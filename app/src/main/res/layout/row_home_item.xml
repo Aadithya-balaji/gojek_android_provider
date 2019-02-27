@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    card_view:cardElevation="2dp"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardUseCompatPadding="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingRight="@dimen/_8sdp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/flower"
+            android:layout_centerVertical="true"
+            app:civ_border_width="0dp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_toRightOf="@+id/profile_image"
+                android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Boopathi natarajan"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:singleLine="true" />
+
+            <RatingBar
+                android:layout_below="@+id/tv_user_name"
+                android:id="@+id/ratingBar"
+                style="@android:style/Widget.Holo.Light.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="1.0"
+                android:theme="@style/RatingBar"
+                android:layout_marginTop="@dimen/_2sdp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12 sec lef"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"/>
+
+        </RelativeLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingRight="@dimen/_8sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_label_service_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_service_type"
+                android:textColor="@color/black"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:textSize="@dimen/_10sdp"/>
+
+            <TextView
+                android:id="@+id/tv_service_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_label_service_type"
+                android:layout_marginTop="@dimen/_1sdp"
+                tools:text="food"/>
+         <TextView
+             android:id="@+id/tv_label_schedule"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/label_schedule_date"
+             android:layout_alignParentEnd="true"
+             android:layout_alignParentRight="true"
+             android:textColor="@color/black"
+             android:textSize="@dimen/_10sdp"/>
+
+            <TextView
+                android:id="@+id/tv_schedule_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12/02/2019"
+                android:layout_below="@id/tv_label_schedule"
+                android:layout_marginTop="@dimen/_1sdp"
+                android:layout_alignStart="@+id/tv_label_schedule"
+                android:layout_alignLeft="@+id/tv_label_schedule" />
+        </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
+                android:visibility="gone"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_label_pickup_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:textColor="@color/doc_font_service_enabled"
+                    android:textSize="@dimen/_12sdp"
+                    android:text="@string/label_pickup_location"/>
+
+                <TextView
+                    android:id="@+id/tv_street_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:textColor="@color/et_stroke_color"
+                    android:text="sdfdfdfdfdfdfdfdf dfdf"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:textSize="@dimen/_10sdp"/>
+
+                <TextView
+                    android:id="@+id/tv_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="India"
+                    android:textColor="@color/et_stroke_color"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:layout_marginBottom="@dimen/_10sdp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            android:weightSum="1">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingTop="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:layout_weight="0.5">
+                <TextView
+                    android:id="@+id/tv_reject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_order_reject"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:textColor="@color/home_reject"
+                    android:textSize="@dimen/_15sdp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="0.2dp"
+                android:layout_height="match_parent"
+                android:background="@color/black"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="@dimen/_7sdp"
+            android:paddingBottom="@dimen/_7sdp"
+            android:layout_weight="0.5">
+            <TextView
+                android:id="@+id/tv_approve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_order_aprrove"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:textColor="@color/card_left_bg"
+                android:textSize="@dimen/_15sdp"/>
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

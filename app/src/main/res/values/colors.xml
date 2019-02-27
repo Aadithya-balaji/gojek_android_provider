@@ -3,6 +3,8 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#67B7FF</color>
+    <color name="app_background_color">#f2f2f2</color>
+
 
     <!-- Common Colors -->
     <color name="white">#FFFFFF</color>
@@ -10,6 +12,39 @@
 
 
     <!-- Document page -->
-    <color name="bg_doc_button">#364bea</color>
+    <color name="bg_doc_button">#FCFCFC</color>
+    <color name="bg_service_enabled">#ecefff</color>
+    <color name="bg_service_disabled">#f8f7f6</color>
+    <color name="doc_font_service_enabled">#242428</color>
+    <color name="doc_font_service_disabled">#989fcb</color>
+    <color name="et_stroke_color">#4F666772</color>
+
+
+
+    <!-- Custom EditText  -->
+    <color name="dark_grey">#666772</color>
+    <color name="grey">#d1d4e7</color>
+    <color name="et_text_color">#888888</color>
+
+
+    <!-- Dashboard -->
+    <color name="card_left_bg">#364bea</color>
+    <color name="home_reject">#d43d59</color>
+
+    <!-- Orders -->
+    <color name="bg_on_ride">#ffe4da</color>
+    <color name="text_on_ride">#d13b00</color>
+    <color name="bg_order_completed"></color>
+    <color name="txt_order_completed"></color>
+
+    <!-- Notification -->
+    <color name="bg_notification_read"></color>
+    <color name="txt_notication_read"></color>
+    <color name="bg_notification_unread"></color>
+    <color name="txt_notification_unread"></color>
+
+    <color name="button_textcolor">#ffffff</color>
+
+
 
 </resources>

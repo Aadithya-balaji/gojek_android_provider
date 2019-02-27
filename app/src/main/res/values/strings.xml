@@ -1,6 +1,48 @@
 <resources>
     <string name="app_name">GoJek_Android_Provider</string>
 
+    <string name="sign_in" translatable="false">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+
     <!-- Upload Document -->
     <string name="btn_doc_txt">Proceed</string>
+    <string name="label_upload_img">Upload Image</string>
+    <string name="label_upload_img_types">You can upload png and jpeg format.</string>
+    <string name="label_upload_pdf">Upload pdf</string>
+    <string name="label_upload_pdf_support">You can uplad pdf file.</string>
+
+    <!-- Tranxit document process -->
+    <string name="taxi_hint_vechile_make">Vechile Make</string>
+    <string name="taxi_hint_vechile_model">Vechile Model</string>
+    <string name="taxi_hint_vechile_year">Vechile Year</string>
+    <string name="taxi_hint_vechile_color">Vechile Color</string>
+    <string name="taxi_hint_vechile_licence_number">Vechile License Plate</string>
+    <string name="taxi_hint_vechile_category">Car Category</string>
+
+    <!-- Food -->
+    <string name="food_hint_vechile_number">Enter Vechile Number</string>
+
+    <!-- Services -->
+    <string name="services_hint_service_type">Service Type</string>
+
+    <!-- Home -->
+    <string name="label_pickup_location">Pickup Location</string>
+    <string name="label_order_reject">Reject</string>
+    <string name="label_order_aprrove">Accept</string>
+    <string name="label_service_type">Service Type</string>
+    <string name="label_schedule_date">Scheduled date</string>
+
+
+
+    <!--- Home tab -->
+    <string name="tab_home">Home</string>
+    <string name="tab_order">Order</string>
+    <string name="tab_notification">Notification</string>
+    <string name="tab_account">Account</string>>
+
+    <!-- Order tab -->
+    <string name="order_track">Track</string>
+    <string name="order_call">Call</string>
+    <string name="order_cancel">Cancel</string>
+
 </resources>

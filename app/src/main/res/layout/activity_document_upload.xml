@@ -79,7 +79,7 @@
         android:layout_marginBottom="@dimen/_30sdp"
         android:layout_marginLeft="@dimen/_30sdp"
         android:layout_marginRight="@dimen/_30sdp"
-        android:fontFamily="@font/AvenirLTStd-Roman"
+        android:fontFamily="@font/avenirltstd_medium"
         android:textStyle="bold"
         android:paddingTop="@dimen/_7sdp"
         android:paddingBottom="@dimen/_7sdp"

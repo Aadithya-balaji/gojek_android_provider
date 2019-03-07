@@ -5,7 +5,10 @@ import android.os.Handler;
 import com.appoets.basemodule.base.BaseActivity;
 import com.appoets.gojek.provider.R;
 import com.appoets.gojek.provider.databinding.ActivitySplashBinding;
+import com.appoets.gojek.provider.views.dashboard.DashBoardActivity;
 import com.appoets.xjek.ui.onboard.OnBoardActivityK;
+import com.appoets.xjek.ui.signin.SignInActivity;
+import com.google.android.gms.maps.model.Dash;
 
 import androidx.databinding.ViewDataBinding;
 //import com.appoets.xjek.ui.onboard.OnBoardActivityK;
@@ -26,6 +29,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> implemen
 
     @Override
     public void moveToHome() {
-        new Handler().postDelayed(() -> openNewActivity(SplashActivity.this, OnBoardActivityK.class, true), 3000);
+        new Handler().postDelayed(() -> openNewActivity(SplashActivity.this, DashBoardActivity.class, true), 3000);
     }
 }

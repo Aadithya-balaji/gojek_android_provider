@@ -3,7 +3,7 @@
 
     <style name="Edittext_OutlinedTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/et_stroke_color</item>
-        <item name="boxBackgroundColor">@android:color/white</item>
+        <item name="boxBackgroundColor">@color/bg_vechile_edittext</item>
         <item name="boxBackgroundMode">outline</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/boxCornerRadius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/boxCornerRadius</item>
@@ -28,4 +28,5 @@
         <item name="android:textColor">#ff0000</item>
         <item name="android:textSize">20sp</item>
     </style>
+
 </resources>

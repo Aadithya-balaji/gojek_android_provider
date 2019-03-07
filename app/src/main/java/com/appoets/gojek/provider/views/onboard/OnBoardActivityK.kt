@@ -16,8 +16,11 @@ import android.util.DisplayMetrics
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.appoets.gojek.provider.R
+import com.appoets.gojek.provider.databinding.ActivityOnBoardBinding
 import com.appoets.gojek.provider.views.onboard.OnBoardNavigator
 import com.appoets.gojek.provider.views.onboard.OnBoardViewModel
+import com.appoets.xjek.ui.signin.SignInActivity
+import com.appoets.xjek.ui.signup.SignupActivity
 
 
 class OnBoardActivityK :BaseActivity<com.appoets.gojek.provider.databinding.ActivityOnBoardBinding>(), OnBoardNavigator {
@@ -34,20 +37,18 @@ class OnBoardActivityK :BaseActivity<com.appoets.gojek.provider.databinding.Acti
         this.mViewDataBinding = mViewDataBinding as ActivityOnBoardBinding
         val onBoardViewModel = OnBoardViewModel()
         onBoardViewModel.setNavigator(this)
-       /* mViewDataBinding.viewModel = onBoardViewModel
-        viewPager = mViewDataBinding.viewpagerOnboard*/
+        mViewDataBinding.viewModel = onBoardViewModel
+        viewPager = mViewDataBinding.viewpagerOnboard
         viewPager.adapter = ScreenSlidePagerAdapter(supportFragmentManager)
-
         initSpritz()
     }
 
     override fun goToSignIn() {
-        Toast.makeText(this, "click sigin", Toast.LENGTH_SHORT).show()
+        openNewActivity(this@OnBoardActivityK,SignInActivity::class.java,true)
     }
 
     override fun goToSignUp() {
-        Toast.makeText(this, "click signup", Toast.LENGTH_SHORT).show()
-
+       openNewActivity(this@OnBoardActivityK,SignupActivity::class.java,true)
     }
 
 

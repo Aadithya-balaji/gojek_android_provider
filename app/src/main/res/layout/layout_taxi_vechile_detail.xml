@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/ll_test"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_vechile_make"
+                style="@style/Edittext_OutlinedTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_100sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:hint="@string/taxi_hint_vechile_make">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedt_vechile_make"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/et_text_color"
+                    android:background="@color/bg_vechile_edittext"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Edittext_OutlinedTheme"
+                android:id="@+id/til_vechile_model"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/taxi_hint_vechile_model">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedt_vechile_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/et_text_color"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Edittext_OutlinedTheme"
+                android:id="@+id/til_vechile_year"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/taxi_hint_vechile_year">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedt_vechile_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/et_text_color"
+                    android:textSize="@dimen/_12sdp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Edittext_OutlinedTheme"
+                android:id="@+id/til_vechil_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/taxi_hint_vechile_color">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedt_vechile_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/et_text_color"
+                    android:textSize="@dimen/_12sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Edittext_OutlinedTheme"
+                android:id="@+id/til_vechil_licence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/taxi_hint_vechile_licence_number">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedt_vechile_licence"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/et_text_color"
+                    android:textSize="@dimen/_12sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Edittext_OutlinedTheme"
+                android:id="@+id/til_vechil_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:hint="@string/taxi_hint_vechile_category">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiedt_vechile_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/et_text_color"
+                    android:drawableRight="@drawable/down_arrow"
+                    android:textSize="@dimen/_12sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/profile_placeholder"
+            app:civ_shadow="true"
+            app:civ_shadow_radius="15"
+            app:civ_shadow_color="#000"
+            app:civ_border_width="0dp"
+            app:civ_shadow_gravity="bottom"
+            app:civ_border="true"
+            app:layout_anchor="@+id/ll_test"
+            app:layout_anchorGravity="top|center"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_background_color="@color/colorPrimary"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+

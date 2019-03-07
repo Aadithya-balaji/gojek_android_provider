@@ -10,7 +10,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.appoets.gojek.provider"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -18,9 +18,9 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
-        dataBinding {
-            enabled = true
-        }
+    dataBinding {
+        enabled = true
+    }
 
     buildTypes {
         release {
@@ -33,48 +33,35 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
+
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     implementation 'com.google.android.material:material:1.0.0-beta01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
-
     //Android databinding
     kapt "com.android.databinding:compiler:3.1.4"
-
-
-
-
     //Basic design support library
-    implementation 'androidx.recyclerview:recyclerview:1.0.0-beta01'
-    implementation 'androidx.cardview:cardview:1.0.0-beta01'
-
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
     //android dimen support
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
-
     /*      Glide       */
     implementation 'com.github.bumptech.glide:glide:4.8.0'
-
     /* square image */
     implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
-
     // Circle with elevation image
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
-
     // Circle image with no elevation
     implementation 'de.hdodenhof:circleimageview:3.0.0'
-
-
     //ViewPager Animation
-    implementation('com.novoda:spritz:1.0.0')
-
-
+    implementation 'com.novoda:spritz:1.0.0'
+    implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
     //Sub Modules
     implementation project(':basemodule')
-
+  //   implementation project(':traximodule')
 }

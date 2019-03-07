@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="@dimen/_10sdp"
     android:orientation="vertical">
     <LinearLayout
@@ -15,7 +15,7 @@
         <ImageView
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
-            android:src="@drawable/provider_pdf_upload"/>
+            app:srcCompat="@drawable/provider_pdf_upload"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:text="@string/label_upload_pdf"
             android:textColor="@color/doc_font_service_enabled"
-            android:fontFamily="@font/AvenirLTStd-Medium"
+            android:fontFamily="@font/avenirltstd_medium"
             android:textSize="@dimen/_11sdp"
             android:layout_height="wrap_content" />
 

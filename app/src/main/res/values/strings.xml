@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">GoJek_Android_Provider</string>
-
     <string name="sign_in" translatable="false">Sign In</string>
     <string name="sign_up">Sign Up</string>
 
@@ -11,7 +10,7 @@
     <string name="label_upload_pdf">Upload pdf</string>
     <string name="label_upload_pdf_support">You can uplad pdf file.</string>
 
-    <!-- Tranxit document process -->
+    <!-- Taxi vechile detail-->
     <string name="taxi_hint_vechile_make">Vechile Make</string>
     <string name="taxi_hint_vechile_model">Vechile Model</string>
     <string name="taxi_hint_vechile_year">Vechile Year</string>
@@ -19,8 +18,10 @@
     <string name="taxi_hint_vechile_licence_number">Vechile License Plate</string>
     <string name="taxi_hint_vechile_category">Car Category</string>
 
-    <!-- Food -->
-    <string name="food_hint_vechile_number">Enter Vechile Number</string>
+
+    <!-- Foodie vechile detail -->
+    <string name="foodie_vechile_number_hint">Enter Vehicle Number</string>
+
 
     <!-- Services -->
     <string name="services_hint_service_type">Service Type</string>
@@ -33,7 +34,6 @@
     <string name="label_schedule_date">Scheduled date</string>
 
 
-
     <!--- Home tab -->
     <string name="tab_home">Home</string>
     <string name="tab_order">Order</string>
@@ -44,5 +44,76 @@
     <string name="order_track">Track</string>
     <string name="order_call">Call</string>
     <string name="order_cancel">Cancel</string>
+    <string name="order_past">Past</string>
+    <string name="order_current">Current</string>
+
+    <!-- Register -->
+    <string name="user_name_hint">User Name</string>
+    <string name="create_account">Create Account</string>
+    <string name="countrycode_hint">code</string>
+    <string name="phonenumber_hint">Phone Number</string>
+    <string name="email_id_hint">Email Id (optional)</string>
+    <string name="password_hint">Password</string>
+    <string name="city_hint">City</string>
+    <string name="country_hint">Country</string>
+    <string name="already_have_an_account">Already have an account</string>
+
+
+    <!-- Sign in -->
+    <string name="login_via">Login Via</string>
+    <string name="dont_have_account">Don\'t have an account</string>
+    <string name="or">OR</string>
+    <string name="social_login">Social Login</string>
+    <string name="connect_via_google">Connect via Google</string>
+    <string name="connect_via_facebook">Connect via Facebook</string>
+    <string name="forgot_password">Forgot Password ?</string>
+
+
+    <!-- Notification -->
+    <string name="notificaiton_valid_label">Valid Till</string>
+    <string name="notification_date"></string>
+    <string name="notification_label_car">Car Notification</string>
+    <string name="notificaiton_label_foodie">Food Notificaiton</string>
+    <string name="notification_label_service">Service Notification</string>
+
+
+    <!-- Account -->
+    <string name="account_profile">Profile</string>
+    <string name="account_card">Manage Address</string>
+    <string name="account_gift">Payment</string>
+    <string name="privacy_support">Support</string>
+    <string name="account_privacy">Privacy Policy</string>
+    <string name="account_invite">Invite Referrals</string>
+
+
+
+    <string-array name="account">
+        <item>Profile</item>
+        <item>Invite Referrals</item>
+        <item>Payment</item>
+        <item>Transcation</item>
+        <item>Privacy Policy</item>
+        <item>Support</item>
+    </string-array>
+
+    <integer-array name="account_icons">
+        <item>@drawable/ic_profile</item>
+        <item>@drawable/ic_gift_card</item>
+        <item>@drawable/card</item>
+        <item>@drawable/card</item>
+        <item>@drawable/ic_privacy_policy</item>
+        <item>@drawable/ic_support</item>
+    </integer-array>
+
+
+    <!-- Taxi pickup -->
+    <string name="taxi_pickup_location">Pickup Location</string>
+    <string name="taxi_pickup_approve">Approve</string>
+    <string name="taxi_pickup_cancel">Cancel</string>
+
+    <!-- Header label -->
+    <string name="header_label_order">Orders</string>
+    <string name="header_label_notification">Notification</string>
+    <string name="header_label_myaccount">My Account</string>
 
 </resources>

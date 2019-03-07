@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <!-- Basic colors -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey">#d1d4e7</color>
+
+
+
+    <!-- Vechile detail -->
+    <color name="bg_vechile_profile">#F2F2F2</color>
+    <color name="bg_vechile_edittext">#F8F7F6</color>
+
+
+    <!-- Taxi -->
+    <color name="taxi_bg_yellow">#FFA200</color>
+    <color name="taxi_bg_grey">#F8F7F6</color>
+    <color name="taxi_bg_status_solid">#FFF8ED</color>
+    <color name="taxi_circle_grey">#9F9F9F</color>
+
+
+</resources>

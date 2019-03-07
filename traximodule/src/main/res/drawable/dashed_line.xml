@@ -1,0 +1,9 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="line">
+    <solid android:color="@android:color/transparent"/>
+    <stroke
+        android:width="1px"
+        android:color="@color/taxi_bg_yellow"
+        android:dashGap="6dp"
+        android:dashWidth="5dp" />
+</shape>

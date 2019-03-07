@@ -1,3 +1,52 @@
 <resources>
     <string name="app_name">Traximodule</string>
+
+
+    <!-- Common -->
+    <string name="submit">Submit</string>
+
+    <!-- Taxi pickup -->
+    <string name="taxi_pickup_location">Pickup Location</string>
+    <string name="taxi_sos">SOS</string>
+
+
+    <!-- invoice -->
+    <string name="taxi_invoice">Invoice</string>
+    <string name="taxi_source_destination">Source and Destination</string>
+    <string name="taxi_invoice_total">Total</string>
+    <string name="taxi_confirm_payment">Confirm Payment</string>
+    <string name="taxi_invoice_booking_id">Booking ID</string>
+    <string name="taxi_distance_travelled">Distance Travelled</string>
+    <string name="taxi_invoice_time_taken">Time Taken</string>
+    <string name="taxi_invoice_base_fare">Base Fare</string>
+    <string name="taxi_invoice_distance_fare">Distance Fare</string>
+    <string name="taxi_invoice_tax">Tax</string>
+    <string name="taxi_invoice_Tips">Tips</string>
+
+    <!-- OTP -->
+    <string name="otp_label">Enter OTP</string>
+    <string name="otp_call">Call</string>
+    <string name="otp_chat">Chat</string>
+    <string name="otp_start_trip">Start Trip</string>
+
+
+    <!-- Rating -->
+    <string name="rating_label">Rating</string>
+    <string name="rate_your_customer">Rate your Customer</string>
+    <string name="rate_comments">Leave your comments</string>
+
+    <!-- Ride status -->
+    <string name="taxi_pickup_approve">Approve</string>
+    <string name="taxi_pickup_cancel">Cancel</string>
+    <string name="taxi_tab_ariived">Tap When arrived</string>
+
+
+
+    <!-- Support -->
+    <string name="support">Support</string>
+    <string name="support_team_text">You can contact our team at any time for you quries</string>
+    <string name="call">Call</string>
+    <string name="mail">Mail</string>
+    <string name="website">Website</string>
+
 </resources>

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
 
 android {
     compileSdkVersion 28
@@ -12,8 +14,8 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        android.defaultConfig.vectorDrawables.useSupportLibrary = true
 
     }
 
@@ -41,6 +43,10 @@ dependencies {
 
     //Sub modules
     implementation project(':basemodule')
+
+    //Permission check lib compiler
+    kapt "com.github.hotchemi:permissionsdispatcher-processor:4.1.0"
+
 }
 repositories {
     mavenCentral()

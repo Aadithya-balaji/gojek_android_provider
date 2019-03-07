@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#67B7FF</color>
+    <color name="colorPrimary">#364bea</color>
+    <color name="colorPrimaryDark">#1F298B</color>
+    <color name="colorAccent">#364bea</color>
     <color name="app_background_color">#f2f2f2</color>
 
 
@@ -42,8 +42,16 @@
     <color name="txt_notication_read"></color>
     <color name="bg_notification_unread"></color>
     <color name="txt_notification_unread"></color>
-
     <color name="button_textcolor">#ffffff</color>
+
+    <!-- Vechile detail -->
+    <color name="bg_vechile_profile">#F2F2F2</color>
+    <color name="bg_vechile_edittext">#F8F7F6</color>
+
+
+    <!-- Taxi -->
+    <color name="taxi_bg_yellow">#FFA200</color>
+    <color name="taxi_bg_grey">#F8F7F6</color>
 
 
 

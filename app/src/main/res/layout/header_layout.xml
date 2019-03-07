@@ -4,17 +4,21 @@
     android:background="@color/white"
     android:id="@+id/lay_header"
     android:layout_height="wrap_content">
-    <ImageView
-        android:id="@+id/tv_changePassword"
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentLeft="true">
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:gravity="center"
         android:padding="10dp"
         android:src="@drawable/back_arrow"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_header"
@@ -26,6 +30,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold" />
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/iv_right"

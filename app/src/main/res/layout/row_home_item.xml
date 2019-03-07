@@ -6,6 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     card_view:cardElevation="2dp"
     card_view:cardCornerRadius="4dp"
+    android:layout_marginRight="@dimen/_20sdp"
+    android:layout_marginLeft="@dimen/_20sdp"
     card_view:cardUseCompatPadding="true">
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,7 +51,7 @@
 
             <RatingBar
                 android:layout_below="@+id/tv_user_name"
-                android:id="@+id/ratingBar"
+                android:id="@+id/rb_home"
                 style="@android:style/Widget.Holo.Light.RatingBar.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

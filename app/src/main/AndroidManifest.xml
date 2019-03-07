@@ -4,21 +4,15 @@
     package="com.appoets.gojek.provider">
 
     <application
+        android:name=".base.GojekApplication"
         android:allowBackup="true"
+        android:appComponentFactory="androidx"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/app_icon_512"
         android:supportsRtl="true"
-        android:name=".base.GojekApplication"
-        tools:replace="android:appComponentFactory"
-        android:appComponentFactory="androidx"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        android:theme="@style/AppTheme"
+        tools:replace="android:appComponentFactory">
 
         <activity
             android:name=".views.splash.SplashActivity"
@@ -26,12 +20,32 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <activity android:name="com.appoets.xjek.ui.onboard.OnBoardActivityK"
+        <activity
+            android:name="com.appoets.xjek.ui.onboard.OnBoardActivityK"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity
+            android:name="com.appoets.xjek.ui.signup.SignupActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity
+            android:name="com.appoets.xjek.ui.signin.SignInActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity
+            android:name=".views.dashboard.DashBoardActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 </manifest>

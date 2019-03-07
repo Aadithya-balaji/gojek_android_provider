@@ -1,13 +1,23 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="100dp"
-    app:layout_behavior="@string/bottom_sheet_behavior"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <data>
+        <variable
+            name="bottomsheetmodel"
+            type="com.appoets.gojek.traximodule.views.views.bottomsheets.BottomSheetModule"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="100dp"
+        android:orientation="vertical"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        android:layout_marginBottom="@dimen/_20sdp">
 
 
     <RelativeLayout
@@ -30,6 +40,7 @@
             android:textSize="@dimen/_10sdp" />
 
         <ImageButton
+            android:id="@+id/iv_unselected_map_bin"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
             android:layout_alignParentEnd="true"
@@ -157,6 +168,7 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp" />
         <LinearLayout
+            android:id="@+id/ll_button_approve"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_15sdp"
@@ -187,7 +199,8 @@
                 android:text="@string/taxi_pickup_approve"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10sdp"
-                android:textStyle="bold" />
+                android:onClick="@{() -> bottomsheetmodel.openOTPDialogFrag()}"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <Button
@@ -201,9 +214,11 @@
             android:textColor="@color/white"
             android:fontFamily="@font/avenirltstd_medium"
             android:textSize="@dimen/_12sdp"
+            android:onClick="@{() -> bottomsheetmodel.gotoInvoicePage()}"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
             android:textStyle="bold"/>
     </LinearLayout>
+    </LinearLayout>
 
-</LinearLayout>
+</layout>

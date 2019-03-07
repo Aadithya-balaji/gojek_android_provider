@@ -17,6 +17,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         android.defaultConfig.vectorDrawables.useSupportLibrary = true
 
+        resValue "string", "google_map_key", "AIzaSyAdXoVw-M-g4vgEOZZK7Dc9jMUlLR5xVXI"
+
+
     }
 
     buildTypes {
@@ -24,6 +27,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+
+    dataBinding {
+        enabled = true
     }
 
     compileOptions {

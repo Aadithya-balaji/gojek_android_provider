@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.generated.callback.OnClickListener
+import com.appoets.gojek.traximodule.views.views.main.ActivityTaxiMain
 import de.hdodenhof.circleimageview.CircleImageView
 
 class HomeAdapter (activity: AppCompatActivity): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(),View.OnClickListener{
@@ -50,7 +51,7 @@ class HomeAdapter (activity: AppCompatActivity): RecyclerView.Adapter<HomeAdapte
     }
 
     override fun onClick(v: View?) {
-        /*val intent= Intent(activity,ActivityTaxiMain::class.java)
-        activity!!.startActivity(intent)*/
+        val intent= Intent(activity, ActivityTaxiMain::class.java)
+        activity!!.startActivity(intent)
     }
 }

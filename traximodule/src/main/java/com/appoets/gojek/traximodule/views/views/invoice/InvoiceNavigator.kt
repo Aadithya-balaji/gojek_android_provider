@@ -1,3 +1,5 @@
 package com.appoets.gojek.traximodule.views.views.invoice
 
-class InvoiceNavigator
+interface InvoiceNavigator{
+    fun openRatingDialog()
+}

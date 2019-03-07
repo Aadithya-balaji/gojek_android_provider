@@ -15,6 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -63,5 +64,9 @@ dependencies {
     implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
     //Sub Modules
     implementation project(':basemodule')
-  //   implementation project(':traximodule')
+    implementation project(':traximodule')
+
+    implementation 'com.android.support:multidex:1.0.3'
+
+
 }

@@ -48,7 +48,6 @@ class AccountFragment : BaseFragment<com.appoets.gojek.provider.databinding.Frag
 
 
         var accountIcons=resources.getIntArray(R.array.account_icons)
-
          var iconSize:Int=accountIcons.size
 
          accountAdapter= AccountAdapter(appCompatActivity!!,accountTitle,accountIcons)

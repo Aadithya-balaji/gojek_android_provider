@@ -21,6 +21,7 @@ class SignInActivity : BaseActivity<ActivitySiginBinding>(), SigninNavigator {
         this.mViewDataBinding = mViewDataBinding as ActivitySiginBinding
         val signViewModel = SigninViewModel()
         signViewModel.setNavigator(this)
+        this.mViewDataBinding.signinmodel = signViewModel
 
     }
 
@@ -31,23 +32,20 @@ class SignInActivity : BaseActivity<ActivitySiginBinding>(), SigninNavigator {
 
     //move to signup page
     override fun goToSignup() {
-
         openNewActivity(this@SignInActivity, SignupActivity::class.java, false)
     }
 
     override fun googleSignin() {
 
-
     }
 
     override fun facebookSignin() {
+
     }
 
     override fun gotoHome() {
-
-        val intent= Intent(this@SignInActivity,DashBoardActivity::class.java)
+        val intent = Intent(this@SignInActivity, DashBoardActivity::class.java)
         startActivity(intent)
-
     }
 
 }

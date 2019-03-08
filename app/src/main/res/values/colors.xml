@@ -13,7 +13,7 @@
 
     <!-- Document page -->
     <color name="bg_doc_button">#FCFCFC</color>
-    <color name="bg_service_enabled">#ecefff</color>
+    <color name="bg_service_enabled">#ECEFFF</color>
     <color name="bg_service_disabled">#f8f7f6</color>
     <color name="doc_font_service_enabled">#242428</color>
     <color name="doc_font_service_disabled">#989fcb</color>

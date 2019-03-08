@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vechiledetailmodel"
+            type="com.appoets.gojek.provider.views.uploaddocumentlist.VechileDetailModel"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_vechile_profile">
+
+        <include
+            android:id="@+id/tbr_vehicle_header"
+            layout="@layout/toolbar_header"/>
+
+
+       <!-- <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tbr_vehicle_header"
+            android:fillViewport="true"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:isScrollContainer="false"
+            android:background="@android:color/transparent">
+
+            <LinearLayout
+                android:id="@+id/cv_vehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:elevation="@dimen/_3sdp">
+
+
+                <include
+                    android:id="@+id/layout_taxi"
+                    layout="@layout/layout_taxi_vechile_detail"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/_20sdp"/>
+
+                <include
+                    android:id="@+id/layout_foodie"
+                    layout="@layout/layout_foodie_vechile"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/layout_service"
+                    layout="@layout/layout_service_type"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </ScrollView>-->
+
+        <TextView
+            android:id="@+id/tv_proceed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@drawable/bg_blue_rounded_corner"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:gravity="center"
+            android:paddingTop="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_15sdp"
+            android:text="@string/btn_doc_txt"
+            android:onClick="@{() -> vechiledetailmodel.gotoVerificationProofPage()}"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:textSize="@dimen/_15sdp" />
+
+    </RelativeLayout>
+</layout>

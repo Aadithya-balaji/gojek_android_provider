@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="verifyFileModel"
+            type="com.appoets.gojek.provider.views.verifyfile.VerifyFIleVIewModel"/>
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/tbr_verification"
+        layout="@layout/toolbar_header"/>
+
+
+     <include
+         android:layout_marginTop="@dimen/_10sdp"
+         layout="@layout/layout_upload_adhar"
+         android:layout_below="@+id/tbr_verification"
+         android:layout_height="wrap_content"
+         android:layout_width="match_parent"/>
+
+    <TextView
+        android:id="@+id/tv_verfiy_proceed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/bg_blue_rounded_corner"
+        android:fontFamily="@font/avenirltstd_medium"
+        android:gravity="center"
+        android:paddingTop="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_10sdp"
+        android:onClick="@{() -> verifyFileModel.showDashboardPage()}"
+        android:text="@string/btn_doc_txt"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp" />
+</RelativeLayout>
+
+</layout>
+

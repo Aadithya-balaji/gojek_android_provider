@@ -29,6 +29,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding> implemen
 
     @Override
     public void moveToHome() {
-        new Handler().postDelayed(() -> openNewActivity(SplashActivity.this, DashBoardActivity.class, true), 3000);
+        new Handler().postDelayed(() -> openNewActivity(SplashActivity.this, OnBoardActivityK.class, true), 3000);
     }
 }

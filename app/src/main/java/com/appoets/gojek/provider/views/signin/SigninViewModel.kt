@@ -31,6 +31,10 @@ public class SigninViewModel : BaseViewModel<SigninNavigator>(),Observable
 
     fun signIn()
     {
+        //navigator.gotoHome()
+    }
+
+    fun goToHome(){
         navigator.gotoHome()
     }
 }

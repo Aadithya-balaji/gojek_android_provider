@@ -9,6 +9,8 @@
     <string name="label_upload_img_types">You can upload png and jpeg format.</string>
     <string name="label_upload_pdf">Upload pdf</string>
     <string name="label_upload_pdf_support">You can uplad pdf file.</string>
+    <string name="label_upload_back_view_adhar">Upload back view of adhar</string>
+    <string name="label_upload_front_view_adhar">Upload front view of adhar</string>
 
     <!-- Taxi vechile detail-->
     <string name="taxi_hint_vechile_make">Vechile Make</string>
@@ -86,7 +88,6 @@
     <string name="account_invite">Invite Referrals</string>
 
 
-
     <string-array name="account">
         <item>Profile</item>
         <item>Invite Referrals</item>
@@ -105,6 +106,15 @@
         <item>@drawable/ic_support</item>
     </integer-array>
 
+    <string-array name="document_list">
+        <item>Taxi App</item>
+        <item>Moto Rental</item>
+        <item>Movers</item>
+        <item>Service</item>
+        <item>Food</item>
+        <item>Grocery</item>
+    </string-array>
+
 
     <!-- Taxi pickup -->
     <string name="taxi_pickup_location">Pickup Location</string>
@@ -115,5 +125,8 @@
     <string name="header_label_order">Orders</string>
     <string name="header_label_notification">Notification</string>
     <string name="header_label_myaccount">My Account</string>
+    <string name="header_label_verification_img">Verification Images</string>
+    <string name="header_after_document_upload">After Document Upload</string>
+    <string  name="header_label_document_upload">Document Upload</string>
 
 </resources>

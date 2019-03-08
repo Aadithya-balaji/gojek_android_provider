@@ -4,4 +4,5 @@ interface SignupNavigator {
 
     fun signup()
     fun openSignin()
+    fun gotoDocumentPage()
 }

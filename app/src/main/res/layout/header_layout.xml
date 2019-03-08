@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/rl_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -31,6 +32,20 @@
         android:textSize="18sp"
         android:textStyle="bold" />
     </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tv_right_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/rl_right"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/iv_right"

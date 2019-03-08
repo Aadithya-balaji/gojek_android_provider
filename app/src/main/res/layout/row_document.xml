@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/tv_doc_service"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/_80sdp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_document_button"
+    android:gravity="center">
+</TextView>

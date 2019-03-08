@@ -2,12 +2,12 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <solid android:color="@color/bg_service_disabled" />
+    <solid android:color="@color/bg_service_enabled" />
 
 
     <corners
         android:bottomLeftRadius="@dimen/_100sdp"
         android:bottomRightRadius="@dimen/_100sdp"
         android:topLeftRadius="@dimen/_100sdp"
-        android:topRightRadius="@dimen/_100sdp"/>
+        android:topRightRadius="@dimen/_100sdp" />
 </shape>

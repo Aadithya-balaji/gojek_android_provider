@@ -126,4 +126,8 @@ class BottomStatuslayout : BaseBottomSheet<com.appoets.gojek.traximodule.databin
 
         }
     }
+
+    override fun closeBottomSheet() {
+        dismiss()
+    }
 }

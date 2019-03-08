@@ -11,4 +11,8 @@ class SignupViewModel : BaseViewModel<SignupNavigator>() {
     fun gotoSignin() {
         navigator.openSignin()
     }
+
+    fun gotoDocumentPage(){
+        navigator.gotoDocumentPage()
+    }
 }

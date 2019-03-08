@@ -10,6 +10,10 @@
     </data>
 
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -271,13 +275,12 @@
                 android:layout_alignParentEnd="true"
                 android:layout_margin="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
-                android:onClick="@{()-> registermodel.gotoSignin()}"
+                android:onClick="@{()-> registermodel.gotoDocumentPage()}"
                 app:srcCompat="@drawable/ic_right_arrow_in_black_circular_button"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
-
-
     </LinearLayout>
+    </ScrollView>
 
 
 </layout>

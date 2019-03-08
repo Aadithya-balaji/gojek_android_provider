@@ -179,6 +179,7 @@
             android:weightSum="1">
 
             <Button
+                android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".5"
@@ -186,10 +187,12 @@
                 android:fontFamily="@font/avenirltstd_medium"
                 android:text="@string/taxi_pickup_cancel"
                 android:textColor="@color/white"
+                android:onClick="@{() -> bottomsheetmodel.closeDialog()}"
                 android:textSize="@dimen/_10sdp"
                 android:textStyle="bold" />
 
             <Button
+                android:id="@+id/btn_approve"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"

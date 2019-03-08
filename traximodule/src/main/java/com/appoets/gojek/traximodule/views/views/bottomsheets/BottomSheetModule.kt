@@ -10,4 +10,9 @@ class BottomSheetModule:BaseViewModel<BottomSheetNavigator>(){
     fun gotoInvoicePage(){
          navigator.opentInvoice()
     }
+
+    fun closeDialog(){
+        navigator.closeBottomSheet()
+    }
+
 }

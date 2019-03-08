@@ -49,7 +49,7 @@
             android:paddingLeft="@dimen/_12sdp"
             android:paddingTop="@dimen/_5sdp"
             android:paddingRight="@dimen/_12sdp"
-            android:paddingBottom="@dimen/_5sdp">
+            android:paddingBottom="@dimen/_10sdp">
 
             <TextView
                 android:id="@+id/tv_source"
@@ -347,8 +347,10 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:orientation="horizontal"
                 android:background="#DEDEDE"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_5sdp"
+                android:paddingRight="@dimen/_5sdp"
                 android:weightSum="1">
 
                 <TextView
@@ -358,8 +360,9 @@
                     android:layout_weight="0.60"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:text="@string/taxi_invoice_total"
+                    android:textAllCaps="true"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_15sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/tv_invoice_total"
@@ -368,7 +371,6 @@
                     android:layout_weight="0.40"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:gravity="end"
-                    android:text="dfdaf"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
         </LinearLayout>
@@ -385,8 +387,8 @@
             android:fontFamily="@font/avenirltstd_medium"
             android:textSize="@dimen/_13sdp"
             android:gravity="center"
-            android:paddingTop="@dimen/_8sdp"
-            android:paddingBottom="@dimen/_8sdp"
+            android:paddingTop="@dimen/_11sdp"
+            android:paddingBottom="@dimen/_11sdp"
             android:layout_marginLeft="@dimen/_13sdp"
             android:layout_marginRight="@dimen/_13sdp"
             android:onClick="@{() -> invoicemodel.openRatingDialog()}"

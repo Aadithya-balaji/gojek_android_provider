@@ -33,19 +33,18 @@ class AccountAdapter(var cont: Context, val titleList: Array<String>, val iconsL
 
             1 -> {
                 ivAccount.setImageResource(R.drawable.ic_gift_card)
-
             }
+
             2 -> {
                 ivAccount.setImageResource(R.drawable.card)
-
             }
+
             3 -> {
                 ivAccount.setImageResource(R.drawable.ic_privacy_policy)
 
             }
             4 -> {
                 ivAccount.setImageResource(R.drawable.ic_support)
-
             }
             5 -> {
                 ivAccount.setImageResource(R.drawable.card)

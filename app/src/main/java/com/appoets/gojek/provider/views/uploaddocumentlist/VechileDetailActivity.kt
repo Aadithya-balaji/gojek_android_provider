@@ -8,6 +8,7 @@ import androidx.databinding.ViewDataBinding
 import com.appoets.basemodule.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityVechileDetailPageBinding
+import com.appoets.gojek.provider.views.adapters.ServiceListAdapter
 import com.appoets.gojek.provider.views.verifyfile.VerifyFileActivity
 
 class VechileDetailActivity:BaseActivity<ActivityVechileDetailPageBinding>(),VechileDetailNavigator{
@@ -30,15 +31,20 @@ class VechileDetailActivity:BaseActivity<ActivityVechileDetailPageBinding>(),Vec
         vechileDetailModel.setNavigator(this)
         mVechileDetailPageBinding!!.vechiledetailmodel=vechileDetailModel
 
-        llTaxiVechileDetail = findViewById(R.id.layout_taxi)
-        llFoodieDetail = findViewById(R.id.layout_foodie)
-        llService = findViewById(R.id.layout_service)
+        llTaxiVechileDetail = findViewById(R.id.cl_taxi)
+        llFoodieDetail = findViewById(R.id.ll_foodie)
+        llService = findViewById(R.id.ll_service)
 
         //get IntentViewlues
         getIntentValues()
 
         //Change Page based on Service type
         changeLayout()
+
+        val services=resources.getStringArray(R.array.document_list)
+        val list=services.toList()
+
+        val serviceListAdapter=ServiceListAdapter(this,list)
     }
 
     fun getIntentValues() {

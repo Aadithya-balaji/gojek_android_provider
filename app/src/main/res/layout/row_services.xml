@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:id="@+id/tv_services"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="@dimen/_80sdp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_service_unselected"
+    android:paddingTop="@dimen/_8sdp"
+    android:paddingBottom="@dimen/_8sdp"
+    android:text="boopathi"
+    android:gravity="center">
+</TextView>

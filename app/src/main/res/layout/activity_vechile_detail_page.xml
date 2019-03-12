@@ -18,7 +18,7 @@
             layout="@layout/toolbar_header"/>
 
 
-       <!-- <ScrollView
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tbr_vehicle_header"
@@ -38,23 +38,23 @@
 
 
                 <include
-                    android:id="@+id/layout_taxi"
+                    android:id="@+id/cl_taxi"
                     layout="@layout/layout_taxi_vechile_detail"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/_20sdp"/>
 
                 <include
-                    android:id="@+id/layout_foodie"
+                    android:id="@+id/ll_foodie"
                     layout="@layout/layout_foodie_vechile"
                     android:visibility="gone" />
 
                 <include
-                    android:id="@+id/layout_service"
+                    android:id="@+id/ll_service"
                     layout="@layout/layout_service_type"
                     android:visibility="gone" />
             </LinearLayout>
-        </ScrollView>-->
+        </ScrollView>
 
         <TextView
             android:id="@+id/tv_proceed"

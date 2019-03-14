@@ -1,59 +1,61 @@
 package com.appoets.gojek.provider.views.account
 
-import android.content.Context
 import android.view.View
-import android.widget.GridView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProviders
 import com.appoets.basemodule.base.BaseFragment
 import com.appoets.gojek.provider.R
-import com.appoets.gojek.provider.views.adapters.AccountAdapter
-import com.appoets.gojek.provider.views.dashboard.DashBoardNavigator
-import java.util.*
+import com.appoets.gojek.provider.databinding.FragmentAccountBinding
+import com.appoets.gojek.provider.views.TransactionStatusActivity.TransactionStatusActivity
+import com.appoets.xjek.ui.invitereferals.InviteReferalsActivity
+import com.appoets.xjek.ui.payment.PaymentActivity
+import com.appoets.xjek.ui.profile.Profile
+import com.appoets.xjek.ui.support.SupportActivity
+
+class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator {
+
+    private lateinit var mFragmentAccountBinding: FragmentAccountBinding
 
 
-class AccountFragment : BaseFragment<com.appoets.gojek.provider.databinding.FragmentAccountBinding>() {
-    private lateinit var mFragmentAccountBinding: com.appoets.gojek.provider.databinding.FragmentAccountBinding
-    private var mAccountViewModel: AccountViewModel? = null
-    private lateinit var rvAccount: RecyclerView
-    private lateinit var gvAccount: GridView
-    private var dashBoardNavigator: DashBoardNavigator? = null
-    private var appCompatActivity: AppCompatActivity? = null
-    private var accountAdapter: AccountAdapter? = null
-
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        dashBoardNavigator = context as DashBoardNavigator
-    }
-
-
-    override fun getLayoutId(): Int {
-        return com.appoets.gojek.provider.R.layout.fragment_account
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_account
 
 
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
         mFragmentAccountBinding = mViewDataBinding as com.appoets.gojek.provider.databinding.FragmentAccountBinding
-        mAccountViewModel = AccountViewModel()
-        // rvAccount=mRootView.findViewById(R.id.rvc)
-        gvAccount = mRootView.findViewById(R.id.gv_account) as GridView
-        appCompatActivity = if (dashBoardNavigator?.getInstance() != null) dashBoardNavigator?.getInstance() else activity as AppCompatActivity
+        val mAccountViewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
+        mAccountViewModel.setNavigator(this)
+        mFragmentAccountBinding.myaccountfragmentviewmodel = mAccountViewModel
+    }
 
-        //Get List Values from xml
-        var accountTitle =resources.getStringArray(R.array.account)
-        var accountTitleList= Arrays.asList(accountTitle)
+    override fun gotoProfilePage() {
 
+        openNewActivity(activity, Profile::class.java, false)
+    }
 
+    override fun gotoInvitPage() {
 
-        var accountIcons=resources.getIntArray(R.array.account_icons)
-         var iconSize:Int=accountIcons.size
-
-         accountAdapter= AccountAdapter(appCompatActivity!!,accountTitle,accountIcons)
-        gvAccount.adapter=accountAdapter
-
-        dashBoardNavigator!!.setTitle(appCompatActivity!!.resources.getString(R.string.header_label_myaccount))
+        openNewActivity(activity, InviteReferalsActivity::class.java, false)
 
     }
+
+    override fun gotoPaymentPage() {
+        openNewActivity(activity, PaymentActivity::class.java, false)
+
+    }
+
+    override fun gotoTransacationPage() {
+
+        openNewActivity(activity, TransactionStatusActivity::class.java, false)
+
+    }
+
+    override fun gotoPrivacyPage() {
+
+    }
+
+    override fun gotoSupportPage() {
+
+        openNewActivity(activity, SupportActivity::class.java, false)
+    }
+
 }

@@ -24,7 +24,7 @@ class AccountViewModel : BaseViewModel<AccountNavigator>() {
         navigator.gotoPrivacyPage()
     }
 
-    fun openAccountPage() {
+    fun openSupportPage() {
         navigator.gotoSupportPage()
     }
 }

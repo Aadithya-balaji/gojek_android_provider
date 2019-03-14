@@ -52,7 +52,11 @@
     <!-- Taxi -->
     <color name="taxi_bg_yellow">#FFA200</color>
     <color name="taxi_bg_grey">#F8F7F6</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="schedule_blue_txt">#11aba9</color>
 
+    <!--TransactionStatus-->
+    <color name="transactinstatus">#F8FFA200</color>
 
 
 </resources>

@@ -3,11 +3,15 @@ package com.appoets.basemodule.base;
 import android.content.Context;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +73,12 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     protected void setBindingVariable(int variableId,@Nullable Object object){
         mViewDataBinding.setVariable(variableId,object);
         mViewDataBinding.executePendingBindings();
+    }
+
+    public void openNewActivity(FragmentActivity activity, Class<?> cls, boolean finishCurrent) {
+        Intent intent = new Intent(activity, cls);
+        startActivity(intent);
+        if (finishCurrent) activity.finish();
     }
 
 }

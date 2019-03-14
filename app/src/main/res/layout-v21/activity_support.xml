@@ -101,6 +101,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@+id/call_support_imgview"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:text="@string/call"
@@ -113,7 +114,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="@string/dummy_number"
+                            android:text="+91123456789"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/_10sdp" />
                     </LinearLayout>
@@ -140,6 +141,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@+id/call_support_imgview"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:text="@string/mail"
@@ -152,7 +154,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="@string/dummy_mail_id"
+                            android:text="mail@mail.com"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/_10sdp" />
                     </LinearLayout>
@@ -179,6 +181,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_below="@+id/call_support_imgview"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:text="@string/website"
@@ -191,7 +194,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="@string/dummy_website"
+                            android:text="www.support.com"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/_10sdp" />
                     </LinearLayout>

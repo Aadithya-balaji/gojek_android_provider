@@ -20,7 +20,7 @@ class TransactionStatusActivity : BaseActivity<ActivtyTransactionStatusBinding>(
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { view ->
             finish()
         }
-        mViewDataBinding.transactionAdapter = TransactionStatusListAdapter(this)
+        mViewDataBinding. transactionStatusAdapter = TransactionStatusListAdapter(this)
     }
 
     override fun showStatus() {

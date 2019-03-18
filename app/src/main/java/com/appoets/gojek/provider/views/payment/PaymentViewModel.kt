@@ -6,4 +6,8 @@ public class PaymentViewModel : BaseViewModel<PaymentNavigator>() {
     fun addAmount() {
         navigator.addWalletAmount()
     }
+
+    fun openTransactionStatusActivty() {
+        navigator.goToTransactionStatusActivty()
+    }
 }

@@ -4,8 +4,8 @@
 
     <data>
 
-       <variable
-            name="transactionAdapter"
+        <variable
+            name="transactionStatusAdapter"
             type="com.appoets.gojek.provider.views.adapters.TransactionStatusListAdapter" />
     </data>
 
@@ -14,8 +14,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/toolbar_layout"
-            android:id="@+id/toolbarLayout"/>
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_layout" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
-            android:adapter="@{transactionAdapter}"
+            android:adapter="@{transactionStatusAdapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
 

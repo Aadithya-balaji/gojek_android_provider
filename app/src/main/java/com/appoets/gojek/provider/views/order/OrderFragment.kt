@@ -32,21 +32,10 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
     private  var isPastOrderSelected:Boolean=false
     private  var isCurrentOrderSelected:Boolean=true
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_order
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_order
 
 
-    /*fun onAttach(context: Context) {
-        super.onAttach(context)
-        mListner = context as ActivityListner
 
-    }*/
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        dashBoardNavigator = context as DashBoardNavigator
-    }
 
 
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
@@ -62,8 +51,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
         linearLayoutManager=LinearLayoutManager(activity)
         rvOrders.layoutManager=linearLayoutManager
         rvOrders.adapter=orderAdpater
-        //dashBoardNavigator!!.setTitle(appCompatActivity!!.resources.getString(R.string.heade))
-        dashBoardNavigator!!.setTitle(appCompatActivity!!.resources.getString(R.string.header_label_order))
     }
 
 

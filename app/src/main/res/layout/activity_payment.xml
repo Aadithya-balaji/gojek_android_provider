@@ -24,264 +24,280 @@
             android:id="@+id/toolbar_layout"
             layout="@layout/toolbar_layout" />
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardlist_payment_cv"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_70sdp"
-            android:layout_margin="@dimen/_6sdp"
-            android:background="@drawable/bg_white"
-            app:cardCornerRadius="@dimen/_5sdp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_5sdp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/save_card"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/card_for_receving_the_user_s_payment" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_60sdp"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:layout_weight="1"
-                    android:background="@drawable/bg_grey_square"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/bankname_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/dummy_bank_name"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:id="@+id/card_numeber"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/dummy_card_number" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/wallet_payment_cv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_6sdp"
-            android:background="@drawable/bg_white"
-            app:cardCornerRadius="@dimen/_5sdp">
-
-
-            <LinearLayout
-                android:id="@+id/wallet_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp">
-
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/wallet_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/wallet"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:id="@+id/wallet_value_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/wallet_tv"
-                        android:layout_toRightOf="@+id/wallet_tv"
-                        android:padding="@dimen/_5sdp"
-                        tools:text="($50)" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/transaction" />
-
-                </RelativeLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_5sdp"
-                    android:weightSum="4">
-
-                    <EditText
-                        android:id="@+id/amount"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:layout_weight="1.7"
-                        android:background="@drawable/custom_roundcorner_button"
-                        android:backgroundTint="@color/app_background_color"
-                        android:hint="@string/enter_amount"
-                        android:inputType="number"
-                        android:padding="@dimen/_9sdp"
-                        android:textSize="16sp" />
-
-
-                    <Button
-                        android:id="@+id/bt_199"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/custom_roundcorner_button"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:padding="@dimen/_5sdp"
-                        android:singleLine="true"
-                        android:text="@string/_50"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <Button
-                        android:id="@+id/bt_599"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:layout_weight="0.7"
-                        android:background="@drawable/custom_roundcorner_button"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:padding="@dimen/_5sdp"
-                        android:singleLine="true"
-                        android:text="@string/_100"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <Button
-                        android:id="@+id/bt_1099"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:layout_weight="0.8"
-                        android:background="@drawable/custom_roundcorner_button"
-                        android:ellipsize="end"
-                        android:gravity="center"
-                        android:padding="@dimen/_5sdp"
-                        android:singleLine="true"
-                        android:text="@string/_1000"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp" />
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/add_amount"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/_12sdp" />
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/custom_roundcorner_button_grey"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="@dimen/_8sdp">
 
-            <TextView
-                android:layout_width="0dp"
+
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/transaction_id"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/_10sdp">
 
-            <TextView
-                android:layout_width="0dp"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardlist_payment_cv"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_70sdp"
+                    android:layout_margin="@dimen/_6sdp"
+                    android:background="@drawable/bg_white"
+                    app:cardCornerRadius="@dimen/_5sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="@dimen/_5sdp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/save_card"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/card_for_receving_the_user_s_payment" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_60sdp"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bg_grey_square"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/bankname_tv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/dummy_bank_name"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/card_numeber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/dummy_card_number" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/wallet_payment_cv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/date"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:layout_margin="@dimen/_6sdp"
+                android:background="@drawable/bg_white"
+                app:cardCornerRadius="@dimen/_5sdp">
 
-            <TextView
-                android:layout_width="0dp"
+
+                <LinearLayout
+                    android:id="@+id/wallet_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_5sdp">
+
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/wallet_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/wallet"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/wallet_value_tv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@+id/wallet_tv"
+                            android:layout_toRightOf="@+id/wallet_tv"
+                            android:padding="@dimen/_5sdp"
+                            tools:text="($50)" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:background="@drawable/custom_full_round_corner"
+                            android:onClick="@{() -> paymentViewModel.openTransactionStatusActivty()}"
+                            android:padding="@dimen/_6sdp"
+                            android:text="@string/transaction"
+                            android:textColor="@color/black" />
+
+                    </RelativeLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_5sdp"
+                        android:weightSum="4">
+
+                        <EditText
+                            android:id="@+id/amount"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:layout_weight="1.7"
+                            android:background="@drawable/custom_roundcorner_button"
+                            android:backgroundTint="@color/app_background_color"
+                            android:hint="@string/enter_amount"
+                            android:inputType="number"
+                            android:padding="@dimen/_9sdp"
+                            android:textSize="16sp" />
+
+
+                        <Button
+                            android:id="@+id/bt_199"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="0.8"
+                            android:background="@drawable/custom_roundcorner_button"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:singleLine="true"
+                            android:text="@string/_50"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <Button
+                            android:id="@+id/bt_599"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="0.7"
+                            android:background="@drawable/custom_roundcorner_button"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:singleLine="true"
+                            android:text="@string/_100"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <Button
+                            android:id="@+id/bt_1099"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="4dp"
+                            android:layout_weight="0.8"
+                            android:background="@drawable/custom_roundcorner_button"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:padding="@dimen/_5sdp"
+                            android:singleLine="true"
+                            android:text="@string/_1000"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12sdp" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/add_amount"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/amount"
-                android:textColor="@color/black"
-                android:textStyle="bold" />
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/custom_roundcorner_button_grey"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/transaction_id"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/date"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/amount"
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/transaction_list_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_8sdp"
+                android:adapter="@{transactionAdapter}"
+                android:padding="@dimen/_5sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/transaction_list_rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_8sdp"
-            android:adapter="@{transactionAdapter}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-
     </LinearLayout>
-
 
 </layout>

@@ -1,6 +1,5 @@
 package com.appoets.gojek.provider.views.adapters
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.appoets.gojek.provider.R
-import com.appoets.gojek.provider.generated.callback.OnClickListener
 import com.appoets.gojek.traximodule.views.views.main.ActivityTaxiMain
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -23,7 +21,7 @@ class HomeAdapter (activity: AppCompatActivity): RecyclerView.Adapter<HomeAdapte
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.row_home_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.row_taxiprovider_item, parent, false)
         return HomeViewHolder(v)
     }
 

@@ -15,13 +15,11 @@ import com.appoets.xjek.ui.support.SupportActivity
 class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator {
 
     private lateinit var mFragmentAccountBinding: FragmentAccountBinding
-
-
     override fun getLayoutId(): Int = R.layout.fragment_account
 
 
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
-        mFragmentAccountBinding = mViewDataBinding as com.appoets.gojek.provider.databinding.FragmentAccountBinding
+        mFragmentAccountBinding = mViewDataBinding as FragmentAccountBinding
         val mAccountViewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
         mAccountViewModel.setNavigator(this)
         mFragmentAccountBinding.myaccountfragmentviewmodel = mAccountViewModel

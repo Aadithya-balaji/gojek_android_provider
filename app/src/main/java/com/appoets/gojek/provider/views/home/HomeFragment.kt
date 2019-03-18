@@ -1,43 +1,71 @@
 package com.appoets.gojek.provider.views.home
 
-import android.content.Context
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.ViewModelProviders
 import com.appoets.basemodule.base.BaseFragment
 import com.appoets.gojek.provider.R
-import com.appoets.gojek.provider.views.adapters.HomeAdapter
-import com.appoets.gojek.provider.views.dashboard.DashBoardNavigator
+import com.appoets.gojek.provider.databinding.FragmentHomePageBinding
+import com.appoets.gojek.provider.views.foodproviderfragment.FoodProviderFragment
+import com.appoets.gojek.provider.views.taxiproviderfragment.TaxiProviderFragment
+import com.appoets.gojek.provider.views.xuberServicesProviderFragment.XuberServicesProviderFragment
 
-class HomeFragment:BaseFragment<com.appoets.gojek.provider.databinding.FragmentHomePageBinding>(){
-    private  lateinit var mHomeDataBinding:com.appoets.gojek.provider.databinding.FragmentHomePageBinding
-    private  var mHomeViewModel:HomeViewModel?=null
-    private  lateinit var   rvHome:RecyclerView
-    private  var  rvHomeAdapter:HomeAdapter?=null
-    private  var  linearLayoutManager:LinearLayoutManager?=null
-    private var appCompatActivity: AppCompatActivity? = null
-    private var dashBoardNavigator: DashBoardNavigator? = null
-    override fun getLayoutId(): Int {
-        return  R.layout.fragment_home_page
-    }
+class HomeFragment : BaseFragment<com.appoets.gojek.provider.databinding.FragmentHomePageBinding>(), Home_Navigator {
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        dashBoardNavigator = context as DashBoardNavigator
-    }
+    private lateinit var mHomeDataBinding: com.appoets.gojek.provider.databinding.FragmentHomePageBinding
+    override fun getLayoutId(): Int = R.layout.fragment_home_page
+
 
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
-        mHomeDataBinding=mViewDataBinding as com.appoets.gojek.provider.databinding.FragmentHomePageBinding
-        mHomeViewModel =HomeViewModel()
-        mHomeDataBinding.homemodel=mHomeViewModel
-        rvHome=mRootView.findViewById(R.id.rv_home)
-        linearLayoutManager= LinearLayoutManager(activity)
-        appCompatActivity = if (dashBoardNavigator?.getInstance() != null) dashBoardNavigator?.getInstance() else activity as AppCompatActivity
-        rvHomeAdapter= HomeAdapter(appCompatActivity!!)
-        rvHome.adapter=rvHomeAdapter
-        rvHome.layoutManager=linearLayoutManager
+        mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
+        val mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
+        mHomeDataBinding.homemodel = mHomeViewModel
+        activity?.supportFragmentManager?.beginTransaction()?.add(R.id.provider_container, TaxiProviderFragment())?.commit()
+        mHomeViewModel!!.setNavigator(this);
+
+
     }
+
+    override fun gotoTaxiModule() {
+
+        mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
+        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
+        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
+        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
+
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.provider_container, TaxiProviderFragment())?.commit()
+
+    }
+
+    override fun gotoFoodieModule() {
+
+
+        mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
+        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
+        mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
+        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
+        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.provider_container, FoodProviderFragment())?.commit()
+
+    }
+
+    override fun gotoXuberModule() {
+
+        mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
+        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
+        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
+        mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
+        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+
+        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.provider_container, XuberServicesProviderFragment())?.commit()
+
+    }
+
 
 }

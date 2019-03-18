@@ -32,7 +32,8 @@
                 android:fontFamily="@font/avenirltstd_medium"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
-                tools:text="@string/notificaiton_valid_label" />
+                android:text="@string/notificaiton_valid_label"
+                />
 
             <TextView
                 android:id="@+id/tv_notification_date"
@@ -42,7 +43,8 @@
                 android:fontFamily="@font/avenirltstd_medium"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
-                tools:text="12/10/20" />
+                android:text="dummy" />
+
         </LinearLayout>
 
         <LinearLayout

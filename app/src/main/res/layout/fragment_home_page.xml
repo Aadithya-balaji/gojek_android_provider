@@ -1,22 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="homemodel"
-            type="com.appoets.gojek.provider.views.home.HomeViewModel"/>
+            type="com.appoets.gojek.provider.views.home.HomeViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/app_background_color"
+        android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_20sdp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/app_logo" />
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_order_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:padding="@dimen/_5sdp">
+
+            <TextView
+                android:id="@+id/taxi_app_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_service_selected"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:gravity="center"
+                android:onClick="@{() -> homemodel.opentTranxitModule()}"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/taxi_app"
+                android:textColor="@color/selected_provider_tc" />
+
+            <TextView
+                android:id="@+id/foodie_app_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_service_unselected"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:gravity="center"
+                android:onClick="@{() -> homemodel.openFoodieModule()}"
+                android:paddingTop="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:text="@string/food" />
+
+            <TextView
+                android:id="@+id/services_app_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_service_unselected"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:gravity="center"
+
+                android:onClick="@{() -> homemodel.openXuberMoudle()}"
+                android:paddingTop="@dimen/_7sdp"
+                android:paddingBottom="@dimen/_7sdp"
+                android:text="@string/services"
+
+                />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/provider_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_10sdp" />
+
 
     </LinearLayout>
 </layout>

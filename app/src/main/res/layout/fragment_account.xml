@@ -167,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:onClick="@{() -> myaccountfragmentviewmodel.opegotoTransacationPagenTranscationPage()}"
+                    android:onClick="@{() -> myaccountfragmentviewmodel.openTranscationPage()}"
                     android:padding="@dimen/_10sdp">
 
                     <ImageView
@@ -215,17 +215,20 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:onClick="@{() -> myaccountfragmentviewmodel.openPrivacyPage()}"
-
                     android:padding="@dimen/_10sdp">
+
 
                     <ImageView
                         android:id="@+id/privacypolicy_myaccount_imgview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
                         android:background="@drawable/custom_circle"
+                        android:contentDescription="@string/invite"
                         android:padding="@dimen/_15sdp"
                         android:tint="@color/colorWhite"
                         app:srcCompat="@drawable/ic_privacy_policy" />
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -261,9 +264,11 @@
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/custom_circle"
+                        android:contentDescription="@string/invite"
                         android:padding="@dimen/_15sdp"
                         android:tint="@color/colorWhite"
                         app:srcCompat="@drawable/ic_support" />
+
 
                     <TextView
                         android:layout_width="wrap_content"

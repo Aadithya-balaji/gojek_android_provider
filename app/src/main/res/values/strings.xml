@@ -162,5 +162,18 @@
     <string name="dummy_mail_id">mail@mail.com</string>
     <string name="status">Status</string>
     <string name="dummy_status">Pending</string>
+    <string name="taxi_app">Taxi App</string>
+    <string name="food">Food</string>
+    <string name="services">Service</string>
+    <string name="dummy_restaturant_name">Mc donalds</string>
+    <string name="dummy_restaturant_location">Los Vegas</string>
+    <string name="dummy_service_type">Electrician</string>
+    <string name="dummy_country">United States</string>
+    <string name="dummy_provider_name">Christain Joseph</string>
+    <string name="time">3:30 pm</string>
+    <string name="dummy_title_text">ABC123</string>
+    <string name="dummy_src_type">Sedan Type (Tn 39 aa 1234)</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="dummy_rating">4.6</string>
 
 </resources>

@@ -10,6 +10,10 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 
+    <!--service provider bg color-->
+    <color name="service_bg_color">#514659F7</color>
+    <color name="selected_provider_tc">#B5364BEA</color>
+
 
     <!-- Document page -->
     <color name="bg_doc_button">#FCFCFC</color>
@@ -53,10 +57,11 @@
     <color name="taxi_bg_yellow">#FFA200</color>
     <color name="taxi_bg_grey">#F8F7F6</color>
     <color name="colorWhite">#ffffff</color>
-    <color name="schedule_blue_txt">#11aba9</color>
 
     <!--TransactionStatus-->
     <color name="transactinstatus">#F8FFA200</color>
+    <color name="blue_transaction_bg">#11aba9</color>
+    <color name="red">#fc3a14</color>
 
 
 </resources>

@@ -50,7 +50,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.7"
                     android:padding="@dimen/_8sdp"
-                    android:tint="@color/schedule_blue_txt"
+                    android:tint="@color/blue_transaction_bg"
                     app:srcCompat="@drawable/ic_gift_card" />
 
             </LinearLayout>

@@ -11,7 +11,7 @@ class HomeViewModel :BaseViewModel<Home_Navigator>(){
         navigator.gotoFoodieModule()
     }
 
-    fun openXuperMoudle(){
-        navigator.gotoXuperModule()
+    fun openXuberMoudle(){
+        navigator.gotoXuberModule()
     }
 }

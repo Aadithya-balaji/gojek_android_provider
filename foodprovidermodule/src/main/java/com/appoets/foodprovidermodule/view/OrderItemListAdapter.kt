@@ -1,20 +1,19 @@
-package com.appoets.xjek.adapter
+package com.appoets.foodprovidermodule.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.appoets.gojek.provider.R
-import com.appoets.gojek.provider.databinding.CurrentOderItemlistBinding
+import com.appoets.foodprovidermodule.R
+import com.appoets.foodprovidermodule.databinding.RowOderItemlistBinding
 
-class CurrentOrdersAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<CurrentOrdersAdapter.MyViewHolder>() {
+class OrderItemListAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<OrderItemListAdapter.MyViewHolder>() {
 
     val activity = activity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
-        val inflate = DataBindingUtil.inflate<CurrentOderItemlistBinding>(LayoutInflater.from(parent.context), R.layout.current_oder_itemlist, parent, false)
+        val inflate = DataBindingUtil.inflate<RowOderItemlistBinding>(LayoutInflater.from(parent.context), R.layout.row_oder_itemlist, parent, false)
         return MyViewHolder(inflate)
     }
 
@@ -25,7 +24,7 @@ class CurrentOrdersAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<C
     }
 
 
-    inner class MyViewHolder(itemView: CurrentOderItemlistBinding) : RecyclerView.ViewHolder(itemView.root) {
+    inner class MyViewHolder(itemView: RowOderItemlistBinding) : RecyclerView.ViewHolder(itemView.root) {
 
         val currentOderItemlistBinding = itemView
 

@@ -65,11 +65,9 @@ dependencies {
     //Sub Modules
     implementation project(':basemodule')
     implementation project(':traximodule')
-
     implementation 'com.android.support:multidex:1.0.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-
+    implementation project(':foodprovidermodule')
 }
 repositories {
     mavenCentral()

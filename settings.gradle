@@ -1,1 +1,1 @@
-include ':app', ':basemodule', ':traximodule'
+include ':app', ':basemodule', ':traximodule', ':foodprovidermodule'

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">GoJek_Android_Provider</string>
     <string name="sign_in" translatable="false">Sign In</string>
     <string name="sign_up">Sign Up</string>
 

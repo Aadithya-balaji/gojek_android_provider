@@ -1,0 +1,92 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // Configured the app to use vector support libraries with all Android platform versions
+        // back to Android 2.1 (API level 7+).
+        vectorDrawables.useSupportLibrary = true
+    }
+    buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://dummy.restapiexample.com/\"")
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "BASE_URL", "\"http://dummy.restapiexample.com/\"")
+        }
+
+    }
+    // Configured Java 8 language features for each module.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
+    // Separated Kotlin files from Java files and placed them inside the specified folder.
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    api 'androidx.cardview:cardview:1.0.0'
+    api 'com.google.android.material:material:1.1.0-alpha04'
+
+    //Dimension
+    api 'com.intuit.sdp:sdp-android:1.0.6'
+
+    //Image & Lottie
+    implementation 'com.airbnb.android:lottie:2.7.0'
+
+    // Dagger
+    api 'com.google.dagger:dagger:2.21'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.21'
+
+    //      LiveData
+    api 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha03'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.1.0-alpha03'
+
+    // Circle Image
+    api 'de.hdodenhof:circleimageview:3.0.0'
+
+    //      Retrofit
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //Okhttp
+    api 'com.squareup.okhttp3:okhttp:3.13.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.11.0'
+
+    // Rx java dependency
+    api 'io.reactivex.rxjava2:rxjava:2.2.3' // please add current version of dependencies.
+    // Rx Android dependency
+    api 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    // Rx java adapter version
+    api 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+
+    //Map
+    api 'com.google.android.gms:play-services-maps:16.1.0'
+    api 'com.google.maps:google-maps-services:0.2.7'
+    api 'com.google.maps.android:android-maps-utils:0.5'
+    api 'com.google.android.gms:play-services-location:16.0.0'
+
+    //Permission check
+    //Permission Dispatcher
+    api 'com.github.hotchemi:permissionsdispatcher:4.1.0'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}

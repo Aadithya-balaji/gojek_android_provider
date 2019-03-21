@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.RowTaxiproviderItemBinding
-import com.appoets.gojek.traximodule.views.views.main.ActivityTaxiMain
+import com.appoets.gojek.taxi.views.views.main.ActivityTaxiMain
 
 class TaxiProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<TaxiProviderAdapter.MyViewHolder>() {
     val activity = activity

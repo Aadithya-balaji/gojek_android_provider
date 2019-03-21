@@ -83,7 +83,7 @@ class OnBoardActivityK :BaseActivity<com.appoets.gojek.provider.databinding.Acti
 
 }
 
-class ScreenSlidePagerAdapter(fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {
+class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     override fun getItem(p0: Int): Fragment {
         return AnimationFragment()

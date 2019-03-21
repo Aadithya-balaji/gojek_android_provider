@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
 
@@ -9,8 +9,6 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.appoets.gojek.provider"
-        // Android 4.1 or newer is required since Google sign-in is integrated in the Android app.
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
@@ -19,17 +17,18 @@ android {
         // Configured the app to use vector support libraries with all Android platform versions
         // back to Android 2.1 (API level 7+).
         vectorDrawables.useSupportLibrary = true
-        // Setup your app project to use a multi-dex configuration if your minSdkVersion is set
-        // to 21 or higher.
-        multiDexEnabled true
-        resValue("string", "app_name", "GoJek_Android_Provider")
         resValue "string", "google_map_key", "AIzaSyAdXoVw-M-g4vgEOZZK7Dc9jMUlLR5xVXI"
     }
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://dummy.restapiexample.com/\"")
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "BASE_URL", "\"http://dummy.restapiexample.com/\"")
         }
+
     }
     // Configured Java 8 language features for each module.
     compileOptions {
@@ -48,32 +47,15 @@ dependencies {
     // The data binding library that allows to bind UI components in your layouts to data sources
     // in Kotlin.
     kapt "com.android.databinding:compiler:$compiler_version"
-    implementation 'com.google.android.material:material:1.1.0-alpha04'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'com.android.support:multidex:1.0.3'
-    // Basic design support library
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    // android dimen support
-    implementation 'com.intuit.sdp:sdp-android:1.0.6'
-    /*      Glide       */
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
-    /* square image */
-    implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
-    // Circle with elevation image
-    implementation 'com.mikhaellopez:circularimageview:3.2.0'
-    // Circle image with no elevation
-    implementation 'de.hdodenhof:circleimageview:3.0.0'
-    // ViewPager Animation
-    implementation 'com.novoda:spritz:1.0.0'
-    implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    // Permission check lib compiler
+    kapt "com.github.hotchemi:permissionsdispatcher-processor:4.1.0"
 
     // Added dependent library modules into the Android app module.
     implementation project(':base')
-    implementation project(':foodservice')
-    implementation project(':taxiservice')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
 }

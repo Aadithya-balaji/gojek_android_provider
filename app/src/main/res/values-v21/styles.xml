@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Edittext_OutlinedTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="Edittext_OutlinedTheme" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
         <item name="boxStrokeColor">@color/et_stroke_color</item>
         <item name="boxBackgroundColor">@color/bg_vechile_edittext</item>
         <item name="boxBackgroundMode">outline</item>
@@ -13,7 +13,8 @@
         <item name="hintTextAppearance">@style/AppTheme.TextFloatLabelAppearance</item>
         <item name="errorTextAppearance">@style/AppTheme.TextErrorAppearance</item>
         <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
-        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
+        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow
+        </item>
         <item name="android:strokeColor">@color/grey</item>
     </style>
 

@@ -196,7 +196,8 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/label_order_reject"
                         android:textColor="@color/home_reject"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/_13sdp" />
                 </LinearLayout>
 
                 <View
@@ -218,8 +219,9 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/label_order_aprrove"
+                        android:textAllCaps="true"
                         android:textColor="@color/card_left_bg"
-                        android:textSize="@dimen/_15sdp" />
+                        android:textSize="@dimen/_13sdp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

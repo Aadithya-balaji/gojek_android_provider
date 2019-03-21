@@ -85,7 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/_8sdp"
+                android:paddingLeft="@dimen/_13sdp"
                 android:paddingRight="@dimen/_8sdp">
 
                 <RelativeLayout
@@ -172,13 +172,13 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/grey" />
+                android:background="@color/grey"
+                android:layout_marginTop="@dimen/_8sdp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-
                 android:weightSum="1">
 
                 <LinearLayout

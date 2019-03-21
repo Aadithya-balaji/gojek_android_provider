@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    //custom ratingbar
+
+    <style name="customRatingBar" parent="android:style/Widget.Material.RatingBar.Small">
+        <item name="android:progressTint">@color/duskYellow</item>
+
+    </style>
+
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="MediumText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+    </style>
+
+
+    <style name="MediumText.Black" parent="MediumText">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <style name="MediumText.colorTaxiPrimary" parent="MediumText">
+        <item name="android:textColor">@color/button_blue</item>
+    </style>
+
+    <style name="SmallText" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+    </style>
+
+
+    <style name="SmallText.Black" parent="SmallText">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="SmallText.Grey" parent="SmallText">
+        <item name="android:textColor">@color/darkgrey</item>
+    </style>
+
+
+    <style name="SmallText.colorWhite" parent="SmallText">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+    <style name="VerySmallText" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+
+
+    <style name="VerySmallText.Black" parent="VerySmallText">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <style name="VerySmallText.colorTaxiPrimary" parent="VerySmallText">
+        <item name="android:textColor">@color/button_blue</item>
+    </style>
+
+    <style name="VerySmallText.colorTaxiWhite" parent="VerySmallText">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
+    <color name="duskYellow">#ffa200</color>
+</resources>

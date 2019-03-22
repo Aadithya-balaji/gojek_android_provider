@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -24,7 +25,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_height="@dimen/_50sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:paddingLeft="@dimen/_8sdp"
@@ -38,8 +39,9 @@
                     android:src="@drawable/flower"
                     app:civ_border_width="0dp" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/ll_rating"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_15sdp"
@@ -50,33 +52,47 @@
                         android:id="@+id/tv_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:singleLine="true"
                         android:text="@string/dummy_provider_name"
                         android:textColor="@color/black" />
 
-                    <RatingBar
+                    <!--<RatingBar
                         android:id="@+id/rb_home"
-                        style="@android:style/Widget.Holo.Light.RatingBar.Small"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_sdp"
+                        android:layout_below="@+id/tv_user_name"
+                        android:isIndicator="true"
+                        android:stepSize="1"
+                        android:numStars="5"
+                        android:scaleX="1"
+                        android:scaleY="1"
+                        android:transformPivotX="0dp"
+                        android:transformPivotY="0dp"/>-->
+
+                    <com.appoets.gojek.provider.views.customviews.SmartRatingBar
+                        android:id="@+id/smart_rating_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="13dp"
+                        android:layout_below="@+id/tv_user_name"
+                        android:layout_marginTop="8dp"
+                        app:gap="@dimen/_5sdp"
+                        app:indicator="false"
+                        app:maxRating="5"
+                        app:orientation="horizontal"
+                        app:rating="3.5" />
+
+
+                    <TextView
+                        android:id="@+id/tv_taxi_order_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_user_name"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:numStars="5"
-                        android:stepSize="1.0"
-                        android:theme="@style/RatingBar" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:fontFamily="@font/avenirltstd_medium"
-                    android:text="12 sec lef" />
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:textSize="@dimen/_10sdp"
+                        android:textColor="@color/black" />
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -107,6 +123,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_label_service_type"
                         android:layout_marginTop="@dimen/_1sdp"
+                        android:textSize="@dimen/_10sdp"
                         tools:text="food" />
 
                     <TextView
@@ -127,10 +144,12 @@
                         android:layout_alignStart="@+id/tv_label_schedule"
                         android:layout_alignLeft="@+id/tv_label_schedule"
                         android:layout_marginTop="@dimen/_1sdp"
-                        android:text="12/02/2019" />
+                        android:text="12/02/2019"
+                        android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_taxi_pick_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_3sdp"
@@ -171,7 +190,8 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@color/grey" />
 
             <LinearLayout
@@ -186,8 +206,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:paddingTop="@dimen/_7sdp"
-                    android:paddingBottom="@dimen/_7sdp">
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp">
 
                     <TextView
                         android:id="@+id/tv_reject"
@@ -195,23 +215,23 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/label_order_reject"
-                        android:textColor="@color/home_reject"
                         android:textAllCaps="true"
+                        android:textColor="@color/home_reject"
                         android:textSize="@dimen/_13sdp" />
                 </LinearLayout>
 
                 <View
                     android:layout_width="0.2dp"
                     android:layout_height="match_parent"
-                    android:background="@color/black" />
+                    android:background="@color/grey" />
 
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:gravity="center"
-                    android:paddingTop="@dimen/_7sdp"
-                    android:paddingBottom="@dimen/_7sdp">
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp">
 
                     <TextView
                         android:id="@+id/tv_approve"

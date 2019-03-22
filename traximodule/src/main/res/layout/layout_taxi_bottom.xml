@@ -39,7 +39,7 @@
             android:textColor="@color/taxi_bg_yellow"
             android:textSize="@dimen/_10sdp" />
 
-        <ImageButton
+       <!-- <ImageButton
             android:id="@+id/iv_unselected_map_bin"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_50sdp"
@@ -47,7 +47,14 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/bg_black_circle"
             android:tint="@color/taxi_bg_yellow"
-            app:srcCompat="@drawable/ic_pin" />
+            android:src="@drawable/icons8-more-filled-48" />-->
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_bar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:backgroundTint="#1E355E">
+        </com.google.android.material.floatingactionbutton.FloatingActionButton>
     </RelativeLayout>
 
 

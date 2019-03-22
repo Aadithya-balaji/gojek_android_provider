@@ -3,6 +3,10 @@
 
     <data>
 
+        <variable
+            name="arrivedViewModel"
+            type="com.xgek.xubermodule.arrived_fragment.ArrivedFragmentViewModel"/>
+
     </data>
 
     <LinearLayout
@@ -39,7 +43,7 @@
                     android:layout_gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/chat"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/xuber_black" />
 
             </LinearLayout>
 
@@ -103,7 +107,7 @@
                     android:layout_gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/call"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/xuber_black" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -124,20 +128,22 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="@color/button_blue"
+                android:onClick="@{() -> arrivedViewModel.cancel()}"
+                android:background="@color/xuber_button_blue"
                 android:text="@string/cancel"
-                android:textColor="@color/white" />
+                android:textColor="@color/xuber_white" />
 
             <Button
                 android:id="@+id/arrived_btn"
                 style="@style/MediumText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> arrivedViewModel.arrived()}"
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
-                android:background="@color/button_blue"
+                android:background="@color/xuber_button_blue"
                 android:text="@string/arrived"
-                android:textColor="@color/white" />
+                android:textColor="@color/xuber_white" />
 
         </LinearLayout>
 

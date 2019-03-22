@@ -3,6 +3,9 @@
 
     <data>
 
+        <variable
+            name="invoiceViewModel"
+            type="com.xgek.xubermodule.invoice_fragment.InvoiceViewModel" />
     </data>
 
     <LinearLayout
@@ -39,7 +42,7 @@
                     android:layout_gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/chat"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/xuber_black" />
 
             </LinearLayout>
 
@@ -103,7 +106,7 @@
                     android:layout_gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/call"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/xuber_black" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -114,7 +117,7 @@
             android:layout_height="@dimen/_1sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:background="@color/grey" />
+            android:background="@color/xuber_grey" />
 
 
         <TextView
@@ -164,10 +167,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:background="@color/button_blue"
+            android:background="@color/xuber_button_blue"
+            android:onClick="@{() -> invoiceViewModel.confrimPayment()}"
             android:text="@string/confrim_payment"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/xuber_white" />
 
 
     </LinearLayout>

@@ -3,12 +3,18 @@ package com.appoets.basemodule.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
+import androidx.annotation.IdRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -63,6 +69,15 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected void setBindingVariable(int variableId,@Nullable Object object){
         mViewDataBinding.setVariable(variableId,object);
         mViewDataBinding.executePendingBindings();
+    }
+
+    protected void replaceFragment(@IdRes int id, Fragment fragmentName, String fragmentTag, boolean addToBackStack) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(id, fragmentName, fragmentTag);
+        if (addToBackStack)
+            transaction.addToBackStack(fragmentTag);
+        transaction.commit();
     }
 
 }

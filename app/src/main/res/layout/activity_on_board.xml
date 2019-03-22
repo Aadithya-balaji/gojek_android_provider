@@ -65,7 +65,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
-                android:background="@color/white"
+                android:background="@color/xuber_white"
                 android:elevation="@dimen/_8sdp"
                 android:padding="@dimen/_10sdp"
                 android:onClick="@{() -> viewModel.openSignIn()}"

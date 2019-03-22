@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,8 +9,7 @@
             type="com.xgek.xubermodule.xuberMainActivity.XuberMainViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -29,9 +29,10 @@
             android:onClick="@{()-> xuberViewModel.showCurrentLocation()}"
             android:src="@drawable/ic_taxi_my_location"
             android:visibility="visible"
-            app:backgroundTint="@color/white"
+            app:backgroundTint="@color/xuber_white"
             app:borderWidth="0dp"
-            app:fabCustomSize="@dimen/_40sdp" />
+            app:fabCustomSize="@dimen/_40sdp"
+            android:layout_marginRight="@dimen/_10sdp" />
 
 
         <FrameLayout

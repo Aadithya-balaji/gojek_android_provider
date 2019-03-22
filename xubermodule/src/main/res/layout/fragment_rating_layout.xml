@@ -3,6 +3,10 @@
 
     <data>
 
+        <variable
+            name="ratingViewModel"
+            type="com.xgek.xubermodule.ratingFragment.RatingViewModel" />
+
     </data>
 
     <LinearLayout
@@ -72,10 +76,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_5sdp"
-            android:background="@color/button_blue"
+            android:background="@color/xuber_button_blue"
             android:text="@string/submit"
+            android:onClick="@{() -> ratingViewModel.submitRating()}"
             android:textAllCaps="false"
-            android:textColor="@color/white" />
+            android:textColor="@color/xuber_white" />
 
 
     </LinearLayout>

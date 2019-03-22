@@ -57,7 +57,7 @@
                 android:paddingTop="@dimen/_7sdp"
                 android:paddingBottom="@dimen/_7sdp"
                 android:text="@string/order_current"
-                android:textColor="@color/black" />
+                android:textColor="@color/xuber_black" />
         </LinearLayout>
 
         <FrameLayout

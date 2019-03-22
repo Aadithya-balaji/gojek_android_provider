@@ -274,7 +274,7 @@
                 android:background="@drawable/custom_circle"
                 android:contentDescription="@string/edit_image"
                 android:padding="@dimen/_5sdp"
-                android:tint="@color/white"
+                android:tint="@color/xuber_white"
                 app:srcCompat="@drawable/ic_pencil_edit_button" />
 
         </RelativeLayout>

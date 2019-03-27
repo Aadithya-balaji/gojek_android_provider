@@ -66,6 +66,10 @@ dependencies {
     //Kotlin
     api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.20'
 
+    //relfection kotlin
+    api "org.jetbrains.kotlin:kotlin-reflect:1.3.20"
+
+
 
     //Okhttp
     api 'com.squareup.okhttp3:okhttp:3.13.1'

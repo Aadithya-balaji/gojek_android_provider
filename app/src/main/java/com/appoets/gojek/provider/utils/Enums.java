@@ -14,6 +14,5 @@ public class Enums {
    @IntDef({DOC_TAXI,DOC_FOODIE,DOC_SERVICE})
    @Retention(RetentionPolicy.SOURCE)
     public  @interface ServiceType{
-
    }
 }

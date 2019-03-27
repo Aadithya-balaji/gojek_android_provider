@@ -30,7 +30,7 @@ class  DocumentActivity:BaseActivity<com.appoets.gojek.provider.databinding.Acti
 
         tvLeftHeader=findViewById(R.id.tv_header)
         ivBackArrow=findViewById(R.id.iv_back)
-        tvRightHeader=findViewById(R.id.tv_right_header)
+        tvRightHeader=findViewById(R.id.tv_header)
 
 
         tvLeftHeader.visibility= View.GONE
@@ -43,7 +43,6 @@ class  DocumentActivity:BaseActivity<com.appoets.gojek.provider.databinding.Acti
     }
 
     override fun uploadImages() {
-
         val intent= Intent(this@DocumentActivity,VechileDetailActivity::class.java)
         startActivity(intent)
 

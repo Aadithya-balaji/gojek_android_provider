@@ -12,11 +12,11 @@
         android:roundIcon="@mipmap/app_icon_512"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:appComponentFactory"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="android:appComponentFactory">
 
         <activity
-            android:name=".views.splash.SplashActivity"
+            android:name=".views.countrypicker.CountryCodeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>

@@ -1,5 +1,7 @@
 package com.appoets.gojek.provider.views.home
 
+import android.content.Context
+import android.content.Intent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
@@ -7,6 +9,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.appoets.basemodule.base.BaseFragment
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.FragmentHomePageBinding
+import com.appoets.gojek.provider.views.dashboard.DashBoardActivity
+import com.appoets.gojek.provider.views.dashboard.DashBoardNavigator
 import com.appoets.gojek.provider.views.foodproviderfragment.FoodProviderFragment
 import com.appoets.gojek.provider.views.taxiproviderfragment.TaxiProviderFragment
 import com.appoets.gojek.provider.views.xuberServicesProviderFragment.XuberServicesProviderFragment
@@ -15,6 +19,8 @@ class HomeFragment : BaseFragment<com.appoets.gojek.provider.databinding.Fragmen
 
     private lateinit var mHomeDataBinding: com.appoets.gojek.provider.databinding.FragmentHomePageBinding
     override fun getLayoutId(): Int = R.layout.fragment_home_page
+    private lateinit var dashBoardNavigator: DashBoardNavigator
+
 
 
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
@@ -24,8 +30,14 @@ class HomeFragment : BaseFragment<com.appoets.gojek.provider.databinding.Fragmen
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.provider_container, TaxiProviderFragment())?.commit()
         mHomeViewModel!!.setNavigator(this);
 
-
     }
+
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        dashBoardNavigator = context as DashBoardNavigator
+    }
+
 
     override fun gotoTaxiModule() {
 

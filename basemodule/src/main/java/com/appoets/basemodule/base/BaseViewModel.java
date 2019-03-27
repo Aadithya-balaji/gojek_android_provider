@@ -22,7 +22,4 @@ public abstract class BaseViewModel<N>  extends ViewModel {
         this.mNavigator = new WeakReference<>(navigator);
     }
 
-
-
-
 }

@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityDocumentUploadBinding
 import com.appoets.gojek.provider.views.uploaddocumentlist.VechileDetailActivity

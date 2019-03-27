@@ -1,7 +1,7 @@
 package com.appoets.xjek.ui.invitereferals
 
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityInviteFriendBinding
 import kotlinx.android.synthetic.main.toolbar_layout.view.*

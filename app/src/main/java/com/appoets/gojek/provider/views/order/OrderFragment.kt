@@ -3,7 +3,7 @@ package com.appoets.gojek.provider.views.order
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseFragment
+import com.appoets.base.base.BaseFragment
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.FragmentOrderBinding
 import com.appoets.xjek.ui.currentorder_fragment.CurrentOrderFragment

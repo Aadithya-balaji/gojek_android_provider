@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityVechileDetailPageBinding
 import com.appoets.gojek.provider.views.adapters.ServiceListAdapter

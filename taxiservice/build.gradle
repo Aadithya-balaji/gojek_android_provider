@@ -44,8 +44,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    // The data binding library that allows to bind UI components in your layouts to data sources
-    // in Kotlin.
+    // The data binding library for Kotlin that allows to bind UI components in your layouts to
+    // data sources.
     kapt "com.android.databinding:compiler:$compiler_version"
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
     // Permission check lib compiler

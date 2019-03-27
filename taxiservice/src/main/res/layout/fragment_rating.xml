@@ -7,7 +7,7 @@
 
         <variable
             name="ratingmodel"
-            type="com.appoets.gojek.taxi.views.views.rating.RatingViewModel" />
+            type="com.appoets.taxiservice.views.views.rating.RatingViewModel" />
     </data>
 
 

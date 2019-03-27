@@ -2,11 +2,10 @@ package com.appoets.gojek.provider.views.verifyfile
 
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityVerifyProofBinding
 import com.appoets.gojek.provider.views.dashboard.DashBoardActivity
-import com.google.android.gms.maps.model.Dash
 
 class VerifyFileActivity : BaseActivity<ActivityVerifyProofBinding>(), VerifyFileNavigator {
 

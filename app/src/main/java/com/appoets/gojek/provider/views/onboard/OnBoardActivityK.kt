@@ -1,25 +1,21 @@
 package com.appoets.xjek.ui.onboard
 
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.appoets.basemodule.base.BaseActivity
-import com.appoets.basemodule.base.BaseFragment
+import com.appoets.base.base.BaseActivity
+import com.appoets.base.base.BaseFragment
 import com.novoda.spritz.Spritz
 import com.novoda.spritz.SpritzStep
 import java.util.concurrent.TimeUnit
-import android.util.DisplayMetrics
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityOnBoardBinding
 import com.appoets.gojek.provider.views.onboard.OnBoardNavigator
 import com.appoets.gojek.provider.views.onboard.OnBoardViewModel
-import com.appoets.xjek.ui.signin.SignInActivity
+import com.appoets.gojek.provider.views.signin.SignInActivity
 import com.appoets.xjek.ui.signup.SignupActivity
 
 
@@ -44,7 +40,7 @@ class OnBoardActivityK :BaseActivity<com.appoets.gojek.provider.databinding.Acti
     }
 
     override fun goToSignIn() {
-        openNewActivity(this@OnBoardActivityK,SignInActivity::class.java,true)
+        openNewActivity(this@OnBoardActivityK, SignInActivity::class.java,true)
     }
 
     override fun goToSignUp() {

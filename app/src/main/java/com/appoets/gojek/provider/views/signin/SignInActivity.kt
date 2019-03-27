@@ -1,51 +1,63 @@
-package com.appoets.xjek.ui.signin
+package com.appoets.gojek.provider.views.signin
 
-import android.content.Intent
+import android.util.Patterns
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
+import com.appoets.base.extensions.observeLiveData
+import com.appoets.base.extensions.provideViewModel
 import com.appoets.gojek.provider.R
-import com.appoets.gojek.provider.databinding.ActivitySiginBinding
-import com.appoets.gojek.provider.views.dashboard.DashBoardActivity
-import com.appoets.xjek.ui.signup.SignupActivity
+import com.appoets.gojek.provider.databinding.ActivitySignInBinding
 
-class SignInActivity : BaseActivity<ActivitySiginBinding>(), SigninNavigator {
+class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.SignInListener {
 
+    private lateinit var signInViewModel: SignInViewModel
+    private lateinit var message: String
 
-    val TAG = "SigninActivity"
-    lateinit var mViewDataBinding: ActivitySiginBinding
-
-    override fun getLayoutId(): Int = R.layout.activity_sigin
+    override fun getLayoutId(): Int {
+        return R.layout.activity_sign_in
+    }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-
-        this.mViewDataBinding = mViewDataBinding as ActivitySiginBinding
-        val signViewModel = SigninViewModel()
-        signViewModel.setNavigator(this)
-        this.mViewDataBinding.signinmodel = signViewModel
-
+        signInViewModel = provideViewModel {
+            SignInViewModel(this)
+        }
+        observeViewModel()
+        val activitySignInBinding = mViewDataBinding as ActivitySignInBinding
+        activitySignInBinding.lifecycleOwner = this
+        activitySignInBinding.signInViewModel = signInViewModel
     }
 
-
-    override fun changeSigninViaPhone(): Boolean = true
-
-    override fun changeSigninViaMail(): Boolean = true
-
-    //move to signup page
-    override fun goToSignup() {
-        openNewActivity(this@SignInActivity, SignupActivity::class.java, false)
+    override fun performValidation() {
+        hideKeyboard()
+        if (isSignInDataValid()) {
+            signInViewModel.postLogin()
+        } else {
+            showToast(message)
+        }
     }
 
-    override fun googleSignin() {
-
+    override fun showError(error: String) {
+        showToast(error)
     }
 
-    override fun facebookSignin() {
-
+    private fun observeViewModel() {
+        observeLiveData(signInViewModel.getLoginObservable()) {
+            if (signInViewModel.getLoginResponseModel()!!.statusCode.equals("200"))
+                showToast("Success")
+        }
     }
 
-    override fun gotoHome() {
-        val intent = Intent(this@SignInActivity, DashBoardActivity::class.java)
-        startActivity(intent)
+    private fun isSignInDataValid(): Boolean {
+        if (signInViewModel.email.value.isNullOrEmpty()) {
+            message = resources.getString(R.string.email_empty)
+            return false
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(signInViewModel.email.value).matches()) {
+            message = resources.getString(R.string.email_invalid)
+            return false
+        } else if (signInViewModel.password.value.isNullOrEmpty()) {
+            message = resources.getString(R.string.password_empty)
+            return false
+        }
+        return true
     }
-
 }

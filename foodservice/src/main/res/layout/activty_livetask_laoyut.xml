@@ -6,11 +6,11 @@
 
         <variable
             name="orderItemListAdpter"
-            type="com.appoets.foodprovidermodule.view.OrderItemListAdapter" />
+            type="com.appoets.foodservice.view.OrderItemListAdapter" />
 
         <variable
             name="foodLiveTaskviewModel"
-            type="com.appoets.foodprovidermodule.view.FoodLiveTaskServiceViewModel" />
+            type="com.appoets.foodservice.view.FoodLiveTaskServiceViewModel" />
 
     </data>
 

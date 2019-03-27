@@ -1,6 +1,6 @@
 package com.appoets.gojek.provider.views.order
 
-import com.appoets.basemodule.base.BaseViewModel
+import com.appoets.base.base.BaseViewModel
 
 class  OrderViewModel :BaseViewModel<OrderNavigator>(){
     fun gotoPastOrder(){

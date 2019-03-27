@@ -2,7 +2,7 @@ package com.appoets.xjek.ui.pastorder_fragment
 
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseFragment
+import com.appoets.base.base.BaseFragment
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.FragmentPastOrdersBinding
 import com.appoets.xjek.adapter.PastOrdersAdapter

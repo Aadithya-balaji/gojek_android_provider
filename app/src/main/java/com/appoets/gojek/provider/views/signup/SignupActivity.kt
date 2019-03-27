@@ -1,18 +1,23 @@
 package com.appoets.xjek.ui.signup
 
+import android.app.Activity
 import android.content.Intent
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.appoets.basemodule.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityRegisterBinding
+import com.appoets.gojek.provider.views.countrypicker.CountryCodeActivity
 import com.appoets.gojek.provider.views.dashboard.DashBoardActivity
 import com.appoets.gojek.provider.views.document.DocumentActivity
 import com.appoets.xjek.ui.signin.SignInActivity
+import com.google.android.material.textfield.TextInputLayout
 import kotlin.math.sign
 
-class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.ActivityRegisterBinding>(), SignupNavigator {
+class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.ActivityRegisterBinding>(), SignupNavigator,View.OnClickListener {
 
 
+    private  lateinit var  tlCountryCode:TextInputLayout
 
     lateinit var mViewDataBinding: ActivityRegisterBinding
     override fun getLayoutId(): Int = R.layout.activity_register
@@ -24,6 +29,26 @@ class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.Activ
         signupViewmodel.setNavigator(this)
         this.mViewDataBinding.registermodel = signupViewmodel
 
+
+        tlCountryCode=findViewById(R.id.tl_country_code)
+
+        //initListener
+        initListener()
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode== Activity.RESULT_OK){
+            if(data!=null){
+
+            }
+        }
+    }
+
+    fun initListener(){
+        tlCountryCode.setOnClickListener (this)
     }
 
     //do registration
@@ -43,5 +68,13 @@ class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.Activ
     }
 
 
+    override fun onClick(v: View?) {
+        when(v!!.id){
+            R.id.tl_country_code -> {
+                val intent =Intent(this@SignupActivity,CountryCodeActivity::class.java)
+                startActivityForResult(intent,111)
+            }
+        }
+    }
 
 }

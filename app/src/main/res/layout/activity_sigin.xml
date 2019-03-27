@@ -59,6 +59,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        android:animateLayoutChanges="true"
                         android:padding="@dimen/_10sdp">
                         <!--Login option layout-->
                         <RelativeLayout
@@ -83,6 +84,7 @@
                                 android:background="@color/app_background_color"
                                 android:padding="@dimen/_3sdp"
                                 app:srcCompat="@drawable/ic_mail"
+                                android:visibility="gone"
                                 android:layout_alignParentRight="true" />
                             <!--Login via phone number imageview -->
 
@@ -94,14 +96,53 @@
                                 android:layout_toLeftOf="@+id/mail_singin_imgview"
                                 android:background="@color/app_background_color"
                                 android:padding="@dimen/_3sdp"
+                                android:visibility="gone"
                                 app:srcCompat="@drawable/ic_call_24"
                                 android:tint="@color/colorAccent" />
+
+                            <RadioGroup
+                                android:id="@+id/rg_signin"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:orientation="horizontal">
+
+
+
+                                <RadioButton
+                                    android:id="@+id/rb_phone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:button="@null"
+                                    android:padding="@dimen/_5sdp"
+                                    android:checked="true"
+                                    android:drawableTop="@drawable/selector_signin_phone_radio"
+                                    android:gravity="center" />
+
+                                <RadioButton
+                                    android:id="@+id/rb_email"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:button="@null"
+                                    android:padding="@dimen/_5sdp"
+                                    android:layout_marginLeft="@dimen/_20sdp"
+                                    android:drawableTop="@drawable/selector_signin_email_radio"
+                                    android:gravity="center" />
+
+                            </RadioGroup>
 
                         </RelativeLayout>
 
                         <!--Layout countrycode & phonenumber-->
 
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
                         <LinearLayout
+                            android:id="@+id/ll_signin_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_8sdp"
@@ -162,12 +203,14 @@
 
                         <!--TextInputLayout EmailID-->
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tl_signin_email"
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
+                            android:visibility="gone"
                             android:hint="@string/email_id_hint">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -178,6 +221,7 @@
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+                        </RelativeLayout>
 
                         <!--TextInputLayout Password-->
                         <com.google.android.material.textfield.TextInputLayout
@@ -302,7 +346,7 @@
                                 android:padding="@dimen/_5sdp"
                                 android:text="@string/social_login"
                                 android:textColor="@android:color/black"
-                                android:textSize="@dimen/_12sdp" />
+                                android:textSize="@dimen/_16sdp" />
 
 
                         </RelativeLayout>
@@ -316,7 +360,7 @@
                             android:drawablePadding="@dimen/_8sdp"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/connect_via_google"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_12sdp"
                             android:drawableLeft="@drawable/ic_google" />
 
@@ -329,7 +373,7 @@
                             android:drawablePadding="@dimen/_8sdp"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/connect_via_facebook"
-                            android:textColor="@color/colorPrimaryDark"
+                            android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/_12sdp"
                             android:drawableLeft="@drawable/ic_facebook" />
                     </LinearLayout>

@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityDocumentUploadBinding
 import com.appoets.gojek.provider.views.uploaddocumentlist.VechileDetailActivity
@@ -17,6 +17,8 @@ class  DocumentActivity:BaseActivity<com.appoets.gojek.provider.databinding.Acti
     private  lateinit var  tvLeftHeader:TextView
     private  lateinit var ivBackArrow:ImageView
     private  lateinit var  tvRightHeader:TextView
+    private  lateinit var  tbrivLogo:ImageView
+    private  lateinit var   tbrIvRight:ImageView
 
     override fun getLayoutId(): Int {
         return R.layout.activity_document_upload
@@ -30,12 +32,16 @@ class  DocumentActivity:BaseActivity<com.appoets.gojek.provider.databinding.Acti
 
         tvLeftHeader=findViewById(R.id.tv_header)
         ivBackArrow=findViewById(R.id.iv_back)
-        tvRightHeader=findViewById(R.id.tv_right_header)
+        tvRightHeader=findViewById(R.id.tv_header)
+        tbrivLogo=findViewById(R.id.tbr_iv_logo)
+        tbrIvRight=findViewById(R.id.iv_right)
 
 
         tvLeftHeader.visibility= View.GONE
         ivBackArrow.visibility=View.VISIBLE
         tvRightHeader.visibility=View.VISIBLE
+        tbrivLogo.visibility=View.GONE
+        tbrIvRight.visibility=View.GONE
 
         tvRightHeader.setText(resources.getString(R.string.header_label_document_upload))
         ivBackArrow.setOnClickListener(this)
@@ -43,7 +49,6 @@ class  DocumentActivity:BaseActivity<com.appoets.gojek.provider.databinding.Acti
     }
 
     override fun uploadImages() {
-
         val intent= Intent(this@DocumentActivity,VechileDetailActivity::class.java)
         startActivity(intent)
 

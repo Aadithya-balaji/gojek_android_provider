@@ -13,12 +13,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
+        <include
+            android:id="@+id/tbr_home"
+            layout="@layout/toolbar_header" />
         <LinearLayout
             android:id="@+id/frame_home_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/bottom_navigation"
+            android:layout_below="@+id/tbr_home"
             android:orientation="horizontal"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView

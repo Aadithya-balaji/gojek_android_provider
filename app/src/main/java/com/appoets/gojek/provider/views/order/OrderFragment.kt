@@ -1,11 +1,13 @@
 package com.appoets.gojek.provider.views.order
 
+import android.content.Context
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseFragment
+import com.appoets.base.base.BaseFragment
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.FragmentOrderBinding
+import com.appoets.gojek.provider.views.dashboard.DashBoardNavigator
 import com.appoets.xjek.ui.currentorder_fragment.CurrentOrderFragment
 import com.appoets.xjek.ui.pastorder_fragment.PastOrderFragment
 
@@ -14,7 +16,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
 
     private lateinit var mFragmentOrderBinding: FragmentOrderBinding
     private var mOrderViewModel: OrderViewModel? = null
-
+    private lateinit var dashBoardNavigator: DashBoardNavigator
     override fun getLayoutId(): Int = R.layout.fragment_order
 
 
@@ -24,8 +26,16 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
         mOrderViewModel?.let { it.setNavigator(this) }
         mFragmentOrderBinding.ordermodel = mOrderViewModel
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.order_container, PastOrderFragment())?.commit()
+        dashBoardNavigator.setTitle(resources.getString(R.string.header_label_order))
+        dashBoardNavigator.showLogo(false)
 
     }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        dashBoardNavigator = context as DashBoardNavigator
+    }
+
 
 
     override fun getCurrentOrder() {

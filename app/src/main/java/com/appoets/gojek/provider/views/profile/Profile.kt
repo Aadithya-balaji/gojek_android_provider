@@ -1,10 +1,11 @@
 package com.appoets.xjek.ui.profile
 
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityEditProfileBinding
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
+
 
 class Profile : BaseActivity<ActivityEditProfileBinding>() {
     lateinit var mViewDataBinding: ActivityEditProfileBinding

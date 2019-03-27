@@ -29,4 +29,9 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="backgroundTint">@color/colorPrimary</item>
+    </style>
+
 </resources>

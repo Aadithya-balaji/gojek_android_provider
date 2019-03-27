@@ -3,7 +3,7 @@ package com.appoets.xjek.ui.currentorder_fragment
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
-import com.appoets.basemodule.base.BaseFragment
+import com.appoets.base.base.BaseFragment
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.FragmentCurrentOrdersBinding
 import com.appoets.xjek.adapter.CurrentOrdersAdapter

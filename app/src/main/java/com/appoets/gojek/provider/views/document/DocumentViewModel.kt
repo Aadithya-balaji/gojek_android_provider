@@ -1,6 +1,6 @@
 package com.appoets.gojek.provider.views.document
 
-import com.appoets.basemodule.base.BaseViewModel
+import com.appoets.base.base.BaseViewModel
 
 class DocumentViewModel:BaseViewModel<DocumentNavigator>(){
 

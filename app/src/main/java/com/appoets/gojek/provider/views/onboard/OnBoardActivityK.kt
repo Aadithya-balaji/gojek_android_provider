@@ -1,20 +1,18 @@
 package com.appoets.xjek.ui.onboard
 
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.appoets.basemodule.base.BaseActivity
-import com.appoets.basemodule.base.BaseFragment
+import com.appoets.base.base.BaseActivity
+import com.appoets.base.base.BaseFragment
 import com.novoda.spritz.Spritz
 import com.novoda.spritz.SpritzStep
 import java.util.concurrent.TimeUnit
-import android.util.DisplayMetrics
-import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.ImageView
+import android.widget.TextView
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityOnBoardBinding
 import com.appoets.gojek.provider.views.onboard.OnBoardNavigator
@@ -25,9 +23,13 @@ import com.appoets.xjek.ui.signup.SignupActivity
 
 class OnBoardActivityK :BaseActivity<com.appoets.gojek.provider.databinding.ActivityOnBoardBinding>(), OnBoardNavigator {
 
-    lateinit var mViewDataBinding: com.appoets.gojek.provider.databinding.ActivityOnBoardBinding
-    lateinit var spritz: Spritz
-    lateinit var viewPager: ViewPager
+    private lateinit var mViewDataBinding: com.appoets.gojek.provider.databinding.ActivityOnBoardBinding
+    private lateinit var spritz: Spritz
+    private lateinit var viewPager: ViewPager
+    private  lateinit var  ivBack:ImageView
+    private  lateinit var  tbrRightTitle:TextView
+    private  lateinit var  ivLogo:ImageView
+    private  lateinit var  ivRight:ImageView
 
     override fun getLayoutId(): Int {
         return R.layout.activity_on_board
@@ -41,6 +43,9 @@ class OnBoardActivityK :BaseActivity<com.appoets.gojek.provider.databinding.Acti
         viewPager = mViewDataBinding.viewpagerOnboard
         viewPager.adapter = ScreenSlidePagerAdapter(supportFragmentManager)
         initSpritz()
+
+        //InitView
+
     }
 
     override fun goToSignIn() {

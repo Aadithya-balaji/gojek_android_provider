@@ -15,6 +15,6 @@
     app:contentInsetEnd="0dp"
     android:elevation="5dp">
 
-    <!--<include layout="@layout/header_layout"/>-->
+    <include layout="@layout/header_layout"/>
 
 </androidx.appcompat.widget.Toolbar>

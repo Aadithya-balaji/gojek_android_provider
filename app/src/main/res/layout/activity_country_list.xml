@@ -27,6 +27,7 @@
                 android:paddingLeft="@dimen/_5sdp"
                 android:backgroundTint="@color/white"
                 android:tint="@color/white"
+                android:onClick="@{()-> placesModel.closeActivity()}"
                 android:src="@drawable/back_arrow" />
 
             <androidx.appcompat.widget.SearchView

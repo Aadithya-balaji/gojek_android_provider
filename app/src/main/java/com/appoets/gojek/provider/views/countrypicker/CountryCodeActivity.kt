@@ -1,7 +1,10 @@
 package com.appoets.gojek.provider.views.countrypicker
 
+import android.app.Activity
+import android.content.Intent
 import android.view.View
 import android.widget.AdapterView
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListView
 import androidx.appcompat.widget.SearchView
@@ -11,13 +14,17 @@ import com.appoets.basemodule.base.BaseActivity
 import com.appoets.basemodule.base.BaseBottomSheet
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityCountryListBinding
+import com.appoets.gojek.provider.databinding.ActivityRegisterBinding
 import com.appoets.gojek.provider.model.CountryModel
 import com.appoets.gojek.provider.model.ciity.PlaceResponseModel
 import com.appoets.gojek.provider.utils.Country
 import com.appoets.gojek.provider.views.adapters.CountryAdapter
 import com.appoets.gojek.provider.views.adapters.PlacesAdapter
+import com.appoets.gojek.traximodule.views.views.countrypicker.CountrtCodeNavigator
+import com.appoets.xjek.ui.signup.SignupViewModel
 
-class CountryCodeActivity : BaseActivity<ActivityCountryListBinding>(), SearchView.OnQueryTextListener, AdapterView.OnItemClickListener {
+class CountryCodeActivity : BaseActivity<ActivityCountryListBinding>(), SearchView.OnQueryTextListener, AdapterView.OnItemClickListener,CountrtCodeNavigator {
+
 
 
     private lateinit var ivBack: ImageView
@@ -30,6 +37,7 @@ class CountryCodeActivity : BaseActivity<ActivityCountryListBinding>(), SearchVi
     private var countryName: String? = ""
     private var countryCode: String? = ""
     private var countryFlag: Int? = -1
+    private  lateinit var  activityCountryListBinding: ActivityCountryListBinding
 
 
     override fun getLayoutId(): Int {
@@ -37,7 +45,13 @@ class CountryCodeActivity : BaseActivity<ActivityCountryListBinding>(), SearchVi
     }
 
 
-    override fun initView(mViewDataBinding: ViewDataBinding?) {
+    override fun initView(mViewDataBinding: ViewDataBinding) {
+
+
+        this.activityCountryListBinding = mViewDataBinding as ActivityCountryListBinding
+        val countryCodeViewModel = CountryCodeViewModel()
+        countryCodeViewModel.setNavigator(this)
+        activityCountryListBinding.placesModel=countryCodeViewModel
         ivBack = findViewById(R.id.iv_back) as ImageView
         svCountry = findViewById(R.id.sv_country)
         llPlaces = findViewById(R.id.ll_country) as ListView
@@ -71,7 +85,19 @@ class CountryCodeActivity : BaseActivity<ActivityCountryListBinding>(), SearchVi
             countryCode = countryModel.dialCode
             countryFlag = countryModel.flag
 
+            val resultIntent= Intent()
+            resultIntent.putExtra("countryName",countryName)
+            resultIntent.putExtra("countrycode",countryCode)
+            resultIntent.putExtra("countryflag", countryFlag!!)
+            setResult(Activity.RESULT_OK,resultIntent)
+            finish()
+
+
         }
+    }
+
+    override fun closeActivity() {
+        finish()
     }
 
 }

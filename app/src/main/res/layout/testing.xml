@@ -7,7 +7,34 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="gone">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
+
+    <RadioGroup
+        android:id="@+id/rg_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/rb_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@null"
+        android:drawableTop="@drawable/selector_signin_email_radio"
+        android:gravity="center" />
+
+    <RadioButton
+        android:id="@+id/rb_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@null"
+        android:drawableTop="@drawable/selector_signin_phone_radio"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:gravity="center" />
+    </RadioGroup>
 
 </LinearLayout>

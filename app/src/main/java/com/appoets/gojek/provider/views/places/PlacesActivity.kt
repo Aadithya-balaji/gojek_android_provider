@@ -4,13 +4,11 @@ import android.widget.ImageView
 import android.widget.ListView
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivitySearchPlaceBinding
 import com.appoets.gojek.provider.model.ciity.PlaceResponseModel
 import com.appoets.gojek.provider.views.adapters.PlacesAdapter
-import com.appoets.gojek.traximodule.views.views.model.CountryResponseModel
-import java.net.ResponseCache
 
 class  PlacesActivity :BaseActivity<ActivitySearchPlaceBinding>(),SearchView.OnQueryTextListener{
 

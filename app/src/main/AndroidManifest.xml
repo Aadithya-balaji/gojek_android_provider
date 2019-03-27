@@ -15,6 +15,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory">
 
+
         <activity
             android:name=".views.splash.SplashActivity"
             android:configChanges="orientation"

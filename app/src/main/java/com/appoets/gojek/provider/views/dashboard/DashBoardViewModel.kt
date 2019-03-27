@@ -1,6 +1,6 @@
 package com.appoets.gojek.provider.views.dashboard
 
-import com.appoets.basemodule.base.BaseViewModel
+import com.appoets.base.base.BaseViewModel
 
 class DashBoardViewModel :BaseViewModel<DashBoardNavigator>(){
     /*fun changeFragment(){

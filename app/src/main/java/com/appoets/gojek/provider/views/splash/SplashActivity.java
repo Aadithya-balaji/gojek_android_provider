@@ -2,13 +2,10 @@ package com.appoets.gojek.provider.views.splash;
 
 import android.os.Handler;
 
-import com.appoets.basemodule.base.BaseActivity;
+import com.appoets.base.base.BaseActivity;
 import com.appoets.gojek.provider.R;
 import com.appoets.gojek.provider.databinding.ActivitySplashBinding;
-import com.appoets.gojek.provider.views.dashboard.DashBoardActivity;
 import com.appoets.xjek.ui.onboard.OnBoardActivityK;
-import com.appoets.xjek.ui.signin.SignInActivity;
-import com.google.android.gms.maps.model.Dash;
 
 import androidx.databinding.ViewDataBinding;
 //import com.appoets.xjek.ui.onboard.OnBoardActivityK;

@@ -1,16 +1,19 @@
 package com.appoets.xjek.ui.support
 
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivitySupportBinding
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
+
 
 class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator {
 
     lateinit var mViewDataBinding: ActivitySupportBinding
 
+
     override fun getLayoutId(): Int = R.layout.activity_support
+
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 

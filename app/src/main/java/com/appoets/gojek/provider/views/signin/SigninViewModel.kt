@@ -1,8 +1,7 @@
 package com.appoets.xjek.ui.signin
 
-import androidx.databinding.BaseObservable
 import androidx.databinding.Observable
-import com.appoets.basemodule.base.BaseViewModel
+import com.appoets.base.base.BaseViewModel
 
 public class SigninViewModel : BaseViewModel<SigninNavigator>(),Observable
 {

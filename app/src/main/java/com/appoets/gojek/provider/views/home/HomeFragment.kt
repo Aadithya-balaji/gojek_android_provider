@@ -1,15 +1,13 @@
 package com.appoets.gojek.provider.views.home
 
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
-import com.appoets.basemodule.base.BaseFragment
+import com.appoets.base.base.BaseFragment
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.FragmentHomePageBinding
-import com.appoets.gojek.provider.views.dashboard.DashBoardActivity
 import com.appoets.gojek.provider.views.dashboard.DashBoardNavigator
 import com.appoets.gojek.provider.views.foodproviderfragment.FoodProviderFragment
 import com.appoets.gojek.provider.views.taxiproviderfragment.TaxiProviderFragment

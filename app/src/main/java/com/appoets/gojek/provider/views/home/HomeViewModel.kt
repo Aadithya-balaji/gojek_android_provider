@@ -1,6 +1,6 @@
 package com.appoets.gojek.provider.views.home
 
-import com.appoets.basemodule.base.BaseViewModel
+import com.appoets.base.base.BaseViewModel
 
 class HomeViewModel :BaseViewModel<Home_Navigator>(){
     fun opentTranxitModule(){

@@ -1,4 +1,4 @@
-package com.appoets.gojek.traximodule.views.views.model
+package com.appoets.gojek.taxiservice.views.views.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

@@ -1,7 +1,7 @@
 package com.appoets.gojek.provider.views.countrypicker
 
-import com.appoets.basemodule.base.BaseViewModel
-import com.appoets.gojek.traximodule.views.views.countrypicker.CountrtCodeNavigator
+import com.appoets.base.base.BaseViewModel
+import com.appoets.gojek.taxiservice.views.views.countrypicker.CountrtCodeNavigator
 
 class  CountryCodeViewModel:BaseViewModel<CountrtCodeNavigator>(){
 

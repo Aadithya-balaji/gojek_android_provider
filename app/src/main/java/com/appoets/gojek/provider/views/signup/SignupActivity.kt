@@ -6,16 +6,13 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.databinding.ViewDataBinding
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityRegisterBinding
 import com.appoets.gojek.provider.views.countrypicker.CountryCodeActivity
-import com.appoets.gojek.provider.views.dashboard.DashBoardActivity
 import com.appoets.gojek.provider.views.document.DocumentActivity
 import com.appoets.xjek.ui.signin.SignInActivity
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlin.math.sign
 
 class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.ActivityRegisterBinding>(), SignupNavigator,View.OnClickListener {
 

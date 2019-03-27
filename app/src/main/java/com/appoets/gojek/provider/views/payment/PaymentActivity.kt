@@ -2,12 +2,13 @@ package com.appoets.xjek.ui.payment
 
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
-import com.appoets.basemodule.base.BaseActivity
+import com.appoets.base.base.BaseActivity
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityPaymentBinding
 import com.appoets.gojek.provider.views.TransactionStatusActivity.TransactionStatusActivity
 import com.appoets.gojek.provider.views.adapters.TransactionListAdapter
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
+
 
 class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator {
 

@@ -1,6 +1,6 @@
 package com.appoets.xjek.ui.support
 
-import com.appoets.basemodule.base.BaseViewModel
+import com.appoets.base.base.BaseViewModel
 
 public class SupportViewModel : BaseViewModel<SupportNavigator>() {
     fun makeCall() {

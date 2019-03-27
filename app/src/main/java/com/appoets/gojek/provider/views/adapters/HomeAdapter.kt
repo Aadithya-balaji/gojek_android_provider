@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.appoets.gojek.provider.R
-import com.appoets.gojek.traximodule.views.views.main.ActivityTaxiMain
+import com.appoets.taxiservice.views.main.ActivityTaxiMain
 import de.hdodenhof.circleimageview.CircleImageView
 
 class HomeAdapter (activity: AppCompatActivity): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(),View.OnClickListener{

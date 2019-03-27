@@ -1,6 +1,6 @@
 package com.appoets.gojek.provider.views.onboard;
 
-import com.appoets.basemodule.base.BaseViewModel;
+import com.appoets.base.base.BaseViewModel;
 
 public class OnBoardViewModel extends BaseViewModel<OnBoardNavigator> {
 

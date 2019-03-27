@@ -1,6 +1,6 @@
 package com.appoets.gojek.provider.base;
 
-import com.appoets.basemodule.base.BaseApplication;
+import com.appoets.base.base.BaseApplication;
 
 public class GojekApplication extends BaseApplication {
     @Override

@@ -13,14 +13,15 @@ class RatingFragment:BaseDialogFragment<FragmentRatingBinding>(), RatingNavigato
 
      private  var  appCompatActivity:AppCompatActivity?=null
     private  var fragmentRatingBinding:FragmentRatingBinding?=null
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         appCompatActivity=context as AppCompatActivity
     }
 
     override fun onStart() {
         super.onStart()
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams
+                .WRAP_CONTENT);
     }
 
     override fun goToAppModule() {

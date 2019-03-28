@@ -55,7 +55,7 @@ class BottomStatuslayout : BaseBottomSheet<com.appoets.gojek.taxiservice.databin
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme);
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         ctxt = context as AppCompatActivity
     }
@@ -93,10 +93,6 @@ class BottomStatuslayout : BaseBottomSheet<com.appoets.gojek.taxiservice.databin
 
     override fun startTrip(isTrue: Boolean) {
         startTrip()
-    }
-
-    override fun onDismiss(dialog: DialogInterface?) {
-        //Fragment dialog had been dismissed
     }
 
     fun startTrip() {

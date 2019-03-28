@@ -1,4 +1,4 @@
-package com.appoets.gojek.taxiservice;
+package com.appoets.taxiservice;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;

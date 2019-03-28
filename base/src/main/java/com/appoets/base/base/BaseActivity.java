@@ -3,28 +3,22 @@ package com.appoets.base.base;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
+
+import com.appoets.base.utils.NetworkUtils;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-
-import com.appoets.base.utils.NetworkUtils;
-
-
-import java.util.Objects;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
     private T mViewDataBinding;
-
 
     @LayoutRes
     protected abstract int getLayoutId();
@@ -39,7 +33,6 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     }
 
 
-
     protected void showKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -52,8 +45,8 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected void hideKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)
-                    getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm =
+                    (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             if (imm != null) imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
@@ -73,4 +66,7 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         mViewDataBinding.executePendingBindings();
     }
 
+    protected void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 }

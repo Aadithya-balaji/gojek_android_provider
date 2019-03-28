@@ -11,16 +11,16 @@ import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityRegisterBinding
 import com.appoets.gojek.provider.views.countrypicker.CountryCodeActivity
 import com.appoets.gojek.provider.views.document.DocumentActivity
-import com.appoets.xjek.ui.signin.SignInActivity
+import com.appoets.gojek.provider.views.signin.SignInActivity
 import com.google.android.material.textfield.TextInputLayout
 
-class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.ActivityRegisterBinding>(), SignupNavigator,View.OnClickListener {
+class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.ActivityRegisterBinding>(), SignupNavigator, View.OnClickListener {
 
 
-    private  lateinit var  tlCountryCode:TextInputLayout
+    private lateinit var tlCountryCode: TextInputLayout
 
     lateinit var mViewDataBinding: ActivityRegisterBinding
-    private  lateinit var  edtCountryCode: EditText
+    private lateinit var edtCountryCode: EditText
 
     override fun getLayoutId(): Int = R.layout.activity_register
 
@@ -32,8 +32,8 @@ class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.Activ
         this.mViewDataBinding.registermodel = signupViewmodel
 
 
-        tlCountryCode=findViewById(R.id.tl_country_code)
-        edtCountryCode=findViewById(R.id.countrycode_register_et)
+        tlCountryCode = findViewById(R.id.tl_country_code)
+        edtCountryCode = findViewById(R.id.countrycode_register_et)
 
         //initListener
         initListener()
@@ -43,17 +43,17 @@ class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.Activ
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(resultCode== Activity.RESULT_OK){
-            if(data!=null){
-               if(data.hasExtra("countryName")){
-                   Log.e("code Picker","--------------"+data.extras.get("countryName"))
-               }
+        if (resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                if (data.hasExtra("countryName")) {
+                    Log.e("code Picker", "--------------" + data.extras.get("countryName"))
+                }
             }
         }
     }
 
-    fun initListener(){
-       // tlCountryCode.setOnClickListener (this)
+    fun initListener() {
+        // tlCountryCode.setOnClickListener (this)
         edtCountryCode.setOnClickListener(this)
     }
 
@@ -68,17 +68,17 @@ class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.Activ
     }
 
     override fun gotoDocumentPage() {
-        val intent=Intent(this@SignupActivity,DocumentActivity::class.java)
+        val intent = Intent(this@SignupActivity, DocumentActivity::class.java)
         startActivity(intent)
 
     }
 
 
     override fun onClick(v: View?) {
-        when(v!!.id){
+        when (v!!.id) {
             R.id.countrycode_register_et -> {
-                val intent =Intent(this@SignupActivity,CountryCodeActivity::class.java)
-                startActivityForResult(intent,111)
+                val intent = Intent(this@SignupActivity, CountryCodeActivity::class.java)
+                startActivityForResult(intent, 111)
             }
         }
     }

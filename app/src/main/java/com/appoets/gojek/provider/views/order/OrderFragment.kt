@@ -31,7 +31,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
 
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
     }

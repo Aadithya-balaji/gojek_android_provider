@@ -1,5 +1,3 @@
-
-
 package com.appoets.base.utils;
 
 import android.content.Context;
@@ -13,13 +11,12 @@ public final class NetworkUtils {
     }
 
     public static boolean isNetworkConnected(Context context) {
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
         }
         return false;
     }
-
-
 }

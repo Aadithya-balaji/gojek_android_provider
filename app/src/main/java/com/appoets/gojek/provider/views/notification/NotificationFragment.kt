@@ -19,7 +19,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
 
     override fun getLayoutId(): Int = R.layout.fragment_notification
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
         dashBoardNavigator.setTitle(resources.getString(R.string.header_label_notification))

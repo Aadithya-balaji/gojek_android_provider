@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">GoJek_Android_Provider</string>
     <string name="sign_in" translatable="false">Sign In</string>
     <string name="sign_up">Sign Up</string>
 
@@ -127,7 +126,7 @@
     <string name="header_label_myaccount">My Account</string>
     <string name="header_label_verification_img">Verification Images</string>
     <string name="header_after_document_upload">After Document Upload</string>
-    <string  name="header_label_document_upload">Document Upload</string>
+    <string name="header_label_document_upload">Document Upload</string>
     <string name="profile">Profile</string>
     <string name="invite">Invite Refferals</string>
     <string name="invite_refferals">Invite Refferals</string>
@@ -176,4 +175,7 @@
     <string name="cancelled">Cancelled</string>
     <string name="dummy_rating">4.6</string>
 
+    <string name="email_empty">Email should not be empty</string>
+    <string name="email_invalid">Please enter valid email</string>
+    <string name="password_empty">Password should not be empty</string>
 </resources>

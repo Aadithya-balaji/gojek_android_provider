@@ -31,7 +31,7 @@ class HomeFragment : BaseFragment<com.appoets.gojek.provider.databinding.Fragmen
     }
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
     }

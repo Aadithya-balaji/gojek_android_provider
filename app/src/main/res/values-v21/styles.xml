@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Edittext_OutlinedTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="Edittext_OutlinedTheme" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
         <item name="boxStrokeColor">@color/et_stroke_color</item>
         <item name="boxBackgroundColor">@color/bg_vechile_edittext</item>
         <item name="boxBackgroundMode">outline</item>

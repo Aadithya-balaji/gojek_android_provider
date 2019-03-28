@@ -16,7 +16,7 @@ class OTPDialogFrag : DialogFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
     }
 
@@ -25,7 +25,7 @@ class OTPDialogFrag : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        dialog.window.requestFeature(Window.FEATURE_NO_TITLE)
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         return inflater.inflate(R.layout.fragment_verify_otp, container)
     }
 

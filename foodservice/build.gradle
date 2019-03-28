@@ -5,37 +5,53 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 28
-
-
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        // Configured the app to use vector support libraries with all Android platform versions
+        // back to Android 2.1 (API level 7+).
+        vectorDrawables.useSupportLibrary = true
     }
-
-    dataBinding {
-        enabled = true
-    }
-
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://dummy.restapiexample.com/\"")
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField("String", "BASE_URL", "\"http://dummy.restapiexample.com/\"")
         }
-    }
 
+    }
+    // Configured Java 8 language features for each module.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    kapt "com.android.databinding:compiler:3.1.4"
-    implementation project(':base')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+    // The data binding library for Kotlin that allows to bind UI components in your layouts to
+    // data sources.
+    kapt "com.android.databinding:compiler:$compiler_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    // Added dependent library modules into the Android app module.
+    implementation project(':base')
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

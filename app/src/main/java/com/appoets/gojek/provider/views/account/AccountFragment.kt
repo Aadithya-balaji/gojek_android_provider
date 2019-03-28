@@ -21,7 +21,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     private lateinit var dashBoardNavigator: DashBoardNavigator
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
     }

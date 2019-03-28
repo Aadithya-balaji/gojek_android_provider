@@ -4,7 +4,7 @@
     package="com.appoets.gojek.provider">
 
     <application
-        android:name=".base.GojekApplication"
+        android:name=".GoJekApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +14,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory">
-
 
         <activity
             android:name=".views.splash.SplashActivity"
@@ -39,7 +38,7 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="com.appoets.xjek.ui.signin.SignInActivity"
+            android:name=".views.signin.SignInActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -50,10 +49,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
-        <activity android:name=".views.countrypicker.CountryCodeActivity"
+        <activity
+            android:name=".views.countrypicker.CountryCodeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".views.document.DocumentActivity"

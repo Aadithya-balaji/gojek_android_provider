@@ -14,6 +14,22 @@
         android:background="@color/app_background_color"
         android:orientation="vertical">
 
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/xuber_white">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/app_logo" />
+
+        </RelativeLayout>
+
+
         <LinearLayout
             android:id="@+id/ll_order_type"
             android:layout_width="match_parent"

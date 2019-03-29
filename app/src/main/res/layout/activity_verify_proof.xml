@@ -39,7 +39,7 @@
         android:paddingBottom="@dimen/_10sdp"
         android:onClick="@{() -> verifyFileModel.showDashboardPage()}"
         android:text="@string/btn_doc_txt"
-        android:textColor="@color/white"
+        android:textColor="@color/xuber_white"
         android:textSize="@dimen/_15sdp" />
 </RelativeLayout>
 

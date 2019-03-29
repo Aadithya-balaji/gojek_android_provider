@@ -74,6 +74,7 @@ dependencies {
     implementation project(':base')
     implementation project(':foodservice')
     implementation project(':taxiservice')
+    implementation project(':xuberservice')
     implementation project(':countrycodepicker')
 
     testImplementation 'junit:junit:4.12'

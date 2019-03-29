@@ -41,7 +41,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
     override fun getCurrentOrder() {
 
         mFragmentOrderBinding.tvOrderPast.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mFragmentOrderBinding.tvOrderPast.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mFragmentOrderBinding.tvOrderPast.setTextColor(ContextCompat.getColor(this.activity!!, R.color.xuber_black))
         mFragmentOrderBinding.tvOrderCurrent.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
         mFragmentOrderBinding.tvOrderCurrent.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
 
@@ -54,7 +54,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
         mFragmentOrderBinding.tvOrderPast.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
         mFragmentOrderBinding.tvOrderPast.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
         mFragmentOrderBinding.tvOrderCurrent.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mFragmentOrderBinding.tvOrderCurrent.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mFragmentOrderBinding.tvOrderCurrent.setTextColor(ContextCompat.getColor(this.activity!!, R.color.xuber_black))
 
         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.order_container, PastOrderFragment())?.commit()
 

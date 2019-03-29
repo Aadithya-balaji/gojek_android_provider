@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="endServicesViewModel"
+            type="com.xjek.xuberservice.endservice_fragment.EndServicesViewModel"/>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_5sdp">
+
+            <LinearLayout
+                android:id="@+id/chat_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/round"
+                    android:contentDescription="@string/chat_action"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_chat_bubble" />
+
+                <TextView
+                    style="@style/MediumText.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/chat"
+                    android:textColor="@color/xuber_black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/customet_pic_cimgv"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/dummy_profile_pic" />
+
+                <TextView
+                    android:id="@+id/customer_name_tv"
+                    style="@style/MediumText.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/dummy_customer_name" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="@style/customRatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:numStars="5"
+                    android:rating="5.0"
+                    android:stepSize="1.0"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/call_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/round"
+                    android:contentDescription="@string/call_action"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_call" />
+
+                <TextView
+                    style="@style/MediumText.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/call"
+                    android:textColor="@color/xuber_black" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <Button
+            android:id="@+id/start_service_btn"
+            style="@style/MediumText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@color/xuber_button_blue"
+            android:text="@string/end_service"
+            android:onClick="@{() -> endServicesViewModel.endService()}"
+            android:textAllCaps="false"
+            android:textColor="@color/xuber_white" />
+
+
+    </LinearLayout>
+</layout>

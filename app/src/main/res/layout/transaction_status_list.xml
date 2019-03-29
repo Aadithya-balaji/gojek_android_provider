@@ -19,7 +19,7 @@
             android:gravity="center"
             android:padding="@dimen/_5sdp"
             android:text="@string/dummy_transaction_id"
-            android:textColor="@color/black" />
+            android:textColor="@color/xuber_black" />
 
         <TextView
             android:id="@+id/transactionstatus_amount_tv"
@@ -29,7 +29,7 @@
             android:gravity="center"
             android:padding="@dimen/_5sdp"
             android:text="@string/dummy_amount"
-            android:textColor="@color/black" />
+            android:textColor="@color/xuber_black" />
 
         <TextView
             android:id="@+id/transaction_status_tv"

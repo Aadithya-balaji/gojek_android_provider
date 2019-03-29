@@ -9,11 +9,15 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.appoets.base.utils.NetworkUtils;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
@@ -63,5 +67,15 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected void setBindingVariable(int variableId, @Nullable Object object) {
         mViewDataBinding.setVariable(variableId, object);
         mViewDataBinding.executePendingBindings();
+    }
+
+    protected void replaceFragment(@IdRes int id, Fragment fragmentName, String fragmentTag,
+                                   boolean addToBackStack) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(id, fragmentName, fragmentTag);
+        if (addToBackStack)
+            transaction.addToBackStack(fragmentTag);
+        transaction.commit();
     }
 }

@@ -1,4 +1,4 @@
-package com.appoets.xjek.ui.onboard
+package com.appoets.gojek.provider.views.onboard
 
 import android.view.View
 import android.widget.ImageView
@@ -12,8 +12,6 @@ import com.appoets.base.base.BaseActivity
 import com.appoets.base.base.BaseFragment
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivityOnBoardBinding
-import com.appoets.gojek.provider.views.onboard.OnBoardNavigator
-import com.appoets.gojek.provider.views.onboard.OnBoardViewModel
 import com.appoets.gojek.provider.views.signin.SignInActivity
 import com.appoets.gojek.provider.views.signup.SignupActivity
 import com.novoda.spritz.Spritz

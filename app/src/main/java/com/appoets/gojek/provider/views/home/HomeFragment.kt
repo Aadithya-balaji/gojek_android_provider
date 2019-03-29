@@ -40,9 +40,9 @@ class HomeFragment : BaseFragment<com.appoets.gojek.provider.databinding.Fragmen
     override fun gotoTaxiModule() {
 
         mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.xuber_black))
         mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.xuber_black))
         mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
         mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
 
@@ -56,9 +56,9 @@ class HomeFragment : BaseFragment<com.appoets.gojek.provider.databinding.Fragmen
         mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
         mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
         mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.xuber_black))
         mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.xuber_black))
 
         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.provider_container, FoodProviderFragment())?.commit()
 
@@ -67,11 +67,11 @@ class HomeFragment : BaseFragment<com.appoets.gojek.provider.databinding.Fragmen
     override fun gotoXuberModule() {
 
         mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.xuber_black))
         mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
         mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
         mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
+        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.xuber_black))
 
         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.provider_container, XuberServicesProviderFragment())?.commit()
 

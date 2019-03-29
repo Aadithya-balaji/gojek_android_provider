@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="invoiceViewModel"
+            type="com.xjek.xuberservice.invoice_fragment.InvoiceViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_5sdp">
+
+            <LinearLayout
+                android:id="@+id/chat_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/round"
+                    android:contentDescription="@string/chat_action"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_chat_bubble" />
+
+                <TextView
+                    style="@style/MediumText.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/chat"
+                    android:textColor="@color/xuber_black" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/customet_pic_cimgv"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/dummy_profile_pic" />
+
+                <TextView
+                    android:id="@+id/customer_name_tv"
+                    style="@style/MediumText.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/dummy_customer_name" />
+
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    style="@style/customRatingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:numStars="5"
+                    android:rating="5.0"
+                    android:stepSize="1.0"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/call_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+
+                <ImageView
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@drawable/round"
+                    android:contentDescription="@string/call_action"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_call" />
+
+                <TextView
+                    style="@style/MediumText.Black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/call"
+                    android:textColor="@color/xuber_black" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@color/xuber_grey" />
+
+
+        <TextView
+            style="@style/MediumText.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/invoice" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/MediumText.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/amount_to_be_paid" />
+
+            <TextView
+                android:id="@+id/amount_tv"
+                style="@style/MediumText.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/dummy_price" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/paying_mode"
+            style="@style/SmallText.Grey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_cash"
+            android:drawablePadding="@dimen/_5sdp"
+            android:text="@string/cash_mode" />
+
+
+        <Button
+            android:id="@+id/start_service_btn"
+            style="@style/MediumText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/xuber_button_blue"
+            android:onClick="@{() -> invoiceViewModel.confrimPayment()}"
+            android:text="@string/confrim_payment"
+            android:textAllCaps="false"
+            android:textColor="@color/xuber_white" />
+
+
+    </LinearLayout>
+</layout>

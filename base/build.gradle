@@ -83,9 +83,9 @@ dependencies {
 
     //Map
     api 'com.google.android.gms:play-services-maps:16.1.0'
-//    api 'com.google.maps:google-maps-services:0.2.7'
+    api 'com.google.maps:google-maps-services:0.2.7'
 //    api 'com.google.maps.android:android-maps-utils:0.5'
-//    api 'com.google.android.gms:play-services-location:16.0.0'
+    api 'com.google.android.gms:play-services-location:16.0.0'
 //    api ("com.google.android.libraries.places:places:1.0.0") {
 //        exclude group: 'com.google.common.util.concurrent', module: 'ListenableFuture'
 //    }

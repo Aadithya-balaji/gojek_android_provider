@@ -28,7 +28,7 @@ class VechileDetailActivity:BaseActivity<ActivityVechileDetailPageBinding>(),Vec
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mVechileDetailPageBinding=mViewDataBinding as ActivityVechileDetailPageBinding
         val vechileDetailModel=VechileDetailModel()
-        vechileDetailModel.setNavigator(this)
+        vechileDetailModel.navigator = this
         mVechileDetailPageBinding!!.vechiledetailmodel=vechileDetailModel
 
         llTaxiVechileDetail = findViewById(R.id.cl_taxi)

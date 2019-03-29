@@ -28,7 +28,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         this.mViewDataBinding = mViewDataBinding as ActivtyLivetaskLaoyutBinding
         val foodLiveTaskviewModel = ViewModelProviders.of(this).get(FoodLiveTaskServiceViewModel::class.java)
         mViewDataBinding.foodLiveTaskviewModel = foodLiveTaskviewModel
-        foodLiveTaskviewModel.setNavigator(this)
+        foodLiveTaskviewModel.navigator = this
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this)
 
     }

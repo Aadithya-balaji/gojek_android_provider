@@ -35,7 +35,6 @@ class WebServiceModule {
     private fun getHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
                 .addInterceptor(getLoggingInterceptor())
-//                .addNetworkInterceptor(getRequestHeader())
                 .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)

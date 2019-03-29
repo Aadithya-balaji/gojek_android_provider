@@ -74,43 +74,48 @@
                                 android:text="@string/login_via"
                                 android:textColor="@android:color/black"
                                 android:textSize="@dimen/_12sdp" />
-                            <!--Login via mail imageview -->
-                            <ImageView
-                                android:id="@+id/mail_singin_imgview"
+
+                            <RadioGroup
+                                android:id="@+id/rg_signin"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginRight="@dimen/_8sdp"
-                                android:background="@color/app_background_color"
-                                android:padding="@dimen/_3sdp"
-                                app:srcCompat="@drawable/ic_mail" />
-                            <!--Login via phone number imageview -->
+                                android:checkedButton="@+id/rb_phone"
+                                android:onCheckedChanged="@{signInViewModel::onSignInOptionsClick}"
+                                android:orientation="horizontal">
 
-                            <ImageView
-                                android:id="@+id/phone_signin_imgview"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="@dimen/_15sdp"
-                                android:layout_toLeftOf="@+id/mail_singin_imgview"
-                                android:background="@color/app_background_color"
-                                android:padding="@dimen/_3sdp"
-                                android:tint="@color/colorAccent"
-                                android:visibility="gone"
-                                app:srcCompat="@drawable/ic_call_24"
-                                tools:visibility="visible" />
+                                <RadioButton
+                                    android:id="@+id/rb_phone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:button="@null"
+                                    android:drawableTop="@drawable/selector_signin_phone_radio"
+                                    android:gravity="center"
+                                    android:padding="@dimen/_5sdp" />
 
+                                <RadioButton
+                                    android:id="@+id/rb_email"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/_20sdp"
+                                    android:button="@null"
+                                    android:drawableTop="@drawable/selector_signin_email_radio"
+                                    android:gravity="center"
+                                    android:padding="@dimen/_5sdp" />
+                            </RadioGroup>
                         </RelativeLayout>
 
                         <!--Layout countrycode & phonenumber-->
 
                         <LinearLayout
+                            android:id="@+id/ll_phone_number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:baselineAligned="false"
                             android:orientation="horizontal"
-                            android:visibility="gone"
+                            android:visibility="visible"
                             android:weightSum="2"
                             tools:visibility="visible">
 
@@ -136,6 +141,7 @@
                                     android:drawablePadding="@dimen/_3sdp"
                                     android:inputType="text"
                                     android:maxLines="1"
+                                    android:onClick="@{signInViewModel::onCountryCodeClick}"
                                     android:singleLine="true"
                                     android:text="@={signInViewModel.countryCode}"
                                     android:textColor="@color/et_text_color"
@@ -176,13 +182,16 @@
 
                         <!--TextInputLayout EmailID-->
                         <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/til_email_"
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/email_id_hint">
+                            android:hint="@string/email_id_hint"
+                            android:visibility="gone"
+                            tools:visibility="visible">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/emailid_register_et"
@@ -225,14 +234,11 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:onClick="@{signInViewModel::onForgotPasswordClick}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/forgot_password"
                             android:textSize="@dimen/_12sdp" />
-
-
                     </LinearLayout>
-
-
                 </androidx.cardview.widget.CardView>
 
                 <!--Go to Registration activity Layout-->
@@ -261,11 +267,11 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/alreadyaccount_register_tv"
                         android:layout_marginBottom="@dimen/_5sdp"
+                        android:onClick="@{signInViewModel::onSignUpClick}"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/sign_up"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
-                    <!--android:onClick="@{() -> signinmodel.openSignUp()}"-->
 
                     <!--Move to Registration activity Imageview-->
                     <ImageView
@@ -275,7 +281,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_margin="@dimen/_5sdp"
-                        android:onClick="@{signInViewModel::performSignInClick}"
+                        android:onClick="@{signInViewModel::onSignInClick}"
                         android:padding="@dimen/_5sdp"
                         app:srcCompat="@drawable/ic_right_arrow_in_black_circular_button" />
                 </RelativeLayout>
@@ -300,7 +306,6 @@
                     android:layout_marginRight="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_15sdp"
                     android:background="@drawable/bg_white">
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -332,6 +337,7 @@
                             android:drawableStart="@drawable/ic_google"
                             android:drawableLeft="@drawable/ic_google"
                             android:drawablePadding="@dimen/_8sdp"
+                            android:onClick="@{signInViewModel::onGoogleSignInClick}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/connect_via_google"
                             android:textColor="@color/colorPrimaryDark"
@@ -345,6 +351,7 @@
                             android:drawableStart="@drawable/ic_facebook"
                             android:drawableLeft="@drawable/ic_facebook"
                             android:drawablePadding="@dimen/_8sdp"
+                            android:onClick="@{signInViewModel::onFacebookLoginClick}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/connect_via_facebook"
                             android:textColor="@color/colorPrimaryDark"

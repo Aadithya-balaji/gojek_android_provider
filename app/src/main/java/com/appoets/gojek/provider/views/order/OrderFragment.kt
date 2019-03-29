@@ -23,7 +23,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
         mFragmentOrderBinding = mViewDataBinding as FragmentOrderBinding
         mOrderViewModel = OrderViewModel()
-        mOrderViewModel?.let { it.setNavigator(this) }
+        mOrderViewModel?.let { it.navigator = this }
         mFragmentOrderBinding.ordermodel = mOrderViewModel
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.order_container, PastOrderFragment())?.commit()
         dashBoardNavigator.setTitle(resources.getString(R.string.header_label_order))

@@ -175,6 +175,8 @@
     <string name="cancelled">Cancelled</string>
     <string name="dummy_rating">4.6</string>
 
+    <string name="country_code_empty">Country code should not be empty</string>
+    <string name="phone_number_empty">Phone number should not be empty</string>
     <string name="email_empty">Email should not be empty</string>
     <string name="email_invalid">Please enter valid email</string>
     <string name="password_empty">Password should not be empty</string>

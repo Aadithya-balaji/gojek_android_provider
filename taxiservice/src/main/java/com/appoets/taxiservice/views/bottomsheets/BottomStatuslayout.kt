@@ -67,7 +67,7 @@ class BottomStatuslayout : BaseBottomSheet<com.appoets.gojek.taxiservice.databin
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mLayoutTaxiBottomBinding = mViewDataBinding as LayoutTaxiBottomBinding
         val bottomSheetModule = BottomSheetModule()
-        bottomSheetModule.setNavigator(this)
+        bottomSheetModule.navigator = this
         mLayoutTaxiBottomBinding!!.bottomsheetmodel = bottomSheetModule
     }
 

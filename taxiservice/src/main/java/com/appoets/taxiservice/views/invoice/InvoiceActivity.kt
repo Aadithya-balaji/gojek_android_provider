@@ -28,7 +28,7 @@ class  InvoiceActivity : BaseActivity<ActivityInvoiceBinding>(), InvoiceNavigato
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         activityInvoiceBinding=mViewDataBinding as ActivityInvoiceBinding
         val invoiceModule= InvoiceModule()
-        invoiceModule.setNavigator(this)
+        invoiceModule.navigator = this
         activityInvoiceBinding!!.invoicemodel=invoiceModule
 
         //initViews

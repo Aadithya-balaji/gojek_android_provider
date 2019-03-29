@@ -26,7 +26,7 @@ class HomeFragment : BaseFragment<com.appoets.gojek.provider.databinding.Fragmen
         val mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
         mHomeDataBinding.homemodel = mHomeViewModel
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.provider_container, TaxiProviderFragment())?.commit()
-        mHomeViewModel!!.setNavigator(this);
+        mHomeViewModel!!.navigator = this;
 
     }
 

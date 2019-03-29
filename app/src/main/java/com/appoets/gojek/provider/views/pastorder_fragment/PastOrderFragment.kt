@@ -17,7 +17,7 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
 
         this.mViewDataBinding = mViewDataBinding as FragmentPastOrdersBinding
         val pastOrderViewModel = PastOrderViewModel()
-        pastOrderViewModel.setNavigator(this)
+        pastOrderViewModel.navigator = this
         mViewDataBinding.pastfragmentviewmodel = pastOrderViewModel
         val pastOrdersAdapter = PastOrdersAdapter(activity)
         mViewDataBinding.pastOrdersAdapter = pastOrdersAdapter

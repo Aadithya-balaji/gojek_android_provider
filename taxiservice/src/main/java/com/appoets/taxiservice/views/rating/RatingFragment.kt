@@ -37,7 +37,7 @@ class RatingFragment:BaseDialogFragment<FragmentRatingBinding>(), RatingNavigato
     override fun initView(viewDataBinding: ViewDataBinding?) {
         fragmentRatingBinding=viewDataBinding as FragmentRatingBinding
         val ratingViewModel= RatingViewModel()
-        ratingViewModel.setNavigator(this)
+        ratingViewModel.navigator = this
         fragmentRatingBinding!!.ratingmodel=ratingViewModel
     }
 

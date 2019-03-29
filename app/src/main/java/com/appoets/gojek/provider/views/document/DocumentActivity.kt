@@ -27,7 +27,7 @@ class  DocumentActivity:BaseActivity<com.appoets.gojek.provider.databinding.Acti
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.activityDocumentUploadBinding=mViewDataBinding as ActivityDocumentUploadBinding
         val documentViewModel=DocumentViewModel()
-        documentViewModel.setNavigator(this)
+        documentViewModel.navigator = this
         activityDocumentUploadBinding!!.documentviewmodel=documentViewModel
 
         tvLeftHeader=findViewById(R.id.tv_header)

@@ -15,7 +15,7 @@ import com.appoets.gojek.provider.databinding.ActivityOnBoardBinding
 import com.appoets.gojek.provider.views.onboard.OnBoardNavigator
 import com.appoets.gojek.provider.views.onboard.OnBoardViewModel
 import com.appoets.gojek.provider.views.signin.SignInActivity
-import com.appoets.xjek.ui.signup.SignupActivity
+import com.appoets.gojek.provider.views.signup.SignupActivity
 import com.novoda.spritz.Spritz
 import com.novoda.spritz.SpritzStep
 import java.util.concurrent.TimeUnit
@@ -38,7 +38,7 @@ class OnBoardActivityK : BaseActivity<com.appoets.gojek.provider.databinding.Act
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivityOnBoardBinding
         val onBoardViewModel = OnBoardViewModel()
-        onBoardViewModel.setNavigator(this)
+        onBoardViewModel.navigator = this
         mViewDataBinding.viewModel = onBoardViewModel
         viewPager = mViewDataBinding.viewpagerOnboard
         viewPager.adapter = ScreenSlidePagerAdapter(supportFragmentManager)
@@ -49,11 +49,11 @@ class OnBoardActivityK : BaseActivity<com.appoets.gojek.provider.databinding.Act
     }
 
     override fun goToSignIn() {
-        openNewActivity(this@OnBoardActivityK, SignInActivity::class.java, true)
+        openNewActivity(this@OnBoardActivityK, SignInActivity::class.java, false)
     }
 
     override fun goToSignUp() {
-        openNewActivity(this@OnBoardActivityK, SignupActivity::class.java, true)
+        openNewActivity(this@OnBoardActivityK, SignupActivity::class.java, false)
     }
 
 

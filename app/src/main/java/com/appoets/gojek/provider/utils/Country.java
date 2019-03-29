@@ -1,21 +1,15 @@
 package com.appoets.gojek.provider.utils;
 
-import android.content.Context;
-import android.telephony.TelephonyManager;
-import android.text.TextUtils;
-
 import com.appoets.gojek.provider.R;
 import com.appoets.gojek.provider.model.CountryModel;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 public class Country {
 
     private static final CountryModel[] COUNTRIES = {
-            new CountryModel("AD", "Andorra", "+376",R.drawable.flag_ad),
+            new CountryModel("AD", "Andorra", "+376", R.drawable.flag_ad),
             new CountryModel("AE", "United Arab Emirates", "+971", R.drawable.flag_ae),
             new CountryModel("AF", "Afghanistan", "+93", R.drawable.flag_af),
             new CountryModel("AG", "Antigua and Barbuda", "+1", R.drawable.flag_ag),
@@ -54,7 +48,8 @@ public class Country {
             new CountryModel("BZ", "Belize", "+501", R.drawable.flag_bz),
             new CountryModel("CA", "Canada", "+1", R.drawable.flag_ca),
             new CountryModel("CC", "Cocos (Keeling) Islands", "+61", R.drawable.flag_cc),
-            new CountryModel("CD", "Congo, The Democratic Republic of the", "+243", R.drawable.flag_cd),
+            new CountryModel("CD", "Congo, The Democratic Republic of the", "+243",
+                    R.drawable.flag_cd),
             new CountryModel("CF", "Central African Republic", "+236", R.drawable.flag_cf),
             new CountryModel("CG", "Congo", "+242", R.drawable.flag_cg),
             new CountryModel("CH", "Switzerland", "+41", R.drawable.flag_ch),
@@ -104,7 +99,8 @@ public class Country {
             new CountryModel("GP", "Guadeloupe", "+590", R.drawable.flag_gp),
             new CountryModel("GQ", "Equatorial Guinea", "+240", R.drawable.flag_gq),
             new CountryModel("GR", "Greece", "+30", R.drawable.flag_gr),
-            new CountryModel("GS", "South Georgia and the South Sandwich Islands", "+500", R.drawable.flag_gs),
+            new CountryModel("GS", "South Georgia and the South Sandwich Islands", "+500",
+                    R.drawable.flag_gs),
             new CountryModel("GT", "Guatemala", "+502", R.drawable.flag_gt),
             new CountryModel("GU", "Guam", "+1", R.drawable.flag_gu),
             new CountryModel("GW", "Guinea-Bissau", "+245", R.drawable.flag_gw),
@@ -158,7 +154,8 @@ public class Country {
             new CountryModel("MF", "Saint Martin", "+590", R.drawable.flag_mf),
             new CountryModel("MG", "Madagascar", "+261", R.drawable.flag_mg),
             new CountryModel("MH", "Marshall Islands", "+692", R.drawable.flag_mh),
-            new CountryModel("MK", "Macedonia, The Former Yugoslav Republic of", "+389", R.drawable.flag_mk),
+            new CountryModel("MK", "Macedonia, The Former Yugoslav Republic of", "+389",
+                    R.drawable.flag_mk),
             new CountryModel("ML", "Mali", "+223", R.drawable.flag_ml),
             new CountryModel("MM", "Myanmar", "+95", R.drawable.flag_mm),
             new CountryModel("MN", "Mongolia", "+976", R.drawable.flag_mn),
@@ -213,7 +210,8 @@ public class Country {
             new CountryModel("SD", "Sudan", "+249", R.drawable.flag_sd),
             new CountryModel("SE", "Sweden", "+46", R.drawable.flag_se),
             new CountryModel("SG", "Singapore", "+65", R.drawable.flag_sg),
-            new CountryModel("SH", "Saint Helena, Ascension and Tristan Da Cunha", "+290", R.drawable.flag_sh),
+            new CountryModel("SH", "Saint Helena, Ascension and Tristan Da Cunha", "+290",
+                    R.drawable.flag_sh),
             new CountryModel("SI", "Slovenia", "+386", R.drawable.flag_si),
             new CountryModel("SJ", "Svalbard and Jan Mayen", "+47", R.drawable.flag_sj),
             new CountryModel("SK", "Slovakia", "+421", R.drawable.flag_sk),
@@ -268,8 +266,8 @@ public class Country {
     };
     private static List<CountryModel> allCountriesList;
 
-
     public Country() {
+        // Primary Constructor
     }
 
     public static List<CountryModel> getAllCountries() {
@@ -278,8 +276,4 @@ public class Country {
         }
         return allCountriesList;
     }
-
-
-
-
 }

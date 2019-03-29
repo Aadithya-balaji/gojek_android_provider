@@ -1,4 +1,4 @@
-package com.appoets.xjek.ui.signup
+package com.appoets.gojek.provider.views.signup
 
 import android.app.Activity
 import android.content.Intent
@@ -12,6 +12,8 @@ import com.appoets.gojek.provider.databinding.ActivityRegisterBinding
 import com.appoets.gojek.provider.views.countrypicker.CountryCodeActivity
 import com.appoets.gojek.provider.views.document.DocumentActivity
 import com.appoets.gojek.provider.views.signin.SignInActivity
+import com.appoets.xjek.ui.signup.SignupNavigator
+import com.appoets.xjek.ui.signup.SignupViewModel
 import com.google.android.material.textfield.TextInputLayout
 
 class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.ActivityRegisterBinding>(), SignupNavigator, View.OnClickListener {
@@ -28,7 +30,7 @@ class SignupActivity : BaseActivity<com.appoets.gojek.provider.databinding.Activ
 
         this.mViewDataBinding = mViewDataBinding as ActivityRegisterBinding
         val signupViewmodel = SignupViewModel()
-        signupViewmodel.setNavigator(this)
+        signupViewmodel.navigator = this
         this.mViewDataBinding.registermodel = signupViewmodel
 
 

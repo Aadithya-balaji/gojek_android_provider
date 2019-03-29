@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.appoets.base.utils.NetworkUtils;
 
@@ -64,9 +63,5 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected void setBindingVariable(int variableId, @Nullable Object object) {
         mViewDataBinding.setVariable(variableId, object);
         mViewDataBinding.executePendingBindings();
-    }
-
-    protected void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

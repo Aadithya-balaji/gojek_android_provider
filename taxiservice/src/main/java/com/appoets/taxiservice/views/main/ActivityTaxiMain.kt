@@ -31,7 +31,7 @@ class ActivityTaxiMain : BaseActivity<com.appoets.gojek.taxiservice.databinding.
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.activityTaxiMainBinding = mViewDataBinding as com.appoets.gojek.taxiservice.databinding.ActivityTaxiMainBinding
         val taxiModule = ActivityTaxiModule()
-        taxiModule.setNavigator(this)
+        taxiModule.navigator = this
         activityTaxiMainBinding.taximainmodule = taxiModule
         bottomStatuslayout= BottomStatuslayout()
         bottomStatuslayout!!.show(supportFragmentManager,"bottomstatus")

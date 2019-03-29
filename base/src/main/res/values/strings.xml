@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BaseModule</string>
+    <string name="action_allow">Allow</string>
+    <string name="action_deny">Deny</string>
+    <string name="action_delete_account">Delete Account</string>
+    <string name="action_logout_account">Logout Account</string>
 </resources>

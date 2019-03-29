@@ -19,7 +19,7 @@ class CurrentOrderFragment : BaseFragment<FragmentCurrentOrdersBinding>(), Curre
 
         this.mViewDataBinding = mViewDataBinding as FragmentCurrentOrdersBinding
         val currentOrderViewModel = ViewModelProviders.of(this).get(CurrentOrderViewModel::class.java)
-        currentOrderViewModel.setNavigator(this)
+        currentOrderViewModel.navigator = this
         mViewDataBinding.currentorderviewmodel = currentOrderViewModel
 
         val currentOrderAdapter = CurrentOrdersAdapter(activity)

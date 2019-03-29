@@ -18,7 +18,7 @@ class VerifyFileActivity : BaseActivity<ActivityVerifyProofBinding>(), VerifyFil
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mVerifyProofBinding = mViewDataBinding as ActivityVerifyProofBinding
         val verfiyFileViewModel = VerifyFIleVIewModel()
-          verfiyFileViewModel.setNavigator(this)
+        verfiyFileViewModel.navigator = this
         mVerifyProofBinding!!.verifyFileModel = verfiyFileViewModel
     }
 

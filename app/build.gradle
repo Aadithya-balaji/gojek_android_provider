@@ -23,6 +23,8 @@ android {
         // to 21 or higher.
         multiDexEnabled true
         resValue("string", "app_name", "GoJek_Android_Provider")
+        resValue("string", "facebook_app_id", "394261008038577")
+        resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
     }
     buildTypes {
         release {

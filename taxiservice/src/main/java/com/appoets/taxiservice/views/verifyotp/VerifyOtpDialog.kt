@@ -31,7 +31,7 @@ class VerifyOtpDialog() : BaseDialogFragment<FragmentVerifyOtpBinding>() , Verif
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         fragmentVerifyOtpBinding = mViewDataBinding as FragmentVerifyOtpBinding
         val verifyOTPModule = VerifyOTPModule()
-        verifyOTPModule.setNavigator(this)
+        verifyOTPModule.navigator = this
         fragmentVerifyOtpBinding!!.otpviewmodel = verifyOTPModule
     }
 

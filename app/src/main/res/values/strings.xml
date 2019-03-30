@@ -59,7 +59,6 @@
     <string name="country_hint">Country</string>
     <string name="already_have_an_account">Already have an account</string>
 
-
     <!-- Sign in -->
     <string name="login_via">Login Via</string>
     <string name="dont_have_account">Don\'t have an account</string>
@@ -69,6 +68,11 @@
     <string name="connect_via_facebook">Connect via Facebook</string>
     <string name="forgot_password">Forgot Password ?</string>
 
+    <string name="title_change_password">Change Password</string>
+    <string name="create_new_password">Create new password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 
     <!-- Notification -->
     <string name="notificaiton_valid_label">Valid Till</string>
@@ -180,4 +184,9 @@
     <string name="email_empty">Email should not be empty</string>
     <string name="email_invalid">Please enter valid email</string>
     <string name="password_empty">Password should not be empty</string>
+    <string name="old_password_empty">Old password should not be empty</string>
+    <string name="new_password_empty">New password should not be empty</string>
+    <string name="new_password_invalid">Old password and new password should not be same</string>
+    <string name="confirm_password_invalid">New password and confirm password should be
+        same</string>
 </resources>

@@ -9,6 +9,7 @@
     <!-- Common Colors -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
+    <color name="colorBlack">#000000</color>
 
     <!--service provider bg color-->
     <color name="service_bg_color">#514659F7</color>
@@ -22,7 +23,6 @@
     <color name="doc_font_service_enabled">#242428</color>
     <color name="doc_font_service_disabled">#989fcb</color>
     <color name="et_stroke_color">#4F666772</color>
-
 
 
     <!-- Custom EditText  -->
@@ -62,6 +62,4 @@
     <color name="transactinstatus">#F8FFA200</color>
     <color name="blue_transaction_bg">#11aba9</color>
     <color name="red">#fc3a14</color>
-
-
 </resources>

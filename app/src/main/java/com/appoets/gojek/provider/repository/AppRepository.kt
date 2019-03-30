@@ -2,8 +2,8 @@ package com.appoets.gojek.provider.repository
 
 import android.annotation.SuppressLint
 import com.appoets.base.repository.BaseRepository
-import com.appoets.base.utils.Logger
 import com.appoets.gojek.provider.network.AppWebService
+import com.appoets.gojek.provider.views.change_password.ChangePasswordViewModel
 import com.appoets.gojek.provider.views.signin.SignInViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -22,7 +22,20 @@ class AppRepository : BaseRepository() {
                     if (it.statusCode.equals("200"))
                         viewModel.getLoginObservable().postValue(it)
                 }, {
-                    Logger.e(TAG, it.message!!)
+                    viewModel.navigator.showError(it.message!!)
+                })
+    }
+
+    fun postChangePassword(viewModel: ChangePasswordViewModel, token: String,
+                           params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(AppWebService::class.java)
+                .postChangePassword(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode.equals("200"))
+                        viewModel.getChangePasswordObservable().postValue(it)
+                }, {
                     viewModel.navigator.showError(it.message!!)
                 })
     }

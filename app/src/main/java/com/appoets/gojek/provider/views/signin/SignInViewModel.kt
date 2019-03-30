@@ -1,6 +1,5 @@
 package com.appoets.gojek.provider.views.signin
 
-import android.annotation.SuppressLint
 import android.view.View
 import android.widget.RadioGroup
 import androidx.lifecycle.MutableLiveData
@@ -19,6 +18,10 @@ class SignInViewModel(private val signInNavigator: SignInNavigator) :
     val phoneNumber = MutableLiveData<String>()
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
+
+    init {
+        navigator = signInNavigator
+    }
 
     fun onSignInOptionsClick(group: RadioGroup, checkedId: Int) {
         signInNavigator.onCheckedChanged(group, checkedId)
@@ -48,7 +51,6 @@ class SignInViewModel(private val signInNavigator: SignInNavigator) :
         signInNavigator.onFacebookLoginClicked()
     }
 
-    @SuppressLint("CheckResult")
     internal fun postLogin(isEmailLogin: Boolean) {
         val params = HashMap<String, String>()
         if (isEmailLogin)

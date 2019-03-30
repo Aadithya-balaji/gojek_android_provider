@@ -17,7 +17,9 @@ import com.appoets.base.utils.Logger
 import com.appoets.base.utils.ViewUtils
 import com.appoets.gojek.provider.R
 import com.appoets.gojek.provider.databinding.ActivitySignInBinding
+import com.appoets.gojek.provider.utils.Constant
 import com.appoets.gojek.provider.utils.Enums
+import com.appoets.gojek.provider.views.change_password.ChangePasswordActivity
 import com.appoets.gojek.provider.views.countrypicker.CountryCodeActivity
 import com.appoets.gojek.provider.views.dashboard.DashBoardActivity
 import com.appoets.gojek.provider.views.signup.SignupActivity
@@ -59,6 +61,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private fun observeViewModel() {
         observeLiveData(signInViewModel.getLoginObservable()) {
             ViewUtils.showToast(applicationContext, "Success", true)
+            Constant.accessToken = it.responseData.accessToken
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(dashBoardIntent)
@@ -166,7 +169,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun onForgotPasswordClicked() {
-        // TODO
+        val changePasswordIntent = Intent(applicationContext, ChangePasswordActivity::class.java)
+        startActivity(changePasswordIntent)
     }
 
     override fun onSignUpClicked() {

@@ -5,7 +5,7 @@
 
         <variable
             name="homemodel"
-            type="com.appoets.gojek.provider.views.home.HomeViewModel" />
+            type="com.xjek.provider.views.home.HomeViewModel" />
     </data>
 
     <LinearLayout

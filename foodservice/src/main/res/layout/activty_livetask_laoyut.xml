@@ -6,11 +6,11 @@
 
         <variable
             name="orderItemListAdpter"
-            type="com.appoets.foodservice.view.OrderItemListAdapter" />
+            type="com.xjek.foodservice.view.OrderItemListAdapter" />
 
         <variable
             name="foodLiveTaskviewModel"
-            type="com.appoets.foodservice.view.FoodLiveTaskServiceViewModel" />
+            type="com.xjek.foodservice.view.FoodLiveTaskServiceViewModel" />
 
     </data>
 

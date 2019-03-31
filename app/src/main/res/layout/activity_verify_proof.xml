@@ -6,7 +6,7 @@
     <data>
         <variable
             name="verifyFileModel"
-            type="com.appoets.gojek.provider.views.verifyfile.VerifyFIleVIewModel"/>
+            type="com.xjek.provider.views.verifyfile.VerifyFIleVIewModel"/>
     </data>
 
 <RelativeLayout

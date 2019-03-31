@@ -6,7 +6,7 @@
 
         <variable
             name="dashboardModel"
-            type="com.appoets.gojek.provider.views.dashboard.DashBoardViewModel" />
+            type="com.xjek.provider.views.dashboard.DashBoardViewModel" />
     </data>
 
     <RelativeLayout

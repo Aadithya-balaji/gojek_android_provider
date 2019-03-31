@@ -6,7 +6,7 @@
 
         <variable
             name="otpviewmodel"
-            type="com.appoets.taxiservice.views.verifyotp.VerifyOTPModule" />
+            type="com.xjek.taxiservice.views.verifyotp.VerifyOTPModule" />
     </data>
 
     <RelativeLayout

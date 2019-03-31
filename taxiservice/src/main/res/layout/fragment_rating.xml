@@ -7,7 +7,7 @@
 
         <variable
             name="ratingmodel"
-            type="com.appoets.taxiservice.views.rating.RatingViewModel" />
+            type="com.xjek.taxiservice.views.rating.RatingViewModel" />
     </data>
 
 

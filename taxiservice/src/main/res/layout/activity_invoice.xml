@@ -6,7 +6,7 @@
     <data>
         <variable
             name="invoicemodel"
-            type="com.appoets.taxiservice.views.invoice.InvoiceModule"/>
+            type="com.xjek.taxiservice.views.invoice.InvoiceModule"/>
     </data>
 
     <ScrollView

@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.appoets.gojek.provider.views.onboard.OnBoardViewModel" />
+            type="com.xjek.provider.views.onboard.OnBoardViewModel" />
     </data>
 
     <LinearLayout

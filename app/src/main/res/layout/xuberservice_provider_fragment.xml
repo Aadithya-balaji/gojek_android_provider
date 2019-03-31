@@ -7,7 +7,7 @@
 
         <variable
             name="xuberServicesProviderAdapter"
-            type="com.appoets.gojek.provider.views.adapters.XuberServicesProviderAdapter" />
+            type="com.xjek.provider.views.adapters.XuberServicesProviderAdapter" />
     </data>
 
     <LinearLayout

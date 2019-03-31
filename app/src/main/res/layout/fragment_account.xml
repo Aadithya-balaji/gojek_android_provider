@@ -7,7 +7,7 @@
 
         <variable
             name="myaccountfragmentviewmodel"
-            type="com.appoets.gojek.provider.views.account.AccountViewModel" />
+            type="com.xjek.provider.views.account.AccountViewModel" />
     </data>
 
     <LinearLayout

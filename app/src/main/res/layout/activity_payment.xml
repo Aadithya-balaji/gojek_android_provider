@@ -7,11 +7,11 @@
 
         <variable
             name="paymentViewModel"
-            type="com.appoets.xjek.ui.payment.PaymentViewModel" />
+            type="com.xjek.xjek.ui.payment.PaymentViewModel" />
 
         <variable
             name="transactionAdapter"
-            type="com.appoets.gojek.provider.views.adapters.TransactionListAdapter" />
+            type="com.xjek.provider.views.adapters.TransactionListAdapter" />
     </data>
 
     <LinearLayout

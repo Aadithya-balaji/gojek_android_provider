@@ -6,7 +6,7 @@
 
         <variable
             name="foodProviderAdapter"
-            type="com.appoets.gojek.provider.views.adapters.FoodProviderAdapter"/>
+            type="com.xjek.provider.views.adapters.FoodProviderAdapter"/>
 
 
     </data>

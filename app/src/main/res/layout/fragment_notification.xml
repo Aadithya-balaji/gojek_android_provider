@@ -7,11 +7,11 @@
 
         <variable
             name="notificationmodel"
-            type="com.appoets.gojek.provider.views.notification.NotificationViewModel" />
+            type="com.xjek.provider.views.notification.NotificationViewModel" />
 
         <variable
             name="notificationAdapter"
-            type="com.appoets.gojek.provider.views.adapters.NotificationAdapter" />
+            type="com.xjek.provider.views.adapters.NotificationAdapter" />
     </data>
 
     <LinearLayout

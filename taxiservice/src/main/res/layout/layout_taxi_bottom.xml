@@ -6,7 +6,7 @@
     <data>
         <variable
             name="bottomsheetmodel"
-            type="com.appoets.taxiservice.views.bottomsheets.BottomSheetModule"/>
+            type="com.xjek.taxiservice.views.bottomsheets.BottomSheetModule"/>
     </data>
 
     <LinearLayout

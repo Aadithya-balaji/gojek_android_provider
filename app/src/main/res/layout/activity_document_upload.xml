@@ -6,7 +6,7 @@
     <data>
         <variable
             name="documentviewmodel"
-            type="com.appoets.gojek.provider.views.document.DocumentViewModel">
+            type="com.xjek.provider.views.document.DocumentViewModel">
         </variable>
     </data>
 

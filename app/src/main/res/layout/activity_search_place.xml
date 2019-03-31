@@ -5,7 +5,7 @@
     <data>
         <variable
             name="placesModel"
-            type="com.appoets.gojek.provider.views.places.PlacesViewModel">
+            type="com.xjek.provider.views.places.PlacesViewModel">
         </variable>
     </data>
 

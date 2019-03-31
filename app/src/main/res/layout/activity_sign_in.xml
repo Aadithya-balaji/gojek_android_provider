@@ -8,7 +8,7 @@
 
         <variable
             name="signInViewModel"
-            type="com.appoets.gojek.provider.views.signin.SignInViewModel" />
+            type="com.xjek.provider.views.signin.SignInViewModel" />
     </data>
 
     <LinearLayout

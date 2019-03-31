@@ -7,7 +7,7 @@
 
         <variable
             name="registermodel"
-            type="com.appoets.xjek.ui.signup.SignupViewModel" />
+            type="com.xjek.provider.views.signup.SignupViewModel" />
     </data>
 
 
@@ -69,6 +69,37 @@
                             android:text="@string/create_account"
                             android:textColor="@android:color/black" />
 
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:gravity="center_horizontal"
+                             android:orientation="horizontal">
+                             <ImageView
+                                 android:id="@+id/iv_fb_signup"
+                                 android:layout_width="@dimen/_25sdp"
+                                 android:layout_height="@dimen/_20sdp"
+                                 android:onClick="@{() -> registermodel.fbLogin()}"
+                                 app:srcCompat="@drawable/ic_facebook"/>
+
+                             <ImageView
+                                 android:id="@+id/iv_google_signup"
+                                 android:layout_height="@dimen/_25sdp"
+                                 android:layout_width="@dimen/_25sdp"
+                                 android:layout_marginLeft="@dimen/_30sdp"
+                                 android:onClick="@{() -> registermodel.googleSignin()}"
+                                 app:srcCompat="@drawable/ic_google"/>
+                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_signup_or"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="OR"
+                            android:textColor="@color/black"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/_13sdp"
+                            android:fontFamily="@font/avenirltstd_medium"/>
+
                         <!--TextInputLayout username-->
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -78,12 +109,33 @@
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/user_name_hint">
+                            android:hint="@string/hint_firstname">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/username_register_et"
+                                android:id="@+id/edt_singup_firstname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:text="@{registermodel.firstName}"
+                                android:textColor="@color/et_text_color"
+                                android:textSize="@dimen/_12sdp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Edittext_OutlinedTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:hint="@string/hint_lastname">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_singup_lastname"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@={registermodel.lastName}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -100,8 +152,8 @@
 
                             <!--TextInputLayout country code -->
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Edittext_OutlinedTheme"
                                 android:id="@+id/tl_country_code"
+                                style="@style/Edittext_OutlinedTheme"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_8sdp"
@@ -113,7 +165,7 @@
                                 app:boxCornerRadiusTopEnd="0dp">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/countrycode_register_et"
+                                    android:id="@+id/edt_signup_code"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:drawableStart="@drawable/ic_us"
@@ -121,8 +173,8 @@
                                     android:drawableEnd="@drawable/down_arrow"
                                     android:drawableRight="@drawable/down_arrow"
                                     android:drawablePadding="@dimen/_3sdp"
-                                    android:text="+1"
                                     android:focusableInTouchMode="false"
+                                    android:text="@={registermodel.countryCode}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp" />
 
@@ -144,15 +196,44 @@
                                 app:boxCornerRadiusTopStart="0dp">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/phonenumber_register_et"
+                                    android:id="@+id/edt_signup_phone"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:text="@={registermodel.phoneNumber}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp" />
 
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/gender_radiogroup"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rbMale"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/_10sdp"
+                                android:text="@string/male"/>
+
+
+                            <RadioButton
+                                android:id="@+id/rbFemale"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textColor="@color/grey"
+                                android:textSize="@dimen/_10sdp"
+                                android:text="@string/female"/>
+                        </RadioGroup>
                         <!--TextInputLayout EmailID-->
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Edittext_OutlinedTheme"
@@ -164,9 +245,10 @@
                             android:hint="@string/email_id_hint">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/emailid_register_et"
+                                android:id="@+id/edt_signup_mail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:text="@={registermodel.email}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -183,19 +265,20 @@
                             android:hint="@string/password_hint">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/password_register_et"
+                                android:id="@+id/edt_signup_password"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableEnd="@drawable/ic_iconfinder_icons_view"
                                 android:drawableRight="@drawable/ic_iconfinder_icons_view"
                                 android:drawablePadding="@dimen/_3sdp"
                                 android:inputType="textPassword"
+                                android:text="@={registermodel.password}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!--TextInputLayout City-->
+
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
@@ -203,18 +286,21 @@
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/city_hint">
+                            android:hint="@string/confirm_pwd_hint">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/city_register_et"
+                                android:id="@+id/edt_signup_confirmpwd"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:drawablePadding="@dimen/_5sdp"
+                                android:drawableEnd="@drawable/ic_iconfinder_icons_view"
+                                android:drawableRight="@drawable/ic_iconfinder_icons_view"
+                                android:drawablePadding="@dimen/_3sdp"
+                                android:inputType="textPassword"
+                                android:text="@={registermodel.confirmPassword}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
                         <!--TextInputLayout Country-->
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Edittext_OutlinedTheme"
@@ -227,7 +313,25 @@
                             android:hint="@string/country_hint">
 
                             <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/country_register_et"
+                                android:id="@+id/edt_signup_country"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:textColor="@color/et_text_color"
+                                android:textSize="@dimen/_12sdp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                        <!--TextInputLayout City-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Edittext_OutlinedTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:hint="@string/state_hint">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_signup_state"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
@@ -236,6 +340,24 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
+                        <!--TextInputLayout City-->
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Edittext_OutlinedTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:hint="@string/city_hint">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/edt_signup_city"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:textColor="@color/et_text_color"
+                                android:textSize="@dimen/_12sdp" />
+                        </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </ScrollView>
 
@@ -272,17 +394,20 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
 
-                <!--Registration Submit   Imageview-->
-                <ImageView
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/submit_register_imgview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_margin="@dimen/_5sdp"
-                    android:onClick="@{()-> registermodel.gotoDocumentPage()}"
+                    android:backgroundTint="@color/colorBasePrimary"
+                    android:elevation="@dimen/_8sdp"
+                    android:onClick="@{()-> registermodel.doRegistration()}"
                     android:padding="@dimen/_5sdp"
-                    app:srcCompat="@drawable/ic_right_arrow_in_black_circular_button" />
+                    app:fabSize="mini"
+                    app:srcCompat="@drawable/ic_forward_arrow"
+                    app:tint="@android:color/white" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.appoets.gojek.provider">
+    package="com.xjek.provider">
 
     <application
-        android:name=".GoJekApplication"
+        android:name="com.xjek.provider.GoJekApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx"
         android:icon="@mipmap/ic_launcher"
@@ -16,7 +16,7 @@
         tools:replace="android:appComponentFactory">
 
         <activity
-            android:name=".views.splash.SplashActivity"
+            android:name="com.xjek.provider.views.splash.SplashActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -26,13 +26,13 @@
         </activity>
 
         <activity
-            android:name="com.appoets.xjek.ui.onboard.OnBoardActivityK"
+            android:name=".views.onboard.OnBoardActivityK"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="com.appoets.xjek.ui.signup.SignupActivity"
+            android:name=".views.signup.SignupActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -74,17 +74,17 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.appoets.xjek.ui.profile.Profile"
+            android:name=".views.profile.Profile"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.appoets.xjek.ui.payment.PaymentActivity"
+            android:name=".views.payment.PaymentActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.appoets.xjek.ui.support.SupportActivity"
+            android:name=".views.support.SupportActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -94,10 +94,21 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.appoets.xjek.ui.invitereferals.InviteReferalsActivity"
+            android:name=".views.invitereferals.InviteReferalsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.accountkit.ApplicationName"
+            android:value="@string/app_name" />
+        <meta-data
+            android:name="com.facebook.accountkit.ClientToken"
+            android:value="@string/facebook_accountkit_id" />
+
+        <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
     </application>
 </manifest>

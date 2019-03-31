@@ -1,0 +1,121 @@
+{
+  "project_info": {
+    "project_number": "602657530672",
+    "firebase_url": "https://gojek-234610.firebaseio.com",
+    "project_id": "gojek-234610",
+    "storage_bucket": "gojek-234610.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602657530672:android:f63d7c60ca85b2a8",
+        "android_client_info": {
+          "package_name": "com.appoets.gojek.provider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602657530672-bi7qko89s2aj5kcf5p5kubprbupdenr1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.appoets.gojek.provider",
+            "certificate_hash": "21f915f6f2499b05689b1c0042d6dfc631bca4dc"
+          }
+        },
+        {
+          "client_id": "602657530672-iecjpa7qljsr3npsjctlbaq8fm3ch4lb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602657530672-iecjpa7qljsr3npsjctlbaq8fm3ch4lb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "602657530672-jdf357auu7q2ibehlrdp358bmh1it6e2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.xjek.user"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602657530672:android:7c0665dc081e2c4b",
+        "android_client_info": {
+          "package_name": "com.xjek.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602657530672-vlrnghll1dq82ms755sgp12c4gh7lt76.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xjek.user",
+            "certificate_hash": "d6531e3f8080099f506d8579fe5b3fafaba89327"
+          }
+        },
+        {
+          "client_id": "602657530672-395klb9aev2j952qanqrr39hs8gouk8l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.xjek.user",
+            "certificate_hash": "84bd8014da2449f0585dbab22d05c16f7a0a0703"
+          }
+        },
+        {
+          "client_id": "602657530672-iecjpa7qljsr3npsjctlbaq8fm3ch4lb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602657530672-iecjpa7qljsr3npsjctlbaq8fm3ch4lb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "602657530672-jdf357auu7q2ibehlrdp358bmh1it6e2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.xjek.user"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

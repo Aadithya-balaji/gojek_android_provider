@@ -6,7 +6,7 @@
     <data>
         <variable
             name="taximainmodule"
-            type="com.appoets.taxiservice.views.main.ActivityTaxiModule"/>
+            type="com.xjek.taxiservice.views.main.ActivityTaxiModule"/>
     </data>
 
     <RelativeLayout

@@ -49,4 +49,11 @@
     <string name="mail">Mail</string>
     <string name="website">Website</string>
 
+
+    <!-- Facebook -->
+    <string name="facebook_app_id" translatable="false">394261008038577</string>
+    <string name="facebook_accountkit_id" translatable="false">86a614c0d50f8e010c15b3b92a26dfb4</string>
+
+
+
 </resources>

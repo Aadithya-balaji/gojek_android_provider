@@ -6,11 +6,11 @@
 
         <variable
             name="currentorderviewmodel"
-            type="com.appoets.xjek.ui.currentorder_fragment.CurrentOrderViewModel" />
+            type="com.xjek.xjek.ui.currentorder_fragment.CurrentOrderViewModel" />
 
         <variable
             name="currrentOrdersAdapter"
-            type="com.appoets.xjek.adapter.CurrentOrdersAdapter" />
+            type="com.xjek.xjek.adapter.CurrentOrdersAdapter" />
 
     </data>
 

@@ -6,11 +6,11 @@
 
         <variable
             name="pastfragmentviewmodel"
-            type="com.appoets.xjek.ui.pastorder_fragment.PastOrderViewModel" />
+            type="com.xjek.xjek.ui.pastorder_fragment.PastOrderViewModel" />
 
         <variable
             name="pastOrdersAdapter"
-            type="com.appoets.xjek.adapter.PastOrdersAdapter" />
+            type="com.xjek.xjek.adapter.PastOrdersAdapter" />
     </data>
 
     <RelativeLayout

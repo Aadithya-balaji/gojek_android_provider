@@ -78,8 +78,11 @@ dependencies {
     // Rx java adapter version
     api 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
 
+
     //Map
     api 'com.google.android.gms:play-services-maps:16.1.0'
+    api 'com.google.maps:google-maps-services:0.2.7'
+    api 'com.google.android.gms:play-services-location:16.0.0'
 
 
     //OAuth

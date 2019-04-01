@@ -48,7 +48,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:padding="@dimen/_5sdp"
                         android:text="Time"
-                        android:textColor="@color/white"
+                        android:textColor="@color/xuber_white"
                         android:textSize="@dimen/_13sdp" />
                 </LinearLayout>
 
@@ -74,7 +74,7 @@
                     android:layout_toRightOf="@+id/date_time_laoyut"
                     android:padding="@dimen/_5sdp"
                     android:text="Sedan Type"
-                    android:textColor="@color/grey" />
+                    android:textColor="@color/xuber_grey" />
 
                 <TextView
                     android:id="@+id/rating_past_tv"

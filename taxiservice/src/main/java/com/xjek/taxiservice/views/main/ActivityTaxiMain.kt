@@ -32,7 +32,6 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(), ActivityTaxMai
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.activityTaxiMainBinding = mViewDataBinding as ActivityTaxiMainBinding
         val taxiModule = ActivityTaxiModule()
-        taxiModule.navigator=this
         activityTaxiMainBinding.taximainmodule = taxiModule
         bottomStatuslayout= BottomStatuslayout()
         bottomStatuslayout!!.show(supportFragmentManager,"bottomstatus")

@@ -62,7 +62,7 @@ class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : Ba
 
         // If weren't re-ordering this you could rely on what you set last time
        holder.tvCountryName!!.setText(filteredData.get(position).name.toString())
-        holder.tvCountryCode!!.setText("+"+filteredData.get(position).dialCode.toString())
+        holder.tvCountryCode!!.setText(filteredData.get(position).dialCode.toString())
         holder.ivCountryFlag!!.setImageResource(filteredData.get(position).flag)
 
 

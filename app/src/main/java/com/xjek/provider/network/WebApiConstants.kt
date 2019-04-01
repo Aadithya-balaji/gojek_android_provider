@@ -19,4 +19,9 @@ object WebApiConstants {
     const val COUNTRY_ID="country_id"
     const val STATE_ID="state_id"
     const val CITY_ID="city_id"
+
+
+    //Change Password
+    const val OLD_PASSWORD = "old_password"
+
 }

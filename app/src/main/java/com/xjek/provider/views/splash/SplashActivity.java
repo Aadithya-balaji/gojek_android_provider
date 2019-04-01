@@ -6,9 +6,8 @@ import com.xjek.base.base.BaseActivity;
 import com.xjek.provider.R;
 import com.xjek.provider.databinding.ActivitySplashBinding;
 import com.xjek.provider.views.onboard.OnBoardActivityK;
-
 import androidx.databinding.ViewDataBinding;
-//import com.appoets.gojek.provider.views.onboard.OnBoardActivityK;
+//import com.xjek.gojek.provider.views.onboard.OnBoardActivityK;
 
 public class SplashActivity extends BaseActivity<ActivitySplashBinding> implements SplashNavigator {
 

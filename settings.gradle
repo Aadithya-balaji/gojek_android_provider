@@ -1,1 +1,1 @@
-include ':app', ':base', ':taxiservice', ':foodservice', ':countrycodepicker'
+include ':app', ':base', ':taxiservice', ':foodservice', ':xuberservice', ':countrycodepicker'

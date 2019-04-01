@@ -218,6 +218,7 @@
 
 
                         <TextView
+                            android:id="@+id/tv_change_password"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
@@ -274,7 +275,7 @@
                 android:background="@drawable/custom_circle"
                 android:contentDescription="@string/edit_image"
                 android:padding="@dimen/_5sdp"
-                android:tint="@color/white"
+                android:tint="@color/xuber_white"
                 app:srcCompat="@drawable/ic_pencil_edit_button" />
 
         </RelativeLayout>

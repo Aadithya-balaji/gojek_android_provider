@@ -14,6 +14,13 @@ interface AppWebService {
     fun postLogin(@FieldMap params: HashMap<String, String>): Observable<LoginResponseModel>
 
     @FormUrlEncoded
+    @POST("provider/password")
+    fun postChangePassword(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<ChangePasswordResponseModel>
+
+    @FormUrlEncoded
     @POST("provider/signup")
     fun postSignup(@FieldMap params: HashMap<String, String>): Observable<SignupResponseModel>
 

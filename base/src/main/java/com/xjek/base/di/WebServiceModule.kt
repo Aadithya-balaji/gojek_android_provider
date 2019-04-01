@@ -1,7 +1,7 @@
 package com.xjek.base.di
 
-import com.xjek.base.BuildConfig
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import com.xjek.base.BuildConfig
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -35,7 +35,6 @@ class WebServiceModule {
     private fun getHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
                 .addInterceptor(getLoggingInterceptor())
-//                .addNetworkInterceptor(getRequestHeader())
                 .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -51,7 +50,6 @@ class WebServiceModule {
     private fun getRequestHeader(): Interceptor {
         return Interceptor {
             val original = it.request()
-
             val request = original.newBuilder()
                     .header("X-Requested-With", "XMLHttpRequest")
                     .method(original.method(), original.body())

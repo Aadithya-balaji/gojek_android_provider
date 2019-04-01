@@ -3,7 +3,7 @@
     android:id="@+id/lay_header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@color/xuber_white">
 
     <RelativeLayout
         android:id="@+id/tbr_rl_right"
@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:padding="10dp"
-            android:textColor="@color/black"
+            android:textColor="@color/xuber_black"
             android:textSize="18sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -43,8 +43,9 @@
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/_5sdp"
         android:gravity="center"
+        android:padding="10dp"
         android:src="@drawable/app_logo"
-        android:textColor="@color/black"
+        android:textColor="@color/xuber_black"
         android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible" />
@@ -59,7 +60,7 @@
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:padding="10dp"
-        android:textColor="@color/white"
+        android:textColor="@color/xuber_white"
         android:textSize="16sp"
         android:textStyle="bold"
         android:visibility="gone" />

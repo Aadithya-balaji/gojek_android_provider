@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">xubermodule</string>
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="location_permission_rationale">    Location Permission is needed to get current location</string>
+    <string name="chat">Chat</string>
+    <string name="dummy_customer_name">Christain Joseph</string>
+    <string name="call">Call</string>
+    <string name="cancel">Cancel</string>
+    <string name="arrived">Arrived</string>
+    <string name="call_action">call action</string>
+    <string name="chat_action">chat action</string>
+    <string name="start_service">Start service</string>
+    <string name="enter_otp_here">Enter OTP here</string>
+    <string name="end_service">End service</string>
+    <string name="confrim_payment">Confrim Payment</string>
+    <string name="invoice">INVOICE</string>
+    <string name="amount_to_be_paid">Amount to be paid</string>
+    <string name="dummy_price">$35</string>
+    <string name="cash_mode">Cash</string>
+    <string name="submit">Submit</string>
+    <string name="dummy_rate_your_service_with_christain_joseph">Rate your service with Christain Joseph</string>
+    <string name="write_your_review">write your reviews</string>
+</resources>

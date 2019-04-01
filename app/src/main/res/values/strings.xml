@@ -1,5 +1,9 @@
-<resources>
-    <string name="sign_in" translatable="false">Sign In</string>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation" >
+
+
+    <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
 
     <!-- Upload Document -->
@@ -18,6 +22,8 @@
     <string name="taxi_hint_vechile_color">Vechile Color</string>
     <string name="taxi_hint_vechile_licence_number">Vechile License Plate</string>
     <string name="taxi_hint_vechile_category">Car Category</string>
+    <string name="edit_image">Edit_image</string>
+
 
 
     <!-- Foodie vechile detail -->
@@ -66,7 +72,6 @@
     <string name="female">Female</string>
 
 
-
     <!-- Sign in -->
     <string name="login_via">Login Via</string>
     <string name="dont_have_account">Don\'t have an account</string>
@@ -76,6 +81,11 @@
     <string name="connect_via_facebook">Connect via Facebook</string>
     <string name="forgot_password">Forgot Password ?</string>
 
+    <string name="title_change_password">Change Password</string>
+    <string name="create_new_password">Create new password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
 
     <!-- Notification -->
     <string name="notificaiton_valid_label">Valid Till</string>
@@ -92,6 +102,8 @@
     <string name="privacy_support">Support</string>
     <string name="account_privacy">Privacy Policy</string>
     <string name="account_invite">Invite Referrals</string>
+    <string name="your_referral_code">Your Refferal Code</string>
+
 
 
     <string-array name="account">
@@ -138,14 +150,39 @@
     <string name="invite">Invite Refferals</string>
     <string name="invite_refferals">Invite Refferals</string>
     <string name="transaction">Transaction</string>
+    <string name="dummy_rating">4.6</string>
+    <string name="country_code_empty">Country code should not be empty</string>
+    <string name="phone_number_empty">Phone number should not be empty</string>
+    <string name="email_invalid">Please enter valid email</string>
+
+
+
+    <!-- Error -->
+    <string name="empty_username">Please enter the user name</string>
+    <string name="empty_phone">Please enter the Phone Number</string>
+    <string name="password_empty">Password should not be empty</string>
+    <string name="email_empty">Email should not be empty</string>
+    <string name="empty_country">Plese enter the Country</string>
+    <string name="empty_state">Please enter the state</string>
+    <string name="empty_city">Please enter the City</string>
+    <string name="password_not_match">Password and Confirm password do not match</string>
+    <string name="empty_firstname">Please Enter FirstName</string>
+    <string name="empty_lastname">Please Enter LastName</string>
+    <string name="fb_session_expired">Facebook session expired. Kindly open Facebook application…</string>
+
+    <string name="old_password_empty">Old password should not be empty</string>
+    <string name="new_password_empty">New password should not be empty</string>
+    <string name="new_password_invalid">Old password and new password should not be same</string>
+    <string name="confirm_password_invalid">New password and confirm password should be same</string>
+
+
+
     <string name="payment">Payment</string>
     <string name="privacy_plicy">Privacy Policy</string>
     <string name="myaccount">My Account</string>
     <string name="change_password">Change Password ?</string>
     <string name="save">Save</string>
     <string name="services_hint_service">Service</string>
-    <string name="edit_image">Edit_image</string>
-    <string name="your_referral_code">Your Refferal Code</string>
     <string name="wallet">Wallet</string>
     <string name="_50">$50</string>
     <string name="_100">$50</string>
@@ -176,30 +213,9 @@
     <string name="dummy_service_type">Electrician</string>
     <string name="dummy_country">United States</string>
     <string name="dummy_provider_name">Christain Joseph</string>
-    <string name="time">3:30 pm</string>
     <string name="dummy_title_text">ABC123</string>
     <string name="dummy_src_type">Sedan Type (Tn 39 aa 1234)</string>
     <string name="cancelled">Cancelled</string>
-    <string name="dummy_rating">4.6</string>
-    <string name="email_invalid">Please enter valid email</string>
-
-
-
-    <!-- Error -->
-    <string name="empty_username">Please enter the user name</string>
-    <string name="empty_phone">Please enter the Phone Number</string>
-    <string name="password_empty">Password should not be empty</string>
-    <string name="email_empty">Email should not be empty</string>
-    <string name="empty_country">Plese enter the Country</string>
-    <string name="empty_state">Please enter the state</string>
-    <string name="empty_city">Please enter the City</string>
-    <string name="password_not_match">Password and Confirm password do not match</string>
-    <string name="empty_firstname">Please Enter FirstName</string>
-    <string name="empty_lastname">Please Enter LastName</string>
-
-
-    <string name="fb_session_expired">Facebook session expired. Kindly open Facebook application…</string>
-
-
+    <string name="time">3:30 pm</string>
 
 </resources>

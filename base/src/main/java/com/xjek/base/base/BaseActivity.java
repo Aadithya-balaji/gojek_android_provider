@@ -13,11 +13,15 @@ import com.xjek.base.views.CustomDialog;
 
 import java.util.Objects;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
@@ -96,5 +100,16 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     protected void hideLoading() {
         if (customDialog != null)
             customDialog.cancel();
+    }
+
+
+    protected void replaceFragment(@IdRes int id, Fragment fragmentName, String fragmentTag,
+                                   boolean addToBackStack) {
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(id, fragmentName, fragmentTag);
+        if (addToBackStack)
+            transaction.addToBackStack(fragmentTag);
+        transaction.commit();
     }
 }

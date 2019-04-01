@@ -35,7 +35,7 @@
                     android:layout_weight="1.3"
                     android:padding="@dimen/_12sdp"
                     android:text="@string/support_team_text"
-                    android:textColor="@color/white"
+                    android:textColor="@color/xuber_white"
                     android:textSize="@dimen/_14sdp" />
 
                 <ImageView
@@ -93,7 +93,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:background="@drawable/custom_circle"
-                            android:backgroundTint="@color/grey"
+                            android:backgroundTint="@color/xuber_grey"
                             android:padding="@dimen/_15sdp"
                             app:srcCompat="@drawable/ic_call_24"
                             android:tint="@color/dark_grey" />
@@ -133,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:background="@drawable/custom_circle"
-                            android:backgroundTint="@color/grey"
+                            android:backgroundTint="@color/xuber_grey"
                             android:padding="@dimen/_15sdp"
                             android:tint="@color/dark_grey"
                             app:srcCompat="@drawable/ic_mail" />
@@ -173,7 +173,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:background="@drawable/custom_circle"
-                            android:backgroundTint="@color/grey"
+                            android:backgroundTint="@color/xuber_grey"
                             android:padding="@dimen/_15sdp"
                             android:tint="@color/dark_grey"
                             app:srcCompat="@drawable/ic_website" />

@@ -30,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:textColor="@color/white"
+                android:textColor="@color/xuber_white"
                 android:textSize="@dimen/_12sdp"
                 tools:text="13 Aug" />
 
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:textColor="@color/white"
+                android:textColor="@color/xuber_white"
                 android:textSize="@dimen/_12sdp"
                 tools:text="12/10/20" />
         </LinearLayout>
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
                     tools:text="SB123"
-                    android:textColor="@color/black"
+                    android:textColor="@color/xuber_black"
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
@@ -90,7 +90,7 @@
                     android:fontFamily="@font/avenirltstd_medium"
                     android:text="sdfdf dfdafdaf dfdfd "
                     android:visibility="gone"
-                    android:textColor="@color/grey" />
+                    android:textColor="@color/xuber_grey" />
             </RelativeLayout>
 
             <RelativeLayout

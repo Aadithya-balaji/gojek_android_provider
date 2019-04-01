@@ -69,7 +69,7 @@
             android:paddingBottom="@dimen/_15sdp"
             android:text="@string/btn_doc_txt"
             android:onClick="@{() -> vechiledetailmodel.gotoVerificationProofPage()}"
-            android:textColor="@color/white"
+            android:textColor="@color/xuber_white"
             android:layout_marginBottom="@dimen/_15sdp"
             android:textSize="@dimen/_15sdp" />
 

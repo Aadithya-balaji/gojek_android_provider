@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.xjek.provider"
         // Android 4.1 or newer is required since Google sign-in is integrated in the Android app.
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -23,6 +23,8 @@ android {
         // to 21 or higher.
         multiDexEnabled true
         resValue("string", "app_name", "GoJek_Android_Provider")
+        resValue("string", "facebook_app_id", "394261008038577")
+        resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
     }
     buildTypes {
         release {
@@ -91,6 +93,7 @@ dependencies {
     implementation project(':base')
     implementation project(':foodservice')
     implementation project(':taxiservice')
+    implementation project(':xuberservice')
     implementation project(':countrycodepicker')
 
     testImplementation 'junit:junit:4.12'

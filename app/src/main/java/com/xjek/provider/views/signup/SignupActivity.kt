@@ -13,7 +13,6 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
-import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityRegisterBinding
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
@@ -26,6 +25,7 @@ import com.xjek.provider.utils.Enums.Companion.FB_ACCOUNT_KIT_CODE
 import java.util.*
 import android.os.Bundle
 import android.util.Log
+import com.xjek.base.utils.ViewUtils
 import org.json.JSONObject
 import com.facebook.GraphResponse
 import com.facebook.GraphRequest

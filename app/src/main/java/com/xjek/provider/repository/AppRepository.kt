@@ -2,6 +2,7 @@ package com.xjek.provider.repository
 
 import android.annotation.SuppressLint
 import com.xjek.base.repository.BaseRepository
+import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.network.AppWebService
 import com.xjek.provider.views.signin.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
@@ -21,13 +22,27 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.getLoginObservable().postValue(it)
+                    if (it.statusCode.equals("200"))
+                        viewModel.getLoginObservable().postValue(it)
                 }, {
-                    Logger.getLogger(TAG).log(Level.SEVERE, it.message)
-                    viewModel.signInListener.showError(it.message!!)
+                    viewModel.navigator.showError(it.message!!)
                 })
     }
 
+
+    fun postChangePassword(viewModel: ChangePasswordViewModel, token: String,
+                           params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(AppWebService::class.java)
+                .postChangePassword(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode.equals("200"))
+                        viewModel.getChangePasswordObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(it.message!!)
+                })
+    }
 
     @SuppressLint("CheckResult")
     fun postSignup(viewModel: SignupViewModel, params: HashMap<String, String>):Disposable{

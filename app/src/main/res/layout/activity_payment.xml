@@ -62,7 +62,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/_5sdp"
                                 android:text="@string/save_card"
-                                android:textColor="@color/black"
+                                android:textColor="@color/xuber_black"
                                 android:textSize="@dimen/_12sdp" />
 
                             <TextView
@@ -133,7 +133,7 @@
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/wallet"
-                            android:textColor="@color/black"
+                            android:textColor="@color/xuber_black"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
@@ -156,7 +156,7 @@
                             android:onClick="@{() -> paymentViewModel.openTransactionStatusActivty()}"
                             android:padding="@dimen/_6sdp"
                             android:text="@string/transaction"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/xuber_black" />
 
                     </RelativeLayout>
 
@@ -196,7 +196,7 @@
                             android:padding="@dimen/_5sdp"
                             android:singleLine="true"
                             android:text="@string/_50"
-                            android:textColor="@color/white"
+                            android:textColor="@color/xuber_white"
                             android:textSize="@dimen/_12sdp" />
 
                         <Button
@@ -211,7 +211,7 @@
                             android:padding="@dimen/_5sdp"
                             android:singleLine="true"
                             android:text="@string/_100"
-                            android:textColor="@color/white"
+                            android:textColor="@color/xuber_white"
                             android:textSize="@dimen/_12sdp" />
 
                         <Button
@@ -226,7 +226,7 @@
                             android:padding="@dimen/_5sdp"
                             android:singleLine="true"
                             android:text="@string/_1000"
-                            android:textColor="@color/white"
+                            android:textColor="@color/xuber_white"
                             android:textSize="@dimen/_12sdp" />
 
 
@@ -261,7 +261,7 @@
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/transaction_id"
-                    android:textColor="@color/black"
+                    android:textColor="@color/xuber_black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -271,7 +271,7 @@
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/date"
-                    android:textColor="@color/black"
+                    android:textColor="@color/xuber_black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -281,7 +281,7 @@
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/amount"
-                    android:textColor="@color/black"
+                    android:textColor="@color/xuber_black"
                     android:textStyle="bold" />
 
 

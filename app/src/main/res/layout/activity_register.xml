@@ -22,8 +22,6 @@
             android:orientation="vertical">
 
 
-            <!--app logo imageview-->
-
             <RelativeLayout
                 android:id="@+id/top_applogo_layout"
                 android:layout_width="match_parent"
@@ -39,7 +37,80 @@
                     app:srcCompat="@drawable/app_logo" />
             </RelativeLayout>
 
-            <!-- registration form layout-->
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/social_login_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_applogo_layout"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:background="@drawable/bg_white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
+                    <!--Login option layout-->
+                    <RelativeLayout
+                        android:id="@+id/loginvia_sociallogin_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/social_login"
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/_12sdp" />
+
+
+                    </RelativeLayout>
+                    <!--Google Login Textview-->
+                    <TextView
+                        android:id="@+id/tv_signup_google"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:drawableStart="@drawable/ic_google"
+                        android:drawableLeft="@drawable/ic_google"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:onClick="@{() -> registermodel.googleSignin()}"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/connect_via_google"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/tv_signup_facebook"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:drawableStart="@drawable/ic_facebook"
+                        android:drawableLeft="@drawable/ic_facebook"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:onClick="@{() -> registermodel.fbLogin()}"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/connect_via_facebook"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_signup_or"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:text="OR"
+                android:textColor="@color/black" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -69,36 +140,35 @@
                             android:text="@string/create_account"
                             android:textColor="@android:color/black" />
 
-                         <LinearLayout
-                             android:layout_width="match_parent"
-                             android:layout_height="wrap_content"
-                             android:gravity="center_horizontal"
-                             android:orientation="horizontal">
-                             <ImageView
-                                 android:id="@+id/iv_fb_signup"
-                                 android:layout_width="@dimen/_25sdp"
-                                 android:layout_height="@dimen/_20sdp"
-                                 android:onClick="@{() -> registermodel.fbLogin()}"
-                                 app:srcCompat="@drawable/ic_facebook"/>
-
-                             <ImageView
-                                 android:id="@+id/iv_google_signup"
-                                 android:layout_height="@dimen/_25sdp"
-                                 android:layout_width="@dimen/_25sdp"
-                                 android:layout_marginLeft="@dimen/_30sdp"
-                                 android:onClick="@{() -> registermodel.googleSignin()}"
-                                 app:srcCompat="@drawable/ic_google"/>
-                         </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/tv_signup_or"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="OR"
-                            android:textColor="@color/black"
+                        <RelativeLayout
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="@dimen/_80sdp"
+                            android:layout_centerHorizontal="true"
                             android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/_13sdp"
-                            android:fontFamily="@font/avenirltstd_medium"/>
+                            android:onClick="@{() -> registermodel.getImage()}"
+                            android:padding="@dimen/_5sdp">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:id="@+id/profile_image"
+                                android:layout_width="@dimen/_60sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_centerHorizontal="true"
+                                android:src="@drawable/profile_placeholder" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:background="@drawable/custom_circle"
+                                android:contentDescription="@string/edit_image"
+                                android:padding="@dimen/_5sdp"
+                                android:tint="@color/xuber_white"
+                                app:srcCompat="@drawable/ic_pencil_edit_button" />
+
+                        </RelativeLayout>
+
 
                         <!--TextInputLayout username-->
 
@@ -117,6 +187,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="@{registermodel.firstName}"
                                 android:textColor="@color/et_text_color"
+                                android:singleLine="true"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
@@ -159,7 +230,7 @@
                                 android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
-                                android:layout_weight="0.7"
+                                android:layout_weight="0.8"
                                 android:hint="@string/countrycode_hint"
                                 app:boxCornerRadiusBottomEnd="0dp"
                                 app:boxCornerRadiusTopEnd="0dp">
@@ -174,6 +245,7 @@
                                     android:drawableRight="@drawable/down_arrow"
                                     android:drawablePadding="@dimen/_3sdp"
                                     android:focusableInTouchMode="false"
+                                    android:singleLine="true"
                                     android:text="@={registermodel.countryCode}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp" />
@@ -190,7 +262,7 @@
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginEnd="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
-                                android:layout_weight="1.3"
+                                android:layout_weight="1.2"
                                 android:hint="@string/phonenumber_hint"
                                 app:boxCornerRadiusBottomStart="0dp"
                                 app:boxCornerRadiusTopStart="0dp">
@@ -200,6 +272,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@={registermodel.phoneNumber}"
+                                    android:singleLine="true"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp" />
 
@@ -207,9 +280,9 @@
                         </LinearLayout>
 
                         <RadioGroup
+                            android:id="@+id/gender_radiogroup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/gender_radiogroup"
                             android:layout_marginStart="@dimen/_12sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:layout_marginEnd="@dimen/_12sdp"
@@ -220,9 +293,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:text="@string/male"
                                 android:textColor="@color/grey"
-                                android:textSize="@dimen/_10sdp"
-                                android:text="@string/male"/>
+                                android:textSize="@dimen/_10sdp" />
 
 
                             <RadioButton
@@ -230,9 +303,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:text="@string/female"
                                 android:textColor="@color/grey"
-                                android:textSize="@dimen/_10sdp"
-                                android:text="@string/female"/>
+                                android:textSize="@dimen/_10sdp" />
                         </RadioGroup>
                         <!--TextInputLayout EmailID-->
                         <com.google.android.material.textfield.TextInputLayout
@@ -273,6 +346,7 @@
                                 android:drawablePadding="@dimen/_3sdp"
                                 android:inputType="textPassword"
                                 android:text="@={registermodel.password}"
+                                android:singleLine="true"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -297,6 +371,7 @@
                                 android:drawablePadding="@dimen/_3sdp"
                                 android:inputType="textPassword"
                                 android:text="@={registermodel.confirmPassword}"
+                                android:singleLine="true"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -318,27 +393,11 @@
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:textColor="@color/et_text_color"
+                                android:onClick="@{() ->registermodel.getCountryList()}"
+                                android:singleLine="true"
                                 android:textSize="@dimen/_12sdp" />
                         </com.google.android.material.textfield.TextInputLayout>
                         <!--TextInputLayout City-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/state_hint">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/edt_signup_state"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawablePadding="@dimen/_5sdp"
-                                android:textColor="@color/et_text_color"
-                                android:textSize="@dimen/_12sdp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
 
                         <!--TextInputLayout City-->
                         <com.google.android.material.textfield.TextInputLayout
@@ -356,8 +415,18 @@
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:textColor="@color/et_text_color"
+                                android:singleLine="true"
+                                android:onClick="@{() -> registermodel.getCityList()}"
                                 android:textSize="@dimen/_12sdp" />
                         </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <com.google.android.material.checkbox.MaterialCheckBox
+                            android:id="@+id/cb_terms_condition"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/terms_condition"
+                            android:layout_marginTop="@dimen/_30sdp"/>
                     </LinearLayout>
                 </ScrollView>
 

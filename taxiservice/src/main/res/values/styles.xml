@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowDisablePreview">true</item>
-        <item name="colorAccent">@color/black</item>
     </style>
+
     <style name="BottomOptionsDialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowBackground">@null</item>
         <item name="android:windowNoTitle">true</item>

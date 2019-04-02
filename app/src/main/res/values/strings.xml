@@ -70,6 +70,9 @@
     <string name="hint_lastname">LastName</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="search_country">Search country</string>
+    <string name="search_city">Search city</string>
+    <string name="terms_condition">I accept the following terms and conditions</string>
 
 
     <!-- Sign in -->
@@ -217,5 +220,9 @@
     <string name="dummy_src_type">Sedan Type (Tn 39 aa 1234)</string>
     <string name="cancelled">Cancelled</string>
     <string name="time">3:30 pm</string>
+
+
+
+
 
 </resources>

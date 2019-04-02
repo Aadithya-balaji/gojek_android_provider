@@ -10,13 +10,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityCountryListBinding
 import com.xjek.provider.model.CountryModel
 import com.xjek.provider.views.adapters.CountryAdapter
 import com.xjek.provider.views.adapters.PlacesAdapter
 import com.xjek.gojek.taxiservice.views.views.countrypicker.CountrtCodeNavigator
+import com.xjek.provider.databinding.ActivityCountryCodeBinding
 
-class CountryCodeActivity : BaseActivity<ActivityCountryListBinding>(), SearchView.OnQueryTextListener, AdapterView.OnItemClickListener,CountrtCodeNavigator {
+class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(), SearchView.OnQueryTextListener, AdapterView.OnItemClickListener,CountrtCodeNavigator {
 
 
 
@@ -30,18 +30,18 @@ class CountryCodeActivity : BaseActivity<ActivityCountryListBinding>(), SearchVi
     private var countryName: String? = ""
     private var countryCode: String? = ""
     private var countryFlag: Int? = -1
-    private  lateinit var  activityCountryListBinding: ActivityCountryListBinding
+    private  lateinit var  activityCountryListBinding:ActivityCountryCodeBinding
 
 
     override fun getLayoutId(): Int {
-        return R.layout.activity_country_list
+        return R.layout.activity_country_code
     }
 
 
     override fun initView(mViewDataBinding: ViewDataBinding) {
 
 
-        this.activityCountryListBinding = mViewDataBinding as ActivityCountryListBinding
+        this.activityCountryListBinding = mViewDataBinding as com.xjek.provider.databinding.ActivityCountryCodeBinding
         val countryCodeViewModel = CountryCodeViewModel()
         activityCountryListBinding.placesModel=countryCodeViewModel
         ivBack = findViewById(R.id.iv_back) as ImageView
@@ -79,8 +79,8 @@ class CountryCodeActivity : BaseActivity<ActivityCountryListBinding>(), SearchVi
 
             val resultIntent= Intent()
             resultIntent.putExtra("countryName",countryName)
-            resultIntent.putExtra("countrycode",countryCode)
-            resultIntent.putExtra("countryflag", countryFlag!!)
+            resultIntent.putExtra("countryCode",countryCode)
+            resultIntent.putExtra("countryFlag", countryFlag!!)
             setResult(Activity.RESULT_OK,resultIntent)
             finish()
 

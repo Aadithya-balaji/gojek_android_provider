@@ -2,6 +2,8 @@ package com.xjek.provider.views.signup
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.text.TextUtils
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -25,6 +27,8 @@ import com.xjek.provider.utils.Enums.Companion.FB_ACCOUNT_KIT_CODE
 import java.util.*
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import com.xjek.base.utils.ViewUtils
 import org.json.JSONObject
 import com.facebook.GraphResponse
@@ -39,12 +43,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResultCallback
 import com.google.android.gms.common.api.Status
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import com.xjek.base.BuildConfig
+import com.xjek.provider.utils.Constant
+import com.xjek.provider.utils.Enums.Companion.CITYLIST_REQUEST_CODE
+import com.xjek.provider.utils.Enums.Companion.COUNTRYLIST_REQUEST_CODE
 import com.xjek.provider.utils.Enums.Companion.GOOGLE
 import com.xjek.provider.utils.Enums.Companion.GOOGLE_REQ_CODE
+import com.xjek.provider.views.citylist.CityListActivity
+import com.xjek.provider.views.countrylist.CountryListActivity
+import com.xjek.provider.views.dashboard.DashBoardActivity
+import com.xjek.user.data.repositary.remote.model.City
+import com.xjek.user.data.repositary.remote.model.CountryResponseData
+import java.io.Serializable
 
 
 class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.SignupNavigator, View.OnClickListener {
+
 
 
     private lateinit var tlCountryCode: TextInputLayout
@@ -59,7 +75,9 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     private lateinit var edtConfirmPassword: TextInputEditText
     private lateinit var edtFirstName: TextInputEditText
     private lateinit var edtLastName: TextInputEditText
+    private  lateinit var  ivProfile: ImageView
     private var message: String = ""
+    private lateinit var cityList: List<City>
 
 
     private var strPhoneCode: String? = ""
@@ -84,7 +102,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         signupViewmodel = SignupViewModel(this)
         this.mViewDataBinding.registermodel = signupViewmodel
 
-        this.mViewDataBinding.lifecycleOwner=this@SignupActivity
+        this.mViewDataBinding.lifecycleOwner = this@SignupActivity
         //initListener
         tlCountryCode = findViewById(R.id.tl_country_code)
         edtCountryCode = findViewById(R.id.edt_signup_code)
@@ -93,11 +111,13 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         edtPhoneNumber = findViewById(R.id.edt_signup_phone)
         edtEmail = findViewById(R.id.edt_signup_mail)
         edtCountry = findViewById(R.id.edt_signup_country)
-        edtState = findViewById(R.id.edt_signup_state)
         edtCity = findViewById(R.id.edt_signup_city)
         edtPassword = findViewById(R.id.edt_signup_password)
         edtConfirmPassword = findViewById(R.id.edt_signup_confirmpwd)
+        ivProfile=findViewById(R.id.profile_image)
         callbackManager = CallbackManager.Factory.create()
+        edtCountry.isFocusableInTouchMode = false
+        edtCity.isFocusableInTouchMode = false
         initListener()
 
 
@@ -107,30 +127,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         initFacebooik()
 
         initGoogle()
-
-        /* signupViewmodel.getCountryLiveData().observe(this@SignupActivity, Observer<CountryListResponse> {
-             Log.d("_D", "country_code :" + it.responseData.get(0).country_code)
-             val intent = Intent(this@SignupActivity, CountryListActivity::class.java)
-             intent.putExtra("selectedfrom", "country")
-             intent.putExtra("countrylistresponse", it as Serializable)
-             startActivityForResult(intent, 100)
-         })
-
-         signupViewmodel.getStateLiveData().observe(this@SignupActivity, Observer<StateListResponse> {
-             Log.d("_D", "state_name :" + it.responseData.get(0).state_name)
-             val intent = Intent(this@SignupActivity, StateListActivity::class.java)
-             intent.putExtra("selectedfrom", "state")
-             intent.putExtra("statelistresponse", it as Serializable)
-             startActivityForResult(intent, 101)
-         })
-
-         signupViewmodel.getCityLiveData().observe(this@SignupActivity, Observer<CityListResponse> {
-             Log.d("_D", "state_name :" + it.responseData.get(0).city_name)
-             val intent = Intent(this@SignupActivity, CityListActivity::class.java)
-             intent.putExtra("selectedfrom", "city")
-             intent.putExtra("citylistresponse", it as Serializable)
-             startActivityForResult(intent, 102)
-         })*/
 
         getApiResponse()
     }
@@ -142,6 +138,17 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
                 showToast("Success")
             }
         }
+
+
+        observeLiveData(signupViewmodel.getCountryLiveData()) {
+            ViewUtils.showToast(applicationContext, "Success", true)
+            val intent = Intent(this@SignupActivity, CountryListActivity::class.java)
+            intent.putExtra("selectedfrom", "country")
+            intent.putExtra("countrylistresponse", it as Serializable)
+            startActivityForResult(intent, COUNTRYLIST_REQUEST_CODE)
+        }
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -149,6 +156,22 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
 
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
+                COUNTRYLIST_REQUEST_CODE -> {
+                    val selectedCountry = data?.extras?.get("selected_list") as? CountryResponseData
+                    Log.d("countrylist", selectedCountry?.country_name + "")
+                    cityList = (selectedCountry?.city as? List<City>)!!
+                    mViewDataBinding.edtSignupCountry.setText(selectedCountry?.country_name)
+                    signupViewmodel.countryName.value = selectedCountry?.country_name
+                    signupViewmodel.countryID.value = selectedCountry?.id.toString()
+                }
+
+                CITYLIST_REQUEST_CODE -> {
+                    val selectedCity = data?.extras?.get("selected_list") as? City
+                    Log.d("statelist", selectedCity?.city_name + "")
+                    mViewDataBinding.edtSignupCity.setText(selectedCity?.city_name)
+                    signupViewmodel.cityName.value = selectedCity?.city_name
+                    signupViewmodel.cityID.value = selectedCity?.id.toString()
+                }
                 FB_ACCOUNT_KIT_CODE -> {
                     showToast("Verified")
                 }
@@ -173,6 +196,18 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
                     callbackManager.onActivityResult(requestCode, resultCode, data)
                 }
 
+                Enums.RC_COUNTRY_CODE_PICKER -> {
+                    if (data != null && data.extras != null) {
+                        handleCountryCodePickerResult(data)
+                    }
+                }
+
+
+                CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                    val result = CropImage.getActivityResult(data)
+                    ivProfile.setImageURI(result.uri)
+                }
+
 
             }
         }
@@ -180,27 +215,14 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     }
 
     fun initListener() {
-        edtCountryCode.setOnClickListener(this)
+       // edtCountryCode.setOnClickListener(this)
+        edtCountryCode.isFocusableInTouchMode=false
+        edtCity.setOnClickListener(this)
     }
 
     //do registration
     override fun signup() {
-        strPhoneNumber = edtPhoneNumber.text.toString()
-        strPwd = edtPassword.text.toString()
-        strCity = edtCity.text.toString()
-        strCountry = edtCountry.text.toString()
-        strCity = edtCity.text.toString()
-        strState = edtState.text.toString()
-        strConfirmPwd = edtConfirmPassword.text.toString()
-        strFirstName = edtFirstName.text.toString()
-        strLastName = edtLastName.text.toString()
 
-        if (isValidCredential()) {
-            baseLiveDataLoading.value = true
-            signupViewmodel.postSignup()
-        } else {
-            ViewUtils.showToast(this@SignupActivity, message, false)
-        }
     }
 
     // move to signin page
@@ -218,7 +240,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         when (v!!.id) {
             R.id.countrycode_register_et -> {
                 val intent = Intent(this@SignupActivity, CountryCodeActivity::class.java)
-                startActivityForResult(intent, 111)
+                startActivityForResult(intent, Enums.RC_COUNTRY_CODE_PICKER)
             }
         }
     }
@@ -235,33 +257,30 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     }
 
     fun isValidCredential(): Boolean {
-        if (TextUtils.isEmpty(strFirstName)) {
+        if (TextUtils.isEmpty(signupViewmodel.firstName.value)) {
             message = resources.getString(R.string.empty_firstname)
             return false
-        } else if (TextUtils.isEmpty(strLastName)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.lastName.value)) {
             message = resources.getString(R.string.empty_lastname)
-        } else if (TextUtils.isEmpty(strPhoneCode)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.countryCode.value)) {
             message = resources.getString(R.string.empty_phone)
             return false
-        } else if (TextUtils.isEmpty(strPhoneNumber)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.phoneNumber.value)) {
             message = resources.getString(R.string.empty_phone)
             return false
-        } else if (TextUtils.isEmpty(strEmaiL)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.email.value)) {
             message = resources.getString(R.string.email_empty)
             return false
-        } else if (TextUtils.isEmpty(strPwd)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.password.value)) {
             message = resources.getString(R.string.password_empty)
             return false
-        } else if (TextUtils.isEmpty(strConfirmPwd)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.confirmPassword.value)) {
             // message = resources.getString(R.string.password_not_match)
             return false
-        } else if (TextUtils.isEmpty(strCountry)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.countryName.value)) {
             message = resources.getString(R.string.empty_country)
             return false
-        } else if (TextUtils.isEmpty(strState)) {
-            message = resources.getString(R.string.empty_state)
-            return false
-        } else if (TextUtils.isEmpty(strCity)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.cityName.value)) {
             message = resources.getString(R.string.empty_city)
             return false
         }
@@ -326,16 +345,13 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
                 val socialId = jsonObject.getString("id")
                 val token = accessToken.token
                 val socialEmail = jsonObject.getString("email")
-
-
-                 signupViewmodel.firstName.value=socialFirstName
-                 signupViewmodel.lastName.value=socialLastName
-                 signupViewmodel.email.value=socialEmail
-
+                Log.e("FB_ID", "-----" + socialId)
+                signupViewmodel.firstName.value = socialFirstName
+                signupViewmodel.lastName.value = socialLastName
+                signupViewmodel.email.value = socialEmail
 
                 if (jsonObject.has("picture")) {
                     val profileImg = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
-                    Log.e("Profile","------"+profileImg)
                 }
 
             } catch (e: Exception) {
@@ -363,12 +379,80 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         var token = result.getIdToken()
         var profileImage = result.photoUrl
 
-        signupViewmodel.firstName.value=socialFirstName.toString()
-        signupViewmodel.lastName.value=socialLastName.toString()
-        signupViewmodel.email.value=email.toString()
+        signupViewmodel.firstName.value = socialFirstName.toString()
+        signupViewmodel.lastName.value = socialLastName.toString()
+        signupViewmodel.email.value = email.toString()
+
+        if (!signupViewmodel.firstName.value.isNullOrEmpty()) {
+            edtFirstName.isEnabled = false
+        } else if (!signupViewmodel.lastName.value.isNullOrEmpty()) {
+            edtLastName.isEnabled = false
+        } else if (!signupViewmodel.email.value.isNullOrEmpty()) {
+            edtEmail.isEnabled = false
+        }
 
         Log.e("firstName", "==" + socialFirstName)
         Log.e("email", "===" + email)
         Log.e("photo", "----" + profileImage)
     }
+
+
+    override fun getCityList() {
+        if (TextUtils.isEmpty(signupViewmodel.countryName.value)) {
+            ViewUtils.showToast(this@SignupActivity, resources.getString(R.string.empty_country), false)
+        } else {
+            val intent = Intent(this@SignupActivity, CityListActivity::class.java)
+            intent.putExtra("selectedfrom", "city")
+            intent.putExtra("citylistresponse", cityList as Serializable)
+            startActivityForResult(intent, CITYLIST_REQUEST_CODE)
+        }
+    }
+
+
+    private fun handleCountryCodePickerResult(data: Intent) {
+        val countryCode = data.getStringExtra("countryCode")
+        signupViewmodel.countryCode.value = countryCode
+        val countryFlag = data.getIntExtra("countryFlag", -1)
+        val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
+        if (leftDrawable != null) {
+            val bitmap = (leftDrawable as BitmapDrawable).bitmap
+            val drawable = BitmapDrawable(resources,
+                    Bitmap.createScaledBitmap(bitmap, 64, 64, true))
+            mViewDataBinding.edtSignupCountry
+                    .setCompoundDrawablesWithIntrinsicBounds(drawable, null,
+                            null, null)
+        }
+    }
+
+    override fun getCountryCode() {
+        val intent = Intent(this@SignupActivity, CountryCodeActivity::class.java)
+        startActivityForResult(intent, Enums.RC_COUNTRY_CODE_PICKER)
+    }
+
+
+    override fun getImage() {
+        CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).start(this)
+    }
+
+    override fun validate() {
+
+        baseLiveDataLoading.value=true
+
+      /*  signupViewmodel.firstName.value = edtFirstName.text.toString()
+        signupViewmodel.lastName.value = edtLastName.text.toString()
+        signupViewmodel.phoneNumber.value = edtPhoneNumber.text.toString()
+        signupViewmodel.password.value = edtPassword.text.toString()
+        signupViewmodel.cityName.value = edtCity.text.toString()
+        signupViewmodel.countryName.value = edtCountry.text.toString()
+        signupViewmodel.confirmPassword.value = edtConfirmPassword.text.toString()
+
+        if (isValidCredential()) {
+            baseLiveDataLoading.value = true
+            signupViewmodel.postSignup()
+        } else {
+            ViewUtils.showToast(this@SignupActivity, message, false)
+        }*/
+    }
+
+
 }

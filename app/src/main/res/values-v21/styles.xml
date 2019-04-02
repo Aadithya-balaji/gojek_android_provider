@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
     <style name="Edittext_OutlinedTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/et_stroke_color</item>
-        <item name="boxBackgroundColor">@color/bg_vechile_edittext</item>
         <item name="boxBackgroundMode">outline</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/boxCornerRadius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/boxCornerRadius</item>

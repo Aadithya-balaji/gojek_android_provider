@@ -3,48 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
-            name="placesModel"
-            type="com.xjek.provider.views.countrypicker.CountryCodeViewModel">
-        </variable>
+            name="countrylistadapter"
+            type="com.xjek.provider.views.adapters.CountryListAdapter" />
     </data>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <!-- Editext for Search -->
+        <EditText
+            android:id="@+id/inputSearch"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:hint="Search country"
+            android:inputType="textVisiblePassword" />
 
-            <ImageView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/_5sdp"
-                android:backgroundTint="@color/white"
-                android:tint="@color/white"
-                android:onClick="@{()-> placesModel.closeActivity()}"
-                android:src="@drawable/back_arrow" />
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/sv_country"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                app:queryHint="Search Country"/>
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/ll_country"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </ListView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/countryListAdapter"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:adapter="@{countrylistadapter}"
+            android:forceHasOverlappingRendering="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </LinearLayout>
 </layout>

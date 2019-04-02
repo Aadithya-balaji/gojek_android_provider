@@ -7,24 +7,26 @@ import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Enums
 import com.xjek.provider.models.CityListResponse
-import com.xjek.provider.models.CountryListResponse
 import com.xjek.provider.models.StateListResponse
+import com.xjek.user.data.repositary.remote.model.CountryListResponse
 
 class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<SignupViewModel.SignupNavigator>() {
 
     private val appRepository = AppRepository.instance()
 
-    val firstName = MutableLiveData<String>()
-    val lastName = MutableLiveData<String>()
-    val countryCode = MutableLiveData<String>()
-    val phoneNumber = MutableLiveData<String>()
-    val email = MutableLiveData<String>()
-    val password = MutableLiveData<String>()
-    val confirmPassword = MutableLiveData<String>()
-    val countryID = MutableLiveData<String>()
-    val cityID = MutableLiveData<String>()
-    val stateID = MutableLiveData<String>()
-    val gender = MutableLiveData<String>()
+    var firstName = MutableLiveData<String>()
+    var lastName = MutableLiveData<String>()
+    var countryCode = MutableLiveData<String>()
+    var phoneNumber = MutableLiveData<String>()
+    var email = MutableLiveData<String>()
+    var password = MutableLiveData<String>()
+    var confirmPassword = MutableLiveData<String>()
+    var countryID = MutableLiveData<String>()
+    var cityID = MutableLiveData<String>()
+    var stateID = MutableLiveData<String>()
+    var gender = MutableLiveData<String>()
+    var countryName = MutableLiveData<String>()
+    var cityName = MutableLiveData<String>()
 
 
     private var countryListResponse = MutableLiveData<CountryListResponse>()
@@ -35,7 +37,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
     var loadingProgress = MutableLiveData<Boolean>()
 
     fun doRegistration() {
-        signupNavigator.verifyPhoneNumber()
+        signupNavigator.validate()
     }
 
     fun gotoSignin() {
@@ -79,7 +81,10 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
     }
 
     fun getCountryList() {
-        //getCompositeDisposable().add(appRepository.getCountryList(this, countryID.value!!))
+        // loadingProgress.value=true
+        val hashMap: HashMap<String, Any?> = HashMap()
+        hashMap["salt_key"] = "MQ=="
+        getCompositeDisposable().add(appRepository.getCountryList(this, hashMap))
     }
 
     fun getStateList() {
@@ -87,17 +92,28 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
     }
 
     fun getCityList() {
-       // getCompositeDisposable().add(appRepository.getCityList(this, cityID.value!!))
+        signupNavigator.getCityList()
     }
 
-    fun fbLogin(){
+    fun fbLogin() {
         signupNavigator.facebookSignup()
     }
 
-    fun googleSignin(){
+    fun googleSignin() {
         signupNavigator.googleSignup()
     }
 
+    fun validate(){
+        val signupNavigator1 = validate()
+    }
+
+    fun getCountryCode() {
+        signupNavigator.getCountryCode()
+    }
+
+    fun getImage(){
+        signupNavigator.getImage()
+    }
 
     interface SignupNavigator {
         fun signup()
@@ -106,7 +122,11 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         fun showError(error: String)
         fun verifyPhoneNumber()
         fun facebookSignup()
-        fun  googleSignup()
+        fun googleSignup()
+        fun getCityList()
+        fun getCountryCode()
+        fun getImage()
+        fun validate()
     }
 
 }

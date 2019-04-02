@@ -255,9 +255,7 @@
             android:layout_height="@dimen/_80sdp"
             android:layout_below="@+id/toolbar_layout"
             android:layout_centerHorizontal="true"
-            android:padding="@dimen/_5sdp"
-
-            >
+            android:padding="@dimen/_5sdp">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"

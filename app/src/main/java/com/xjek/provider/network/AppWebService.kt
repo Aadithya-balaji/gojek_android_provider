@@ -1,10 +1,12 @@
 package com.xjek.provider.network
 
 import com.xjek.provider.models.*
+import com.xjek.user.data.repositary.remote.model.CountryListResponse
 import io.reactivex.Observable
 import retrofit2.http.*
 import java.util.*
 import retrofit2.http.Path
+import kotlin.collections.HashMap
 
 
 interface AppWebService {
@@ -24,8 +26,9 @@ interface AppWebService {
     @POST("provider/signup")
     fun postSignup(@FieldMap params: HashMap<String, String>): Observable<SignupResponseModel>
 
-    @GET("countries/{country_id}")
-    fun getCountries(@Path("country_id") country_id: String): Observable<CountryListResponse>
+    @FormUrlEncoded
+    @POST("user/countries")
+    fun getCountries(@FieldMap params:HashMap<String,Any?>):Observable<CountryListResponse>
 
     @GET("states/{state_id}")
     fun getStatelist(@Path("state_id") state_id: String): Observable<StateListResponse>

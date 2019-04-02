@@ -6,12 +6,12 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
-import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityResetPasswordBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
+import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityResetPasswordBinding
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.views.signin.SignInActivity
 
@@ -54,7 +54,9 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getResetPasswordObservable()) {
-            ViewUtils.showToast(applicationContext, "Success", true)
+            loadingObservable.value = false
+            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            ViewUtils.showToast(applicationContext, message, true)
             val signInIntent = Intent(applicationContext, SignInActivity::class.java)
             signInIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(signInIntent)
@@ -63,6 +65,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
 
     private fun handleIntentData() {
         viewModel.accountType = intent.getStringExtra(WebApiConstants.ResetPassword.ACCOUNT_TYPE)
+        viewModel.countryCode = intent.getStringExtra(WebApiConstants.ResetPassword.COUNTRY_CODE)
         viewModel.username = intent.getStringExtra(WebApiConstants.ResetPassword.USERNAME)
         viewModel.receivedOtp = intent.getStringExtra(WebApiConstants.ResetPassword.OTP)
         viewModel.otp.value = intent.getStringExtra(WebApiConstants.ResetPassword.OTP)
@@ -94,7 +97,8 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
             }
         } else if (binding.mbReset.visibility == View.VISIBLE) {
             if (isPasswordDataValid()) {
-                viewModel.postResetPassword(true)
+                loadingObservable.value = true
+                viewModel.postResetPassword()
             } else {
                 ViewUtils.showToast(applicationContext, message, false)
             }
@@ -138,6 +142,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
     }
 
     override fun showError(error: String) {
+        loadingObservable.value = false
         ViewUtils.showToast(applicationContext, message, false)
     }
 }

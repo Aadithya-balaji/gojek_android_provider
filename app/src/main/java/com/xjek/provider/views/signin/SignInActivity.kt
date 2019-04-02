@@ -64,7 +64,9 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getLoginObservable()) {
-            ViewUtils.showToast(applicationContext, "Success", true)
+            loadingObservable.value = false
+            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            ViewUtils.showToast(applicationContext, message, true)
             Constant.accessToken = it.responseData.accessToken
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -75,6 +77,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private fun performValidation() {
         hideKeyboard()
         if (isSignInDataValid()) {
+            loadingObservable.value = true
             viewModel.postLogin((binding.rgSignin.checkedRadioButtonId == R.id.rb_email))
         } else {
             ViewUtils.showToast(applicationContext, message, false)
@@ -112,6 +115,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
             val account = completedTask.getResult(ApiException::class.java)
             if (account != null && account.id != null) {
                 Logger.i(TAG, account.id!!)
+                loadingObservable.value = true
                 viewModel.postSocialLogin(true, account.id!!)
             }
         } catch (e: ApiException) {
@@ -203,6 +207,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         val accessToken = AccessToken.getCurrentAccessToken()
         if (accessToken != null && !accessToken.isExpired) {
             Logger.i(TAG, accessToken.token)
+            loadingObservable.value = true
             viewModel.postSocialLogin(false, accessToken.userId)
         } else {
             isFacebookLoginClicked = true
@@ -227,11 +232,13 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun showAlert(message: String) {
+        loadingObservable.value = false
         ViewUtils.showAlert(this, message, resources.getString(R.string.action_sign_up),
                 resources.getString(R.string.action_cancel), this)
     }
 
     override fun showError(error: String) {
+        loadingObservable.value = false
         ViewUtils.showToast(applicationContext, error, false)
     }
 

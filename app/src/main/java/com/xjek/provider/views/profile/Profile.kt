@@ -22,7 +22,7 @@ class Profile : BaseActivity<ActivityEditProfileBinding>(),View.OnClickListener 
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { view ->
             finish()
         }
-      //  mViewDataBinding.tvChangePassword.setOnClickListener(this)
+        mViewDataBinding.tvChangePassword.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {

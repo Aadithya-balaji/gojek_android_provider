@@ -29,7 +29,7 @@ class AppRepository : BaseRepository() {
                     if (it.statusCode == "200")
                         viewModel.getConfigObservable().postValue(it)
                 }, {
-                    viewModel.navigator.showError(it.message!!)
+                    viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 
@@ -43,7 +43,7 @@ class AppRepository : BaseRepository() {
                     if (it.statusCode == "200")
                         viewModel.getLoginObservable().postValue(it)
                 }, {
-                    viewModel.navigator.showError(it.message!!)
+                    viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 
@@ -72,7 +72,7 @@ class AppRepository : BaseRepository() {
                     if (it.statusCode == "200")
                         viewModel.getForgotPasswordObservable().postValue(it)
                 }, {
-                    viewModel.navigator.showError(it.message!!)
+                    viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 
@@ -87,7 +87,7 @@ class AppRepository : BaseRepository() {
                     if (it.statusCode == "200")
                         viewModel.getResetPasswordObservable().postValue(it)
                 }, {
-                    viewModel.navigator.showError(it.message!!)
+                    viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 
@@ -148,7 +148,7 @@ class AppRepository : BaseRepository() {
                     if (it.statusCode == "200")
                         viewModel.getChangePasswordObservable().postValue(it)
                 }, {
-                    viewModel.navigator.showError(it.message!!)
+                    viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 

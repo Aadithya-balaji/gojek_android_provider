@@ -29,6 +29,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
         mFragmentAccountBinding = mViewDataBinding as FragmentAccountBinding
         val mAccountViewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
+        mAccountViewModel.navigator = this
         mFragmentAccountBinding.myaccountfragmentviewmodel = mAccountViewModel
         dashBoardNavigator.setTitle(resources.getString(R.string.myaccount))
         dashBoardNavigator.setRightIcon(R.drawable.more)
@@ -62,8 +63,6 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     }
 
     override fun gotoSupportPage() {
-
         openNewActivity(activity, SupportActivity::class.java, false)
     }
-
 }

@@ -27,6 +27,7 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
             finish()
         }
         val paymentViewModel = ViewModelProviders.of(this).get(PaymentViewModel::class.java)
+        paymentViewModel.navigator = this
         mViewDataBinding.paymentViewModel = paymentViewModel
         mViewDataBinding.transactionAdapter = TransactionListAdapter(this)
 

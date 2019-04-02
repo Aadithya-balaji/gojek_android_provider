@@ -39,7 +39,7 @@
 
     <!--- Home tab -->
     <string name="tab_home">Home</string>
-    <string name="tab_order">Order</string>
+    <string name="tab_history">History</string>
     <string name="tab_notification">Notification</string>
     <string name="tab_account">Account</string>>
 
@@ -229,4 +229,7 @@
     <!--Action-->
     <string name="action_sign_up">Sign Up</string>
     <string name="action_cancel">Cancel</string>
+
+    <!--Menu-->
+    <string name="menu_logout">Logout</string>
 </resources>

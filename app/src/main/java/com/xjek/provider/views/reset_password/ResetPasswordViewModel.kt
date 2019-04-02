@@ -13,6 +13,7 @@ class ResetPasswordViewModel : BaseViewModel<ResetPasswordViewModel.ResetPasswor
     private val appRepository = AppRepository.instance()
     private var resetPasswordLiveData = MutableLiveData<ResetPasswordResponseModel>()
     internal lateinit var accountType: String
+    internal lateinit var countryCode: String
     internal lateinit var username: String
     internal lateinit var receivedOtp: String
 
@@ -30,21 +31,20 @@ class ResetPasswordViewModel : BaseViewModel<ResetPasswordViewModel.ResetPasswor
         navigator.onResetPasswordClicked()
     }
 
-    internal fun postResetPassword(isEmailReset: Boolean) {
+    internal fun postResetPassword() {
         val params = HashMap<String, String>()
         params[WebApiConstants.SALT_KEY] = BuildConfig.SALT_KEY
         params[WebApiConstants.ResetPassword.OTP] = otp.value!!.trim()
-        params[WebApiConstants.ResetPassword.PASSWORD] = otp.value!!.trim()
-        params[WebApiConstants.ResetPassword.PASSWORD_CONFIRMATION] = otp.value!!.trim()
-        if (isEmailReset) {
+        params[WebApiConstants.ResetPassword.PASSWORD] = newPassword.value!!.trim()
+        params[WebApiConstants.ResetPassword.PASSWORD_CONFIRMATION] = confirmPassword.value!!.trim()
+        params[WebApiConstants.ResetPassword.USERNAME] = username
+        if (countryCode.isNullOrBlank()) {
             params[WebApiConstants.ResetPassword.ACCOUNT_TYPE] =
                     ResetPasswordViewModel.AccountType.EMAIL.value()
-            params[WebApiConstants.ResetPassword.USERNAME] = username
         } else {
             params[WebApiConstants.ResetPassword.ACCOUNT_TYPE] =
                     ResetPasswordViewModel.AccountType.MOBILE.value()
-//            params[WebApiConstants.ResetPassword.COUNTRY_CODE] = countryCode.value!!.trim()
-            params[WebApiConstants.ResetPassword.USERNAME] = username
+            params[WebApiConstants.ResetPassword.COUNTRY_CODE] = countryCode.replace("+", "")
         }
         getCompositeDisposable().add(appRepository.postResetPassword(this, params))
     }

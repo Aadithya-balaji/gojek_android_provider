@@ -43,6 +43,7 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(), SearchVi
 
         this.activityCountryListBinding = mViewDataBinding as com.xjek.provider.databinding.ActivityCountryCodeBinding
         val countryCodeViewModel = CountryCodeViewModel()
+        countryCodeViewModel.navigator = this
         activityCountryListBinding.placesModel=countryCodeViewModel
         ivBack = findViewById(R.id.iv_back) as ImageView
         svCountry = findViewById(R.id.sv_country)

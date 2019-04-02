@@ -39,7 +39,9 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getChangePasswordObservable()) {
-            ViewUtils.showToast(applicationContext, "Success", true)
+            loadingObservable.value = false
+            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            ViewUtils.showToast(applicationContext, message, true)
             onBackClicked(binding.toolbar.ivToolbarBack)
         }
     }
@@ -59,6 +61,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
     private fun performValidation() {
         hideKeyboard()
         if (isPasswordDataValid()) {
+            loadingObservable.value = true
             viewModel.postChangePassword()
         } else {
             ViewUtils.showToast(applicationContext, message, false)
@@ -92,6 +95,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
     }
 
     override fun showError(error: String) {
+        loadingObservable.value = false
         ViewUtils.showToast(applicationContext, error, false)
     }
 }

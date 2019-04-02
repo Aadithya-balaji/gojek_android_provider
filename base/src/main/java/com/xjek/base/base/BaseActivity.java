@@ -26,15 +26,14 @@ import androidx.lifecycle.MutableLiveData;
 
 public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
 
+    protected MutableLiveData<Boolean> baseLiveDataLoading = new MutableLiveData<>();
     private T mViewDataBinding;
     private CustomDialog customDialog;
-
 
     @LayoutRes
     protected abstract int getLayoutId();
 
     protected abstract void initView(ViewDataBinding mViewDataBinding);
-    protected MutableLiveData<Boolean> baseLiveDataLoading = new MutableLiveData<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +51,9 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         });
     }
 
+    protected MutableLiveData getLoadingObservable() {
+        return baseLiveDataLoading;
+    }
 
     protected void showKeyboard() {
         View view = this.getCurrentFocus();

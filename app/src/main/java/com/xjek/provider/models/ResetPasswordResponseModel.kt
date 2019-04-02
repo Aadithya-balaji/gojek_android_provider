@@ -11,7 +11,17 @@ class ResetPasswordResponseModel(
         override val error: List<Any>
 ) : CommonResponse {
     data class ResponseData(
-            @SerializedName("base_url")
-            val baseUrl: String
+            @SerializedName("account_type")
+            val accountType: String,
+            @SerializedName("country_code")
+            val countryCode: String,
+            val username: String,
+            val otp: String,
+            @SerializedName("salt_key")
+            val saltKey: String,
+            @SerializedName("password")
+            val password: String,
+            @SerializedName("password_confirmation")
+            val passwordConfirmation: String
     )
 }

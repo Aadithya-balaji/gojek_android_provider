@@ -12,16 +12,16 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityForgotPasswordBinding
-import com.xjek.provider.views.reset_password.ResetPasswordActivity
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
+import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityForgotPasswordBinding
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.utils.Enums
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
+import com.xjek.provider.views.reset_password.ResetPasswordActivity
 
 class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
         ForgotPasswordViewModel.ForgotPasswordNavigator {
@@ -54,10 +54,14 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getForgotPasswordObservable()) {
-            ViewUtils.showToast(applicationContext, "Success", true)
+            loadingObservable.value = false
+            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            ViewUtils.showToast(applicationContext, message, true)
             val resetPasswordIntent = Intent(applicationContext, ResetPasswordActivity::class.java)
             resetPasswordIntent.putExtra(WebApiConstants.ResetPassword.ACCOUNT_TYPE, it
                     .responseData.accountType)
+            resetPasswordIntent.putExtra(WebApiConstants.ResetPassword.COUNTRY_CODE, it
+                    .responseData.countryCode)
             resetPasswordIntent.putExtra(WebApiConstants.ResetPassword.USERNAME, it
                     .responseData.username)
             resetPasswordIntent.putExtra(WebApiConstants.ResetPassword.OTP, it
@@ -74,6 +78,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
     private fun performValidation() {
         hideKeyboard()
         if (isResetDataValid()) {
+            loadingObservable.value = true
             viewModel.postForgotPassword(isEmailLogin)
         } else {
             ViewUtils.showToast(applicationContext, message, false)
@@ -166,6 +171,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
     }
 
     override fun showError(error: String) {
+        loadingObservable.value = false
         ViewUtils.showToast(applicationContext, error, false)
     }
 }

@@ -1,4 +1,4 @@
-package com.xjek.provider.views.TransactionStatusActivity
+package com.xjek.provider.views.transaction_status
 
 interface TransactionStatusNavigator{
 

@@ -10,7 +10,7 @@
 
         <variable
             name="pastOrdersAdapter"
-            type="com.xjek.xjek.adapter.PastOrdersAdapter" />
+            type="com.xjek.provider.views.adapters.PastOrdersAdapter" />
     </data>
 
     <RelativeLayout

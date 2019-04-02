@@ -1,4 +1,4 @@
-package com.xjek.provider.views.TransactionStatusActivity
+package com.xjek.provider.views.transaction_status
 
 import com.xjek.base.base.BaseViewModel
 

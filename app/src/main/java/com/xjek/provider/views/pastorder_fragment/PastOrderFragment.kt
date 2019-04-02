@@ -5,7 +5,7 @@ import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseFragment
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentPastOrdersBinding
-import com.xjek.xjek.adapter.PastOrdersAdapter
+import com.xjek.provider.views.adapters.PastOrdersAdapter
 
 class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNavigator {
 

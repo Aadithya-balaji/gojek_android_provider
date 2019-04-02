@@ -27,7 +27,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "BASE_URL", "\"http://dummy.restapiexample.com/\"")
         }
-
     }
     // Configured Java 8 language features for each module.
     compileOptions {

@@ -4,63 +4,52 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
+import com.xjek.provider.R
 import com.facebook.*
 import com.facebook.accountkit.ui.AccountKitActivity
 import com.facebook.accountkit.ui.AccountKitConfiguration
 import com.facebook.accountkit.ui.LoginType
-import com.facebook.login.LoginManager
-import com.facebook.login.LoginResult
-import com.xjek.base.base.BaseActivity
-import com.xjek.base.extensions.observeLiveData
-import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityRegisterBinding
-import com.xjek.provider.views.countrypicker.CountryCodeActivity
-import com.xjek.provider.views.document.DocumentActivity
-import com.xjek.provider.views.signin.SignInActivity
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.xjek.provider.utils.Enums
-import com.xjek.provider.utils.Enums.Companion.FB_ACCOUNT_KIT_CODE
-import java.util.*
-import android.os.Bundle
-import android.util.Log
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
-import com.xjek.base.utils.ViewUtils
-import org.json.JSONObject
-import com.facebook.GraphResponse
-import com.facebook.GraphRequest
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginBehavior
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.Auth
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.common.api.ResultCallback
-import com.google.android.gms.common.api.Status
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
-import com.xjek.base.BuildConfig
-import com.xjek.provider.utils.Constant
+import com.xjek.base.base.BaseActivity
+import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.utils.ViewUtils
+import com.xjek.provider.databinding.ActivityRegisterBinding
+import com.xjek.provider.utils.Enums
 import com.xjek.provider.utils.Enums.Companion.CITYLIST_REQUEST_CODE
 import com.xjek.provider.utils.Enums.Companion.COUNTRYLIST_REQUEST_CODE
-import com.xjek.provider.utils.Enums.Companion.GOOGLE
+import com.xjek.provider.utils.Enums.Companion.FB_ACCOUNT_KIT_CODE
 import com.xjek.provider.utils.Enums.Companion.GOOGLE_REQ_CODE
 import com.xjek.provider.views.citylist.CityListActivity
 import com.xjek.provider.views.countrylist.CountryListActivity
-import com.xjek.provider.views.dashboard.DashBoardActivity
+import com.xjek.provider.views.countrypicker.CountryCodeActivity
+import com.xjek.provider.views.document.DocumentActivity
+import com.xjek.provider.views.signin.SignInActivity
 import com.xjek.user.data.repositary.remote.model.City
 import com.xjek.user.data.repositary.remote.model.CountryResponseData
+import org.json.JSONObject
 import java.io.Serializable
+import java.util.*
 
 
 class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.SignupNavigator, View.OnClickListener {
-
 
 
     private lateinit var tlCountryCode: TextInputLayout
@@ -75,7 +64,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     private lateinit var edtConfirmPassword: TextInputEditText
     private lateinit var edtFirstName: TextInputEditText
     private lateinit var edtLastName: TextInputEditText
-    private  lateinit var  ivProfile: ImageView
+    private lateinit var ivProfile: ImageView
     private var message: String = ""
     private lateinit var cityList: List<City>
 
@@ -114,7 +103,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         edtCity = findViewById(R.id.edt_signup_city)
         edtPassword = findViewById(R.id.edt_signup_password)
         edtConfirmPassword = findViewById(R.id.edt_signup_confirmpwd)
-        ivProfile=findViewById(R.id.profile_image)
+        ivProfile = findViewById(R.id.profile_image)
         callbackManager = CallbackManager.Factory.create()
         edtCountry.isFocusableInTouchMode = false
         edtCity.isFocusableInTouchMode = false
@@ -215,8 +204,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     }
 
     fun initListener() {
-       // edtCountryCode.setOnClickListener(this)
-        edtCountryCode.isFocusableInTouchMode=false
+        // edtCountryCode.setOnClickListener(this)
+        edtCountryCode.isFocusableInTouchMode = false
         edtCity.setOnClickListener(this)
     }
 
@@ -247,7 +236,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
 
     fun initGoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(BuildConfig.google_signin_server_client_id)
+                .requestIdToken(resources.getString(R.string.google_signin_server_client_id))
                 .requestEmail()
                 .build()
 
@@ -436,22 +425,22 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
 
     override fun validate() {
 
-        baseLiveDataLoading.value=true
+        baseLiveDataLoading.value = true
 
-      /*  signupViewmodel.firstName.value = edtFirstName.text.toString()
-        signupViewmodel.lastName.value = edtLastName.text.toString()
-        signupViewmodel.phoneNumber.value = edtPhoneNumber.text.toString()
-        signupViewmodel.password.value = edtPassword.text.toString()
-        signupViewmodel.cityName.value = edtCity.text.toString()
-        signupViewmodel.countryName.value = edtCountry.text.toString()
-        signupViewmodel.confirmPassword.value = edtConfirmPassword.text.toString()
+        /*  signupViewmodel.firstName.value = edtFirstName.text.toString()
+          signupViewmodel.lastName.value = edtLastName.text.toString()
+          signupViewmodel.phoneNumber.value = edtPhoneNumber.text.toString()
+          signupViewmodel.password.value = edtPassword.text.toString()
+          signupViewmodel.cityName.value = edtCity.text.toString()
+          signupViewmodel.countryName.value = edtCountry.text.toString()
+          signupViewmodel.confirmPassword.value = edtConfirmPassword.text.toString()
 
-        if (isValidCredential()) {
-            baseLiveDataLoading.value = true
-            signupViewmodel.postSignup()
-        } else {
-            ViewUtils.showToast(this@SignupActivity, message, false)
-        }*/
+          if (isValidCredential()) {
+              baseLiveDataLoading.value = true
+              signupViewmodel.postSignup()
+          } else {
+              ViewUtils.showToast(this@SignupActivity, message, false)
+          }*/
     }
 
 

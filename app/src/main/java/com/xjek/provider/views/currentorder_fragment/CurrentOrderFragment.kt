@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.xjek.base.base.BaseFragment
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentCurrentOrdersBinding
-import com.xjek.xjek.adapter.CurrentOrdersAdapter
+import com.xjek.provider.views.adapters.CurrentOrdersAdapter
 
 class CurrentOrderFragment : BaseFragment<FragmentCurrentOrdersBinding>(), CurrentOrderNavigator {
 

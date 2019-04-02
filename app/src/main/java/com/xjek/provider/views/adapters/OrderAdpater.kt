@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
 
 
-class OrderAdpater (): RecyclerView.Adapter<OrderAdpater.OrderViewHolder>() {
+class OrderAdpater() : RecyclerView.Adapter<OrderAdpater.OrderViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.row_order_item, parent, false)
@@ -26,9 +26,9 @@ class OrderAdpater (): RecyclerView.Adapter<OrderAdpater.OrderViewHolder>() {
         val tvOrderDate = orderItemView.findViewById(R.id.tv_order_date) as TextView
         val tvOrderTime = orderItemView.findViewById(R.id.tv_order_time) as TextView
         val tvOrderName = orderItemView.findViewById(R.id.tv_order_name) as TextView
-        val  tvOrderStatus=orderItemView.findViewById(R.id.tv_order_status) as TextView
-        val tvOrderTrack=orderItemView.findViewById(R.id.tv_order_track) as TextView
-        val tvOrdercall=orderItemView.findViewById(R.id.tv_order_call) as TextView
+        val tvOrderStatus = orderItemView.findViewById(R.id.tv_order_status) as TextView
+        val tvOrderTrack = orderItemView.findViewById(R.id.tv_order_track) as TextView
+        val tvOrdercall = orderItemView.findViewById(R.id.tv_order_call) as TextView
 
     }
 }

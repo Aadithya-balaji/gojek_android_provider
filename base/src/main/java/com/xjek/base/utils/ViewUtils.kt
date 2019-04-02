@@ -9,9 +9,9 @@ import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
 import androidx.core.content.ContextCompat
-import com.xjek.base.R
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.xjek.base.R
 import es.dmoral.toasty.Toasty
 import permissions.dispatcher.PermissionRequest
 
@@ -50,6 +50,30 @@ object ViewUtils {
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes) { dialog, which -> dialog.dismiss() }
                 .show()
+    }
+
+    @MainThread
+    fun showAlert(context: Context, message: String, positiveText: CharSequence,
+                  negativeText: CharSequence, callBack: ViewCallBack) {
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+                .setTitle(context.resources.getString(R.string.app_name))
+                .setMessage(message)
+                .setPositiveButton(positiveText) { dialog, which ->
+                    run {
+                        dialog.dismiss()
+                        callBack.onPositiveButtonClick(dialog)
+                    }
+                }
+                .setNegativeButton(negativeText) { dialog, which ->
+                    run {
+                        dialog.dismiss()
+                        callBack.onNegativeButtonClick(dialog)
+                    }
+                }
+        val dialog = builder.create()
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
     @MainThread

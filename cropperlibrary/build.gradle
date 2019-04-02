@@ -42,8 +42,7 @@ publishing {
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
 
 dependencies {
-    api "androidx.appcompat:appcompat:$androidXLibraryVersion"
     api 'com.google.android.material:material:1.1.0-alpha04'
-    implementation "androidx.exifinterface:exifinterface:$androidXLibraryVersion"
+    implementation "androidx.exifinterface:exifinterface:$androidx_version"
 }
 

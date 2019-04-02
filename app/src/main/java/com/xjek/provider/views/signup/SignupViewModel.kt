@@ -2,12 +2,12 @@ package com.xjek.provider.views.signup
 
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.provider.models.CityListResponse
 import com.xjek.provider.models.SignupResponseModel
+import com.xjek.provider.models.StateListResponse
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Enums
-import com.xjek.provider.models.CityListResponse
-import com.xjek.provider.models.StateListResponse
 import com.xjek.user.data.repositary.remote.model.CountryListResponse
 
 class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<SignupViewModel.SignupNavigator>() {
@@ -103,7 +103,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         signupNavigator.googleSignup()
     }
 
-    fun validate(){
+    fun validate() {
         val signupNavigator1 = validate()
     }
 
@@ -111,7 +111,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         signupNavigator.getCountryCode()
     }
 
-    fun getImage(){
+    fun getImage() {
         signupNavigator.getImage()
     }
 

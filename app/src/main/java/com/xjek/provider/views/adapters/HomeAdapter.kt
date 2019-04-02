@@ -12,12 +12,12 @@ import com.xjek.provider.R
 import com.xjek.taxiservice.views.main.ActivityTaxiMain
 import de.hdodenhof.circleimageview.CircleImageView
 
-class HomeAdapter (activity: AppCompatActivity): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(),View.OnClickListener{
+class HomeAdapter(activity: AppCompatActivity) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(), View.OnClickListener {
 
-    private  var activity:AppCompatActivity?=null
+    private var activity: AppCompatActivity? = null
 
-    init{
-        this.activity=activity
+    init {
+        this.activity = activity
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -42,14 +42,14 @@ class HomeAdapter (activity: AppCompatActivity): RecyclerView.Adapter<HomeAdapte
         val rbHome = itemView.findViewById(R.id.rb_home) as RatingBar
         val tvServiceType = itemView.findViewById(R.id.tv_service_type) as TextView
         val tvScheduledDate = itemView.findViewById(R.id.tv_schedule_date) as TextView
-        val  tvReject=itemView.findViewById(R.id.tv_reject) as TextView
-        val  tvAccept=itemView.findViewById(R.id.tv_approve) as TextView
-        val tvStreetAddress=itemView.findViewById(R.id.tv_street_address) as TextView
-        val tvCountry=itemView.findViewById(R.id.tv_country) as TextView
+        val tvReject = itemView.findViewById(R.id.tv_reject) as TextView
+        val tvAccept = itemView.findViewById(R.id.tv_approve) as TextView
+        val tvStreetAddress = itemView.findViewById(R.id.tv_street_address) as TextView
+        val tvCountry = itemView.findViewById(R.id.tv_country) as TextView
     }
 
     override fun onClick(v: View?) {
-        val intent= Intent(activity, ActivityTaxiMain::class.java)
+        val intent = Intent(activity, ActivityTaxiMain::class.java)
         activity!!.startActivity(intent)
     }
 }

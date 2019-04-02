@@ -7,8 +7,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.xjek.provider.R
 import com.xjek.provider.model.CountryModel
-import com.xjek.provider.model.ciity.PlaceResponseModel
-import java.util.ArrayList
+import java.util.*
 
 class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : BaseAdapter(), Filterable {
     private lateinit var mInflater: LayoutInflater
@@ -48,8 +47,8 @@ class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : Ba
             // we want to bind data to.
             holder = ViewHolder()
             holder.tvCountryCode = convertView.findViewById(R.id.tv_code) as TextView
-            holder.tvCountryName=convertView.findViewById(R.id.tv_country_name) as TextView
-            holder.ivCountryFlag=convertView.findViewById(R.id.iv_flag) as ImageView
+            holder.tvCountryName = convertView.findViewById(R.id.tv_country_name) as TextView
+            holder.ivCountryFlag = convertView.findViewById(R.id.iv_flag) as ImageView
 
             // Bind the data efficiently with the holder.
 
@@ -61,7 +60,7 @@ class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : Ba
         }
 
         // If weren't re-ordering this you could rely on what you set last time
-       holder.tvCountryName!!.setText(filteredData.get(position).name.toString())
+        holder.tvCountryName!!.setText(filteredData.get(position).name.toString())
         holder.tvCountryCode!!.setText(filteredData.get(position).dialCode.toString())
         holder.ivCountryFlag!!.setImageResource(filteredData.get(position).flag)
 
@@ -88,8 +87,8 @@ class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : Ba
 
     internal class ViewHolder {
         var tvCountryCode: TextView? = null
-        var  tvCountryName:TextView?=null
-        var ivCountryFlag:ImageView?=null
+        var tvCountryName: TextView? = null
+        var ivCountryFlag: ImageView? = null
     }
 
 
@@ -104,10 +103,10 @@ class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : Ba
 
             val count = list.size
             val nlist = ArrayList<CountryModel>(count)
-            var filterableString: String=""
+            var filterableString: String = ""
             for (i in 0 until count) {
 
-                    filterableString = list.get(i).name.toString()
+                filterableString = list.get(i).name.toString()
                 if (filterableString.toLowerCase().contains(filterString)) {
                     nlist.add(list.get(i))
                 }

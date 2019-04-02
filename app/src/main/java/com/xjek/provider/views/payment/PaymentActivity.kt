@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityPaymentBinding
-import com.xjek.provider.views.TransactionStatusActivity.TransactionStatusActivity
 import com.xjek.provider.views.adapters.TransactionListAdapter
+import com.xjek.provider.views.transaction_status.TransactionStatusActivity
 import com.xjek.xjek.ui.payment.PaymentNavigator
 import com.xjek.xjek.ui.payment.PaymentViewModel
 import kotlinx.android.synthetic.main.toolbar_layout.view.*

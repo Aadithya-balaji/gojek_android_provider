@@ -3,71 +3,79 @@ package com.xjek.provider.views.signin
 import android.view.View
 import android.widget.RadioGroup
 import androidx.lifecycle.MutableLiveData
+import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseViewModel
 import com.xjek.provider.models.LoginResponseModel
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
 
-
-class SignInViewModel(private val signInNavigator: SignInNavigator) :
-        BaseViewModel<SignInViewModel.SignInNavigator>() {
+class SignInViewModel : BaseViewModel<SignInViewModel.SignInNavigator>() {
 
     private val appRepository = AppRepository.instance()
     private var loginLiveData = MutableLiveData<LoginResponseModel>()
 
-    val countryCode = MutableLiveData<String>()
+    val countryCode = MutableLiveData<String>("+1")
     val phoneNumber = MutableLiveData<String>()
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
 
-    init {
-        navigator = signInNavigator
-    }
-
     fun onSignInOptionsClick(group: RadioGroup, checkedId: Int) {
-        signInNavigator.onCheckedChanged(group, checkedId)
+        navigator.onCheckedChanged(group, checkedId)
     }
 
     fun onCountryCodeClick(view: View) {
-        signInNavigator.onCountryCodeClicked()
+        navigator.onCountryCodeClicked()
     }
 
     fun onForgotPasswordClick(view: View) {
-        signInNavigator.onForgotPasswordClicked()
+        navigator.onForgotPasswordClicked()
     }
 
     fun onSignUpClick(view: View) {
-        signInNavigator.onSignUpClicked()
+        navigator.onSignUpClicked()
     }
 
     fun onSignInClick(view: View) {
-        signInNavigator.onSignInClicked()
+        navigator.onSignInClicked()
     }
 
     fun onGoogleSignInClick(view: View) {
-        signInNavigator.onGoogleSignInClicked()
+        navigator.onGoogleSignInClicked()
     }
 
     fun onFacebookLoginClick(view: View) {
-        signInNavigator.onFacebookLoginClicked()
+        navigator.onFacebookLoginClicked()
     }
 
     internal fun postLogin(isEmailLogin: Boolean) {
         val params = HashMap<String, String>()
         if (isEmailLogin)
-            params[WebApiConstants.EMAIL] = email.value.toString().trim()
+            params[WebApiConstants.Login.EMAIL] = email.value!!.trim()
         else {
-            params[WebApiConstants.COUNTRY_CODE] = countryCode.value.toString().trim().replace("+", "")
-            params[WebApiConstants.MOBILE] = phoneNumber.value.toString().trim()
+            params[WebApiConstants.Login.COUNTRY_CODE] = countryCode.value!!.trim()
+                    .replace("+", "")
+            params[WebApiConstants.Login.MOBILE] = phoneNumber.value!!.trim()
         }
-        params[WebApiConstants.PASSWORD] = password.value.toString().trim()
-        params[WebApiConstants.SALT_KEY] = "MQ=="
+        params[WebApiConstants.Login.PASSWORD] = password.value!!.trim()
+        params[WebApiConstants.SALT_KEY] = BuildConfig.SALT_KEY
         getCompositeDisposable().add(appRepository.postLogin(this, params))
     }
 
-    fun getLoginObservable() = loginLiveData
+    internal fun postSocialLogin(isGoogleSignIn: Boolean, id: String) {
+        val params = HashMap<String, String>()
+        params[WebApiConstants.SocialLogin.DEVICE_TYPE] = ANDROID
+        params[WebApiConstants.SocialLogin.DEVICE_TOKEN] = ""
+        params[WebApiConstants.SocialLogin.LOGIN_BY] = if (isGoogleSignIn) {
+            LoginType.GOOGLE.value()
+        } else {
+            LoginType.FACEBOOK.value()
+        }
+        params[WebApiConstants.SocialLogin.SOCIAL_UNIQUE_ID] = id
+        params[WebApiConstants.SALT_KEY] = BuildConfig.SALT_KEY
+        getCompositeDisposable().add(appRepository.postSocialLogin(this, params))
+    }
 
-    fun getLoginResponseModel() = getLoginObservable().value
+    fun getLoginObservable() = loginLiveData
 
     interface SignInNavigator {
         fun onCheckedChanged(group: RadioGroup, checkedId: Int)
@@ -77,6 +85,23 @@ class SignInViewModel(private val signInNavigator: SignInNavigator) :
         fun onSignInClicked()
         fun onGoogleSignInClicked()
         fun onFacebookLoginClicked()
+        fun showAlert(message: String)
         fun showError(error: String)
+    }
+
+    internal enum class LoginType {
+        GOOGLE {
+            override fun value() = "GOOGLE"
+        },
+
+        FACEBOOK {
+            override fun value() = "FACEBOOK"
+        };
+
+        abstract fun value(): String
+    }
+
+    companion object {
+        const val ANDROID = "ANDROID"
     }
 }

@@ -16,8 +16,6 @@ import com.xjek.user.data.repositary.remote.model.CountryResponseData
 import java.io.Serializable
 
 
-
-
 class CountryListAdapter(val activity: FragmentActivity?, val countryList: List<CountryResponseData>)
     : RecyclerView.Adapter<CountryListAdapter.MyViewHolder>(), Filterable {
 
@@ -46,7 +44,7 @@ class CountryListAdapter(val activity: FragmentActivity?, val countryList: List<
             override fun onListClickListner() {
                 val intent = Intent()
                 intent.putExtra("selected_list", countrySearchList!!.get(position) as Serializable)
-                activity!!.setResult(   Activity.RESULT_OK, intent)
+                activity!!.setResult(Activity.RESULT_OK, intent)
                 activity!!.finish()
             }
 

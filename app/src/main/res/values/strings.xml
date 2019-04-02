@@ -1,7 +1,4 @@
-<resources
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation" >
-
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
@@ -23,7 +20,6 @@
     <string name="taxi_hint_vechile_licence_number">Vechile License Plate</string>
     <string name="taxi_hint_vechile_category">Car Category</string>
     <string name="edit_image">Edit_image</string>
-
 
 
     <!-- Foodie vechile detail -->
@@ -59,7 +55,7 @@
     <string name="create_account">Create Account</string>
     <string name="countrycode_hint">code</string>
     <string name="phonenumber_hint">Phone Number</string>
-    <string name="email_id_hint">Email Id (optional)</string>
+    <string name="email_id_hint">Email Id</string>
     <string name="password_hint">Password</string>
     <string name="city_hint">City</string>
     <string name="country_hint">Country</string>
@@ -84,11 +80,22 @@
     <string name="connect_via_facebook">Connect via Facebook</string>
     <string name="forgot_password">Forgot Password ?</string>
 
+    <!--Forgot Password-->
+    <string name="title_forgot_password">Forgot Password</string>
+    <string name="reset_via">Reset Via</string>
+
+    <!--Reset Password-->
+    <string name="title_reset_password">Reset Password</string>
+    <string name="enter_otp">Enter Otp</string>
+    <string name="otp">Otp</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="reset">Reset</string>
+
+    <!--Change Password-->
     <string name="title_change_password">Change Password</string>
     <string name="create_new_password">Create new password</string>
     <string name="old_password">Old Password</string>
-    <string name="new_password">New Password</string>
-    <string name="confirm_password">Confirm Password</string>
 
     <!-- Notification -->
     <string name="notificaiton_valid_label">Valid Till</string>
@@ -96,7 +103,6 @@
     <string name="notification_label_car">Car Notification</string>
     <string name="notificaiton_label_foodie">Food Notificaiton</string>
     <string name="notification_label_service">Service Notification</string>
-
 
     <!-- Account -->
     <string name="account_profile">Profile</string>
@@ -106,7 +112,6 @@
     <string name="account_privacy">Privacy Policy</string>
     <string name="account_invite">Invite Referrals</string>
     <string name="your_referral_code">Your Refferal Code</string>
-
 
 
     <string-array name="account">
@@ -154,31 +159,6 @@
     <string name="invite_refferals">Invite Refferals</string>
     <string name="transaction">Transaction</string>
     <string name="dummy_rating">4.6</string>
-    <string name="country_code_empty">Country code should not be empty</string>
-    <string name="phone_number_empty">Phone number should not be empty</string>
-    <string name="email_invalid">Please enter valid email</string>
-
-
-
-    <!-- Error -->
-    <string name="empty_username">Please enter the user name</string>
-    <string name="empty_phone">Please enter the Phone Number</string>
-    <string name="password_empty">Password should not be empty</string>
-    <string name="email_empty">Email should not be empty</string>
-    <string name="empty_country">Plese enter the Country</string>
-    <string name="empty_state">Please enter the state</string>
-    <string name="empty_city">Please enter the City</string>
-    <string name="password_not_match">Password and Confirm password do not match</string>
-    <string name="empty_firstname">Please Enter FirstName</string>
-    <string name="empty_lastname">Please Enter LastName</string>
-    <string name="fb_session_expired">Facebook session expired. Kindly open Facebook application…</string>
-
-    <string name="old_password_empty">Old password should not be empty</string>
-    <string name="new_password_empty">New password should not be empty</string>
-    <string name="new_password_invalid">Old password and new password should not be same</string>
-    <string name="confirm_password_invalid">New password and confirm password should be same</string>
-
-
 
     <string name="payment">Payment</string>
     <string name="privacy_plicy">Privacy Policy</string>
@@ -221,8 +201,32 @@
     <string name="cancelled">Cancelled</string>
     <string name="time">3:30 pm</string>
 
+    <!-- Error -->
+    <string name="empty_username">Please enter the user name</string>
+    <string name="empty_phone">Please enter the Phone Number</string>
+    <string name="empty_country">Plese enter the Country</string>
+    <string name="empty_state">Please enter the state</string>
+    <string name="empty_city">Please enter the City</string>
+    <string name="password_not_match">Password and Confirm password do not match</string>
+    <string name="empty_firstname">Please Enter FirstName</string>
+    <string name="empty_lastname">Please Enter LastName</string>
+    <string name="fb_session_expired">Facebook session expired. Kindly open Facebook application…</string>
 
+    <string name="country_code_empty">Country code should not be empty</string>
+    <string name="phone_number_empty">Phone number should not be empty</string>
+    <string name="email_empty">Email should not be empty</string>
+    <string name="email_invalid">Please enter valid email</string>
+    <string name="password_empty">Password should not be empty</string>
+    <string name="old_password_empty">Old password should not be empty</string>
+    <string name="new_password_empty">New password should not be empty</string>
+    <string name="new_password_invalid">Old password and new password should not be same</string>
+    <string name="confirm_password_invalid">New password and confirm password should be
+        same</string>
+    <string name="error_otp_empty">Otp should not be empty</string>
+    <string name="error_otp_invalid">Please enter correct otp</string>
+    <string name="alert_sign_up">Please sign up with this account</string>
 
-
-
+    <!--Action-->
+    <string name="action_sign_up">Sign Up</string>
+    <string name="action_cancel">Cancel</string>
 </resources>

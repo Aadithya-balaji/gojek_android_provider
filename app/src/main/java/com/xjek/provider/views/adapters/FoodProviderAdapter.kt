@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.RowFoodproviderItemBinding
+import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 
 class FoodProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<FoodProviderAdapter.MyViewHolder>() {
     val activity = activity
@@ -22,7 +22,7 @@ class FoodProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<Fo
     override fun getItemCount(): Int = 1
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.rowFoodproviderItemBinding.tvApprove.setOnClickListener(){
+        holder.rowFoodproviderItemBinding.tvApprove.setOnClickListener() {
             activity!!.startActivity(Intent(activity, FoodLiveTaskServiceFlow::class.java))
         }
 

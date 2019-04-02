@@ -53,5 +53,4 @@ class Enums {
         MANUAL, FACEBOOK, GOOGLE
     }
 
-
 }

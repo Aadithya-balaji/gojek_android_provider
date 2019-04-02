@@ -1,4 +1,4 @@
-package com.xjek.xjek.adapter
+package com.xjek.provider.views.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

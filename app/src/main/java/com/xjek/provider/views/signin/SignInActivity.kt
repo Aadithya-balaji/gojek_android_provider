@@ -1,7 +1,7 @@
 package com.xjek.provider.views.signin
 
-
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -19,6 +19,7 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -27,20 +28,21 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.Logger
 import com.xjek.base.utils.ViewUtils
-import com.xjek.provider.views.change_password.ChangePasswordActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySignInBinding
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Enums
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
 import com.xjek.provider.views.dashboard.DashBoardActivity
+import com.xjek.provider.views.forgot_password.ForgotPasswordActivity
 import com.xjek.provider.views.signup.SignupActivity
 import java.util.*
 
-class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.SignInNavigator {
+class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.SignInNavigator, ViewUtils.ViewCallBack {
 
-    private lateinit var activitySignInBinding: ActivitySignInBinding
-    private lateinit var signInViewModel: SignInViewModel
+    private lateinit var binding: ActivitySignInBinding
+    private lateinit var viewModel: SignInViewModel
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var callbackManager: CallbackManager
     private lateinit var message: String
     private var isFacebookLoginClicked = false
@@ -50,17 +52,18 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        activitySignInBinding = mViewDataBinding as ActivitySignInBinding
-        activitySignInBinding.lifecycleOwner = this
-        signInViewModel = provideViewModel {
-            SignInViewModel(this)
+        binding = mViewDataBinding as ActivitySignInBinding
+        binding.lifecycleOwner = this
+        viewModel = provideViewModel {
+            SignInViewModel()
         }
-        activitySignInBinding.signInViewModel = signInViewModel
+        viewModel.navigator = this
+        binding.signInViewModel = viewModel
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        observeLiveData(signInViewModel.getLoginObservable()) {
+        observeLiveData(viewModel.getLoginObservable()) {
             ViewUtils.showToast(applicationContext, "Success", true)
             Constant.accessToken = it.responseData.accessToken
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
@@ -72,32 +75,32 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private fun performValidation() {
         hideKeyboard()
         if (isSignInDataValid()) {
-            signInViewModel.postLogin((activitySignInBinding.rgSignin.checkedRadioButtonId == R.id.rb_email))
+            viewModel.postLogin((binding.rgSignin.checkedRadioButtonId == R.id.rb_email))
         } else {
             ViewUtils.showToast(applicationContext, message, false)
         }
     }
 
     private fun isSignInDataValid(): Boolean {
-        if (activitySignInBinding.rgSignin.checkedRadioButtonId == R.id.rb_email) {
-            if (signInViewModel.email.value.isNullOrEmpty()) {
+        if (binding.rgSignin.checkedRadioButtonId == R.id.rb_email) {
+            if (viewModel.email.value.isNullOrEmpty()) {
                 message = resources.getString(R.string.email_empty)
                 return false
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(signInViewModel.email.value.toString().trim())
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(viewModel.email.value.toString().trim())
                             .matches()) {
                 message = resources.getString(R.string.email_invalid)
                 return false
             }
         } else {
-            if (signInViewModel.countryCode.value.isNullOrEmpty()) {
+            if (viewModel.countryCode.value.isNullOrEmpty()) {
                 message = resources.getString(R.string.country_code_empty)
                 return false
-            } else if (signInViewModel.phoneNumber.value.isNullOrEmpty()) {
+            } else if (viewModel.phoneNumber.value.isNullOrEmpty()) {
                 message = resources.getString(R.string.phone_number_empty)
                 return false
             }
         }
-        if (signInViewModel.password.value.isNullOrEmpty()) {
+        if (viewModel.password.value.isNullOrEmpty()) {
             message = resources.getString(R.string.password_empty)
             return false
         }
@@ -107,7 +110,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private fun handleGoogleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-
+            if (account != null && account.id != null) {
+                Logger.i(TAG, account.id!!)
+                viewModel.postSocialLogin(true, account.id!!)
+            }
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -117,14 +123,14 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
 
     private fun handleCountryCodePickerResult(data: Intent) {
         val countryCode = data.getStringExtra("countryCode")
-        signInViewModel.countryCode.value = countryCode
+        viewModel.countryCode.value = countryCode
         val countryFlag = data.getIntExtra("countryFlag", -1)
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
             val drawable = BitmapDrawable(resources,
                     Bitmap.createScaledBitmap(bitmap, 64, 64, true))
-            activitySignInBinding.countrycodeRegisterEt
+            binding.countrycodeRegisterEt
                     .setCompoundDrawablesWithIntrinsicBounds(drawable, null,
                             null, null)
         }
@@ -154,12 +160,13 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
         when (checkedId) {
             R.id.rb_phone -> {
-                activitySignInBinding.tilEmail.visibility = View.GONE
-                activitySignInBinding.llPhoneNumber.visibility = View.VISIBLE
+                binding.tilEmail.visibility = View.GONE
+                binding.llPhoneNumber.visibility = View.VISIBLE
             }
             R.id.rb_email -> {
-                activitySignInBinding.llPhoneNumber.visibility = View.GONE
-                activitySignInBinding.tilEmail.visibility = View.VISIBLE
+                binding.llPhoneNumber.visibility = View.GONE
+                binding.tilEmail.visibility = View.VISIBLE
+                binding.tilEmail.requestFocus()
             }
         }
     }
@@ -170,14 +177,13 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun onForgotPasswordClicked() {
-        val changePasswordIntent = Intent(applicationContext, ChangePasswordActivity::class.java)
+        val changePasswordIntent = Intent(applicationContext, ForgotPasswordActivity::class.java)
         startActivity(changePasswordIntent)
     }
 
     override fun onSignUpClicked() {
         val signUpIntent = Intent(applicationContext, SignupActivity::class.java)
         startActivity(signUpIntent)
-        finish()
     }
 
     override fun onSignInClicked() {
@@ -188,7 +194,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build()
-        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         val googleSignInIntent = mGoogleSignInClient.signInIntent
         startActivityForResult(googleSignInIntent, Enums.RC_GOOGLE_SIGN_IN)
     }
@@ -196,7 +202,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     override fun onFacebookLoginClicked() {
         val accessToken = AccessToken.getCurrentAccessToken()
         if (accessToken != null && !accessToken.isExpired) {
-            // TODO
+            Logger.i(TAG, accessToken.token)
+            viewModel.postSocialLogin(false, accessToken.userId)
         } else {
             isFacebookLoginClicked = true
             callbackManager = CallbackManager.Factory.create()
@@ -205,6 +212,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
                     object : FacebookCallback<LoginResult> {
                         override fun onSuccess(loginResult: LoginResult) {
                             Logger.i(TAG, loginResult.accessToken.token)
+                            viewModel.postSocialLogin(false, loginResult.accessToken.userId)
                         }
 
                         override fun onCancel() {
@@ -218,8 +226,26 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         }
     }
 
+    override fun showAlert(message: String) {
+        ViewUtils.showAlert(this, message, resources.getString(R.string.action_sign_up),
+                resources.getString(R.string.action_cancel), this)
+    }
+
     override fun showError(error: String) {
         ViewUtils.showToast(applicationContext, error, false)
+    }
+
+    override fun onPositiveButtonClick(dialog: DialogInterface) {
+        if (mGoogleSignInClient != null) {
+            mGoogleSignInClient.revokeAccess()
+        }
+        onSignUpClicked()
+    }
+
+    override fun onNegativeButtonClick(dialog: DialogInterface) {
+        if (mGoogleSignInClient != null) {
+            mGoogleSignInClient.revokeAccess()
+        }
     }
 
     companion object {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.webkit.PermissionRequest
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
@@ -13,7 +14,6 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.xjek.base.R
 import es.dmoral.toasty.Toasty
-import permissions.dispatcher.PermissionRequest
 
 object ViewUtils {
 
@@ -76,7 +76,7 @@ object ViewUtils {
         dialog.show()
     }
 
-    @MainThread
+   /* @MainThread
     fun showRationaleAlert(context: Context, message: String, request: PermissionRequest) {
         AlertDialog.Builder(context)
                 .setTitle(context.resources.getString(R.string.app_name))
@@ -87,7 +87,7 @@ object ViewUtils {
                 .setNegativeButton(context.resources.getString(R.string.action_deny)) { dialog, which ->
                     request.cancel()
                 }.show()
-    }
+    }*/
 
     fun bitmapDescriptorFromVector(context: Context, @DrawableRes vectorResId: Int): BitmapDescriptor {
         val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)

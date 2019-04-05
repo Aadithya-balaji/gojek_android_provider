@@ -46,11 +46,11 @@ class OnBoardActivityK : BaseActivity<com.xjek.provider.databinding.ActivityOnBo
     }
 
     override fun goToSignIn() {
-        openNewActivity(this@OnBoardActivityK, SignInActivity::class.java, true)
+        openNewActivity(this@OnBoardActivityK, SignInActivity::class.java, false)
     }
 
     override fun goToSignUp() {
-        openNewActivity(this@OnBoardActivityK, SignupActivity::class.java, true)
+        openNewActivity(this@OnBoardActivityK, SignupActivity::class.java, false)
     }
 
 

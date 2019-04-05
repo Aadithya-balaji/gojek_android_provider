@@ -69,6 +69,9 @@
     <string name="search_country">Search country</string>
     <string name="search_city">Search city</string>
     <string name="terms_condition">I accept the following terms and conditions</string>
+    <string name="gender">Gender</string>
+    <string name="social_signup">Social Signup</string>
+
 
 
     <!-- Sign in -->
@@ -210,7 +213,12 @@
     <string name="password_not_match">Password and Confirm password do not match</string>
     <string name="empty_firstname">Please Enter FirstName</string>
     <string name="empty_lastname">Please Enter LastName</string>
-    <string name="fb_session_expired">Facebook session expired. Kindly open Facebook application…</string>
+    <string name="fb_session_expired">Facebook session expired. Kindly open Facebook applicationâ€¦</string>
+    <string name="unchecked_terms">Please accept the terms and condition</string>
+    <string name="empty_gender_type">Please Choose the gender type</string>
+    <string name="empty_country_code">Please Enter the Country Code</string>
+    <string name="invalid_phone">Pleae Enter the Valid Phone Number</string>
+    <string name="invalid_email">Please Enter the Valid Email</string>
 
     <string name="country_code_empty">Country code should not be empty</string>
     <string name="phone_number_empty">Phone number should not be empty</string>
@@ -220,8 +228,7 @@
     <string name="old_password_empty">Old password should not be empty</string>
     <string name="new_password_empty">New password should not be empty</string>
     <string name="new_password_invalid">Old password and new password should not be same</string>
-    <string name="confirm_password_invalid">New password and confirm password should be
-        same</string>
+    <string name="confirm_password_invalid">New password and confirm password should besame</string>
     <string name="error_otp_empty">Otp should not be empty</string>
     <string name="error_otp_invalid">Please enter correct otp</string>
     <string name="alert_sign_up">Please sign up with this account</string>
@@ -229,6 +236,9 @@
     <!--Action-->
     <string name="action_sign_up">Sign Up</string>
     <string name="action_cancel">Cancel</string>
+
+    <string name="file_pemission_denied">File read permission denied</string>
+    <string name="rationale_storage_permission_denied">Please allow storage permission to change image</string>
 
     <!--Menu-->
     <string name="menu_logout">Logout</string>

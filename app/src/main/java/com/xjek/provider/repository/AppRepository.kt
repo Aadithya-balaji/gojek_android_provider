@@ -13,6 +13,9 @@ import com.xjek.provider.views.splash.SplashViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.http.Part
 import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -105,36 +108,18 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+
+
     @SuppressLint("CheckResult")
-    fun getStateList(viewModel: SignupViewModel, stateID: String): Disposable {
+    fun postSignup(viewModel: SignupViewModel, params: HashMap<String, RequestBody>, @Part filename: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
-                .getStatelist(stateID)
+                .postSignup(params, filename)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.getStateLiveData().postValue(it)
-                })
-    }
+                    viewModel.getSignupLiveData().postValue(it) }, {
 
-    @SuppressLint("CheckResult")
-    fun getCityList(viewModel: SignupViewModel, cityID: String): Disposable {
-        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
-                .getCityList(cityID)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.getCityLiveData().postValue(it)
-                })
-    }
-
-    @SuppressLint("CheckResult")
-    fun postSignup(viewModel: SignupViewModel, params: HashMap<String, String>): Disposable {
-        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
-                .postSignup(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({ viewModel.getSignupLiveData().postValue(it) }, {
-                    viewModel.signupNavigator.showError(it.message!!)
+                    viewModel.signupNavigator.showError(getErrorMessage(it))
                 })
     }
 
@@ -150,6 +135,21 @@ class AppRepository : BaseRepository() {
                 }, {
                     viewModel.navigator.showError(getErrorMessage(it))
                 })
+    }
+
+    fun ValidateUser(viewModel: SignupViewModel,params: HashMap<String, String>):Disposable{
+        return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+                .verifyUser(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if(it.statusCode=="200"){
+
+                    }
+                },{
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+
     }
 
     companion object {

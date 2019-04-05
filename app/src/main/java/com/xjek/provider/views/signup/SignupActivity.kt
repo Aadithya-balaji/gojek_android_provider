@@ -1,17 +1,26 @@
 package com.xjek.provider.views.signup
 
+import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.AsyncTask
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.widget.CompoundButton
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import com.xjek.provider.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.facebook.*
 import com.facebook.accountkit.ui.AccountKitActivity
 import com.facebook.accountkit.ui.AccountKitConfiguration
@@ -24,6 +33,7 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.theartofdev.edmodo.cropper.CropImage
@@ -31,7 +41,10 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
+import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityRegisterBinding
+import com.xjek.provider.network.WebApiConstants
+import com.xjek.provider.utils.CommanMethods
 import com.xjek.provider.utils.Enums
 import com.xjek.provider.utils.Enums.Companion.CITYLIST_REQUEST_CODE
 import com.xjek.provider.utils.Enums.Companion.COUNTRYLIST_REQUEST_CODE
@@ -40,16 +53,25 @@ import com.xjek.provider.utils.Enums.Companion.GOOGLE_REQ_CODE
 import com.xjek.provider.views.citylist.CityListActivity
 import com.xjek.provider.views.countrylist.CountryListActivity
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
+import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.document.DocumentActivity
 import com.xjek.provider.views.signin.SignInActivity
 import com.xjek.user.data.repositary.remote.model.City
 import com.xjek.user.data.repositary.remote.model.CountryResponseData
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import org.json.JSONObject
+import permissions.dispatcher.*
+import java.io.File
+import java.io.FileOutputStream
 import java.io.Serializable
+import java.net.URL
 import java.util.*
 
 
-class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.SignupNavigator, View.OnClickListener {
+@RuntimePermissions
+class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.SignupNavigator, CompoundButton.OnCheckedChangeListener, View.OnClickListener, View.OnFocusChangeListener, TextWatcher {
 
 
     private lateinit var tlCountryCode: TextInputLayout
@@ -58,15 +80,20 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     private lateinit var edtEmail: TextInputEditText
     private lateinit var edtPassword: TextInputEditText
     private lateinit var edtCity: TextInputEditText
-    private lateinit var edtState: TextInputEditText
     private lateinit var edtCountryCode: TextInputEditText
     private lateinit var edtCountry: TextInputEditText
-    private lateinit var edtConfirmPassword: TextInputEditText
     private lateinit var edtFirstName: TextInputEditText
     private lateinit var edtLastName: TextInputEditText
     private lateinit var ivProfile: ImageView
+    private lateinit var tlPassword: TextInputLayout
     private var message: String = ""
     private lateinit var cityList: List<City>
+    private var isEmailFocus: Boolean? = false
+    private var isPhoneFocus: Boolean? = false
+    private var filePart: MultipartBody.Part? = null
+    private lateinit var rbMale: MaterialRadioButton
+    private lateinit var rbFemale: MaterialRadioButton
+    private var isConditionChecked: Boolean? = false
 
 
     private var strPhoneCode: String? = ""
@@ -82,6 +109,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     private lateinit var signupViewmodel: SignupViewModel
     private lateinit var callbackManager: CallbackManager
     private var mGoogleApiClient: GoogleApiClient? = null
+    private var imageUrl: String? = null
 
     override fun getLayoutId(): Int = R.layout.activity_register
 
@@ -102,8 +130,10 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         edtCountry = findViewById(R.id.edt_signup_country)
         edtCity = findViewById(R.id.edt_signup_city)
         edtPassword = findViewById(R.id.edt_signup_password)
-        edtConfirmPassword = findViewById(R.id.edt_signup_confirmpwd)
         ivProfile = findViewById(R.id.profile_image)
+        tlPassword = findViewById(R.id.til_signup_pwd)
+        rbMale = findViewById(R.id.rbMale)
+        rbFemale = findViewById(R.id.rbFemale)
         callbackManager = CallbackManager.Factory.create()
         edtCountry.isFocusableInTouchMode = false
         edtCity.isFocusableInTouchMode = false
@@ -118,19 +148,32 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         initGoogle()
 
         getApiResponse()
+        observeLiveData(signupViewmodel.phoneNumber) {
+            if (!TextUtils.isEmpty(signupViewmodel.countryCode.value.toString()))
+                if (CommanMethods.validatePhone(signupViewmodel.phoneNumber.value.toString()) == true) {
+                    val params = HashMap<String, String>()
+                    params.put(WebApiConstants.SALT_KEY, "MQ==")
+                    params.put(WebApiConstants.ValidateUser.PHONE, signupViewmodel.phoneNumber.value.toString())
+                    params.put(WebApiConstants.ValidateUser.COUNTRYCODE, signupViewmodel.countryCode.toString())
+                    Log.e("phone ", "-------observe" + signupViewmodel.countryCode.value
+                            + "--" + signupViewmodel.phoneNumber.value)
+                    println("phone ${signupViewmodel.phoneNumber.value}")
+                    signupViewmodel.validateUser(params)
+                }
+        }
+
     }
 
     fun getApiResponse() {
         baseLiveDataLoading.value = false
         observeLiveData(signupViewmodel.getSignupLiveData()) {
             if (signupViewmodel.getSignupObserverValue()!!.statusCode.equals("200")) {
-                showToast("Success")
+                // verifyPhoneNumber()
             }
         }
 
 
         observeLiveData(signupViewmodel.getCountryLiveData()) {
-            ViewUtils.showToast(applicationContext, "Success", true)
             val intent = Intent(this@SignupActivity, CountryListActivity::class.java)
             intent.putExtra("selectedfrom", "country")
             intent.putExtra("countrylistresponse", it as Serializable)
@@ -162,7 +205,11 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
                     signupViewmodel.cityID.value = selectedCity?.id.toString()
                 }
                 FB_ACCOUNT_KIT_CODE -> {
-                    showToast("Verified")
+                    val dashBoardIntent = Intent(this@SignupActivity, DashBoardActivity::class.java)
+                    dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(dashBoardIntent)
+                    finish()
+
                 }
 
                 GOOGLE_REQ_CODE -> {
@@ -195,6 +242,11 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     ivProfile.setImageURI(result.uri)
+                    val profileFile = File(result.uri.toString())
+                    if (profileFile != null && profileFile.exists()) {
+                        filePart = MultipartBody.Part.createFormData("picture", profileFile.getName(), RequestBody.create(MediaType.parse("image*//*"), profileFile));
+                        signupViewmodel.fileName.value = filePart
+                    }
                 }
 
 
@@ -207,6 +259,15 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         // edtCountryCode.setOnClickListener(this)
         edtCountryCode.isFocusableInTouchMode = false
         edtCity.setOnClickListener(this)
+        rbFemale.setOnCheckedChangeListener(this)
+        rbMale.setOnCheckedChangeListener(this)
+        edtCountryCode.isFocusableInTouchMode = false
+        edtCountry.isFocusableInTouchMode = false
+        edtCity.isFocusableInTouchMode = false
+        edtEmail.setOnFocusChangeListener(this)
+        edtPhoneNumber.setOnFocusChangeListener(this)
+        edtEmail.addTextChangedListener(this)
+        edtPhoneNumber.addTextChangedListener(this)
     }
 
     //do registration
@@ -251,8 +312,12 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
             return false
         } else if (TextUtils.isEmpty(signupViewmodel.lastName.value)) {
             message = resources.getString(R.string.empty_lastname)
+            return false
         } else if (TextUtils.isEmpty(signupViewmodel.countryCode.value)) {
-            message = resources.getString(R.string.empty_phone)
+            message = resources.getString(R.string.empty_country_code)
+            return false
+        } else if (rbFemale.isChecked == false && rbMale.isChecked == false) {
+            message = resources.getString(R.string.empty_gender_type)
             return false
         } else if (TextUtils.isEmpty(signupViewmodel.phoneNumber.value)) {
             message = resources.getString(R.string.empty_phone)
@@ -260,17 +325,20 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         } else if (TextUtils.isEmpty(signupViewmodel.email.value)) {
             message = resources.getString(R.string.email_empty)
             return false
-        } else if (TextUtils.isEmpty(signupViewmodel.password.value)) {
+        } else if (TextUtils.isEmpty(signupViewmodel.password.value) && signupViewmodel.socialID.value.isNullOrEmpty()) {
             message = resources.getString(R.string.password_empty)
-            return false
-        } else if (TextUtils.isEmpty(signupViewmodel.confirmPassword.value)) {
-            // message = resources.getString(R.string.password_not_match)
             return false
         } else if (TextUtils.isEmpty(signupViewmodel.countryName.value)) {
             message = resources.getString(R.string.empty_country)
             return false
         } else if (TextUtils.isEmpty(signupViewmodel.cityName.value)) {
             message = resources.getString(R.string.empty_city)
+            return false
+        } else if (mViewDataBinding.cbTermsCondition.isChecked == false) {
+            message = resources.getString(R.string.unchecked_terms)
+            return false
+        } else if (rbFemale.isChecked == false && rbMale.isChecked == false) {
+            message = resources.getString(R.string.empty_gender_type)
             return false
         }
 
@@ -292,11 +360,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
                 AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build())
         startActivityForResult(intent, FB_ACCOUNT_KIT_CODE)
-    }
-
-
-    override fun facebookSignup() {
-        LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY).logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
     }
 
 
@@ -334,10 +397,18 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
                 val socialId = jsonObject.getString("id")
                 val token = accessToken.token
                 val socialEmail = jsonObject.getString("email")
+                val img_value = "http://graph.facebook.com/" + jsonObject.getString("id") + "/picture?type=large"
+                Glide.with(this@SignupActivity).load(img_value).into(mViewDataBinding.profileImage)
                 Log.e("FB_ID", "-----" + socialId)
                 signupViewmodel.firstName.value = socialFirstName
                 signupViewmodel.lastName.value = socialLastName
                 signupViewmodel.email.value = socialEmail
+
+                signupViewmodel.loginby.value = "FACEBOOK"
+                tlPassword.visibility = View.GONE
+
+                //DownloadImage
+                DownloadImage(this@SignupActivity).execute(img_value)
 
                 if (jsonObject.has("picture")) {
                     val profileImg = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
@@ -354,11 +425,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         request.executeAsync()
     }
 
-    override fun googleSignup() {
-        val intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
-        startActivityForResult(intent, GOOGLE_REQ_CODE)
-    }
-
 
     fun handleGplusSignInResult(result: GoogleSignInAccount) {
         var socialFirstName = result.getGivenName()
@@ -366,11 +432,12 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         var socialId = result.getId()
         var email = result.getEmail()
         var token = result.getIdToken()
-        var profileImage = result.photoUrl
+        val profileImage = result.photoUrl
 
         signupViewmodel.firstName.value = socialFirstName.toString()
         signupViewmodel.lastName.value = socialLastName.toString()
         signupViewmodel.email.value = email.toString()
+        signupViewmodel.socialID.value = socialId
 
         if (!signupViewmodel.firstName.value.isNullOrEmpty()) {
             edtFirstName.isEnabled = false
@@ -379,6 +446,13 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         } else if (!signupViewmodel.email.value.isNullOrEmpty()) {
             edtEmail.isEnabled = false
         }
+
+        signupViewmodel.loginby.value = "GOOGLE"
+        tlPassword.visibility = View.GONE
+
+        val url: URL = URL(profileImage.toString())
+        DownloadImage(this@SignupActivity).execute(url.toString())
+
 
         Log.e("firstName", "==" + socialFirstName)
         Log.e("email", "===" + email)
@@ -407,7 +481,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
             val drawable = BitmapDrawable(resources,
                     Bitmap.createScaledBitmap(bitmap, 64, 64, true))
-            mViewDataBinding.edtSignupCountry
+            mViewDataBinding.edtSignupCode
                     .setCompoundDrawablesWithIntrinsicBounds(drawable, null,
                             null, null)
         }
@@ -419,29 +493,202 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     }
 
 
+    override fun validate() {
+
+        signupViewmodel.firstName.value = edtFirstName.text.toString()
+        signupViewmodel.lastName.value = edtLastName.text.toString()
+        signupViewmodel.phoneNumber.value = edtPhoneNumber.text.toString()
+        signupViewmodel.password.value = edtPassword.text.toString()
+        signupViewmodel.cityName.value = edtCity.text.toString()
+        signupViewmodel.countryName.value = edtCountry.text.toString()
+
+
+        if (isValidCredential()) {
+            baseLiveDataLoading.value = true
+            val profileFile = File(imageUrl.toString())
+            if (profileFile != null && profileFile.exists()) {
+                Log.e("signup", "---------" + profileFile.path)
+                filePart = MultipartBody.Part.createFormData("picture", profileFile.getName(), RequestBody.create(MediaType.parse("image*//*"), profileFile));
+                signupViewmodel.fileName.value = filePart
+            }
+            signupViewmodel.postSignup()
+        } else {
+            ViewUtils.showToast(this@SignupActivity, message, false)
+        }
+    }
+
+
+    override fun facebookSignup() {
+
+        getFacebookprofileWithPermissionCheck()
+    }
+
     override fun getImage() {
+        pickImageWithPermissionCheck()
+    }
+
+    override fun googleSignup() {
+        getGoogleProfileWithPermissionCheck()
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun getFacebookprofile() {
+        tlPassword.visibility = View.GONE
+        LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY).logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
+    }
+
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun getGoogleProfile() {
+        tlPassword.visibility = View.GONE
+        val intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
+        startActivityForResult(intent, GOOGLE_REQ_CODE)
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun pickImage() {
         CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).start(this)
     }
 
-    override fun validate() {
 
-        baseLiveDataLoading.value = true
+    @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun onLocationPermissionDenied() {
+        ViewUtils.showToast(this@SignupActivity, getString(R.string.file_pemission_denied), false)
+    }
 
-        /*  signupViewmodel.firstName.value = edtFirstName.text.toString()
-          signupViewmodel.lastName.value = edtLastName.text.toString()
-          signupViewmodel.phoneNumber.value = edtPhoneNumber.text.toString()
-          signupViewmodel.password.value = edtPassword.text.toString()
-          signupViewmodel.cityName.value = edtCity.text.toString()
-          signupViewmodel.countryName.value = edtCountry.text.toString()
-          signupViewmodel.confirmPassword.value = edtConfirmPassword.text.toString()
+    @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    fun onShowRationale(request: PermissionRequest) {
+        ViewUtils.showToast(this@SignupActivity, getString(R.string.rationale_storage_permission_denied), false)
+    }
 
-          if (isValidCredential()) {
-              baseLiveDataLoading.value = true
-              signupViewmodel.postSignup()
-          } else {
-              ViewUtils.showToast(this@SignupActivity, message, false)
-          }*/
+    inner class DownloadImage(context: Context) : AsyncTask<String, Void, String>() {
+        var mContext: Context = context
+        override fun onPreExecute() {
+            super.onPreExecute()
+            baseLiveDataLoading.value = true
+        }
+
+        override fun onPostExecute(result: String?) {
+            super.onPostExecute(result)
+            baseLiveDataLoading.value = false
+            imageUrl = result
+
+        }
+
+        override fun doInBackground(vararg params: String?): String {
+            val imgUrl = params[0]
+
+            val requestOptions = RequestOptions().override(100)
+                    .downsample(DownsampleStrategy.CENTER_INSIDE)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+            var file = CommanMethods.getDefaultFileName(mContext)
+            mContext?.let {
+                val bitmap = Glide.with(it)
+                        .asBitmap()
+                        .load(imgUrl)
+                        .apply(requestOptions)
+                        .submit()
+                        .get()
+
+                try {
+                    val out = FileOutputStream(file)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
+                    out.flush()
+                    out.close()
+                    Log.i("Seiggailion", "Image saved.")
+                } catch (e: Exception) {
+                    Log.i("Seiggailion", e.message)
+                }
+            }
+            if (file != null && file.exists()) {
+                return file.path
+            } else {
+                return ""
+            }
+        }
+
+    }
+
+    override fun onFocusChange(v: View?, hasFocus: Boolean) {
+        when (v!!.id) {
+            R.id.edt_signup_mail -> {
+                if (hasFocus) {
+                    isEmailFocus = true
+                    isPhoneFocus = false
+                }
+            }
+
+            R.id.edt_signup_phone -> {
+                isPhoneFocus = true
+                isEmailFocus = false
+
+            }
+
+        }
     }
 
 
+    override fun afterTextChanged(s: Editable?) {
+
+
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+    }
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        if (isEmailFocus == true) {
+            if (CommanMethods.validateEmail(s.toString())) {
+                val params = HashMap<String, String>()
+                params.put(WebApiConstants.SALT_KEY, "MQ==")
+                params.put(WebApiConstants.EMAIL, signupViewmodel.email.value.toString())
+                signupViewmodel.validateUser(params)
+                Log.e("email", "------" + signupViewmodel.email.value.toString())
+            }
+        } else if (isPhoneFocus == true) {
+//            if (!TextUtils.isEmpty(signupViewmodel.countryCode.value.toString()))
+//                if (CommanMethods.validatePhone(s.toString())) {
+//                    val params = HashMap<String, String>()
+//                    params.put(WebApiConstants.SALT_KEY, "MQ==")
+//                    params.put(WebApiConstants.ValidateUser.PHONE, signupViewmodel.phoneNumber.value.toString())
+//                    params.put(WebApiConstants.ValidateUser.COUNTRYCODE, signupViewmodel.countryCode.toString())
+//
+//                    Log.e("phone ", "-----" + signupViewmodel.countryCode.value
+//                            + "--" + signupViewmodel.phoneNumber.value)
+//
+//                    println("phone ${signupViewmodel.phoneNumber.value}")
+//                    signupViewmodel.validateUser(params)
+//                }
+        }
+    }
+
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        when (buttonView!!.id) {
+            R.id.rbMale -> {
+                if (isChecked == true) {
+                    signupViewmodel.gender.value = "MALE"
+                    Log.e("signup", "--------gender" + signupViewmodel.gender.value)
+                }
+
+            }
+
+            R.id.rbFemale -> {
+                if (isChecked == true) {
+                    signupViewmodel.gender.value = "FEMALE"
+                    Log.e("signup", "--------gender" + signupViewmodel.gender.value)
+
+                }
+            }
+
+            R.id.cb_terms_condition -> {
+                if (isChecked) {
+                    isConditionChecked = true
+                } else {
+                    isConditionChecked = false
+                }
+            }
+        }
+    }
 }

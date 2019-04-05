@@ -24,9 +24,8 @@ import com.xjek.xuberservice.invoice_fragment.InvoiceFragment
 import com.xjek.xuberservice.ratingFragment.RatingFragment
 import com.xjek.xuberservice.startservice_fragment.StartServiceFragment
 import kotlinx.android.synthetic.main.activity_xubermain.*
-import permissions.dispatcher.*
 
-@RuntimePermissions
+
 class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNavigator, OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraIdleListener, CommunicationListener {
 
@@ -84,7 +83,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         this.mGoogleMap?.setOnCameraIdleListener(this@XuberMainActivity)
     }
 
-    @SuppressLint("MissingPermission")
+    /*@SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     fun updateLocationUI() {
 
@@ -105,7 +104,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
                 updateMapLocation(Constants.DEFAULT_LOCATION)
             }
         })
-    }
+    }*/
 
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
         if (!isAnimateMap) {
@@ -118,7 +117,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         //mGoogleMap!!.addMarker(MarkerOptions().icon(ViewUtils.bitmapDescriptorFromVector(this@TaxiMainActivity,R.drawable.ic_taxi_pin)).position(location).anchor(0.5f,0.5f))
     }
 
-    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    /*@OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     fun onLocationPermissionDenied() {
         ViewUtils.showToast(this@XuberMainActivity, resources.getString(R.string
                 .location_permission_denied), false)
@@ -129,12 +128,12 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         ViewUtils.showRationaleAlert(this@XuberMainActivity, resources.getString(R.string
                 .location_permission_rationale), request)
     }
+*/
 
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+   /* override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
-    }
+    }*/
 
     override fun goBack() {
         onBackPressed()

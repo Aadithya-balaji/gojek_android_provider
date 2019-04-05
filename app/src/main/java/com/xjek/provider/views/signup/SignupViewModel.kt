@@ -1,14 +1,16 @@
 package com.xjek.provider.views.signup
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
-import com.xjek.provider.models.CityListResponse
 import com.xjek.provider.models.SignupResponseModel
-import com.xjek.provider.models.StateListResponse
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Enums
 import com.xjek.user.data.repositary.remote.model.CountryListResponse
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<SignupViewModel.SignupNavigator>() {
 
@@ -27,18 +29,20 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
     var gender = MutableLiveData<String>()
     var countryName = MutableLiveData<String>()
     var cityName = MutableLiveData<String>()
-
-
+    var socialID = MutableLiveData<String>()
+    var fileName = MutableLiveData<MultipartBody.Part>()
+    var loginby = MutableLiveData<String>()
     private var countryListResponse = MutableLiveData<CountryListResponse>()
     private var signupResponse = MutableLiveData<SignupResponseModel>()
-    private var stateListResponse = MutableLiveData<StateListResponse>()
-    private var cityListResponse = MutableLiveData<CityListResponse>()
     private var errorResponse = MutableLiveData<Throwable>()
     var loadingProgress = MutableLiveData<Boolean>()
 
-    fun doRegistration() {
-        signupNavigator.validate()
+    init {
+        this.navigator = signupNavigator
     }
+
+    fun doRegistration() {
+        signupNavigator.validate() }
 
     fun gotoSignin() {
         signupNavigator.openSignin()
@@ -48,36 +52,31 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         signupNavigator.gotoDocumentPage()
     }
 
-    fun getCountryObserverValue() = getCountryLiveData().value
-    fun getStateListObserverValue() = getStateLiveData().value
-    fun getCityListObserverValue() = getCityLiveData().value
     fun getSignupObserverValue() = getSignupLiveData().value
-
     fun getCountryLiveData() = countryListResponse
-    fun getStateLiveData() = stateListResponse
-    fun getCityLiveData() = cityListResponse
     fun getSignupLiveData() = signupResponse
 
 
     fun postSignup() {
-        val signupParams = HashMap<String, String>()
-        signupParams.put(WebApiConstants.SALT_KEY, "MQ==")
-        signupParams.put(WebApiConstants.DEVICE_TYPE, Enums.DEVICE_TYPE)
-        signupParams.put(WebApiConstants.DEVICE_TOKEN, "123456")
-        signupParams.put(WebApiConstants.LOGIN_BY, Enums.LOGINBY.MANUAL.name.toUpperCase())
-        signupParams.put(WebApiConstants.FIRST_NAME, firstName.value.toString())
-        signupParams.put(WebApiConstants.LAST_NAME, lastName.value.toString())
-        signupParams.put(WebApiConstants.EMAIL, email.value.toString())
-        signupParams.put(WebApiConstants.GENDER, gender.value.toString())
-        signupParams.put(WebApiConstants.COUNTRY_CODE, countryCode.value.toString())
-        signupParams.put(WebApiConstants.MOBILE, phoneNumber.value.toString())
-        signupParams.put(WebApiConstants.PASSWORD, password.value.toString())
-        signupParams.put(WebApiConstants.CONFIRM_PASSWORD, confirmPassword.value.toString())
-        signupParams.put(WebApiConstants.COUNTRY_ID, countryID.value.toString())
-        signupParams.put(WebApiConstants.CITY_ID, cityID.value.toString())
-        signupParams.put(WebApiConstants.STATE_ID, stateID.value.toString())
+        val signupParams = HashMap<String, RequestBody>()
+        signupParams.put(WebApiConstants.SALT_KEY, RequestBody.create(MediaType.parse("text/plain"), "MQ=="))
+        signupParams.put(WebApiConstants.Signup.DEVICE_TYPE, RequestBody.create(MediaType.parse("text/plain"), Enums.DEVICE_TYPE))
+        signupParams.put(WebApiConstants.Signup.DEVICE_TOKEN, RequestBody.create(MediaType.parse("text/plain"), "123"))
+        signupParams.put(WebApiConstants.Signup.LOGIN_BY, RequestBody.create(MediaType.parse("text/plain"), loginby.value.toString()))
+        signupParams.put(WebApiConstants.Signup.FIRST_NAME, RequestBody.create(MediaType.parse("text/plain"), firstName.value.toString()))
+        signupParams.put(WebApiConstants.Signup.LAST_NAME, RequestBody.create(MediaType.parse("text/plain"), lastName.value.toString()))
+        signupParams.put(WebApiConstants.Signup.EMAIL, RequestBody.create(MediaType.parse("text/plain"), email.value.toString()))
+        signupParams.put(WebApiConstants.Signup.GENDER, RequestBody.create(MediaType.parse("text/plain"), gender.value.toString()))
+        signupParams.put(WebApiConstants.Signup.COUNTRY_CODE, RequestBody.create(MediaType.parse("text/plain"), countryCode.value.toString()))
+        signupParams.put(WebApiConstants.Signup.MOBILE, RequestBody.create(MediaType.parse("text/plain"), phoneNumber.value.toString()))
+        signupParams.put(WebApiConstants.Signup.PASSWORD, RequestBody.create(MediaType.parse("text/plain"), password.value.toString()))
+        signupParams.put(WebApiConstants.Signup.COUNTRY_ID, RequestBody.create(MediaType.parse("text/plain"), countryID.value.toString()))
+        signupParams.put(WebApiConstants.Signup.CITY_ID, RequestBody.create(MediaType.parse("text/plain"), cityID.value.toString()))
+        if (!socialID.value.isNullOrEmpty())
+            signupParams.put(WebApiConstants.Signup.SOCIAL_ID, RequestBody.create(MediaType.parse("text/plain"), socialID.value.toString()))
 
-        getCompositeDisposable().add(appRepository.postSignup(this, signupParams))
+        getCompositeDisposable().add(appRepository.postSignup(this, signupParams, fileName.value))
+
     }
 
     fun getCountryList() {
@@ -107,12 +106,16 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         val signupNavigator1 = validate()
     }
 
-    fun getCountryCode() {
+    fun gotToCountryPage() {
         signupNavigator.getCountryCode()
     }
 
     fun getImage() {
         signupNavigator.getImage()
+    }
+
+    fun validateUser(params: HashMap<String, String>) {
+        getCompositeDisposable().add(appRepository.ValidateUser(this, params))
     }
 
     interface SignupNavigator {

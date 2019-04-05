@@ -2,6 +2,7 @@ package com.xjek.provider.views.countrylist
 
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.appcompat.widget.SearchView
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
@@ -9,38 +10,38 @@ import com.xjek.provider.databinding.ActivityCountryListBinding
 import com.xjek.provider.views.adapters.CountryListAdapter
 import com.xjek.user.data.repositary.remote.model.CountryListResponse
 
-class CountryListActivity : BaseActivity<ActivityCountryListBinding>() {
+class CountryListActivity : BaseActivity<ActivityCountryListBinding>(), SearchView.OnQueryTextListener,CountryNavigator {
+
 
     lateinit var mViewDataBinding: ActivityCountryListBinding
     override fun getLayoutId(): Int = R.layout.activity_country_list
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
-
         this.mViewDataBinding = mViewDataBinding as ActivityCountryListBinding
         this.mViewDataBinding.lifecycleOwner=this
-
         val countrylist = intent.getSerializableExtra("countrylistresponse") as CountryListResponse
         mViewDataBinding.countrylistadapter = CountryListAdapter(this, countrylist.responseData)
+        val countryViewModel=CountryViewModel()
+        countryViewModel.navigator=this
+        mViewDataBinding.countrylistmodel=countryViewModel
+        mViewDataBinding.svCountry.setOnQueryTextListener(this)
 
-
-
-        mViewDataBinding.inputSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-                if (s!!.length>2)
-                    mViewDataBinding.countrylistadapter!!.filter.filter(s)
-            }
-
-        })
     }
 
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        mViewDataBinding.countrylistadapter!!.filter.filter(query)
+        return true
+    }
+
+    override fun onQueryTextChange(newText: String?): Boolean {
+        mViewDataBinding.countrylistadapter!!.filter.filter(newText)
+        return true
+    }
+
+    override fun closeActivity() {
+        hideKeyboard()
+        finish()
+    }
 
 }

@@ -84,6 +84,9 @@ dependencies {
     //Facebook Login
     implementation 'com.facebook.android:facebook-login:4.39.0'
     // Added dependent library modules into the Android app module.
+
+    implementation "org.permissionsdispatcher:permissionsdispatcher:4.3.0"
+    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"
     implementation project(':base')
     implementation project(':foodservice')
     implementation project(':taxiservice')

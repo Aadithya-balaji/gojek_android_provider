@@ -1,5 +1,6 @@
 package com.xjek.provider.views.adapters
 
+import android.app.Activity
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -41,7 +42,7 @@ class CityListAdapter(val activity: FragmentActivity?, val citylist: List<City>)
             override fun onListClickListner() {
                 val intent = Intent()
                 intent.putExtra("selected_list", citySearchList!!.get(position) as Serializable)
-                activity!!.setResult(102, intent)
+                activity!!.setResult(Activity.RESULT_OK, intent)
                 activity!!.finish()
             }
 

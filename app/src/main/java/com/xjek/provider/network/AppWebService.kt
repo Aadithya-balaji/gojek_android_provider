@@ -3,6 +3,8 @@ package com.xjek.provider.network
 import com.xjek.provider.models.*
 import com.xjek.user.data.repositary.remote.model.CountryListResponse
 import io.reactivex.Observable
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 import java.util.*
 
@@ -40,9 +42,12 @@ interface AppWebService {
     @GET("cities/{city_id}")
     fun getCityList(@Path("city_id") city_id: String): Observable<CityListResponse>
 
-    @FormUrlEncoded
+    @Multipart
     @POST("provider/signup")
-    fun postSignup(@FieldMap params: HashMap<String, String>): Observable<SignupResponseModel>
+    fun postSignup(
+            @PartMap params: HashMap<String, RequestBody>,
+            @Part fileName: MultipartBody.Part?
+    ): Observable<SignupResponseModel>
 
     @FormUrlEncoded
     @POST("provider/password")
@@ -50,4 +55,8 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<ChangePasswordResponseModel>
+
+    @FormUrlEncoded
+    @POST("provider/verify")
+    fun  verifyUser(@FieldMap params: HashMap<String, String>):Observable<VerifyUser>
 }

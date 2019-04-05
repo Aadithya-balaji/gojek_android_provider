@@ -65,7 +65,7 @@ dependencies {
 
     //      LiveData
     api 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha03'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.1.0-alpha03'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.1.0-alpha03'
 
     // Circle Image
     api 'de.hdodenhof:circleimageview:3.0.0'
@@ -89,9 +89,6 @@ dependencies {
     //OAuth
     api 'com.google.android.gms:play-services-auth:16.0.0'
 
-    //Permission check
-    //Permission Dispatcher
-    api 'com.github.hotchemi:permissionsdispatcher:4.1.0'
 
     //Loading
     api 'com.wang.avi:library:2.1.3'

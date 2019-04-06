@@ -13,7 +13,7 @@ import com.xjek.provider.views.foodproviderfragment.FoodProviderFragment
 import com.xjek.provider.views.taxiproviderfragment.TaxiProviderFragment
 import com.xjek.provider.views.xuberServicesProviderFragment.XuberServicesProviderFragment
 
-class HomeFragment : BaseFragment<com.xjek.provider.databinding.FragmentHomePageBinding>(), Home_Navigator {
+class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator {
 
     private lateinit var mHomeDataBinding: com.xjek.provider.databinding.FragmentHomePageBinding
     override fun getLayoutId(): Int = R.layout.fragment_home_page

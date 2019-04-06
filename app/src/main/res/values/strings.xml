@@ -1,7 +1,53 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-
-    <string name="sign_in">Sign In</string>
+    <!--On-Board Screen-->
     <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+
+    <!--Sign Up Screen-->
+    <string name="social_sign_up">Social Signup</string>
+    <string name="connect_via_google">Connect via Google</string>
+    <string name="connect_via_facebook">Connect via Facebook</string>
+    <string name="create_account">Create Account</string>
+    <string name="hint_first_name">FirstName</string>
+    <string name="hint_last_name">LastName</string>
+    <string name="hint_code">code</string>
+    <string name="hint_phone_number">Phone Number</string>
+    <string name="label_gender">Gender</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
+    <string name="hint_email_id">Email Id</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_confirm_password">Confirm Password</string>
+    <string name="hint_country">Country</string>
+    <string name="hint_city">City</string>
+    <string name="terms_condition">I accept the following terms and conditions</string>
+    <string name="already_have_account">Already have an account</string>
+    <string name="search_country">Search country</string>
+    <string name="search_city">Search city</string>
+
+    <!-- Sign In Screen-->
+    <string name="login_via">Login Via</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="do_not_have_account">Don\'t have an account</string>
+    <string name="or">OR</string>
+    <string name="social_login">Social Login</string>
+
+    <!--Forgot Password Screen-->
+    <string name="title_forgot_password">Forgot Password</string>
+    <string name="reset_via">Reset Via</string>
+
+    <!--Reset Password Screen-->
+    <string name="title_reset_password">Reset Password</string>
+    <string name="enter_otp">Enter Otp</string>
+    <string name="hint_otp">Otp</string>
+    <string name="hint_new_password">New Password</string>
+    <string name="reset">Reset</string>
+
+    <!--Home Screen-->
+    <string name="menu_home">Home</string>
+    <string name="menu_history">History</string>
+    <string name="menu_notification">Notification</string>
+    <string name="menu_account">Account</string>>
 
     <!-- Upload Document -->
     <string name="btn_doc_txt">Proceed</string>
@@ -21,10 +67,8 @@
     <string name="taxi_hint_vechile_category">Car Category</string>
     <string name="edit_image">Edit_image</string>
 
-
     <!-- Foodie vechile detail -->
     <string name="foodie_vechile_number_hint">Enter Vehicle Number</string>
-
 
     <!-- Services -->
     <string name="services_hint_service_type">Service Type</string>
@@ -36,104 +80,102 @@
     <string name="label_service_type">Service Type</string>
     <string name="label_schedule_date">Scheduled date</string>
 
-
-    <!--- Home tab -->
-    <string name="tab_home">Home</string>
-    <string name="tab_history">History</string>
-    <string name="tab_notification">Notification</string>
-    <string name="tab_account">Account</string>>
-
-    <!-- Order tab -->
+    <!--History Screen-->
+    <string name="title_history">History</string>
     <string name="order_track">Track</string>
     <string name="order_call">Call</string>
     <string name="order_cancel">Cancel</string>
     <string name="order_past">Past</string>
     <string name="order_current">Current</string>
 
-    <!-- Register -->
-    <string name="user_name_hint">User Name</string>
-    <string name="create_account">Create Account</string>
-    <string name="countrycode_hint">code</string>
-    <string name="phonenumber_hint">Phone Number</string>
-    <string name="email_id_hint">Email Id</string>
-    <string name="password_hint">Password</string>
-    <string name="city_hint">City</string>
-    <string name="country_hint">Country</string>
-    <string name="state_hint">State</string>
-    <string name="already_have_an_account">Already have an account</string>
-    <string name="confirm_pwd_hint">Confirm Password</string>
-    <string name="hint_firstname">FirstName</string>
-    <string name="hint_lastname">LastName</string>
-    <string name="male">Male</string>
-    <string name="female">Female</string>
-    <string name="search_country">Search country</string>
-    <string name="search_city">Search city</string>
-    <string name="terms_condition">I accept the following terms and conditions</string>
-    <string name="gender">Gender</string>
-    <string name="social_signup">Social Signup</string>
-
-
-
-    <!-- Sign in -->
-    <string name="login_via">Login Via</string>
-    <string name="dont_have_account">Don\'t have an account</string>
-    <string name="or">OR</string>
-    <string name="social_login">Social Login</string>
-    <string name="connect_via_google">Connect via Google</string>
-    <string name="connect_via_facebook">Connect via Facebook</string>
-    <string name="forgot_password">Forgot Password ?</string>
-
-    <!--Forgot Password-->
-    <string name="title_forgot_password">Forgot Password</string>
-    <string name="reset_via">Reset Via</string>
-
-    <!--Reset Password-->
-    <string name="title_reset_password">Reset Password</string>
-    <string name="enter_otp">Enter Otp</string>
-    <string name="otp">Otp</string>
-    <string name="new_password">New Password</string>
-    <string name="confirm_password">Confirm Password</string>
-    <string name="reset">Reset</string>
-
-    <!--Change Password-->
-    <string name="title_change_password">Change Password</string>
-    <string name="create_new_password">Create new password</string>
-    <string name="old_password">Old Password</string>
-
-    <!-- Notification -->
+    <!--Notification Screen-->
+    <string name="title_notification">Notification</string>
     <string name="notificaiton_valid_label">Valid Till</string>
-    <string name="notification_date"></string>
     <string name="notification_label_car">Car Notification</string>
     <string name="notificaiton_label_foodie">Food Notificaiton</string>
     <string name="notification_label_service">Service Notification</string>
 
-    <!-- Account -->
-    <string name="account_profile">Profile</string>
-    <string name="account_card">Manage Address</string>
-    <string name="account_gift">Payment</string>
-    <string name="privacy_support">Support</string>
-    <string name="account_privacy">Privacy Policy</string>
-    <string name="account_invite">Invite Referrals</string>
-    <string name="your_referral_code">Your Refferal Code</string>
-
-
-    <string-array name="account">
-        <item>Profile</item>
-        <item>Invite Referrals</item>
-        <item>Payment</item>
-        <item>Transcation</item>
-        <item>Privacy Policy</item>
-        <item>Support</item>
+    <!--Account Screen-->
+    <string name="title_my_account">My Account</string>
+    <integer-array name="icon_account">
+        <item>@drawable/ic_user</item>
+        <item>@drawable/ic_gift_card</item>
+        <item>@drawable/ic_card</item>
+        <item>@drawable/ic_policy</item>
+        <item>@drawable/ic_support</item>
+        <item>@drawable/ic_services</item>
+        <item>@drawable/ic_document</item>
+        <item>@drawable/ic_language</item>
+    </integer-array>
+    <string-array name="title_account">
+        <item>@string/title_profile</item>
+        <item>@string/title_invite_referrals</item>
+        <item>@string/title_payment</item>
+        <item>@string/title_privacy_policy</item>
+        <item>@string/title_support</item>
+        <item>@string/title_manage_services</item>
+        <item>@string/title_manage_documents</item>
+        <item>@string/title_language</item>
     </string-array>
 
-    <integer-array name="account_icons">
-        <item>@drawable/ic_profile</item>
-        <item>@drawable/ic_gift_card</item>
-        <item>@drawable/card</item>
-        <item>@drawable/card</item>
-        <item>@drawable/ic_privacy_policy</item>
-        <item>@drawable/ic_support</item>
+    <!--Profile Screen-->
+    <string name="title_profile">Profile</string>
+    <string name="hint_user_name">User Name</string>
+    <string name="change_password">Change Password?</string>
+    <string name="save">Save</string>
+
+    <!--Change Password Screen-->
+    <string name="title_change_password">Change Password</string>
+    <string name="create_new_password">Create new password</string>
+    <string name="old_password">Old Password</string>
+
+    <!--Invite Referral Screen-->
+    <string name="title_invite_referrals">Invite Referrals</string>
+    <string name="your_referral_code">Your Referral Code</string>
+
+    <!--Payment Screen-->
+    <string name="title_payment">Payment</string>
+
+    <!--Privacy Policy Screen-->
+    <string name="title_privacy_policy">Privacy Policy</string>
+
+    <!--Support Screen-->
+    <string name="title_support">Support</string>
+
+    <!--Manage Services Screen-->
+    <string name="title_manage_services">Manage Services</string>
+    <array name="color_manage_services">
+        <item>@color/colorDrive</item>
+        <item>@color/colorDeliver</item>
+        <item>@color/colorServe</item>
+    </array>
+    <integer-array name="icon_manage_services">
+        <item>@drawable/ic_drive</item>
+        <item>@drawable/ic_deliver</item>
+        <item>@drawable/ic_serve</item>
     </integer-array>
+    <string-array name="title_manage_services">
+        <item>I am ready to Drive</item>
+        <item>I am ready to Deliver</item>
+        <item>I am ready to Serve</item>
+    </string-array>
+    <string-array name="desc_manage_services">
+        <item>Setup your Vehicle</item>
+        <item>Setup your Deliveries</item>
+        <item>Setup your Services</item>
+    </string-array>
+
+    <!--Setup Vehicle Screen-->
+    <string name="title_setup_vehicle">Setup Your Vehicle</string>
+
+    <!--Manage Documents Screen-->
+    <string name="title_manage_documents">Manage Documents</string>
+    <string name="expiry">Expiry</string>
+
+    <!--Language Screen-->
+    <string name="title_language">Language</string>
+
+    <string name="transaction">Transaction</string>
 
     <string-array name="document_list">
         <item>Taxi App</item>
@@ -144,30 +186,17 @@
         <item>Grocery</item>
     </string-array>
 
-
     <!-- Taxi pickup -->
     <string name="taxi_pickup_location">Pickup Location</string>
     <string name="taxi_pickup_approve">Approve</string>
     <string name="taxi_pickup_cancel">Cancel</string>
 
     <!-- Header label -->
-    <string name="header_label_order">Orders</string>
-    <string name="header_label_notification">Notification</string>
-    <string name="header_label_myaccount">My Account</string>
     <string name="header_label_verification_img">Verification Images</string>
     <string name="header_after_document_upload">After Document Upload</string>
     <string name="header_label_document_upload">Document Upload</string>
-    <string name="profile">Profile</string>
-    <string name="invite">Invite Refferals</string>
-    <string name="invite_refferals">Invite Refferals</string>
-    <string name="transaction">Transaction</string>
     <string name="dummy_rating">4.6</string>
 
-    <string name="payment">Payment</string>
-    <string name="privacy_plicy">Privacy Policy</string>
-    <string name="myaccount">My Account</string>
-    <string name="change_password">Change Password ?</string>
-    <string name="save">Save</string>
     <string name="services_hint_service">Service</string>
     <string name="wallet">Wallet</string>
     <string name="_50">$50</string>
@@ -204,7 +233,11 @@
     <string name="cancelled">Cancelled</string>
     <string name="time">3:30 pm</string>
 
-    <!-- Error -->
+    <!--Action Messages-->
+    <string name="action_sign_up">Sign Up</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!--Error Messages-->
     <string name="empty_username">Please enter the user name</string>
     <string name="empty_phone">Please enter the Phone Number</string>
     <string name="empty_country">Plese enter the Country</string>
@@ -233,13 +266,6 @@
     <string name="error_otp_invalid">Please enter correct otp</string>
     <string name="alert_sign_up">Please sign up with this account</string>
 
-    <!--Action-->
-    <string name="action_sign_up">Sign Up</string>
-    <string name="action_cancel">Cancel</string>
-
     <string name="file_pemission_denied">File read permission denied</string>
     <string name="rationale_storage_permission_denied">Please allow storage permission to change image</string>
-
-    <!--Menu-->
-    <string name="menu_logout">Logout</string>
 </resources>

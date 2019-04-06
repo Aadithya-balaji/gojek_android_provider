@@ -7,7 +7,7 @@ import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
-import com.xjek.provider.views.signin.SignInViewModel
+import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
 import com.xjek.provider.views.splash.SplashViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers

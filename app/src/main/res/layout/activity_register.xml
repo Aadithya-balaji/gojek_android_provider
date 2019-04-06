@@ -18,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/app_background_color"
+            android:background="@color/colorScreenBackground"
             android:orientation="vertical">
 
 
@@ -63,7 +63,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
-                            android:text="@string/social_signup"
+                            android:text="@string/social_sign_up"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_12sdp" />
 
@@ -94,8 +94,8 @@
                         android:drawableStart="@drawable/ic_facebook"
                         android:drawableLeft="@drawable/ic_facebook"
                         android:drawablePadding="@dimen/_8sdp"
-                        android:onClick="@{() -> registermodel.fbLogin()}"
                         android:fontFamily="@font/avenirltstd_medium"
+                        android:onClick="@{() -> registermodel.fbLogin()}"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/connect_via_facebook"
                         android:textColor="@color/colorPrimaryDark"
@@ -157,12 +157,12 @@
                                 android:src="@drawable/profile_placeholder" />
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="@dimen/_12sdp"
+                                android:layout_height="@dimen/_12sdp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:background="@drawable/custom_circle"
+                                android:background="@drawable/drawable_circle"
                                 android:contentDescription="@string/edit_image"
                                 android:padding="@dimen/_5sdp"
                                 android:tint="@color/xuber_white"
@@ -180,15 +180,15 @@
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/hint_firstname">
+                            android:hint="@string/hint_first_name">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_singup_firstname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/avenirltstd_medium"
                                 android:singleLine="true"
                                 android:text="@{registermodel.firstName}"
-                                android:fontFamily="@font/avenirltstd_medium"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -202,14 +202,14 @@
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/hint_lastname">
+                            android:hint="@string/hint_last_name">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_singup_lastname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:singleLine="true"
                                 android:fontFamily="@font/avenirltstd_medium"
+                                android:singleLine="true"
                                 android:text="@={registermodel.lastName}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
@@ -235,7 +235,7 @@
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
                                 android:layout_weight="0.8"
-                                android:hint="@string/countrycode_hint"
+                                android:hint="@string/hint_code"
                                 app:boxCornerRadiusBottomEnd="0dp"
                                 app:boxCornerRadiusTopEnd="0dp">
 
@@ -247,8 +247,8 @@
                                     android:drawableLeft="@drawable/flag_io"
                                     android:drawableEnd="@drawable/down_arrow"
                                     android:drawableRight="@drawable/down_arrow"
-                                    android:fontFamily="@font/avenirltstd_medium"
                                     android:drawablePadding="@dimen/_3sdp"
+                                    android:fontFamily="@font/avenirltstd_medium"
                                     android:onClick="@{() -> registermodel.gotToCountryPage()}"
                                     android:singleLine="true"
                                     android:text="@{registermodel.countryCode}"
@@ -268,7 +268,7 @@
                                 android:layout_marginEnd="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
                                 android:layout_weight="1.2"
-                                android:hint="@string/phonenumber_hint"
+                                android:hint="@string/hint_phone_number"
                                 app:boxCornerRadiusBottomStart="0dp"
                                 app:boxCornerRadiusTopStart="0dp">
 
@@ -276,9 +276,9 @@
                                     android:id="@+id/edt_signup_phone"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
+                                    android:fontFamily="@font/avenirltstd_medium"
                                     android:inputType="number"
                                     android:singleLine="true"
-                                    android:fontFamily="@font/avenirltstd_medium"
                                     android:text="@={registermodel.phoneNumber}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp" />
@@ -293,7 +293,7 @@
                             android:layout_marginStart="@dimen/_12sdp"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:fontFamily="@font/avenirltstd_medium"
-                            android:text="@string/gender"
+                            android:text="@string/label_gender"
                             android:textColor="@color/black" />
 
                         <RadioGroup
@@ -310,8 +310,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/male"
                                 android:fontFamily="@font/avenirltstd_medium"
+                                android:text="@string/gender_male"
                                 android:textColor="@color/grey"
                                 android:textSize="@dimen/_10sdp" />
 
@@ -321,8 +321,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/female"
                                 android:fontFamily="@font/avenirltstd_medium"
+                                android:text="@string/gender_female"
                                 android:textColor="@color/grey"
                                 android:textSize="@dimen/_10sdp" />
                         </RadioGroup>
@@ -334,15 +334,15 @@
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/email_id_hint">
+                            android:hint="@string/hint_email_id">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_signup_mail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:fontFamily="@font/avenirltstd_medium"
                                 android:singleLine="true"
                                 android:text="@={registermodel.email}"
-                                android:fontFamily="@font/avenirltstd_medium"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -357,7 +357,7 @@
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/password_hint"
+                            android:hint="@string/hint_password"
                             app:endIconMode="password_toggle">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -367,9 +367,9 @@
                                 android:drawableEnd="@drawable/ic_iconfinder_icons_view"
                                 android:drawableRight="@drawable/ic_iconfinder_icons_view"
                                 android:drawablePadding="@dimen/_3sdp"
+                                android:fontFamily="@font/avenirltstd_medium"
                                 android:inputType="textPassword"
                                 android:singleLine="true"
-                                android:fontFamily="@font/avenirltstd_medium"
                                 android:text="@={registermodel.password}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
@@ -385,7 +385,7 @@
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
                             android:layout_marginBottom="@dimen/_8sdp"
-                            android:hint="@string/country_hint">
+                            android:hint="@string/hint_country">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_signup_country"
@@ -407,16 +407,16 @@
                             android:layout_marginLeft="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/city_hint">
+                            android:hint="@string/hint_city">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_signup_city"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
+                                android:fontFamily="@font/avenirltstd_medium"
                                 android:onClick="@{() -> registermodel.getCityList()}"
                                 android:singleLine="true"
-                                android:fontFamily="@font/avenirltstd_medium"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -448,10 +448,10 @@
                     android:id="@+id/alreadyaccount_register_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_3sdp"
-                    android:text="@string/already_have_an_account"
-                    android:textSize="@dimen/_12sdp"
                     android:fontFamily="@font/avenirltstd_medium"
+                    android:padding="@dimen/_3sdp"
+                    android:text="@string/already_have_account"
+                    android:textSize="@dimen/_12sdp"
                     tools:ignore="RelativeOverlap" />
 
                 <!--Signin textview-->
@@ -460,10 +460,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/alreadyaccount_register_tv"
                     android:layout_marginBottom="@dimen/_5sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
                     android:onClick="@{() -> registermodel.gotoSignin()}"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/sign_in"
-                    android:fontFamily="@font/avenirltstd_medium"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_12sdp" />
 
@@ -474,10 +474,10 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_margin="@dimen/_5sdp"
-                    app:backgroundTint="@color/colorBasePrimary"
                     android:elevation="@dimen/_8sdp"
                     android:onClick="@{()-> registermodel.doRegistration()}"
                     android:padding="@dimen/_5sdp"
+                    app:backgroundTint="@color/colorBasePrimary"
                     app:fabSize="mini"
                     app:srcCompat="@drawable/ic_forward_arrow"
                     app:tint="@android:color/white" />

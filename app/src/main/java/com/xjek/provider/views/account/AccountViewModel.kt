@@ -1,30 +1,35 @@
 package com.xjek.provider.views.account
 
 import com.xjek.base.base.BaseViewModel
+import com.xjek.provider.models.AccountMenuModel
 
 class AccountViewModel : BaseViewModel<AccountNavigator>() {
-    fun openProfilePage() {
-        navigator.gotoProfilePage()
+
+    private lateinit var adapter: AccountMenuAdapter
+    private lateinit var accountMenus: List<AccountMenuModel>
+
+    fun setAccountMenus(accountMenus: List<AccountMenuModel>) {
+        this.accountMenus = accountMenus
     }
 
-    fun openInvitePage() {
-        navigator.gotoInvitPage()
+    fun getAccountMenus(): List<AccountMenuModel> {
+        return accountMenus
     }
 
-    fun openPaymentPage() {
-        navigator.gotoPaymentPage()
+    fun getAccountMenu(position: Int): AccountMenuModel {
+        return accountMenus[position]
     }
 
-
-    fun openTranscationPage() {
-        navigator.gotoTransacationPage()
+    fun setAdapter() {
+        adapter = AccountMenuAdapter(this)
+        adapter.notifyDataSetChanged()
     }
 
-    fun openPrivacyPage() {
-        navigator.gotoPrivacyPage()
+    fun getAdapter(): AccountMenuAdapter {
+        return adapter
     }
 
-    fun openSupportPage() {
-        navigator.gotoSupportPage()
+    fun onItemClick(position: Int) {
+        navigator.onMenuItemClicked(position)
     }
 }

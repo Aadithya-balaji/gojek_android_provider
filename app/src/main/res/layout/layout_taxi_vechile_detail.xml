@@ -52,7 +52,7 @@
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:layout_marginRight="@dimen/_8sdp"
-                        android:hint="@string/user_name_hint">
+                        android:hint="@string/hint_user_name">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/username_register_et"
@@ -81,7 +81,7 @@
                             android:layout_marginTop="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
                             android:layout_weight="0.7"
-                            android:hint="@string/countrycode_hint"
+                            android:hint="@string/hint_code"
                             app:boxCornerRadiusBottomEnd="0dp"
                             app:boxCornerRadiusTopEnd="0dp">
 
@@ -109,7 +109,7 @@
                             android:layout_marginEnd="@dimen/_8sdp"
                             android:layout_marginRight="@dimen/_8sdp"
                             android:layout_weight="1.3"
-                            android:hint="@string/phonenumber_hint"
+                            android:hint="@string/hint_phone_number"
                             app:boxCornerRadiusBottomStart="0dp"
                             app:boxCornerRadiusTopStart="0dp">
 
@@ -131,7 +131,7 @@
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:layout_marginRight="@dimen/_8sdp"
-                        android:hint="@string/email_id_hint">
+                        android:hint="@string/hint_email_id">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/emailid_register_et"
@@ -151,7 +151,7 @@
                         android:layout_marginLeft="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_8sdp"
                         android:layout_marginRight="@dimen/_8sdp"
-                        android:hint="@string/city_hint">
+                        android:hint="@string/hint_city">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/city_register_et"
@@ -172,7 +172,7 @@
                         android:layout_marginTop="@dimen/_8sdp"
                         android:layout_marginRight="@dimen/_8sdp"
                         android:layout_marginBottom="@dimen/_8sdp"
-                        android:hint="@string/country_hint">
+                        android:hint="@string/hint_country">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/country_register_et"
@@ -246,7 +246,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:background="@drawable/custom_circle"
+                android:background="@drawable/drawable_circle"
                 android:contentDescription="@string/edit_image"
                 android:layout_toEndOf="@+id/iv_profile"
                 android:layout_marginLeft="-26dp"

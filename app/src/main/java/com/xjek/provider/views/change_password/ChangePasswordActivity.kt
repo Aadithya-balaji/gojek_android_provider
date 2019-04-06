@@ -5,11 +5,11 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
-import com.xjek.provider.R
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
+import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityChangePasswordBinding
 
 class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
@@ -59,7 +59,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
     }
 
     private fun performValidation() {
-        hideKeyboard()
+        ViewUtils.hideSoftInputWindow(this)
         if (isPasswordDataValid()) {
             loadingObservable.value = true
             viewModel.postChangePassword()

@@ -18,7 +18,7 @@ class Profile : BaseActivity<ActivityEditProfileBinding>(),View.OnClickListener 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
         this.mViewDataBinding = mViewDataBinding as ActivityEditProfileBinding
-        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.profile)
+        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.title_profile)
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { view ->
             finish()
         }
@@ -28,9 +28,7 @@ class Profile : BaseActivity<ActivityEditProfileBinding>(),View.OnClickListener 
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.tv_change_password -> {
-                val changePasswordIntent = Intent(applicationContext,
-                        ChangePasswordActivity::class.java)
-                startActivity(changePasswordIntent)
+                launchNewActivity(ChangePasswordActivity::class.java, false)
             }
         }
     }

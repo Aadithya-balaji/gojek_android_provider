@@ -55,7 +55,7 @@ import com.xjek.provider.views.countrylist.CountryListActivity
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.document.DocumentActivity
-import com.xjek.provider.views.signin.SignInActivity
+import com.xjek.provider.views.sign_in.SignInActivity
 import com.xjek.user.data.repositary.remote.model.City
 import com.xjek.user.data.repositary.remote.model.CountryResponseData
 import okhttp3.MediaType
@@ -140,9 +140,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         initListener()
 
 
-        baseLiveDataLoading = signupViewmodel.loadingProgress
-
-
         initFacebooik()
 
         initGoogle()
@@ -165,7 +162,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     }
 
     fun getApiResponse() {
-        baseLiveDataLoading.value = false
+        loadingObservable.value = false
         observeLiveData(signupViewmodel.getSignupLiveData()) {
             if (signupViewmodel.getSignupObserverValue()!!.statusCode.equals("200")) {
                 // verifyPhoneNumber()
@@ -207,9 +204,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
                 FB_ACCOUNT_KIT_CODE -> {
                     val dashBoardIntent = Intent(this@SignupActivity, DashBoardActivity::class.java)
                     dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(dashBoardIntent)
-                    finish()
-
+                    launchNewActivity(dashBoardIntent, true)
                 }
 
                 GOOGLE_REQ_CODE -> {
@@ -277,7 +272,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
 
     // move to signin page
     override fun openSignin() {
-        openNewActivity(this@SignupActivity, SignInActivity::class.java, true)
+        launchNewActivity(SignInActivity::class.java, false)
     }
 
     override fun gotoDocumentPage() {
@@ -504,7 +499,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
 
 
         if (isValidCredential()) {
-            baseLiveDataLoading.value = true
+            loadingObservable.value = true
             val profileFile = File(imageUrl.toString())
             if (profileFile != null && profileFile.exists()) {
                 Log.e("signup", "---------" + profileFile.path)
@@ -565,12 +560,12 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         var mContext: Context = context
         override fun onPreExecute() {
             super.onPreExecute()
-            baseLiveDataLoading.value = true
+            loadingObservable.value = true
         }
 
         override fun onPostExecute(result: String?) {
             super.onPostExecute(result)
-            baseLiveDataLoading.value = false
+            loadingObservable.value = false
             imageUrl = result
 
         }

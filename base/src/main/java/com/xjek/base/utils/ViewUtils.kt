@@ -1,11 +1,13 @@
 package com.xjek.base.utils
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.webkit.PermissionRequest
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
@@ -16,6 +18,25 @@ import com.xjek.base.R
 import es.dmoral.toasty.Toasty
 
 object ViewUtils {
+
+    fun showSoftInputWindow(activity: Activity) {
+        val manager = activity
+                .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
+    fun hideSoftInputWindow(activity: Activity) {
+        val manager = activity
+                .getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = activity.currentFocus ?: View(activity)
+        manager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun hideSoftInputWindow(context: Context, view: View) {
+        val manager = context
+                .getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
 
     @MainThread
     fun showToast(context: Context, message: String, isSuccess: Boolean) {
@@ -76,18 +97,18 @@ object ViewUtils {
         dialog.show()
     }
 
-   /* @MainThread
-    fun showRationaleAlert(context: Context, message: String, request: PermissionRequest) {
-        AlertDialog.Builder(context)
-                .setTitle(context.resources.getString(R.string.app_name))
-                .setMessage(message)
-                .setPositiveButton(context.resources.getString(R.string.action_allow)) { dialog, which ->
-                    request.proceed()
-                }
-                .setNegativeButton(context.resources.getString(R.string.action_deny)) { dialog, which ->
-                    request.cancel()
-                }.show()
-    }*/
+/* @MainThread
+ fun showRationaleAlert(context: Context, message: String, request: PermissionRequest) {
+     AlertDialog.Builder(context)
+             .setTitle(context.resources.getString(R.string.app_name))
+             .setMessage(message)
+             .setPositiveButton(context.resources.getString(R.string.action_allow)) { dialog, which ->
+                 request.proceed()
+             }
+             .setNegativeButton(context.resources.getString(R.string.action_deny)) { dialog, which ->
+                 request.cancel()
+             }.show()
+ }*/
 
     fun bitmapDescriptorFromVector(context: Context, @DrawableRes vectorResId: Int): BitmapDescriptor {
         val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)

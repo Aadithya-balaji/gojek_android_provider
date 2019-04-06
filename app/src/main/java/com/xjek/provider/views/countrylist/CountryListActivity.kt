@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityCountryListBinding
 import com.xjek.provider.views.adapters.CountryListAdapter
@@ -40,7 +41,7 @@ class CountryListActivity : BaseActivity<ActivityCountryListBinding>(), SearchVi
     }
 
     override fun closeActivity() {
-        hideKeyboard()
+        ViewUtils.hideSoftInputWindow(this)
         finish()
     }
 

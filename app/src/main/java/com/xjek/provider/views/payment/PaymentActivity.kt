@@ -22,7 +22,7 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
         this.mViewDataBinding = mViewDataBinding as ActivityPaymentBinding
-        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.payment)
+        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.title_payment)
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { view ->
             finish()
         }
@@ -39,7 +39,6 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
     }
 
     override fun goToTransactionStatusActivty() {
-
-        openNewActivity(this, TransactionStatusActivity::class.java, true)
+        launchNewActivity(TransactionStatusActivity::class.java, true)
     }
 }

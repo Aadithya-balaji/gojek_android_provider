@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+
+        <variable
+            name="accountViewModel"
+            type="com.xjek.provider.views.account.AccountViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp"
+        android:onClick="@{() -> accountViewModel.onItemClick(position)}"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/_4sdp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="false">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/_15sdp"
+            tools:ignore="UseCompoundDrawables">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="@dimen/_48sdp"
+                android:background="@drawable/drawable_circle"
+                android:contentDescription="@null"
+                android:padding="@dimen/_10sdp"
+                android:src="@{accountViewModel.getAccountMenu(position).component2()}"
+                android:tint="@color/colorWhite"
+                tools:srcCompat="@drawable/ic_user" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:gravity="center"
+                android:text="@{accountViewModel.getAccountMenu(position).component1()}"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_12sdp"
+                tools:text="@string/title_profile" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

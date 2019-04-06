@@ -14,7 +14,7 @@ class InviteReferalsActivity : BaseActivity<ActivityInviteFriendBinding>() {
 
 
         this.mViewDataBinding = mViewDataBinding as ActivityInviteFriendBinding
-        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.invite_refferals)
+        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.title_invite_referrals)
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { view ->
             finish()
         }

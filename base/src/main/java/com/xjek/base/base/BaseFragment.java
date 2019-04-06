@@ -1,42 +1,39 @@
 package com.xjek.base.base;
 
 import android.content.Context;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
-
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
 
-    private BaseActivity mActivity;
+    private FragmentActivity mActivity;
     private T mViewDataBinding;
 
     @LayoutRes
     public abstract int getLayoutId();
 
-    protected abstract void initView(View mRootView,ViewDataBinding mViewDataBinding);
-
+    protected abstract void initView(View mRootView, ViewDataBinding mViewDataBinding);
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof BaseActivity) {
-            this.mActivity = (BaseActivity) context;
-        }
+        mActivity = getActivity();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         return mViewDataBinding.getRoot();
     }
@@ -47,38 +44,20 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         initView(mViewDataBinding.getRoot(), mViewDataBinding);
     }
 
-    public boolean isNetworkConnected() {
-        return mActivity != null && mActivity.isNetworkConnected();
+    protected void setBindingVariable(int variableId, @Nullable Object object) {
+        mViewDataBinding.setVariable(variableId, object);
+        mViewDataBinding.executePendingBindings();
     }
 
-     public void showKeyboard(){
-         if (mActivity != null) {
-             mActivity.showKeyboard();
-         }
+    protected void launchNewActivity(Class<?> cls, boolean shouldCloseActivity) {
+        startActivity(new Intent(mActivity.getApplicationContext(), cls));
+        if (shouldCloseActivity)
+            mActivity.finish();
     }
-
-    public void hideKeyboard(){
-        if (mActivity != null) {
-            mActivity.hideKeyboard();
-        }
-    }
-
 
     @Override
     public void onDetach() {
         mActivity = null;
         super.onDetach();
     }
-
-    protected void setBindingVariable(int variableId,@Nullable Object object){
-        mViewDataBinding.setVariable(variableId,object);
-        mViewDataBinding.executePendingBindings();
-    }
-
-    public void openNewActivity(FragmentActivity activity, Class<?> cls, boolean finishCurrent) {
-        Intent intent = new Intent(activity, cls);
-        startActivity(intent);
-        if (finishCurrent) activity.finish();
-    }
-
 }

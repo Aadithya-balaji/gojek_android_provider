@@ -66,8 +66,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
                     .responseData.username)
             resetPasswordIntent.putExtra(WebApiConstants.ResetPassword.OTP, it
                     .responseData.otp)
-            startActivity(resetPasswordIntent)
-            finish()
+            launchNewActivity(resetPasswordIntent, false)
         }
     }
 
@@ -76,7 +75,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
     }
 
     private fun performValidation() {
-        hideKeyboard()
+        ViewUtils.hideSoftInputWindow(this)
         if (isResetDataValid()) {
             loadingObservable.value = true
             viewModel.postForgotPassword(isEmailLogin)

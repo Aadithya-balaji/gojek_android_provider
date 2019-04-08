@@ -19,7 +19,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         return R.layout.activity_splash
     }
 
-    public override fun initView(mViewDataBinding: ViewDataBinding) {
+    public override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivitySplashBinding
         binding.lifecycleOwner = this
         viewModel = provideViewModel {

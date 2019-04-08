@@ -168,6 +168,18 @@
     <!--Setup Vehicle Screen-->
     <string name="title_setup_vehicle">Setup Your Vehicle</string>
 
+    <!--Add Vehicle Screen-->
+    <string name="title_add_vehicle">Add Vehicle</string>
+    <string name="hint_car_category">Car Category</string>
+    <string name="hint_vehicle_model">Vehicle Model</string>
+    <string name="hint_vehicle_year">Vehicle Year</string>
+    <string name="hint_vehicle_color">Vehicle Color</string>
+    <string name="hint_vehicle_plate">Vehicle License Plate</string>
+    <string name="hint_vehicle_make">Vehicle Make</string>
+    <string name="document_upload">Document Upload</string>
+    <string name="rc_book">RC Book</string>
+    <string name="insurance">Insurance</string>
+
     <!--Manage Documents Screen-->
     <string name="title_manage_documents">Manage Documents</string>
     <string name="expiry">Expiry</string>

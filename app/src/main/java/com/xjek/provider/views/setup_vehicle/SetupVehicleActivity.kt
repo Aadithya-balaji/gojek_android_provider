@@ -1,14 +1,11 @@
 package com.xjek.provider.views.setup_vehicle
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityManageServicesBinding
 import com.xjek.provider.databinding.ActivitySetupVehicleBinding
-import com.xjek.provider.views.manage_services.ManageServicesViewModel
+import com.xjek.provider.views.add_vehicle.AddVehicleActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupVehicleNavigator {
@@ -38,6 +35,6 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
     }
 
     override fun onMenuItemClicked(position: Int) {
-
+        launchNewActivity(AddVehicleActivity::class.java, false)
     }
 }

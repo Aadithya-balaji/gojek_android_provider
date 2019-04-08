@@ -189,7 +189,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun onSignInClicked() {
-        performValidation()
+//        performValidation()
+        launchNewActivity(DashBoardActivity::class.java, false)
     }
 
     override fun onGoogleSignInClicked() {

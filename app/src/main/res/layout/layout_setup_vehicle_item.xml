@@ -9,20 +9,20 @@
             name="position"
             type="java.lang.Integer" />
 
-        <!--<variable-->
-            <!--name="setupVehicleViewModel"-->
-            <!--type="com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel" />-->
-
         <variable
-            name="manageDocumentsViewModel"
-            type="com.xjek.provider.views.manage_documents.ManageDocumentsViewModel" />
+            name="setupVehicleViewModel"
+            type="com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel" />
+
+        <!--<variable-->
+            <!--name="manageDocumentsViewModel"-->
+            <!--type="com.xjek.provider.views.manage_documents.ManageDocumentsViewModel" />-->
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_8sdp"
-        android:onClick="@{() -> manageDocumentsViewModel.onItemClick(position)}"
+        android:onClick="@{() -> setupVehicleViewModel.onItemClick(position)}"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="@dimen/_4sdp"
         app:cardPreventCornerOverlap="true"

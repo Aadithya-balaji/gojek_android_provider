@@ -10,7 +10,7 @@ import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
 import com.xjek.provider.views.payment.PaymentActivity
-import com.xjek.provider.views.profile.Profile
+import com.xjek.provider.views.profile.ProfileActivity
 import com.xjek.provider.views.support.SupportActivity
 import com.xjek.provider.views.transaction_status.TransactionStatusActivity
 
@@ -38,7 +38,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
 
     override fun gotoProfilePage() {
 
-        openNewActivity(activity, Profile::class.java, false)
+        openNewActivity(activity, ProfileActivity::class.java, false)
     }
 
     override fun gotoInvitPage() {

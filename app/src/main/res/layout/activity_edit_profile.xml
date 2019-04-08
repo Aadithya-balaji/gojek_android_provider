@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="profileviewmodel"
+            type="com.xjek.provider.views.profile.ProfileViewModel" />
     </data>
 
 
@@ -37,206 +39,267 @@
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@color/white">
 
 
-                    <LinearLayout
+                    <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="@dimen/_10sdp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/_5sdp"
-                            android:text="@string/create_account"
-                            android:textColor="@android:color/black" />
-
-                        <!--TextInputLayout username-->
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/user_name_hint">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/username_register_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/et_text_color"
-                                android:textSize="@dimen/et_textsize" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!--Layout countrycode & phonenumber-->
+                        android:padding="@dimen/_10sdp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardElevation="@dimen/_5sdp"
+                        app:cardUseCompatPadding="true">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:baselineAligned="false"
-                            android:orientation="horizontal"
-                            android:weightSum="2">
+                            android:orientation="vertical">
 
-                            <!--TextInputLayout country code -->
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_20sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:hint="@string/hint_firstname">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/edt_profile_firstname"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/avenirltstd_medium"
+                                    android:singleLine="true"
+                                    android:text="@={profileviewmodel.MUserName}"
+                                    android:textColor="@color/et_text_color"
+                                    android:textSize="@dimen/_11sdp" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Edittext_OutlinedTheme"
                                 android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
-                                android:layout_weight="0.7"
-                                android:hint="@string/countrycode_hint"
-                                app:boxCornerRadiusBottomEnd="0dp"
-                                app:boxCornerRadiusTopEnd="0dp">
+                                android:hint="@string/hint_lastname">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/countrycode_register_et"
+                                    android:id="@+id/edt_profile_lastname"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:drawableStart="@drawable/ic_us"
-                                    android:drawableLeft="@drawable/ic_us"
-                                    android:drawablePadding="@dimen/_3sdp"
+                                    android:fontFamily="@font/avenirltstd_medium"
+                                    android:singleLine="true"
+                                    android:text="@={profileviewmodel.MUserName}"
                                     android:textColor="@color/et_text_color"
-                                    android:textSize="@dimen/et_textsize"
-                                    tools:text="+1" />
+                                    android:textSize="@dimen/_11sdp" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <!--TextInputLayout Phonenume-->
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:baselineAligned="false"
+                                android:orientation="horizontal"
+                                android:weightSum="2">
+
+                                <!--TextInputLayout country code -->
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Edittext_OutlinedTheme"
+                                    android:layout_width="0dp"
+                                    android:layout_marginLeft="@dimen/_8sdp"
+                                    android:layout_marginTop="@dimen/_8sdp"
+                                    android:layout_marginRight="@dimen/_8sdp"
+                                    android:layout_weight="0.7"
+                                    android:hint="@string/countrycode_hint"
+                                    app:boxCornerRadiusBottomEnd="0dp"
+                                    app:boxCornerRadiusTopEnd="0dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/countrycode_register_et"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:drawableStart="@drawable/ic_us"
+                                        android:drawableLeft="@drawable/ic_us"
+                                        android:drawablePadding="@dimen/_3sdp"
+                                        android:fontFamily="@font/avenirltstd_medium"
+                                        android:singleLine="true"
+                                        android:text="@={profileviewmodel.MCountryCode}"
+                                        android:textColor="@color/et_text_color"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <!--TextInputLayout Phonenume-->
+                                <com.google.android.material.textfield.TextInputLayout
+                                    style="@style/Edittext_OutlinedTheme"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginStart="@dimen/_2sdp"
+                                    android:layout_marginLeft="@dimen/_2sdp"
+                                    android:layout_marginTop="@dimen/_8sdp"
+                                    android:layout_marginEnd="@dimen/_8sdp"
+                                    android:layout_marginRight="@dimen/_8sdp"
+                                    android:layout_weight="1.3"
+                                    android:hint="@string/phonenumber_hint"
+                                    app:boxCornerRadiusBottomStart="0dp"
+                                    app:boxCornerRadiusTopStart="0dp">
+
+                                    <com.google.android.material.textfield.TextInputEditText
+                                        android:id="@+id/phonenumber_register_et"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:fontFamily="@font/avenirltstd_medium"
+                                        android:singleLine="true"
+                                        android:text="@={profileviewmodel.MMobileNumber}"
+                                        android:textColor="@color/et_text_color"
+                                        android:textSize="@dimen/_11sdp" />
+
+                                </com.google.android.material.textfield.TextInputLayout>
+                            </LinearLayout>
+
+                            <!--TextInputLayout EmailID-->
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_2sdp"
-                                android:layout_marginLeft="@dimen/_2sdp"
+                                android:layout_width="match_parent"
+                                android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
-                                android:layout_marginEnd="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
-                                android:layout_weight="1.3"
-                                android:hint="@string/phonenumber_hint"
-                                app:boxCornerRadiusBottomStart="0dp"
-                                app:boxCornerRadiusTopStart="0dp">
+                                android:hint="@string/email_id_hint">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/phonenumber_register_et"
+                                    android:id="@+id/emailid_register_et"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:editable="false"
+                                    android:singleLine="true"
+                                    android:text="@={profileviewmodel.MEmail}"
+                                    android:textColor="@color/et_text_color"
+                                    android:textSize="@dimen/_11sdp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:id="@+id/tv_label_gender"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:fontFamily="@font/avenirltstd_medium"
+                                android:text="@string/gender"
+                                android:visibility="gone"
+                                android:textColor="@color/black" />
+
+                            <RadioGroup
+                                android:id="@+id/gender_radiogroup"
+                                android:visibility="gone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_12sdp"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:layout_marginEnd="@dimen/_12sdp"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.radiobutton.MaterialRadioButton
+                                    android:id="@+id/rbMale"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/avenirltstd_medium"
+                                    android:text="@string/male"
+                                    android:textColor="@color/grey"
+                                    android:textSize="@dimen/_11sdp" />
+
+
+                                <com.google.android.material.radiobutton.MaterialRadioButton
+                                    android:id="@+id/rbFemale"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:fontFamily="@font/avenirltstd_medium"
+                                    android:text="@string/female"
+                                    android:textColor="@color/grey"
+                                    android:textSize="@dimen/_11sdp" />
+                            </RadioGroup>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Edittext_OutlinedTheme"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:layout_marginBottom="@dimen/_8sdp"
+                                android:hint="@string/country_hint">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/country_register_et"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawablePadding="@dimen/_5sdp"
+                                    android:editable="false"
+                                    android:fontFamily="@font/avenirltstd_medium"
+                                    android:text="@={profileviewmodel.MCountry}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/et_textsize" />
-
                             </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Edittext_OutlinedTheme"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:hint="@string/city_hint">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/city_register_et"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawablePadding="@dimen/_5sdp"
+                                    android:fontFamily="@font/avenirltstd_medium"
+                                    android:singleLine="true"
+                                    android:text="@={profileviewmodel.MCity}"
+                                    android:textColor="@color/et_text_color"
+                                    android:textSize="@dimen/_11sdp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Edittext_OutlinedTheme"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_marginRight="@dimen/_8sdp"
+                                android:layout_marginBottom="@dimen/_8sdp"
+                                android:hint="@string/services_hint_service"
+                                android:visibility="gone">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/service_editprofile_et"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawablePadding="@dimen/_5sdp"
+                                    android:textColor="@color/et_text_color"
+                                    android:textSize="@dimen/et_textsize" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <TextView
+                                android:id="@+id/tv_change_password"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/change_password"
+                                android:textColor="@android:color/black"
+                                android:textSize="@dimen/_10sdp"
+                                tools:ignore="RtlHardcoded" />
                         </LinearLayout>
 
-                        <!--TextInputLayout EmailID-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/email_id_hint">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/emailid_register_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/et_text_color"
-                                android:textSize="@dimen/et_textsize" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <!--TextInputLayout City-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:hint="@string/city_hint">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/city_register_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawablePadding="@dimen/_5sdp"
-                                android:textColor="@color/et_text_color"
-                                android:textSize="@dimen/et_textsize" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!--TextInputLayout Country-->
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:layout_marginBottom="@dimen/_8sdp"
-                            android:hint="@string/country_hint">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/country_register_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawablePadding="@dimen/_5sdp"
-                                android:textColor="@color/et_text_color"
-                                android:textSize="@dimen/et_textsize" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <!--service type-->
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
-                            android:layout_marginBottom="@dimen/_8sdp"
-                            android:hint="@string/services_hint_service">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/service_editprofile_et"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:drawablePadding="@dimen/_5sdp"
-                                android:textColor="@color/et_text_color"
-                                android:textSize="@dimen/et_textsize" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <TextView
-                            android:id="@+id/tv_change_password"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="right"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:padding="@dimen/_5sdp"
-                            android:text="@string/change_password"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="RtlHardcoded" />
-
-                    </LinearLayout>
+                    </androidx.cardview.widget.CardView>
                 </ScrollView>
 
 
             </androidx.cardview.widget.CardView>
         </RelativeLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/save_editprofile_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -244,11 +307,14 @@
             android:layout_margin="@dimen/_17sdp"
             android:background="@drawable/custom_full_round_corner"
             android:backgroundTint="@color/colorPrimary"
-            android:padding="@dimen/_5sdp"
+            android:paddingTop="@dimen/_8sdp"
+            android:paddingBottom="@dimen/_8sdp"
             android:text="@string/save"
             android:textAllCaps="false"
+            android:onClick="@{() -> profileviewmodel.updateProfile()}"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            app:cornerRadius="@dimen/_13sdp" />
 
         <RelativeLayout
             android:layout_width="@dimen/_80sdp"
@@ -257,7 +323,7 @@
             android:layout_centerHorizontal="true"
             android:padding="@dimen/_5sdp">
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="@dimen/_50sdp"
@@ -265,6 +331,7 @@
                 android:src="@drawable/profile_placeholder" />
 
             <ImageView
+                android:id="@+id/imageview_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -273,8 +340,8 @@
                 android:background="@drawable/custom_circle"
                 android:contentDescription="@string/edit_image"
                 android:padding="@dimen/_5sdp"
-                android:tint="@color/xuber_white"
-                app:srcCompat="@drawable/ic_pencil_edit_button" />
+                app:srcCompat="@drawable/ic_pencil_edit_button"
+                app:tint="@color/xuber_white" />
 
         </RelativeLayout>
 

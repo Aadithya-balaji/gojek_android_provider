@@ -6,6 +6,7 @@ import com.xjek.provider.network.AppWebService
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
+import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
 import com.xjek.provider.views.signin.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
@@ -19,6 +20,7 @@ import retrofit2.http.Part
 import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
+import kotlin.collections.HashMap
 
 class AppRepository : BaseRepository() {
 
@@ -150,6 +152,32 @@ class AppRepository : BaseRepository() {
                     viewModel.navigator.showError(getErrorMessage(it))
                 })
 
+    }
+
+    fun getProfile(viewModel:ProfileViewModel):Disposable{
+        return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+                .getProfile()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                     if(it.statusCode=="200"){
+                         viewModel.getProfileRespose().postValue(it)
+                     }
+                },{
+                     viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                })
+    }
+
+    fun updateProfile(viewModel:ProfileViewModel,param: HashMap<String,RequestBody>,@Part filename: MultipartBody.Part?):Disposable{
+        return  BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+                .updateProfile(param,filename)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.updateProfileResposne.postValue(it)
+                },{
+                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                })
     }
 
     companion object {

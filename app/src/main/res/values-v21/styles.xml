@@ -23,6 +23,8 @@
         <item name="hintTextColor">@color/grey</item>
         <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
         <item name="android:strokeColor">@color/xuber_grey</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/_37sdp</item>
     </style>
 
     <style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">

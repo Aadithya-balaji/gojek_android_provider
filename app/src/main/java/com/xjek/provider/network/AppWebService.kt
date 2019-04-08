@@ -7,6 +7,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
 import java.util.*
+import kotlin.collections.HashMap
 
 interface AppWebService {
 
@@ -58,5 +59,12 @@ interface AppWebService {
 
     @FormUrlEncoded
     @POST("provider/verify")
-    fun  verifyUser(@FieldMap params: HashMap<String, String>):Observable<VerifyUser>
+    fun verifyUser(@FieldMap params: HashMap<String, String>): Observable<VerifyUser>
+
+    @GET("provider/profile")
+    fun getProfile(): Observable<ProfileResponse>
+
+    @FormUrlEncoded
+    @POST("provider/signup")
+    fun updateProfile(@FieldMap params:HashMap<String,RequestBody>,@Part fileName: MultipartBody.Part?):Observable<CommonResponse>
 }

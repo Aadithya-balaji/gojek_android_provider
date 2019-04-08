@@ -55,7 +55,7 @@
     <string name="create_account">Create Account</string>
     <string name="countrycode_hint">code</string>
     <string name="phonenumber_hint">Phone Number</string>
-    <string name="email_id_hint">Email Id</string>
+    <string name="email_id_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="city_hint">City</string>
     <string name="country_hint">Country</string>

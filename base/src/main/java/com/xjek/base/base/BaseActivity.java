@@ -1,5 +1,6 @@
 package com.xjek.base.base;
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import com.xjek.base.utils.NetworkUtils;
 import com.xjek.base.views.CustomDialog;
+import com.xjek.basemodule.utils.PermissionUtils;
 
 import java.util.Objects;
 
@@ -30,6 +32,12 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
     private T mViewDataBinding;
     private CustomDialog customDialog;
 
+    private PermissionUtils mPermissionUtils;
+
+    public PermissionUtils getPermissionUtil() {
+        return mPermissionUtils == null ? new PermissionUtils() : mPermissionUtils;
+    }
+
     @LayoutRes
     protected abstract int getLayoutId();
 
@@ -41,7 +49,6 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId());
         initView(mViewDataBinding);
         customDialog = new CustomDialog(this);
-
 
         baseLiveDataLoading.observe(this, showLoading -> {
             if (showLoading)
@@ -104,7 +111,6 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
             customDialog.cancel();
     }
 
-
     protected void replaceFragment(@IdRes int id, Fragment fragmentName, String fragmentTag,
                                    boolean addToBackStack) {
         FragmentManager manager = getSupportFragmentManager();
@@ -114,4 +120,5 @@ public abstract class BaseActivity<T extends ViewDataBinding> extends AppCompatA
             transaction.addToBackStack(fragmentTag);
         transaction.commit();
     }
+
 }

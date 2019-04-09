@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".views.add_vehicle.AddVehicleActivity"></activity>
+        <activity android:name=".views.language.LanguageActivity"/>
+        <activity android:name=".views.add_vehicle.AddVehicleActivity" />
         <activity android:name=".views.document_upload.DocumentUploadActivity" />
         <activity android:name=".views.setup_vehicle.SetupVehicleActivity" />
         <activity android:name=".views.manage_documents.ManageDocumentsActivity" />

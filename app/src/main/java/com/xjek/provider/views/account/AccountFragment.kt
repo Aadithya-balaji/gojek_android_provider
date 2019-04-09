@@ -5,12 +5,12 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.provideViewModel
-import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
+import com.xjek.provider.views.language.LanguageActivity
 import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 import com.xjek.provider.views.privacypolicy.PrivacyActivity
@@ -74,7 +74,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             }
 
             7 -> {
-                ViewUtils.showToast(activity!!, "Language Clicked", true)
+                launchNewActivity(LanguageActivity::class.java, false)
             }
         }
     }

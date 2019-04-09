@@ -3,9 +3,11 @@ package com.xjek.provider.views.account
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.provideViewModel
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
@@ -52,11 +54,20 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     override fun onMenuItemClicked(position: Int) {
         val intent: Intent
         when (position) {
+
+            0 -> {
+               // launchNewActivity(ProfileAc::class.java, false)
+            }
+
             5 -> {
                 launchNewActivity(ManageServicesActivity::class.java, false)
             }
             6 -> {
                 launchNewActivity(ManageDocumentsActivity::class.java, false)
+            }
+
+            7->{
+                ViewUtils.showToast(activity!!,"Language Clicked",true)
             }
         }
     }

@@ -44,15 +44,14 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         mProfileViewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         mProfileViewModel!!.getProfile()
         getApiResponse()
-
+        permissionUtils=getPermissionUtil()
     }
 
     private fun checkPermission() {
-
-        if (permissionUtil.hasPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))) {
+        if (permissionUtils!!.hasPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))) {
             CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).start(this)
         } else {
-            permissionUtil.requestPermissions(this@ProfileActivity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), Enums.FILE_REQ_CODE)
+            permissionUtils!!.requestPermissions(this@ProfileActivity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), Enums.FILE_REQ_CODE)
         }
     }
 
@@ -72,7 +71,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // handle result of CropImageActivity
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == Enums.FILE_REQ_CODE) {

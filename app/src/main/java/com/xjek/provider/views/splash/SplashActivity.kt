@@ -19,7 +19,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         return R.layout.activity_splash
     }
 
-    public override fun initView(mViewDataBinding: ViewDataBinding) {
+    public override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivitySplashBinding
         binding.lifecycleOwner = this
         viewModel = provideViewModel {
@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
             Constant.baseUrl = it.responseData.baseUrl
-            Constant.privacyPolicyUrl=it.responseData.appsetting.cmspage.privacypolicy
+            Constant.privacyPolicyUrl=it.responseData.appsetting.cmspage.privacypolicy.toString()
             Handler().postDelayed({
                 launchNewActivity(OnBoardActivity::class.java, true)
             }, 3000)

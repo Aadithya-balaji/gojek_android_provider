@@ -23,7 +23,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
         return R.layout.activity_change_password
     }
 
-    override fun initView(mViewDataBinding: ViewDataBinding) {
+    override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityChangePasswordBinding
         binding.lifecycleOwner = this
         viewModel = provideViewModel {

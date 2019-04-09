@@ -22,7 +22,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
-        dashBoardNavigator.setTitle(resources.getString(R.string.header_label_notification))
+        dashBoardNavigator.setTitle(resources.getString(R.string.title_notification))
         dashBoardNavigator.showLogo(false)
     }
 

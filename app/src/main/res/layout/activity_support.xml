@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_background_color"
+        android:background="@color/colorScreenBackground"
         android:orientation="vertical">
 
         <include
@@ -92,7 +92,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="@drawable/custom_circle"
+                            android:background="@drawable/drawable_circle"
                             android:backgroundTint="@color/xuber_grey"
                             android:padding="@dimen/_15sdp"
                             app:srcCompat="@drawable/ic_call_24"
@@ -131,7 +131,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="@drawable/custom_circle"
+                            android:background="@drawable/drawable_circle"
                             android:backgroundTint="@color/xuber_grey"
                             android:padding="@dimen/_15sdp"
                             android:tint="@color/dark_grey"
@@ -170,7 +170,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:background="@drawable/custom_circle"
+                            android:background="@drawable/drawable_circle"
                             android:backgroundTint="@color/xuber_grey"
                             android:padding="@dimen/_15sdp"
                             android:tint="@color/dark_grey"

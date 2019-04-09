@@ -3,6 +3,7 @@ package com.xjek.provider.views.citylist
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityCityListBinding
 import com.xjek.provider.views.adapters.CityListAdapter
@@ -12,7 +13,7 @@ class CityListActivity : BaseActivity<ActivityCityListBinding>(), CityListNaviga
 
 
     override fun closeActivity() {
-        hideKeyboard()
+        ViewUtils.hideSoftInputWindow(this)
         finish()
     }
 

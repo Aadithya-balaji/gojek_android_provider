@@ -1,4 +1,4 @@
-package com.xjek.provider.views.signin
+package com.xjek.provider.views.sign_in
 
 import android.app.Activity
 import android.content.DialogInterface
@@ -65,17 +65,15 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private fun observeViewModel() {
         observeLiveData(viewModel.getLoginObservable()) {
             loadingObservable.value = false
-            message = if (!it.message.isNullOrBlank()) it.message else "Success"
-            ViewUtils.showToast(applicationContext, message, true)
             Constant.accessToken = it.responseData.accessToken
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(dashBoardIntent)
+            launchNewActivity(dashBoardIntent, false)
         }
     }
 
     private fun performValidation() {
-        hideKeyboard()
+        ViewUtils.hideSoftInputWindow(this)
         if (isSignInDataValid()) {
             loadingObservable.value = true
             viewModel.postLogin((binding.rgSignin.checkedRadioButtonId == R.id.rb_email))
@@ -86,24 +84,24 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
 
     private fun isSignInDataValid(): Boolean {
         if (binding.rgSignin.checkedRadioButtonId == R.id.rb_email) {
-            if (viewModel.email.value.isNullOrEmpty()) {
+            if (viewModel.email.value.isNullOrBlank()) {
                 message = resources.getString(R.string.email_empty)
                 return false
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(viewModel.email.value.toString().trim())
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(viewModel.email.value!!.trim())
                             .matches()) {
                 message = resources.getString(R.string.email_invalid)
                 return false
             }
         } else {
-            if (viewModel.countryCode.value.isNullOrEmpty()) {
+            if (viewModel.countryCode.value.isNullOrBlank()) {
                 message = resources.getString(R.string.country_code_empty)
                 return false
-            } else if (viewModel.phoneNumber.value.isNullOrEmpty()) {
+            } else if (viewModel.phoneNumber.value.isNullOrBlank()) {
                 message = resources.getString(R.string.phone_number_empty)
                 return false
             }
         }
-        if (viewModel.password.value.isNullOrEmpty()) {
+        if (viewModel.password.value.isNullOrBlank()) {
             message = resources.getString(R.string.password_empty)
             return false
         }
@@ -181,17 +179,16 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun onForgotPasswordClicked() {
-        val changePasswordIntent = Intent(applicationContext, ForgotPasswordActivity::class.java)
-        startActivity(changePasswordIntent)
+        launchNewActivity(ForgotPasswordActivity::class.java, false)
     }
 
     override fun onSignUpClicked() {
-        val signUpIntent = Intent(applicationContext, SignupActivity::class.java)
-        startActivity(signUpIntent)
+        launchNewActivity(SignupActivity::class.java, false)
     }
 
     override fun onSignInClicked() {
         performValidation()
+       // launchNewActivity(DashBoardActivity::class.java, false)
     }
 
     override fun onGoogleSignInClicked() {

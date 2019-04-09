@@ -1,7 +1,5 @@
 package com.xjek.xuberservice.xuberMainActivity
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.location.Location
 import android.widget.FrameLayout
@@ -58,7 +56,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
 
     private fun showServiceScreen() {
         val arrivedFragment: ArrivedFragment = ArrivedFragment.newInstance()
-        replaceFragment(R.id.container, arrivedFragment, arrivedFragment.tag, false)
+        replaceExistingFragment(R.id.container, arrivedFragment, arrivedFragment.tag, false)
     }
 
     private fun setBottomSheetListener() {
@@ -194,26 +192,26 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
             "arrived" -> {
 
                 val startServiceFragment: StartServiceFragment = StartServiceFragment.newInstance()
-                replaceFragment(R.id.container, startServiceFragment, startServiceFragment.tag, true)
+                replaceExistingFragment(R.id.container, startServiceFragment, startServiceFragment.tag, true)
             }
 
             "startservice" -> {
 
                 val endServicesFragment: EndServicesFragment = EndServicesFragment.newInstance()
-                replaceFragment(R.id.container, endServicesFragment, endServicesFragment.tag, true)
+                replaceExistingFragment(R.id.container, endServicesFragment, endServicesFragment.tag, true)
 
             }
 
             "endservice" -> {
 
                 val invoiceFragment: InvoiceFragment = InvoiceFragment.newInstance()
-                replaceFragment(R.id.container, invoiceFragment, invoiceFragment.tag, true)
+                replaceExistingFragment(R.id.container, invoiceFragment, invoiceFragment.tag, true)
             }
 
             "confrimpayment" -> {
 
                 val ratingFragment: RatingFragment = RatingFragment.newInstance()
-                replaceFragment(R.id.container, ratingFragment, ratingFragment.tag, true)
+                replaceExistingFragment(R.id.container, ratingFragment, ratingFragment.tag, true)
 
             }
             "rating" -> {

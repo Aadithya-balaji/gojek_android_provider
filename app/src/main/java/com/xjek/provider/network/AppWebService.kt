@@ -62,7 +62,7 @@ interface AppWebService {
     fun verifyUser(@FieldMap params: HashMap<String, String>): Observable<VerifyUser>
 
     @GET("provider/profile")
-    fun getProfile(): Observable<ProfileResponse>
+    fun getProfile(  @Header("Authorization") token: String): Observable<ProfileResponse>
 
     @FormUrlEncoded
     @POST("provider/signup")

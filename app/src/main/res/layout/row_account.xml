@@ -24,10 +24,10 @@
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_70sdp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/custom_circle"
+                android:background="@drawable/drawable_circle"
                 android:padding="@dimen/_20sdp"
                 android:tint="@color/xuber_white"
-                app:srcCompat="@drawable/ic_profile" />
+                app:srcCompat="@drawable/ic_user" />
 
             <TextView
                 android:id="@+id/tv_account_title"
@@ -37,7 +37,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:singleLine="true"
-                android:text="@string/account_profile"
+                android:text="@string/title_profile"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_12sdp" />
         </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.xjek.provider.views.signin
+package com.xjek.provider.views.sign_in
 
 import android.view.View
 import android.widget.RadioGroup

@@ -1,20 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#364bea</color>
+<resources
+    xmlns:tools="http://schemas.android.com/tools">
+    <color name="colorPrimary">#364BEA</color>
     <color name="colorPrimaryDark">#1F298B</color>
-    <color name="colorAccent">#364bea</color>
+    <color name="colorAccent">#364BEA</color>
     <color name="app_background_color">#f2f2f2</color>
 
 
-    <!-- Common Colors -->
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
+    <!--Background Colors-->
+    <color name="colorScreenBackground" tools:ignore="MissingDefaultResource">#F2F2F2</color>
+
+    <!--Common Colors-->
     <color name="colorBlack">#000000</color>
+    <color name="colorGray">#9D9D9D</color>h
+    <color name="colorGreen">#38BEA6</color>
+    <color name="colorFullTransparent">#00000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorLightBlue">#B6C0E3</color>
+
+    <!--Manage Services Screen-->
+    <color name="colorDrive">#E94D6F</color>
+    <color name="colorDeliver">#3BBDB2</color>
+    <color name="colorServe">#8B4F97</color>
 
     <!--service provider bg color-->
     <color name="service_bg_color">#514659F7</color>
     <color name="selected_provider_tc">#B5364BEA</color>
-
 
     <!-- Document page -->
     <color name="bg_doc_button">#FCFCFC</color>
@@ -24,12 +35,10 @@
     <color name="doc_font_service_disabled">#989fcb</color>
     <color name="et_stroke_color">#4F666772</color>
 
-
     <!-- Custom EditText  -->
     <color name="dark_grey">#666772</color>
     <color name="grey">#d1d4e7</color>
     <color name="et_text_color">#888888</color>
-
 
     <!-- Dashboard -->
     <color name="card_left_bg">#364bea</color>
@@ -52,11 +61,9 @@
     <color name="bg_vechile_profile">#F2F2F2</color>
     <color name="bg_vechile_edittext">#F8F7F6</color>
 
-
     <!-- Taxi -->
     <color name="taxi_bg_yellow">#FFA200</color>
     <color name="taxi_bg_grey">#F8F7F6</color>
-    <color name="colorWhite">#ffffff</color>
 
     <!--TransactionStatus-->
     <color name="transactinstatus">#F8FFA200</color>

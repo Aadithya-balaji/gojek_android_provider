@@ -9,6 +9,7 @@ import com.xjek.provider.models.CommonResponse
 import com.xjek.provider.models.ProfileResponse
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
+import com.xjek.provider.utils.Constant
 import com.xjek.xjek.ui.profile.ProfileNavigator
 import io.reactivex.disposables.Disposable
 import okhttp3.MediaType
@@ -25,7 +26,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     var mFirstName = MutableLiveData<String>()
     var mLastName = MutableLiveData<String>()
     var mMobileNumber = MutableLiveData<String>()
-    var mEmai = MutableLiveData<String>()
+    var mEmail = MutableLiveData<String>()
     var mCity = MutableLiveData<String>()
     var mCountry = MutableLiveData<String>()
     var mCountryCode = MutableLiveData<String>()
@@ -63,7 +64,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     }
 
     fun getProfile() {
-        getCompositeDisposable().add(appRepository.getProfile(this))
+        getCompositeDisposable().add(appRepository.getProfile(this,"Bearer"+" "+Constant.accessToken))
     }
 
     fun  getImage(){

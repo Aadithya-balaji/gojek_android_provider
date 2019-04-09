@@ -6,9 +6,10 @@ import com.xjek.provider.network.AppWebService
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
+import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
-import com.xjek.provider.views.signin.SignInViewModel
+import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
 import com.xjek.provider.views.splash.SplashViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -154,9 +155,9 @@ class AppRepository : BaseRepository() {
 
     }
 
-    fun getProfile(viewModel:ProfileViewModel):Disposable{
+    fun getProfile(viewModel:ProfileViewModel,token:String):Disposable{
         return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
-                .getProfile()
+                .getProfile(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -165,6 +166,18 @@ class AppRepository : BaseRepository() {
                      }
                 },{
                      viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                })
+    }
+
+    fun getReferal(viewModel:InviteReferalsViewModel, token: String):Disposable{
+        return  BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+                .getProfile(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                     viewModel.getProfileLiveData().postValue(it)
+                },{
+                    viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 

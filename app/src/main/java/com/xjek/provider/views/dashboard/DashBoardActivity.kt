@@ -1,7 +1,6 @@
 package com.xjek.provider.views.dashboard
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -49,7 +48,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                     supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, HomeFragment()).commit()
                     true
                 }
-                R.id.action_order -> {
+                R.id.action_history -> {
 
                     supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, OrderFragment()).commit()
                     true
@@ -118,13 +117,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         } else {
             ivRightIcon.visibility = View.VISIBLE
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.account_menu, menu)
-        return true
-//        return super.onCreateOptionsMenu(menu)
     }
 }
 

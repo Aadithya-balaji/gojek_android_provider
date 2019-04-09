@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xjek.provider">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name="com.xjek.provider.GoJekApplication"
+        android:name=".GoJekApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx"
         android:icon="@mipmap/ic_launcher"
@@ -17,17 +18,21 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory">
-
-        <!-- Added the following meta-data element, an activity for Facebook, and an activity and
-             intent filter for Chrome Custom Tabs inside your application element. -->
+        <activity android:name=".views.add_vehicle.AddVehicleActivity"></activity>
+        <activity android:name=".views.document_upload.DocumentUploadActivity" />
+        <activity android:name=".views.setup_vehicle.SetupVehicleActivity" />
+        <activity android:name=".views.manage_documents.ManageDocumentsActivity" />
+        <activity android:name=".views.manage_services.ManageServicesActivity" />
+        <!--
+         Added the following meta-data element, an activity for Facebook, and an activity and
+             intent filter for Chrome Custom Tabs inside your application element.
+        -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
         <meta-data
             android:name="com.facebook.accountkit.ApplicationName"
             android:value="@string/app_name" />
-
         <meta-data
             android:name="com.facebook.accountkit.ClientToken"
             android:value="@string/facebook_accountkit_id" />
@@ -36,7 +41,6 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -49,79 +53,66 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
-
         <activity
-            android:name="com.xjek.provider.views.splash.SplashActivity"
+            android:name=".views.splash.SplashActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="com.xjek.provider.views.onboard.OnBoardActivityK"
+            android:name=".views.on_board.OnBoardActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.signin.SignInActivity"
+            android:name=".views.sign_in.SignInActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.forgot_password.ForgotPasswordActivity"
+            android:name=".views.forgot_password.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.reset_password.ResetPasswordActivity"
+            android:name=".views.reset_password.ResetPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.signup.SignupActivity"
+            android:name=".views.signup.SignupActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.dashboard.DashBoardActivity"
+            android:name=".views.dashboard.DashBoardActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.countrypicker.CountryCodeActivity"
+            android:name=".views.countrypicker.CountryCodeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.document.DocumentActivity"
+            android:name=".views.document.DocumentActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.uploaddocumentlist.VechileDetailActivity"
+            android:name=".views.uploaddocumentlist.VechileDetailActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.change_password.ChangePasswordActivity"
+            android:name=".views.change_password.ChangePasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.verifyfile.VerifyFileActivity"
+            android:name=".views.verifyfile.VerifyFileActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -131,40 +122,44 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.xjek.provider.views.payment.PaymentActivity"
+            android:name=".views.payment.PaymentActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.xjek.provider.views.support.SupportActivity"
+            android:name=".views.support.SupportActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.xjek.provider.views.transaction_status.TransactionStatusActivity"
+            android:name=".views.transaction_status.TransactionStatusActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.xjek.provider.views.invitereferals.InviteReferalsActivity"
+            android:name=".views.invitereferals.InviteReferalsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.countrylist.CountryListActivity"
+            android:name=".views.countrylist.CountryListActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.xjek.provider.views.citylist.CityListActivity"
+            android:name=".views.citylist.CityListActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Crooper" />
+        <activity
+            android:name=".views.privacypolicy.PrivacyActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
     </application>
+
 </manifest>

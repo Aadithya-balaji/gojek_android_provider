@@ -1,6 +1,5 @@
 package com.xjek.provider.views.signup
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.provider.models.SignupResponseModel
@@ -42,7 +41,8 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
     }
 
     fun doRegistration() {
-        signupNavigator.validate() }
+        signupNavigator.validate()
+    }
 
     fun gotoSignin() {
         signupNavigator.openSignin()

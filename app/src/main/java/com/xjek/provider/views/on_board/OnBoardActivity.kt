@@ -1,4 +1,4 @@
-package com.xjek.provider.views.onboard
+package com.xjek.provider.views.on_board
 
 import android.view.View
 import android.widget.ImageView
@@ -8,20 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.xjek.base.base.BaseActivity
-import com.xjek.base.base.BaseFragment
-import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityOnBoardBinding
-import com.xjek.provider.views.signin.SignInActivity
-import com.xjek.provider.views.signup.SignupActivity
 import com.novoda.spritz.Spritz
 import com.novoda.spritz.SpritzStep
+import com.xjek.base.base.BaseActivity
+import com.xjek.base.base.BaseFragment
+import com.xjek.base.extensions.provideViewModel
+import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityOnBoardBinding
+import com.xjek.provider.databinding.FragmentAnimationpageBinding
+import com.xjek.provider.views.sign_in.SignInActivity
+import com.xjek.provider.views.signup.SignupActivity
 import java.util.concurrent.TimeUnit
 
+class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>(), OnBoardNavigator {
 
-class OnBoardActivityK : BaseActivity<com.xjek.provider.databinding.ActivityOnBoardBinding>(), OnBoardNavigator {
-
-    private lateinit var mViewDataBinding: com.xjek.provider.databinding.ActivityOnBoardBinding
+    private lateinit var binding: ActivityOnBoardBinding
+    private lateinit var viewModel: OnBoardViewModel
     private lateinit var spritz: Spritz
     private lateinit var viewPager: ViewPager
     private lateinit var ivBack: ImageView
@@ -34,28 +36,20 @@ class OnBoardActivityK : BaseActivity<com.xjek.provider.databinding.ActivityOnBo
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        this.mViewDataBinding = mViewDataBinding as ActivityOnBoardBinding
-        val onBoardViewModel = OnBoardViewModel(this)
-        mViewDataBinding.viewModel = onBoardViewModel
+        binding = mViewDataBinding as ActivityOnBoardBinding
+        binding.lifecycleOwner = this
+        viewModel = provideViewModel {
+            OnBoardViewModel()
+        }
+        viewModel.navigator = this
+        mViewDataBinding.viewModel = viewModel
         viewPager = mViewDataBinding.viewpagerOnboard
         viewPager.adapter = ScreenSlidePagerAdapter(supportFragmentManager)
         initSpritz()
-
-        //InitView
-
     }
-
-    override fun goToSignIn() {
-        openNewActivity(this@OnBoardActivityK, SignInActivity::class.java, false)
-    }
-
-    override fun goToSignUp() {
-        openNewActivity(this@OnBoardActivityK, SignupActivity::class.java, false)
-    }
-
 
     private fun initSpritz() {
-        spritz = Spritz.with(mViewDataBinding.animationView)
+        spritz = Spritz.with(binding.animationView)
                 .withSteps(SpritzStep.Builder()
                         .withAutoPlayDuration(0, TimeUnit.SECONDS)
                         .withSwipeDuration(5, TimeUnit.SECONDS)
@@ -81,7 +75,13 @@ class OnBoardActivityK : BaseActivity<com.xjek.provider.databinding.ActivityOnBo
         spritz.detachFrom(viewPager)
     }
 
+    override fun onSignInClicked() {
+        launchNewActivity(SignInActivity::class.java, false)
+    }
 
+    override fun onSignUpClicked() {
+        launchNewActivity(SignupActivity::class.java, false)
+    }
 }
 
 class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
@@ -90,15 +90,15 @@ class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(f
         return AnimationFragment()
     }
 
-
     override fun getCount(): Int = 3
-
 }
 
-class AnimationFragment : BaseFragment<com.xjek.provider.databinding.FragmentAnimationpageBinding>() {
+class AnimationFragment : BaseFragment<FragmentAnimationpageBinding>() {
+
     override fun getLayoutId(): Int = R.layout.fragment_animationpage
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
+//        TODO()
     }
 
 }

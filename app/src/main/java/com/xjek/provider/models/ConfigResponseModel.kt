@@ -13,7 +13,11 @@ data class ConfigResponseModel(
     data class ResponseData(
             @SerializedName("base_url")
             val baseUrl: String,
-            val services: List<Service>
+            @SerializedName("services")
+            val services: List<Service>,
+            @SerializedName("appsetting")
+            val appsetting:AppsettingModel
+
     ) {
         data class Service(
                 val id: Int,

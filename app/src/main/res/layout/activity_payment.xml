@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/app_background_color"
+        android:background="@color/colorScreenBackground"
         android:orientation="vertical">
 
         <include
@@ -177,7 +177,7 @@
                             android:layout_marginRight="@dimen/_5sdp"
                             android:layout_weight="1.7"
                             android:background="@drawable/custom_roundcorner_button"
-                            android:backgroundTint="@color/app_background_color"
+                            android:backgroundTint="@color/colorScreenBackground"
                             android:hint="@string/enter_amount"
                             android:inputType="number"
                             android:padding="@dimen/_9sdp"

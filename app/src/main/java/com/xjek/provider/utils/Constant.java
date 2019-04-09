@@ -9,6 +9,7 @@ public class Constant {
 
     public static String baseUrl;
     public static String accessToken;
+    public  static String privacyPolicyUrl;
     public  static  String TEMP_FILE_NAME="Gojek_Provider";
 
 }

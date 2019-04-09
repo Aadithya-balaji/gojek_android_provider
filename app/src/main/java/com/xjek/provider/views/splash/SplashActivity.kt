@@ -1,15 +1,14 @@
 package com.xjek.provider.views.splash
 
-import android.content.Intent
 import android.os.Handler
 import androidx.databinding.ViewDataBinding
-import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivitySplashBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
+import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivitySplashBinding
 import com.xjek.provider.utils.Constant
-import com.xjek.provider.views.onboard.OnBoardActivityK
+import com.xjek.provider.views.on_board.OnBoardActivity
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
 
@@ -36,9 +35,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
             Constant.baseUrl = it.responseData.baseUrl
+            Constant.privacyPolicyUrl=it.responseData.appsetting.cmspage.privacypolicy
             Handler().postDelayed({
-                startActivity(Intent(applicationContext, OnBoardActivityK::class.java))
-                finish()
+                launchNewActivity(OnBoardActivity::class.java, true)
             }, 3000)
         }
     }

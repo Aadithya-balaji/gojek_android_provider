@@ -7,13 +7,15 @@ import android.widget.TextView
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityDocumentBinding
 import com.xjek.provider.databinding.ActivityDocumentUploadBinding
 import com.xjek.provider.views.uploaddocumentlist.VechileDetailActivity
 
-class  DocumentActivity:BaseActivity<com.xjek.provider.databinding.ActivityDocumentUploadBinding>(),DocumentNavigator,View.OnClickListener{
+class  DocumentActivity:BaseActivity<ActivityDocumentBinding>(),DocumentNavigator,
+        View.OnClickListener{
 
 
-    private  var activityDocumentUploadBinding:ActivityDocumentUploadBinding?=null
+    private  var activityDocumentUploadBinding:ActivityDocumentBinding?=null
     private  lateinit var  tvLeftHeader:TextView
     private  lateinit var ivBackArrow:ImageView
     private  lateinit var  tvRightHeader:TextView
@@ -21,11 +23,11 @@ class  DocumentActivity:BaseActivity<com.xjek.provider.databinding.ActivityDocum
     private  lateinit var   tbrIvRight:ImageView
 
     override fun getLayoutId(): Int {
-        return R.layout.activity_document_upload
+        return R.layout.activity_document
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        this.activityDocumentUploadBinding=mViewDataBinding as ActivityDocumentUploadBinding
+        this.activityDocumentUploadBinding= mViewDataBinding as ActivityDocumentBinding
         val documentViewModel=DocumentViewModel()
         activityDocumentUploadBinding!!.documentviewmodel=documentViewModel
 

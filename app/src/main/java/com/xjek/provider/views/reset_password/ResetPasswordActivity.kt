@@ -13,7 +13,7 @@ import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityResetPasswordBinding
 import com.xjek.provider.network.WebApiConstants
-import com.xjek.provider.views.signin.SignInActivity
+import com.xjek.provider.views.sign_in.SignInActivity
 
 class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
         ResetPasswordViewModel.ResetPasswordNavigator {
@@ -59,13 +59,15 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
             ViewUtils.showToast(applicationContext, message, true)
             val signInIntent = Intent(applicationContext, SignInActivity::class.java)
             signInIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(signInIntent)
+            launchNewActivity(signInIntent, false)
         }
     }
 
     private fun handleIntentData() {
         viewModel.accountType = intent.getStringExtra(WebApiConstants.ResetPassword.ACCOUNT_TYPE)
-        viewModel.countryCode = intent.getStringExtra(WebApiConstants.ResetPassword.COUNTRY_CODE)
+        val countryCode = intent.getStringExtra(WebApiConstants.ResetPassword.COUNTRY_CODE)
+        if (countryCode != null)
+            viewModel.countryCode = countryCode
         viewModel.username = intent.getStringExtra(WebApiConstants.ResetPassword.USERNAME)
         viewModel.receivedOtp = intent.getStringExtra(WebApiConstants.ResetPassword.OTP)
         viewModel.otp.value = intent.getStringExtra(WebApiConstants.ResetPassword.OTP)
@@ -84,7 +86,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
     }
 
     private fun performValidation() {
-        hideKeyboard()
+        ViewUtils.hideSoftInputWindow(this)
         if (binding.ibOtp.visibility == View.VISIBLE) {
             if (isOtpDataValid()) {
                 binding.tvResetLabel.text = resources.getString(R.string.create_new_password)

@@ -1,102 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.document_upload.DocumentUploadActivity">
 
     <data>
+
         <variable
-            name="documentviewmodel"
-            type="com.xjek.provider.views.document.DocumentViewModel">
-        </variable>
+            name="documentUploadViewModel"
+            type="com.xjek.provider.views.document_upload.DocumentUploadViewModel" />
     </data>
 
-    <RelativeLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <include
-        android:id="@+id/tbr_doc_header"
-        layout="@layout/toolbar_header"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_below="@+id/tbr_doc_header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/_15sdp"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginTop="@dimen/_15sdp">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/layout_app_bar" />
 
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <androidx.cardview.widget.CardView
+            android:layout_height="match_parent"
+            android:background="@color/colorScreenBackground">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                card_view:cardElevation="2dp"
-                card_view:cardCornerRadius="4dp"
-                card_view:cardUseCompatPadding="false">
-                <GridView
-                    android:id="@+id/gv_services"
+                android:layout_margin="@dimen/_8sdp"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/document_front"
+                    layout="@layout/layout_document_upload_item"
+                    bind:documentUploadDataModel="@{documentUploadViewModel.getDocumentData()}" />
+
+                <include
+                    android:id="@+id/document_back"
+                    layout="@layout/layout_document_upload_item"
+                    bind:documentUploadDataModel="@{documentUploadViewModel.getDocumentData()}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_expiry"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:text="@string/expiry"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_14sdp" />
+
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:horizontalSpacing="@dimen/_12sdp"
-                    android:numColumns="2"
-                    android:stretchMode="columnWidth"
-                    android:verticalSpacing="@dimen/_12sdp"/>
-            </androidx.cardview.widget.CardView>
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="@dimen/_4sdp"
+                    android:onClick="@{documentUploadViewModel::onExpiryDateClick}"
+                    app:cardPreventCornerOverlap="false"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="@dimen/_8sdp">
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_img_upload"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardElevation="2dp"
-                card_view:cardCornerRadius="4dp"
-                card_view:cardUseCompatPadding="true"
-                android:onClick="@{() -> documentviewmodel.uploadImages()}"
-                android:layout_marginTop="@dimen/_30sdp">
-                <include
-                    layout="@layout/activity_document_img_upload"/>
-            </androidx.cardview.widget.CardView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_toStartOf="@+id/iv_expiry"
+                            android:text="@={documentUploadViewModel.expiryDate}"
+                            android:textColor="@color/colorGray"
+                            android:textSize="@dimen/_14sdp"
+                            tools:text="12/09/2030" />
 
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cv_upload_pdf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardElevation="2dp"
-                card_view:cardCornerRadius="4dp"
-                card_view:cardUseCompatPadding="true"
-                android:onClick="@{() -> documentviewmodel.uploadPDF()}"
-                android:layout_marginTop="@dimen/_30sdp">
-
-                <include
-                    layout="@layout/activity_pdf_upload_option"/>
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-    <TextView
-        android:id="@+id/tv_doc_proceed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_document_button"
-        android:text="@string/btn_doc_txt"
-        android:gravity="center"
-        android:textColor="@color/xuber_white"
-        android:textSize="@dimen/_14sdp"
-        android:layout_marginTop="@dimen/_14sdp"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:layout_marginLeft="@dimen/_30sdp"
-        android:layout_marginRight="@dimen/_30sdp"
-        android:fontFamily="@font/avenirltstd_medium"
-        android:textStyle="bold"
-        android:paddingTop="@dimen/_7sdp"
-        android:paddingBottom="@dimen/_7sdp"
-        android:layout_alignParentBottom="true"/>
-    </RelativeLayout>
-
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/iv_expiry"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            app:srcCompat="@drawable/ic_calendar" />
+                    </RelativeLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

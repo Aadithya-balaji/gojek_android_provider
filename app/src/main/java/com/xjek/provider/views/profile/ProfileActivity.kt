@@ -33,11 +33,11 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     private var localPath: Uri? = null
     private var message: String? = ""
     private var filePart: MultipartBody.Part? = null
-
+    private var permissionUtils: com.xjek.basemodule.utils.PermissionUtils? = null
     override fun getLayoutId(): Int = R.layout.activity_edit_profile
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivityEditProfileBinding
-        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.profile)
+        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.title_profile)
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { view ->
             finish()
         }
@@ -48,6 +48,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     }
 
     private fun checkPermission() {
+
         if (permissionUtil.hasPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))) {
             CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).start(this)
         } else {
@@ -62,7 +63,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 if (profileData != null) {
                     if (!profileData.firstName.isNullOrEmpty()) mProfileViewModel!!.mFirstName.postValue(profileData.firstName)
                     if (!profileData.lastName.isNullOrEmpty()) mProfileViewModel!!.mLastName.postValue(profileData.lastName)
-                    if (!profileData.email.isNullOrEmpty()) mProfileViewModel!!.mEmai.postValue(profileData.email)
+                    if (!profileData.email.isNullOrEmpty()) mProfileViewModel!!.mEmail.postValue(profileData.email)
                     if (!profileData.mobile.isNullOrEmpty()) mProfileViewModel!!.mMobileNumber.postValue(profileData.mobile)
                 }
             }
@@ -121,6 +122,9 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             return true
         }
     }
+
+
+
 
 
 }

@@ -4,6 +4,7 @@ import com.xjek.provider.R;
 import com.xjek.provider.model.CountryModel;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class Country {
@@ -264,6 +265,25 @@ public class Country {
 
 
     public Country() {
+    }
+
+    private static CountryModel getCountryByISO(String countryIsoCode) {
+        countryIsoCode = countryIsoCode.toUpperCase();
+        CountryModel c = new CountryModel(countryIsoCode,"","",-1);
+        int i = Arrays.binarySearch(COUNTRIES, c, new ISOCodeComparator());
+
+        if (i < 0) {
+            return null;
+        } else {
+            return COUNTRIES[i];
+        }
+    }
+
+    public static class ISOCodeComparator implements Comparator<CountryModel> {
+        @Override
+        public int compare(CountryModel country, CountryModel t1) {
+            return country.getCode().compareTo(t1.getCode());
+        }
     }
 
     public static List<CountryModel> getAllCountries() {

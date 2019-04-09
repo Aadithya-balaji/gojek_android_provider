@@ -35,6 +35,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
             Constant.baseUrl = it.responseData.baseUrl
+            Constant.privacyPolicyUrl=it.responseData.appsetting.cmspage.privacypolicy.toString()
             Handler().postDelayed({
                 launchNewActivity(OnBoardActivity::class.java, true)
             }, 3000)

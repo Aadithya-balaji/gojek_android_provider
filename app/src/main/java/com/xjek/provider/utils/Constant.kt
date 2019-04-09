@@ -10,5 +10,6 @@ object Constant {
     lateinit var baseUrl:String
     lateinit var accessToken: String
     const val TEMP_FILE_NAME = "Gojek_Provider"
+    lateinit var  privacyPolicyUrl:String
 
 }

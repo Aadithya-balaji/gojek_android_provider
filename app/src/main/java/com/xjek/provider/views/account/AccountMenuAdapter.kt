@@ -9,7 +9,8 @@ import com.xjek.provider.BR
 import com.xjek.provider.R
 import com.xjek.provider.databinding.LayoutAccountMenuItemBinding
 
-class AccountMenuAdapter(private val accountViewModel: AccountViewModel) :
+class AccountMenuAdapter
+(private val accountViewModel: AccountViewModel) :
         RecyclerView.Adapter<AccountMenuAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +32,6 @@ class AccountMenuAdapter(private val accountViewModel: AccountViewModel) :
     }
 
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
-
         fun bind(accountViewModel: AccountViewModel, position: Int) {
             binding.setVariable(BR.accountViewModel, accountViewModel)
             binding.setVariable(BR.position, position)

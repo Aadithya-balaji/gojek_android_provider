@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.views.CustomDialog
+import com.xjek.basemodule.utils.PermissionUtils
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
@@ -29,6 +30,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         get() = NetworkUtils.isNetworkConnected(applicationContext)
 
     protected abstract fun initView(mViewDataBinding: ViewDataBinding?)
+
+    protected val mPermissionUtils: PermissionUtils? = null
+
+    fun getPermissionUtil(): PermissionUtils {
+        return if (mPermissionUtils == null) PermissionUtils() else mPermissionUtils
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

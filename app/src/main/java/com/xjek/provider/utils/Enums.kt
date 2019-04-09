@@ -28,6 +28,7 @@ class Enums {
         const val RC_GOOGLE_SIGN_IN = 101
         const val COUNTRYLIST_REQUEST_CODE=124
         const val  CITYLIST_REQUEST_CODE=125
+        const val FILE_REQ_CODE=126
 
     }
 
@@ -45,7 +46,7 @@ class Enums {
     annotation class CommonData
 
 
-    @IntDef(FB_ACCOUNT_KIT_CODE, GOOGLE_REQ_CODE, RC_COUNTRY_CODE_PICKER, RC_GOOGLE_SIGN_IN, COUNTRYLIST_REQUEST_CODE, CITYLIST_REQUEST_CODE)
+    @IntDef(FB_ACCOUNT_KIT_CODE, GOOGLE_REQ_CODE, RC_COUNTRY_CODE_PICKER, RC_GOOGLE_SIGN_IN, COUNTRYLIST_REQUEST_CODE, CITYLIST_REQUEST_CODE,FILE_REQ_CODE)
     @Retention(AnnotationRetention.SOURCE)
     annotation class OnActivityResultCode
 

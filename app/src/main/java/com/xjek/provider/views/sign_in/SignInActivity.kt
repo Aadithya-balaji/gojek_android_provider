@@ -65,8 +65,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private fun observeViewModel() {
         observeLiveData(viewModel.getLoginObservable()) {
             loadingObservable.value = false
-            message = if (!it.message.isNullOrBlank()) it.message else "Success"
-            ViewUtils.showToast(applicationContext, message, true)
             Constant.accessToken = it.responseData.accessToken
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -189,8 +187,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun onSignInClicked() {
-//        performValidation()
-        launchNewActivity(DashBoardActivity::class.java, false)
+        performValidation()
+       // launchNewActivity(DashBoardActivity::class.java, false)
     }
 
     override fun onGoogleSignInClicked() {

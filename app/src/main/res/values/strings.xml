@@ -5,9 +5,6 @@
 
     <!--Sign Up Screen-->
     <string name="social_sign_up">Social Signup</string>
-    <string name="connect_via_google">Connect via Google</string>
-    <string name="connect_via_facebook">Connect via Facebook</string>
-    <string name="create_account">Create Account</string>
     <string name="hint_first_name">FirstName</string>
     <string name="hint_last_name">LastName</string>
     <string name="hint_code">code</string>
@@ -22,15 +19,10 @@
     <string name="hint_city">City</string>
     <string name="terms_condition">I accept the following terms and conditions</string>
     <string name="already_have_account">Already have an account</string>
-    <string name="search_country">Search country</string>
-    <string name="search_city">Search city</string>
+
 
     <!-- Sign In Screen-->
-    <string name="login_via">Login Via</string>
-    <string name="forgot_password">Forgot Password ?</string>
     <string name="do_not_have_account">Don\'t have an account</string>
-    <string name="or">OR</string>
-    <string name="social_login">Social Login</string>
 
     <!--Forgot Password Screen-->
     <string name="title_forgot_password">Forgot Password</string>
@@ -88,13 +80,42 @@
     <string name="order_past">Past</string>
     <string name="order_current">Current</string>
 
+    <!-- Register -->
+    <string name="user_name_hint">User Name</string>
+    <string name="create_account">Create Account</string>
+    <string name="countrycode_hint">code</string>
+    <string name="phonenumber_hint">Phone Number</string>
+    <string name="email_id_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="city_hint">City</string>
+    <string name="country_hint">Country</string>
+    <string name="state_hint">State</string>
+    <string name="already_have_an_account">Already have an account</string>
+    <string name="confirm_pwd_hint">Confirm Password</string>
+    <string name="hint_firstname">FirstName</string>
+    <string name="hint_lastname">LastName</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="search_city">Search city</string>
+    <string name="gender">Gender</string>
+    <string name="social_signup">Social Signup</string>
+
+
+
+    <!-- Sign in -->
+    <string name="login_via">Login Via</string>
+    <string name="dont_have_account">Don\'t have an account</string>
+    <string name="or">OR</string>
+    <string name="social_login">Social Login</string>
+    <string name="connect_via_google">Connect via Google</string>
+    <string name="connect_via_facebook">Connect via Facebook</string>
+    <string name="forgot_password">Forgot Password ?</string>
     <!--Notification Screen-->
     <string name="title_notification">Notification</string>
     <string name="notificaiton_valid_label">Valid Till</string>
     <string name="notification_label_car">Car Notification</string>
     <string name="notificaiton_label_foodie">Food Notificaiton</string>
     <string name="notification_label_service">Service Notification</string>
-
     <!--Account Screen-->
     <string name="title_my_account">My Account</string>
     <integer-array name="icon_account">
@@ -144,21 +165,25 @@
 
     <!--Manage Services Screen-->
     <string name="title_manage_services">Manage Services</string>
+
     <array name="color_manage_services">
         <item>@color/colorDrive</item>
         <item>@color/colorDeliver</item>
         <item>@color/colorServe</item>
     </array>
+
     <integer-array name="icon_manage_services">
         <item>@drawable/ic_drive</item>
         <item>@drawable/ic_deliver</item>
         <item>@drawable/ic_serve</item>
     </integer-array>
+
     <string-array name="title_manage_services">
         <item>I am ready to Drive</item>
         <item>I am ready to Deliver</item>
         <item>I am ready to Serve</item>
     </string-array>
+
     <string-array name="desc_manage_services">
         <item>Setup your Vehicle</item>
         <item>Setup your Deliveries</item>
@@ -184,7 +209,7 @@
     <string name="title_manage_documents">Manage Documents</string>
     <string name="expiry">Expiry</string>
 
-    <!--Language Screen-->
+    <!--LanguageModel Screen-->
     <string name="title_language">Language</string>
 
     <string name="transaction">Transaction</string>
@@ -207,6 +232,7 @@
     <string name="header_label_verification_img">Verification Images</string>
     <string name="header_after_document_upload">After Document Upload</string>
     <string name="header_label_document_upload">Document Upload</string>
+    <string name="header_label_privacy">Privacy Policy</string>
     <string name="dummy_rating">4.6</string>
 
     <string name="services_hint_service">Service</string>
@@ -249,6 +275,12 @@
     <string name="action_sign_up">Sign Up</string>
     <string name="action_cancel">Cancel</string>
 
+
+    <!-- Invite Referal -->
+    <string name="invite_referal_hint">Invite your friends and earn %s for every %s new Users.</string>
+    <string name="invite_referal_count">%d</string>
+    <string name="invite_referal_amount">%.2f</string>
+
     <!--Error Messages-->
     <string name="empty_username">Please enter the user name</string>
     <string name="empty_phone">Please enter the Phone Number</string>
@@ -277,7 +309,6 @@
     <string name="error_otp_empty">Otp should not be empty</string>
     <string name="error_otp_invalid">Please enter correct otp</string>
     <string name="alert_sign_up">Please sign up with this account</string>
-
     <string name="file_pemission_denied">File read permission denied</string>
     <string name="rationale_storage_permission_denied">Please allow storage permission to change image</string>
 </resources>

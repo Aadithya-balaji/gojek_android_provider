@@ -1,7 +1,6 @@
 package com.xjek.provider.views.account
 
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseFragment
@@ -11,10 +10,12 @@ import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
+import com.xjek.provider.views.language.LanguageActivity
 import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 import com.xjek.provider.views.payment.PaymentActivity
 import com.xjek.provider.views.privacypolicy.PrivacyActivity
+import com.xjek.provider.views.profile.ProfileActivity
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator {
 
@@ -53,11 +54,13 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     }
 
     override fun onMenuItemClicked(position: Int) {
-        val intent: Intent
         when (position) {
+            0 -> {
+                launchNewActivity(ProfileActivity::class.java, false)
+            }
 
             1 -> {
-                launchNewActivity(InviteReferalsActivity::class.java,false)
+                launchNewActivity(InviteReferalsActivity::class.java, false)
             }
 
             2 -> {
@@ -65,7 +68,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             }
 
             3 -> {
-                launchNewActivity(PrivacyActivity::class.java,false)
+                launchNewActivity(PrivacyActivity::class.java, false)
             }
 
             5 -> {
@@ -73,6 +76,10 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             }
             6 -> {
                 launchNewActivity(ManageDocumentsActivity::class.java, false)
+            }
+
+            7 -> {
+                launchNewActivity(LanguageActivity::class.java, false)
             }
         }
     }

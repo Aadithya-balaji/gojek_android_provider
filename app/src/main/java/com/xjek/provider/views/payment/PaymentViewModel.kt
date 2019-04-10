@@ -1,6 +1,7 @@
-package com.xjek.xjek.ui.payment
+package com.xjek.provider.views.payment
 
 import com.xjek.base.base.BaseViewModel
+import com.xjek.xjek.ui.payment.PaymentNavigator
 
 public class PaymentViewModel : BaseViewModel<PaymentNavigator>() {
     fun addAmount() {
@@ -9,5 +10,9 @@ public class PaymentViewModel : BaseViewModel<PaymentNavigator>() {
 
     fun openTransactionStatusActivty() {
         navigator.goToTransactionStatusActivty()
+    }
+
+    fun addNewCard(){
+        navigator.addCard()
     }
 }

@@ -190,6 +190,17 @@
         <item>Setup your Services</item>
     </string-array>
 
+
+    <!-- Payment mode list -->
+    <string-array name="payment_mode">
+        <item>Cash</item>
+        <item>Card</item>
+        <item>Paypal</item>
+        <item>Paytm</item>
+        <item>PayUMoney</item>
+        <item>Braintree</item>
+    </string-array>
+
     <!--Setup Vehicle Screen-->
     <string name="title_setup_vehicle">Setup Your Vehicle</string>
 
@@ -311,4 +322,7 @@
     <string name="alert_sign_up">Please sign up with this account</string>
     <string name="file_pemission_denied">File read permission denied</string>
     <string name="rationale_storage_permission_denied">Please allow storage permission to change image</string>
+
+    <!-- Manage Payments -->
+    <string name="saved_card">Saved Cards</string>
 </resources>

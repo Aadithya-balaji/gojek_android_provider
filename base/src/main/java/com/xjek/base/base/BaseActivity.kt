@@ -1,7 +1,11 @@
 package com.xjek.base.base
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +13,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.snackbar.Snackbar
+import com.xjek.base.R
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.views.CustomDialog
@@ -19,6 +25,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private val loadingLiveData = MutableLiveData<Boolean>()
     private lateinit var mViewDataBinding: T
     private lateinit var customDialog: CustomDialog
+    private  lateinit var mParentView: View
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
@@ -51,6 +58,11 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                 hideLoading()
             }
         }
+    }
+
+    override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
+        return super.onCreateView(parent, name, context, attrs)
+        mParentView=window.decorView.findViewById(R.id.content)
     }
 
     protected fun setBindingVariable(variableId: Int, value: Any?) {
@@ -88,5 +100,11 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         if (doRememberTransaction)
             transaction.addToBackStack(tag)
         transaction.commit()
+    }
+
+    protected  fun showSnackBar(msg:String){
+        val snackbar = Snackbar.make(mParentView, msg, Snackbar.LENGTH_LONG)
+        snackbar.setActionTextColor(Color.RED)
+        snackbar.show()
     }
 }

@@ -19,7 +19,7 @@ public class AppsettingModel {
     private Integer otpVerify;
     @SerializedName("payments")
     @Expose
-    private PaymentsModel PaymentsModel;
+    private List<PaymentsModel> payments = null;
     @SerializedName("cmspage")
     @Expose
     private CmspageModel CmspageModel;
@@ -54,14 +54,6 @@ public class AppsettingModel {
         this.otpVerify = otpVerify;
     }
 
-    public PaymentsModel getPayments() {
-        return PaymentsModel;
-    }
-
-    public void setPayments(PaymentsModel PaymentsModel) {
-        this.PaymentsModel = PaymentsModel;
-    }
-
     public CmspageModel getCmspage() {
         return CmspageModel;
     }
@@ -84,6 +76,14 @@ public class AppsettingModel {
 
     public void setLanguages(List<LanguageModel> languages) {
         this.languages = languages;
+    }
+
+    public List<PaymentsModel> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<PaymentsModel> payments) {
+        this.payments = payments;
     }
 
 }

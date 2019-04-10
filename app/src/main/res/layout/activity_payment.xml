@@ -7,7 +7,7 @@
 
         <variable
             name="paymentViewModel"
-            type="com.xjek.xjek.ui.payment.PaymentViewModel" />
+            type="com.xjek.provider.views.payment.PaymentViewModel" />
 
         <variable
             name="transactionAdapter"
@@ -238,6 +238,7 @@
                         android:layout_gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/add_amount"
+                        android:onClick="@{() -> paymentViewModel.addNewCard()}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
 

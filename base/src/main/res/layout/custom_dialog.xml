@@ -24,8 +24,8 @@
         <com.wang.avi.AVLoadingIndicatorView
             android:id="@+id/avIndicator"
             style="@style/AVLoadingIndicatorView.Small"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:padding="@dimen/_15sdp"
             android:visibility="visible"
             app:indicatorColor="@color/colorBasePrimary"

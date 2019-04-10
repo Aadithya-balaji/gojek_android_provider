@@ -118,7 +118,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         this.mViewDataBinding = mViewDataBinding as ActivityRegisterBinding
         signupViewmodel = SignupViewModel(this)
         this.mViewDataBinding.registermodel = signupViewmodel
-
         this.mViewDataBinding.lifecycleOwner = this@SignupActivity
         //initListener
         tlCountryCode = findViewById(R.id.tl_country_code)
@@ -132,8 +131,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         edtPassword = findViewById(R.id.edt_signup_password)
         ivProfile = findViewById(R.id.profile_image)
         tlPassword = findViewById(R.id.til_signup_pwd)
-        rbMale = findViewById(R.id.rbMale)
-        rbFemale = findViewById(R.id.rbFemale)
+        rbMale = findViewById(R.id.rbMale) as MaterialRadioButton
+        rbFemale = findViewById(R.id.rbFemale) as MaterialRadioButton
         callbackManager = CallbackManager.Factory.create()
         edtCountry.isFocusableInTouchMode = false
         edtCity.isFocusableInTouchMode = false
@@ -664,7 +663,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
             R.id.rbMale -> {
                 if (isChecked == true) {
                     signupViewmodel.gender.value = "MALE"
-                    Log.e("signup", "--------gender" + signupViewmodel.gender.value)
                 }
 
             }
@@ -672,7 +670,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
             R.id.rbFemale -> {
                 if (isChecked == true) {
                     signupViewmodel.gender.value = "FEMALE"
-                    Log.e("signup", "--------gender" + signupViewmodel.gender.value)
 
                 }
             }

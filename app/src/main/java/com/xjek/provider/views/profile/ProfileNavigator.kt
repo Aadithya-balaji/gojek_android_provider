@@ -1,6 +1,7 @@
 package com.xjek.xjek.ui.profile
 
 interface ProfileNavigator {
-
-    fun goToMainActivity()
+    fun showErrorMsg(error:String)
+    fun pickImage()
+    fun saveProfile()
 }

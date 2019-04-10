@@ -32,11 +32,7 @@ class CityListAdapter(val activity: FragmentActivity?, val citylist: List<City>)
     override fun getItemCount(): Int = citySearchList!!.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
-
         holder.currentOderItemlistBinding.countyName.setText(citySearchList!![position].city_name)
-
-
         holder.bind()
         holder.currentOderItemlistBinding.itemClickListener = object : CustomClickListner {
             override fun onListClickListner() {
@@ -51,9 +47,7 @@ class CityListAdapter(val activity: FragmentActivity?, val citylist: List<City>)
 
 
     inner class MyViewHolder(itemView: CountrySearchListItemBinding) : RecyclerView.ViewHolder(itemView.root) {
-
         val currentOderItemlistBinding = itemView
-
         fun bind() {
 
         }

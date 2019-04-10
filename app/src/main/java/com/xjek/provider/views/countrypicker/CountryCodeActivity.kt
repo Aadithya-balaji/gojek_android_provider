@@ -38,7 +38,7 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(), SearchVi
     }
 
 
-    override fun initView(mViewDataBinding: ViewDataBinding) {
+    override fun initView(mViewDataBinding: ViewDataBinding?) {
 
 
         this.activityCountryListBinding = mViewDataBinding as com.xjek.provider.databinding.ActivityCountryCodeBinding

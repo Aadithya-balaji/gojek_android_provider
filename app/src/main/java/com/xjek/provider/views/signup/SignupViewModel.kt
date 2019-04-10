@@ -86,10 +86,6 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         getCompositeDisposable().add(appRepository.getCountryList(this, hashMap))
     }
 
-    fun getStateList() {
-        //getCompositeDisposable().add(appRepository.getStateList(this, stateID.value!!))
-    }
-
     fun getCityList() {
         signupNavigator.getCityList()
     }
@@ -102,9 +98,6 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         signupNavigator.googleSignup()
     }
 
-    fun validate() {
-        val signupNavigator1 = validate()
-    }
 
     fun gotToCountryPage() {
         signupNavigator.getCountryCode()

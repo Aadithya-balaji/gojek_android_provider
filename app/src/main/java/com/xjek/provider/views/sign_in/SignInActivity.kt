@@ -24,6 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.Logger
@@ -68,6 +69,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
             message = if (!it.message.isNullOrBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)
             Constant.accessToken = it.responseData.accessToken
+            val preferences = PreferencesHelper.getDefaultPreferences(this)
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             launchNewActivity(dashBoardIntent, false)

@@ -3,8 +3,11 @@ package com.xjek.provider.views.splash
 import android.os.Handler
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
+import com.xjek.base.extensions.put
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySplashBinding
 import com.xjek.provider.utils.Constant
@@ -34,6 +37,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
+            val preferences = PreferencesHelper.getDefaultPreferences(this)
+            preferences.put(PreferencesKey.BASE_URL, it.responseData.baseUrl)
             Constant.baseUrl = it.responseData.baseUrl
             Handler().postDelayed({
                 launchNewActivity(OnBoardActivity::class.java, true)

@@ -1,32 +1,21 @@
 package com.xjek.provider.models
 
-import com.google.gson.annotations.SerializedName
-import com.xjek.base.models.CommonResponse
-
-data class ConfigResponseModel(
+data class Model(
+        val statusCode: String,
+        val title: String,
+        val message: String,
         val responseData: ResponseData,
-        override val statusCode: String,
-        override val title: String,
-        override val message: String,
-        override val error: List<Any>
-) : CommonResponse {
+        val error: List<Any>
+) {
     data class ResponseData(
-            @SerializedName("base_url") val baseUrl: String,
+            val baseUrl: String,
             val services: List<Service>,
-            val appSetting: AppSetting
+            val appsetting: Appsetting
     ) {
-        data class Service(
-                val id: Int,
-                @SerializedName("admin_service_name") val adminServiceName: String,
-                @SerializedName("display_name") val displayName: String,
-                @SerializedName("base_url") val baseUrl: String,
-                val status: Int
-        )
-
-        data class AppSetting(
+        data class Appsetting(
                 val referral: Int,
-                @SerializedName("social_login") val socialLogin: Int,
-                @SerializedName("otp_verify") val otpVerify: Int,
+                val socialLogin: Int,
+                val otpVerify: Int,
                 val payments: Payments,
                 val cmspage: Cmspage,
                 val supportdetails: Supportdetails,
@@ -34,7 +23,7 @@ data class ConfigResponseModel(
         ) {
             data class Payments(
                     val card: String,
-                    @SerializedName("stripe_secret_key") val stripeSecretKey: String,
+                    val stripeSecretKey: String,
                     val stripePublishableKey: String,
                     val cash: String,
                     val stripeCurrency: String
@@ -61,5 +50,13 @@ data class ConfigResponseModel(
                 )
             }
         }
+
+        data class Service(
+                val id: Int,
+                val adminServiceName: String,
+                val displayName: String,
+                val baseUrl: String,
+                val status: Int
+        )
     }
 }

@@ -6,9 +6,9 @@
 
     <data>
 
-        <!--<variable-->
-        <!--name=""-->
-        <!--type="" />-->
+        <variable
+            name="addVehicleViewModel"
+            type="com.xjek.provider.views.add_vehicle.AddVehicleViewModel" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -22,24 +22,28 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorScreenBackground">
+            android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_8sdp">
+                android:background="@color/colorScreenBackground"
+                android:padding="@dimen/_10sdp">
 
-                <com.google.android.material.card.MaterialCardView
+                <androidx.cardview.widget.CardView
                     android:id="@+id/cv_vehicle_data"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="46dp"
                     app:cardBackgroundColor="@color/colorWhite"
                     app:cardCornerRadius="4dp"
                     app:cardElevation="4dp"
                     app:cardPreventCornerOverlap="false"
-                    android:layout_marginTop="46dp"
                     app:cardUseCompatPadding="true"
+                    app:contentPaddingBottom="@dimen/_15sdp"
+                    app:contentPaddingLeft="@dimen/_15sdp"
+                    app:contentPaddingRight="@dimen/_15sdp"
+                    app:contentPaddingTop="61dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -47,84 +51,114 @@
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingStart="16dp"
-                        android:paddingEnd="16dp"
-                        android:paddingTop="61dp"
-                        android:paddingBottom="16dp"
                         android:orientation="vertical">
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Theme.TextInputLayout"
                             android:layout_width="match_parent"
+
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_car_category">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                style="@style/Theme.TextInputEditText"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="wrap_content"
+                                android:drawableEnd="@drawable/ic_drop_down_arrow"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:editable="false"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Theme.TextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_model">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                style="@style/Theme.TextInputEditText"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Theme.TextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_year">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                style="@style/Theme.TextInputEditText"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Theme.TextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_color">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                style="@style/Theme.TextInputEditText"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Theme.TextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_plate">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                style="@style/Theme.TextInputEditText"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Theme.TextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_make">
 
                             <com.google.android.material.textfield.TextInputEditText
+                                style="@style/Theme.TextInputEditText"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionDone"
+                                android:maxLines="1"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </androidx.appcompat.widget.LinearLayoutCompat>
-                </com.google.android.material.card.MaterialCardView>
+                </androidx.cardview.widget.CardView>
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/iv_vehicle"
@@ -132,6 +166,7 @@
                     android:layout_height="90dp"
                     android:layout_marginTop="8dp"
                     android:elevation="4dp"
+                    android:onClick="@{addVehicleViewModel::onVehicleImageClick}"
                     android:src="@drawable/profile_placeholder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -142,6 +177,7 @@
                     android:layout_height="24dp"
                     android:background="@drawable/drawable_circle"
                     android:elevation="4dp"
+                    android:onClick="@{addVehicleViewModel::onVehicleImageClick}"
                     android:padding="7dp"
                     app:layout_constraintCircle="@id/iv_vehicle"
                     app:layout_constraintCircleAngle="90"
@@ -156,10 +192,11 @@
                     android:id="@+id/tv_document_upload"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/document_upload"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14sdp"
+                    android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cv_vehicle_data" />
 
@@ -167,10 +204,13 @@
                     android:id="@+id/rl_rc_book"
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_120sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:background="@drawable/drawable_dashed_rectangle"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:onClick="@{addVehicleViewModel::onRcBookClick}"
                     app:layout_constraintEnd_toStartOf="@+id/rl_insurance"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_document_upload">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -178,7 +218,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@null"
-                        android:scaleType="fitCenter" />
+                        android:scaleType="centerCrop" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -187,8 +227,8 @@
                         android:drawableTop="@drawable/ic_file_upload"
                         android:drawablePadding="@dimen/_5sdp"
                         android:text="@string/rc_book"
-                        android:textColor="@color/colorGray"
-                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/colorLightBlue"
+                        android:textSize="12sp"
                         app:drawableTint="@color/colorLightBlue" />
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
@@ -196,10 +236,12 @@
                     android:id="@+id/rl_insurance"
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="@dimen/_120sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    app:layout_constraintStart_toEndOf="@id/rl_rc_book"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="4dp"
                     android:background="@drawable/drawable_dashed_rectangle"
+                    android:onClick="@{addVehicleViewModel::onInsuranceClick}"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/rl_rc_book"
                     app:layout_constraintTop_toBottomOf="@id/tv_document_upload">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -207,7 +249,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@null"
-                        android:scaleType="fitCenter" />
+                        android:scaleType="centerCrop" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
@@ -216,19 +258,24 @@
                         android:drawableTop="@drawable/ic_file_upload"
                         android:drawablePadding="@dimen/_5sdp"
                         android:text="@string/insurance"
-                        android:textColor="@color/colorGray"
-                        android:textSize="@dimen/_12sdp"
+                        android:textColor="@color/colorLightBlue"
+                        android:textSize="12sp"
                         app:drawableTint="@color/colorLightBlue" />
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="match_parent"
+                <Button
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_16sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:onClick="@{addVehicleViewModel::onVehicleSubmitClick}"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/submit"
-                    app:cornerRadius="@dimen/_20sdp"
+                    android:textAllCaps="false"
+                    android:textSize="16sp"
+                    app:cornerRadius="@dimen/_25sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rl_rc_book" />

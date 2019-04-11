@@ -12,6 +12,7 @@ import com.xjek.provider.views.reset_password.ResetPasswordViewModel
 import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
 import com.xjek.provider.views.splash.SplashViewModel
+import com.xjek.provider.views.wallet.WalletViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -190,6 +191,31 @@ class AppRepository : BaseRepository() {
                     viewModel.updateProfileResposne.postValue(it)
                 },{
                     viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                })
+    }
+
+
+    fun getCardList(viewModel:WalletViewModel,token:String):Disposable{
+        return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+                .getCardList(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                           viewModel.cardResponseData.postValue(it)
+                },{
+
+                })
+    }
+
+    fun addWalletAmount(viewModel:WalletViewModel,params:HashMap<String,String>,token:String):Disposable{
+        return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+                .addWalletMoney(token,params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+
+                },{
+
                 })
     }
 

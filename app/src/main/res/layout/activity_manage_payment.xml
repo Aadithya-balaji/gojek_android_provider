@@ -7,6 +7,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <include
+            android:id="@+id/toolbar_layout"
+            layout="@layout/layout_app_bar"/>
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tbr_payment"
             android:layout_width="match_parent"
@@ -16,13 +19,11 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-            <TableLayout
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tb_payment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/blue_color"
                 app:tabBackground="@color/grey"
-                app:tabGravity="center"
                 app:tabIndicatorColor="@color/colorPrimary"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/colorPrimary"
@@ -35,6 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
-            android:visibility="visible" />
+            android:visibility="visible"/>
     </LinearLayout>
 </layout>

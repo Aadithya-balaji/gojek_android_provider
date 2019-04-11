@@ -2,4 +2,5 @@
 <resources>
     <dimen name="boxCornerRadius">25dp</dimen>
     <dimen name="et_textsize">@dimen/_10sdp</dimen>
+    <dimen name="rv_space">@dimen/_20sdp</dimen>
 </resources>

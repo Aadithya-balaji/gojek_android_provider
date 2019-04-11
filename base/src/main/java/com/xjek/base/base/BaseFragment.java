@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.xjek.base.views.CustomDialog;
+
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,11 +16,16 @@ import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
 
     private FragmentActivity mActivity;
     private T mViewDataBinding;
+    private MutableLiveData loadingLiveData = new MutableLiveData<Boolean>();
+    private CustomDialog customDialog;
+
 
     @LayoutRes
     public abstract int getLayoutId();
@@ -42,6 +49,18 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(mViewDataBinding.getRoot(), mViewDataBinding);
+        customDialog = new CustomDialog(mActivity);
+        loadingLiveData.observe(getActivity(), new Observer() {
+            @Override
+            public void onChanged(Object o) {
+                /*if(loadingLiveData.getValue()==true){
+                    showLoading();
+                }else{
+                    hideLoading();
+                }*/
+            }
+        });
+
     }
 
     protected void setBindingVariable(int variableId, @Nullable Object object) {
@@ -60,4 +79,17 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         mActivity = null;
         super.onDetach();
     }
+
+    protected void showLoading() {
+        if (customDialog.getWindow() != null) {
+            customDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            customDialog.show();
+        }
+    }
+
+    protected void hideLoading() {
+        customDialog.cancel();
+    }
+
+
 }

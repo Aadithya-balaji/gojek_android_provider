@@ -5,17 +5,17 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.xjek.base.base.BaseViewModel
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.CommonResponse
 import com.xjek.provider.models.ProfileResponse
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
-import com.xjek.provider.utils.Constant
 import com.xjek.xjek.ui.profile.ProfileNavigator
 import io.reactivex.disposables.Disposable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.http.Multipart
 
 
 class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
@@ -34,7 +34,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     val mOpenGallerFlag = MutableLiveData<String>()
     var mGender = MutableLiveData<String>()
     val updateProfileResposne = MutableLiveData<CommonResponse>()
-    val filePath=MutableLiveData<MultipartBody.Part>()
+    val filePath = MutableLiveData<MultipartBody.Part>()
 
     companion object {
         @JvmStatic
@@ -52,7 +52,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     fun getUpdateProfileLiveData() = updateProfileResposne
 
     fun updateProfile() {
-        val params=HashMap<String,RequestBody>()
+        val params = HashMap<String, RequestBody>()
         params.put(WebApiConstants.FIRST_NAME, RequestBody.create(MediaType.parse("text/plain"), mFirstName.value.toString()))
         params.put(WebApiConstants.LAST_NAME, RequestBody.create(MediaType.parse("text/plain"), mLastName.value.toString()))
         params.put(WebApiConstants.COUNTRY_CODE, RequestBody.create(MediaType.parse("text/plain"), mCountryCode.value.toString()))
@@ -60,14 +60,15 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
         params.put(WebApiConstants.GENDER, RequestBody.create(MediaType.parse("text/plain"), mGender.value.toString()))
         params.put(WebApiConstants.COUNTRY_ID, RequestBody.create(MediaType.parse("text/plain"), mCountry.value.toString()))
         params.put(WebApiConstants.CITY_ID, RequestBody.create(MediaType.parse("text/plain"), mCity.value.toString()))
-        getCompositeDisposable().add(appRepository.updateProfile(this,params,filePath.value))
+        getCompositeDisposable().add(appRepository.updateProfile(this, params, filePath.value))
     }
 
     fun getProfile() {
-        getCompositeDisposable().add(appRepository.getProfile(this,"Bearer"+" "+Constant.accessToken))
+        getCompositeDisposable().add(appRepository.getProfile(this, "Bearer" + " "
+                + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
     }
 
-    fun  getImage(){
+    fun getImage() {
         navigator.pickImage()
     }
 

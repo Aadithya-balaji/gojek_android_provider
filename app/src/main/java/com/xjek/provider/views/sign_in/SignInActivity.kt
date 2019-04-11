@@ -24,14 +24,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.xjek.base.base.BaseActivity
-import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.Logger
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySignInBinding
-import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Enums
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
 import com.xjek.provider.views.dashboard.DashBoardActivity
@@ -68,8 +68,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
             loadingObservable.value = false
             message = if (!it.message.isNullOrBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)
-            Constant.accessToken = it.responseData.accessToken
-            val preferences = PreferencesHelper.getDefaultPreferences(this)
+            writePreferences(PreferencesKey.ACCESS_TOKEN, it.responseData.accessToken)
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             launchNewActivity(dashBoardIntent, false)
@@ -192,7 +191,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
 
     override fun onSignInClicked() {
         performValidation()
-       // launchNewActivity(DashBoardActivity::class.java, false)
+        // launchNewActivity(DashBoardActivity::class.java, false)
     }
 
     override fun onGoogleSignInClicked() {

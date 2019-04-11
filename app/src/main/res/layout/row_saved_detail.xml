@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_card_unselected"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/tv_card_type"
+
+    <data>
+
+        <variable
+            name="cardsmodel"
+            type="com.xjek.provider.interfaces.CustomClickListner" />
+    </data>
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:fontFamily="@font/avenirltstd_medium"
-        android:text="Visa"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_15sdp" />
+        android:elevation="@dimen/_5sdp">
 
-    <TextView
-        android:id="@+id/tv_card_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginBottom="@dimen/_30sdp"
-        android:fontFamily="@font/avenirltstd_medium"
-        android:text="xxxx xxxx xxxx xxxx"
-        android:textAllCaps="true"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_15sdp" />
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:background="@drawable/bg_card_unselected"
+        android:onClick="@{() -> cardsmodel.onListClickListner()}"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_card_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:text="Visa"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp" />
+
+        <TextView
+            android:id="@+id/tv_card_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:text="xxxx xxxx xxxx xxxx"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_8sdp" />
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

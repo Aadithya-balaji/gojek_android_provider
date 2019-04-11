@@ -12,6 +12,7 @@ import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
 import com.xjek.provider.views.language.LanguageActivity
 import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
+import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 import com.xjek.provider.views.payment.PaymentActivity
 import com.xjek.provider.views.privacypolicy.PrivacyActivity
@@ -64,7 +65,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             }
 
             2 -> {
-                launchNewActivity(PaymentActivity::class.java,false)
+                launchNewActivity(ManagePaymentActivity::class.java,false)
             }
 
             3 -> {

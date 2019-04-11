@@ -24,10 +24,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.xjek.base.base.BaseActivity
-import com.xjek.base.base.BaseApplication
-import com.xjek.base.data.PreferenceHelper
-import com.xjek.base.data.PreferencesKey
-import com.xjek.base.data.setValue
+import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.Logger
@@ -51,9 +48,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private lateinit var message: String
     private var isFacebookLoginClicked = false
 
-    private val preference = PreferenceHelper(BaseApplication.baseApplication)
-
-
     override fun getLayoutId(): Int {
         return R.layout.activity_sign_in
     }
@@ -72,8 +66,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private fun observeViewModel() {
         observeLiveData(viewModel.getLoginObservable()) {
             loadingObservable.value = false
+            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            ViewUtils.showToast(applicationContext, message, true)
             Constant.accessToken = it.responseData.accessToken
-            preference.setValue(PreferencesKey.ACCESS_TOKEN, it.responseData.accessToken)
+            val preferences = PreferencesHelper.getDefaultPreferences(this)
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             launchNewActivity(dashBoardIntent, false)

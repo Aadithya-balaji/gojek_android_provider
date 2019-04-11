@@ -67,4 +67,16 @@ interface AppWebService {
     @FormUrlEncoded
     @POST("provider/signup")
     fun updateProfile(@FieldMap params:HashMap<String,RequestBody>,@Part fileName: MultipartBody.Part?):Observable<CommonResponse>
+
+    @GET("provider/card")
+    fun getCardList( @Header("Authorization") token: String):Observable<CardListModel>
+
+    @FormUrlEncoded
+    @POST("provider/add/money")
+    fun addWalletMoney(@Header("Authorization") token: String,
+                       @FieldMap params: HashMap<String, String>):Observable<WalletResponse>
+
+    @GET("provider/wallet")
+    fun getWalletTransction(@Header("Authorization") token: String):Observable<WalletTransactionList>
+
 }

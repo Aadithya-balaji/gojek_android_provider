@@ -11,10 +11,8 @@ class ForgotPasswordResponseModel(
         override val error: List<Any>
 ) : CommonResponse {
     data class ResponseData(
-            @SerializedName("account_type")
-            val accountType: String,
-            @SerializedName("country_code")
-            val countryCode: String,
+            @SerializedName("account_type") val accountType: String,
+            @SerializedName("country_code") val countryCode: String,
             val username: String,
             val otp: String
     )

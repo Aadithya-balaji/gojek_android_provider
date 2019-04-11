@@ -1,5 +1,9 @@
 package com.xjek.provider.views.wallet
 
-interface  WalletNavigator{
+import android.view.View
 
+interface  WalletNavigator{
+    fun showErrorMsg(error:String)
+    fun  validate():Boolean
+    fun  addAmount(view: View)
 }

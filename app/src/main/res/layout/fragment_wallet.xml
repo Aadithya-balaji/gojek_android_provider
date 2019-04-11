@@ -9,6 +9,10 @@
             type="com.xjek.provider.views.wallet.WalletViewModel" />
     </data>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +25,7 @@
             android:id="@+id/cv_wallet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/bg_white"
             app:cardCornerRadius="@dimen/_5sdp">
 
@@ -69,8 +73,9 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:hint="@string/enter_amount"
                         android:inputType="number"
+                        android:text="@={walletmodel.walletAmount}"
                         android:padding="@dimen/_9sdp"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/_11sdp" />
 
 
                     <com.google.android.material.button.MaterialButton
@@ -85,8 +90,9 @@
                         android:padding="@dimen/_5sdp"
                         android:singleLine="true"
                         android:text="@string/_50"
+                        android:onClick="@{(v) -> walletmodel.amountAdd(v)}"
                         android:textColor="@color/xuber_white"
-                        android:textSize="@dimen/_12sdp"
+                        android:textSize="@dimen/_10sdp"
                         app:backgroundTint="@color/black" />
 
                     <com.google.android.material.button.MaterialButton
@@ -94,15 +100,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="4dp"
-                        android:layout_weight="0.7"
+                        android:layout_weight="0.8"
                         android:ellipsize="end"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:singleLine="true"
                         android:text="@string/_100"
+                        android:onClick="@{(v) -> walletmodel.amountAdd(v)}"
                         android:textColor="@color/xuber_white"
-                        android:textSize="@dimen/_12sdp"
+                        android:textSize="@dimen/_10sdp"
                         app:backgroundTint="@color/black" />
 
                     <com.google.android.material.button.MaterialButton
@@ -116,9 +123,10 @@
                         android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:singleLine="true"
+                        android:onClick="@{(v) -> walletmodel.amountAdd(v)}"
                         android:text="@string/_1000"
                         android:textColor="@color/xuber_white"
-                        android:textSize="@dimen/_12sdp"
+                        android:textSize="@dimen/_10sdp"
                         app:backgroundTint="@color/black" />
 
 
@@ -133,10 +141,17 @@
                     android:padding="@dimen/_5sdp"
                     android:text="@string/add_amount"
                     android:textColor="@color/colorPrimary"
+                    android:onClick="@{() -> walletmodel.addWalletAmount()}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_payment_modes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_11sdp">
+        </androidx.recyclerview.widget.RecyclerView>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -145,6 +160,7 @@
             android:paddingLeft="@dimen/_15sdp"
             android:paddingTop="@dimen/_15sdp"
             android:paddingRight="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:background="@color/white">
 
             <RelativeLayout
@@ -188,7 +204,7 @@
                 app:srcCompat="@drawable/ic_empty_state_card"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_payment"
+                android:id="@+id/rv_cards"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -196,6 +212,21 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:layout_centerInParent="true"
                 android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_add_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:textColor="@color/colorPrimary"
+                android:layout_alignParentBottom="true"
+                android:text="@string/add_card"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:textStyle="bold"
+                android:textSize="@dimen/_12sdp"/>
         </RelativeLayout>
     </LinearLayout>
+    </ScrollView>
 </layout>

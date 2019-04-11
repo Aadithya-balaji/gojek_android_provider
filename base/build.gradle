@@ -82,6 +82,9 @@ dependencies {
     api 'com.google.android.gms:play-services-maps:16.1.0'
     api 'com.google.maps:google-maps-services:0.2.7'
     api 'com.google.android.gms:play-services-location:16.0.0'
+//    api ("com.google.android.libraries.places:places:1.0.0") {
+//        exclude group: 'com.google.common.util.concurrent', module: 'ListenableFuture'
+//    }
 
     //OAuth
     api 'com.google.android.gms:play-services-auth:16.0.0'
@@ -113,7 +116,7 @@ dependencies {
     //flex layout
     api 'com.google.android:flexbox:1.1.0'
 
-
+    implementation project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

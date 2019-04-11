@@ -1,23 +1,26 @@
 package com.xjek.provider.views.manage_payment
 
+import android.widget.TabHost
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexWrap
-import com.google.android.flexbox.FlexboxLayoutManager
+import androidx.viewpager.widget.ViewPager
+import com.google.android.flexbox.*
+import com.google.android.material.tabs.TabLayout
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityManagePaymentBinding
+import com.xjek.provider.views.adapters.PaymentAdapter
 import com.xjek.provider.views.adapters.PaymentModeAdapter
 import com.xjek.provider.views.transaction.TranascationFragment
 import com.xjek.provider.views.wallet.WalletFragment
 import java.util.*
 
-class  ManagePaymentActivity:BaseActivity<ActivityManagePaymentBinding>(),ManagePaymentNavigator{
+class  ManagePaymentActivity:BaseActivity<ActivityManagePaymentBinding>(),ManagePaymentNavigator,ViewPager.OnPageChangeListener{
     private  lateinit var activityManagePaymentBinding:ActivityManagePaymentBinding
     private  lateinit var  managePaymentViewModel:ManagePaymentViewModel
+    private lateinit var  paymentAdapter:PaymentAdapter
+    private  lateinit var  tbManagePayment: TabLayout
 
     override fun getLayoutId(): Int {
         return  R.layout.activity_manage_payment
@@ -27,7 +30,11 @@ class  ManagePaymentActivity:BaseActivity<ActivityManagePaymentBinding>(),Manage
         activityManagePaymentBinding=mViewDataBinding as ActivityManagePaymentBinding
         managePaymentViewModel= ManagePaymentViewModel()
         managePaymentViewModel.navigator=this
-
+        tbManagePayment=findViewById(R.id.tb_payment)
+        activityManagePaymentBinding.toolbarLayout.tvToolbarTitle.setText(resources.getString(com.xjek.provider.R.string.header_label_payment))
+        activityManagePaymentBinding.toolbarLayout.ivToolbarBack.setOnClickListener{
+            finish()
+        }
         val paymentFragmentList=Vector<Fragment>()
 
         val walletFragment= WalletFragment()
@@ -36,19 +43,22 @@ class  ManagePaymentActivity:BaseActivity<ActivityManagePaymentBinding>(),Manage
         paymentFragmentList.add(walletFragment)
         paymentFragmentList.add(transactionFragment)
 
-        var paymentTypes=resources.getStringArray(R.array.payment_mode).toMutableList()
-        val flexboxLayoutManager = FlexboxLayoutManager(this).apply {
-            flexWrap = FlexWrap.WRAP
-            flexDirection = FlexDirection.ROW
-            alignItems = AlignItems.STRETCH
-        }
+        paymentAdapter = PaymentAdapter(supportFragmentManager,this@ManagePaymentActivity,paymentFragmentList)
+        activityManagePaymentBinding.vbPayment.adapter=paymentAdapter
+        tbManagePayment.setupWithViewPager(activityManagePaymentBinding.vbPayment)
 
-        val recyclerView: RecyclerView = findViewById(R.id.rv_payment)
-        recyclerView.apply {
-            layoutManager = flexboxLayoutManager
-            adapter =PaymentModeAdapter(this@ManagePaymentActivity,paymentTypes)
-        }
+    }
 
+    override fun onPageScrollStateChanged(state: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onPageSelected(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

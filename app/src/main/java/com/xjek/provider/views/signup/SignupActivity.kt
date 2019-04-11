@@ -634,13 +634,13 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
         if (isEmailFocus == true) {
-            if (CommanMethods.validateEmail(s.toString())) {
+            /*if (CommanMethods.validateEmail(s.toString())) {
                 val params = HashMap<String, String>()
                 params.put(WebApiConstants.SALT_KEY, "MQ==")
                 params.put(WebApiConstants.EMAIL, signupViewmodel.email.value.toString())
                 signupViewmodel.validateUser(params)
                 Log.e("email", "------" + signupViewmodel.email.value.toString())
-            }
+            }*/
         } else if (isPhoneFocus == true) {
 //            if (!TextUtils.isEmpty(signupViewmodel.countryCode.value.toString()))
 //                if (CommanMethods.validatePhone(s.toString())) {

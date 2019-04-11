@@ -2,7 +2,7 @@ package com.xjek.provider.models
 
 import com.xjek.base.models.CommonResponse
 
-data class ChangePasswordResponseModel(
+data class AddServicesResponseModel(
         val responseData: List<Any>,
         override val statusCode: String,
         override val title: String,

@@ -15,8 +15,7 @@ import com.xjek.provider.interfaces.CustomClickListner
 import com.xjek.user.data.repositary.remote.model.City
 import java.io.Serializable
 
-class CityListAdapter(val activity: FragmentActivity?, val citylist: List<City>)
-    : RecyclerView.Adapter<CityListAdapter.MyViewHolder>(), Filterable {
+class CityListAdapter(val activity: FragmentActivity?, val citylist: List<City>) : RecyclerView.Adapter<CityListAdapter.MyViewHolder>(), Filterable {
 
     private var citySearchList: List<City>? = null
 

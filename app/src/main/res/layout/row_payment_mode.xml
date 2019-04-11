@@ -9,11 +9,14 @@
     </data>
 <TextView
     android:id="@+id/tv_payment_mode"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/_80sdp"
     android:background="@drawable/bg_white"
+    android:fontFamily="@font/avenirltstd_medium"
+    android:textSize="@dimen/_11sdp"
+    android:textColor="@color/black"
+    android:gravity="center"
     android:onClick="@{() -> paymentmodel.onListClickListner()}"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/_30sdp">
 </TextView>
 
 </layout>

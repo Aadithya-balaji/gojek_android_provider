@@ -222,7 +222,6 @@
     <!--LanguageModel Screen-->
     <string name="title_language">Language</string>
 
-    <string name="transaction">Transaction</string>
 
     <string-array name="document_list">
         <item>Taxi App</item>
@@ -243,12 +242,12 @@
     <string name="header_after_document_upload">After Document Upload</string>
     <string name="header_label_document_upload">Document Upload</string>
     <string name="header_label_privacy">Privacy Policy</string>
+    <string name="header_label_payment">Payment</string>
     <string name="dummy_rating">4.6</string>
 
     <string name="services_hint_service">Service</string>
-    <string name="wallet">Wallet</string>
     <string name="_50">$50</string>
-    <string name="_100">$50</string>
+    <string name="_100">$100</string>
     <string name="_1000">$1000</string>
     <string name="add_amount">Add amount</string>
     <string name="save_card">Save Card</string>
@@ -306,7 +305,6 @@
     <string name="empty_country_code">Please Enter the Country Code</string>
     <string name="invalid_phone">Pleae Enter the Valid Phone Number</string>
     <string name="invalid_email">Please Enter the Valid Email</string>
-
     <string name="country_code_empty">Country code should not be empty</string>
     <string name="phone_number_empty">Phone number should not be empty</string>
     <string name="email_empty">Email should not be empty</string>
@@ -315,13 +313,19 @@
     <string name="old_password_empty">Old password should not be empty</string>
     <string name="new_password_empty">New password should not be empty</string>
     <string name="new_password_invalid">Old password and new password should not be same</string>
-    <string name="confirm_password_invalid">New password and confirm password should besame</string>
+    <string name="confirm_password_invalid">New password and confirm password should be same</string>
     <string name="error_otp_empty">Otp should not be empty</string>
     <string name="error_otp_invalid">Please enter correct otp</string>
     <string name="alert_sign_up">Please sign up with this account</string>
     <string name="file_pemission_denied">File read permission denied</string>
     <string name="rationale_storage_permission_denied">Please allow storage permission to change image</string>
+    <string name="empty_wallet_amount">Please Enter the Amount</string>
 
     <!-- Manage Payments -->
     <string name="saved_card">Saved Cards</string>
+    <string name="wallet">Wallet</string>
+    <string name="transaction">Transaction</string>
+    <string name="add_card">Add Cards</string>
+    <string name="card_number">XXXX XXXX XXXX XXXX %s</string>
+    <string name="transaction_amount">%.2f</string>
 </resources>

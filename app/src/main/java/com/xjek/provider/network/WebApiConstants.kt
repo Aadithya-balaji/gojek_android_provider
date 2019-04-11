@@ -91,4 +91,12 @@ object WebApiConstants {
         const val COUNTRY_ID="country_id"
         const val PICTURE="picture"
     }
+
+
+    object  AddWallet{
+        const val AMOUNT="amount"
+        const val CARD_ID="card_id"
+        const val USER_TYPE="user_type"
+        const val PAYMENT_MODE="payment_mode"
+    }
 }

@@ -3,10 +3,11 @@ package com.xjek.provider.views.change_password
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.ChangePasswordResponseModel
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
-import com.xjek.provider.utils.Constant
 
 class ChangePasswordViewModel : BaseViewModel<ChangePasswordViewModel.ChangePasswordNavigator>() {
 
@@ -22,7 +23,9 @@ class ChangePasswordViewModel : BaseViewModel<ChangePasswordViewModel.ChangePass
     }
 
     internal fun postChangePassword() {
-        val token = StringBuilder("Bearer ").append(Constant.accessToken).toString()
+        val token = StringBuilder("Bearer ")
+                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
+                .toString()
         val params = HashMap<String, String>()
         params[WebApiConstants.ChangePassword.OLD_PASSWORD] = oldPassword.value!!.trim()
         params[WebApiConstants.ChangePassword.PASSWORD] = newPassword.value!!.trim()

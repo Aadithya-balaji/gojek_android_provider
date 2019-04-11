@@ -13,7 +13,7 @@ data class ConfigResponseModel(
     data class ResponseData(
             @SerializedName("base_url") val baseUrl: String,
             val services: List<Service>,
-            val appSetting: AppSetting
+            @SerializedName("appsetting") val appSetting: AppSetting
     ) {
         data class Service(
                 val id: Int,
@@ -27,39 +27,42 @@ data class ConfigResponseModel(
                 val referral: Int,
                 @SerializedName("social_login") val socialLogin: Int,
                 @SerializedName("otp_verify") val otpVerify: Int,
-                val payments: Payments,
-                val cmspage: Cmspage,
-                val supportdetails: Supportdetails,
+                val payments: List<Payments>,
+                @SerializedName("cmspage") val cmsPage: CmsPage,
+                @SerializedName("supportdetails") val supportDetails: SupportDetails,
                 val languages: List<Language>
         ) {
             data class Payments(
-                    val card: String,
-                    @SerializedName("stripe_secret_key") val stripeSecretKey: String,
-                    val stripePublishableKey: String,
-                    val cash: String,
-                    val stripeCurrency: String
-            )
-
-            data class Language(
                     val name: String,
-                    val key: String
-            )
+                    val status: String,
+                    val credentials: List<Credentials>
+            ) {
+                data class Credentials(
+                        val name: String,
+                        val value: String
+                )
+            }
 
-            data class Cmspage(
-                    val privacypolicy: String,
+            data class CmsPage(
+                    @SerializedName("privacypolicy") val privacyPolicy: String,
                     val help: String,
                     val terms: String,
                     val cancel: String
             )
 
-            data class Supportdetails(
-                    val contactNumber: List<ContactNumber>,
-                    val contactEmail: String
+            data class SupportDetails(
+                    @SerializedName("contact_number") val contactNumber: List<ContactNumber>,
+                    @SerializedName("contact_email") val contactEmail: String
             ) {
                 data class ContactNumber(
                         val number: String
                 )
             }
+
+            data class Language(
+                    val name: String,
+                    val key: String
+            )
         }
     }
 }

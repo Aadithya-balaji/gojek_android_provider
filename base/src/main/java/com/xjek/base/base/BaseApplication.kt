@@ -3,6 +3,7 @@ package com.xjek.base.base
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.di.BaseComponent
 import com.xjek.base.di.DaggerBaseComponent
 import com.xjek.base.di.WebServiceModule
@@ -26,9 +27,13 @@ open class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         baseApplication = this
+        PreferencesHelper.setDefaultPreferences(this)
     }
 
     companion object {
-        lateinit var baseApplication: Context
+        private lateinit var baseApplication: Context
+
+        val getBaseApplicationContext: Context
+            get() = baseApplication
     }
 }

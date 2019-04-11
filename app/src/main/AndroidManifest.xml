@@ -19,14 +19,13 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory">
         <activity android:name=".views.language.LanguageActivity" />
-        <activity android:name=".views.add_vehicle.AddVehicleActivity" />
         <activity android:name=".views.document_upload.DocumentUploadActivity" />
         <activity android:name=".views.setup_vehicle.SetupVehicleActivity" />
         <activity android:name=".views.manage_documents.ManageDocumentsActivity" />
         <activity android:name=".views.manage_services.ManageServicesActivity" />
         <!--
-         Added the following meta-data element, an activity for Facebook, and an activity and
-             intent filter for Chrome Custom Tabs inside your application element.
+            Added the following meta-data element, an activity for Facebook, and an activity and
+            intent filter for Chrome Custom Tabs inside your application element.
         -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -153,8 +152,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".views.add_vehicle.AddVehicleActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Theme.ImageCropper"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ImageCropper" />
         <activity
             android:name=".views.privacypolicy.PrivacyActivity"
             android:configChanges="orientation"

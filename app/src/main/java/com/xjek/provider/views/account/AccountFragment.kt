@@ -64,7 +64,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             }
 
             2 -> {
-                launchNewActivity(PaymentActivity::class.java,false)
+                launchNewActivity(PaymentActivity::class.java, false)
             }
 
             3 -> {

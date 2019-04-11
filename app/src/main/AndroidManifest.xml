@@ -24,8 +24,8 @@
         <activity android:name=".views.manage_documents.ManageDocumentsActivity" />
         <activity android:name=".views.manage_services.ManageServicesActivity" />
         <!--
-         Added the following meta-data element, an activity for Facebook, and an activity and
-             intent filter for Chrome Custom Tabs inside your application element.
+            Added the following meta-data element, an activity for Facebook, and an activity and
+            intent filter for Chrome Custom Tabs inside your application element.
         -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -156,8 +156,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.ImageCropper" />
-        android:screenOrientation="portrait" />
         <activity
             android:name=".views.privacypolicy.PrivacyActivity"
             android:configChanges="orientation"

@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.xjek.provider">
 
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".GoJekApplication"
@@ -154,8 +154,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Crooper" />
+            android:theme="@style/Theme.ImageCropper"/>
         <activity
             android:name=".views.privacypolicy.PrivacyActivity"
             android:configChanges="orientation"
@@ -165,5 +164,4 @@
             android:name="com.cooltechworks.creditcarddesign.CardEditActivity"
             android:screenOrientation="portrait" />
     </application>
-
 </manifest>

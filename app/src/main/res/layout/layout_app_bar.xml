@@ -30,6 +30,7 @@
 
             <TextView
                 android:id="@+id/tv_toolbar_title"
+                style="@style/Theme.Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -37,8 +38,6 @@
                 android:background="?attr/selectableItemBackground"
                 android:gravity="start|center_vertical"
                 android:includeFontPadding="false"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_14sdp"
                 tools:text="@string/app_name" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>

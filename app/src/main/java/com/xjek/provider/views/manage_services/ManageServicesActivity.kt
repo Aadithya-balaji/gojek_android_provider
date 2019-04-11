@@ -6,7 +6,7 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityManageServicesBinding
-import com.xjek.provider.models.ManageServicesModel
+import com.xjek.provider.models.ManageServicesDataModel
 import com.xjek.provider.views.setup_vehicle.SetupVehicleActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
@@ -38,7 +38,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
         val titles = resources.getStringArray(R.array.title_manage_services)
         val descriptions = resources.getStringArray(R.array.desc_manage_services)
         val services = List(titles.size) {
-            ManageServicesModel(colors[it], icons.getResourceId(it, -1), titles[it],
+            ManageServicesDataModel(colors[it], icons.getResourceId(it, -1), titles[it],
                     descriptions[it])
         }
         icons.recycle()

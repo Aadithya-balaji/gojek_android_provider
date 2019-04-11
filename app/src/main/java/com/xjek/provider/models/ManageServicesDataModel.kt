@@ -1,6 +1,6 @@
 package com.xjek.provider.models
 
-data class ManageServicesModel(
+data class ManageServicesDataModel(
         val colorResId: Int,
         val iconResId: Int,
         val title: String,

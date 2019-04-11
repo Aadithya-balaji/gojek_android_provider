@@ -20,5 +20,6 @@ class TranascationFragment:BaseFragment<FragmentTransactionBinding>(),Transactio
         transcationViewModel= TransactionViewModel()
         transcationViewModel.navigator=this
         linearLayoutManager=LinearLayoutManager(activity)
+       // fragmentTransactionBinding.r
     }
    }

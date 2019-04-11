@@ -38,70 +38,99 @@
             </RelativeLayout>
 
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/social_login_layout"
+            <LinearLayout
+                android:id="@+id/social_signup_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/top_applogo_layout"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:background="@drawable/bg_white">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/loginvia_sociallogin_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/_10sdp">
-                    <!--Login option layout-->
-                    <RelativeLayout
-                        android:id="@+id/loginvia_sociallogin_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                    android:layout_marginLeft="@dimen/_15sdp">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="@dimen/_5sdp"
-                            android:text="@string/social_sign_up"
-                            android:textColor="@android:color/black"
-                            android:textSize="@dimen/_12sdp" />
-
-
-                    </RelativeLayout>
-                    <!--Google Login Textview-->
                     <TextView
-                        android:id="@+id/tv_signup_google"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:drawableStart="@drawable/ic_google"
-                        android:drawableLeft="@drawable/ic_google"
-                        android:drawablePadding="@dimen/_8sdp"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:onClick="@{() -> registermodel.googleSignin()}"
                         android:padding="@dimen/_5sdp"
+                        android:text="@string/social_signup"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/_12sdp" />
+
+
+                </RelativeLayout>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/social_login_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/bg_white">
+
+                    <TextView
+                        android:id="@+id/tvFacebookSignIn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:drawableStart="@drawable/ic_facebook"
+                        android:drawablePadding="@dimen/_10sdp"
+                        android:onClick="@{() -> registermodel.fbLogin()}"
+                        android:padding="@dimen/_8sdp"
+                        android:gravity="center"
+                        android:text="@string/connect_via_facebook"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/_12sdp" />
+
+
+
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/social_google_login_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/bg_white">
+
+
+                    <!--Login option layout-->
+                    <!--Google Login Textview-->
+                    <TextView
+                        android:id="@+id/goolelogin_signin_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:drawableStart="@drawable/ic_google"
+                        android:drawablePadding="@dimen/_8sdp"
+                        android:onClick="@{() -> registermodel.googleSignin()}"
+                        android:padding="@dimen/_8sdp"
+                        android:gravity="center"
                         android:text="@string/connect_via_google"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
 
-                    <TextView
-                        android:id="@+id/tv_signup_facebook"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:drawableStart="@drawable/ic_facebook"
-                        android:drawableLeft="@drawable/ic_facebook"
-                        android:drawablePadding="@dimen/_8sdp"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:onClick="@{() -> registermodel.fbLogin()}"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/connect_via_facebook"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_12sdp" />
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/or"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_10sdp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_signup_or"
@@ -112,6 +141,7 @@
                 android:layout_marginBottom="@dimen/_12sdp"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:text="OR"
+                android:visibility="gone"
                 android:textColor="@color/colorPrimary" />
 
             <androidx.cardview.widget.CardView
@@ -157,8 +187,8 @@
                                 android:src="@drawable/profile_placeholder" />
 
                             <ImageView
-                                android:layout_width="@dimen/_12sdp"
-                                android:layout_height="@dimen/_12sdp"
+                                android:layout_width="@dimen/_15sdp"
+                                android:layout_height="@dimen/_15sdp"
                                 android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
@@ -166,6 +196,7 @@
                                 android:contentDescription="@string/edit_image"
                                 android:padding="@dimen/_5sdp"
                                 android:tint="@color/xuber_white"
+                                android:backgroundTint="@color/schedule_blue"
                                 app:srcCompat="@drawable/ic_pencil_edit_button" />
 
                         </RelativeLayout>

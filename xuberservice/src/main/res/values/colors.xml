@@ -5,4 +5,7 @@
     <color name="xuber_grey">#dadada</color>
     <color name="xuber_darkgrey">#B1B1B1</color>
     <color name="xuber_black">#000000</color>
+
+    <color name="schedule_blue">#65fff2</color>
+
 </resources>

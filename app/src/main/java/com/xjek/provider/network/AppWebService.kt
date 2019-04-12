@@ -79,6 +79,7 @@ interface AppWebService {
     @GET("provider/wallet")
     fun getWalletTransction(@Header("Authorization") token: String):Observable<WalletTransactionList>
 
+    @FormUrlEncoded
     @POST("provider/card")
     fun addCard(@Header("Authorization") token: String,params:HashMap<String,String>):Observable<AddCardModel>
 

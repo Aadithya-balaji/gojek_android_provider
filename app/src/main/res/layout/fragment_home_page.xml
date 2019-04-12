@@ -8,86 +8,15 @@
             type="com.xjek.provider.views.home.HomeViewModel" />
     </data>
 
-    <LinearLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorScreenBackground"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-
-        <RelativeLayout
+        <fragment
+            android:id="@+id/app_map_fragment"
+            class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/xuber_white">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:padding="@dimen/_10sdp"
-                android:src="@drawable/app_logo" />
-
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:id="@+id/ll_order_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_12sdp"
-            android:padding="@dimen/_5sdp">
-
-            <TextView
-                android:id="@+id/taxi_app_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/bg_service_selected"
-                android:fontFamily="@font/avenirltstd_medium"
-                android:gravity="center"
-                android:onClick="@{() -> homemodel.opentTranxitModule()}"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/taxi_app"
-                android:textColor="@color/selected_provider_tc" />
-
-            <TextView
-                android:id="@+id/foodie_app_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_service_unselected"
-                android:fontFamily="@font/avenirltstd_medium"
-                android:gravity="center"
-                android:onClick="@{() -> homemodel.openFoodieModule()}"
-                android:paddingTop="@dimen/_7sdp"
-                android:paddingBottom="@dimen/_7sdp"
-                android:text="@string/food" />
-
-            <TextView
-                android:id="@+id/services_app_tv"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:layout_weight="1"
-                android:background="@drawable/bg_service_unselected"
-                android:fontFamily="@font/avenirltstd_medium"
-                android:gravity="center"
-
-                android:onClick="@{() -> homemodel.openXuberMoudle()}"
-                android:paddingTop="@dimen/_7sdp"
-                android:paddingBottom="@dimen/_7sdp"
-                android:text="@string/services"
-
-                />
-        </LinearLayout>
-
-        <FrameLayout
-            android:id="@+id/provider_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_10sdp" />
-    </LinearLayout>
+            android:layout_height="match_parent" />
+    </FrameLayout>
 </layout>

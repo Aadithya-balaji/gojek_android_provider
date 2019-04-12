@@ -1,32 +1,95 @@
 package com.xjek.provider.views.home
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
+import android.location.Location
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.xjek.base.base.BaseFragment
+import com.xjek.base.utils.LocationCallBack
+import com.xjek.base.utils.LocationUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.views.dashboard.DashBoardNavigator
-import com.xjek.provider.views.foodproviderfragment.FoodProviderFragment
-import com.xjek.provider.views.taxiproviderfragment.TaxiProviderFragment
-import com.xjek.provider.views.xuberServicesProviderFragment.XuberServicesProviderFragment
+import permissions.dispatcher.NeedsPermission
 
-class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator {
+
+class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, OnMapReadyCallback
+        , GoogleMap.OnCameraMoveListener,
+        GoogleMap.OnCameraIdleListener, LocationSource.OnLocationChangedListener {
+
 
     private lateinit var mHomeDataBinding: com.xjek.provider.databinding.FragmentHomePageBinding
     override fun getLayoutId(): Int = R.layout.fragment_home_page
     private lateinit var dashBoardNavigator: DashBoardNavigator
-
+    private lateinit var fragmentMap: SupportMapFragment
+    private var mGoogleMap: GoogleMap? = null
+    private var currentLat: Double = -33.8523341
+    private var currentLong: Double = 151.2106085
 
 
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
         val mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
         mHomeDataBinding.homemodel = mHomeViewModel
-        activity?.supportFragmentManager?.beginTransaction()?.add(R.id.provider_container, TaxiProviderFragment())?.commit()
+        updateCurrentLocation()
+        initalizeMap()
 
+    }
+
+    @SuppressLint("MissingPermission")
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    private fun updateCurrentLocation() {
+        LocationUtils.getLastKnownLocation(activity!!.applicationContext, object : LocationCallBack.LastKnownLocation {
+            override fun onSuccess(location: Location?) {
+                currentLat = location!!.latitude
+                currentLong = location.longitude
+            }
+
+            override fun onFailure(messsage: String?) {
+                currentLat = -33.8523341
+                currentLong = 151.2106085
+            }
+
+        })
+    }
+
+    fun initalizeMap() {
+
+        fragmentMap = childFragmentManager.findFragmentById(R.id.app_map_fragment) as SupportMapFragment
+        fragmentMap.getMapAsync(this@HomeFragment)
+
+    }
+
+    override fun onMapReady(map: GoogleMap?) {
+        mGoogleMap = map
+        try {
+            mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.xjek.taxiservice.R.raw.style_json))
+            val latlong = LatLng(currentLat, currentLong)
+            val location = CameraUpdateFactory.newLatLngZoom(
+                    latlong, 15f)
+            mGoogleMap!!.animateCamera(location)
+        } catch (e: Resources.NotFoundException) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onLocationChanged(currentLocation: Location?) {
+
+
+    }
+
+    override fun onCameraMove() {
+
+    }
+
+    override fun onCameraIdle() {
     }
 
 
@@ -37,42 +100,12 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator {
 
 
     override fun gotoTaxiModule() {
-
-        mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
-        mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
-        mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
-        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
-
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.provider_container, TaxiProviderFragment())?.commit()
-
     }
 
     override fun gotoFoodieModule() {
-
-
-        mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
-        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
-        mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
-        mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
-
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.provider_container, FoodProviderFragment())?.commit()
-
     }
 
     override fun gotoXuberModule() {
-
-        mHomeDataBinding.foodieAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.foodieAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
-        mHomeDataBinding.servicesAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_selected)
-        mHomeDataBinding.servicesAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.selected_provider_tc))
-        mHomeDataBinding.taxiAppTv.background = ContextCompat.getDrawable(this!!.activity!!, R.drawable.bg_service_unselected)
-        mHomeDataBinding.taxiAppTv.setTextColor(ContextCompat.getColor(this.activity!!, R.color.black))
-
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.provider_container, XuberServicesProviderFragment())?.commit()
 
     }
 

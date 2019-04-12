@@ -26,7 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "BASE_URL", "\"https://xjekapi.xtikr.com/\"")
             buildConfigField("String", "SALT_KEY", "\"MQ==\"")
-            buildConfigField("String","STRIPE_KEY","pk_test_DbfzA8Pv1MDErUiHakK9XfLe")
+            buildConfigField("String","STRIPE_KEY","\"pk_test_DbfzA8Pv1MDErUiHakK9XfLe\"")
         }
     }
     // Configured Java 8 language features for each module.

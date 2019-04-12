@@ -1,16 +1,13 @@
 package com.xjek.provider.views.splash
 
-import android.os.Handler
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
-import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
-import com.xjek.base.extensions.put
+import com.xjek.base.extensions.writePreferences
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySplashBinding
-import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.on_board.OnBoardActivity
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
@@ -37,12 +34,31 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
-            val preferences = PreferencesHelper.getDefaultPreferences(this)
-            preferences.put(PreferencesKey.BASE_URL, it.responseData.baseUrl)
-            Constant.baseUrl = it.responseData.baseUrl
-            Handler().postDelayed({
-                launchNewActivity(OnBoardActivity::class.java, true)
-            }, 3000)
+            writePreferences(PreferencesKey.BASE_ID, "0")
+            writePreferences(PreferencesKey.BASE_ID, "0")
+            writePreferences(PreferencesKey.BASE_ID, "0")
+            writePreferences("0", it.responseData.baseUrl+"/")
+            writePreferences(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id)
+            writePreferences(it.responseData.services[0].id.toString(),
+                    it.responseData.services[0].baseUrl+"/")
+            writePreferences(PreferencesKey.ORDER_ID, it.responseData.services[1].id)
+            writePreferences(it.responseData.services[1].id.toString(),
+                    it.responseData.services[1].baseUrl+"/")
+            writePreferences(PreferencesKey.SERVICE_ID, it.responseData.services[2].id)
+            writePreferences(it.responseData.services[2].id.toString(),
+                    it.responseData.services[2].baseUrl+"/")
+            writePreferences(PreferencesKey.PRIVACY_POLICY,
+                    it.responseData.appSetting.cmsPage.privacyPolicy)
+            writePreferences(PreferencesKey.HELP, it.responseData.appSetting.cmsPage.help)
+            writePreferences(PreferencesKey.TERMS, it.responseData.appSetting.cmsPage.terms)
+            val contactNumbers = hashSetOf<String>()
+            for (contact in it.responseData.appSetting.supportDetails.contactNumber)
+                contactNumbers.add(contact.number)
+            writePreferences(PreferencesKey.CONTACT_NUMBER, contactNumbers.toSet())
+            writePreferences(PreferencesKey.CONTACT_EMAIL,
+                    it.responseData.appSetting.supportDetails.contactEmail)
+
+            launchNewActivity(OnBoardActivity::class.java, true)
         }
     }
 

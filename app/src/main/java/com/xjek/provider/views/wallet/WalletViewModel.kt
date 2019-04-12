@@ -4,6 +4,8 @@ import android.content.res.Resources
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.R
 import com.xjek.provider.models.AddCardModel
 import com.xjek.provider.models.CardListModel
@@ -11,6 +13,8 @@ import com.xjek.provider.models.WalletResponse
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Constant
+
+
 
 class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
     var cardResponseData = MutableLiveData<CardListModel>()
@@ -31,10 +35,10 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
 
     fun getCardList() {
         showLoading?.let { it.value=true }
-        getCompositeDisposable().add(appRepository.getCardList(this, "Bearer " + Constant.accessToken))
+        getCompositeDisposable().add(appRepository.getCardList(this,         "Bearer "+ readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
     }
 
-    fun amountAdd(view: View){
+    fun amountAdd(view: View) {
         navigator.addAmount(view)
     }
 
@@ -43,10 +47,10 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
             showLoading?.let { it.value=true }
             val params=HashMap<String,String>()
             params.put(WebApiConstants.AddWallet.AMOUNT,walletAmount.value.toString())
-            params.put(WebApiConstants.AddWallet.CARD_ID,Constant.CARD_ID)
+            params.put(WebApiConstants.AddWallet.CARD_ID, Constant.CARD_ID)
             params.put(WebApiConstants.AddWallet.USER_TYPE,Constant.TYPE_PROVIDER)
             params.put(WebApiConstants.AddWallet.PAYMENT_MODE,"card")
-            getCompositeDisposable().add(appRepository.addWalletAmount(this,params,"Bearer "+Constant.accessToken))
+            getCompositeDisposable().add(appRepository.addWalletAmount(this,params,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
         }
     }
 
@@ -54,15 +58,15 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
         showLoading?.let { it.value=true }
         val params=HashMap<String,String>()
         params.put(WebApiConstants.addCard.STRIP_TOKEN,stripeID)
-        getCompositeDisposable().add(appRepository.addCard(this,params,"Bearer "+Constant.accessToken))
+        getCompositeDisposable().add(appRepository.addCard(this,params,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
     }
 
     fun callCardDeleteCardAPi(){
         showLoading?.let { it.value=true }
         if(!selectedCardId.value.isNullOrEmpty())
-        getCompositeDisposable().add(appRepository.deleteCDard(this,"Bearer "+Constant.accessToken,selectedCardId.value!!))
+        getCompositeDisposable().add(appRepository.deleteCDard(this,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN),selectedCardId.value!!))
         else
-          navigator.showErrorMsg(resources!!.getString(R.string.empty_card))
+          navigator.showErrorMsg(resources!!.getString(com.xjek.provider.R.string.empty_card))
     }
 
     fun onCardSelected(cardId:String,position:Int){

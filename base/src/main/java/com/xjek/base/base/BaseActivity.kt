@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
+import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.views.CustomDialog
@@ -25,7 +26,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private val loadingLiveData = MutableLiveData<Boolean>()
     private lateinit var mViewDataBinding: T
     private lateinit var customDialog: CustomDialog
-    private  lateinit var mParentView: View
+    private lateinit var mParentView: View
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
@@ -41,9 +42,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     protected val mPermissionUtils: PermissionUtils? = null
 
     fun getPermissionUtil(): PermissionUtils {
-        return if (mPermissionUtils == null) PermissionUtils() else mPermissionUtils
+        return mPermissionUtils ?: PermissionUtils()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +54,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         observeLiveData(loadingLiveData) { isShowLoading ->
             if (isShowLoading) {
                 showLoading()
-            }else{
+            } else {
                 hideLoading()
             }
         }
@@ -62,7 +62,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     override fun onCreateView(parent: View?, name: String, context: Context, attrs: AttributeSet): View? {
         return super.onCreateView(parent, name, context, attrs)
-        mParentView=window.decorView.findViewById(R.id.content)
+        mParentView = window.decorView.findViewById(R.id.content)
     }
 
     protected fun setBindingVariable(variableId: Int, value: Any?) {
@@ -70,14 +70,14 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         mViewDataBinding.executePendingBindings()
     }
 
-    protected fun showLoading() {
+    private fun showLoading() {
         if (customDialog.window != null) {
             customDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
             customDialog.show()
         }
     }
 
-    protected fun hideLoading() {
+    private fun hideLoading() {
         customDialog.cancel()
     }
 
@@ -102,7 +102,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         transaction.commit()
     }
 
-    protected  fun showSnackBar(msg:String){
+    protected fun showSnackBar(msg: String) {
         val snackbar = Snackbar.make(mParentView, msg, Snackbar.LENGTH_LONG)
         snackbar.setActionTextColor(Color.RED)
         snackbar.show()

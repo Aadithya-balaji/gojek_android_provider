@@ -3,10 +3,13 @@ package com.xjek.provider.views.manage_services
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityManageServicesBinding
 import com.xjek.provider.models.ManageServicesDataModel
+import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.setup_vehicle.SetupVehicleActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
@@ -14,6 +17,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
 
     private lateinit var binding: ActivityManageServicesBinding
     private lateinit var viewModel: ManageServicesViewModel
+    private lateinit var serviceData: List<ManageServicesDataModel>
 
     override fun getLayoutId(): Int {
         return R.layout.activity_manage_services
@@ -37,17 +41,28 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
         val icons = resources.obtainTypedArray(R.array.icon_manage_services)
         val titles = resources.getStringArray(R.array.title_manage_services)
         val descriptions = resources.getStringArray(R.array.desc_manage_services)
-        val services = List(titles.size) {
+        serviceData = List(titles.size) {
             ManageServicesDataModel(colors[it], icons.getResourceId(it, -1), titles[it],
                     descriptions[it])
         }
         icons.recycle()
-        viewModel.setServices(services)
-        viewModel.setAdapter()
+
+        observeViewModel()
+
+        loadingObservable.value = true
+        viewModel.getServices()
+    }
+
+    private fun observeViewModel() {
+        observeLiveData(viewModel.getServicesObservable()) {
+            loadingObservable.value = false
+            viewModel.setServiceData(serviceData)
+            viewModel.setAdapter()
+        }
     }
 
     override fun onMenuItemClicked(position: Int) {
-        var intent: Intent? = null
+        lazy { var intent: Intent }
         when (position) {
             0 -> {
                 intent = Intent(applicationContext, SetupVehicleActivity::class.java)
@@ -59,6 +74,13 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
                 intent = Intent(applicationContext, SetupVehicleActivity::class.java)
             }
         }
-        startActivity(intent)
+        intent.putExtra(Constant.SERVICE_ID,
+                viewModel.getServicesObservable().value!!.responseData[position].id)
+        launchNewActivity(intent, false)
+    }
+
+    override fun showError(error: String) {
+        loadingObservable.value = false
+        ViewUtils.showToast(applicationContext, error, false)
     }
 }

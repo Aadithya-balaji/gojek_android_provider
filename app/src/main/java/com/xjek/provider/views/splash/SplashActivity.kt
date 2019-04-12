@@ -34,9 +34,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
-            writePreferences(PreferencesKey.BASE_ID, "0")
-            writePreferences(PreferencesKey.BASE_ID, "0")
-            writePreferences(PreferencesKey.BASE_ID, "0")
+            writePreferences(PreferencesKey.BASE_ID, 0)
             writePreferences("0", it.responseData.baseUrl)
             writePreferences(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id)
             writePreferences(it.responseData.services[0].id.toString(),

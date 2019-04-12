@@ -5,11 +5,14 @@ import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.repository.BaseRepository
 import com.xjek.provider.network.AppWebService
+import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
+import com.xjek.provider.views.manage_services.ManageServicesViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
+import com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel
 import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
 import com.xjek.provider.views.splash.SplashViewModel
@@ -25,7 +28,7 @@ import java.util.logging.Logger
 class AppRepository : BaseRepository() {
 
     private val serviceId: String
-        get() = PreferencesHelper.get(PreferencesKey.BASE_ID)
+        get() = PreferencesHelper.get<Int>(PreferencesKey.BASE_ID).toString()
 
     @SuppressLint("CheckResult")
     fun getConfig(viewModel: SplashViewModel, params: HashMap<String, String>): Disposable {
@@ -108,7 +111,7 @@ class AppRepository : BaseRepository() {
                 .subscribe({
                     viewModel.getCountryLiveData().postValue(it)
                 }, {
-                    Logger.getLogger(com.xjek.provider.repository.AppRepository.TAG).log(Level.SEVERE, it.message)
+                    Logger.getLogger(TAG).log(Level.SEVERE, it.message)
                     viewModel.gotoSignin()
                 })
     }
@@ -194,6 +197,61 @@ class AppRepository : BaseRepository() {
                     viewModel.updateProfileResposne.postValue(it)
                 }, {
                     viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                })
+    }
+
+    fun getServices(viewModel: ManageServicesViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getServices(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getServicesObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getRides(viewModel: SetupVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getRides(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleDataObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getShops(viewModel: SetupVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getShops(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleDataObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun postVehicle(viewModel: AddVehicleViewModel, token: String,
+                    params: HashMap<String, RequestBody>,
+                    rcBookMultipart: MultipartBody.Part, insuranceMultipart: MultipartBody.Part
+    ): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postVehicle(token, params, rcBookMultipart, insuranceMultipart)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleResponseObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 

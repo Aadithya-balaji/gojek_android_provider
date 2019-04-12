@@ -4,6 +4,9 @@ import com.xjek.provider.models.LanguageModel
 
 object Constant {
 
+    const val SERVICE_ID = "service_id"
+    const val PROVIDER_VEHICLE = "provider_vehicle"
+
     const val TAB_HOME = "Home"
     const val TAB_ORDER = "Order"
     const val TAB_NOTIFICATION = "Notification"

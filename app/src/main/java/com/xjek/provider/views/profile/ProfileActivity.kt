@@ -13,6 +13,7 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.utils.PermissionUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityEditProfileBinding
@@ -33,7 +34,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     private var localPath: Uri? = null
     private var message: String? = ""
     private var filePart: MultipartBody.Part? = null
-    private var permissionUtils: com.xjek.basemodule.utils.PermissionUtils? = null
+    private var permissionUtils: PermissionUtils? = null
     override fun getLayoutId(): Int = R.layout.activity_edit_profile
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivityEditProfileBinding

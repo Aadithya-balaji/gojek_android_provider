@@ -56,9 +56,9 @@
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Theme.TextInputLayout"
                             android:layout_width="match_parent"
-
                             android:layout_height="wrap_content"
-                            android:hint="@string/hint_car_category">
+                            android:hint="@string/hint_car_category"
+                            app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 style="@style/Theme.TextInputEditText"
@@ -87,7 +87,8 @@
                                 android:imeOptions="actionNext"
                                 android:maxLines="1"
                                 android:scrollHorizontally="true"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:text="@={addVehicleViewModel.vehicleData.component1()}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -95,14 +96,19 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
-                            android:hint="@string/hint_vehicle_year">
+                            android:hint="@string/hint_vehicle_year"
+                            app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 style="@style/Theme.TextInputEditText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:digits="0123456789"
                                 android:imeOptions="actionNext"
+                                android:inputType="number"
+                                android:maxLength="4"
                                 android:maxLines="1"
+                                android:text="@={addVehicleViewModel.vehicleData.component2()}"
                                 android:scrollHorizontally="true"
                                 android:singleLine="true" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -112,7 +118,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
-                            android:hint="@string/hint_vehicle_color">
+                            android:hint="@string/hint_vehicle_color"
+                            app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 style="@style/Theme.TextInputEditText"
@@ -138,7 +145,8 @@
                                 android:imeOptions="actionNext"
                                 android:maxLines="1"
                                 android:scrollHorizontally="true"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:text="@={addVehicleViewModel.vehicleData.component4()}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -146,7 +154,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
-                            android:hint="@string/hint_vehicle_make">
+                            android:hint="@string/hint_vehicle_make"
+                            app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 style="@style/Theme.TextInputEditText"
@@ -213,13 +222,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_document_upload">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_rc_book"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@null"
-                        android:scaleType="centerCrop" />
-
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -230,6 +232,14 @@
                         android:textColor="@color/colorLightBlue"
                         android:textSize="12sp"
                         app:drawableTint="@color/colorLightBlue" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_rc_book"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@null"
+                        android:scaleType="centerCrop"
+                        app:setImageResource="@{addVehicleViewModel.vehicleData.component6()}" />
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
                 <com.google.android.material.circularreveal.CircularRevealRelativeLayout
@@ -244,13 +254,6 @@
                     app:layout_constraintStart_toEndOf="@id/rl_rc_book"
                     app:layout_constraintTop_toBottomOf="@id/tv_document_upload">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_insurance"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@null"
-                        android:scaleType="centerCrop" />
-
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -261,6 +264,14 @@
                         android:textColor="@color/colorLightBlue"
                         android:textSize="12sp"
                         app:drawableTint="@color/colorLightBlue" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_insurance"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@null"
+                        android:scaleType="centerCrop"
+                        app:setImageResource="@{addVehicleViewModel.vehicleData.component7()}" />
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
                 <Button

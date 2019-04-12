@@ -6,8 +6,6 @@ import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
-import java.util.*
-import kotlin.collections.HashMap
 
 interface AppWebService {
 
@@ -62,9 +60,32 @@ interface AppWebService {
     fun verifyUser(@FieldMap params: HashMap<String, String>): Observable<VerifyUser>
 
     @GET("provider/profile")
-    fun getProfile(  @Header("Authorization") token: String): Observable<ProfileResponse>
+    fun getProfile(@Header("Authorization") token: String): Observable<ProfileResponse>
 
     @FormUrlEncoded
     @POST("provider/signup")
-    fun updateProfile(@FieldMap params:HashMap<String,RequestBody>,@Part fileName: MultipartBody.Part?):Observable<CommonResponse>
+    fun updateProfile(
+            @FieldMap params: HashMap<String, RequestBody>,
+            @Part fileName: MultipartBody.Part?
+    ): Observable<CommonResponse>
+
+    @GET("provider/adminservices")
+    fun getServices(@Header("Authorization") token: String):
+            Observable<ManageServicesResponseModel>
+
+    @GET("provider/ridetype")
+    fun getRides(@Header("Authorization") token: String): Observable<SetupRideResponseModel>
+
+    @GET("provider/shoptype")
+    fun getShops(@Header("Authorization") token: String): Observable<SetupShopResponseModel>
+
+    @Multipart
+    @POST("provider/vechile/add")
+    fun postVehicle(
+            @Header("Authorization") token: String,
+            @PartMap params: HashMap<String, RequestBody>,
+//            @Part vehicleImage: MultipartBody.Part,
+            @Part rcBookMultipart: MultipartBody.Part,
+            @Part insuranceMultipart: MultipartBody.Part
+    ): Observable<AddVehicleResponseModel>
 }

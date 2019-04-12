@@ -1,6 +1,6 @@
 package com.xjek.provider.utils
 
-import com.xjek.provider.models.LanguageModel
+import com.xjek.provider.models.ConfigResponseModel.ResponseData.AppSetting.Language
 
 object Constant {
 
@@ -13,5 +13,5 @@ object Constant {
     lateinit var  privacyPolicyUrl:String
     const val CARD_ID = "card_1ENH9aG9bvHy22wUda2eyiFX"
     const val TYPE_PROVIDER = "provider"
-    var languages = ArrayList<LanguageModel>()
+    lateinit var languages :List<Language>
 }

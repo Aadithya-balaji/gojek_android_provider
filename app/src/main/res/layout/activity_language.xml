@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,7 +10,7 @@
             type="com.xjek.provider.views.language.LanguageViewModel" />
     </data>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorScreenBackground"
@@ -20,20 +21,26 @@
             layout="@layout/layout_app_bar" />
 
         <TextView
+            android:id="@+id/tvSelectLanguage"
+            android:layout_below="@+id/toolbar"
             style="@style/SmallText.Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:text="Select Language" />
+            android:text="@string/select_language" />
 
 
         <LinearLayout
+            android:layout_below="@+id/tvSelectLanguage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
-            android:background="@color/white">
+            android:orientation="vertical"
+            android:background="@drawable/bg_white_rounded_corner_rect"
+            android:backgroundTint="@color/white"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvLanguage"
@@ -41,9 +48,29 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:padding="@dimen/_8sdp"
+                android:adapter="@{languageViewModel.getAdapter()}"
+                tools:listitem="@layout/language_inflate"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_editprofile_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_17sdp"
+            android:background="@drawable/custom_full_round_corner"
+            android:backgroundTint="@color/colorPrimary"
+            android:paddingTop="@dimen/_8sdp"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="@dimen/_8sdp"
+            android:text="@string/save"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_12sdp"
+            app:cornerRadius="@dimen/_13sdp" />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </RelativeLayout>
 </layout>

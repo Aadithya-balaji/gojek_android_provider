@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -9,8 +8,8 @@
             type="java.lang.Integer" />
 
         <variable
-            name="accountViewModel"
-            type="com.xjek.provider.views.account.AccountViewModel" />
+            name="languageViewModel"
+            type="com.xjek.provider.views.language.LanguageViewModel" />
     </data>
 
     <RelativeLayout
@@ -19,9 +18,10 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="English"/>
+            android:padding="@dimen/_5sdp"
+            android:text="@{languageViewModel.getLanguage(position)}"/>
 
     </RelativeLayout>
 

@@ -16,7 +16,7 @@
             android:id="@+id/lottieIndicator"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:lottie_autoPlay="true"
             app:lottie_fileName="loading.json"
             app:lottie_loop="true" />
@@ -27,7 +27,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:padding="@dimen/_15sdp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:indicatorColor="@color/colorBasePrimary"
             app:indicatorName="BallSpinFadeLoaderIndicator" />
 

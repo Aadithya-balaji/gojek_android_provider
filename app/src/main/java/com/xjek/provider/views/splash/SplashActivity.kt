@@ -5,9 +5,14 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
+import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySplashBinding
+import com.xjek.provider.models.ConfigResponseModel
+import com.xjek.provider.models.ConfigResponseModel.ResponseData.AppSetting.Language
+import com.xjek.provider.utils.Constant
+import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
@@ -58,7 +63,22 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             writePreferences(PreferencesKey.CONTACT_EMAIL,
                     it.responseData.appSetting.supportDetails.contactEmail)
 
-            launchNewActivity(OnBoardActivity::class.java, true)
+            setLanguage(it)
+
+            if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
+                launchNewActivity(OnBoardActivity::class.java, true)
+            else
+                launchNewActivity(DashBoardActivity::class.java, true)
+        }
+    }
+
+    private fun setLanguage(it: ConfigResponseModel) {
+        val languages = it.responseData.appSetting.languages
+        if (languages.isNotEmpty())
+            Constant.languages = languages
+        else {
+            val defaultLanguage = Language("English", "en")
+            Constant.languages = listOf(defaultLanguage)
         }
     }
 

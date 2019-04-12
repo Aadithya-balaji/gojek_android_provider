@@ -39,7 +39,7 @@ class  CardResponseModel{
     @SerializedName("funding")
     @Expose
     private var funding: String? = null
-
+      var isCardSelected:Boolean?=false
     fun getId(): Int? {
         return id
     }

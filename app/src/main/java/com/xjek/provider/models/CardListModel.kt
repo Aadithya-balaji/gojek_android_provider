@@ -17,7 +17,7 @@ class  CardListModel{
     private var message: String? = null
     @SerializedName("responseData")
     @Expose
-    private var responseData: List<CardResponseModel>? = null
+    private var responseData: MutableList<CardResponseModel>? = null
     @SerializedName("error")
     @Expose
     private var error: List<Any>? = null
@@ -46,11 +46,11 @@ class  CardListModel{
         this.message = message
     }
 
-    fun getResponseData(): List<CardResponseModel>? {
+    fun getResponseData(): MutableList<CardResponseModel>? {
         return responseData
     }
 
-    fun setResponseData(responseData: List<CardResponseModel>) {
+    fun setResponseData(responseData: MutableList<CardResponseModel>) {
         this.responseData = responseData
     }
 

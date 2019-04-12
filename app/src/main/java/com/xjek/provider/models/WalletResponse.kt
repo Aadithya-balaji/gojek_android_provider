@@ -16,7 +16,7 @@ class WalletResponse {
     private var message: String? = null
     @SerializedName("responseData")
     @Expose
-    private var responseData: List<WalletModel>? = null
+    private var responseData: WalletModel?= null
     @SerializedName("error")
     @Expose
     private var error: List<Any>? = null
@@ -45,11 +45,11 @@ class WalletResponse {
         this.message = message
     }
 
-    fun getResponseData(): List<WalletModel>? {
+    fun getResponseData():WalletModel? {
         return responseData
     }
 
-    fun setResponseData(responseData: List<WalletModel>) {
+    fun setResponseData(responseData:WalletModel){
         this.responseData = responseData
     }
 

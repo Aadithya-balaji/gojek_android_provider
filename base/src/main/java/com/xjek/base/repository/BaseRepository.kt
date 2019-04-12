@@ -31,6 +31,7 @@ open class BaseRepository {
         return reconstructedRetrofit(baseUrl).create(service)
     }
 
+
     fun getErrorMessage(e: Throwable): String {
         val errorObject = JSONObject((e as HttpException).response().errorBody()?.string())
         return if (errorObject.has("message"))

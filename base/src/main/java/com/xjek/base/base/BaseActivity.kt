@@ -30,7 +30,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
-    protected val loadingObservable: MutableLiveData<*>
+     val loadingObservable: MutableLiveData<*>
         get() = loadingLiveData
 
     protected val isNetworkConnected: Boolean

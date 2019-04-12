@@ -99,4 +99,8 @@ object WebApiConstants {
         const val USER_TYPE="user_type"
         const val PAYMENT_MODE="payment_mode"
     }
+
+    object  addCard{
+        const val STRIP_TOKEN="stripe_token"
+    }
 }

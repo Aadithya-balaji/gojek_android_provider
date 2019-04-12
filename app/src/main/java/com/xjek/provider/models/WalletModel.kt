@@ -8,16 +8,16 @@ import com.google.gson.annotations.SerializedName
 class  WalletModel{
     @SerializedName("wallet_balance")
     @Expose
-    private var walletBalance: Int? = null
+    private var walletBalance: Double? = null
     @SerializedName("message")
     @Expose
     private var message: String? = null
 
-    fun getWalletBalance(): Int? {
+    fun getWalletBalance(): Double? {
         return walletBalance
     }
 
-    fun setWalletBalance(walletBalance: Int?) {
+    fun setWalletBalance(walletBalance: Double?) {
         this.walletBalance = walletBalance
     }
 

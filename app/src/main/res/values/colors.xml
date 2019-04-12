@@ -76,4 +76,5 @@
     <color name="transactinstatus">#F8FFA200</color>
     <color name="blue_transaction_bg">#11aba9</color>
     <color name="red">#fc3a14</color>
+    <color name="card_unselected">#faf9f6</color>
 </resources>

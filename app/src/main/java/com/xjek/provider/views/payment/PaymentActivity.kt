@@ -73,7 +73,6 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
         val month = Integer.parseInt(temp[0])
         val year = Integer.parseInt(temp[1])
 
-
         val card = Card(
                 mCardNumber,
                 month,

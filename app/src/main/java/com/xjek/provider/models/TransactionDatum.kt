@@ -96,7 +96,7 @@ class  TransactionDatum{
         this.type = type
     }
 
-    fun getAmount(): Double? {
+    fun getAmount():Double? {
         return amount
     }
 
@@ -127,5 +127,4 @@ class  TransactionDatum{
     fun setPaymentLog(paymentLog: PaymentLog) {
         this.paymentLog = paymentLog
     }
-
 }

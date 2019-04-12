@@ -17,6 +17,8 @@ import com.xjek.provider.views.wallet.WalletFragment
 import java.util.*
 
 class  ManagePaymentActivity:BaseActivity<ActivityManagePaymentBinding>(),ManagePaymentNavigator,ViewPager.OnPageChangeListener{
+
+
     private  lateinit var activityManagePaymentBinding:ActivityManagePaymentBinding
     private  lateinit var  managePaymentViewModel:ManagePaymentViewModel
     private lateinit var  paymentAdapter:PaymentAdapter
@@ -58,6 +60,10 @@ class  ManagePaymentActivity:BaseActivity<ActivityManagePaymentBinding>(),Manage
     }
 
     override fun onPageSelected(position: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun addCard() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

@@ -12,6 +12,7 @@ import com.xjek.provider.views.reset_password.ResetPasswordViewModel
 import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
 import com.xjek.provider.views.splash.SplashViewModel
+import com.xjek.provider.views.transaction.TransactionViewModel
 import com.xjek.provider.views.wallet.WalletViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -19,10 +20,8 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Part
-import java.util.*
 import java.util.logging.Level
 import java.util.logging.Logger
-import kotlin.collections.HashMap
 
 class AppRepository : BaseRepository() {
 
@@ -113,7 +112,6 @@ class AppRepository : BaseRepository() {
     }
 
 
-
     @SuppressLint("CheckResult")
     fun postSignup(viewModel: SignupViewModel, params: HashMap<String, RequestBody>, @Part filename: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
@@ -121,7 +119,8 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.getSignupLiveData().postValue(it) }, {
+                    viewModel.getSignupLiveData().postValue(it)
+                }, {
 
                     viewModel.signupNavigator.showError(getErrorMessage(it))
                 })
@@ -141,82 +140,119 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun ValidateUser(viewModel: SignupViewModel,params: HashMap<String, String>):Disposable{
-        return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+    fun ValidateUser(viewModel: SignupViewModel, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
                 .verifyUser(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    if(it.statusCode=="200"){
+                    if (it.statusCode == "200") {
 
                     }
-                },{
+                }, {
                     viewModel.navigator.showError(getErrorMessage(it))
                 })
 
     }
 
-    fun getProfile(viewModel:ProfileViewModel,token:String):Disposable{
-        return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+    fun getProfile(viewModel: ProfileViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
                 .getProfile(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                     if(it.statusCode=="200"){
-                         viewModel.getProfileRespose().postValue(it)
-                     }
-                },{
-                     viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                    if (it.statusCode == "200") {
+                        viewModel.getProfileRespose().postValue(it)
+                    }
+                }, {
+                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
                 })
     }
 
-    fun getReferal(viewModel:InviteReferalsViewModel, token: String):Disposable{
-        return  BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+    fun getReferal(viewModel: InviteReferalsViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
                 .getProfile(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                     viewModel.getProfileLiveData().postValue(it)
-                },{
+                    viewModel.getProfileLiveData().postValue(it)
+                }, {
                     viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 
-    fun updateProfile(viewModel:ProfileViewModel,param: HashMap<String,RequestBody>,@Part filename: MultipartBody.Part?):Disposable{
-        return  BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
-                .updateProfile(param,filename)
+    fun updateProfile(viewModel: ProfileViewModel, param: HashMap<String, RequestBody>, @Part filename: MultipartBody.Part?): Disposable {
+        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
+                .updateProfile(param, filename)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.updateProfileResposne.postValue(it)
-                },{
+                }, {
                     viewModel.navigator.showErrorMsg(getErrorMessage(it))
                 })
     }
 
 
-    fun getCardList(viewModel:WalletViewModel,token:String):Disposable{
-        return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+    fun getCardList(viewModel: WalletViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
                 .getCardList(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                           viewModel.cardResponseData.postValue(it)
-                },{
+                    viewModel.cardResponseData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                })
+    }
+
+    fun addWalletAmount(viewModel: WalletViewModel, params: HashMap<String, String>, token: String): Disposable {
+        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
+                .addWalletMoney(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                          viewModel.walletLiveResponse.postValue(it)
+                }, {
+                          viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                })
+    }
+
+    fun getTransaction(viewModel: TransactionViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(Constant.baseUrl, AppWebService::class.java)
+                .getWalletTransction(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                     viewModel.transcationLiveResponse.postValue(it)
+                }, {
 
                 })
     }
 
-    fun addWalletAmount(viewModel:WalletViewModel,params:HashMap<String,String>,token:String):Disposable{
-        return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
-                .addWalletMoney(token,params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
+    fun deleteCDard(viewModel: WalletViewModel,token:String,cardId:String):Disposable{
+         return BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+                 .deleteCard(token,cardId)
+                 .observeOn(AndroidSchedulers.mainThread())
+                 .subscribeOn(Schedulers.io())
+                 .subscribe({
+                     viewModel.deleCardLivResponse.postValue(it)
+                 },{
+                     viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                 })
 
-                },{
+    }
 
-                })
+    fun addCard(viewModel:WalletViewModel,params:HashMap<String,String>,token:String):Disposable{
+           return   BaseRepository().createApiClient(Constant.baseUrl,AppWebService::class.java)
+                   .addCard(token,params)
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribeOn(Schedulers.io())
+                   .subscribe({
+                       viewModel.addCardLiveResposne.postValue(it)
+                   },{
+                       viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                   })
     }
 
     companion object {

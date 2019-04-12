@@ -320,12 +320,14 @@
     <string name="file_pemission_denied">File read permission denied</string>
     <string name="rationale_storage_permission_denied">Please allow storage permission to change image</string>
     <string name="empty_wallet_amount">Please Enter the Amount</string>
+    <string name="empty_card">Please choose any card</string>
 
     <!-- Manage Payments -->
     <string name="saved_card">Saved Cards</string>
     <string name="wallet">Wallet</string>
     <string name="transaction">Transaction</string>
     <string name="add_card">Add Cards</string>
-    <string name="card_number">XXXX XXXX XXXX XXXX %s</string>
+    <string name="row_card_number">XXXX XXXX XXXX XXXX %s</string>
     <string name="transaction_amount">%.2f</string>
+    <string name="wallet_balance">%.2f $</string>
 </resources>

@@ -6,4 +6,8 @@ interface  WalletNavigator{
     fun showErrorMsg(error:String)
     fun  validate():Boolean
     fun  addAmount(view: View)
+    fun addCard()
+    fun cardPicked(cardID:String,position:Int)
+    fun removeCard()
+    fun  deselectCard()
 }

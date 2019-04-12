@@ -79,4 +79,10 @@ interface AppWebService {
     @GET("provider/wallet")
     fun getWalletTransction(@Header("Authorization") token: String):Observable<WalletTransactionList>
 
+    @POST("provider/card")
+    fun addCard(@Header("Authorization") token: String,params:HashMap<String,String>):Observable<AddCardModel>
+
+    @DELETE("provider/card/{card_id}")
+    fun deleteCard(@Header("Authorization") token:String,@Path("card_id") cardid:String):Observable<AddCardModel>
+
 }

@@ -2,21 +2,27 @@ package com.xjek.provider.views.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
 import com.xjek.provider.databinding.RowSavedDetailBinding
 import com.xjek.provider.models.CardResponseModel
+import com.xjek.provider.views.wallet.WalletViewModel
 
-class CardsAdapter(context: Context, cardList: List<CardResponseModel>) : RecyclerView.Adapter<CardsAdapter.CardViewHolder>() {
+class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, walletViewModel: WalletViewModel) : RecyclerView.Adapter<CardsAdapter.CardViewHolder>(), View.OnLongClickListener, View.OnClickListener {
 
     private var context: Context? = null
-    private var cardList: List<CardResponseModel>? = null
+    private var cardList: MutableList<CardResponseModel>? = null
+    private var walletViewModel: WalletViewModel? = null
+    private var selectedPosition: Int? = -1
 
     init {
         this.context = context
         this.cardList = cardList
+        this.walletViewModel = walletViewModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
@@ -25,16 +31,59 @@ class CardsAdapter(context: Context, cardList: List<CardResponseModel>) : Recycl
     }
 
     override fun getItemCount(): Int {
-        return  cardList!!.size
+        return cardList!!.size
     }
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         holder.cardViewBinding.tvCardType.setText(cardList!!.get(position).getBrand())
-        holder.cardViewBinding.tvCardNumber.setText(String.format(context!!.resources.getString(R.string.card_number),cardList!!.get(position).getLastFour()))
+        holder.cardViewBinding.tvCardNumber.setText(String.format(context!!.resources.getString(R.string.row_card_number), cardList!!.get(position).getLastFour()))
+        holder.cardViewBinding.root.tag = holder
+        if (cardList!!.get(position).isCardSelected == false) {
+            holder.cardViewBinding.root.setBackgroundColor(ContextCompat.getColor(context!!, R.color.card_unselected))
+            holder.cardViewBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.black))
+            holder.cardViewBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.black))
+        }
+        else {
+            holder.cardViewBinding.root.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+            holder.cardViewBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+            holder.cardViewBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+        }
+
+       // holder.cardViewBinding.root.setOnClickListener(this)
+        holder.cardViewBinding.root.setOnLongClickListener(this)
+
     }
 
 
     inner class CardViewHolder(cardViewBinding: RowSavedDetailBinding) : RecyclerView.ViewHolder(cardViewBinding.root) {
         val cardViewBinding = cardViewBinding
+    }
+
+    override fun onLongClick(v: View?): Boolean {
+        var cardViewHolder = v!!.tag as CardViewHolder
+        var position = cardViewHolder.adapterPosition
+        if (selectedPosition != position) {
+            selectedPosition=position
+            walletViewModel!!.navigator.cardPicked(cardList!!.get(position).getCardId().toString(), position)
+        }
+        return true
+    }
+
+    override fun onClick(v: View?) {
+        var cardViewHolder = v!!.tag as CardViewHolder
+        var position = cardViewHolder.adapterPosition
+        if (selectedPosition != position) {
+            if (selectedPosition != -1) {
+                walletViewModel!!.navigator.cardPicked(cardList!!.get(position).getCardId().toString(), position)
+                cardList!!.get(selectedPosition!!).isCardSelected=false
+                selectedPosition=position
+                cardList!!.get(position).isCardSelected=true
+                notifyItemRangeRemoved(0, cardList!!.size)
+                notifyItemRangeInserted(0, cardList!!.size)
+            }
+        } else if (selectedPosition == position) {
+            cardList!!.get(position).isCardSelected = false
+            notifyItemChanged(position)
+        }
     }
 }

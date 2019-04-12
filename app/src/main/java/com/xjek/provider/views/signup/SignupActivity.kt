@@ -137,10 +137,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         edtCountry.isFocusableInTouchMode = false
         edtCity.isFocusableInTouchMode = false
         initListener()
-
-
         initFacebooik()
-
         initGoogle()
 
         getApiResponse()
@@ -164,7 +161,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         loadingObservable.value = false
         observeLiveData(signupViewmodel.getSignupLiveData()) {
             if (signupViewmodel.getSignupObserverValue()!!.statusCode.equals("200")) {
-                // verifyPhoneNumber()
+                 verifyPhoneNumber()
             }
         }
 

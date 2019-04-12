@@ -4,8 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-
-class  WalletTransactionList{
+class AddCardModel {
     @SerializedName("statusCode")
     @Expose
     private var statusCode: String? = null
@@ -17,7 +16,7 @@ class  WalletTransactionList{
     private var message: String? = null
     @SerializedName("responseData")
     @Expose
-    private var responseData: TranscationModel? = null
+    private var responseData: List<Any>? = null
     @SerializedName("error")
     @Expose
     private var error: List<Any>? = null
@@ -46,11 +45,11 @@ class  WalletTransactionList{
         this.message = message
     }
 
-    fun getResponseData(): TranscationModel? {
+    fun getResponseData(): List<Any>? {
         return responseData
     }
 
-    fun setResponseData(responseData: TranscationModel) {
+    fun setResponseData(responseData: List<Any>) {
         this.responseData = responseData
     }
 
@@ -61,6 +60,5 @@ class  WalletTransactionList{
     fun setError(error: List<Any>) {
         this.error = error
     }
-
 
 }

@@ -239,6 +239,19 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+    fun getVehicleCategories(viewModel: AddVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getVehicleCategories(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleCategoryObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
     fun postVehicle(viewModel: AddVehicleViewModel, token: String,
                     params: HashMap<String, RequestBody>,
                     rcBookMultipart: MultipartBody.Part, insuranceMultipart: MultipartBody.Part
@@ -254,6 +267,19 @@ class AppRepository : BaseRepository() {
                     viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
+
+//    fun getServices(viewModel: SetupVehicleViewModel, token: String): Disposable {
+//        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+//                .getRides(token)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe({
+//                    if (it.statusCode == "200")
+//                        viewModel.getVehicleDataObservable().postValue(it)
+//                }, {
+//                    viewModel.navigator.showError(getErrorMessage(it))
+//                })
+//    }
 
     companion object {
         private val TAG = AppRepository::class.java.simpleName

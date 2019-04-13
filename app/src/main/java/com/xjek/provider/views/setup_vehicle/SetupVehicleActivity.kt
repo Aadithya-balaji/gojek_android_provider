@@ -24,7 +24,6 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-
         binding = mViewDataBinding as ActivitySetupVehicleBinding
         binding.lifecycleOwner = this
         viewModel = provideViewModel {

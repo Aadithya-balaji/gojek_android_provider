@@ -1,15 +1,13 @@
 package com.xjek.provider.models
 
-import androidx.lifecycle.MutableLiveData
-
-data class AddVehicleDataModel(
-//        var vehicleImage: MutableLiveData<String?>,
-//        var categoryId: MutableLiveData<String?>,
-        var vehicleModel: MutableLiveData<String?>,
-        var vehicleYear: MutableLiveData<String?>,
-        var vehicleColor: MutableLiveData<String?>,
-        var vehiclePlate: MutableLiveData<String?>,
-        var vehicleMake: MutableLiveData<String?>,
-        var vehicleRcBook: MutableLiveData<String?>,
-        var vehicleInsurance: MutableLiveData<String?>
-)
+class AddVehicleDataModel {
+    var vehicleImage: String? = null
+    var categoryId: String? = null
+    var vehicleModel: String? = null
+    var vehicleYear: String? = null
+    var vehicleColor: String? = null
+    var vehicleNumber: String? = null
+    var vehicleMake: String? = null
+    var vehicleRcBook: String? = null
+    var vehicleInsurance: String? = null
+}

@@ -6,6 +6,8 @@ import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.theartofdev.edmodo.cropper.CropImage
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.PreferencesHelper.message
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ImageCropperUtils
 import com.xjek.base.utils.ViewUtils
@@ -45,6 +47,34 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
         binding.toolbar.tbApp.tv_toolbar_title.text =
                 resources.getString(R.string.title_add_vehicle)
+
+        observeViewModel()
+
+        getVehicleCategories()
+    }
+
+    private fun observeViewModel() {
+        observeLiveData(viewModel.getVehicleCategoryObservable()) {
+            loadingObservable.value = false
+        }
+        observeLiveData(viewModel.getVehicleResponseObservable()) {
+            loadingObservable.value = false
+        }
+    }
+
+    private fun getVehicleCategories() {
+        loadingObservable.value = true
+        viewModel.getVehicleCategories()
+    }
+
+    private fun performValidation() {
+        ViewUtils.hideSoftInputWindow(this)
+        if (viewModel.isVehicleDataValid()) {
+            loadingObservable.value = true
+            viewModel.postVehicle()
+        } else {
+            ViewUtils.showToast(applicationContext, message, false)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -96,7 +126,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     }
 
     override fun onVehicleSubmitClicked() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        performValidation()
     }
 
     override fun showError(error: String) {

@@ -79,6 +79,10 @@ interface AppWebService {
     @GET("provider/shoptype")
     fun getShops(@Header("Authorization") token: String): Observable<SetupShopResponseModel>
 
+    @GET("provider/services/list")
+    fun getVehicleCategories(@Header("Authorization") token: String):
+            Observable<VehicleCategoryResponseModel>
+
     @Multipart
     @POST("provider/vechile/add")
     fun postVehicle(

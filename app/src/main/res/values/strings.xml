@@ -215,6 +215,9 @@
     <string name="rc_book">RC Book</string>
     <string name="insurance">Insurance</string>
 
+    <!--Setup Services Screen-->
+    <string name="title_setup_services">Setup Your Vehicle</string>
+
     <!--Manage Documents Screen-->
     <string name="title_manage_documents">Manage Documents</string>
     <string name="expiry">Expiry</string>

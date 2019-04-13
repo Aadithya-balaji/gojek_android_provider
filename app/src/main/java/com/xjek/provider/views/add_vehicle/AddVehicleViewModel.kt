@@ -11,20 +11,22 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.AddVehicleDataModel
 import com.xjek.provider.models.AddVehicleResponseModel
 import com.xjek.provider.models.ProviderVehicleResponseModel
+import com.xjek.provider.models.VehicleCategoryResponseModel
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
 import okhttp3.RequestBody
 import java.io.File
-
 
 class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     private val appRepository = AppRepository.instance()
     private val transportId: Int = readPreferences(PreferencesKey.TRANSPORT_ID)
     private val orderId: Int = readPreferences(PreferencesKey.ORDER_ID)
+    private val vehicleCategoryLiveData = MutableLiveData<VehicleCategoryResponseModel>()
     private val vehicleResponseLiveData = MutableLiveData<AddVehicleResponseModel>()
 
     private var serviceId: Int = -1
+    private val addVehicleDataModel = AddVehicleDataModel()
     private val vehicleLiveData = MutableLiveData<AddVehicleDataModel>()
     private lateinit var vehicleUri: Uri
     private lateinit var rcBookUri: Uri
@@ -41,17 +43,14 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     fun getServiceId() = serviceId
 
     fun setVehicleLiveData(providerVehicle: ProviderVehicleResponseModel) {
-        val addVehicleDataModel = AddVehicleDataModel(
-//                MutableLiveData(providerVehicle.vehicleImage),
-//                MutableLiveData(""),
-                MutableLiveData(providerVehicle.vehicleModel),
-                MutableLiveData(providerVehicle.vehicleYear.toString()),
-                MutableLiveData(providerVehicle.vehicleColor),
-                MutableLiveData(providerVehicle.vehicleNo),
-                MutableLiveData(providerVehicle.vehicleMake),
-                MutableLiveData(providerVehicle.picture),
-                MutableLiveData(providerVehicle.picture1)
-        )
+        addVehicleDataModel.vehicleImage = providerVehicle.vehicleImage
+        addVehicleDataModel.vehicleModel = providerVehicle.vehicleModel
+        addVehicleDataModel.vehicleYear = providerVehicle.vehicleYear.toString()
+        addVehicleDataModel.vehicleColor = providerVehicle.vehicleColor
+        addVehicleDataModel.vehicleNumber = providerVehicle.vehicleNo
+        addVehicleDataModel.vehicleMake = providerVehicle.vehicleMake
+        addVehicleDataModel.vehicleRcBook = providerVehicle.picture
+        addVehicleDataModel.vehicleInsurance = providerVehicle.picture1
         vehicleLiveData.value = addVehicleDataModel
     }
 
@@ -79,7 +78,21 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         }
     }
 
-    private fun postVehicle() {
+    fun isVehicleDataValid(): Boolean {
+        if (addVehicleDataModel.vehicleModel.isNullOrBlank()) {
+            return false
+        }
+        return false
+    }
+
+    fun getVehicleCategories() {
+        val token = StringBuilder("Bearer ")
+                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
+                .toString()
+        getCompositeDisposable().add(appRepository.getVehicleCategories(this, token))
+    }
+
+    fun postVehicle() {
         val token = StringBuilder("Bearer ")
                 .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
                 .toString()
@@ -105,6 +118,8 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun getVehicleData() = vehicleLiveData.value
 
+    fun getVehicleCategoryObservable() = vehicleCategoryLiveData
+
     fun getVehicleResponseObservable() = vehicleResponseLiveData
 
     fun onVehicleImageClick(view: View) {
@@ -120,7 +135,6 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     }
 
     fun onVehicleSubmitClick(view: View) {
-        postVehicle()
-//        navigator.onVehicleSubmitClicked()
+        navigator.onVehicleSubmitClicked()
     }
 }

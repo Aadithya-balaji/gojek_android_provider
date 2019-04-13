@@ -88,7 +88,7 @@
                                 android:maxLines="1"
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
-                                android:text="@={addVehicleViewModel.vehicleData.component1()}" />
+                                android:text="@={addVehicleViewModel.vehicleData.vehicleModel}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -108,9 +108,9 @@
                                 android:inputType="number"
                                 android:maxLength="4"
                                 android:maxLines="1"
-                                android:text="@={addVehicleViewModel.vehicleData.component2()}"
                                 android:scrollHorizontally="true"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:text="@={addVehicleViewModel.vehicleData.vehicleYear}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -128,7 +128,8 @@
                                 android:imeOptions="actionNext"
                                 android:maxLines="1"
                                 android:scrollHorizontally="true"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:text="@={addVehicleViewModel.vehicleData.vehicleColor}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -146,7 +147,7 @@
                                 android:maxLines="1"
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
-                                android:text="@={addVehicleViewModel.vehicleData.component4()}" />
+                                android:text="@={addVehicleViewModel.vehicleData.vehicleNumber}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -164,7 +165,8 @@
                                 android:imeOptions="actionDone"
                                 android:maxLines="1"
                                 android:scrollHorizontally="true"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:text="@={addVehicleViewModel.vehicleData.vehicleMake}" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
@@ -239,7 +241,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@null"
                         android:scaleType="centerCrop"
-                        app:setImageResource="@{addVehicleViewModel.vehicleData.component6()}" />
+                        app:setImageResource="@{addVehicleViewModel.vehicleData.vehicleRcBook}" />
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
                 <com.google.android.material.circularreveal.CircularRevealRelativeLayout
@@ -271,7 +273,7 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@null"
                         android:scaleType="centerCrop"
-                        app:setImageResource="@{addVehicleViewModel.vehicleData.component7()}" />
+                        app:setImageResource="@{addVehicleViewModel.vehicleData.vehicleInsurance}" />
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
                 <Button

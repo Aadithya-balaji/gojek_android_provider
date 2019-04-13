@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory">
+        <activity android:name=".views.setup_services.SetupServicesActivity"></activity>
         <activity android:name=".views.language.LanguageActivity" />
         <activity android:name=".views.document_upload.DocumentUploadActivity" />
         <activity android:name=".views.setup_vehicle.SetupVehicleActivity" />
@@ -167,4 +168,5 @@
             android:name="com.cooltechworks.creditcarddesign.CardEditActivity"
             android:screenOrientation="portrait" />
     </application>
+
 </manifest>

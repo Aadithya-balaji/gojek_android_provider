@@ -69,7 +69,7 @@ interface AppWebService {
     fun updateProfile(@FieldMap params:HashMap<String,RequestBody>,@Part fileName: MultipartBody.Part?):Observable<CommonResponse>
 
     @GET("provider/card")
-    fun getCardList( @Header("Authorization") token: String):Observable<CardListModel>
+    fun getCardList( @Header("Authorization") token: String,@Query("limit") limit:String,@Query("offset") offset:String):Observable<CardListModel>
 
     @FormUrlEncoded
     @POST("provider/add/money")
@@ -81,7 +81,7 @@ interface AppWebService {
 
     @FormUrlEncoded
     @POST("provider/card")
-    fun addCard(@Header("Authorization") token: String,params:HashMap<String,String>):Observable<AddCardModel>
+    fun addCard(@Header("Authorization") token: String,@FieldMap params:HashMap<String,String>):Observable<AddCardModel>
 
     @DELETE("provider/card/{card_id}")
     fun deleteCard(@Header("Authorization") token:String,@Path("card_id") cardid:String):Observable<AddCardModel>

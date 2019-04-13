@@ -2,7 +2,7 @@ package com.xjek.provider.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-
+import com.xjek.base.data.PreferencesHelper.message
 
 
 class  WalletTransactionList{
@@ -61,6 +61,5 @@ class  WalletTransactionList{
     fun setError(error: List<Any>) {
         this.error = error
     }
-
 
 }

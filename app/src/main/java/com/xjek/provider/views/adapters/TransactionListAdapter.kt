@@ -34,7 +34,7 @@ class TransactionListAdapter(context: Context, transactionList:List<TransactionD
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
        holder.currentOderItemlistBinding.transactionIdTv.setText(transactionList!!.get(position).getTransactionId().toString())
-        var strDate=CommanMethods.getLocalTimeStamp(transactionList!!.get(position).getPaymentLog()!!.getCreatedAt().toString())
+        var strDate=CommanMethods.getLocalTimeStamp(transactionList!!.get(position).getCreatedAt().toString())
         holder.currentOderItemlistBinding.transactionDateTv.setText(strDate)
         holder.currentOderItemlistBinding.transactionAmountTv.setText(String.format(context!!.getString(R.string.transaction_amount),transactionList!!.get(position).getAmount()))
     }

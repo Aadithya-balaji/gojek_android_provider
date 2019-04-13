@@ -64,7 +64,8 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
         var position = cardViewHolder.adapterPosition
         if (selectedPosition != position) {
             selectedPosition=position
-            walletViewModel!!.navigator.cardPicked(cardList!!.get(position).getCardId().toString(), position)
+            val cardResponseModel=cardList!!.get(selectedPosition!!)
+            walletViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(),cardResponseModel.getId().toString(), selectedPosition!!)
         }
         return true
     }
@@ -74,7 +75,8 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
         var position = cardViewHolder.adapterPosition
         if (selectedPosition != position) {
             if (selectedPosition != -1) {
-                walletViewModel!!.navigator.cardPicked(cardList!!.get(position).getCardId().toString(), position)
+                val cardResponseModel=cardList!!.get(position)
+                walletViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(),cardResponseModel.getId().toString(), position)
                 cardList!!.get(selectedPosition!!).isCardSelected=false
                 selectedPosition=position
                 cardList!!.get(position).isCardSelected=true

@@ -175,7 +175,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
             // Your processing goes here.
             val temp = mCardExpiryDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
             val month = Integer.parseInt(temp[0])
             val year = Integer.parseInt(temp[1])
 
@@ -189,6 +188,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
             card.name = mCardHolderName
             if (card.validateNumber() && card.validateCVC()) {
                 //showSnackBar("Card Added Successfully");
+                loadingProgress?.value =true
                 val stripe = Stripe(activity!!, resources.getString(R.string.stripe_key))
                 stripe.createToken(
                         card,
@@ -204,6 +204,9 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
                             override fun onError(error: Exception) {
                                 // Show localized error message
+                                loadingProgress?.value =false
+                                Log.e("card", "-----" + error.message.toString())
+
 
                             }
                         }
@@ -216,7 +219,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         if (walletViewModel.walletAmount.value.isNullOrEmpty()) {
             ViewUtils.showToast(activity!!, resources.getString(R.string.empty_wallet_amount), false)
             return false
-        } else if(walletViewModel.selectedCardId.value.isNullOrEmpty()) {
+        } else if(walletViewModel.selectedStripeID.value.isNullOrEmpty()) {
             ViewUtils.showToast(activity!!, resources.getString(R.string.empty_card), false)
             return false
         }else{
@@ -230,10 +233,11 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         startActivityForResult(intent, 125)
     }
 
-    override fun cardPicked(cardID: String, position: Int) {
+    override fun cardPicked(stripeID: String,cardID:String ,position: Int) {
         fragmentWalletBinding.ivDelete.visibility = View.VISIBLE
         fragmentWalletBinding.ivRemove.visibility = View.VISIBLE
-        walletViewModel.selectedCardId.value = cardID
+        walletViewModel.selectedStripeID.value = stripeID
+        walletViewModel.selectedCardID.value=cardID
         if (selectedPosition != -1) {
             selectedPosition?.let { cardList!!.get(it).isCardSelected = false }
             cardsAdapter.notifyItemChanged(selectedPosition!!)
@@ -252,6 +256,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         cardsAdapter.notifyItemChanged(selectedPosition!!)
         fragmentWalletBinding.ivRemove.visibility = View.GONE
         fragmentWalletBinding.ivDelete.visibility = View.GONE
-        walletViewModel.selectedCardId.value = ""
+        walletViewModel.selectedStripeID.value = ""
     }
 }

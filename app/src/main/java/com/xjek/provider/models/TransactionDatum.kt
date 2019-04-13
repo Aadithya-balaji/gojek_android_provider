@@ -9,18 +9,9 @@ class  TransactionDatum{
     @SerializedName("id")
     @Expose
     private var id: Int? = null
-    @SerializedName("provider_id")
-    @Expose
-    private var providerId: Int? = null
     @SerializedName("transaction_id")
     @Expose
     private var transactionId: Int? = null
-    @SerializedName("company_id")
-    @Expose
-    private var companyId: Int? = null
-    @SerializedName("transaction_alias")
-    @Expose
-    private var transactionAlias: Any? = null
     @SerializedName("transaction_desc")
     @Expose
     private var transactionDesc: Any? = null
@@ -30,12 +21,9 @@ class  TransactionDatum{
     @SerializedName("amount")
     @Expose
     private var amount: Double? = null
-    @SerializedName("open_balance")
+    @SerializedName("created_at")
     @Expose
-    private var openBalance: Int? = null
-    @SerializedName("close_balance")
-    @Expose
-    private var closeBalance: Int? = null
+    private var createdAt: String? = null
     @SerializedName("payment_log")
     @Expose
     private var paymentLog: PaymentLog? = null
@@ -48,36 +36,12 @@ class  TransactionDatum{
         this.id = id
     }
 
-    fun getProviderId(): Int? {
-        return providerId
-    }
-
-    fun setProviderId(providerId: Int?) {
-        this.providerId = providerId
-    }
-
     fun getTransactionId(): Int? {
         return transactionId
     }
 
     fun setTransactionId(transactionId: Int?) {
         this.transactionId = transactionId
-    }
-
-    fun getCompanyId(): Int? {
-        return companyId
-    }
-
-    fun setCompanyId(companyId: Int?) {
-        this.companyId = companyId
-    }
-
-    fun getTransactionAlias(): Any? {
-        return transactionAlias
-    }
-
-    fun setTransactionAlias(transactionAlias: Any) {
-        this.transactionAlias = transactionAlias
     }
 
     fun getTransactionDesc(): Any? {
@@ -96,7 +60,7 @@ class  TransactionDatum{
         this.type = type
     }
 
-    fun getAmount():Double? {
+    fun getAmount(): Double? {
         return amount
     }
 
@@ -104,20 +68,12 @@ class  TransactionDatum{
         this.amount = amount
     }
 
-    fun getOpenBalance(): Int? {
-        return openBalance
+    fun getCreatedAt(): String? {
+        return createdAt
     }
 
-    fun setOpenBalance(openBalance: Int?) {
-        this.openBalance = openBalance
-    }
-
-    fun getCloseBalance(): Int? {
-        return closeBalance
-    }
-
-    fun setCloseBalance(closeBalance: Int?) {
-        this.closeBalance = closeBalance
+    fun setCreatedAt(createdAt: String) {
+        this.createdAt = createdAt
     }
 
     fun getPaymentLog(): PaymentLog? {
@@ -127,4 +83,5 @@ class  TransactionDatum{
     fun setPaymentLog(paymentLog: PaymentLog) {
         this.paymentLog = paymentLog
     }
+
 }

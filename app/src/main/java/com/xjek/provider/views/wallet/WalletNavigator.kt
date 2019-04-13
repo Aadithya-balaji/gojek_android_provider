@@ -7,7 +7,7 @@ interface  WalletNavigator{
     fun  validate():Boolean
     fun  addAmount(view: View)
     fun addCard()
-    fun cardPicked(cardID:String,position:Int)
+    fun cardPicked(stripeID:String,cardID:String,position:Int)
     fun removeCard()
     fun  deselectCard()
 }

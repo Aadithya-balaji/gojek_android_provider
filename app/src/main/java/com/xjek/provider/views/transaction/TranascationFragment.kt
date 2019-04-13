@@ -8,6 +8,7 @@ import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentTransactionBinding
+import com.xjek.provider.models.TransactionDatum
 import com.xjek.provider.views.adapters.TransactionListAdapter
 
 class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), TransactionNavigator {
@@ -27,6 +28,7 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
         fragmentTransactionBinding.transctionmodel = transcationViewModel
         linearLayoutManager = LinearLayoutManager(activity)
         fragmentTransactionBinding.transactionListRv.layoutManager = linearLayoutManager
+        fragmentTransactionBinding.lifecycleOwner=this
 
         //callGetTrancation Api
         transcationViewModel.callTranscationApi()
@@ -37,18 +39,19 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
 
     fun getApiResponse() {
         observeLiveData(transcationViewModel.transcationLiveResponse) {
-            var walletTransactionList=transcationViewModel.transcationLiveResponse
-            if(walletTransactionList.value==null){
-                Log.e("wallet","------null")
-            }else{
-                Log.e("wallet","------non null")
+            var walletTransactionList = transcationViewModel.transcationLiveResponse
+            if (walletTransactionList.value == null) {
+                Log.e("wallet", "------null")
+            } else {
+                Log.e("wallet", "------non null")
 
             }
-            if (transcationViewModel.transcationLiveResponse!= null) {
-                var transcationlist = transcationViewModel.transcationLiveResponse.value!!.getResponseData()!!.data
+            if (transcationViewModel.transcationLiveResponse != null) {
+                var transcationlist : List<TransactionDatum> = transcationViewModel.transcationLiveResponse.value!!.getResponseData()!!.getData()!!
                 transactionListAdapter = TransactionListAdapter(activity!!, transcationlist)
-                fragmentTransactionBinding.transactionListRv.adapter=transactionListAdapter
+                fragmentTransactionBinding.transactionListRv.adapter = transactionListAdapter
             }
         }
+        }
     }
-}
+

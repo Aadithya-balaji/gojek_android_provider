@@ -202,9 +202,9 @@ class AppRepository : BaseRepository() {
     }
 
 
-    fun getCardList(viewModel: WalletViewModel, token: String): Disposable {
+    fun getCardList(viewModel: WalletViewModel, token: String,limit:String,offset:String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getCardList(token)
+                .getCardList(token,limit,offset)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

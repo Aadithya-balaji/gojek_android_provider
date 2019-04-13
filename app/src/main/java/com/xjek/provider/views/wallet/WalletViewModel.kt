@@ -23,9 +23,10 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
     var addCardLiveResposne=MutableLiveData<AddCardModel>()
     var deleCardLivResponse=MutableLiveData<AddCardModel>()
     var walletLiveResponse=MutableLiveData<WalletResponse>()
-    var selectedCardId=MutableLiveData<String>()
+    var selectedStripeID=MutableLiveData<String>()
     var resources:Resources?=null
     var showLoading=MutableLiveData<Boolean>()
+    var selectedCardID=MutableLiveData<String>()
 
     init {
         this.resources=resources
@@ -35,7 +36,7 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
 
     fun getCardList() {
         showLoading?.let { it.value=true }
-        getCompositeDisposable().add(appRepository.getCardList(this,         "Bearer "+ readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
+        getCompositeDisposable().add(appRepository.getCardList(this,         "Bearer "+ readPreferences<String>(PreferencesKey.ACCESS_TOKEN),"100","1"))
     }
 
     fun amountAdd(view: View) {
@@ -63,14 +64,14 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
 
     fun callCardDeleteCardAPi(){
         showLoading?.let { it.value=true }
-        if(!selectedCardId.value.isNullOrEmpty())
-        getCompositeDisposable().add(appRepository.deleteCDard(this,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN),selectedCardId.value!!))
+        if(!selectedStripeID.value.isNullOrEmpty())
+        getCompositeDisposable().add(appRepository.deleteCDard(this,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN),selectedCardID.value!!))
         else
           navigator.showErrorMsg(resources!!.getString(com.xjek.provider.R.string.empty_card))
     }
 
     fun onCardSelected(cardId:String,position:Int){
-         navigator.cardPicked(cardId,position)
+         navigator.cardPicked(selectedStripeID.value!!,selectedCardID.value!!,position)
     }
     fun saveCard(){
         navigator.addCard()

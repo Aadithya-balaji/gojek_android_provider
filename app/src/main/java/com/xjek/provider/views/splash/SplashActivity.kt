@@ -1,13 +1,16 @@
 package com.xjek.provider.views.splash
 
+import android.text.TextUtils
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
+import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySplashBinding
+import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
@@ -58,7 +61,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             writePreferences(PreferencesKey.CONTACT_EMAIL,
                     it.responseData.appSetting.supportDetails.contactEmail)
 
-            launchNewActivity(OnBoardActivity::class.java, true)
+            if(!TextUtils.isEmpty(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))){
+                launchNewActivity(DashBoardActivity::class.java, true)
+            }else {
+                launchNewActivity(OnBoardActivity::class.java, true)
+            }
         }
     }
 

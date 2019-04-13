@@ -23,12 +23,13 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(),LanguageNavigat
         }
 
         viewModel.navigator = this
+        viewModel.setLanguage()
         binding.languageViewModel = viewModel
 
         setSupportActionBar(binding.toolbar.tbApp)
         binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text =
-                resources.getString(R.string.title_language)
+        binding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_language)
+
     }
 
 }

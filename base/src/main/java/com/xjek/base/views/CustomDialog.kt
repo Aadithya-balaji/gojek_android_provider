@@ -32,9 +32,9 @@ class CustomDialog(context: Context) : Dialog(context) {
         } else {
             mCustomDialogBinding.lottieIndicator.visibility = View.GONE
             mCustomDialogBinding.avIndicator.visibility = View.VISIBLE
+            mCustomDialogBinding.avIndicator.show()
         }
 
-        mCustomDialogBinding.avIndicator.show()
     }
 
 }

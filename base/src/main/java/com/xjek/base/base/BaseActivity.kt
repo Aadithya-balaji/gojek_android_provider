@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
-import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.views.CustomDialog
@@ -49,7 +48,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView(mViewDataBinding)
-        customDialog = CustomDialog(this)
+        customDialog = CustomDialog(this,true)
 
         observeLiveData(loadingLiveData) { isShowLoading ->
             if (isShowLoading) {

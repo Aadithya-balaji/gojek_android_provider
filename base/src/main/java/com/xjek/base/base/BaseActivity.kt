@@ -16,6 +16,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.views.CustomDialog
 import com.xjek.basemodule.utils.PermissionUtils
@@ -63,6 +64,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         return super.onCreateView(parent, name, context, attrs)
         mParentView = window.decorView.findViewById(R.id.content)
     }
+
+
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(LocaleUtils.setLocale(newBase!!))
+    }
+
 
     protected fun setBindingVariable(variableId: Int, value: Any?) {
         mViewDataBinding.setVariable(variableId, value)

@@ -34,7 +34,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
     private var currentLong: Double = 151.2106085
 
 
-    override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
+    override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
         val mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
         mHomeDataBinding.homemodel = mHomeViewModel

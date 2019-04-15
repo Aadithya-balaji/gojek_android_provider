@@ -55,7 +55,7 @@
 
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/save_editprofile_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,6 +66,7 @@
             android:layout_alignParentBottom="true"
             android:paddingBottom="@dimen/_8sdp"
             android:text="@string/save"
+            android:onClick="@{() ->languageViewModel.onSaveClicked()}"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp"

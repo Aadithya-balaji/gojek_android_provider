@@ -27,7 +27,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>() {
     }
 
 
-    override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
+    override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mFragmentNotificationBinding = mViewDataBinding as FragmentNotificationBinding
         mNotificationViewModel = ViewModelProviders.of(this).get(NotificationViewModel::class.java)
         mFragmentNotificationBinding.notificationmodel = mNotificationViewModel

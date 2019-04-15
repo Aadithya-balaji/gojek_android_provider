@@ -8,6 +8,10 @@
             type="java.lang.Integer" />
 
         <variable
+            name="currentLanguage"
+            type="java.lang.String" />
+
+        <variable
             name="languageViewModel"
             type="com.xjek.provider.views.language.LanguageViewModel" />
     </data>
@@ -21,7 +25,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp"
-            android:text="@{languageViewModel.getLanguage(position)}"/>
+            android:onCheckedChanged="@{(switch, checked) -> languageViewModel.checkedChangeListener(checked,position)}"
+            android:checked="@{currentLanguage.equalsIgnoreCase(languageViewModel.getLanguage(position).key)}"
+            android:text="@{languageViewModel.getLanguage(position).name}"/>
 
     </RelativeLayout>
 

@@ -1,10 +1,11 @@
 package com.xjek.base.utils
 
+import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.preference.PreferenceManager
-import com.xjek.base.base.BaseApplication
 import java.util.*
 
 
@@ -26,20 +27,17 @@ class LocaleUtils {
         }
 
 
+        @SuppressLint("NewApi")
+        @SuppressWarnings("deprecation")
         private fun updateResources(context: Context, language: String?): Context {
-            var mContext = context
             val locale = Locale(language)
             Locale.setDefault(locale)
-            val res = mContext.resources
-            val config = Configuration(res.configuration)
-            if (Build.VERSION.SDK_INT >= 17) {
-                config.setLocale(locale)
-                mContext = mContext.createConfigurationContext(config)
-            } else {
-                config.locale = locale
-                res.updateConfiguration(config, res.displayMetrics)
-            }
-            return context
+            val resources = context.resources
+            val configuration = resources.configuration
+            configuration.locale = locale
+            configuration.setLayoutDirection(locale)
+            resources.updateConfiguration(configuration, resources.displayMetrics)
+            return context.createConfigurationContext(configuration)
         }
 
         fun getLanguagePref(mContext: Context): String? {
@@ -47,9 +45,9 @@ class LocaleUtils {
             return mPreferences.getString(LANGUAGE.KEY, LANGUAGE.DEFAULT)
         }
 
-        fun setLanguagePref(mContext: Context, locale: String) {
+        private fun setLanguagePref(mContext: Context, locale: String) {
             val mPreferences = PreferenceManager.getDefaultSharedPreferences(mContext)
-            mPreferences.edit().putString(LANGUAGE.KEY,locale).apply()
+            mPreferences.edit().putString(LANGUAGE.KEY, locale).apply()
         }
     }
 

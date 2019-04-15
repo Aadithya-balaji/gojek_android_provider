@@ -191,10 +191,10 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
         when(view.id){
             R.id.btn_change_status ->{
                 if(mHomeDataBinding.btnChangeStatus.text.toString().equals(activity!!.resources.getString(R.string.offline))){
-                  changeView(true)
+                  changeView(false)
                 }
                 else{
-                 changeView(false)
+                 changeView(true)
                 }
 
             }
@@ -212,15 +212,15 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
 
 
     fun changeView(isOnline:Boolean){
-        if(isOnline) {
-
-            mHomeDataBinding.llOffline.visibility = View.GONE
-            fragmentMap.view!!.visibility = View.VISIBLE
-            mHomeDataBinding.btnChangeStatus.setText(activity!!.resources.getString(R.string.offline))
-        } else{
+        if(isOnline==false) {
             mHomeDataBinding.llOffline.visibility=View.VISIBLE
             fragmentMap.view!!.visibility=View.GONE
             mHomeDataBinding.btnChangeStatus.setText(activity!!.resources.getString(R.string.online))
+
+        } else{
+            mHomeDataBinding.llOffline.visibility = View.GONE
+            fragmentMap.view!!.visibility = View.VISIBLE
+            mHomeDataBinding.btnChangeStatus.setText(activity!!.resources.getString(R.string.offline))
         }
     }
 

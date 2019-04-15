@@ -14,7 +14,6 @@ import com.xjek.provider.views.language.LanguageActivity
 import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
-import com.xjek.provider.views.payment.PaymentActivity
 import com.xjek.provider.views.privacypolicy.PrivacyActivity
 import com.xjek.provider.views.profile.ProfileActivity
 
@@ -33,7 +32,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         return R.layout.fragment_account
     }
 
-    override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
+    override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         viewModel = provideViewModel { AccountViewModel() }
         viewModel.navigator = this
         binding = mViewDataBinding as FragmentAccountBinding

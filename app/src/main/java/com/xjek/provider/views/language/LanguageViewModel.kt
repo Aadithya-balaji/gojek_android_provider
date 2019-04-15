@@ -8,8 +8,10 @@ class LanguageViewModel : BaseViewModel<LanguageNavigator>(){
 
     private lateinit var languages:List<Language>
     private lateinit var adapter: LanguageAdapter
+    private lateinit var currentLanguage:String
 
-    fun setLanguage(){
+    fun setLanguage(currentLanguage:String){
+        this.currentLanguage = currentLanguage
         languages = Constant.languages
         adapter = LanguageAdapter(this)
     }
@@ -19,6 +21,20 @@ class LanguageViewModel : BaseViewModel<LanguageNavigator>(){
     fun getLanguages():List<Language> = languages
 
 
-    fun getLanguage(position:Int):String = languages[position].name
+    fun getLanguage(position:Int):Language = languages[position]
+
+    fun getCurrentLanguage():String = currentLanguage
+
+    fun checkedChangeListener(checked:Boolean,position:Int){
+        val selectedLanguage = languages[position].key
+        if (checked && selectedLanguage != currentLanguage) {
+            currentLanguage = selectedLanguage
+            adapter.setNewLocale(selectedLanguage)
+        }
+    }
+
+    fun onSaveClicked(){
+        navigator.onLanguageChanged()
+    }
 
 }

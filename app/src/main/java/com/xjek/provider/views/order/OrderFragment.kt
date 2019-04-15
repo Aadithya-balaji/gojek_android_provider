@@ -20,7 +20,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
     override fun getLayoutId(): Int = R.layout.fragment_order
 
 
-    override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
+    override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mFragmentOrderBinding = mViewDataBinding as FragmentOrderBinding
         mOrderViewModel = OrderViewModel()
         mFragmentOrderBinding.ordermodel = mOrderViewModel

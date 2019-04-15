@@ -221,7 +221,7 @@
     <string name="expiry">Expiry</string>
 
     <!--LanguageModel Screen-->
-    <string name="title_language">Language</string>
+    <string name="title_language">لغة</string>
 
 
     <string-array name="document_list">
@@ -336,6 +336,7 @@
     <string name="add_document">Add Document</string>
     <string name="add_bank_detail">Add Bank Detail</string>
     <string name="select_language">Select Language</string>
+    <string name="language_change_success">Language changed</string>
 
     <!--- Home -->
     <string name="offline">Offline</string>

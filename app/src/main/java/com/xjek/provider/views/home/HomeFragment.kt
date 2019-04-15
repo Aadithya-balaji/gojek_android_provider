@@ -55,7 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
     }
 
 
-    override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
+    override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
          mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
         mHomeViewModel.navigator=this

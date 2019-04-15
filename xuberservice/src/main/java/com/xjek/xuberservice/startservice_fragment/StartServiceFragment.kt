@@ -35,5 +35,4 @@ class StartServiceFragment : BaseFragment<FragmentStartservicesLayoutBinding>(),
 
     }
 
-
 }

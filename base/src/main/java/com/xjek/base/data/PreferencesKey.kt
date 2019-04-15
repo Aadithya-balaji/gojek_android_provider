@@ -11,4 +11,5 @@ object PreferencesKey {
     const val CONTACT_NUMBER = "contact_number"
     const val CONTACT_EMAIL = "contact_email"
     const val ACCESS_TOKEN = "access_token"
+    const val  IS_ONLINE="is_online"
 }

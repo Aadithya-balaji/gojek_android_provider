@@ -10,7 +10,7 @@ import com.xjek.provider.views.setup_vehicle.SetupVehicleAdapter
 class SetupServicesViewModel : BaseViewModel<SetupServicesNavigator>() {
 
     private val appRepository = AppRepository.instance()
-    private val vehicleLiveData = MutableLiveData<Any>()
+    private val servicesLiveData = MutableLiveData<Any>()
 
     private val adapter: SetupServicesAdapter = SetupServicesAdapter(this)
 
@@ -35,7 +35,7 @@ class SetupServicesViewModel : BaseViewModel<SetupServicesNavigator>() {
 //        getCompositeDisposable().add(appRepository.getRides(this, token))
 //    }
 
-    fun getVehicleDataObservable() = vehicleLiveData
+    fun getServicesDataObservable() = servicesLiveData
 
     fun onItemClick(position: Int) {
         navigator.onMenuItemClicked(position)

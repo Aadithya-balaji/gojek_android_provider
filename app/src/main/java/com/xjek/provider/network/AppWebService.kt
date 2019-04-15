@@ -92,4 +92,11 @@ interface AppWebService {
             @Part rcBookMultipart: MultipartBody.Part,
             @Part insuranceMultipart: MultipartBody.Part
     ): Observable<AddVehicleResponseModel>
+
+    @FormUrlEncoded
+    @POST("provider/listdocuments")
+    fun getDocumentTypes(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<DocumentTypeResponseModel>
 }

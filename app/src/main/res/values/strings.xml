@@ -220,6 +220,12 @@
 
     <!--Manage Documents Screen-->
     <string name="title_manage_documents">Manage Documents</string>
+
+    <!--Document Upload Screen-->
+    <string name="front">(Front)</string>
+    <string name="upload_front_page">Upload Front Page</string>
+    <string name="back">(Back)</string>
+    <string name="upload_back_page">Upload Back Page</string>
     <string name="expiry">Expiry</string>
 
     <!--LanguageModel Screen-->

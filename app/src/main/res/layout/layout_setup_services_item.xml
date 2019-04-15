@@ -30,7 +30,6 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_content"
                 style="@style/Theme.TextView.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

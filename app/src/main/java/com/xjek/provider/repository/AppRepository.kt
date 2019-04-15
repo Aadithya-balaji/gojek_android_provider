@@ -9,6 +9,7 @@ import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
+import com.xjek.provider.views.manage_documents.ManageDocumentsViewModel
 import com.xjek.provider.views.manage_services.ManageServicesViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
@@ -280,6 +281,20 @@ class AppRepository : BaseRepository() {
 //                    viewModel.navigator.showError(getErrorMessage(it))
 //                })
 //    }
+
+    fun getDocumentTypes(viewModel: ManageDocumentsViewModel, token: String,
+                         params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getDocumentTypes(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getDocumentTypeObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
 
     companion object {
         private val TAG = AppRepository::class.java.simpleName

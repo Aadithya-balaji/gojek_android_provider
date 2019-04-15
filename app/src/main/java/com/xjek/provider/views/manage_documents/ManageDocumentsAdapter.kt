@@ -7,23 +7,26 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.BR
 import com.xjek.provider.R
-import com.xjek.provider.databinding.LayoutSetupVehicleItemBinding
+import com.xjek.provider.databinding.LayoutManageDocumentsItemBinding
 
 class ManageDocumentsAdapter(private val manageDocumentsViewModel: ManageDocumentsViewModel) :
         RecyclerView.Adapter<ManageDocumentsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<LayoutSetupVehicleItemBinding>(
+        val binding = DataBindingUtil.inflate<LayoutManageDocumentsItemBinding>(
                 layoutInflater,
-                R.layout.layout_setup_vehicle_item,
+                R.layout.layout_manage_documents_item,
                 parent,
                 false)
         return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return 4
+        return if (manageDocumentsViewModel.getDocumentTypeObservable().value == null)
+            0
+        else
+            manageDocumentsViewModel.getDocumentTypeObservable().value!!.responseData.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

@@ -106,4 +106,16 @@ object WebApiConstants {
         const val PICTURE = "picture"
         const val PICTURE1 = "picture1"
     }
+
+    object ListDocuments {
+        const val TYPE = "type"
+    }
+
+    object AddDocument {
+        const val DOCUMENT_NAME = "document_name"
+        const val DOCUMENT_ID = "document_id"
+        const val EXPIRES_AT = "expires_at"
+        const val DOCUMENT_FRONTSIDE = "file[0]"
+        const val DOCUMENT_BACKSIDE = "file[1]"
+    }
 }

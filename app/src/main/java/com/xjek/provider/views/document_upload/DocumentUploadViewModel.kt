@@ -14,8 +14,9 @@ class DocumentUploadViewModel : BaseViewModel<DocumentUploadNavigator>() {
         return documentData
     }
 
+    @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     fun setDocumentData(documentUploadDataModel: DocumentUploadDataModel) {
-        this.documentData = documentUploadDataModel
+        documentData = documentUploadDataModel
     }
 
 //    fun setExpiryDateObservable(expiryDate: MutableLiveData<String>) {

@@ -33,13 +33,12 @@ class InviteReferalsActivity : BaseActivity<ActivityInviteFriendBinding>(), Invi
 
     fun getApiResponse() {
         observeLiveData(inviteReferalsViewModel.profileResponse) {
-            if (inviteReferalsViewModel.profileResponse != null) {
-                if (inviteReferalsViewModel.profileResponse.value != null) {
-                    if (inviteReferalsViewModel.profileResponse.value!!.profileData!!.referalData != null) {
-                        inviteReferalsViewModel.mReferalObj.value = inviteReferalsViewModel.profileResponse.value!!.profileData!!.referalData
-                        mViewDataBinding.tvInviteHeader.setText(String.format(resources.getString(R.string.invite_referal_hint), inviteReferalsViewModel.mReferalObj.value!!.referalAmount, inviteReferalsViewModel.mReferalObj.value!!.referralCount))
-                        mShareLink=inviteReferalsViewModel.mReferalObj.value!!.referralCode
-                    }
+            if (inviteReferalsViewModel.profileResponse.value != null) {
+                if (inviteReferalsViewModel.profileResponse.value!!.profileData!!.referalData != null) {
+                    inviteReferalsViewModel.mReferalObj.value = inviteReferalsViewModel.profileResponse.value!!.profileData!!.referalData
+                    mViewDataBinding.tvInviteHeader.setText(String.format(resources.getString(R.string.invite_referal_hint), inviteReferalsViewModel.mReferalObj.value!!.referalAmount, inviteReferalsViewModel.mReferalObj.value!!.referralCount))
+                    mShareLink=inviteReferalsViewModel.mReferalObj.value!!.referralCode
+                    mViewDataBinding.tvReferalCode.text=inviteReferalsViewModel.mReferalObj.value!!.referralCode
                 }
             }
         }

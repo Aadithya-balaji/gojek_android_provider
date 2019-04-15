@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/offline"
+            android:text="@string/online"
             android:textColor="@color/white"
             android:fontFamily="@font/avenirltstd_medium"
             android:textStyle="bold"

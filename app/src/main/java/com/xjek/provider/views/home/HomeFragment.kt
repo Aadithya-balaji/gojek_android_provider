@@ -124,15 +124,15 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
     override fun changeStatus(view: View) {
         when(view.id){
             R.id.btn_change_status ->{
-                if(mHomeDataBinding.btnChangeStatus.text.toString().equals(activity!!.resources.getString(R.string.offline))){
+                if(mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)){
                     mHomeDataBinding.llOffline.visibility=View.VISIBLE
                     fragmentMap.view!!.visibility=View.GONE
-                    mHomeDataBinding.btnChangeStatus.setText(activity!!.resources.getString(R.string.online))
+                    mHomeDataBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.online)
                 }
                 else{
                     mHomeDataBinding.llOffline.visibility=View.GONE
                     fragmentMap.view!!.visibility=View.VISIBLE
-                    mHomeDataBinding.btnChangeStatus.setText(activity!!.resources.getString(R.string.offline))
+                    mHomeDataBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.offline)
 
                 }
 

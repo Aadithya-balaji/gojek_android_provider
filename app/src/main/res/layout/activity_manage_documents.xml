@@ -27,7 +27,10 @@
             android:adapter="@{manageDocumentsViewModel.getAdapter()}"
             android:clipToPadding="false"
             android:padding="@dimen/_8sdp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/layout_setup_vehicle_item" />
+
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

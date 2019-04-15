@@ -339,7 +339,7 @@
 
 
 
-    <string name="offline">Offline</string>
-    <string name="online">Online</string>
+    <string name="offline">Go Offline</string>
+    <string name="online">Go Online</string>
 
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,14 +10,42 @@
     </data>
 
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <fragment
-            android:id="@+id/app_map_fragment"
+            android:id="@+id/map_home"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <LinearLayout
+            android:id="@+id/ll_offline"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="@dimen/_100sdp"
+                app:tint="@color/grey"
+                app:srcCompat="@drawable/ic_offline"/>
+        </LinearLayout>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_change_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/offline"
+            android:textColor="@color/white"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:textStyle="bold"
+            android:onClick="@{(v) -> homemodel.changeStatus(v)}"
+            android:layout_marginBottom="@dimen/_15sdp"
+            app:cornerRadius="@dimen/_6sdp"/>
+    </RelativeLayout>
 </layout>

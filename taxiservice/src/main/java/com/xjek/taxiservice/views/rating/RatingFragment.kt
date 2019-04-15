@@ -39,6 +39,5 @@ class RatingFragment:BaseDialogFragment<FragmentRatingBinding>(), RatingNavigato
         val ratingViewModel= RatingViewModel()
         fragmentRatingBinding!!.ratingmodel=ratingViewModel
     }
-
 }
 

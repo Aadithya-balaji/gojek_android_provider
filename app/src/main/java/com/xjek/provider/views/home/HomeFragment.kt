@@ -12,6 +12,8 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.xjek.base.base.BaseFragment
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.readPreferences
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.provider.R
@@ -23,6 +25,7 @@ import permissions.dispatcher.NeedsPermission
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, OnMapReadyCallback
         , GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraIdleListener, LocationSource.OnLocationChangedListener {
+
 
 
     private lateinit var mHomeDataBinding: com.xjek.provider.databinding.FragmentHomePageBinding
@@ -37,10 +40,19 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
     override fun initView(mRootView: View, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
         val mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
+        mHomeViewModel.navigator=this
         mHomeDataBinding.homemodel = mHomeViewModel
+        mHomeDataBinding.btnChangeStatus.bringToFront()
         updateCurrentLocation()
         initalizeMap()
+       if(readPreferences<Int>(PreferencesKey.IS_ONLINE)==1){
+           mHomeDataBinding.llOffline.visibility=View.GONE
+           fragmentMap.view!!.visibility=View.VISIBLE
 
+       }else{
+           mHomeDataBinding.llOffline.visibility=View.VISIBLE
+           fragmentMap.view!!.visibility=View.GONE
+       }
     }
 
     @SuppressLint("MissingPermission")
@@ -53,8 +65,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
             }
 
             override fun onFailure(messsage: String?) {
-                currentLat = -33.8523341
-                currentLong = 151.2106085
+                currentLat = 13.0561789
+                currentLong = 80.247998
             }
 
         })
@@ -62,7 +74,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
 
     fun initalizeMap() {
 
-        fragmentMap = childFragmentManager.findFragmentById(R.id.app_map_fragment) as SupportMapFragment
+        fragmentMap = childFragmentManager.findFragmentById(R.id.map_home) as SupportMapFragment
         fragmentMap.getMapAsync(this@HomeFragment)
 
     }
@@ -107,6 +119,25 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
 
     override fun gotoXuberModule() {
 
+    }
+
+    override fun changeStatus(view: View) {
+        when(view.id){
+            R.id.btn_change_status ->{
+                if(mHomeDataBinding.btnChangeStatus.text.toString().equals(activity!!.resources.getString(R.string.offline))){
+                    mHomeDataBinding.llOffline.visibility=View.VISIBLE
+                    fragmentMap.view!!.visibility=View.GONE
+                    mHomeDataBinding.btnChangeStatus.setText(activity!!.resources.getString(R.string.online))
+                }
+                else{
+                    mHomeDataBinding.llOffline.visibility=View.GONE
+                    fragmentMap.view!!.visibility=View.VISIBLE
+                    mHomeDataBinding.btnChangeStatus.setText(activity!!.resources.getString(R.string.offline))
+
+                }
+
+            }
+        }
     }
 
 

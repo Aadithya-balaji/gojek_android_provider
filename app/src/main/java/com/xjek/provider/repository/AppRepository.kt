@@ -8,6 +8,7 @@ import com.xjek.provider.network.AppWebService
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
+import com.xjek.provider.views.home.HomeViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
@@ -261,6 +262,19 @@ class AppRepository : BaseRepository() {
                    },{
                        viewModel.navigator.showErrorMsg(getErrorMessage(it))
                    })
+    }
+
+    fun changeAvilability(viewModel:HomeViewModel,token:String,params: HashMap<String, String>):Disposable{
+            return BaseRepository().createApiClient(serviceId,AppWebService::class.java)
+                    .changeAvailability(token,params)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({
+
+                    },{
+
+                    })
+
     }
 
     companion object {

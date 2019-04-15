@@ -5,6 +5,7 @@ import com.xjek.user.data.repositary.remote.model.CountryListResponse
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.http.*
 import java.util.*
 import kotlin.collections.HashMap
@@ -85,5 +86,8 @@ interface AppWebService {
 
     @DELETE("provider/card/{card_id}")
     fun deleteCard(@Header("Authorization") token:String,@Path("card_id") cardid:String):Observable<AddCardModel>
+
+    @FormUrlEncoded
+    fun changeAvailability(@Header("Authorization") token:String,@FieldMap params:HashMap<String,String>):Observable<ResponseBody>
 
 }

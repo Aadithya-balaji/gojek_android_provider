@@ -106,4 +106,9 @@ object WebApiConstants {
         const val STRIP_TOKEN="stripe_token"
     }
 
+
+    object  Availability{
+        const val STATUS="status"
+    }
+
     }

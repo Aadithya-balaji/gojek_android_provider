@@ -7,8 +7,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
-import java.util.*
-import kotlin.collections.HashMap
 
 interface AppWebService {
 
@@ -63,31 +61,36 @@ interface AppWebService {
     fun verifyUser(@FieldMap params: HashMap<String, String>): Observable<VerifyUser>
 
     @GET("provider/profile")
-    fun getProfile(  @Header("Authorization") token: String): Observable<ProfileResponse>
+    fun getProfile(@Header("Authorization") token: String): Observable<ProfileResponse>
 
     @FormUrlEncoded
     @POST("provider/signup")
-    fun updateProfile(@FieldMap params:HashMap<String,RequestBody>,@Part fileName: MultipartBody.Part?):Observable<CommonResponse>
+    fun updateProfile(@FieldMap params: HashMap<String, RequestBody>, @Part fileName: MultipartBody.Part?): Observable<CommonResponse>
 
     @GET("provider/card")
-    fun getCardList( @Header("Authorization") token: String,@Query("limit") limit:String,@Query("offset") offset:String):Observable<CardListModel>
+    fun getCardList(@Header("Authorization") token: String, @Query("limit") limit: String, @Query("offset") offset: String): Observable<CardListModel>
 
     @FormUrlEncoded
     @POST("provider/add/money")
     fun addWalletMoney(@Header("Authorization") token: String,
-                       @FieldMap params: HashMap<String, String>):Observable<WalletResponse>
+                       @FieldMap params: HashMap<String, String>): Observable<WalletResponse>
 
     @GET("provider/wallet")
-    fun getWalletTransction(@Header("Authorization") token: String):Observable<WalletTransactionList>
+    fun getWalletTransction(@Header("Authorization") token: String): Observable<WalletTransactionList>
 
     @FormUrlEncoded
     @POST("provider/card")
-    fun addCard(@Header("Authorization") token: String,@FieldMap params:HashMap<String,String>):Observable<AddCardModel>
+    fun addCard(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<AddCardModel>
 
     @DELETE("provider/card/{card_id}")
-    fun deleteCard(@Header("Authorization") token:String,@Path("card_id") cardid:String):Observable<AddCardModel>
+    fun deleteCard(@Header("Authorization") token: String, @Path("card_id") cardid: String): Observable<AddCardModel>
 
     @FormUrlEncoded
-    fun changeAvailability(@Header("Authorization") token:String,@FieldMap params:HashMap<String,String>):Observable<ResponseBody>
+    @POST
+    fun changeAvailability(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<ResponseBody>
+
+    @GET("provider/check/request")
+    fun getRequest(@Header("Authorization") token: String,@Query("latitude") lat:String,@Query("longitude") lon:String): Observable<CheckRequetModel>
+
 
 }

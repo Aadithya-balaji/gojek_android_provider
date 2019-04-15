@@ -7,4 +7,5 @@ interface Home_Navigator {
     fun gotoFoodieModule()
     fun gotoXuberModule()
     fun changeStatus(view: View)
+    fun showErrormessage(error:String)
 }

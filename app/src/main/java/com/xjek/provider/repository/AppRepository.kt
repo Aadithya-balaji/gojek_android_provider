@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.repository.BaseRepository
+import com.xjek.provider.models.CheckRequetModel
 import com.xjek.provider.network.AppWebService
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
@@ -275,6 +276,18 @@ class AppRepository : BaseRepository() {
 
                     })
 
+    }
+
+    fun checkRequest(viewModel: HomeViewModel,token:String,lat:String,lon:String):Disposable{
+        return BaseRepository().createApiClient(serviceId,AppWebService::class.java)
+                .getRequest(token,lat,lon)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.checkRequestLiveData.postValue(it)
+                },{
+
+                })
     }
 
     companion object {

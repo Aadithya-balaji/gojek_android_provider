@@ -115,7 +115,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
                         bundle.putInt("ISBANCKDETAILNEED",isBankdetailNeed!!)
                         pendingListDialog.arguments=bundle
                         pendingListDialog.show(activity!!.supportFragmentManager,"pendinglist")
-                        pendingListDialog.isCancelable=false
+                        //pendingListDialog.isCancelable=false
+                        pendingListDialog.isCancelable=true
                     }
 
                 }
@@ -174,6 +175,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
     override fun onAttach(context: Context) {
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
+        dashBoardNavigator.hideRightIcon(true)
     }
 
 

@@ -65,6 +65,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                     it.responseData.appSetting.supportDetails.contactEmail)
 
             setLanguage(it)
+
+            Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
+
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
             else

@@ -12,6 +12,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.views.CustomDialog
 
@@ -22,6 +23,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     private val loadingLiveData = MutableLiveData<Boolean>()
     private var customDialog: CustomDialog? = null
 
+    val loadingObservable: MutableLiveData<*>
+        get() = loadingLiveData
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
@@ -44,6 +47,14 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView(mViewDataBinding.root, mViewDataBinding)
         customDialog = CustomDialog(mActivity!!,true)
+
+        observeLiveData(loadingLiveData) { isShowLoading ->
+            if (isShowLoading) {
+                showLoading()
+            } else {
+                hideLoading()
+            }
+        }
 
 
     }

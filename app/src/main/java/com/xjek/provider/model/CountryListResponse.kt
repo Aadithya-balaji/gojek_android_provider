@@ -1,4 +1,4 @@
-package com.xjek.user.data.repositary.remote.model
+package com.xjek.provider.model
 
 import java.io.Serializable
 

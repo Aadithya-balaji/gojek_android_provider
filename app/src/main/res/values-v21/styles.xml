@@ -80,7 +80,9 @@
     </style>
 
     <style name="Edittext_OutlinedTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
         <item name="boxStrokeColor">@color/et_stroke_color</item>
+        <item name="boxBackgroundColor">@android:color/white</item>
         <item name="boxBackgroundMode">outline</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/boxCornerRadius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/boxCornerRadius</item>
@@ -90,10 +92,11 @@
         <item name="hintTextAppearance">@style/AppTheme.TextFloatLabelAppearance</item>
         <item name="errorTextAppearance">@style/AppTheme.TextErrorAppearance</item>
         <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
-        <item name="hintTextColor">@color/grey</item>
         <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow
         </item>
-        <item name="android:strokeColor">@color/xuber_grey</item>
+        <item name="android:strokeColor">@color/grey
+        </item>
+
     </style>
 
     <style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">
@@ -107,12 +110,4 @@
         <item name="android:textColor">#ff0000</item>
         <item name="android:textSize">20sp</item>
     </style>
-
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
 </resources>

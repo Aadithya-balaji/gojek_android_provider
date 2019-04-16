@@ -1,10 +1,13 @@
 package com.xjek.provider.views.account
 
 import android.content.Context
+import android.content.DialogInterface
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseFragment
+import com.xjek.base.extensions.clearPreferences
 import com.xjek.base.extensions.provideViewModel
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
@@ -14,8 +17,10 @@ import com.xjek.provider.views.language.LanguageActivity
 import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
+import com.xjek.provider.views.on_board.OnBoardActivity
 import com.xjek.provider.views.privacypolicy.PrivacyActivity
 import com.xjek.provider.views.profile.ProfileActivity
+import kotlinx.android.synthetic.main.header_layout.*
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator {
 
@@ -40,8 +45,24 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         binding.accountViewModel = viewModel
 
         dashBoardNavigator.setTitle(resources.getString(R.string.title_my_account))
-        dashBoardNavigator.setRightIcon(R.drawable.more)
+        dashBoardNavigator.setRightIcon(R.drawable.ic_logout)
+        dashBoardNavigator.hideRightIcon(false)
         dashBoardNavigator.showLogo(false)
+
+        dashBoardNavigator.getInstance().iv_right.setOnClickListener {
+            ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
+                override fun onPositiveButtonClick(dialog: DialogInterface) {
+                    clearPreferences<String>()
+                    launchNewActivity(OnBoardActivity::class.java, false)
+                    activity!!.finishAffinity()
+                    dialog.dismiss()
+                }
+
+                override fun onNegativeButtonClick(dialog: DialogInterface) {
+                    dialog.dismiss()
+                }
+            })
+        }
 
         val accountMenuTitles = resources.getStringArray(R.array.title_account)
         val accountMenuIcons = resources.obtainTypedArray(R.array.icon_account)

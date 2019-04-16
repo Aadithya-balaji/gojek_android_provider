@@ -28,7 +28,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as com.xjek.provider.databinding.ActivityDashboardBinding
+        binding = mViewDataBinding as ActivityDashboardBinding
         viewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
         binding.dashboardModel = viewModel
 
@@ -71,7 +71,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun setTitle(title: String) {
-        tvTitle.setText(title)
+        tvTitle.text = title
     }
 
     override fun hideLeftArrow(isTrue: Boolean) {
@@ -85,7 +85,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     override fun setLeftTitle(strTitle: String) {
         tbrIvLogo.visibility = View.GONE
         tbrRlLeft.visibility = View.VISIBLE
-        tvTitle.setText(strTitle)
+        tvTitle.text = strTitle
     }
 
     override fun showLogo(isNeedShow: Boolean) {
@@ -100,12 +100,9 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun switchFragment(fragmentName: String, bundle: Bundle, isNeedAnimation: Boolean, isClearBackStack: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getInstance(): DashBoardActivity {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getInstance(): DashBoardActivity = this@DashBoardActivity
 
     override fun setRightIcon(rightIcon: Int) {
         ivRightIcon.setImageResource(rightIcon)

@@ -100,7 +100,7 @@
             android:numStars="5"
             android:stepSize="1" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_rating_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -120,8 +120,7 @@
                 android:inputType="text"
                 android:minHeight="@dimen/_80sdp"
                 android:textSize="@dimen/_13sdp" />
-        </androidx.cardview.widget.CardView>
-
+        </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:id="@+id/tv_rating_submit"

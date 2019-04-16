@@ -18,14 +18,15 @@
         android:layout_height="match_parent"
         android:background="@color/grey"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/_15sdp"
-        android:paddingRight="@dimen/_15sdp">
+     >
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_wallet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
             android:background="@drawable/bg_white"
             app:cardCornerRadius="@dimen/_5sdp">
 
@@ -57,9 +58,8 @@
                         android:id="@+id/tv_wallet_bal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
                         android:layout_toRightOf="@+id/tv_wallet_label"
-                        android:layout_marginLeft="@dimen/_7sdp"
+                        android:layout_marginLeft="@dimen/_2sdp"
                         android:gravity="center"
                         android:layout_centerVertical="true"
                         android:textColor="@color/xuber_black"
@@ -77,21 +77,22 @@
                     android:padding="@dimen/_5sdp"
                     android:weightSum="4">
 
-                    <EditText
+                    <com.xjek.base.utils.PrefixCustomEditText
                         android:id="@+id/edt_amount"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:layout_marginRight="@dimen/_5sdp"
-                        android:layout_weight="1.7"
+                        android:layout_weight="1.6"
                         android:background="@drawable/custom_roundcorner_button"
                         android:backgroundTint="@color/colorScreenBackground"
                         android:fontFamily="@font/avenirltstd_medium"
+                        android:singleLine="true"
                         android:hint="@string/enter_amount"
-                        android:inputType="number"
+                        android:inputType="numberDecimal"
                         android:text="@={walletmodel.walletAmount}"
                         android:padding="@dimen/_9sdp"
-                        android:textSize="@dimen/_11sdp" />
+                        android:textSize="@dimen/_10sdp" />
 
 
                     <com.google.android.material.button.MaterialButton
@@ -166,23 +167,27 @@
             android:id="@+id/rv_payment_modes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_11sdp">
         </androidx.recyclerview.widget.RecyclerView>
 
         <RelativeLayout
+            android:id="@+id/rl_payment_card"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_200sdp"
             android:orientation="vertical"
             android:paddingLeft="@dimen/_15sdp"
             android:paddingTop="@dimen/_15sdp"
             android:paddingRight="@dimen/_15sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:background="@color/white">
 
             <RelativeLayout
                 android:id="@+id/rl_remove"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_30sdp"
                 android:visibility="visible">
 
             <TextView
@@ -201,7 +206,7 @@
                 android:layout_toLeftOf="@+id/iv_remove"
                 android:visibility="gone"
                 android:background="@color/card_unselected"
-                android:elevation="@dimen/_5sdp"
+                android:elevation="@dimen/_2sdp"
                 android:onClick="@{() -> walletmodel.callCardDeleteCardAPi()}"
                 app:srcCompat="@drawable/ic_delete" />
 
@@ -214,7 +219,7 @@
                 android:background="@color/card_unselected"
                 android:onClick="@{() -> walletmodel.deselectCard()}"
                 android:visibility="gone"
-                android:elevation="@dimen/_5sdp"
+                android:elevation="@dimen/_2sdp"
                 app:srcCompat="@drawable/ic_cross" />
             </RelativeLayout>
 

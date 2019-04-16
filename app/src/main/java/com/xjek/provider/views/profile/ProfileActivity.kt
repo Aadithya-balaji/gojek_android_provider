@@ -5,18 +5,23 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.provider.Settings
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.MutableLiveData
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.utils.RunTimePermission
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityEditProfileBinding
+import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Enums
+import com.xjek.provider.views.privacypolicy.PrivacyActivity
 import com.xjek.xjek.ui.profile.ProfileNavigator
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import okhttp3.MediaType
@@ -33,7 +38,11 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     private var localPath: Uri? = null
     private var message: String? = ""
     private var filePart: MultipartBody.Part? = null
-    private var permissionUtils: com.xjek.basemodule.utils.PermissionUtils? = null
+    private var permissionUtils:RunTimePermission? = null
+    companion object {
+        var loadingProgress: MutableLiveData<Boolean>?=null
+
+    }
     override fun getLayoutId(): Int = R.layout.activity_edit_profile
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivityEditProfileBinding
@@ -41,22 +50,39 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { view ->
             finish()
         }
-        mProfileViewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
+        mProfileViewModel = ProfileViewModel()
         mProfileViewModel!!.getProfile()
+        mProfileViewModel!!.navigator=this
+        mViewDataBinding.profileviewmodel=mProfileViewModel
+        mViewDataBinding.setLifecycleOwner(this)
+        loadingProgress = loadingObservable as MutableLiveData<Boolean>
+        mProfileViewModel!!.showLoading= loadingProgress as MutableLiveData<Boolean>
         getApiResponse()
-        permissionUtils=getPermissionUtil()
+        permissionUtils=getPermissioUtil()
+        getProfile()
     }
 
-    private fun checkPermission() {
-        if (permissionUtils!!.hasPermission(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))) {
-            CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).start(this)
-        } else {
-            permissionUtils!!.requestPermissions(this@ProfileActivity, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), Enums.FILE_REQ_CODE)
+    fun getProfile(){
+        loadingProgress!!.value=true
+        mProfileViewModel!!.getProfile()
+    }
+
+    private fun checkAllPermission(permission: Array<String>) {
+        val blockedPermission = runtimePermission!!.checkHasPermission(this, permission)
+        if (blockedPermission != null && blockedPermission.size > 0) {
+            val isBlocked = runtimePermission!!.isPermissionBlocked(this, blockedPermission)
+            if (isBlocked) {
+                callPermissionSettings()
+            } else {
+                ActivityCompat.requestPermissions(this, permission, 150)
+            }
         }
+
     }
 
     fun getApiResponse() {
         observeLiveData(mProfileViewModel!!.getProfileRespose()) {
+            loadingProgress!!.value=false
             if (it.statusCode == "200") {
                 val profileData = it.profileData
                 if (profileData != null) {
@@ -69,6 +95,15 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
     }
 
+
+    fun callPermissionSettings(){
+        val intent = Intent()
+        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val uri = Uri.fromParts("package", this.applicationContext.packageName, null)
+        intent.data = uri
+        startActivityForResult(intent, 300)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -95,7 +130,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
     override fun pickImage() {
         if ((ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
-            checkPermission()
+            checkAllPermission(Constant.PERMISSIONS_FILE)
         } else {
             CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).start(this)
         }
@@ -107,7 +142,17 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        permissionUtils!!.setFirstTimePermission(true)
+        val permission = permissionUtils!!.onRequestPermissionsResult(permissions, grantResults)
+        if (permission != null && permission!!.size > 0) run {
+           callPermissionSettings()
+        }
+    }
+
     override fun showErrorMsg(error: String) {
+        loadingProgress!!.value=false
         ViewUtils.showToast(this, error.toString(), false)
     }
 

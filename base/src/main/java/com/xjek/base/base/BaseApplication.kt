@@ -11,13 +11,14 @@ import com.xjek.base.utils.LocaleUtils
 
 open class BaseApplication : Application() {
 
-    val baseComponent: BaseComponent = DaggerBaseComponent.builder()
-            .webServiceModule(WebServiceModule())
-            .build()
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(LocaleUtils.setLocale(base!!))
     }
+
+    var baseComponent = DaggerBaseComponent.builder()
+    .webServiceModule(WebServiceModule())
+    .build()
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
@@ -27,12 +28,13 @@ open class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         baseApplication = this
+        appController=baseComponent
         PreferencesHelper.setDefaultPreferences(this)
     }
 
     companion object {
         private lateinit var baseApplication: Context
-
+          var appController:BaseComponent?=null
         val getBaseApplicationContext: Context
             get() = baseApplication
     }

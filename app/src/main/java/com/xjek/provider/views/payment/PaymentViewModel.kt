@@ -15,4 +15,7 @@ public class PaymentViewModel : BaseViewModel<PaymentNavigator>() {
     fun addNewCard(){
         navigator.addCard()
     }
+
+
+
 }

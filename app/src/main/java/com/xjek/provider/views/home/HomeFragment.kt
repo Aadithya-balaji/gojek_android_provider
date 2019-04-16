@@ -24,17 +24,13 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.dashboard.DashBoardNavigator
-import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 import com.xjek.provider.views.pendinglist.PendingListDialog
-import com.xjek.provider.views.wallet.WalletFragment
-import com.xjek.taxiservice.views.rating.RatingFragment
 import permissions.dispatcher.NeedsPermission
 
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, OnMapReadyCallback
         , GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraIdleListener, LocationSource.OnLocationChangedListener {
-
 
 
     private lateinit var mHomeDataBinding: com.xjek.provider.databinding.FragmentHomePageBinding
@@ -44,78 +40,79 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
     private var mGoogleMap: GoogleMap? = null
     private var currentLat: Double = 13.0561789
     private var currentLong: Double = 80.247998
-    private  var isDocumentNeed:Int?=-1
-    private  var isServiceNeed:Int?=-1
-    private var isBankdetailNeed:Int?=-1
-    private  var isOnline:Boolean?=true
-    private  lateinit var  mHomeViewModel: HomeViewModel
+    private var isDocumentNeed: Int? = -1
+    private var isServiceNeed: Int? = -1
+    private var isBankdetailNeed: Int? = -1
+    private var isOnline: Boolean? = true
+    private lateinit var mHomeViewModel: HomeViewModel
+
     companion object {
-        var loadingProgress: MutableLiveData<Boolean>?=null
+        var loadingProgress: MutableLiveData<Boolean>? = null
 
     }
 
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
-         mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
-        mHomeViewModel.navigator=this
+        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
+        mHomeViewModel.navigator = this
         mHomeDataBinding.homemodel = mHomeViewModel
         mHomeDataBinding.btnChangeStatus.bringToFront()
         updateCurrentLocation()
         initalizeMap()
-        mHomeViewModel.latitude.value=currentLat
-        mHomeViewModel.longitude.value=currentLong
+        mHomeViewModel.latitude.value = currentLat
+        mHomeViewModel.longitude.value = currentLong
         callCheckRequestApi()
-        val  activity: DashBoardActivity = activity as DashBoardActivity
-        loadingProgress =activity.loadingObservable as MutableLiveData<Boolean>
-        mHomeViewModel.showLoading= loadingProgress as MutableLiveData<Boolean>
-       if(readPreferences<Int>(PreferencesKey.IS_ONLINE)==1){
-           mHomeDataBinding.llOffline.visibility=View.GONE
-           fragmentMap.view!!.visibility=View.VISIBLE
+        val activity: DashBoardActivity = activity as DashBoardActivity
+        loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
+        mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+        if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
+            mHomeDataBinding.llOffline.visibility = View.GONE
+            fragmentMap.view!!.visibility = View.VISIBLE
 
-       }else{
-           mHomeDataBinding.llOffline.visibility=View.VISIBLE
-           fragmentMap.view!!.visibility=View.GONE
-       }
+        } else {
+            mHomeDataBinding.llOffline.visibility = View.VISIBLE
+            fragmentMap.view!!.visibility = View.GONE
+        }
 
         getApiResponse()
 
     }
 
 
-    fun callCheckRequestApi(){
-           mHomeViewModel.getRequest()
+    fun callCheckRequestApi() {
+        mHomeViewModel.getRequest()
     }
 
-    fun getApiResponse(){
-        observeLiveData(mHomeViewModel.checkRequestLiveData){
-            if(mHomeViewModel.checkRequestLiveData.value!!.getStatusCode().equals("200")){
-                var providerDetailsModel=mHomeViewModel.checkRequestLiveData.value!!.getResponseData()!!.getProviderDetails()
-                if(providerDetailsModel!=null){
-                   isDocumentNeed=providerDetailsModel.getIsDocument()
-                    isServiceNeed=providerDetailsModel.getIsService()
-                    isBankdetailNeed=providerDetailsModel.getIsBankdetail()
-                    if(providerDetailsModel.getIsOnline()==1){
-                        isOnline=true
-                        writePreferences(PreferencesKey.IS_ONLINE,1)
+    fun getApiResponse() {
+        observeLiveData(mHomeViewModel.checkRequestLiveData) {
+            if (mHomeViewModel.checkRequestLiveData.value!!.getStatusCode().equals("200")) {
+                var providerDetailsModel = mHomeViewModel.checkRequestLiveData.value!!.getResponseData()!!.getProviderDetails()
+                if (providerDetailsModel != null) {
+                    isDocumentNeed = providerDetailsModel.getIsDocument()
+                    isServiceNeed = providerDetailsModel.getIsService()
+                    isBankdetailNeed = providerDetailsModel.getIsBankdetail()
+                    if (providerDetailsModel.getIsOnline() == 1) {
+                        isOnline = true
+                        writePreferences(PreferencesKey.IS_ONLINE, 1)
                         changeView(true)
 
-                    }else{
-                         isOnline=false
+                    } else {
+                        isOnline = false
                         writePreferences(PreferencesKey.IS_ONLINE, 0)
                         changeView(false)
 
                     }
 
-                    if(isDocumentNeed==0 || isServiceNeed==0 || isBankdetailNeed==0){
-                        val pendingListDialog= PendingListDialog()
-                        val bundle=Bundle()
-                        bundle.putInt("ISDOCUMENTNEED",isDocumentNeed!!)
-                        bundle.putInt("ISSERVICENEED",isServiceNeed!!)
-                        bundle.putInt("ISBANCKDETAILNEED",isBankdetailNeed!!)
-                        pendingListDialog.arguments=bundle
-                        pendingListDialog.show(activity!!.supportFragmentManager,"pendinglist")
-                        pendingListDialog.isCancelable=false
+                    if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankdetailNeed == 0) {
+                        val pendingListDialog = PendingListDialog()
+                        val bundle = Bundle()
+                        bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
+                        bundle.putInt("ISSERVICENEED", isServiceNeed!!)
+                        bundle.putInt("ISBANCKDETAILNEED", isBankdetailNeed!!)
+                        pendingListDialog.arguments = bundle
+                        pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
+                        pendingListDialog.isCancelable = false
                     }
 
                 }
@@ -136,7 +133,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
                 currentLat = 13.0561789
                 currentLong = 80.247998
             }
-
         })
     }
 
@@ -188,13 +184,12 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
     }
 
     override fun changeStatus(view: View) {
-        when(view.id){
-            R.id.btn_change_status ->{
-                if(mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)){
-                  changeView(false)
-                }
-                else{
-                 changeView(true)
+        when (view.id) {
+            R.id.btn_change_status -> {
+                if (mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) {
+                    changeView(false)
+                } else {
+                    changeView(true)
                 }
 
             }
@@ -202,23 +197,23 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
     }
 
     override fun showErrormessage(error: String) {
-        loadingProgress!!.value=false
+        loadingProgress!!.value = false
     }
 
-    fun showPendingListDialog(){
-        val pendingListDialog= PendingListDialog()
-        pendingListDialog.show(activity!!.supportFragmentManager,"pendinglist")
-        pendingListDialog.isCancelable=false
+    fun showPendingListDialog() {
+        val pendingListDialog = PendingListDialog()
+        pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
+        pendingListDialog.isCancelable = false
     }
 
 
-    private fun changeView(isOnline:Boolean){
-        if(!isOnline) {
-            mHomeDataBinding.llOffline.visibility=View.VISIBLE
-            fragmentMap.view!!.visibility=View.GONE
+    private fun changeView(isOnline: Boolean) {
+        if (!isOnline) {
+            mHomeDataBinding.llOffline.visibility = View.VISIBLE
+            fragmentMap.view!!.visibility = View.GONE
             mHomeDataBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.online)
 
-        } else{
+        } else {
             mHomeDataBinding.llOffline.visibility = View.GONE
             fragmentMap.view!!.visibility = View.VISIBLE
             mHomeDataBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.offline)

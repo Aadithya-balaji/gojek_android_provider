@@ -48,7 +48,7 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
             showLoading?.let { it.value=true }
             val params=HashMap<String,String>()
             params.put(WebApiConstants.AddWallet.AMOUNT,walletAmount.value.toString())
-            params.put(WebApiConstants.AddWallet.CARD_ID, Constant.CARD_ID)
+            params.put(WebApiConstants.AddWallet.CARD_ID, selectedStripeID.value.toString())
             params.put(WebApiConstants.AddWallet.USER_TYPE,Constant.TYPE_PROVIDER)
             params.put(WebApiConstants.AddWallet.PAYMENT_MODE,"card")
             getCompositeDisposable().add(appRepository.addWalletAmount(this,params,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
@@ -64,7 +64,7 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
 
     fun callCardDeleteCardAPi(){
         showLoading?.let { it.value=true }
-        if(!selectedStripeID.value.isNullOrEmpty())
+        if(!selectedCardID.value.isNullOrEmpty())
         getCompositeDisposable().add(appRepository.deleteCDard(this,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN),selectedCardID.value!!))
         else
           navigator.showErrorMsg(resources!!.getString(com.xjek.provider.R.string.empty_card))
@@ -79,6 +79,10 @@ class WalletViewModel(res:Resources) : BaseViewModel<WalletNavigator>() {
 
     fun deselectCard(){
         navigator.deselectCard()
+    }
+
+    fun changePaymentType(type:Int){
+        navigator.paymentType(type)
     }
 
 }

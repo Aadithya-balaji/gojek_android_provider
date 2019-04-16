@@ -89,7 +89,7 @@
                             android:layout_marginStart="@dimen/_8sdp"
                             app:srcCompat="@drawable/ic_calendar" />
                     </RelativeLayout>
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </ScrollView>
     </androidx.appcompat.widget.LinearLayoutCompat>

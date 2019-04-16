@@ -10,4 +10,5 @@ interface  WalletNavigator{
     fun cardPicked(stripeID:String,cardID:String,position:Int)
     fun removeCard()
     fun  deselectCard()
+    fun paymentType(type:Int)
 }

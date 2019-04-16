@@ -15,6 +15,7 @@
     android:textSize="@dimen/_11sdp"
     android:textColor="@color/black"
     android:gravity="center"
+    android:layout_marginLeft="@dimen/_15sdp"
     android:onClick="@{() -> paymentmodel.onListClickListner()}"
     android:layout_height="@dimen/_30sdp">
 </TextView>

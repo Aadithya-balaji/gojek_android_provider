@@ -13,7 +13,12 @@ import com.xjek.provider.databinding.ActivitySplashBinding
 import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.dashboard.DashBoardActivity
+import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
+import com.xjek.provider.views.profile.ProfileActivity
+import com.google.gson.Gson
+
+
 
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
@@ -65,6 +70,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                     it.responseData.appSetting.supportDetails.contactEmail)
 
             setLanguage(it)
+            setPayment(it)
 
             Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
 
@@ -74,6 +80,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                 launchNewActivity(DashBoardActivity::class.java, true)
         }
     }
+
+    fun setPayment(it:ConfigResponseModel){
+        val paymentlist=it.responseData.appSetting.payments
+        val gson = Gson()
+        val paymentString=gson.toJson(paymentlist)
+        writePreferences(PreferencesKey.PAYMENT_LIST,paymentString)
+    }
+
 
     private fun setLanguage(it: ConfigResponseModel) {
         val languages = it.responseData.appSetting.languages

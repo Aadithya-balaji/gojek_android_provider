@@ -69,10 +69,13 @@ import java.io.Serializable
 import java.net.URL
 import java.util.*
 
-
 @RuntimePermissions
-class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.SignupNavigator, CompoundButton.OnCheckedChangeListener, View.OnClickListener, View.OnFocusChangeListener, TextWatcher {
-
+class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
+        SignupViewModel.SignupNavigator,
+        CompoundButton.OnCheckedChangeListener,
+        View.OnClickListener,
+        View.OnFocusChangeListener,
+        TextWatcher {
 
     private lateinit var tlCountryCode: TextInputLayout
     private lateinit var mViewDataBinding: ActivityRegisterBinding
@@ -94,7 +97,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     private lateinit var rbMale: MaterialRadioButton
     private lateinit var rbFemale: MaterialRadioButton
     private var isConditionChecked: Boolean? = false
-
 
     private var strPhoneCode: String? = ""
     private var strPhoneNumber: String? = ""
@@ -136,6 +138,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         callbackManager = CallbackManager.Factory.create()
         edtCountry.isFocusableInTouchMode = false
         edtCity.isFocusableInTouchMode = false
+
         initListener()
         initFacebooik()
         initGoogle()

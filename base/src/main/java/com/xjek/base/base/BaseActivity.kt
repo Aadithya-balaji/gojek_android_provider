@@ -19,7 +19,7 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.views.CustomDialog
-import com.xjek.basemodule.utils.PermissionUtils
+import com.xjek.base.utils.PermissionUtils
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 

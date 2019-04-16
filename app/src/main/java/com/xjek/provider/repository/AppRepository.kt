@@ -286,7 +286,7 @@ class AppRepository : BaseRepository() {
                 .subscribe({
                     viewModel.checkRequestLiveData.postValue(it)
                 },{
-
+                    viewModel.navigator.showErrormessage(getErrorMessage(it))
                 })
     }
 

@@ -5,8 +5,8 @@
 
     <!--Sign Up Screen-->
     <string name="social_sign_up">Social Signup</string>
-    <string name="hint_first_name">FirstName</string>
-    <string name="hint_last_name">LastName</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
     <string name="hint_code">code</string>
     <string name="hint_phone_number">Phone Number</string>
     <string name="label_gender">Gender</string>
@@ -93,8 +93,8 @@
     <string name="state_hint">State</string>
     <string name="already_have_an_account">Already have an account</string>
     <string name="confirm_pwd_hint">Confirm Password</string>
-    <string name="hint_firstname">FirstName</string>
-    <string name="hint_lastname">LastName</string>
+    <string name="hint_firstname">First Name</string>
+    <string name="hint_lastname">Last Name</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="search_city">Search city</string>
@@ -298,8 +298,8 @@
     <string name="empty_state">Please enter the state</string>
     <string name="empty_city">Please enter the City</string>
     <string name="password_not_match">Password and Confirm password do not match</string>
-    <string name="empty_firstname">Please Enter FirstName</string>
-    <string name="empty_lastname">Please Enter LastName</string>
+    <string name="empty_firstname">Please Enter First Name</string>
+    <string name="empty_lastname">Please Enter Last Name</string>
     <string name="fb_session_expired">Facebook session expired. Kindly open Facebook applicationâ€¦</string>
     <string name="unchecked_terms">Please accept the terms and condition</string>
     <string name="empty_gender_type">Please Choose the gender type</string>

@@ -1,4 +1,4 @@
-package com.xjek.basemodule.utils
+package com.xjek.base.utils
 
 import android.app.Activity
 import android.content.Intent

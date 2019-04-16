@@ -3,6 +3,8 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
 
+    <string name="location_updated">Location Updated: %1$s</string>
+
     <!--Sign Up Screen-->
     <string name="social_sign_up">Social Signup</string>
     <string name="hint_first_name">FirstName</string>
@@ -336,7 +338,6 @@
     <string name="add_bank_detail">Add Bank Detail</string>
     <string name="select_language">Select Language</string>
     <string name="language_change_success">Language changed</string>
-
 
 
     <string name="offline">Go Offline</string>

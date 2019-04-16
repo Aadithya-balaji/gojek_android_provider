@@ -1,10 +1,10 @@
 package com.xjek.provider.utils
 
-
 import androidx.annotation.IntDef
 import androidx.annotation.StringDef
 
 class Enums {
+
     companion object {
 
         const val DOC_TAXI: Int = 0
@@ -26,9 +26,10 @@ class Enums {
         const val GOOGLE_REQ_CODE: Int = 123
         const val RC_COUNTRY_CODE_PICKER = 100
         const val RC_GOOGLE_SIGN_IN = 101
-        const val COUNTRYLIST_REQUEST_CODE=124
-        const val  CITYLIST_REQUEST_CODE=125
-        const val FILE_REQ_CODE=126
+        const val COUNTRYLIST_REQUEST_CODE = 124
+        const val CITYLIST_REQUEST_CODE = 125
+        const val FILE_REQ_CODE = 126
+        const val LOCATION_REQUEST_CODE = 126
 
     }
 
@@ -40,17 +41,15 @@ class Enums {
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class DocumentType
 
-
     @StringDef(DEVICE_TYPE)
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class CommonData
 
-
-    @IntDef(FB_ACCOUNT_KIT_CODE, GOOGLE_REQ_CODE, RC_COUNTRY_CODE_PICKER, RC_GOOGLE_SIGN_IN, COUNTRYLIST_REQUEST_CODE, CITYLIST_REQUEST_CODE,FILE_REQ_CODE)
+    @IntDef(FB_ACCOUNT_KIT_CODE, GOOGLE_REQ_CODE, RC_COUNTRY_CODE_PICKER, RC_GOOGLE_SIGN_IN, COUNTRYLIST_REQUEST_CODE, CITYLIST_REQUEST_CODE, FILE_REQ_CODE)
     @Retention(AnnotationRetention.SOURCE)
     annotation class OnActivityResultCode
 
-    enum class LOGINBY {
+    enum class LOGIN_BY {
         MANUAL, FACEBOOK, GOOGLE
     }
 

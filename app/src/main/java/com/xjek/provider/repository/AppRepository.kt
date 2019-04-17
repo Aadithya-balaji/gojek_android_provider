@@ -306,7 +306,6 @@ class AppRepository : BaseRepository() {
                 }, {
 
                 })
-
     }
 
     fun checkRequest(viewModel: HomeViewModel, token: String, lat: String, lon: String): Disposable {
@@ -316,6 +315,30 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.checkRequestLiveData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                })
+    }
+
+    fun acceptIncomingRequest(viewModel: HomeViewModel, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .acceptIncomingRequest(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.acceptRequestLiveData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                })
+    }
+
+    fun rejectIncomingRequest(viewModel: HomeViewModel, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .rejectIncomingRequest(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.rejectRequestLiveData.postValue(it)
                 }, {
                     viewModel.navigator.showErrormessage(getErrorMessage(it))
                 })

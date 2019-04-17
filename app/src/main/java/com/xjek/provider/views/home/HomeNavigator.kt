@@ -2,7 +2,7 @@ package com.xjek.provider.views.home
 
 import android.view.View
 
-interface Home_Navigator {
+interface HomeNavigator {
     fun gotoTaxiModule()
     fun gotoFoodieModule()
     fun gotoXuberModule()

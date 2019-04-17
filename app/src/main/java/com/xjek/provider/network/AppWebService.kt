@@ -131,13 +131,13 @@ interface AppWebService {
     fun acceptIncomingRequest(
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
-    ): Observable<AddCardModel>
+    ): Observable<AcceptRequestModel>
 
     @FormUrlEncoded
-    @POST("provider/accept/request")
+    @POST("provider/cancel/request")
     fun rejectIncomingRequest(
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
-    ): Observable<AddCardModel>
+    ): Observable<RejectRequestModel>
 
 }

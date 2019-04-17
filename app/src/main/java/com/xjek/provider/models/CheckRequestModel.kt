@@ -1,12 +1,14 @@
 package com.xjek.provider.models
 
+import java.io.Serializable
+
 data class CheckRequestModel(
         var error: List<Any?>?,
         var message: String?,
         var responseData: ResponseData?,
         var statusCode: String?,
         var title: String?
-)
+) : Serializable
 
 data class ResponseData(
         var account_status: String?,
@@ -19,7 +21,7 @@ data class ResponseData(
         var requests: List<Request?>?,
         var ride_otp: String?,
         var service_status: String?
-)
+) : Serializable
 
 data class Request(
         var admin_service_id: Int?,
@@ -35,7 +37,7 @@ data class Request(
         var time_left_to_respond: Int?,
         var user: User?,
         var user_id: Int?
-)
+) : Serializable
 
 data class User(
         var city_id: Int?,
@@ -60,7 +62,7 @@ data class User(
         var status: Int?,
         var user_type: String?,
         var wallet_balance: Int?
-)
+) : Serializable
 
 data class RequestX(
         var assigned_at: String?,
@@ -96,7 +98,7 @@ data class RequestX(
         var track_longitude: String?,
         var unit: String?,
         var user_id: Int?
-)
+) : Serializable
 
 data class Service(
         var admin_service_name: String?,
@@ -104,7 +106,7 @@ data class Service(
         var display_name: Any?,
         var id: Int?,
         var status: Int?
-)
+) : Serializable
 
 data class ProviderDetails(
         var activation_status: Int?,
@@ -147,7 +149,7 @@ data class ProviderDetails(
         var stripe_cust_id: Any?,
         var wallet_balance: Int?,
         var zone_id: Any?
-)
+) : Serializable
 
 data class ServiceX(
         var admin_service_id: Int?,
@@ -163,4 +165,4 @@ data class ServiceX(
         var service_id: Any?,
         var status: String?,
         var sub_category_id: Any?
-)
+) : Serializable

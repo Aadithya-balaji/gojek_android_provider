@@ -16,6 +16,9 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.xjek.base.R
 import es.dmoral.toasty.Toasty
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
 
 object ViewUtils {
 
@@ -123,4 +126,43 @@ object ViewUtils {
         fun onPositiveButtonClick(dialog: DialogInterface)
         fun onNegativeButtonClick(dialog: DialogInterface)
     }
+
+    fun getTimeDifference(date: String): String {
+        val simpleDateFormat = SimpleDateFormat("yyyy-mm-dd hh:mm:ss")
+
+        try {
+            val date1 = simpleDateFormat.parse(simpleDateFormat.format(Calendar.getInstance().time))
+            val date2 = simpleDateFormat.parse(date)
+
+            var different = date2.time - date1.time
+            val secondsInMilli: Long = 1000
+            val minutesInMilli = secondsInMilli * 60
+            val hoursInMilli = minutesInMilli * 60
+            val daysInMilli = hoursInMilli * 24
+
+
+            val elapsedDays = different / daysInMilli
+            different = different % daysInMilli
+
+            val elapsedHours = different / hoursInMilli
+            different = different % hoursInMilli
+
+            val elapsedMinutes = different / minutesInMilli
+            different = different % minutesInMilli
+
+            val elapsedSeconds = different / secondsInMilli
+
+            return if (elapsedHours == 0L) {
+                if (elapsedMinutes > 1) "$elapsedMinutes mins" else elapsedMinutes.toString() + "min"
+            } else
+                if (elapsedHours > 1) "$elapsedHours hrs" else elapsedMinutes.toString() + "hr"
+
+
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        return "0"
+    }
+
 }

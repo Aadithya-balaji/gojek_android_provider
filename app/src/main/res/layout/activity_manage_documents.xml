@@ -31,6 +31,32 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/layout_setup_vehicle_item" />
 
+        <LinearLayout
+            android:id="@+id/llEmptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar_layout"
+            android:gravity="center"
+            android:visibility="visible"
+            android:orientation="vertical"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/no_documents"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
+                android:text="@string/no_documents_found"/>
+
+        </LinearLayout>
+
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

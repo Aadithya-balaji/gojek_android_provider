@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <import type="android.view.View"/>
+
+
         <variable
-            name="notificationmodel"
+            name="notificationviewmodel"
             type="com.xjek.provider.views.notification.NotificationViewModel" />
 
         <variable
             name="notificationAdapter"
             type="com.xjek.provider.views.adapters.NotificationAdapter" />
+
     </data>
 
     <LinearLayout
@@ -19,15 +22,48 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_notification"
+        <LinearLayout
+            android:id="@+id/llNotification"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:adapter="@{notificationAdapter}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="match_parent"
+            android:background="@color/app_background_color"
+            android:orientation="vertical"
+            android:visibility="@{notificationviewmodel.showEmptyView ? View.GONE:View.VISIBLE}">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notification_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llEmptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{notificationviewmodel.showEmptyView ? View.VISIBLE:View.GONE}">
+
+            <ImageView
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/no_notification" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/no_notification_found"
+                android:textSize="@dimen/_12sdp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </layout>

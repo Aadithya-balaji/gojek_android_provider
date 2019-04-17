@@ -37,20 +37,18 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
         getApiResponse()
     }
 
-    fun getApiResponse() {
+    private fun getApiResponse() {
         observeLiveData(transcationViewModel.transcationLiveResponse) {
-            var walletTransactionList = transcationViewModel.transcationLiveResponse
+            val walletTransactionList = transcationViewModel.transcationLiveResponse
             if (walletTransactionList.value == null) {
                 Log.e("wallet", "------null")
             } else {
                 Log.e("wallet", "------non null")
 
             }
-            if (transcationViewModel.transcationLiveResponse != null) {
-                var transcationlist : List<TransactionDatum> = transcationViewModel.transcationLiveResponse.value!!.getResponseData()!!.getData()!!
-                transactionListAdapter = TransactionListAdapter(activity!!, transcationlist)
-                fragmentTransactionBinding.transactionListRv.adapter = transactionListAdapter
-            }
+            val transcationlist : List<TransactionDatum> = transcationViewModel.transcationLiveResponse.value!!.getResponseData()!!.getData()!!
+            transactionListAdapter = TransactionListAdapter(activity!!, transcationlist)
+            fragmentTransactionBinding.transactionListRv.adapter = transactionListAdapter
         }
         }
     }

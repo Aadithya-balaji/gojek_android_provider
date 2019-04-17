@@ -27,7 +27,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     private lateinit var viewModel: SplashViewModel
 
     public override fun getLayoutId(): Int {
-        return com.xjek.provider.R.layout.activity_splash
+        return R.layout.activity_splash
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
@@ -71,6 +71,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
             setLanguage(it)
             setPayment(it)
+
+            Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
+
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
             else

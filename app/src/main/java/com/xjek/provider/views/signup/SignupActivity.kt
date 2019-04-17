@@ -43,6 +43,8 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityRegisterBinding
+import com.xjek.provider.model.City
+import com.xjek.provider.model.CountryResponseData
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.utils.CommanMethods
 import com.xjek.provider.utils.Enums
@@ -56,8 +58,6 @@ import com.xjek.provider.views.countrypicker.CountryCodeActivity
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.document.DocumentActivity
 import com.xjek.provider.views.sign_in.SignInActivity
-import com.xjek.user.data.repositary.remote.model.City
-import com.xjek.user.data.repositary.remote.model.CountryResponseData
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -69,10 +69,13 @@ import java.io.Serializable
 import java.net.URL
 import java.util.*
 
-
 @RuntimePermissions
-class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.SignupNavigator, CompoundButton.OnCheckedChangeListener, View.OnClickListener, View.OnFocusChangeListener, TextWatcher {
-
+class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
+        SignupViewModel.SignupNavigator,
+        CompoundButton.OnCheckedChangeListener,
+        View.OnClickListener,
+        View.OnFocusChangeListener,
+        TextWatcher {
 
     private lateinit var tlCountryCode: TextInputLayout
     private lateinit var mViewDataBinding: ActivityRegisterBinding
@@ -94,7 +97,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
     private lateinit var rbMale: MaterialRadioButton
     private lateinit var rbFemale: MaterialRadioButton
     private var isConditionChecked: Boolean? = false
-
 
     private var strPhoneCode: String? = ""
     private var strPhoneNumber: String? = ""
@@ -136,6 +138,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(), SignupViewModel.
         callbackManager = CallbackManager.Factory.create()
         edtCountry.isFocusableInTouchMode = false
         edtCity.isFocusableInTouchMode = false
+
         initListener()
         initFacebooik()
         initGoogle()

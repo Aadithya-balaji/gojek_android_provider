@@ -9,22 +9,37 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+
     <application
         android:name=".GoJekApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/app_icon_512"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
-        tools:replace="android:appComponentFactory">
-        <activity android:name=".views.language.LanguageActivity" />
-        <activity android:name=".views.document_upload.DocumentUploadActivity" />
-        <activity android:name=".views.setup_vehicle.SetupVehicleActivity" />
-        <activity android:name=".views.manage_documents.ManageDocumentsActivity" />
-        <activity android:name=".views.manage_services.ManageServicesActivity" />
+        tools:replace="android:appComponentFactory"
+        tools:targetApi="p">
+
+
+        <activity android:name=".views.language.LanguageActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".views.document_upload.DocumentUploadActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".views.setup_vehicle.SetupVehicleActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".views.manage_documents.ManageDocumentsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".views.manage_services.ManageServicesActivity"
+            android:screenOrientation="portrait"/>
         <!--
             Added the following meta-data element, an activity for Facebook, and an activity and
             intent filter for Chrome Custom Tabs inside your application element.
@@ -168,9 +183,14 @@
         <activity
             android:name="com.cooltechworks.creditcarddesign.CardEditActivity"
             android:screenOrientation="portrait" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />
+        <service
+            android:name=".utils.location_service.LocationUpdatesService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
+
 </manifest>

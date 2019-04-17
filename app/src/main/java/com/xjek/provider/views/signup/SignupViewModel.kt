@@ -2,11 +2,11 @@ package com.xjek.provider.views.signup
 
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.models.SignupResponseModel
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Enums
-import com.xjek.user.data.repositary.remote.model.CountryListResponse
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

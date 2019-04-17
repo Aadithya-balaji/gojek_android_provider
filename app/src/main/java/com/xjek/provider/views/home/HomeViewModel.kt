@@ -8,33 +8,33 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.CheckRequetModel
 import com.xjek.provider.repository.AppRepository
 
-class HomeViewModel :BaseViewModel<Home_Navigator>(){
+class HomeViewModel : BaseViewModel<Home_Navigator>() {
 
-    val appRepository=AppRepository.instance()
-    var checkRequestLiveData=MutableLiveData<CheckRequetModel>()
-    var showLoading=MutableLiveData<Boolean>()
-    var latitude=MutableLiveData<Double>()
-    var longitude=MutableLiveData<Double>()
+    val appRepository = AppRepository.instance()
+    var checkRequestLiveData = MutableLiveData<CheckRequetModel>()
+    var showLoading = MutableLiveData<Boolean>()
+    var latitude = MutableLiveData<Double>()
+    var longitude = MutableLiveData<Double>()
 
-    fun opentTranxitModule(){
+    fun opentTranxitModule() {
         navigator.gotoTaxiModule()
     }
 
-    fun openFoodieModule(){
+    fun openFoodieModule() {
         navigator.gotoFoodieModule()
     }
 
-    fun openXuberMoudle(){
+    fun openXuberMoudle() {
         navigator.gotoXuberModule()
     }
 
-    fun changeStatus(view: View){
+    fun changeStatus(view: View) {
         navigator.changeStatus(view)
     }
 
-    fun getRequest(){
-        showLoading.value=true
-        getCompositeDisposable().add(appRepository.checkRequest(this,"Bearer "+ readPreferences<String>(PreferencesKey.ACCESS_TOKEN),latitude.value.toString(),longitude.value.toString()))
+    fun getRequest() {
+        getCompositeDisposable().add(appRepository.checkRequest(this,
+                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), latitude.value.toString(), longitude.value.toString()))
     }
 
 }

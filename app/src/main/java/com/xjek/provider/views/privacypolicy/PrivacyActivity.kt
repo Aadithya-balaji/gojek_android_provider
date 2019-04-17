@@ -38,7 +38,7 @@ class PrivacyActivity:BaseActivity<ActivityPrivacyPolicyBinding>(),PrivactyNavig
         privacyViewModel= PrivacyViewModel()
         privacyViewModel.navigator=this
         privacyBinding.privacymodel=privacyViewModel
-        privacyBinding.toolbarLayout.tvToolbarTitle.setText(resources.getString(com.xjek.provider.R.string.header_label_privacy))
+        privacyBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(R.string.header_label_privacy)
         privacyBinding.toolbarLayout.ivToolbarBack.setOnClickListener{
             finish()
         }

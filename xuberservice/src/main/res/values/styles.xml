@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     //custom ratingbar
 
     <style name="customRatingBar" parent="android:style/Widget.Material.RatingBar.Small">
-        <item name="android:progressTint">@color/duskYellow</item>
+        <item name="android:progressTint" tools:targetApi="lollipop">@color/duskYellow</item>
 
     </style>
 

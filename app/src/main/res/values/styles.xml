@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="toolbarStyle">@style/CustomToolBarStyle</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowFullscreen">true</item>
+
     </style>
 
-    <style name="Theme.ImageCropper" parent="Theme.MaterialComponents.Light">
+    <style name="CustomToolBarStyle" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="background">@android:color/white</item>
+        <item name="titleTextColor">@android:color/black</item>
+        <item name="android:navigationIcon">@drawable/ic_left_arrow</item>
+
+    </style>
+
+    <style name="Theme.ImageCropper" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
@@ -94,4 +106,12 @@
         <item name="android:textColor">#ff0000</item>
         <item name="android:textSize">20sp</item>
     </style>
+
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
 </resources>

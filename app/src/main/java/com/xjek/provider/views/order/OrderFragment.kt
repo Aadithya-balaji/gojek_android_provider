@@ -27,6 +27,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.order_container, PastOrderFragment())?.commit()
         dashBoardNavigator.setTitle(resources.getString(R.string.title_history))
         dashBoardNavigator.showLogo(false)
+        dashBoardNavigator.hideRightIcon(true)
 
     }
 

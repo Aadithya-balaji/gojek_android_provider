@@ -18,9 +18,9 @@ import com.xjek.base.R
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.NetworkUtils
+import com.xjek.base.utils.PermissionUtils
 import com.xjek.base.utils.RunTimePermission
 import com.xjek.base.views.CustomDialog
-import com.xjek.basemodule.utils.PermissionUtils
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
@@ -28,12 +28,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private lateinit var mViewDataBinding: T
     private lateinit var customDialog: CustomDialog
     private lateinit var mParentView: View
-    private  lateinit var  context:Context
+    private lateinit var context: Context
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
-     val loadingObservable: MutableLiveData<*>
+    val loadingObservable: MutableLiveData<*>
         get() = loadingLiveData
 
     protected val isNetworkConnected: Boolean
@@ -43,29 +43,25 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     protected val mPermissionUtils: PermissionUtils? = null
 
-    protected  var runtimePermission:RunTimePermission?=null
+    protected var runtimePermission: RunTimePermission? = null
 
-   /* fun getPermissionUtil(): PermissionUtils {
-        return mPermissionUtils ?: PermissionUtils()
-    }*/
+     fun getPermissionUtil(): PermissionUtils {
+         return mPermissionUtils ?: PermissionUtils()
+     }
 
-    fun getPermissioUtil():RunTimePermission{
-       return  if(runtimePermission!=null) return  runtimePermission!! else RunTimePermission(this@BaseActivity)
-    }
+//    fun getPermissionUtil(): RunTimePermission? {
+//        return if (runtimePermission != null) return runtimePermission!! else RunTimePermission(this@BaseActivity)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView(mViewDataBinding)
-        context=this
-        customDialog = CustomDialog(this,true)
+        context = this
+        customDialog = CustomDialog(this, true)
 
         observeLiveData(loadingLiveData) { isShowLoading ->
-            if (isShowLoading) {
-                showLoading()
-            } else {
-                hideLoading()
-            }
+            if (isShowLoading) showLoading() else hideLoading()
         }
     }
 

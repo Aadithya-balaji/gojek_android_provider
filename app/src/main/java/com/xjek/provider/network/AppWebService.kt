@@ -1,7 +1,7 @@
 package com.xjek.provider.network
 
+import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.models.*
-import com.xjek.user.data.repositary.remote.model.CountryListResponse
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -63,6 +63,13 @@ interface AppWebService {
     @GET("provider/profile")
     fun getProfile(@Header("Authorization") token: String): Observable<ProfileResponse>
 
+    @Multipart
+    @POST("provider/profile")
+    fun profileUpdate(@Header("Authorization") token: String,
+                      @PartMap params: java.util.HashMap<String, RequestBody>,
+                      @Part image: MultipartBody.Part): Observable<ResProfileUpdate>
+
+
     @FormUrlEncoded
     @POST("provider/signup")
     fun updateProfile(@FieldMap params: HashMap<String, RequestBody>, @Part fileName: MultipartBody.Part?): Observable<CommonResponse>
@@ -91,6 +98,9 @@ interface AppWebService {
 
     @GET("provider/check/request")
     fun getRequest(@Header("Authorization") token: String,@Query("latitude") lat:String,@Query("longitude") lon:String): Observable<CheckRequetModel>
+
+    @GET("provider/notification")
+    fun getnotification(@Header("Authorization") token: String): Observable<NotificationResponse>
 
 
 }

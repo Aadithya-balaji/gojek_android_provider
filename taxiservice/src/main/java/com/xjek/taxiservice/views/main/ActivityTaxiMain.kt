@@ -3,27 +3,28 @@ package com.xjek.taxiservice.views.main
 import android.content.res.Resources
 import android.location.Location
 import androidx.databinding.ViewDataBinding
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.xjek.base.base.BaseActivity
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityTaxiMainBinding
 import com.xjek.taxiservice.views.bottomsheets.BottomStatuslayout
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.LatLng
 
-
-class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(), ActivityTaxMainNavigator, OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
+class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
+        ActivityTaxMainNavigator,
+        OnMapReadyCallback,
+        GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraIdleListener {
-
 
     private lateinit var activityTaxiMainBinding: ActivityTaxiMainBinding
     private lateinit var fragmentMap: SupportMapFragment
     private var mGoogleMap: GoogleMap? = null
     private var mLastKnownLocation: Location? = null
-    private  var bottomStatuslayout: BottomStatuslayout?=null
+    private var bottomStatuslayout: BottomStatuslayout? = null
 
     override fun getLayoutId(): Int {
         return R.layout.activity_taxi_main
@@ -33,9 +34,9 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(), ActivityTaxMai
         this.activityTaxiMainBinding = mViewDataBinding as ActivityTaxiMainBinding
         val taxiModule = ActivityTaxiModule()
         activityTaxiMainBinding.taximainmodule = taxiModule
-        bottomStatuslayout= BottomStatuslayout()
-        bottomStatuslayout!!.show(supportFragmentManager,"bottomstatus")
-        bottomStatuslayout!!.isCancelable=false
+        bottomStatuslayout = BottomStatuslayout()
+        bottomStatuslayout!!.show(supportFragmentManager, "bottomstatus")
+        bottomStatuslayout!!.isCancelable = false
 
         //Initalize map
         initalizeMap()
@@ -59,7 +60,6 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(), ActivityTaxMai
             e.printStackTrace()
         }
     }
-
 
     override fun onCameraMove() {
     }

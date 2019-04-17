@@ -3,6 +3,8 @@
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
 
+    <string name="location_updated">Location Updated: %1$s</string>
+
     <!--Sign Up Screen-->
     <string name="social_sign_up">Social Signup</string>
     <string name="hint_first_name">FirstName</string>
@@ -338,9 +340,26 @@
     <string name="language_change_success">Language changed</string>
 
 
-
     <string name="offline">Go Offline</string>
     <string name="online">Go Online</string>
+    <string name="no_documents_found">No Documents Found</string>
+
+    <string name="profile">Profile</string>
+    <string name="error_select_country">Please select a country</string>
+    <string name="error_select_state">Please select a state</string>
+    <string name="error_firstname">Please enter First name </string>
+    <string name="error_lastname">Please enter Last name</string>
+    <string name="error_gender">Please select gender</string>
+    <string name="error_select_city">Please select a city</string>
+    <string name="error_invalid_phonenumber">Please enter valid phone number</string>
+    <string name="error_invalid_email_address">Please enter valid email address</string>
+    <string name="xjek_logout_alert">Would you like to logout?</string>
+
+    <string name="dummy_title">Title</string>
+    <string name="dummy_min">12mins</string>
+    <string name="dummy_text">Lorem Ipsum has been the industry\'s standard dummy text</string>
+    <string name="no_notification_found">No notification found</string>
+
 
     <!-- Approval -->
     <string name="waiting_for_approval">Pleae wait for Admin Apporval</string>

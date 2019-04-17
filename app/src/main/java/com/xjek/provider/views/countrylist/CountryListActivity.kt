@@ -8,8 +8,8 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityCountryListBinding
+import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.views.adapters.CountryListAdapter
-import com.xjek.user.data.repositary.remote.model.CountryListResponse
 
 class CountryListActivity : BaseActivity<ActivityCountryListBinding>(), SearchView.OnQueryTextListener,CountryNavigator {
 

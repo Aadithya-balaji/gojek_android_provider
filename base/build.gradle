@@ -44,7 +44,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     api 'androidx.cardview:cardview:1.0.0'
-    api 'com.google.android.material:material:1.1.0-alpha04'
+    api 'com.google.android.material:material:1.0.0'
+
 
     // Google Sign-In Integration
     api 'com.google.android.gms:play-services-auth:16.0.1'

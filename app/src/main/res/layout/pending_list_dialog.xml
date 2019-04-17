@@ -38,7 +38,6 @@
             android:layout_margin="@dimen/_8sdp"
             android:background="@color/grey" />
 
-
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_add_service"
             android:layout_width="match_parent"

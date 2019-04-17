@@ -1,31 +1,56 @@
 package com.xjek.provider.views.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.xjek.base.utils.ViewUtils.getTimeDifference
 import com.xjek.provider.R
+import com.xjek.provider.databinding.NotificationListitemBinding
+import com.xjek.provider.interfaces.CustomClickListner
+import com.xjek.provider.models.NotificationResponseData
 
-class NotificationAdapter : RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder>() {
+class NotificationAdapter(val activity: FragmentActivity?, val notificationResponseData: NotificationResponseData)
+    : RecyclerView.Adapter<NotificationAdapter.MyViewHolder>(), CustomClickListner {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.row_notification, parent, false)
-        return NotificationViewHolder(v)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
+        val inflate = DataBindingUtil.inflate<NotificationListitemBinding>(LayoutInflater.from(parent.context)
+                , R.layout.notification_listitem, parent, false)
+        return MyViewHolder(inflate)
     }
 
-    override fun getItemCount(): Int {
-        return 1
+    override fun getItemCount(): Int = notificationResponseData.data.size
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.bind()
+        holder.notificationListitemBinding.notificationTimeTv.text = getTimeDifference(notificationResponseData
+                .data[position].created_at)
+        holder.notificationListitemBinding.titlenotificationListTv.text = notificationResponseData.data[position].title
+        holder.notificationListitemBinding.descriptionNotificationTv.text = notificationResponseData.data[position].description
+        Glide.with(activity!!).load(notificationResponseData.data[position].image)
+                .into(holder.notificationListitemBinding.notificationImg)
     }
 
-    override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
+
+    inner class MyViewHolder(itemView: NotificationListitemBinding) : RecyclerView.ViewHolder(itemView.root) {
+
+        val notificationListitemBinding = itemView
+
+        fun bind() {
+
+        }
+
 
     }
 
-    inner class NotificationViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview) {
-        val tvValidDate = itemview.findViewById(R.id.tv_notification_date) as TextView
-        val tvServiceType = itemView.findViewById(R.id.tv_label_notification) as TextView
-        val tvService = itemView.findViewById(R.id.tv_notification_service) as TextView
+    override fun onListClickListner() {
 
+        Log.d("currentadapter", "onListClickListner")
     }
+
 }

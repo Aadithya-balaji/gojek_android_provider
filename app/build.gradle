@@ -27,7 +27,7 @@ android {
                 "602657530672-otdsmtkdip8bvf3miqhcfcdpn2mp6qr2.apps.googleusercontent.com")
         resValue("string", "facebook_app_id", "394261008038577")
         resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
-        resValue("string", "google_map_key", "AIzaSyApN9UWdadrD_Q8TWce4lJOfdbz06CG_UM")
+        resValue("string", "google_map_key", "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ")
         resValue("string","stripe_key","pk_test_DbfzA8Pv1MDErUiHakK9XfLe")
     }
     buildTypes {
@@ -61,7 +61,6 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha03'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
 
-    implementation 'com.google.android.material:material:1.1.0-alpha04'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.android.support:multidex:1.0.3'
     // Basic design support library

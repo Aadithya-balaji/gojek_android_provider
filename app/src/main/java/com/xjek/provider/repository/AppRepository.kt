@@ -127,7 +127,7 @@ class AppRepository : BaseRepository() {
     fun postSignup(viewModel: SignupViewModel, params: HashMap<String, RequestBody>,
                    @Part filename: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postSignup(params, filename)
+                .postSignUp(params, filename)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -323,7 +323,7 @@ class AppRepository : BaseRepository() {
 
     fun getNotification(viewModel: NotificationViewModel, token: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getnotification(token)
+                .getNotification(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

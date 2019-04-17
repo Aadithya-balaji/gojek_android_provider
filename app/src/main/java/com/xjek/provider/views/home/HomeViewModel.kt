@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
-import com.xjek.provider.models.CheckRequetModel
+import com.xjek.provider.models.CheckRequestModel
 import com.xjek.provider.repository.AppRepository
 
 class HomeViewModel : BaseViewModel<Home_Navigator>() {
 
     val appRepository = AppRepository.instance()
-    var checkRequestLiveData = MutableLiveData<CheckRequetModel>()
+    var checkRequestLiveData = MutableLiveData<CheckRequestModel>()
     var showLoading = MutableLiveData<Boolean>()
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
@@ -33,8 +33,13 @@ class HomeViewModel : BaseViewModel<Home_Navigator>() {
     }
 
     fun getRequest() {
-        getCompositeDisposable().add(appRepository.checkRequest(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), latitude.value.toString(), longitude.value.toString()))
+        getCompositeDisposable()
+                .add(appRepository.checkRequest(
+                        this,
+                        "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
+                        latitude.value.toString(),
+                        longitude.value.toString())
+                )
     }
 
 }

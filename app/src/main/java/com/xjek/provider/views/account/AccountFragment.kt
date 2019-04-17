@@ -49,20 +49,20 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         dashBoardNavigator.hideRightIcon(false)
         dashBoardNavigator.showLogo(false)
 
-        dashBoardNavigator.getInstance().iv_right.setOnClickListener {
-            ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
-                override fun onPositiveButtonClick(dialog: DialogInterface) {
-                    clearPreferences<String>()
-                    launchNewActivity(OnBoardActivity::class.java, false)
-                    activity!!.finishAffinity()
-                    dialog.dismiss()
-                }
-
-                override fun onNegativeButtonClick(dialog: DialogInterface) {
-                    dialog.dismiss()
-                }
-            })
-        }
+//        dashBoardNavigator.getInstance().iv_right.setOnClickListener {
+//            ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
+//                override fun onPositiveButtonClick(dialog: DialogInterface) {
+//                    clearPreferences<String>()
+//                    launchNewActivity(OnBoardActivity::class.java, false)
+//                    activity!!.finishAffinity()
+//                    dialog.dismiss()
+//                }
+//
+//                override fun onNegativeButtonClick(dialog: DialogInterface) {
+//                    dialog.dismiss()
+//                }
+//            })
+//        }
 
         val accountMenuTitles = resources.getStringArray(R.array.title_account)
         val accountMenuIcons = resources.obtainTypedArray(R.array.icon_account)

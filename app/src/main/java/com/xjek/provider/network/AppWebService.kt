@@ -37,14 +37,14 @@ interface AppWebService {
     fun getCountries(@FieldMap params: HashMap<String, Any?>): Observable<CountryListResponse>
 
     @GET("states/{state_id}")
-    fun getStatelist(@Path("state_id") state_id: String): Observable<StateListResponse>
+    fun getStateList(@Path("state_id") state_id: String): Observable<StateListResponse>
 
     @GET("cities/{city_id}")
     fun getCityList(@Path("city_id") city_id: String): Observable<CityListResponse>
 
     @Multipart
     @POST("provider/signup")
-    fun postSignup(
+    fun postSignUp(
             @PartMap params: HashMap<String, RequestBody>,
             @Part fileName: MultipartBody.Part?
     ): Observable<SignupResponseModel>
@@ -65,42 +65,79 @@ interface AppWebService {
 
     @Multipart
     @POST("provider/profile")
-    fun profileUpdate(@Header("Authorization") token: String,
-                      @PartMap params: java.util.HashMap<String, RequestBody>,
-                      @Part image: MultipartBody.Part): Observable<ResProfileUpdate>
+    fun profileUpdate(
+            @Header("Authorization") token: String,
+            @PartMap params: java.util.HashMap<String, RequestBody>,
+            @Part image: MultipartBody.Part
+    ): Observable<ResProfileUpdate>
 
 
     @FormUrlEncoded
     @POST("provider/signup")
-    fun updateProfile(@FieldMap params: HashMap<String, RequestBody>, @Part fileName: MultipartBody.Part?): Observable<CommonResponse>
+    fun updateProfile(
+            @FieldMap params: HashMap<String, RequestBody>,
+            @Part fileName: MultipartBody.Part?
+    ): Observable<CommonResponse>
 
     @GET("provider/card")
-    fun getCardList(@Header("Authorization") token: String, @Query("limit") limit: String, @Query("offset") offset: String): Observable<CardListModel>
+    fun getCardList(
+            @Header("Authorization") token: String,
+            @Query("limit") limit: String,
+            @Query("offset") offset: String
+    ): Observable<CardListModel>
 
     @FormUrlEncoded
     @POST("provider/add/money")
-    fun addWalletMoney(@Header("Authorization") token: String,
-                       @FieldMap params: HashMap<String, String>): Observable<WalletResponse>
+    fun addWalletMoney(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<WalletResponse>
 
     @GET("provider/wallet")
     fun getWalletTransction(@Header("Authorization") token: String): Observable<WalletTransactionList>
 
     @FormUrlEncoded
     @POST("provider/card")
-    fun addCard(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<AddCardModel>
+    fun addCard(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<AddCardModel>
 
     @DELETE("provider/card/{card_id}")
-    fun deleteCard(@Header("Authorization") token: String, @Path("card_id") cardid: String): Observable<AddCardModel>
+    fun deleteCard(
+            @Header("Authorization") token: String,
+            @Path("card_id") cardid: String
+    ): Observable<AddCardModel>
 
     @FormUrlEncoded
     @POST
-    fun changeAvailability(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<ResponseBody>
+    fun changeAvailability(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<ResponseBody>
 
     @GET("provider/check/request")
-    fun getRequest(@Header("Authorization") token: String,@Query("latitude") lat:String,@Query("longitude") lon:String): Observable<CheckRequetModel>
+    fun getRequest(
+            @Header("Authorization") token: String,
+            @Query("latitude") lat: String,
+            @Query("longitude") lon: String
+    ): Observable<CheckRequestModel>
 
     @GET("provider/notification")
-    fun getnotification(@Header("Authorization") token: String): Observable<NotificationResponse>
+    fun getNotification(@Header("Authorization") token: String): Observable<NotificationResponse>
 
+    @FormUrlEncoded
+    @POST("provider/accept/request")
+    fun acceptIncomingRequest(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<AddCardModel>
+
+    @FormUrlEncoded
+    @POST("provider/accept/request")
+    fun rejectIncomingRequest(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<AddCardModel>
 
 }

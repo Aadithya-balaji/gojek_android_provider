@@ -10,6 +10,8 @@ import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +19,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.gson.Gson
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
@@ -61,7 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
-        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
+        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         mHomeViewModel.navigator = this
         mHomeDataBinding.homemodel = mHomeViewModel
         mHomeDataBinding.btnChangeStatus.bringToFront()
@@ -79,7 +82,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
             fragmentMap.view!!.visibility = View.VISIBLE
-
         } else {
             mHomeDataBinding.llOffline.visibility = View.VISIBLE
             fragmentMap.view!!.visibility = View.GONE
@@ -102,15 +104,17 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     private fun getApiResponse() {
         observeLiveData(mHomeViewModel.checkRequestLiveData) {
-            if (mHomeViewModel.checkRequestLiveData.value!!.getStatusCode().equals("200")) {
+
+            val checkStatusModel = mHomeViewModel.checkRequestLiveData.value
+            if (checkStatusModel?.statusCode.equals("200")) {
                 val providerDetailsModel =
-                        mHomeViewModel.checkRequestLiveData.value!!.getResponseData()!!.getProviderDetails()
+                        checkStatusModel?.responseData!!.provider_details
 
                 if (providerDetailsModel != null) {
-                    isDocumentNeed = providerDetailsModel.getIsDocument()
-                    isServiceNeed = providerDetailsModel.getIsService()
-                    isBankdetailNeed = providerDetailsModel.getIsBankdetail()
-                    if (providerDetailsModel.getIsOnline() == 1) {
+                    isDocumentNeed = providerDetailsModel.is_document
+                    isServiceNeed = providerDetailsModel.is_service
+                    isBankdetailNeed = providerDetailsModel.is_bankdetail
+                    if (providerDetailsModel.is_online == 1) {
                         isOnline = true
                         writePreferences(PreferencesKey.IS_ONLINE, 1)
                         changeView(true)
@@ -132,21 +136,24 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                         pendingListDialog.isCancelable = true
                     }
 
-                    //      By Rajaganapathi :: Just for development purpose...
+                    val builder = AlertDialog.Builder(context!!)
+                    val alertDialog = builder.create()
+                    if (!alertDialog.isShowing)
+                        if (checkStatusModel.responseData?.requests?.get(0)?.request?.status == "") {
 
-//                    val builder = AlertDialog.Builder(context!!)
-//                    builder.setTitle("Incoming request dialog")
-//                    builder.setMessage(Gson().toJson(providerDetailsModel))
-//                    builder.setPositiveButton("Accept") { dialog, which ->
-//                        Toast.makeText(context, "Accept", Toast.LENGTH_SHORT).show()
-//                    }
-//
-//                    builder.setNegativeButton("Reject") { dialog, which ->
-//                        Toast.makeText(context, "Reject", Toast.LENGTH_SHORT).show()
-//                    }
-//
-//                    val dialog: AlertDialog = builder.create()
-//                    dialog.show()
+                            builder.setTitle("Incoming request dialog")
+                            builder.setMessage(Gson().toJson(providerDetailsModel))
+                            builder.setPositiveButton("Accept") { dialog, which ->
+                                Toast.makeText(context, "Accept", Toast.LENGTH_SHORT).show()
+                            }
+
+                            builder.setNegativeButton("Reject") { dialog, which ->
+                                Toast.makeText(context, "Reject", Toast.LENGTH_SHORT).show()
+                            }
+
+                            val dialog: AlertDialog = builder.create()
+                            dialog.show()
+                        }
                 }
             }
         }
@@ -225,7 +232,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             R.id.btn_change_status -> {
                 if (mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) changeView(false)
                 else changeView(true)
-
             }
         }
     }

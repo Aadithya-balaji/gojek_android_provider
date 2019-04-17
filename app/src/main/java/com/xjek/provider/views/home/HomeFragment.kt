@@ -124,7 +124,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                     if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankdetailNeed == 0) {
                         showPendingListDialog(1)
 
-                    }else if(providerDetailsModel.getStatus().equals("APPROVED")){
+                    }else if(!providerDetailsModel.getStatus().equals("APPROVED")){
                         showPendingListDialog(2)
 
                     }else if(providerDetailsModel.getWalletBalance()!! < 1){

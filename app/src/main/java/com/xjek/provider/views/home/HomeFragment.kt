@@ -17,7 +17,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.gson.Gson
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
@@ -43,6 +42,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         LocationSource.OnLocationChangedListener {
 
     private lateinit var mHomeDataBinding: FragmentHomePageBinding
+
     override fun getLayoutId(): Int = R.layout.fragment_home_page
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private lateinit var fragmentMap: SupportMapFragment
@@ -71,11 +71,19 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
         mHomeViewModel.latitude.value = currentLat
         mHomeViewModel.longitude.value = currentLong
-
         callCheckRequestApi()
         val activity: DashBoardActivity = activity as DashBoardActivity
         loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
         mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+
+        if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
+            mHomeDataBinding.llOffline.visibility = View.GONE
+            fragmentMap.view!!.visibility = View.VISIBLE
+
+        } else {
+            mHomeDataBinding.llOffline.visibility = View.VISIBLE
+            fragmentMap.view!!.visibility = View.GONE
+        }
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
@@ -88,15 +96,16 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         getApiResponse()
     }
 
-    private fun callCheckRequestApi() {
+    fun callCheckRequestApi() {
         mHomeViewModel.getRequest()
     }
 
     private fun getApiResponse() {
         observeLiveData(mHomeViewModel.checkRequestLiveData) {
-            println("RRR :: provider check status API response = ${Gson().toJson(mHomeViewModel.checkRequestLiveData.value)}")
             if (mHomeViewModel.checkRequestLiveData.value!!.getStatusCode().equals("200")) {
-                val providerDetailsModel = mHomeViewModel.checkRequestLiveData.value!!.getResponseData()!!.getProviderDetails()
+                val providerDetailsModel =
+                        mHomeViewModel.checkRequestLiveData.value!!.getResponseData()!!.getProviderDetails()
+
                 if (providerDetailsModel != null) {
                     isDocumentNeed = providerDetailsModel.getIsDocument()
                     isServiceNeed = providerDetailsModel.getIsService()
@@ -215,6 +224,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             R.id.btn_change_status -> {
                 if (mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) changeView(false)
                 else changeView(true)
+
             }
         }
     }
@@ -243,7 +253,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
-
             println("RRR MyReceiver.onReceive")
             val location = intent!!.getParcelableExtra<Location>(EXTRA_LOCATION)
             if (location != null) {
@@ -257,5 +266,4 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             }
         }
     }
-
 }

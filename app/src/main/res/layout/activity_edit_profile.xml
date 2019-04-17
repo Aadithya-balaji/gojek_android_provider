@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="profileviewmodel"
             type="com.xjek.provider.views.profile.ProfileViewModel" />
@@ -59,6 +60,8 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_36sdp"
                                 android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_20sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
@@ -67,7 +70,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edt_profile_firstname"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:fontFamily="@font/avenirltstd_medium"
                                     android:singleLine="true"
                                     android:text="@={profileviewmodel.mFirstName}"
@@ -78,6 +81,8 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_36sdp"
                                 android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
@@ -86,7 +91,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edt_profile_lastname"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:fontFamily="@font/avenirltstd_medium"
                                     android:singleLine="true"
                                     android:text="@={profileviewmodel.mLastName}"
@@ -106,6 +111,7 @@
                                 <com.google.android.material.textfield.TextInputLayout
                                     style="@style/Edittext_OutlinedTheme"
                                     android:layout_width="0dp"
+                                    android:layout_height="@dimen/_36sdp"
                                     android:layout_marginLeft="@dimen/_8sdp"
                                     android:layout_marginTop="@dimen/_8sdp"
                                     android:layout_marginRight="@dimen/_8sdp"
@@ -117,7 +123,7 @@
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/countrycode_register_et"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="match_parent"
                                         android:drawableStart="@drawable/ic_us"
                                         android:drawableLeft="@drawable/ic_us"
                                         android:drawablePadding="@dimen/_3sdp"
@@ -161,6 +167,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
                                 android:layout_width="match_parent"
+                                android:layout_height="@dimen/_36sdp"
                                 android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
@@ -185,18 +192,18 @@
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:fontFamily="@font/avenirltstd_medium"
                                 android:text="@string/gender"
-                                android:visibility="gone"
-                                android:textColor="@color/black" />
+                                android:textColor="@color/black"
+                                android:visibility="gone" />
 
                             <RadioGroup
                                 android:id="@+id/gender_radiogroup"
-                                android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_12sdp"
                                 android:layout_marginTop="@dimen/_2sdp"
                                 android:layout_marginEnd="@dimen/_12sdp"
-                                android:orientation="horizontal">
+                                android:orientation="horizontal"
+                                android:visibility="gone">
 
                                 <com.google.android.material.radiobutton.MaterialRadioButton
                                     android:id="@+id/rbMale"
@@ -222,6 +229,8 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_36sdp"
                                 android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
@@ -242,6 +251,8 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_36sdp"
                                 android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
@@ -250,7 +261,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/city_register_et"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:drawablePadding="@dimen/_5sdp"
                                     android:fontFamily="@font/avenirltstd_medium"
                                     android:singleLine="true"
@@ -262,6 +273,8 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_35sdp"
                                 android:layout_marginLeft="@dimen/_8sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
@@ -272,7 +285,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/service_editprofile_et"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:drawablePadding="@dimen/_5sdp"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/et_textsize" />
@@ -307,11 +320,11 @@
             android:layout_margin="@dimen/_17sdp"
             android:background="@drawable/custom_full_round_corner"
             android:backgroundTint="@color/colorPrimary"
+            android:onClick="@{() -> profileviewmodel.updateProfile()}"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
             android:text="@string/save"
             android:textAllCaps="false"
-            android:onClick="@{() -> profileviewmodel.updateProfile()}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp"
             app:cornerRadius="@dimen/_13sdp" />
@@ -321,6 +334,7 @@
             android:layout_height="@dimen/_80sdp"
             android:layout_below="@+id/toolbar_layout"
             android:layout_centerHorizontal="true"
+            android:onClick="@{() ->  profileviewmodel.getImage()}"
             android:padding="@dimen/_5sdp">
 
             <de.hdodenhof.circleimageview.CircleImageView

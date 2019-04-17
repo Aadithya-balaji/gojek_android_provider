@@ -18,6 +18,7 @@ import com.xjek.base.R
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.NetworkUtils
+import com.xjek.base.utils.RunTimePermission
 import com.xjek.base.views.CustomDialog
 import com.xjek.base.utils.PermissionUtils
 
@@ -27,6 +28,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private lateinit var mViewDataBinding: T
     private lateinit var customDialog: CustomDialog
     private lateinit var mParentView: View
+    private  lateinit var  context:Context
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
@@ -41,14 +43,21 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     protected val mPermissionUtils: PermissionUtils? = null
 
-    fun getPermissionUtil(): PermissionUtils {
+    protected  var runtimePermission:RunTimePermission?=null
+
+   /* fun getPermissionUtil(): PermissionUtils {
         return mPermissionUtils ?: PermissionUtils()
+    }*/
+
+    fun getPermissioUtil(): PermissionUtils? {
+       return  if(runtimePermission!=null) return  runtimePermission!! else RunTimePermission(this@BaseActivity)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView(mViewDataBinding)
+        context=this
         customDialog = CustomDialog(this,true)
 
         observeLiveData(loadingLiveData) { isShowLoading ->

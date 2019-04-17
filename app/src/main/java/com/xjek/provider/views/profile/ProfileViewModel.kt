@@ -35,6 +35,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     var mGender = MutableLiveData<String>()
     val updateProfileResposne = MutableLiveData<CommonResponse>()
     val filePath = MutableLiveData<MultipartBody.Part>()
+    var showLoading=MutableLiveData<Boolean>()
 
     companion object {
         @JvmStatic

@@ -29,7 +29,18 @@ class Enums {
         const val COUNTRYLIST_REQUEST_CODE = 124
         const val CITYLIST_REQUEST_CODE = 125
         const val FILE_REQ_CODE = 126
+<<<<<<< HEAD
         const val LOCATION_REQUEST_CODE = 126
+=======
+
+        //PaymentType
+        const val PAYMENT_CASH = 1
+        const val PAYMENT_CARD = 2
+        const val PAYMENT_PAYAPL = 3
+        const val PAYMENT_PAYTM = 4
+        const val PAYMENT_PAYUMONEY = 5
+        const val PAYMENT_BRAINTREE = 6
+>>>>>>> c54d4852c29aae9b72e40dcaca30c61d0a93bd79
 
     }
 
@@ -45,6 +56,10 @@ class Enums {
     @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class CommonData
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c54d4852c29aae9b72e40dcaca30c61d0a93bd79
     @IntDef(FB_ACCOUNT_KIT_CODE, GOOGLE_REQ_CODE, RC_COUNTRY_CODE_PICKER, RC_GOOGLE_SIGN_IN, COUNTRYLIST_REQUEST_CODE, CITYLIST_REQUEST_CODE, FILE_REQ_CODE)
     @Retention(AnnotationRetention.SOURCE)
     annotation class OnActivityResultCode

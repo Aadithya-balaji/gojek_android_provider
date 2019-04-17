@@ -37,7 +37,10 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         holder.cardViewBinding.tvCardType.setText(cardList!!.get(position).getBrand())
         holder.cardViewBinding.tvCardNumber.setText(String.format(context!!.resources.getString(R.string.row_card_number), cardList!!.get(position).getLastFour()))
-        holder.cardViewBinding.root.tag = holder
+        holder.cardViewBinding.root
+        if(selectedPosition==position&&cardList!!.get(position).isCardSelected==false){
+            selectedPosition=-1
+        }
         if (cardList!!.get(position).isCardSelected == false) {
             holder.cardViewBinding.root.setBackgroundColor(ContextCompat.getColor(context!!, R.color.card_unselected))
             holder.cardViewBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.black))
@@ -49,8 +52,9 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
             holder.cardViewBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.white))
         }
 
-       // holder.cardViewBinding.root.setOnClickListener(this)
-        holder.cardViewBinding.root.setOnLongClickListener(this)
+        holder.cardViewBinding.root.setOnClickListener(this)
+        holder.cardViewBinding.root.tag=holder
+       // holder.cardViewBinding.root.setOnLongClickListener(this)
 
     }
 
@@ -60,13 +64,13 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
     }
 
     override fun onLongClick(v: View?): Boolean {
-        var cardViewHolder = v!!.tag as CardViewHolder
+        /*var cardViewHolder = v!!.tag as CardViewHolder
         var position = cardViewHolder.adapterPosition
         if (selectedPosition != position) {
             selectedPosition=position
             val cardResponseModel=cardList!!.get(selectedPosition!!)
             walletViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(),cardResponseModel.getId().toString(), selectedPosition!!)
-        }
+        }*/
         return true
     }
 
@@ -74,18 +78,9 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
         var cardViewHolder = v!!.tag as CardViewHolder
         var position = cardViewHolder.adapterPosition
         if (selectedPosition != position) {
-            if (selectedPosition != -1) {
-                val cardResponseModel=cardList!!.get(position)
-                walletViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(),cardResponseModel.getId().toString(), position)
-                cardList!!.get(selectedPosition!!).isCardSelected=false
-                selectedPosition=position
-                cardList!!.get(position).isCardSelected=true
-                notifyItemRangeRemoved(0, cardList!!.size)
-                notifyItemRangeInserted(0, cardList!!.size)
-            }
-        } else if (selectedPosition == position) {
-            cardList!!.get(position).isCardSelected = false
-            notifyItemChanged(position)
+            selectedPosition=position
+            val cardResponseModel=cardList!!.get(selectedPosition!!)
+            walletViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(),cardResponseModel.getId().toString(), selectedPosition!!)
         }
     }
 }

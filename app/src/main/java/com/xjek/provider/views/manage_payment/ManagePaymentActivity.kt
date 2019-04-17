@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayout
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityManagePaymentBinding
+import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.views.adapters.PaymentAdapter
 import com.xjek.provider.views.adapters.PaymentModeAdapter
 import com.xjek.provider.views.transaction.TranascationFragment

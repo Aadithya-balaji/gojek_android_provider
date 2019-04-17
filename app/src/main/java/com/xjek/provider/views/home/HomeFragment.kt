@@ -104,16 +104,18 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
 
                     }
 
-                    if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankdetailNeed == 0) {
-                        val pendingListDialog = PendingListDialog()
-                        val bundle = Bundle()
-                        bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
-                        bundle.putInt("ISSERVICENEED", isServiceNeed!!)
-                        bundle.putInt("ISBANCKDETAILNEED", isBankdetailNeed!!)
-                        pendingListDialog.arguments = bundle
-                        pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
-                        pendingListDialog.isCancelable = false
-                    }
+                    showPendingListDialog(2)
+
+
+                    /*if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankdetailNeed == 0) {
+                        showPendingListDialog(1)
+
+                    }else if(providerDetailsModel.getStatus().equals("APPROVED")){
+                        showPendingListDialog(2)
+
+                    }else if(providerDetailsModel.getWalletBalance()!! < 1){
+                        showPendingListDialog(3)
+                    }*/
 
                 }
             }
@@ -200,8 +202,13 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(), Home_Navigator, On
         loadingProgress!!.value = false
     }
 
-    fun showPendingListDialog() {
-        val pendingListDialog = PendingListDialog()
+    fun showPendingListDialog(type:Int) {
+        val pendingListDialog = PendingListDialog(type)
+        val bundle = Bundle()
+        bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
+        bundle.putInt("ISSERVICENEED", isServiceNeed!!)
+        bundle.putInt("ISBANCKDETAILNEED", isBankdetailNeed!!)
+        pendingListDialog.arguments = bundle
         pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
         pendingListDialog.isCancelable = false
     }

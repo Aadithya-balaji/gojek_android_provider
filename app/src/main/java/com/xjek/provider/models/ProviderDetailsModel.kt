@@ -56,7 +56,7 @@ class  ProviderDetailsModel{
     private var stripeCustId: String? = null
     @SerializedName("wallet_balance")
     @Expose
-    private var walletBalance: Int? = null
+    private var walletBalance: Double? = null
     @SerializedName("rating")
     @Expose
     private var rating: Int? = null
@@ -246,11 +246,11 @@ class  ProviderDetailsModel{
         this.stripeCustId = stripeCustId
     }
 
-    fun getWalletBalance(): Int? {
+    fun getWalletBalance(): Double? {
         return walletBalance
     }
 
-    fun setWalletBalance(walletBalance: Int?) {
+    fun setWalletBalance(walletBalance: Double?) {
         this.walletBalance = walletBalance
     }
 

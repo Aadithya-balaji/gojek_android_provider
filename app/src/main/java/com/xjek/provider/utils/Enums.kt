@@ -39,6 +39,10 @@ class Enums {
         const val PAYMENT_PAYUMONEY = 5
         const val PAYMENT_BRAINTREE = 6
 
+        //Dialoge Type
+        const val PAYMENT_PENDING=11
+        const val ADMIN_APPROVAL=12
+        const val LOW_BALANCE=13
     }
 
     @IntDef(DOC_TAXI, DOC_FOODIE, DOC_SERVICE)
@@ -56,6 +60,10 @@ class Enums {
     @IntDef(FB_ACCOUNT_KIT_CODE, GOOGLE_REQ_CODE, RC_COUNTRY_CODE_PICKER, RC_GOOGLE_SIGN_IN, COUNTRYLIST_REQUEST_CODE, CITYLIST_REQUEST_CODE, FILE_REQ_CODE)
     @Retention(AnnotationRetention.SOURCE)
     annotation class OnActivityResultCode
+
+    @IntDef(PAYMENT_PENDING, ADMIN_APPROVAL, LOW_BALANCE)
+    @Retention(AnnotationRetention.SOURCE)
+    annotation class  DialogeType
 
     enum class LOGIN_BY {
         MANUAL, FACEBOOK, GOOGLE

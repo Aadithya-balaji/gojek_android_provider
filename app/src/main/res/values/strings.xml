@@ -361,4 +361,10 @@
     <string name="no_notification_found">No notification found</string>
 
 
+    <!-- Approval -->
+    <string name="waiting_for_approval">Pleae wait for Admin Apporval</string>
+    <string name="low_balance">your wallet is at low balance, \n call admin to get clarfied</string>
+    <string name="call_admin">Call Admin</string>
+    <string name="alert">Alert</string>
+
 </resources>

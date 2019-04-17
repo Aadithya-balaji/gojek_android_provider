@@ -7,10 +7,10 @@ import android.net.Uri
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -28,7 +28,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
-import com.xjek.base.utils.PermissionUtils
 import com.xjek.base.utils.ValidationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
@@ -50,6 +49,7 @@ import okhttp3.RequestBody
 import java.io.File
 import java.io.Serializable
 
+
 class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavigator {
 
 
@@ -57,14 +57,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     private lateinit var mProfileViewmodel: ProfileViewModel
     private var mCropImageUri: Uri? = null
     private var localPath: Uri? = null
-    private var message: String? = ""
-    private var filePart: MultipartBody.Part? = null
-    private var permissionUtils: PermissionUtils? = null
-
-    companion object {
-        var loadingProgress: MutableLiveData<Boolean>? = null
-    }
-
     private var mProfileData: ProfileResponse? = null
     private var mMobileNumberFlag = 0
     override fun getLayoutId(): Int = R.layout.activity_edit_profile
@@ -73,48 +65,10 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
         this.mViewDataBinding = mViewDataBinding as ActivityEditProfileBinding
-//        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.profile)
+        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.profile)
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener {
             finish()
         }
-//<<<<<<< HEAD
-//        mProfileViewModel = ProfileViewModel()
-//        mProfileViewModel!!.getProfile()
-//        mProfileViewModel!!.navigator = this
-//        mViewDataBinding.profileviewmodel = mProfileViewModel
-//        mViewDataBinding.setLifecycleOwner(this)
-//        loadingProgress = loadingObservable as MutableLiveData<Boolean>
-//        mProfileViewModel!!.showLoading = loadingProgress as MutableLiveData<Boolean>
-//        getApiResponse()
-//
-//        permissionUtils = getPermissioUtil()
-//        getProfile()
-//    }
-//
-//    fun getProfile() {
-//        loadingProgress!!.value = true
-//        mProfileViewModel!!.getProfile()
-//    }
-//
-//    private fun checkAllPermission(permission: Array<String>) {
-//        val blockedPermission = runtimePermission!!.checkHasPermission(this, permission)
-//        if (blockedPermission.size > 0) {
-//            val isBlocked = runtimePermission!!.isPermissionBlocked(this, blockedPermission)
-//            if (isBlocked) callPermissionSettings() else ActivityCompat.requestPermissions(this, permission, 150)
-//        }
-//    }
-//
-//    fun getApiResponse() {
-//        observeLiveData(mProfileViewModel!!.getProfileRespose()) {
-//            loadingProgress!!.value = false
-//            if (it.statusCode == "200") {
-//                val profileData = it.profileData
-//                if (profileData != null) {
-//                    if (!profileData.firstName.isNullOrEmpty()) mProfileViewModel!!.mFirstName.postValue(profileData.firstName)
-//                    if (!profileData.lastName.isNullOrEmpty()) mProfileViewModel!!.mLastName.postValue(profileData.lastName)
-//                    if (!profileData.email.isNullOrEmpty()) mProfileViewModel!!.mEmail.postValue(profileData.email)
-//                    if (!profileData.mobile.isNullOrEmpty()) mProfileViewModel!!.mMobileNumber.postValue(profileData.mobile)
-//=======
         mProfileViewmodel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         mViewDataBinding.profileviewmodel = mProfileViewmodel
         mProfileViewmodel.navigator = this
@@ -126,7 +80,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                     .into(mViewDataBinding.profileImage)
         })
         mProfileViewmodel.updateProfileResponse().observe(this, Observer {
-            ViewUtils.showToast(this, it.message!!, true)
+            ViewUtils.showToast(this, it.message!!,true)
         })
 
         mProfileViewmodel.countryListResponse.observe(this@ProfileActivity, Observer<CountryListResponse> {
@@ -138,12 +92,12 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             startActivityForResult(intent, Constant.COUNTRYLIST_REQUEST_CODE)
         })
 
-        observeLiveData(mProfileViewmodel.loadingProgress) {
+        observeLiveData(mProfileViewmodel.loadingProgress){
             loadingObservable.value = it
         }
 
-        observeLiveData(mProfileViewmodel.errorResponse) {
-            ViewUtils.showToast(ProfileActivity@ this, it, false)
+        observeLiveData(mProfileViewmodel.errorResponse){
+            ViewUtils.showToast(ProfileActivity@this,it,false)
         }
 
 
@@ -170,9 +124,9 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     }
 
     private fun setOnclickListteners() {
-//        mViewDataBinding.profileLayout.setOnClickListener {
-//            checkPermission()
-//        }
+        mViewDataBinding.profileLayout.setOnClickListener {
+            checkPermission()
+        }
         mViewDataBinding.saveEditprofileBtn.setOnClickListener {
 
             if (mProfileData?.profileData?.mobile!!.toString().equals(mViewDataBinding.phonenumberRegisterEt.text.toString())) {
@@ -187,7 +141,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                     mProfileViewmodel?.updateProfile(fileBody)
                 } else {
                     mProfileViewmodel?.updateProfile(null)
-//>>>>>>> 2f4af34c6efbd492274f4555c61539040feef3a3
                 }
             } else {
                 mMobileNumberFlag = 2 // different mobile number
@@ -198,15 +151,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
     }
 
-    //<<<<<<< HEAD
-//    fun callPermissionSettings() {
-//        val intent = Intent()
-//        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//        val uri = Uri.fromParts("package", this.applicationContext.packageName, null)
-//        intent.data = uri
-//        startActivityForResult(intent, 300)
-//=======
     private fun verifyMobileNumber() {
         val intent = Intent(this@ProfileActivity, AccountKitActivity::class.java)
         val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
@@ -234,12 +178,11 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
                     override fun onPermissionDenied(response: PermissionDeniedResponse?) {
                         //close activity
-                        ViewUtils.showToast(applicationContext, "Unable to perform this action", false)
+                        ViewUtils.showToast(applicationContext, "Unable to perform this action",false)
                         //finish()
                     }
 
                 }).check()
-//>>>>>>> 2f4af34c6efbd492274f4555c61539040feef3a3
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -269,15 +212,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             val result = CropImage.getActivityResult(data)
             if (resultCode == Activity.RESULT_OK) {
                 mViewDataBinding.profileImage.setImageURI(result.uri)
-//<<<<<<< HEAD
-//                val profileFile = File(result.uri.toString())
-//                if (profileFile.exists()) {
-//                    filePart = MultipartBody.Part.createFormData("picture", profileFile.getName(), RequestBody.create(MediaType.parse("image*//*"), profileFile));
-//                    mProfileViewModel!!.filePath.value = filePart
-//                }
-//            }
-//        }
-//=======
                 localPath = result.uri
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: ", Toast.LENGTH_LONG).show()
@@ -294,7 +228,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             accountKitOtpVerified(data)
         }
 
-//>>>>>>> 2f4af34c6efbd492274f4555c61539040feef3a3
     }
 
 
@@ -329,18 +262,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
     }
 
-    //<<<<<<< HEAD
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-////        permissionUtils!!.setFirstTimePermission(true)
-////        val permission = permissionUtils!!.onRequestPermissionsResult(permissions, grantResults)
-////        if (permission != null && permission!!.size > 0) run { callPermissionSettings() }
-//    }
-//
-//    override fun showErrorMsg(error: String) {
-//        loadingProgress!!.value = false
-//        ViewUtils.showToast(this, error, false)
-//=======
     private fun setCity(data: Intent?) {
         val selectedCity = data?.extras?.get("selected_list") as? City
         Log.d("statelist", selectedCity?.city_name + "")
@@ -355,40 +276,39 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 .setCropShape(CropImageView.CropShape.OVAL)
                 .setMultiTouchEnabled(true)
                 .start(this)
-//>>>>>>> 2f4af34c6efbd492274f4555c61539040feef3a3
     }
 
     override fun profileUpdateValidation(email: String, phonenumber: String, firstname: String
                                          , country: String, city: String): Boolean {
 
 
-//        if (TextUtils.isEmpty(firstname)) {
-//            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_firstname), false)
-//            mProfileViewmodel?.loadingProgress!!.value = false
-//            return false
-//        } else if (TextUtils.isEmpty(phonenumber) && ValidationUtils.isMinLength(phonenumber, 6)) {
-//            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_invalid_phonenumber), false)
-//            mProfileViewmodel?.loadingProgress!!.value = false
-//            return false
-//        } else if (TextUtils.isEmpty(email) && !ValidationUtils.isValidEmail(email)) {
-//            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_invalid_email_address), false)
-//            mProfileViewmodel?.loadingProgress!!.value = false
-//            return false
-//        } else if (TextUtils.isEmpty(country)) {
-//            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_country), false)
-//            mProfileViewmodel?.loadingProgress!!.value = false
-//            return false
-//        } else if (TextUtils.isEmpty(city)) {
-//            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_city), false)
-//            mProfileViewmodel?.loadingProgress!!.value = false
-//            return false
-//        }
+        if (TextUtils.isEmpty(firstname)) {
+            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_firstname), false)
+            mProfileViewmodel?.loadingProgress!!.value = false
+            return false
+        } else if (TextUtils.isEmpty(phonenumber) && ValidationUtils.isMinLength(phonenumber, 6)) {
+            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_invalid_phonenumber), false)
+            mProfileViewmodel?.loadingProgress!!.value = false
+            return false
+        } else if (TextUtils.isEmpty(email) && !ValidationUtils.isValidEmail(email)) {
+            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_invalid_email_address), false)
+            mProfileViewmodel?.loadingProgress!!.value = false
+            return false
+        } else if (TextUtils.isEmpty(country)) {
+            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_country), false)
+            mProfileViewmodel?.loadingProgress!!.value = false
+            return false
+        } else if (TextUtils.isEmpty(city)) {
+            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_city), false)
+            mProfileViewmodel?.loadingProgress!!.value = false
+            return false
+        }
         return true
     }
 
     override fun goToCityListActivity(countryId: ObservableField<String>) {
         if (TextUtils.isEmpty(countryId.toString())) {
-//            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_country), false)
+            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_country), false)
         } else {
 
             val intent = Intent(this@ProfileActivity, CityListActivity::class.java)
@@ -397,4 +317,8 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             startActivityForResult(intent, Constant.CITYLIST_REQUEST_CODE)
         }
     }
+
+
 }
+
+

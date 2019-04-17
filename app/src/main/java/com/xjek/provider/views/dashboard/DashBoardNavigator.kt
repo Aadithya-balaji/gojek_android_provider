@@ -7,5 +7,6 @@ interface DashBoardNavigator {
     fun showLogo(isNeedShow: Boolean)
     fun setRightIcon(rightIcon: Int)
     fun hideRightIcon(isNeedHide: Boolean)
+    fun getInstance():DashBoardActivity
 }
 

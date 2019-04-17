@@ -126,14 +126,15 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                     }
 
                     if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankdetailNeed == 0) {
-                        val pendingListDialog = PendingListDialog()
-                        val bundle = Bundle()
-                        bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
-                        bundle.putInt("ISSERVICENEED", isServiceNeed!!)
-                        bundle.putInt("ISBANCKDETAILNEED", isBankdetailNeed!!)
-                        pendingListDialog.arguments = bundle
-                        pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
-                        pendingListDialog.isCancelable = true
+                        showPendingListDialog(1)
+
+                    } else if (!providerDetailsModel.status.equals("APPROVED")) {
+                        showPendingListDialog(2)
+
+                    } else if (providerDetailsModel.wallet_balance!! < 1) {
+
+                        //for now  in api side not implmented the low balance
+                        // showPendingListDialog(3)
                     }
 
                     val builder = AlertDialog.Builder(context!!)
@@ -240,8 +241,13 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         loadingProgress!!.value = false
     }
 
-    fun showPendingListDialog() {
-        val pendingListDialog = PendingListDialog()
+    fun showPendingListDialog(type: Int) {
+        val pendingListDialog = PendingListDialog(type)
+        val bundle = Bundle()
+        bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
+        bundle.putInt("ISSERVICENEED", isServiceNeed!!)
+        bundle.putInt("ISBANCKDETAILNEED", isBankdetailNeed!!)
+        pendingListDialog.arguments = bundle
         pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
         pendingListDialog.isCancelable = false
     }

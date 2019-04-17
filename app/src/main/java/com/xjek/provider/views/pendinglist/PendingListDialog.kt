@@ -1,5 +1,6 @@
 package com.xjek.provider.views.pendinglist
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -13,7 +14,8 @@ import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.document.DocumentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 
-class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
+@SuppressLint("ValidFragment")
+class PendingListDialog(typeOfDialog: Int) : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
 
 
     private lateinit var pendingListDialogBinding: PendingListDialogBinding
@@ -22,12 +24,15 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     private var isDocumentNeed: Int? = 0
     private var isServiceNeed: Int? = 0
     private var isBankDetailNeed: Int? = 0
+    private var dialogType: Int? = 0
 
+    init {
+        this.dialogType = typeOfDialog
+    }
 
     override fun getLayout(): Int {
         return R.layout.pending_list_dialog
     }
-
 
     override fun onStart() {
         super.onStart()
@@ -47,6 +52,25 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
         pendginListViewModel.navigator = this
         pendingListDialogBinding.pendinglistModel = pendginListViewModel
         getBundleArugment()
+        when (dialogType) {
+            0 -> {
+                pendingListDialogBinding.llDocPending.visibility = View.VISIBLE
+                pendingListDialogBinding.llLowBalance.visibility = View.GONE
+                pendingListDialogBinding.llWaiting.visibility = View.GONE
+            }
+
+            1 -> {
+                pendingListDialogBinding.llDocPending.visibility = View.GONE
+                pendingListDialogBinding.llLowBalance.visibility = View.VISIBLE
+                pendingListDialogBinding.llWaiting.visibility = View.GONE
+            }
+
+            2 -> {
+                pendingListDialogBinding.llDocPending.visibility = View.GONE
+                pendingListDialogBinding.llLowBalance.visibility = View.GONE
+                pendingListDialogBinding.llWaiting.visibility = View.VISIBLE
+            }
+        }
     }
 
     fun getBundleArugment() {
@@ -55,24 +79,24 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
         isBankDetailNeed = if (arguments != null && arguments!!.containsKey("ISBANCKDETAILNEED")) arguments!!.getInt("ISBANCKDETAILNEED") else 0
 
         if (isDocumentNeed == 1 && isServiceNeed == 0 && isBankDetailNeed == 0) {
-            pendingListDialogBinding.tvAddDocument.visibility=View.VISIBLE
-            pendingListDialogBinding.tvAddService.visibility=View.GONE
-            pendingListDialogBinding.tvBankDetails.visibility=View.GONE
+            pendingListDialogBinding.tvAddDocument.visibility = View.VISIBLE
+            pendingListDialogBinding.tvAddService.visibility = View.GONE
+            pendingListDialogBinding.tvBankDetails.visibility = View.GONE
 
         } else if (isDocumentNeed == 0 && isServiceNeed == 1 && isBankDetailNeed == 0) {
-            pendingListDialogBinding.tvAddDocument.visibility=View.GONE
-            pendingListDialogBinding.tvAddService.visibility=View.VISIBLE
-            pendingListDialogBinding.tvBankDetails.visibility=View.GONE
+            pendingListDialogBinding.tvAddDocument.visibility = View.VISIBLE
+            pendingListDialogBinding.tvAddService.visibility = View.GONE
+            pendingListDialogBinding.tvBankDetails.visibility = View.VISIBLE
 
         } else if (isDocumentNeed == 0 && isServiceNeed == 0 && isBankDetailNeed == 1) {
-            pendingListDialogBinding.tvAddDocument.visibility=View.GONE
-            pendingListDialogBinding.tvAddService.visibility=View.GONE
-            pendingListDialogBinding.tvBankDetails.visibility=View.VISIBLE
+            pendingListDialogBinding.tvAddDocument.visibility = View.VISIBLE
+            pendingListDialogBinding.tvAddService.visibility = View.VISIBLE
+            pendingListDialogBinding.tvBankDetails.visibility = View.GONE
 
         } else if (isDocumentNeed == 1 && isServiceNeed == 1 && isBankDetailNeed == 0) {
-            pendingListDialogBinding.tvAddDocument.visibility=View.GONE
-            pendingListDialogBinding.tvAddService.visibility=View.GONE
-            pendingListDialogBinding.tvBankDetails.visibility=View.VISIBLE
+            pendingListDialogBinding.tvAddDocument.visibility = View.GONE
+            pendingListDialogBinding.tvAddService.visibility = View.GONE
+            pendingListDialogBinding.tvBankDetails.visibility = View.VISIBLE
 
         }
     }
@@ -92,6 +116,10 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
             R.id.tv_add_service -> {
                 val intent = Intent(dashBoardActivity, ManageServicesActivity::class.java)
                 startActivity(intent)
+            }
+
+            R.id.btn_call_admin ->{
+
             }
         }
     }

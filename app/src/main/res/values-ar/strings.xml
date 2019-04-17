@@ -35,6 +35,11 @@
     <string name="hint_new_password">New Password</string>
     <string name="reset">Reset</string>
 
+
+    <!-- Approval -->
+    <string name="waiting_for_approval">Pleae wait for Admin Apporval</string>
+
+
     <!--Home Screen-->
     <string name="menu_home">Home</string>
     <string name="menu_history">History</string>

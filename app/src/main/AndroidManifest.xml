@@ -187,7 +187,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />
         <service
-            android:name=".utils.location_service.LocationUpdatesService"
+            android:name=".utils.location_service.BaseLocationService"
             android:enabled="true"
             android:exported="true" />
 

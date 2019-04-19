@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/bg_vechile_profile">
+        android:background="@color/bg_vehicle_profile">
 
         <include
             android:id="@+id/tbr_vehicle_header"

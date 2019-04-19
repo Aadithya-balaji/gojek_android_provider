@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.toolbar_header.view.*
 
 class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator {
 
+
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var viewModel: DashBoardViewModel
     private lateinit var tvTitle: TextView
@@ -30,6 +31,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     private lateinit var tbrRlLeft: RelativeLayout
     private lateinit var tbrIvLogo: ImageView
     private lateinit var ivRightIcon: ImageView
+    private  var   locationServiceIntent:Intent?=null
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -74,17 +76,25 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
             }
         }
 
-        val locationServiceIntent = Intent(this, LocationUpdatesService::class.java)
+         locationServiceIntent = Intent(this, LocationUpdatesService::class.java)
         if (getPermissionUtil().hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION))
-            startService(locationServiceIntent)
+         isNeedLocagtionUpdate(true)
         else if (getPermissionUtil().requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                         Enums.LOCATION_REQUEST_CODE)) startService(locationServiceIntent)
 
         btStop.setOnClickListener {
             Toast.makeText(baseContext, "Stop Service", Toast.LENGTH_SHORT).show()
-            stopService(locationServiceIntent)
+            isNeedLocagtionUpdate(false)
         }
     }
+
+    fun isNeedLocagtionUpdate(isTrue:Boolean){
+        if(isTrue==true)
+            startService(locationServiceIntent)
+        else
+            stopService(locationServiceIntent)
+    }
+
 
     override fun setTitle(title: String) {
         tvTitle.text = title
@@ -119,6 +129,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun getInstance(): DashBoardActivity = this
+
+    override fun isNeedLocationUpdate(isTrue: Boolean) {
+
+         isNeedLocagtionUpdate(isTrue)
+    }
 
 }
 

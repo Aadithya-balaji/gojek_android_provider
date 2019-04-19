@@ -8,7 +8,9 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.AcceptRequestModel
 import com.xjek.provider.models.CheckRequestModel
 import com.xjek.provider.models.RejectRequestModel
+import com.xjek.provider.models.StatusResponseModel
 import com.xjek.provider.repository.AppRepository
+
 
 class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
@@ -21,10 +23,13 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
     var showLoading = MutableLiveData<Boolean>()
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
+    var onlineStatusLiveData=MutableLiveData<StatusResponseModel>()
 
     fun opentTranxitModule() {
         navigator.gotoTaxiModule()
     }
+
+
 
     fun openFoodieModule() {
         navigator.gotoFoodieModule()
@@ -66,4 +71,8 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
                 )
     }
 
+
+    fun changeOnlineStatus(status:String){
+        getCompositeDisposable().add(appRepository.changeOnlineStatus(this,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN),status))
+    }
 }

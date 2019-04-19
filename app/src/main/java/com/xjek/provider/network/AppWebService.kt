@@ -126,6 +126,8 @@ interface AppWebService {
     @GET("provider/notification")
     fun getNotification(@Header("Authorization") token: String): Observable<NotificationResponse>
 
+    @GET("provider/onlinestatus/{status_id}")
+    fun changeOnlineStatus(@Header("Authorization") token: String,@Path("status_id") statusID: String): Observable<StatusResponseModel>
     @FormUrlEncoded
     @POST("provider/accept/request")
     fun acceptIncomingRequest(
@@ -139,5 +141,4 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<RejectRequestModel>
-
 }

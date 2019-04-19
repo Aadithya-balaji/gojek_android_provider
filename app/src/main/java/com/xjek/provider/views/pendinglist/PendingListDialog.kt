@@ -19,7 +19,7 @@ import com.xjek.provider.views.document.DocumentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 
 @SuppressLint("ValidFragment")
-class PendingListDialog() : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
+class PendingListDialog(type: Int) : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
 
 
     private lateinit var pendingListDialogBinding: PendingListDialogBinding

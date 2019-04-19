@@ -29,6 +29,14 @@ import com.xjek.base.utils.LocationUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.utils.Enums
+import com.xjek.provider.utils.Enums.RideStatus.ACCEPTED
+import com.xjek.provider.utils.Enums.RideStatus.ARRIVED
+import com.xjek.provider.utils.Enums.RideStatus.CANCELLED
+import com.xjek.provider.utils.Enums.RideStatus.COMPLETED
+import com.xjek.provider.utils.Enums.RideStatus.DROPPED
+import com.xjek.provider.utils.Enums.RideStatus.PICKED_UP
+import com.xjek.provider.utils.Enums.RideStatus.SCHEDULED
+import com.xjek.provider.utils.Enums.RideStatus.SEARCHING
 import com.xjek.provider.utils.location_service.LocationUpdatesService.BROADCAST
 import com.xjek.provider.utils.location_service.LocationUpdatesService.EXTRA_LOCATION
 import com.xjek.provider.views.dashboard.DashBoardActivity
@@ -56,7 +64,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private var isDocumentNeed: Int? = -1
     private var isBankDetailNeed: Int? = -1
     private var isOnline: Boolean? = true
-    private  var pendingListDialog:PendingListDialog?=null
+    private var pendingListDialog: PendingListDialog? = null
     private var canShowRequestDialog: Boolean? = true
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
@@ -73,7 +81,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mHomeDataBinding.btnChangeStatus.bringToFront()
 
         updateCurrentLocation()
-        initalizeMap()
+        initializeMap()
 
         mHomeViewModel.latitude.value = currentLat
         mHomeViewModel.longitude.value = currentLong
@@ -81,7 +89,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         val activity: DashBoardActivity = activity as DashBoardActivity
         loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
         mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
-        pendingListDialog= PendingListDialog()
+        pendingListDialog = PendingListDialog(type)
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
@@ -131,98 +139,105 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                         changeView(false)
                     }
                     if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) {
-                        if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
-                        showPendingListDialog(1)
-
-                    }else if(!providerDetailsModel.status.equals("APPROVED")){
-                        if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
-                         showPendingListDialog(2)
-
-                    }else if(providerDetailsModel.wallet_balance!! < 1){
-
+                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
+                            showPendingListDialog(1)
+                    } else if (!providerDetailsModel.status.equals("APPROVED")) {
+                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
+                            showPendingListDialog(2)
+                    } else if (providerDetailsModel.wallet_balance!! < 1) {
                         //for now  in api side not implmented the low balance
-                        if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
-                        showPendingListDialog(3)
+                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
+                            showPendingListDialog(3)
                     }
 
-
-
-
-
-                    //      By Rajaganapathi :: Just for development purpose...
-
-//                    val builder = AlertDialog.Builder(context!!)
-//                    builder.setTitle("Incoming request dialog")
-//                    builder.setMessage(Gson().toJson(providerDetailsModel))
-//                    builder.setPositiveButton("Accept") { dialog, which ->
-//                        Toast.makeText(context, "Accept", Toast.LENGTH_SHORT).show()
-//                    }
-//
-//                    builder.setNegativeButton("Reject") { dialog, which ->
-//                        Toast.makeText(context, "Reject", Toast.LENGTH_SHORT).show()
-//                    }
-//
-//                    val dialog: AlertDialog = builder.create()
-//                    dialog.show()
-                /*   if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) showPendingListDialog(1)
-                    else if (!providerDetailsModel.status.equals("APPROVED")) showPendingListDialog(2)
-                    else if (providerDetailsModel.wallet_balance!! < 1) {
-                        //for now  in api side not implmented the low balance
-                        // showPendingListDialog(3)
+                    BROADCAST = when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
+                        "TRANSPORT" -> Enums.ProjectTypes.TRANSPORT
+                        "SERVICE" -> Enums.ProjectTypes.SERVICE
+                        "ORDER" -> Enums.ProjectTypes.ORDER
+                        else -> Enums.ProjectTypes.TRANSPORT
                     }
 
                     println("RRR :: inside ")
-                    if (canShowRequestDialog!!)
-
-                        if (checkStatusModel.responseData!!.requests!!.get(0)!!.request!!.status == "SEARCHING") {
-                            var params: HashMap<String, String>
-                            params.put()
-                            canShowRequestDialog = false
-                            when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
-                                "TRANSPORT" -> BROADCAST = Enums.FlowTypes.TRANSPORT
-                                "SERVICE" -> BROADCAST = Enums.FlowTypes.SERVICE
-                                "ORDER" -> BROADCAST = Enums.FlowTypes.ORDER
-                                else -> BROADCAST = Enums.FlowTypes.TRANSPORT
+                    if (canShowRequestDialog!!) {
+                        when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
+                            SEARCHING -> {
+                                val params: HashMap<String, String> = HashMap()
+                                params["id"] = checkStatusModel.responseData!!.provider_details!!.id.toString()
+                                params["service_id"] = checkStatusModel.responseData!!.requests!![0]!!.request!!.id.toString()
+                                canShowRequestDialog = false
+                                println("RRR :: inside 2 ")
+                                AlertDialog
+                                        .Builder(activity!!)
+                                        .setTitle("Incoming request")
+                                        .setMessage("Accept or reject request>>>")
+                                        .setPositiveButton("Accept") { dialog, which ->
+                                            run {
+                                                dialog.dismiss()
+                                                mHomeViewModel.acceptRequest(params)
+                                                Toast.makeText(context!!, "Accept", Toast.LENGTH_SHORT).show()
+                                                canShowRequestDialog = true
+                                                BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+                                                    "TRANSPORT" -> Enums.ProjectTypes.TRANSPORT
+                                                    "SERVICE" -> Enums.ProjectTypes.SERVICE
+                                                    "ORDER" -> Enums.ProjectTypes.ORDER
+                                                    else -> Enums.ProjectTypes.TRANSPORT
+                                                }
+                                            }
+                                        }
+                                        .setNegativeButton("Reject") { dialog, which ->
+                                            run {
+                                                dialog.dismiss()
+                                                mHomeViewModel.acceptRequest(params)
+                                                Toast.makeText(context!!, "Reject", Toast.LENGTH_SHORT).show()
+                                                canShowRequestDialog = true
+                                            }
+                                        }.create().show()
                             }
-                            println("RRR :: inside 2 ")
-                            AlertDialog
-                                    .Builder(activity!!)
-                                    .setTitle("Incoming request")
-                                    .setMessage("Accept or reject request>>>")
-                                    .setPositiveButton("Accept") { dialog, which ->
-                                        run {
-                                            dialog.dismiss()
-                                            mHomeViewModel.acceptRequest()
-                                            Toast.makeText(context!!, "Accept", Toast.LENGTH_SHORT).show()
-                                        }
-                                    }
-                                    .setNegativeButton("Reject") { dialog, which ->
-                                        run {
-                                            dialog.dismiss()
-                                            mHomeViewModel.acceptRequest()
-                                            Toast.makeText(context!!, "Reject", Toast.LENGTH_SHORT).show()
-                                        }
-                                    }.create().show()
-                        } else Toast.makeText(context, "RRR :: ", Toast.LENGTH_SHORT).show()*/
+                            SCHEDULED -> {
+
+                            }
+                            CANCELLED -> {
+
+                            }
+                            ACCEPTED -> {
+
+                            }
+                            Enums.RideStatus.STARTED -> {
+
+                            }
+                            ARRIVED -> {
+
+                            }
+                            PICKED_UP -> {
+
+                            }
+                            DROPPED -> {
+
+                            }
+                            COMPLETED -> {
+
+                            }
+                            else -> {
+                                Toast.makeText(context!!, "Status empty", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
                 }
             }
         }
 
-
         //GetOnlineStatus
-        observeLiveData(mHomeViewModel.onlineStatusLiveData){
-            loadingObservable.value=false
-            if(mHomeViewModel.onlineStatusLiveData.value!=null){
-                val isOnline= mHomeViewModel.onlineStatusLiveData.value!!.responseData?.providerStatus
-                if(isOnline.equals("1")) {
+        observeLiveData(mHomeViewModel.onlineStatusLiveData) {
+            loadingObservable.value = false
+            if (mHomeViewModel.onlineStatusLiveData.value != null) {
+                val isOnline = mHomeViewModel.onlineStatusLiveData.value!!.responseData?.providerStatus
+                if (isOnline.equals("1")) {
                     dashBoardNavigator.isNeedLocationUpdate(true)
                     changeView(true)
-                }
-                    else {
+                } else {
                     dashBoardNavigator.isNeedLocationUpdate(false)
                     changeView(false)
                 }
-
             }
         }
     }
@@ -253,7 +268,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         })
     }
 
-    private fun initalizeMap() {
+    private fun initializeMap() {
         fragmentMap = childFragmentManager.findFragmentById(R.id.map_home) as SupportMapFragment
         fragmentMap.getMapAsync(this@HomeFragment)
     }
@@ -301,12 +316,10 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 if (mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) {
                     loadingObservable.value = true
                     mHomeViewModel.changeOnlineStatus("0")
-                }
-                else{
+                } else {
                     loadingObservable.value = true
                     mHomeViewModel.changeOnlineStatus("1")
                 }
-
             }
         }
     }
@@ -315,15 +328,17 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         loadingProgress!!.value = false
     }
 
-    fun showPendingListDialog(type:Int) {
+    private fun showPendingListDialog(type: Int) {
+        val pendingListDialog = PendingListDialog(type)
         val bundle = Bundle()
+
         bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
         bundle.putInt("ISSERVICENEED", isServiceNeed!!)
         bundle.putInt("ISBANCKDETAILNEED", isBankDetailNeed!!)
         bundle.putInt("TYPE", type)
-        pendingListDialog!!.arguments = bundle
-        pendingListDialog!!.show(activity!!.supportFragmentManager, "pendinglist")
-        pendingListDialog!!.isCancelable = true
+        pendingListDialog.arguments = bundle
+        pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
+        pendingListDialog.isCancelable = true
     }
 
     private fun changeView(isOnline: Boolean) {

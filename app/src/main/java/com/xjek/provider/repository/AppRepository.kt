@@ -127,7 +127,7 @@ class AppRepository : BaseRepository() {
     fun postSignup(viewModel: SignupViewModel, params: HashMap<String, RequestBody>,
                    @Part filename: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postSignup(params, filename)
+                .postSignUp(params, filename)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -306,7 +306,6 @@ class AppRepository : BaseRepository() {
                 }, {
 
                 })
-
     }
 
     fun checkRequest(viewModel: HomeViewModel, token: String, lat: String, lon: String): Disposable {
@@ -321,9 +320,33 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+    fun acceptIncomingRequest(viewModel: HomeViewModel, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .acceptIncomingRequest(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.acceptRequestLiveData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                })
+    }
+
+    fun rejectIncomingRequest(viewModel: HomeViewModel, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .rejectIncomingRequest(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.rejectRequestLiveData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                })
+    }
+
     fun getNotification(viewModel: NotificationViewModel, token: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getnotification(token)
+                .getNotification(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

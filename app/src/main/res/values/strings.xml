@@ -238,6 +238,11 @@
     <string name="taxi_pickup_location">Pickup Location</string>
     <string name="taxi_pickup_approve">Approve</string>
     <string name="taxi_pickup_cancel">Cancel</string>
+    <string name="taxi_incoming_req">Incoming Request</string>
+    <string name="taxi_location">Location</string>
+    <string name="taxi_service_type">Service Type</string>
+    <string name="taxi_accept">Accept</string>
+    <string name="taxi_rejcet">Reject</string>
 
     <!-- Header label -->
     <string name="header_label_verification_img">Verification Images</string>

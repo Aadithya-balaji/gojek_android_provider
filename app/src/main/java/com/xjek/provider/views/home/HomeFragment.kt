@@ -10,6 +10,8 @@ import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
@@ -26,6 +28,7 @@ import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
+import com.xjek.provider.utils.Enums
 import com.xjek.provider.utils.location_service.LocationUpdatesService.BROADCAST
 import com.xjek.provider.utils.location_service.LocationUpdatesService.EXTRA_LOCATION
 import com.xjek.provider.views.dashboard.DashBoardActivity
@@ -35,26 +38,28 @@ import com.xjek.taxiservice.views.main.ActivityTaxiMain
 import permissions.dispatcher.NeedsPermission
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
-        Home_Navigator,
+        HomeNavigator,
         OnMapReadyCallback,
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraIdleListener,
         LocationSource.OnLocationChangedListener {
 
     private lateinit var mHomeDataBinding: FragmentHomePageBinding
-
-    override fun getLayoutId(): Int = R.layout.fragment_home_page
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private lateinit var fragmentMap: SupportMapFragment
+    private lateinit var mHomeViewModel: HomeViewModel
+
     private var mGoogleMap: GoogleMap? = null
     private var currentLat: Double = 13.0561789
     private var currentLong: Double = 80.247998
-    private var isDocumentNeed: Int? = -1
     private var isServiceNeed: Int? = -1
-    private var isBankdetailNeed: Int? = -1
+    private var isDocumentNeed: Int? = -1
+    private var isBankDetailNeed: Int? = -1
     private var isOnline: Boolean? = true
-    private lateinit var mHomeViewModel: HomeViewModel
     private  var pendingListDialog:PendingListDialog?=null
+    private var canShowRequestDialog: Boolean? = true
+
+    override fun getLayoutId(): Int = R.layout.fragment_home_page
 
     companion object {
         var loadingProgress: MutableLiveData<Boolean>? = null
@@ -62,7 +67,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
-        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java);
+        mHomeViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         mHomeViewModel.navigator = this
         mHomeDataBinding.homemodel = mHomeViewModel
         mHomeDataBinding.btnChangeStatus.bringToFront()
@@ -81,7 +86,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
             fragmentMap.view!!.visibility = View.VISIBLE
-
         } else {
             mHomeDataBinding.llOffline.visibility = View.VISIBLE
             fragmentMap.view!!.visibility = View.GONE
@@ -104,37 +108,37 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     private fun getApiResponse() {
 
-        //Check Status
+        println("RRR :: HomeFragment.getApiResponse")
         observeLiveData(mHomeViewModel.checkRequestLiveData) {
-            if (mHomeViewModel.checkRequestLiveData.value!!.getStatusCode().equals("200")) {
+
+            val checkStatusModel = mHomeViewModel.checkRequestLiveData.value
+            if (checkStatusModel?.statusCode.equals("200")) {
                 val providerDetailsModel =
-                        mHomeViewModel.checkRequestLiveData.value!!.getResponseData()!!.getProviderDetails()
+                        checkStatusModel?.responseData!!.provider_details
 
                 if (providerDetailsModel != null) {
-                    isDocumentNeed = providerDetailsModel.getIsDocument()
-                    isServiceNeed = providerDetailsModel.getIsService()
-                    isBankdetailNeed = providerDetailsModel.getIsBankdetail()
-                    if (providerDetailsModel.getIsOnline() == 1) {
+                    isDocumentNeed = providerDetailsModel.is_document
+                    isServiceNeed = providerDetailsModel.is_service
+                    isBankDetailNeed = providerDetailsModel.is_bankdetail
+                    if (providerDetailsModel.is_online == 1) {
                         isOnline = true
                         writePreferences(PreferencesKey.IS_ONLINE, 1)
                         changeView(true)
-
                     } else {
                         isOnline = false
                         writePreferences(PreferencesKey.IS_ONLINE, 0)
                         dashBoardNavigator.isNeedLocationUpdate(false)
                         changeView(false)
                     }
-
-                    if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankdetailNeed == 0) {
+                    if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) {
                         if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
                         showPendingListDialog(1)
 
-                    }else if(!providerDetailsModel.getStatus().equals("APPROVED")){
+                    }else if(!providerDetailsModel.status.equals("APPROVED")){
                         if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
                          showPendingListDialog(2)
 
-                    }else if(providerDetailsModel.getWalletBalance()!! < 1){
+                    }else if(providerDetailsModel.wallet_balance!! < 1){
 
                         //for now  in api side not implmented the low balance
                         if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
@@ -160,6 +164,46 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 //
 //                    val dialog: AlertDialog = builder.create()
 //                    dialog.show()
+                /*   if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) showPendingListDialog(1)
+                    else if (!providerDetailsModel.status.equals("APPROVED")) showPendingListDialog(2)
+                    else if (providerDetailsModel.wallet_balance!! < 1) {
+                        //for now  in api side not implmented the low balance
+                        // showPendingListDialog(3)
+                    }
+
+                    println("RRR :: inside ")
+                    if (canShowRequestDialog!!)
+
+                        if (checkStatusModel.responseData!!.requests!!.get(0)!!.request!!.status == "SEARCHING") {
+                            var params: HashMap<String, String>
+                            params.put()
+                            canShowRequestDialog = false
+                            when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
+                                "TRANSPORT" -> BROADCAST = Enums.FlowTypes.TRANSPORT
+                                "SERVICE" -> BROADCAST = Enums.FlowTypes.SERVICE
+                                "ORDER" -> BROADCAST = Enums.FlowTypes.ORDER
+                                else -> BROADCAST = Enums.FlowTypes.TRANSPORT
+                            }
+                            println("RRR :: inside 2 ")
+                            AlertDialog
+                                    .Builder(activity!!)
+                                    .setTitle("Incoming request")
+                                    .setMessage("Accept or reject request>>>")
+                                    .setPositiveButton("Accept") { dialog, which ->
+                                        run {
+                                            dialog.dismiss()
+                                            mHomeViewModel.acceptRequest()
+                                            Toast.makeText(context!!, "Accept", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                    .setNegativeButton("Reject") { dialog, which ->
+                                        run {
+                                            dialog.dismiss()
+                                            mHomeViewModel.acceptRequest()
+                                            Toast.makeText(context!!, "Reject", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }.create().show()
+                        } else Toast.makeText(context, "RRR :: ", Toast.LENGTH_SHORT).show()*/
                 }
             }
         }
@@ -263,7 +307,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                     mHomeViewModel.changeOnlineStatus("1")
                 }
 
-
             }
         }
     }
@@ -276,8 +319,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         val bundle = Bundle()
         bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
         bundle.putInt("ISSERVICENEED", isServiceNeed!!)
-        bundle.putInt("ISBANCKDETAILNEED", isBankdetailNeed!!)
-        bundle.putInt("TYPE",type)
+        bundle.putInt("ISBANCKDETAILNEED", isBankDetailNeed!!)
+        bundle.putInt("TYPE", type)
         pendingListDialog!!.arguments = bundle
         pendingListDialog!!.show(activity!!.supportFragmentManager, "pendinglist")
         pendingListDialog!!.isCancelable = true

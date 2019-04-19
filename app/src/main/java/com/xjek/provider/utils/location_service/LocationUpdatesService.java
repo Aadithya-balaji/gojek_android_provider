@@ -42,19 +42,18 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class LocationUpdatesService extends Service {
 
-    public static final String PACKAGE = "LocationUpdatesService";
-    public static final String BROADCAST = PACKAGE + ".broadcast";
-    public static final String EXTRA_LOCATION = PACKAGE + ".location";
-    public static final String NOTIFICATION = PACKAGE + ".started_from_notification";
+    public static String BROADCAST = "BASE_BROADCAST";
+    public static final String EXTRA_LOCATION = BROADCAST + ".location";
+    public static final String NOTIFICATION = "NOTIFICATION";
 
     private final String CHANNEL_ID = "channel_01";
 
-    private final long DISPLACEMENT = 50;
-    private final long UPDATE_INTERVAL = 12000;
+    private final long DISPLACEMENT = 10;
+    private final long UPDATE_INTERVAL = 6000;
     private final long FASTEST_UPDATE_INTERVAL = UPDATE_INTERVAL / 2;
     private final int NOTIFICATION_ID = 12345678;
 
-    private final int CHECK_INTERVAL = 25000;
+    private final int CHECK_INTERVAL = 15000;
     private Runnable r;
     private Handler h;
 

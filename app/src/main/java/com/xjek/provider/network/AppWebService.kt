@@ -102,5 +102,6 @@ interface AppWebService {
     @GET("provider/notification")
     fun getnotification(@Header("Authorization") token: String): Observable<NotificationResponse>
 
-
+    @GET("provider/onlinestatus/{status_id}")
+    fun changeOnlineStatus(@Header("Authorization") token: String,@Path("status_id") statusID: String): Observable<StatusResponseModel>
 }

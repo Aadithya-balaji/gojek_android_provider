@@ -335,6 +335,19 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+
+    fun changeOnlineStatus(viewModel: HomeViewModel,token:String, status: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .changeOnlineStatus(token,status)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.onlineStatusLiveData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                })
+    }
+
     companion object {
         private val TAG = AppRepository::class.java.simpleName
         private var appRepository: AppRepository? = null

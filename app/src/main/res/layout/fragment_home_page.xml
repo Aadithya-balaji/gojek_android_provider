@@ -25,12 +25,13 @@
             android:id="@+id/ll_offline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingLeft="@dimen/_50sdp"
+            android:paddingRight="@dimen/_50sdp"
             android:gravity="center">
             <ImageView
-                android:layout_width="@dimen/_100sdp"
-                android:layout_height="@dimen/_100sdp"
-                app:tint="@color/grey"
-                app:srcCompat="@drawable/ic_offline"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/offline_status"/>
         </LinearLayout>
 
 

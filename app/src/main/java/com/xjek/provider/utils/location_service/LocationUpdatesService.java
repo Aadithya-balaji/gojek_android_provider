@@ -142,37 +142,38 @@ public class LocationUpdatesService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        System.out.println("RRR LocationUpdatesService.onBind");
-        stopForeground(true);
+        /*System.out.println("RRR LocationUpdatesService.onBind");
+        stopForeground(true);*/
         mChangingConfiguration = false;
         return null;
     }
 
     @Override
     public void onRebind(Intent intent) {
-        System.out.println("RRR LocationUpdatesService.onRebind");
+        /*System.out.println("RRR LocationUpdatesService.onRebind");
         stopForeground(true);
-        mChangingConfiguration = false;
+        mChangingConfiguration = false;*/
         super.onRebind(intent);
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
         System.out.println("RRR LocationUpdatesService.onUnbind");
-        if (!mChangingConfiguration) {
+        /*if (!mChangingConfiguration) {
             System.out.println("RRR Starting foreground service");
             if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O) {
                 startService(new Intent(this, LocationUpdatesService.class));
 //                mNotificationManager.startServiceInForeground(new Intent(this,
 //                        LocationUpdatesService.class), NOTIFICATION_ID, getNotification());
             } else startForeground(NOTIFICATION_ID, getNotification());
-        }
+        }*/
         return true;
     }
 
     @Override
     public void onDestroy() {
-        System.out.println("RRR LocationUpdatesService.onDestroy");
+        System.out.println("" +
+                " LocationUpdatesService.onDestroy");
         mFusedLocationClient.removeLocationUpdates(mLocationCallback);
     }
 

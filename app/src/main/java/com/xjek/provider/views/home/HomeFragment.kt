@@ -54,6 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private var isBankdetailNeed: Int? = -1
     private var isOnline: Boolean? = true
     private lateinit var mHomeViewModel: HomeViewModel
+    private  var pendingListDialog:PendingListDialog?=null
 
     companion object {
         var loadingProgress: MutableLiveData<Boolean>? = null
@@ -75,6 +76,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         val activity: DashBoardActivity = activity as DashBoardActivity
         loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
         mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+        pendingListDialog= PendingListDialog()
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
@@ -101,6 +103,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     private fun getApiResponse() {
+
+        //Check Status
         observeLiveData(mHomeViewModel.checkRequestLiveData) {
             if (mHomeViewModel.checkRequestLiveData.value!!.getStatusCode().equals("200")) {
                 val providerDetailsModel =
@@ -118,20 +122,27 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                     } else {
                         isOnline = false
                         writePreferences(PreferencesKey.IS_ONLINE, 0)
+                        dashBoardNavigator.isNeedLocationUpdate(false)
                         changeView(false)
                     }
 
                     if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankdetailNeed == 0) {
+                        if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
                         showPendingListDialog(1)
 
                     }else if(!providerDetailsModel.getStatus().equals("APPROVED")){
-                        showPendingListDialog(2)
+                        if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
+                         showPendingListDialog(2)
 
                     }else if(providerDetailsModel.getWalletBalance()!! < 1){
 
                         //for now  in api side not implmented the low balance
-                       // showPendingListDialog(3)
+                        if(pendingListDialog!=null && pendingListDialog!!.isShown()==false)
+                        showPendingListDialog(3)
                     }
+
+
+
 
 
                     //      By Rajaganapathi :: Just for development purpose...
@@ -150,6 +161,24 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 //                    val dialog: AlertDialog = builder.create()
 //                    dialog.show()
                 }
+            }
+        }
+
+
+        //GetOnlineStatus
+        observeLiveData(mHomeViewModel.onlineStatusLiveData){
+            loadingObservable.value=false
+            if(mHomeViewModel.onlineStatusLiveData.value!=null){
+                val isOnline= mHomeViewModel.onlineStatusLiveData.value!!.responseData?.providerStatus
+                if(isOnline.equals("1")) {
+                    dashBoardNavigator.isNeedLocationUpdate(true)
+                    changeView(true)
+                }
+                    else {
+                    dashBoardNavigator.isNeedLocationUpdate(false)
+                    changeView(false)
+                }
+
             }
         }
     }
@@ -225,8 +254,15 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     override fun changeStatus(view: View) {
         when (view.id) {
             R.id.btn_change_status -> {
-                if (mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) changeView(false)
-                else changeView(true)
+                if (mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) {
+                    loadingObservable.value = true
+                    mHomeViewModel.changeOnlineStatus("0")
+                }
+                else{
+                    loadingObservable.value = true
+                    mHomeViewModel.changeOnlineStatus("1")
+                }
+
 
             }
         }
@@ -237,14 +273,14 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     fun showPendingListDialog(type:Int) {
-        val pendingListDialog = PendingListDialog(type)
         val bundle = Bundle()
         bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
         bundle.putInt("ISSERVICENEED", isServiceNeed!!)
         bundle.putInt("ISBANCKDETAILNEED", isBankdetailNeed!!)
-        pendingListDialog.arguments = bundle
-        pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
-        pendingListDialog.isCancelable = false
+        bundle.putInt("TYPE",type)
+        pendingListDialog!!.arguments = bundle
+        pendingListDialog!!.show(activity!!.supportFragmentManager, "pendinglist")
+        pendingListDialog!!.isCancelable = true
     }
 
     private fun changeView(isOnline: Boolean) {

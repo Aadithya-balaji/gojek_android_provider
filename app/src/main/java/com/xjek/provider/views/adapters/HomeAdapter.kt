@@ -36,7 +36,6 @@ class HomeAdapter(activity: AppCompatActivity) : RecyclerView.Adapter<HomeAdapte
     }
 
     inner class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         val ivProfile = itemView.findViewById(R.id.profile_image) as CircleImageView
         val tvUserName = itemView.findViewById(R.id.tv_user_name) as TextView
         val rbHome = itemView.findViewById(R.id.rb_home) as RatingBar

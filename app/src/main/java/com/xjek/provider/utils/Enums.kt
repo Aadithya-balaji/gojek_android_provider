@@ -44,10 +44,28 @@ class Enums {
         const val LOW_BALANCE = 13
     }
 
-    object FlowTypes {
+    object ProjectTypes {
         const val TRANSPORT = "TRANSPORT"
         const val SERVICE = "SERVICE"
         const val ORDER = "ORDER"
+    }
+
+    object ProviderStatus {
+        const val ACTIVE = "ACTIVE"
+        const val RIDING = "RIDING"
+        const val OFFLINE = "OFFLINE"
+    }
+
+    object RideStatus {
+        const val SEARCHING = "SEARCHING"
+        const val SCHEDULED = "SCHEDULED"
+        const val CANCELLED = "CANCELLED"
+        const val ACCEPTED = "ACCEPTED"
+        const val STARTED = "STARTED"
+        const val ARRIVED = "ARRIVED"
+        const val PICKED_UP = "PICKEDUP"
+        const val DROPPED = "DROPPED"
+        const val COMPLETED = "COMPLETED"
     }
 
     @IntDef(DOC_TAXI, DOC_FOODIE, DOC_SERVICE)

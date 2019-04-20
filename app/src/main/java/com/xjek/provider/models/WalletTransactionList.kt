@@ -2,10 +2,9 @@ package com.xjek.provider.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.xjek.base.data.PreferencesHelper.message
 
 
-class  WalletTransactionList{
+class WalletTransactionList {
     @SerializedName("statusCode")
     @Expose
     private var statusCode: String? = null

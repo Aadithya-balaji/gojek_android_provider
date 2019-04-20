@@ -49,10 +49,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
          return mPermissionUtils ?: PermissionUtils()
      }
 
-//    fun getPermissionUtil(): RunTimePermission? {
-//        return if (runtimePermission != null) return runtimePermission!! else RunTimePermission(this@BaseActivity)
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())

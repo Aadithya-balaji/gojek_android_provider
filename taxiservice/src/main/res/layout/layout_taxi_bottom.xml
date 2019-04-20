@@ -5,7 +5,7 @@
 
         <variable
             name="bottomsheetmodel"
-            type="com.xjek.taxiservice.views.bottomsheets.BottomSheetModule" />
+            type="com.xjek.taxiservice.views.bottomsheets.RideStatusViewModel" />
 
     </data>
 
@@ -96,7 +96,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
-                            android:text="@string/placeholder_string" />
+                            android:text="@string/placeholder_string"
+                            android:textColor="@color/taxi_bg_yellow" />
 
                         <RatingBar
                             android:id="@+id/rate"
@@ -185,7 +186,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:background="@drawable/bg_yellow_curve"
+                    android:background="@color/taxi_bg_yellow"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:onClick="@{() -> bottomsheetmodel.closeDialog()}"
                     android:text="@string/taxi_pickup_cancel"
@@ -197,15 +198,16 @@
                     android:id="@+id/btn_approve"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_weight=".5"
-                    android:background="@drawable/bg_yellow_curve"
+                    android:background="@color/taxi_bg_yellow"
                     android:fontFamily="@fo"
                     android:onClick="@{() -> bottomsheetmodel.openOTPDialogFrag()}"
                     android:text="@string/taxi_pickup_approve"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:textStyle="bold" />
+
             </LinearLayout>
 
             <Button
@@ -223,7 +225,9 @@
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
                 android:visibility="gone" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </layout>

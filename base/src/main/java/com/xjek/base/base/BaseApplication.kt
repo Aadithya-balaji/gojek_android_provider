@@ -17,8 +17,8 @@ open class BaseApplication : Application() {
     }
 
     var baseComponent = DaggerBaseComponent.builder()
-    .webServiceModule(WebServiceModule())
-    .build()
+            .webServiceModule(WebServiceModule())
+            .build()
 
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
@@ -28,13 +28,13 @@ open class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         baseApplication = this
-        appController=baseComponent
+        appController = baseComponent
         PreferencesHelper.setDefaultPreferences(this)
     }
 
     companion object {
         private lateinit var baseApplication: Context
-          var appController:BaseComponent?=null
+        var appController: BaseComponent? = null
         val getBaseApplicationContext: Context
             get() = baseApplication
     }

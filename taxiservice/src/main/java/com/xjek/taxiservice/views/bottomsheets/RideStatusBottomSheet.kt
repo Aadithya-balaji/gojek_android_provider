@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Build
-import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.layout_taxi_bottom.view.*
 
 class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(), BottomSheetNavigator, DialogInterface.OnDismissListener {
 
-    private var mLayoutTaxiBottomBinding: LayoutTaxiBottomBinding? = null
+    private lateinit var mLayoutTaxiBottomBinding: LayoutTaxiBottomBinding
     private var ctxt: AppCompatActivity? = null
 
     private lateinit var mViewModel: RideStatusViewModel
@@ -45,18 +44,22 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(), Bottom
         ctxt!!.startActivity(Intent(context, InvoiceActivity::class.java))
     }
 
-    override fun initView(View: View?) {
+
+    override fun initView(mViewDataBinding: ViewDataBinding?) {
+        mLayoutTaxiBottomBinding = mViewDataBinding as LayoutTaxiBottomBinding
         mViewModel = ViewModelProviders.of(this).get(RideStatusViewModel::class.java)
         mViewModel.navigator = this
-        mLayoutTaxiBottomBinding!!.bottomsheetmodel = mViewModel
-        
-        ivMapBin = view!!.findViewById(R.id.ib_location_pin) as ImageButton
-        ivSteering = view!!.findViewById(R.id.ib_steering) as ImageButton
-        ivFlag = view!!.findViewById(R.id.ib_flag) as ImageButton
-        vlTripStarted = view!!.findViewById(R.id.vl_trip_started) as View
-        vlTripFinished = view!!.findViewById(R.id.vl_trip_finished) as View
+        mLayoutTaxiBottomBinding.bottomsheetmodel = mViewModel
 
-        view!!.btn_approve.setOnClickListener {
+        val rootView = mLayoutTaxiBottomBinding.root
+
+        ivMapBin = rootView.findViewById(R.id.ib_location_pin) as ImageButton
+        ivSteering = rootView.findViewById(R.id.ib_steering) as ImageButton
+        ivFlag = rootView.findViewById(R.id.ib_flag) as ImageButton
+        vlTripStarted = rootView.findViewById(R.id.vl_trip_started) as View
+        vlTripFinished = rootView.findViewById(R.id.vl_trip_finished) as View
+
+        rootView.btn_approve.setOnClickListener {
             println("RRR :: RideStatusBottomSheet.initView")
             Toast.makeText(context!!, "RRR ", Toast.LENGTH_SHORT).show() }
     }
@@ -70,16 +73,10 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(), Bottom
         return R.layout.layout_taxi_bottom
     }
 
-    override fun initView(mViewDataBinding: ViewDataBinding?) {
-        mLayoutTaxiBottomBinding = mViewDataBinding as LayoutTaxiBottomBinding
-
-        val bottomSheetModule = RideStatusViewModel()
-        mLayoutTaxiBottomBinding!!.bottomsheetmodel = bottomSheetModule
-    }
-
+    @SuppressLint("SetTextI18n")
     override fun whenStatusStarted(checkStatusModel: ResponseData?) {
-        tv_user_name.setText(checkStatusModel!!.request!!.user!!.first_name + " " + checkStatusModel.request!!.user!!.last_name)
-        tv_user_address_one.setText(checkStatusModel.request!!.s_address)
+        tv_user_name.text = checkStatusModel!!.request!!.user!!.first_name + " " + checkStatusModel.request!!.user!!.last_name
+        tv_user_address_one.text = checkStatusModel.request!!.s_address
         rate.rating = checkStatusModel.request!!.user!!.rating!!.toFloat()
     }
 

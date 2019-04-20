@@ -3,6 +3,7 @@ package com.xjek.provider.views.incoming_request_taxi
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
@@ -56,11 +57,16 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
         if(incomingRequstModel!=null){
 
             if( incomingRequstModel!!.responseData!!.requests!!.size>0) {
-                totalSeconds = incomingRequstModel!!.responseData!!.requests!![0]!!.time_left_to_respond
+                totalSeconds = Math.abs( incomingRequstModel!!.responseData!!.requests!![0]!!.time_left_to_respond!!.toInt())
+                totalSeconds=120
                 val minutes = totalSeconds!! / 60
                 val seconds = totalSeconds!! % 60
-                val time = String.format("%d %d", minutes, seconds)
+                val time = String.format("%d:%d", minutes, seconds)
                 initCiruclarSeekbar(0f, time)
+                val totalMiliSeconds=totalSeconds!!*1000
+                val totalTimeInLong=totalMiliSeconds.toLong()
+                val myCountDownTimer:MyCountDownTimer=MyCountDownTimer(totalTimeInLong,1000L)
+                myCountDownTimer.start()
             }
         }
     }
@@ -141,7 +147,12 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
             val time:String= ""+String.format("%d:%d",
                     TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished),
                     TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)))
-          //  initCiruclarSeekbar()
+            val interval = millisUntilFinished * 100
+            val toPercent = interval / (totalSeconds!!*1000)
+            val result = 100 - toPercent
+            val longObject = result.toLong()
+            Log.e("percentage","----"+longObject.toFloat())
+            initCiruclarSeekbar(longObject.toFloat(),time);
 
         }
 

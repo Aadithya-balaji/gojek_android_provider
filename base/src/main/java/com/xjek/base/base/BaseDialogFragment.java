@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 public abstract class BaseDialogFragment <T extends ViewDataBinding> extends DialogFragment {
 
     public  abstract  int getLayout();
-    public  abstract  void initView(ViewDataBinding viewDataBinding);
+    public  abstract  void initView(ViewDataBinding viewDataBinding,View view);
     private T mViewDataBinding;
     private  View view;
 
@@ -22,10 +22,9 @@ public abstract class BaseDialogFragment <T extends ViewDataBinding> extends Dia
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mViewDataBinding = DataBindingUtil.inflate(
-                inflater,getLayout(), container, false);
-        initView(mViewDataBinding);
+        mViewDataBinding = DataBindingUtil.inflate(inflater,getLayout(), container, false);
         view=mViewDataBinding.getRoot();
+        initView(mViewDataBinding,view);
         return view;
 
     }

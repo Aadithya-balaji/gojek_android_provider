@@ -19,6 +19,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.gson.Gson
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
@@ -41,6 +42,7 @@ import com.xjek.provider.utils.location_service.LocationUpdatesService.BROADCAST
 import com.xjek.provider.utils.location_service.LocationUpdatesService.EXTRA_LOCATION
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.dashboard.DashBoardNavigator
+import com.xjek.provider.views.incoming_request_taxi.IncomingRequest
 import com.xjek.provider.views.pendinglist.PendingListDialog
 import com.xjek.taxiservice.views.main.ActivityTaxiMain
 import permissions.dispatcher.NeedsPermission
@@ -89,7 +91,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         val activity: DashBoardActivity = activity as DashBoardActivity
         loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
         mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
-        pendingListDialog = PendingListDialog(type)
+        pendingListDialog = PendingListDialog()
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
@@ -108,6 +110,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
 
         getApiResponse()
+
     }
 
     fun callCheckRequestApi() {
@@ -150,6 +153,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                             showPendingListDialog(3)
                     }
 
+
+                    if(checkStatusModel.responseData!!.requests!!.size>0)
                     BROADCAST = when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
                         "TRANSPORT" -> Enums.ProjectTypes.TRANSPORT
                         "SERVICE" -> Enums.ProjectTypes.SERVICE
@@ -158,7 +163,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                     }
 
                     println("RRR :: inside ")
-                    if (canShowRequestDialog!!) {
+                    if (canShowRequestDialog!! && checkStatusModel.responseData!!.requests!!.size>0) {
                         when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
                             SEARCHING -> {
                                 val params: HashMap<String, String> = HashMap()
@@ -166,7 +171,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                                 params["service_id"] = checkStatusModel.responseData!!.requests!![0]!!.request!!.id.toString()
                                 canShowRequestDialog = false
                                 println("RRR :: inside 2 ")
-                                AlertDialog
+                                /*AlertDialog
                                         .Builder(activity!!)
                                         .setTitle("Incoming request")
                                         .setMessage("Accept or reject request>>>")
@@ -191,7 +196,16 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                                                 Toast.makeText(context!!, "Reject", Toast.LENGTH_SHORT).show()
                                                 canShowRequestDialog = true
                                             }
-                                        }.create().show()
+                                        }.create().show()*/
+
+                                var requestModel=Gson().toJson(checkStatusModel!!)
+                                val bundle=Bundle()
+                                bundle.putString("requestModel",requestModel)
+                                val incomingRequestDialog=IncomingRequest()
+                                incomingRequestDialog.arguments=bundle
+                                pendingListDialog!!.show(activity!!.supportFragmentManager, "pendinglist")
+
+
                             }
                             SCHEDULED -> {
 
@@ -329,7 +343,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     private fun showPendingListDialog(type: Int) {
-        val pendingListDialog = PendingListDialog(type)
+        val pendingListDialog = PendingListDialog()
         val bundle = Bundle()
 
         bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)

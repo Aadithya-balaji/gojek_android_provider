@@ -2,6 +2,7 @@ package com.xjek.taxiservice.views.rating
 
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
@@ -34,7 +35,7 @@ class RatingFragment:BaseDialogFragment<FragmentRatingBinding>(), RatingNavigato
         return R.layout.fragment_rating
     }
 
-    override fun initView(viewDataBinding: ViewDataBinding?) {
+    override fun initView(viewDataBinding: ViewDataBinding,view: View) {
         fragmentRatingBinding=viewDataBinding as FragmentRatingBinding
         val ratingViewModel= RatingViewModel()
         fragmentRatingBinding!!.ratingmodel=ratingViewModel

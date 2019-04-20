@@ -1,5 +1,6 @@
 package com.xjek.taxiservice.views.verifyotp
 
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.taxiservice.R
@@ -28,7 +29,7 @@ class VerifyOtpDialog() : BaseDialogFragment<FragmentVerifyOtpBinding>() , Verif
         }
     }
 
-    override fun initView(mViewDataBinding: ViewDataBinding?) {
+    override fun initView(mViewDataBinding: ViewDataBinding,view: View) {
         fragmentVerifyOtpBinding = mViewDataBinding as FragmentVerifyOtpBinding
         val verifyOTPModule = VerifyOTPModule()
         fragmentVerifyOtpBinding!!.otpviewmodel = verifyOTPModule

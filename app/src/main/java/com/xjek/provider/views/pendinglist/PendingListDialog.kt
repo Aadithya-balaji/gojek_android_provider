@@ -19,7 +19,7 @@ import com.xjek.provider.views.document.DocumentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 
 @SuppressLint("ValidFragment")
-class PendingListDialog(type: Int) : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
+class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
 
 
     private lateinit var pendingListDialogBinding: PendingListDialogBinding
@@ -56,7 +56,7 @@ class PendingListDialog(type: Int) : BaseDialogFragment<PendingListDialogBinding
 
     }
 
-    override fun initView(viewDataBinding: ViewDataBinding?) {
+    override fun initView(viewDataBinding: ViewDataBinding,view:View) {
         pendingListDialogBinding = viewDataBinding as PendingListDialogBinding
         pendginListViewModel = PendingListViewModel()
         pendginListViewModel.navigator = this
@@ -81,13 +81,7 @@ class PendingListDialog(type: Int) : BaseDialogFragment<PendingListDialogBinding
                 pendingListDialogBinding.llWaiting.visibility = View.VISIBLE
             }
         }
-    }
 
-    fun getBundleArugment() {
-        isDocumentNeed = if (arguments != null && arguments!!.containsKey("ISDOCUMENTNEED")) arguments!!.getInt("ISDOCUMENTNEED") else 0
-        isServiceNeed = if (arguments != null && arguments!!.containsKey("ISSERVICENEED")) arguments!!.getInt("ISSERVICENEED") else 0
-        isBankDetailNeed = if (arguments != null && arguments!!.containsKey("ISBANCKDETAILNEED")) arguments!!.getInt("ISBANCKDETAILNEED") else 0
-        dialogType=if(arguments!=null && arguments!!.containsKey("TYPE")) arguments!!.getInt("TYPE") else -1
 
         if (isDocumentNeed == 1 && isServiceNeed == 0 && isBankDetailNeed == 0) {
             pendingListDialogBinding.tvAddDocument.visibility = View.VISIBLE
@@ -110,6 +104,15 @@ class PendingListDialog(type: Int) : BaseDialogFragment<PendingListDialogBinding
             pendingListDialogBinding.tvBankDetails.visibility = View.VISIBLE
 
         }
+    }
+
+    fun getBundleArugment() {
+        isDocumentNeed = if (arguments != null && arguments!!.containsKey("ISDOCUMENTNEED")) arguments!!.getInt("ISDOCUMENTNEED") else 0
+        isServiceNeed = if (arguments != null && arguments!!.containsKey("ISSERVICENEED")) arguments!!.getInt("ISSERVICENEED") else 0
+        isBankDetailNeed = if (arguments != null && arguments!!.containsKey("ISBANCKDETAILNEED")) arguments!!.getInt("ISBANCKDETAILNEED") else 0
+        dialogType=if(arguments!=null && arguments!!.containsKey("TYPE")) arguments!!.getInt("TYPE") else -1
+
+
     }
 
     fun  showDialogue(type:String){

@@ -19,6 +19,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.gson.Gson
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
@@ -34,6 +35,7 @@ import com.xjek.provider.utils.location_service.BaseLocationService.BROADCAST
 import com.xjek.provider.utils.location_service.BaseLocationService.EXTRA_LOCATION
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.dashboard.DashBoardNavigator
+import com.xjek.provider.views.incoming_request_taxi.IncomingRequest
 import com.xjek.provider.views.pendinglist.PendingListDialog
 import com.xjek.taxiservice.views.main.ActivityTaxiMain
 import permissions.dispatcher.NeedsPermission
@@ -49,6 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mHomeViewModel: HomeViewModel
+    private  lateinit var  incomingRequestDialog:IncomingRequest
 
     private var mGoogleMap: GoogleMap? = null
     private var currentLat: Double = 13.0561789
@@ -82,7 +85,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         val activity: DashBoardActivity = activity as DashBoardActivity
         loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
         mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
-        pendingListDialog = PendingListDialog(0)
+        pendingListDialog = PendingListDialog()
+        incomingRequestDialog=IncomingRequest()
+
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
@@ -101,6 +106,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
 
         getApiResponse()
+
     }
 
     fun callCheckRequestApi() {
@@ -131,6 +137,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                         dashBoardNavigator.isNeedLocationUpdate(false)
                         changeView(false)
                     }
+
+
                     if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) {
                         if (pendingListDialog != null && !pendingListDialog!!.isShown())
                             showPendingListDialog(1)
@@ -139,70 +147,93 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                             showPendingListDialog(2)
                     } else if (providerDetailsModel.wallet_balance!! < 1) {
                         //for now  in api side not implmented the low balance
-//                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
-//                            showPendingListDialog(3)
+                        //if (pendingListDialog != null && !pendingListDialog!!.isShown())
+                        //showPendingListDialog(3)
                     }
 
-                    println("RRR :: inside ")
-                    if (checkStatusModel.responseData!!.requests!!.isNotEmpty())
-                        when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
-                            SEARCHING -> {
-                                val params: HashMap<String, String> = HashMap()
-                                params["id"] = checkStatusModel.responseData!!.requests!![0]!!.request!!.id.toString()
-                                params["service_id"] = checkStatusModel.responseData!!.provider_details!!.service!!.admin_service_id.toString()
-                                if (canShowRequestDialog!!) {
-                                    AlertDialog
-                                            .Builder(activity!!)
-                                            .setTitle("Incoming request")
-                                            .setMessage("Accept or reject request>>>")
-                                            .setPositiveButton("Accept") { dialog, which ->
-                                                run {
-                                                    dialog.dismiss()
-                                                    mHomeViewModel.acceptRequest(params)
-                                                    Toast.makeText(context!!, "Accept", Toast.LENGTH_SHORT).show()
-                                                    canShowRequestDialog = true
-                                                }
+
+
+                    if (checkStatusModel.responseData!!.requests!!.size > 0)
+                        BROADCAST = when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
+                            "TRANSPORT" -> Constants.ProjectTypes.TRANSPORT
+                            "SERVICE" -> Constants.ProjectTypes.SERVICE
+                            "ORDER" -> Constants.ProjectTypes.ORDER
+                            else -> Constants.ProjectTypes.TRANSPORT
+                        }
+
+
+//                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
+//                            showPendingListDialog(3)
+                }
+
+                println("RRR :: inside ")
+                if (checkStatusModel.responseData!!.requests!!.isNotEmpty())
+                    when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
+                        SEARCHING -> {
+                            val params: HashMap<String, String> = HashMap()
+                            params["id"] = checkStatusModel.responseData!!.requests!![0]!!.request!!.id.toString()
+                            params["service_id"] = checkStatusModel.responseData!!.provider_details!!.service!!.admin_service_id.toString()
+                            if (canShowRequestDialog!!) {
+                               /* AlertDialog
+                                        .Builder(activity!!)
+                                        .setTitle("Incoming request")
+                                        .setMessage("Accept or reject request>>>")
+                                        .setPositiveButton("Accept") { dialog, which ->
+                                            run {
+                                                dialog.dismiss()
+                                                mHomeViewModel.acceptRequest(params)
+                                                Toast.makeText(context!!, "Accept", Toast.LENGTH_SHORT).show()
+                                                canShowRequestDialog = true
                                             }
-                                            .setNegativeButton("Reject") { dialog, which ->
-                                                run {
-                                                    dialog.dismiss()
-                                                    mHomeViewModel.rejectRequest(params)
-                                                    Toast.makeText(context!!, "Reject", Toast.LENGTH_SHORT).show()
-                                                    canShowRequestDialog = true
-                                                }
-                                            }.create().show()
+                                        }
+                                        .setNegativeButton("Reject") { dialog, which ->
+                                            run {
+                                                dialog.dismiss()
+                                                mHomeViewModel.rejectRequest(params)
+                                                Toast.makeText(context!!, "Reject", Toast.LENGTH_SHORT).show()
+                                                canShowRequestDialog = true
+                                            }
+                                        }.create().show()*/
+
+                                if(incomingRequestDialog.isShown()==false) {
+                                    val bundle = Bundle()
+                                    val strRequest = Gson().toJson(checkStatusModel)
+                                    bundle.putString("requestModel", strRequest)
+                                    incomingRequestDialog.show(activity!!.supportFragmentManager, "incomingRequest")
                                     canShowRequestDialog = false
                                 }
-                                BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                                    "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
-                                    "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
-                                    "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
-                                    else -> "BASE_BROADCAST"
-                                }
                             }
-                            else -> {
-                                when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                                    "TRANSPORT" -> {
-                                        BROADCAST += Constants.ProjectTypes.TRANSPORT
-                                        gotoTaxiModule()
-                                    }
-                                    "SERVICE" -> {
-                                        BROADCAST += Constants.ProjectTypes.SERVICE
-                                        gotoXuberModule()
-                                    }
-                                    "ORDER" -> {
-                                        BROADCAST += Constants.ProjectTypes.ORDER
-                                        gotoFoodieModule()
-                                    }
-                                    else -> {
-                                        BROADCAST = "BASE_BROADCAST"
-                                    }
+                            BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+                                "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
+                                "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
+                                "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
+                                else -> "BASE_BROADCAST"
+                            }
+                        }
+                        else -> {
+                            when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+                                "TRANSPORT" -> {
+                                    BROADCAST += Constants.ProjectTypes.TRANSPORT
+                                    gotoTaxiModule()
+                                }
+                                "SERVICE" -> {
+                                    BROADCAST += Constants.ProjectTypes.SERVICE
+                                    gotoXuberModule()
+                                }
+                                "ORDER" -> {
+                                    BROADCAST += Constants.ProjectTypes.ORDER
+                                    gotoFoodieModule()
+                                }
+                                else -> {
+                                    BROADCAST = "BASE_BROADCAST"
                                 }
                             }
                         }
-                }
+                    }
             }
         }
+
+
 
         try {//GetOnlineStatus
             observeLiveData(mHomeViewModel.onlineStatusLiveData) {
@@ -221,7 +252,11 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
+
+        }
+
+
+
 
     override fun onResume() {
         super.onResume()
@@ -314,7 +349,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     private fun showPendingListDialog(type: Int) {
-        val pendingListDialog = PendingListDialog(type)
+        val pendingListDialog = PendingListDialog()
         val bundle = Bundle()
 
         bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)

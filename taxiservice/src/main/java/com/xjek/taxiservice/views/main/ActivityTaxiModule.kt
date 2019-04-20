@@ -9,7 +9,7 @@ import com.xjek.taxiservice.repositary.TaxiRepository
 
 class ActivityTaxiModule :BaseViewModel<ActivityTaxMainNavigator>(){
 
-    val mRepository = TaxiRepository.instance()
+    private val mRepository = TaxiRepository.instance()
 
     var checkStatusTaxiLiveData = MutableLiveData<CheckRequestModel>()
 

@@ -114,7 +114,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     private fun getApiResponse() {
-
         println("RRR :: HomeFragment.getApiResponse")
         observeLiveData(mHomeViewModel.checkRequestLiveData) {
 

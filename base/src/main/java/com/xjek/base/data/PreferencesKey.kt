@@ -11,7 +11,8 @@ object PreferencesKey {
     const val CONTACT_NUMBER = "contact_number"
     const val CONTACT_EMAIL = "contact_email"
     const val ACCESS_TOKEN = "access_token"
-    const val  IS_ONLINE="is_online"
-    const val IS_FIRSTTIME="is_first_time"
-    const val PAYMENT_LIST="paymentlist"
+    const val IS_ONLINE = "is_online"
+    const val IS_FIRSTTIME = "is_first_time"
+    const val PAYMENT_LIST = "paymentlist"
+    const val TAXI_CHECK_REQUEST_DATA = "TAXI_CHECK_REQUEST_DATA"
 }

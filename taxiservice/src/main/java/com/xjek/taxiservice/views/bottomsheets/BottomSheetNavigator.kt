@@ -1,8 +1,11 @@
 package com.xjek.taxiservice.views.bottomsheets
 
-interface BottomSheetNavigator{
-    fun  openOTPDialog()
-    fun  startTrip(isTrue:Boolean)
-    fun  opentInvoice()
-    fun  closeBottomSheet()
+import com.xjek.taxiservice.model.ResponseData
+
+interface BottomSheetNavigator {
+    fun whenStatusStarted(checkStatusModel: ResponseData?)
+    fun openOTPDialog()
+    fun startTrip(isTrue: Boolean)
+    fun openInvoice()
+    fun closeBottomSheet()
 }

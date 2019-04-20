@@ -193,6 +193,7 @@ public class BaseLocationService extends Service {
 
     private void onNewLocation(Location location) {
         System.out.println("RRR BaseLocationService.onNewLocation");
+        System.out.println("RRR :: BROADCAST = " + BROADCAST);
 
         mLocation = location;
 

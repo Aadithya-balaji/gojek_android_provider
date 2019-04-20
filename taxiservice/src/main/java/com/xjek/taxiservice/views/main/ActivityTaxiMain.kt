@@ -18,13 +18,23 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
-import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
 import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
 import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
+import com.xjek.base.data.Constants.RideStatus.ACCEPTED
+import com.xjek.base.data.Constants.RideStatus.ARRIVED
+import com.xjek.base.data.Constants.RideStatus.CANCELLED
+import com.xjek.base.data.Constants.RideStatus.COMPLETED
+import com.xjek.base.data.Constants.RideStatus.DROPPED
+import com.xjek.base.data.Constants.RideStatus.PICKED_UP
+import com.xjek.base.data.Constants.RideStatus.SCHEDULED
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
+import com.xjek.base.data.Constants.RideStatus.STARTED
+import com.xjek.base.data.PreferencesKey.TAXI_CHECK_REQUEST_DATA
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.taxiservice.R
@@ -65,6 +75,7 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         mBottomSheet!!.isCancelable = false
 
         initializeMap()
+        checkStatusAPIResponse()
     }
 
     private fun initializeMap() {
@@ -159,7 +170,7 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
 
-    private fun getApiResponse() {
+    private fun checkStatusAPIResponse() {
 
         observeLiveData(mViewModel.checkStatusTaxiLiveData) {
 
@@ -169,36 +180,44 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
                 val providerDetailsModel =
                         checkStatusModel?.responseData!!.provider_details
 
-                if (providerDetailsModel != null && checkStatusModel.responseData!!.requests!!.isNotEmpty())
-                    when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
-                        SEARCHING -> {
+                try {
+                    if (providerDetailsModel != null) {
+                        writePreferences(TAXI_CHECK_REQUEST_DATA, Gson().toJson(checkStatusModel.responseData))
 
-                            BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                                "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
-                                "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
-                                "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
-                                else -> "BASE_BROADCAST"
+                        when (checkStatusModel.responseData!!.request!!.status) {
+                            SEARCHING -> {
+
                             }
-                        }
-                        else -> {
-                            when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                                "TRANSPORT" -> {
-                                    BROADCAST += Constants.ProjectTypes.TRANSPORT
-                                }
-                                "SERVICE" -> {
-                                    BROADCAST += Constants.ProjectTypes.SERVICE
-                                }
-                                "ORDER" -> {
-                                    BROADCAST += Constants.ProjectTypes.ORDER
-                                }
-                                else -> {
-                                    BROADCAST = "BASE_BROADCAST"
-                                }
+                            SCHEDULED -> {
+
+                            }
+                            CANCELLED -> {
+
+                            }
+                            ACCEPTED -> {
+
+                            }
+                            STARTED -> {
+                                mBottomSheet!!.whenStatusStarted(checkStatusModel.responseData)
+                            }
+                            ARRIVED -> {
+
+                            }
+                            PICKED_UP -> {
+
+                            }
+                            DROPPED -> {
+
+                            }
+                            COMPLETED -> {
+
                             }
                         }
                     }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
-
 }

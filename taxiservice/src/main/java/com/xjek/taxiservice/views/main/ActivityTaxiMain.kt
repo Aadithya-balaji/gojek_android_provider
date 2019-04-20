@@ -19,9 +19,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
 import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
 import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
+import com.xjek.base.data.Constants.RideStatus.SEARCHING
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.taxiservice.R
@@ -153,6 +156,49 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
 
     override fun showErrorMessage(error: String) {
         showLoader!!.value = false
+    }
+
+
+    private fun getApiResponse() {
+
+        observeLiveData(mViewModel.checkStatusTaxiLiveData) {
+
+            val checkStatusModel = mViewModel.checkStatusTaxiLiveData.value
+
+            if (checkStatusModel?.statusCode.equals("200")) {
+                val providerDetailsModel =
+                        checkStatusModel?.responseData!!.provider_details
+
+                if (providerDetailsModel != null && checkStatusModel.responseData!!.requests!!.isNotEmpty())
+                    when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
+                        SEARCHING -> {
+
+                            BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+                                "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
+                                "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
+                                "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
+                                else -> "BASE_BROADCAST"
+                            }
+                        }
+                        else -> {
+                            when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+                                "TRANSPORT" -> {
+                                    BROADCAST += Constants.ProjectTypes.TRANSPORT
+                                }
+                                "SERVICE" -> {
+                                    BROADCAST += Constants.ProjectTypes.SERVICE
+                                }
+                                "ORDER" -> {
+                                    BROADCAST += Constants.ProjectTypes.ORDER
+                                }
+                                else -> {
+                                    BROADCAST = "BASE_BROADCAST"
+                                }
+                            }
+                        }
+                    }
+            }
+        }
     }
 
 }

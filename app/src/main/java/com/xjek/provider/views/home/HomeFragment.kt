@@ -20,6 +20,8 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.xjek.base.base.BaseFragment
+import com.xjek.base.data.Constants
+import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
@@ -28,8 +30,6 @@ import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
-import com.xjek.provider.utils.Enums
-import com.xjek.provider.utils.Enums.RideStatus.SEARCHING
 import com.xjek.provider.utils.location_service.BaseLocationService.BROADCAST
 import com.xjek.provider.utils.location_service.BaseLocationService.EXTRA_LOCATION
 import com.xjek.provider.views.dashboard.DashBoardActivity
@@ -175,24 +175,24 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                                     canShowRequestDialog = false
                                 }
                                 BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                                    "TRANSPORT" -> BROADCAST + Enums.ProjectTypes.TRANSPORT
-                                    "SERVICE" -> BROADCAST + Enums.ProjectTypes.SERVICE
-                                    "ORDER" -> BROADCAST + Enums.ProjectTypes.ORDER
+                                    "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
+                                    "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
+                                    "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
                                     else -> "BASE_BROADCAST"
                                 }
                             }
                             else -> {
                                 when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
                                     "TRANSPORT" -> {
-                                        BROADCAST += Enums.ProjectTypes.TRANSPORT
+                                        BROADCAST += Constants.ProjectTypes.TRANSPORT
                                         gotoTaxiModule()
                                     }
                                     "SERVICE" -> {
-                                        BROADCAST += Enums.ProjectTypes.SERVICE
+                                        BROADCAST += Constants.ProjectTypes.SERVICE
                                         gotoXuberModule()
                                     }
                                     "ORDER" -> {
-                                        BROADCAST += Enums.ProjectTypes.ORDER
+                                        BROADCAST += Constants.ProjectTypes.ORDER
                                         gotoFoodieModule()
                                     }
                                     else -> {

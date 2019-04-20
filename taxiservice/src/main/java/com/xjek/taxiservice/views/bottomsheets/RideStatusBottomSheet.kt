@@ -29,6 +29,7 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(), Bottom
     private lateinit var ivFlag: ImageButton
     private lateinit var vlTripStarted: View
     private lateinit var vlTripFinished: View
+
     private lateinit var llButtonApprove: LinearLayout
     private lateinit var llButtonStartTrip: LinearLayout
     private lateinit var tvStartTrip: TextView

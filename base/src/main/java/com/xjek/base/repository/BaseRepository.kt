@@ -30,7 +30,8 @@ open class BaseRepository {
 
     private fun reconstructedRetrofit(serviceId: String): Retrofit {
         return retrofit.newBuilder()
-                .baseUrl(PreferencesHelper.get<String>(serviceId))
+                .baseUrl(StringBuilder(PreferencesHelper.get<String>(serviceId))
+                        .append("/").toString())
                 .build()
     }
 

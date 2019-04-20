@@ -29,17 +29,24 @@
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">
 
+        <activity android:name=".views.setup_services.SetupServicesActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity android:name=".views.language.LanguageActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".views.document_upload.DocumentUploadActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".views.setup_vehicle.SetupVehicleActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".views.manage_documents.ManageDocumentsActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".views.manage_services.ManageServicesActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".views.language.LanguageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.document_upload.DocumentUploadActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.setup_vehicle.SetupVehicleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.manage_documents.ManageDocumentsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.manage_services.ManageServicesActivity"
+            android:screenOrientation="portrait" />
         <!--
             Added the following meta-data element, an activity for Facebook, and an activity and
             intent filter for Chrome Custom Tabs inside your application element.
@@ -183,6 +190,7 @@
         <activity
             android:name="com.cooltechworks.creditcarddesign.CardEditActivity"
             android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />

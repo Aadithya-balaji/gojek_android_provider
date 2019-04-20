@@ -23,7 +23,7 @@ class SetupVehicleAdapter(private val setupVehicleViewModel: SetupVehicleViewMod
     }
 
     override fun getItemCount(): Int {
-        return 4
+        return setupVehicleViewModel.getItemCount()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

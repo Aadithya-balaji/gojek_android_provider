@@ -6,13 +6,17 @@ import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.repository.BaseRepository
 import com.xjek.provider.network.AppWebService
+import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.home.HomeViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
 import com.xjek.provider.views.notification.NotificationViewModel
+import com.xjek.provider.views.manage_documents.ManageDocumentsViewModel
+import com.xjek.provider.views.manage_services.ManageServicesViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
+import com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel
 import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
 import com.xjek.provider.views.splash.SplashViewModel
@@ -368,6 +372,101 @@ class AppRepository : BaseRepository() {
                     viewModel.onlineStatusLiveData.postValue(it)
                 }, {
                     viewModel.navigator.showErrormessage(getErrorMessage(it))
+                })
+    }
+
+    fun getServices(viewModel: ManageServicesViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getServices(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getServicesObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getRides(viewModel: SetupVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getRides(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleDataObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getShops(viewModel: SetupVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getShops(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleDataObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getVehicleCategories(viewModel: AddVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getVehicleCategories(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleCategoryObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun postVehicle(viewModel: AddVehicleViewModel, token: String,
+                    params: HashMap<String, RequestBody>,
+                    rcBookMultipart: MultipartBody.Part, insuranceMultipart: MultipartBody.Part
+    ): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postVehicle(token, params, rcBookMultipart, insuranceMultipart)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleResponseObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+//    fun getServices(viewModel: SetupVehicleViewModel, token: String): Disposable {
+//        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+//                .getRides(token)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe({
+//                    if (it.statusCode == "200")
+//                        viewModel.getVehicleDataObservable().postValue(it)
+//                }, {
+//                    viewModel.navigator.showError(getErrorMessage(it))
+//                })
+//    }
+
+    fun getDocumentTypes(viewModel: ManageDocumentsViewModel, token: String,
+                         params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getDocumentTypes(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getDocumentTypeObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 

@@ -1,3 +1,11 @@
 package com.xjek.provider.models
 
-data class DocumentUploadDataModel(val title: String, val hint: String, val imageUrl: String)
+class DocumentUploadDataModel {
+    var documentId: Int = -1
+    lateinit var frontPageTitle: String
+    var isBackPageRequired: Boolean = false
+    var backPageTitle: String? = null
+    var frontPageUrl: String? = null
+    var backPageUrl: String? = null
+    var isExpiryDateRequired: Int = -1
+}

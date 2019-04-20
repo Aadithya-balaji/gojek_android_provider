@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".views.manage_services.ManageServicesActivity">
+    tools:context=".views.setup_services.SetupServicesActivity">
 
     <data>
 
         <variable
-            name="manageServicesViewModel"
-            type="com.xjek.provider.views.manage_services.ManageServicesViewModel" />
+            name="setupServicesViewModel"
+            type="com.xjek.provider.views.setup_services.SetupServicesViewModel" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -27,8 +27,8 @@
             android:clipToPadding="false"
             android:padding="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:setAdapter="@{manageServicesViewModel.getAdapter()}"
+            app:setAdapter="@{setupServicesViewModel.adapter}"
             tools:itemCount="3"
-            tools:listitem="@layout/layout_manage_services_item" />
+            tools:listitem="@layout/layout_setup_services_item" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

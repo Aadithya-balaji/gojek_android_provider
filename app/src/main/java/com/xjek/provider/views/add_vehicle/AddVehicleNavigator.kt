@@ -5,4 +5,5 @@ interface AddVehicleNavigator {
     fun onRcBookClicked()
     fun onInsuranceClicked()
     fun onVehicleSubmitClicked()
+    fun showError(error: String)
 }

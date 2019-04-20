@@ -1,32 +1,40 @@
 package com.xjek.provider.views.manage_documents
 
+import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.readPreferences
+import com.xjek.provider.models.DocumentTypeResponseModel
+import com.xjek.provider.network.WebApiConstants
+import com.xjek.provider.repository.AppRepository
 
 class ManageDocumentsViewModel : BaseViewModel<ManageDocumentsNavigator>() {
 
-    private lateinit var adapter: ManageDocumentsAdapter
-//    private lateinit var services: List<ManageServicesModel>
+    private val appRepository = AppRepository.instance()
+    private val documentTypeLiveData = MutableLiveData<DocumentTypeResponseModel>()
 
-//    fun setServices(services: List<ManageServicesModel>) {
-//        this.services = services
-//    }
-
-//    fun getServices(): List<ManageServicesModel> {
-//        return services
-//    }
+    private val adapter = ManageDocumentsAdapter(this)
 
     fun setAdapter() {
-        adapter = ManageDocumentsAdapter(this)
         adapter.notifyDataSetChanged()
     }
 
-    fun getAdapter(): ManageDocumentsAdapter {
-        return adapter
+    fun getAdapter() = adapter
+
+    fun getDocumentType(position: Int): String {
+        return documentTypeLiveData.value!!.responseData[position].name
     }
 
-//    fun getService(position: Int): ManageServicesModel {
-//        return services[position]
-//    }
+    fun getDocumentTypes() {
+        val token = StringBuilder("Bearer ")
+                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
+                .toString()
+        val params = HashMap<String, String>()
+        params[WebApiConstants.ListDocuments.TYPE] = "Transport"
+        getCompositeDisposable().add(appRepository.getDocumentTypes(this, token, params))
+    }
+
+    fun getDocumentTypeObservable() = documentTypeLiveData
 
     fun onItemClick(position: Int) {
         navigator.onMenuItemClicked(position)

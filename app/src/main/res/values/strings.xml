@@ -217,8 +217,17 @@
     <string name="rc_book">RC Book</string>
     <string name="insurance">Insurance</string>
 
+    <!--Setup Services Screen-->
+    <string name="title_setup_services">Setup Your Vehicle</string>
+
     <!--Manage Documents Screen-->
     <string name="title_manage_documents">Manage Documents</string>
+
+    <!--Document Upload Screen-->
+    <string name="front">(Front)</string>
+    <string name="upload_front_page">Upload Front Page</string>
+    <string name="back">(Back)</string>
+    <string name="upload_back_page">Upload Back Page</string>
     <string name="expiry">Expiry</string>
 
     <!--LanguageModel Screen-->

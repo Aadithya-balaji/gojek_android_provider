@@ -10,19 +10,19 @@
             type="java.lang.Integer" />
 
         <variable
-            name="setupVehicleViewModel"
-            type="com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel" />
+            name="manageDocumentsViewModel"
+            type="com.xjek.provider.views.manage_documents.ManageDocumentsViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:onClick="@{() -> setupVehicleViewModel.onItemClick(position)}"
+        android:onClick="@{() -> manageDocumentsViewModel.onItemClick(position)}"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="4dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="false"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
         app:contentPadding="15dp">
 
         <com.google.android.material.circularreveal.CircularRevealRelativeLayout
@@ -30,7 +30,6 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_content"
                 style="@style/Theme.TextView.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,23 +39,18 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="@{setupVehicleViewModel.getVehicleName(position)}"
+                android:text="@{manageDocumentsViewModel.getDocumentType(safeUnbox(position))}"
                 android:textStyle="bold"
                 tools:text="@string/app_name" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_end"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
-                android:background="@drawable/drawable_circle"
-                android:backgroundTint="@color/colorGreen"
                 android:contentDescription="@null"
-                android:padding="5dp"
-                android:scaleType="fitCenter"
-                app:setVisibility="@{setupVehicleViewModel.isVehicleAdded(position)}"
                 app:srcCompat="@drawable/ic_right_arrow" />
         </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
     </com.google.android.material.card.MaterialCardView>

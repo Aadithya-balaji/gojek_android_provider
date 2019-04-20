@@ -10,49 +10,36 @@
             type="java.lang.Integer" />
 
         <variable
-            name="manageServicesViewModel"
-            type="com.xjek.provider.views.manage_services.ManageServicesViewModel" />
+            name="setupServicesViewModel"
+            type="com.xjek.provider.views.setup_services.SetupServicesViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:onClick="@{() -> manageServicesViewModel.onItemClick(position)}"
+        android:onClick="@{() -> setupServicesViewModel.onItemClick(position)}"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="4dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="false">
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="15dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <View
-                android:id="@+id/view_start"
-                android:layout_width="4dp"
-                android:layout_height="0dp"
-                android:background="@{manageServicesViewModel.getService(position).component1()}"
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cb_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_start"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@null"
-                android:padding="15dp"
-                android:src="@{manageServicesViewModel.getService(position).component2()}"
-                android:tint="@{manageServicesViewModel.getService(position).component1()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/view_start"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/ic_drive"
-                tools:tint="@color/colorDrive" />
-
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_title"
+                android:id="@+id/tv_service_name"
                 style="@style/Theme.TextView.Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -61,17 +48,16 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="@{manageServicesViewModel.getService(position).component3()}"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/tv_description"
-                app:layout_constraintEnd_toStartOf="@+id/iv_end"
-                app:layout_constraintStart_toEndOf="@id/iv_start"
+                app:layout_constraintBottom_toTopOf="@+id/tv_service_price"
+                app:layout_constraintEnd_toStartOf="@+id/iv_edit"
+                app:layout_constraintStart_toEndOf="@id/cb_service"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:text="@string/app_name" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_description"
+                android:id="@+id/tv_service_price"
                 style="@style/Theme.TextView.Small.Gray"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -80,15 +66,14 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="@{manageServicesViewModel.getService(position).component4()}"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@id/tv_title"
-                app:layout_constraintStart_toStartOf="@id/tv_title"
-                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                app:layout_constraintEnd_toEndOf="@id/tv_service_name"
+                app:layout_constraintStart_toStartOf="@id/tv_service_name"
+                app:layout_constraintTop_toBottomOf="@id/tv_service_name"
                 tools:text="@string/app_name" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_end"
+                android:id="@+id/iv_edit"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_marginEnd="15dp"
@@ -97,7 +82,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_right_arrow" />
+                app:srcCompat="@drawable/ic_pencil_edit_button" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

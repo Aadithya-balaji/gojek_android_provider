@@ -11,7 +11,6 @@ import com.xjek.provider.models.RejectRequestModel
 import com.xjek.provider.models.StatusResponseModel
 import com.xjek.provider.repository.AppRepository
 
-
 class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
     val appRepository = AppRepository.instance()
@@ -21,15 +20,15 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
     var rejectRequestLiveData = MutableLiveData<RejectRequestModel>()
 
     var showLoading = MutableLiveData<Boolean>()
+
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
-    var onlineStatusLiveData=MutableLiveData<StatusResponseModel>()
+
+    var onlineStatusLiveData = MutableLiveData<StatusResponseModel>()
 
     fun opentTranxitModule() {
         navigator.gotoTaxiModule()
     }
-
-
 
     fun openFoodieModule() {
         navigator.gotoFoodieModule()
@@ -72,7 +71,7 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
     }
 
 
-    fun changeOnlineStatus(status:String){
-        getCompositeDisposable().add(appRepository.changeOnlineStatus(this,"Bearer "+readPreferences<String>(PreferencesKey.ACCESS_TOKEN),status))
+    fun changeOnlineStatus(status: String) {
+        getCompositeDisposable().add(appRepository.changeOnlineStatus(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), status))
     }
 }

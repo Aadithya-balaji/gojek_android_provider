@@ -21,6 +21,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.gson.Gson
 import com.xjek.base.base.BaseFragment
+import com.xjek.base.data.Constants
+import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
@@ -29,17 +31,8 @@ import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
-import com.xjek.provider.utils.Enums
-import com.xjek.provider.utils.Enums.RideStatus.ACCEPTED
-import com.xjek.provider.utils.Enums.RideStatus.ARRIVED
-import com.xjek.provider.utils.Enums.RideStatus.CANCELLED
-import com.xjek.provider.utils.Enums.RideStatus.COMPLETED
-import com.xjek.provider.utils.Enums.RideStatus.DROPPED
-import com.xjek.provider.utils.Enums.RideStatus.PICKED_UP
-import com.xjek.provider.utils.Enums.RideStatus.SCHEDULED
-import com.xjek.provider.utils.Enums.RideStatus.SEARCHING
-import com.xjek.provider.utils.location_service.LocationUpdatesService.BROADCAST
-import com.xjek.provider.utils.location_service.LocationUpdatesService.EXTRA_LOCATION
+import com.xjek.provider.utils.location_service.BaseLocationService.BROADCAST
+import com.xjek.provider.utils.location_service.BaseLocationService.EXTRA_LOCATION
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequest
@@ -58,6 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mHomeViewModel: HomeViewModel
+    private  lateinit var  incomingRequestDialog:IncomingRequest
 
     private var mGoogleMap: GoogleMap? = null
     private var currentLat: Double = 13.0561789
@@ -92,6 +86,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
         mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
         pendingListDialog = PendingListDialog()
+        incomingRequestDialog=IncomingRequest()
+
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
@@ -123,6 +119,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         observeLiveData(mHomeViewModel.checkRequestLiveData) {
 
             val checkStatusModel = mHomeViewModel.checkRequestLiveData.value
+
             if (checkStatusModel?.statusCode.equals("200")) {
                 val providerDetailsModel =
                         checkStatusModel?.responseData!!.provider_details
@@ -141,6 +138,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                         dashBoardNavigator.isNeedLocationUpdate(false)
                         changeView(false)
                     }
+
+
                     if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) {
                         if (pendingListDialog != null && !pendingListDialog!!.isShown())
                             showPendingListDialog(1)
@@ -149,29 +148,34 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                             showPendingListDialog(2)
                     } else if (providerDetailsModel.wallet_balance!! < 1) {
                         //for now  in api side not implmented the low balance
-                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
-                            showPendingListDialog(3)
+                        //if (pendingListDialog != null && !pendingListDialog!!.isShown())
+                        //showPendingListDialog(3)
                     }
 
 
-                    if(checkStatusModel.responseData!!.requests!!.size>0)
-                    BROADCAST = when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
-                        "TRANSPORT" -> Enums.ProjectTypes.TRANSPORT
-                        "SERVICE" -> Enums.ProjectTypes.SERVICE
-                        "ORDER" -> Enums.ProjectTypes.ORDER
-                        else -> Enums.ProjectTypes.TRANSPORT
-                    }
 
-                    println("RRR :: inside ")
-                    if (canShowRequestDialog!! && checkStatusModel.responseData!!.requests!!.size>0) {
-                        when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
-                            SEARCHING -> {
-                                val params: HashMap<String, String> = HashMap()
-                                params["id"] = checkStatusModel.responseData!!.provider_details!!.id.toString()
-                                params["service_id"] = checkStatusModel.responseData!!.requests!![0]!!.request!!.id.toString()
-                                canShowRequestDialog = false
-                                println("RRR :: inside 2 ")
-                                /*AlertDialog
+                    if (checkStatusModel.responseData!!.requests!!.size > 0)
+                        BROADCAST = when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
+                            "TRANSPORT" -> Constants.ProjectTypes.TRANSPORT
+                            "SERVICE" -> Constants.ProjectTypes.SERVICE
+                            "ORDER" -> Constants.ProjectTypes.ORDER
+                            else -> Constants.ProjectTypes.TRANSPORT
+                        }
+
+
+//                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
+//                            showPendingListDialog(3)
+                }
+
+                println("RRR :: inside ")
+                if (checkStatusModel.responseData!!.requests!!.isNotEmpty())
+                    when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
+                        SEARCHING -> {
+                            val params: HashMap<String, String> = HashMap()
+                            params["id"] = checkStatusModel.responseData!!.requests!![0]!!.request!!.id.toString()
+                            params["service_id"] = checkStatusModel.responseData!!.provider_details!!.service!!.admin_service_id.toString()
+                            if (canShowRequestDialog!!) {
+                               /* AlertDialog
                                         .Builder(activity!!)
                                         .setTitle("Incoming request")
                                         .setMessage("Accept or reject request>>>")
@@ -181,80 +185,79 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                                                 mHomeViewModel.acceptRequest(params)
                                                 Toast.makeText(context!!, "Accept", Toast.LENGTH_SHORT).show()
                                                 canShowRequestDialog = true
-                                                BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                                                    "TRANSPORT" -> Enums.ProjectTypes.TRANSPORT
-                                                    "SERVICE" -> Enums.ProjectTypes.SERVICE
-                                                    "ORDER" -> Enums.ProjectTypes.ORDER
-                                                    else -> Enums.ProjectTypes.TRANSPORT
-                                                }
                                             }
                                         }
                                         .setNegativeButton("Reject") { dialog, which ->
                                             run {
                                                 dialog.dismiss()
-                                                mHomeViewModel.acceptRequest(params)
+                                                mHomeViewModel.rejectRequest(params)
                                                 Toast.makeText(context!!, "Reject", Toast.LENGTH_SHORT).show()
                                                 canShowRequestDialog = true
                                             }
                                         }.create().show()*/
 
-                                var requestModel=Gson().toJson(checkStatusModel!!)
-                                val bundle=Bundle()
-                                bundle.putString("requestModel",requestModel)
-                                val incomingRequestDialog=IncomingRequest()
-                                incomingRequestDialog.arguments=bundle
-                                pendingListDialog!!.show(activity!!.supportFragmentManager, "pendinglist")
-
-
+                                if(incomingRequestDialog.isShown()==false) {
+                                    val bundle = Bundle()
+                                    val strRequest = Gson().toJson(checkStatusModel)
+                                    bundle.putString("requestModel", strRequest)
+                                    incomingRequestDialog.show(activity!!.supportFragmentManager, "incomingRequest")
+                                    canShowRequestDialog = false
+                                }
                             }
-                            SCHEDULED -> {
-
+                            BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+                                "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
+                                "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
+                                "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
+                                else -> "BASE_BROADCAST"
                             }
-                            CANCELLED -> {
-
-                            }
-                            ACCEPTED -> {
-
-                            }
-                            Enums.RideStatus.STARTED -> {
-
-                            }
-                            ARRIVED -> {
-
-                            }
-                            PICKED_UP -> {
-
-                            }
-                            DROPPED -> {
-
-                            }
-                            COMPLETED -> {
-
-                            }
-                            else -> {
-                                Toast.makeText(context!!, "Status empty", Toast.LENGTH_SHORT).show()
+                        }
+                        else -> {
+                            when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+                                "TRANSPORT" -> {
+                                    BROADCAST += Constants.ProjectTypes.TRANSPORT
+                                    gotoTaxiModule()
+                                }
+                                "SERVICE" -> {
+                                    BROADCAST += Constants.ProjectTypes.SERVICE
+                                    gotoXuberModule()
+                                }
+                                "ORDER" -> {
+                                    BROADCAST += Constants.ProjectTypes.ORDER
+                                    gotoFoodieModule()
+                                }
+                                else -> {
+                                    BROADCAST = "BASE_BROADCAST"
+                                }
                             }
                         }
                     }
-                }
             }
         }
 
-        //GetOnlineStatus
-        observeLiveData(mHomeViewModel.onlineStatusLiveData) {
-            loadingObservable.value = false
-            if (mHomeViewModel.onlineStatusLiveData.value != null) {
-                val isOnline = mHomeViewModel.onlineStatusLiveData.value!!.responseData?.providerStatus
-                if (isOnline.equals("1")) {
-                    dashBoardNavigator.isNeedLocationUpdate(true)
-                    changeView(true)
-                } else {
-                    dashBoardNavigator.isNeedLocationUpdate(false)
-                    changeView(false)
+
+
+        try {//GetOnlineStatus
+            observeLiveData(mHomeViewModel.onlineStatusLiveData) {
+                loadingObservable.value = false
+                if (mHomeViewModel.onlineStatusLiveData.value != null) {
+                    val isOnline = mHomeViewModel.onlineStatusLiveData.value!!.responseData?.providerStatus
+                    if (isOnline.equals("1")) {
+                        dashBoardNavigator.isNeedLocationUpdate(true)
+                        changeView(true)
+                    } else {
+                        dashBoardNavigator.isNeedLocationUpdate(false)
+                        changeView(false)
+                    }
                 }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-    }
+
+        }
+
+
+
 
     override fun onResume() {
         super.onResume()
@@ -290,9 +293,12 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     override fun onMapReady(map: GoogleMap?) {
         mGoogleMap = map
         try {
+            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
+            mGoogleMap!!.uiSettings.isCompassEnabled = true
+
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.xjek.taxiservice.R.raw.style_json))
-            val latlong = LatLng(currentLat, currentLong)
-            val location = CameraUpdateFactory.newLatLngZoom(latlong, 15f)
+            val latlng = LatLng(currentLat, currentLong)
+            val location = CameraUpdateFactory.newLatLngZoom(latlng, 15f)
             mGoogleMap!!.animateCamera(location)
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
@@ -316,6 +322,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun gotoTaxiModule() {
         startActivity(Intent(activity!!, ActivityTaxiMain::class.java))
+        dashBoardNavigator.isNeedLocationUpdate(false)
     }
 
     override fun gotoFoodieModule() {

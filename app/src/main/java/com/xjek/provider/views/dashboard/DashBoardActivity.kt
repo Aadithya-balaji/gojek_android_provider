@@ -13,7 +13,7 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityDashboardBinding
 import com.xjek.provider.utils.Enums
-import com.xjek.provider.utils.location_service.LocationUpdatesService
+import com.xjek.provider.utils.location_service.BaseLocationService
 import com.xjek.provider.views.account.AccountFragment
 import com.xjek.provider.views.home.HomeFragment
 import com.xjek.provider.views.notification.NotificationFragment
@@ -23,7 +23,6 @@ import kotlinx.android.synthetic.main.toolbar_header.view.*
 
 class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator {
 
-
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var viewModel: DashBoardViewModel
     private lateinit var tvTitle: TextView
@@ -31,7 +30,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     private lateinit var tbrRlLeft: RelativeLayout
     private lateinit var tbrIvLogo: ImageView
     private lateinit var ivRightIcon: ImageView
-    private  var   locationServiceIntent:Intent?=null
+    private var locationServiceIntent: Intent? = null
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -76,9 +75,9 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
             }
         }
 
-         locationServiceIntent = Intent(this, LocationUpdatesService::class.java)
+        locationServiceIntent = Intent(this, BaseLocationService::class.java)
         if (getPermissionUtil().hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION))
-         isNeedLocagtionUpdate(true)
+            isNeedLocagtionUpdate(true)
         else if (getPermissionUtil().requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                         Enums.LOCATION_REQUEST_CODE)) startService(locationServiceIntent)
 
@@ -88,13 +87,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         }
     }
 
-    fun isNeedLocagtionUpdate(isTrue:Boolean){
-        if(isTrue==true)
-            startService(locationServiceIntent)
-        else
-            stopService(locationServiceIntent)
+    private fun isNeedLocagtionUpdate(isTrue: Boolean) {
+        if (isTrue) startService(locationServiceIntent)
+        else stopService(locationServiceIntent)
     }
-
 
     override fun setTitle(title: String) {
         tvTitle.text = title
@@ -132,7 +128,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     override fun isNeedLocationUpdate(isTrue: Boolean) {
 
-         isNeedLocagtionUpdate(isTrue)
+        isNeedLocagtionUpdate(isTrue)
     }
 
 }

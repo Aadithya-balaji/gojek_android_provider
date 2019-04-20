@@ -85,7 +85,7 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(), Bottom
 
     override fun openOTPDialog() {
         val otpDialogFragment = VerifyOtpDialog.newInstance(this)
-        otpDialogFragment.show(ctxt!!.supportFragmentManager, "dialog")
+         otpDialogFragment.show(ctxt!!.supportFragmentManager, "dialog")
     }
 
     inner class DismissListener : DialogInterface {

@@ -53,21 +53,21 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
     }
 
     fun acceptRequest(param: HashMap<String, String>) {
-        getCompositeDisposable()
+       /* getCompositeDisposable()
                 .add(appRepository.acceptIncomingRequest(
                         this,
                         "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
                         param)
-                )
+                )*/
     }
 
     fun rejectRequest(param: HashMap<String, String>) {
-        getCompositeDisposable()
+       /* getCompositeDisposable()
                 .add(appRepository.rejectIncomingRequest(
                         this,
                         "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
                         param)
-                )
+                )*/
     }
 
 

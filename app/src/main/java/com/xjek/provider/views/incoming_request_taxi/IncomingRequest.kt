@@ -1,24 +1,30 @@
 package com.xjek.provider.views.incoming_request_taxi
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.ViewUtils
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.xjek.base.base.BaseDialogFragment
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
+import com.xjek.provider.views.home.HomeFragment
 import java.util.concurrent.TimeUnit
 
 class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
+
 
     private lateinit var dialogTaxiIncomingReqBinding: DialogTaxiIncomingRequestBinding
     private lateinit var incomingRequestViewModel: IncomingRequestViewModel
@@ -26,6 +32,11 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
     private var shown: Boolean? = false
     private var totalSeconds:Int?=0
     private  var incomingRequstModel:CheckRequestModel?=null
+
+    companion object {
+        var loadingProgress: MutableLiveData<Boolean>? = null
+    }
+
 
     override fun getLayout(): Int {
         return com.xjek.provider.R.layout.dialog_taxi_incoming_request
@@ -43,8 +54,7 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams
-                .WRAP_CONTENT);
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
@@ -53,11 +63,12 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
         incomingRequestViewModel.navigator = this
         dialogTaxiIncomingReqBinding.requestmodel = incomingRequestViewModel
         dialogTaxiIncomingReqBinding.setLifecycleOwner(this)
+        //incomingRequestViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
        // initCiruclarSeekbar(100f,"03:21")
         if(incomingRequstModel!=null){
 
             if( incomingRequstModel!!.responseData!!.requests!!.size>0) {
-                totalSeconds = Math.abs( incomingRequstModel!!.responseData!!.requests!![0]!!.time_left_to_respond!!.toInt())
+                totalSeconds = Math.abs( incomingRequstModel!!.responseData!!.requests!![0]!!.time_left_to_respond!!)
                 totalSeconds=120
                 val minutes = totalSeconds!! / 60
                 val seconds = totalSeconds!! % 60
@@ -69,13 +80,50 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
                 myCountDownTimer.start()
             }
         }
+
+
+        // Get Api Resposne
+        getApiResponse()
+    }
+
+    fun getApiResponse(){
+
+        //Accept Request model
+        observeLiveData(incomingRequestViewModel.acceptRequestLiveData){
+            loadingObservable.value=false
+            if(incomingRequestViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")){
+                val intent = Intent(activity,Class.forName("com.xjek.taxiservice.views.main.ActivityTaxiMain"))
+                activity!!.startActivity(intent)
+                dialog!!.dismiss()
+
+            }
+        }
+
+        //Cancel Request model
+        observeLiveData(incomingRequestViewModel.rejectRequestLiveData){
+           loadingObservable.value=false
+            if(incomingRequestViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")){
+                com.xjek.base.utils.ViewUtils.showToast(activity!!,incomingRequestViewModel.rejectRequestLiveData.value!!.message.toString(),false)
+                dialog!!.dismiss()
+            }
+        }
     }
 
     override fun accept() {
+        loadingObservable.value=true
+        val params: HashMap<String, String> = HashMap()
+        params["id"] = incomingRequstModel!!.responseData!!.requests!![0]!!.request!!.id.toString()
+        params["service_id"] = incomingRequstModel!!.responseData!!.provider_details!!.service!!.admin_service_id.toString()
+        incomingRequestViewModel.acceptRequest(params)
+
     }
 
     override fun cancel() {
-
+        loadingObservable.value=true
+        val params: HashMap<String, String> = HashMap()
+        params["id"] = incomingRequstModel!!.responseData!!.requests!![0]!!.request!!.id.toString()
+        params["service_id"] = incomingRequstModel!!.responseData!!.provider_details!!.service!!.admin_service_id.toString()
+        incomingRequestViewModel.rejectRequest(params)
     }
 
     fun initCiruclarSeekbar(percentage:Float,time:String) {
@@ -153,10 +201,13 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
             val longObject = result.toLong()
             Log.e("percentage","----"+longObject.toFloat())
             initCiruclarSeekbar(longObject.toFloat(),time);
-
         }
 
     }
 
+    override fun showErrormessage(error: String) {
+        loadingObservable.value=false
+        com.xjek.base.utils.ViewUtils.showToast(activity!!,error,false)
+    }
 
 }

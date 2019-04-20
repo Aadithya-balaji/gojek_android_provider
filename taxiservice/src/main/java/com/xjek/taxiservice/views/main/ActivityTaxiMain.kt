@@ -152,7 +152,6 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
 
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-
                 mViewModel.callTaxiCheckStatusAPI()
             }
         }

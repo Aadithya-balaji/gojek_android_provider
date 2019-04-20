@@ -9,6 +9,7 @@ import android.content.IntentFilter
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -120,9 +121,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             val checkStatusModel = mHomeViewModel.checkRequestLiveData.value
 
             if (checkStatusModel?.statusCode.equals("200")) {
-                val providerDetailsModel =
-                        checkStatusModel?.responseData!!.provider_details
-
+                Log.e("request","---------"+checkStatusModel!!.statusCode)
+                val providerDetailsModel = checkStatusModel?.responseData!!.provider_details
                 if (providerDetailsModel != null) {
                     isDocumentNeed = providerDetailsModel.is_document
                     isServiceNeed = providerDetailsModel.is_service
@@ -196,6 +196,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                                         }.create().show()*/
 
                                 if(incomingRequestDialog.isShown()==false) {
+                                    Log.e("request","----searching"+canShowRequestDialog)
                                     val bundle = Bundle()
                                     val strRequest = Gson().toJson(checkStatusModel)
                                     bundle.putString("requestModel", strRequest)

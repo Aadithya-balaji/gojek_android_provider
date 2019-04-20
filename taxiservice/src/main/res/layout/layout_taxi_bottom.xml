@@ -75,7 +75,8 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_alignParentLeft="true">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_cancel"
@@ -127,7 +128,8 @@
                         android:padding="3dp"
                         android:text="@string/taxi_pickup_location"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13sdp" />
+                        android:textSize="@dimen/_13sdp"
+                        android:layout_toLeftOf="@id/ibNavigation" />
 
                     <TextView
                         android:id="@+id/tv_user_address_one"
@@ -137,8 +139,8 @@
                         android:layout_toStartOf="@id/ibNavigation"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
-                        android:text="@string/placeholder_string"
-                        android:textColor="@color/grey" />
+                        android:textColor="@color/grey"
+                        android:layout_toLeftOf="@id/ibNavigation" />
 
                     <TextView
                         android:id="@+id/tv_user_address_two"
@@ -147,8 +149,8 @@
                         android:layout_below="@+id/tv_user_address_one"
                         android:layout_toStartOf="@id/ibNavigation"
                         android:padding="3dp"
-                        android:text="@string/placeholder_string"
-                        android:textColor="@color/grey" />
+                        android:textColor="@color/grey"
+                        android:layout_toLeftOf="@id/ibNavigation" />
 
                     <ImageButton
                         android:id="@+id/ibNavigation"
@@ -160,7 +162,8 @@
                         android:contentDescription="@string/app_name"
                         android:elevation="5dp"
                         android:padding="@dimen/_15sdp"
-                        app:srcCompat="@drawable/ic_location_arrow" />
+                        app:srcCompat="@drawable/ic_location_arrow"
+                        android:layout_alignParentRight="true" />
 
                 </RelativeLayout>
 
@@ -203,10 +206,11 @@
                     android:background="@color/taxi_bg_yellow"
                     android:fontFamily="@fo"
                     android:onClick="@{() -> bottomsheetmodel.openOTPDialogFrag()}"
-                    android:text="@string/taxi_pickup_approve"
+                    android:text="@string/taxi_pickup_arrived"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:layout_marginLeft="@dimen/_10sdp" />
 
             </LinearLayout>
 

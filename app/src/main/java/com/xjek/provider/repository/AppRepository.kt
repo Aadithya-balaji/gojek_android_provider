@@ -9,6 +9,7 @@ import com.xjek.provider.network.AppWebService
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.home.HomeViewModel
+import com.xjek.provider.views.incoming_request_taxi.IncomingRequestViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
 import com.xjek.provider.views.notification.NotificationViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
@@ -320,7 +321,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun acceptIncomingRequest(viewModel: HomeViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun acceptIncomingRequest(viewModel: IncomingRequestViewModel, token: String, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .acceptIncomingRequest(token, params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -332,7 +333,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun rejectIncomingRequest(viewModel: HomeViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun rejectIncomingRequest(viewModel: IncomingRequestViewModel, token: String, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .rejectIncomingRequest(token, params)
                 .observeOn(AndroidSchedulers.mainThread())

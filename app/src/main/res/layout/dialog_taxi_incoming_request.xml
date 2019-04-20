@@ -229,7 +229,7 @@
                             android:paddingLeft="@dimen/_28sdp"
                             android:paddingRight="@dimen/_28sdp"
                             android:paddingBottom="@dimen/_5sdp"
-                            android:onClick="@{() -> requestmodel.acceptReq()}"
+                            android:onClick="@{() -> requestmodel.cancelReq()}"
                             app:backgroundTint="#ba160c"
                             app:cornerRadius="@dimen/_13sdp"/>
 
@@ -250,7 +250,7 @@
                             android:paddingLeft="@dimen/_28sdp"
                             android:paddingBottom="@dimen/_5sdp"
                             android:textSize="@dimen/_10sdp"
-                            android:onClick="@{() -> requestmodel.cancelReq()}"
+                            android:onClick="@{() -> requestmodel.acceptReq()}"
                             app:cornerRadius="@dimen/_13sdp"/>
                 </LinearLayout>
 

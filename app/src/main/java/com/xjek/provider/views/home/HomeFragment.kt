@@ -200,6 +200,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                                     val bundle = Bundle()
                                     val strRequest = Gson().toJson(checkStatusModel)
                                     bundle.putString("requestModel", strRequest)
+                                    incomingRequestDialog.arguments=bundle
                                     incomingRequestDialog.show(activity!!.supportFragmentManager, "incomingRequest")
                                     canShowRequestDialog = false
                                 }

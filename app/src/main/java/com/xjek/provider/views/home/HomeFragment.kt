@@ -107,7 +107,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
 
         getApiResponse()
-
     }
 
     fun callCheckRequestApi() {
@@ -153,7 +152,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
 
 
-                    if (checkStatusModel.responseData!!.requests!!.size > 0)
+                    if (checkStatusModel.responseData!!.requests!!.isNotEmpty())
                         BROADCAST = when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
                             "TRANSPORT" -> Constants.ProjectTypes.TRANSPORT
                             "SERVICE" -> Constants.ProjectTypes.SERVICE
@@ -195,8 +194,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                                             }
                                         }.create().show()*/
 
-                                if(incomingRequestDialog.isShown()==false) {
-                                    Log.e("request","----searching"+canShowRequestDialog)
+                                if(!incomingRequestDialog.isShown()) {
                                     val bundle = Bundle()
                                     val strRequest = Gson().toJson(checkStatusModel)
                                     bundle.putString("requestModel", strRequest)

@@ -14,11 +14,8 @@ import androidx.databinding.ViewDataBinding;
 
 public abstract class BaseBottomSheet<T extends ViewDataBinding> extends BottomSheetDialogFragment {
 
-    private View rootView;
     private T mViewDataBinding;
     private View view;
-
-    protected abstract void initView(View View);
 
     public abstract int getLayout();
 

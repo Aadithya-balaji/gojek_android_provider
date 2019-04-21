@@ -32,6 +32,7 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
     private var shown: Boolean? = false
     private var totalSeconds:Int?=0
     private  var incomingRequstModel:CheckRequestModel?=null
+    private  lateinit var  timertoTakeOrder:MyCountDownTimer
 
     companion object {
         var loadingProgress: MutableLiveData<Boolean>? = null
@@ -76,8 +77,8 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
                 initCiruclarSeekbar(0f, time)
                 val totalMiliSeconds=totalSeconds!!*1000
                 val totalTimeInLong=totalMiliSeconds.toLong()
-                val myCountDownTimer:MyCountDownTimer=MyCountDownTimer(totalTimeInLong,1000L)
-                myCountDownTimer.start()
+                 timertoTakeOrder=MyCountDownTimer(totalTimeInLong,1000L)
+                 timertoTakeOrder.start()
             }
         }
 
@@ -95,7 +96,6 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
                 val intent = Intent(activity,Class.forName("com.xjek.taxiservice.views.main.ActivityTaxiMain"))
                 activity!!.startActivity(intent)
                 dialog!!.dismiss()
-
             }
         }
 
@@ -103,6 +103,7 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
         observeLiveData(incomingRequestViewModel.rejectRequestLiveData){
            loadingObservable.value=false
             if(incomingRequestViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")){
+                timertoTakeOrder.cancel()
                 com.xjek.base.utils.ViewUtils.showToast(activity!!,incomingRequestViewModel.rejectRequestLiveData.value!!.message.toString(),false)
                 dialog!!.dismiss()
             }

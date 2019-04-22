@@ -17,13 +17,6 @@
             android:id="@+id/tbr_home"
             layout="@layout/toolbar_header" />
 
-        <Button
-            android:id="@+id/btStop"
-            android:layout_below="@id/tbr_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stop Service" />
-
         <LinearLayout
             android:id="@+id/frame_home_container"
             android:layout_width="match_parent"

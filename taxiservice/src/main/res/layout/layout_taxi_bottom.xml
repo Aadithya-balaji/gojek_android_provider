@@ -235,22 +235,40 @@
                     app:cornerRadius="@dimen/_6sdp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_approve"
+                    android:id="@+id/btn_arrived"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_weight=".5"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:onClick="@{() -> bottomsheetmodel.openOTPDialogFrag()}"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_10sdp"
+                   android:textColor="@color/white"
+                    app:backgroundTint="@color/taxi_bg_yellow"
+                    app:cornerRadius="@dimen/_5sdp"
                     android:text="@string/taxi_pickup_arrived"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_picked_up"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_weight=".5"
+                    android:background="@color/taxi_bg_yellow"
+                    android:fontFamily="@fo"
+                    android:onClick="@{() -> bottomsheetmodel.openOTPDialogFrag()}"
+                    android:text="@string/taxi_pickup"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:textStyle="bold"
                     app:backgroundTint="@color/taxi_bg_yellow"
-                    app:cornerRadius="@dimen/_6sdp" />
+                    app:cornerRadius="@dimen/_10sdp"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
             <Button
@@ -263,7 +281,7 @@
                 android:background="@drawable/bg_yellow_curve"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:onClick="@{() -> bottomsheetmodel.gotoInvoicePage()}"
-                android:text="@string/taxi_tab_ariived"
+                android:text="@string/taxi_tab_dropped"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"

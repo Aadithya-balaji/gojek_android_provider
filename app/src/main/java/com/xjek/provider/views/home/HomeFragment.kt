@@ -5,24 +5,19 @@ import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
 import android.view.View
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.gson.Gson
 import com.xjek.base.base.BaseFragment
-import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
@@ -32,7 +27,6 @@ import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
-import com.xjek.provider.utils.location_service.BaseLocationService.BROADCAST
 import com.xjek.provider.utils.location_service.BaseLocationService.EXTRA_LOCATION
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.dashboard.DashBoardNavigator
@@ -40,6 +34,8 @@ import com.xjek.provider.views.incoming_request_taxi.IncomingRequest
 import com.xjek.provider.views.pendinglist.PendingListDialog
 import com.xjek.taxiservice.views.main.ActivityTaxiMain
 import permissions.dispatcher.NeedsPermission
+import java.util.*
+import kotlin.collections.HashMap
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         HomeNavigator,
@@ -52,7 +48,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mHomeViewModel: HomeViewModel
-    private  lateinit var  incomingRequestDialog:IncomingRequest
+    private lateinit var incomingRequestDialog: IncomingRequest
 
     private var mGoogleMap: GoogleMap? = null
     private var currentLat: Double = 13.0561789
@@ -62,7 +58,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private var isBankDetailNeed: Int? = -1
     private var isOnline: Boolean? = true
     private var pendingListDialog: PendingListDialog? = null
-    private var canShowRequestDialog: Boolean? = true
+
+    private val checkRequestTimer = Timer()
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
 
@@ -82,12 +79,11 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
         mHomeViewModel.latitude.value = currentLat
         mHomeViewModel.longitude.value = currentLong
-        callCheckRequestApi()
         val activity: DashBoardActivity = activity as DashBoardActivity
         loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
         mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
         pendingListDialog = PendingListDialog()
-        incomingRequestDialog=IncomingRequest()
+        incomingRequestDialog = IncomingRequest()
 
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
@@ -107,25 +103,24 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
 
         getApiResponse()
-    }
 
-    fun callCheckRequestApi() {
-        mHomeViewModel.getRequest()
+        checkRequestTimer.schedule(object : TimerTask() {
+            override fun run() = updateCurrentLocation()
+        }, 0, 8000)
     }
 
     private fun getApiResponse() {
         println("RRR :: HomeFragment.getApiResponse")
-        observeLiveData(mHomeViewModel.checkRequestLiveData) {
+        observeLiveData(mHomeViewModel.checkRequestLiveData) { checkStatusData ->
 
-            val checkStatusModel = mHomeViewModel.checkRequestLiveData.value
-
-            if (checkStatusModel?.statusCode.equals("200")) {
-                Log.e("request","---------"+checkStatusModel!!.statusCode)
-                val providerDetailsModel = checkStatusModel?.responseData!!.provider_details
+            if (checkStatusData.statusCode.equals("200")) {
+                val providerDetailsModel = checkStatusData.responseData!!.provider_details
                 if (providerDetailsModel != null) {
+
                     isDocumentNeed = providerDetailsModel.is_document
                     isServiceNeed = providerDetailsModel.is_service
                     isBankDetailNeed = providerDetailsModel.is_bankdetail
+
                     if (providerDetailsModel.is_online == 1) {
                         isOnline = true
                         writePreferences(PreferencesKey.IS_ONLINE, 1)
@@ -136,7 +131,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                         dashBoardNavigator.isNeedLocationUpdate(false)
                         changeView(false)
                     }
-
 
                     if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) {
                         if (pendingListDialog != null && !pendingListDialog!!.isShown())
@@ -149,93 +143,39 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                         //if (pendingListDialog != null && !pendingListDialog!!.isShown())
                         //showPendingListDialog(3)
                     }
-
-
-
-                    if (checkStatusModel.responseData!!.requests!!.isNotEmpty())
-                        BROADCAST = when (checkStatusModel.responseData!!.requests!!.get(0)!!.service!!.admin_service_name) {
-                            "TRANSPORT" -> Constants.ProjectTypes.TRANSPORT
-                            "SERVICE" -> Constants.ProjectTypes.SERVICE
-                            "ORDER" -> Constants.ProjectTypes.ORDER
-                            else -> Constants.ProjectTypes.TRANSPORT
-                        }
-
-
-//                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
-//                            showPendingListDialog(3)
                 }
 
                 println("RRR :: inside ")
-                if (checkStatusModel.responseData!!.requests!!.isNotEmpty())
-                    when (checkStatusModel.responseData!!.requests!![0]!!.request!!.status) {
+                if (checkStatusData.responseData!!.requests!!.isNotEmpty())
+                    when (checkStatusData.responseData!!.requests!![0]!!.request!!.status) {
                         SEARCHING -> {
                             val params: HashMap<String, String> = HashMap()
-                            params["id"] = checkStatusModel.responseData!!.requests!![0]!!.request!!.id.toString()
-                            params["service_id"] = checkStatusModel.responseData!!.provider_details!!.service!!.admin_service_id.toString()
-                            if (canShowRequestDialog!!) {
-                               /* AlertDialog
-                                        .Builder(activity!!)
-                                        .setTitle("Incoming request")
-                                        .setMessage("Accept or reject request>>>")
-                                        .setPositiveButton("Accept") { dialog, which ->
-                                            run {
-                                                dialog.dismiss()
-                                                mHomeViewModel.acceptRequest(params)
-                                                Toast.makeText(context!!, "Accept", Toast.LENGTH_SHORT).show()
-                                                canShowRequestDialog = true
-                                            }
-                                        }
-                                        .setNegativeButton("Reject") { dialog, which ->
-                                            run {
-                                                dialog.dismiss()
-                                                mHomeViewModel.rejectRequest(params)
-                                                Toast.makeText(context!!, "Reject", Toast.LENGTH_SHORT).show()
-                                                canShowRequestDialog = true
-                                            }
-                                        }.create().show()*/
-
-                                if(!incomingRequestDialog.isShown()) {
-                                    val bundle = Bundle()
-                                    val strRequest = Gson().toJson(checkStatusModel)
-                                    bundle.putString("requestModel", strRequest)
-                                    incomingRequestDialog.arguments=bundle
-                                    incomingRequestDialog.show(activity!!.supportFragmentManager, "incomingRequest")
-                                    canShowRequestDialog = false
-                                }
+                            params["id"] = checkStatusData.responseData!!.requests!![0]!!.request!!.id.toString()
+                            params["service_id"] = checkStatusData.responseData!!.provider_details!!.service!!.admin_service_id.toString()
+                            if (!incomingRequestDialog.isShown()) {
+                                val bundle = Bundle()
+                                val strRequest = Gson().toJson(checkStatusData)
+                                bundle.putString("requestModel", strRequest)
+                                incomingRequestDialog.arguments = bundle
+                                incomingRequestDialog.show(activity!!.supportFragmentManager, "incomingRequest")
                             }
-                            BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                                "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
-                                "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
-                                "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
-                                else -> "BASE_BROADCAST"
-                            }
+//                            BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+//                                "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
+//                                "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
+//                                "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
+//                                else -> "BASE_BROADCAST"
+//                            }
                         }
-                        else -> {
-                            when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                                "TRANSPORT" -> {
-                                    BROADCAST += Constants.ProjectTypes.TRANSPORT
-                                    gotoTaxiModule()
-                                }
-                                "SERVICE" -> {
-                                    BROADCAST += Constants.ProjectTypes.SERVICE
-                                    gotoXuberModule()
-                                }
-                                "ORDER" -> {
-                                    BROADCAST += Constants.ProjectTypes.ORDER
-                                    gotoFoodieModule()
-                                }
-                                else -> {
-                                    BROADCAST = "BASE_BROADCAST"
-                                }
-                            }
+                        else -> when (checkStatusData.responseData!!.requests!![0]!!.service!!.admin_service_name) {
+                            "TRANSPORT" -> gotoTaxiModule()
+                            "SERVICE" -> gotoXuberModule()
+                            "ORDER" -> gotoFoodieModule()
                         }
                     }
             }
         }
 
-
-
-        try {//GetOnlineStatus
+        try {//     GetOnlineStatus
             observeLiveData(mHomeViewModel.onlineStatusLiveData) {
                 loadingObservable.value = false
                 if (mHomeViewModel.onlineStatusLiveData.value != null) {
@@ -252,34 +192,23 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
-        }
-
-
-
-
-    override fun onResume() {
-        super.onResume()
-        LocalBroadcastManager.getInstance(context!!).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        LocalBroadcastManager.getInstance(context!!).unregisterReceiver(mBroadcastReceiver)
     }
 
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     private fun updateCurrentLocation() {
+        println("RRR :: HomeFragment.updateCurrentLocation")
         LocationUtils.getLastKnownLocation(activity!!.applicationContext, object : LocationCallBack.LastKnownLocation {
             override fun onSuccess(location: Location?) {
                 currentLat = location!!.latitude
                 currentLong = location.longitude
+                mHomeViewModel.getRequest()
             }
 
             override fun onFailure(messsage: String?) {
                 currentLat = 13.0561789
                 currentLong = 80.247998
+                mHomeViewModel.getRequest()
             }
         })
     }
@@ -384,7 +313,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 mHomeViewModel.latitude.value = currentLat
                 mHomeViewModel.longitude.value = currentLong
 
-                callCheckRequestApi()
+                mHomeViewModel.getRequest()
             }
         }
     }

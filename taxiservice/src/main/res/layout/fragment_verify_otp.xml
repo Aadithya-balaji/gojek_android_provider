@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
         <variable
             name="otpviewmodel"
             type="com.xjek.taxiservice.views.verifyotp.VerifyOTPModule" />
+
     </data>
 
     <RelativeLayout
@@ -23,7 +23,7 @@
             android:fontFamily="@font/avenirltstd_medium"
             android:text="@string/otp_label"
             android:textColor="@color/black"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_15sdp" />
 
         <EditText
             android:id="@+id/ed_otp"
@@ -31,15 +31,15 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_label_otp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_margin="20dp"
             android:background="@drawable/bg_grey_square"
-            android:ems="8"
+            android:ems="6"
+            android:maxLength="4"
             android:gravity="center"
+            android:hint="1234"
+            android:inputType="number"
             android:letterSpacing="0.35"
-            android:paddingTop="@dimen/_7sdp"
-            android:paddingBottom="@dimen/_7sdp"
-            android:text="123456" />
-
+            android:padding="10dp" />
 
         <LinearLayout
             android:id="@+id/ll_call"
@@ -49,6 +49,7 @@
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginRight="@dimen/_15sdp"
+            android:visibility="gone"
             android:weightSum="1">
 
             <Button
@@ -67,6 +68,7 @@
                 android:background="@drawable/black_sqaure"
                 android:text="@string/otp_chat"
                 android:textColor="@color/white" />
+
         </LinearLayout>
 
         <Button
@@ -79,10 +81,11 @@
             android:layout_marginRight="@dimen/_15sdp"
             android:background="@drawable/bg_yellow_curve"
             android:fontFamily="@font/avenirltstd_medium"
+            android:onClick="@{() -> otpviewmodel.proceedTrip()}"
             android:text="@string/otp_start_trip"
             android:textColor="@color/white"
-            android:onClick="@{() -> otpviewmodel.proceedTrip()}"
             android:textSize="@dimen/_13sdp" />
+
     </RelativeLayout>
 
 </layout>

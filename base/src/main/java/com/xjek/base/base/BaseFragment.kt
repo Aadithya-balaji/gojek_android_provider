@@ -49,14 +49,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         customDialog = CustomDialog(mActivity!!,true)
 
         observeLiveData(loadingLiveData) { isShowLoading ->
-            if (isShowLoading) {
-                showLoading()
-            } else {
-                hideLoading()
-            }
+            if (isShowLoading) showLoading() else hideLoading()
         }
-
-
     }
 
     protected fun setBindingVariable(variableId: Int, value: Any) {
@@ -85,6 +79,5 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     protected fun hideLoading() {
         customDialog!!.cancel()
     }
-
 
 }

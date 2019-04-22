@@ -18,7 +18,7 @@ data class ResponseData(
         var referral_count: String?,
         var referral_total_amount: Int?,
         var referral_total_count: String?,
-        var request: Request?,
+        var request: Request,
         var ride_otp: String?,
         var service_status: String?
 ) : Serializable
@@ -54,7 +54,7 @@ data class ProviderDetails(
         var payment_mode: String?,
         var picture: Any?,
         var qrcode_url: String?,
-        var rating: Int?,
+        var rating: Double?,
         var referal_count: Int?,
         var referral_unique_id: String?,
         var service: Service?,

@@ -3,6 +3,7 @@ package com.xjek.base.base
 import android.app.Application
 import android.content.Context
 import android.content.res.Configuration
+import com.facebook.stetho.Stetho
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.di.BaseComponent
 import com.xjek.base.di.DaggerBaseComponent
@@ -10,7 +11,6 @@ import com.xjek.base.di.WebServiceModule
 import com.xjek.base.utils.LocaleUtils
 
 open class BaseApplication : Application() {
-
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(LocaleUtils.setLocale(base!!))
@@ -29,6 +29,7 @@ open class BaseApplication : Application() {
         super.onCreate()
         baseApplication = this
         appController = baseComponent
+        Stetho.initializeWithDefaults(this)
         PreferencesHelper.setDefaultPreferences(this)
     }
 

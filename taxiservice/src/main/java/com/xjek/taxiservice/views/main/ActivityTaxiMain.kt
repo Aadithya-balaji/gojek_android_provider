@@ -1,24 +1,17 @@
 package com.xjek.taxiservice.views.main
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.content.res.Resources
 import android.location.Location
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
 import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
@@ -30,19 +23,14 @@ import com.xjek.base.data.Constants.RideStatus.COMPLETED
 import com.xjek.base.data.Constants.RideStatus.DROPPED
 import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.RideStatus.SCHEDULED
-import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.Constants.RideStatus.STARTED
-import com.xjek.base.data.PreferencesKey.TAXI_CHECK_REQUEST_DATA
 import com.xjek.base.extensions.observeLiveData
-import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityTaxiMainBinding
-import com.xjek.taxiservice.location_service.TaxiLocationService
-import com.xjek.taxiservice.location_service.TaxiLocationService.BROADCAST
-import com.xjek.taxiservice.location_service.TaxiLocationService.EXTRA_LOCATION
 import com.xjek.taxiservice.views.bottomsheets.RideStatusBottomSheet
+import java.util.*
 
 class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         ActivityTaxMainNavigator,
@@ -54,6 +42,8 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mViewModel: ActivityTaxiModule
 
+    private val taxiCheckStatusTimer = Timer()
+
     companion object {
         var showLoader: MutableLiveData<Boolean>? = null
     }
@@ -62,9 +52,7 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
     private var mLastKnownLocation: Location? = null
     private var mBottomSheet: RideStatusBottomSheet? = null
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_taxi_main
-    }
+    override fun getLayoutId(): Int = R.layout.activity_taxi_main
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.activityTaxiMainBinding = mViewDataBinding as ActivityTaxiMainBinding
@@ -110,6 +98,11 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
             LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {
                     mLastKnownLocation = location
+                    if (location != null) {
+                        mViewModel.latitude.value = location.latitude
+                        mViewModel.longitude.value = location.longitude
+                        mViewModel.callTaxiCheckStatusAPI()
+                    }
                     updateMapLocation(LatLng(location!!.latitude, location.longitude))
                 }
 
@@ -119,6 +112,11 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION))
             LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {
+                    if (location != null) {
+                        mViewModel.latitude.value = location.latitude
+                        mViewModel.longitude.value = location.longitude
+                        mViewModel.callTaxiCheckStatusAPI()
+                    }
                     updateMapLocation(LatLng(location!!.latitude, location.longitude))
                 }
 
@@ -134,59 +132,30 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
 
     override fun onResume() {
         super.onResume()
-        if (!isMyServiceRunning(TaxiLocationService::class.java))
-            startService(Intent(this, TaxiLocationService::class.java))
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
+        taxiCheckStatusTimer.schedule(object : TimerTask() {
+            override fun run() {
+                println("RRR :: ActivityTaxiMain.run")
+                if (mGoogleMap != null) updateCurrentLocation()
+            }
+        }, 0, 8000)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
-    }
-
-    private val mBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(contxt: Context?, intent: Intent?) {
-            println("RRR MyReceiver.onReceive")
-            val location = intent!!.getParcelableExtra<Location>(EXTRA_LOCATION)
-            if (location != null) {
-
-                mViewModel.latitude.value = location.latitude
-                mViewModel.longitude.value = location.longitude
-                mViewModel.callTaxiCheckStatusAPI()
-            }
-        }
-    }
-
-    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
-        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        for (service in manager.getRunningServices(Integer.MAX_VALUE))
-            if (serviceClass.name == service.service.className) return true
-        return false
+        taxiCheckStatusTimer.cancel()
     }
 
     override fun showErrorMessage(error: String) {
         showLoader!!.value = false
     }
 
-
     private fun checkStatusAPIResponse() {
-
-        observeLiveData(mViewModel.checkStatusTaxiLiveData) {
-
-            val checkStatusModel = mViewModel.checkStatusTaxiLiveData.value
-
-            if (checkStatusModel?.statusCode.equals("200")) {
-                val providerDetailsModel =
-                        checkStatusModel?.responseData!!.provider_details
-
-                try {
-                    if (providerDetailsModel != null) {
-                        writePreferences(TAXI_CHECK_REQUEST_DATA, Gson().toJson(checkStatusModel.responseData))
-
-                        when (checkStatusModel.responseData!!.request!!.status) {
-                            SEARCHING -> {
-
-                            }
+        observeLiveData(mViewModel.checkStatusTaxiLiveData) { checkStatusResponse ->
+            if (checkStatusResponse?.statusCode.equals("200")) try {
+                if (checkStatusResponse?.responseData!!.provider_details != null) {
+                    println("RRR :: Status = ${checkStatusResponse.responseData!!.request.status}")
+                    if (checkStatusResponse.responseData!!.request.status.isNullOrEmpty()) {
+                        when (checkStatusResponse.responseData!!.request.status) {
                             SCHEDULED -> {
 
                             }
@@ -197,25 +166,28 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
 
                             }
                             STARTED -> {
-                                mBottomSheet!!.whenStatusStarted(checkStatusModel.responseData)
+                                mBottomSheet!!.whenStatusStarted(checkStatusResponse.responseData)
                             }
                             ARRIVED -> {
-
+                                mBottomSheet!!.whenStatusArrived(checkStatusResponse.responseData)
                             }
                             PICKED_UP -> {
-
+                                mBottomSheet!!.whenStatusArrived(checkStatusResponse.responseData)
                             }
                             DROPPED -> {
-
+                                mBottomSheet!!.whenStatusArrived(checkStatusResponse.responseData)
                             }
                             COMPLETED -> {
-
+                                mBottomSheet!!.whenStatusArrived(checkStatusResponse.responseData)
                             }
                         }
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                    else {
+                        println("RRR :: inside else = ${checkStatusResponse.responseData!!.request.status}")
+                    }
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
 
@@ -233,4 +205,6 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
             }
         }
     }
+
+
 }

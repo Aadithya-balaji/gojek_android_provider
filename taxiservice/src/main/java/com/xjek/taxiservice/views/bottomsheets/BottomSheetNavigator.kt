@@ -4,8 +4,9 @@ import com.xjek.taxiservice.model.ResponseData
 
 interface BottomSheetNavigator {
     fun whenStatusStarted(checkStatusModel: ResponseData?)
+    fun whenArrivedStatus()
     fun openOTPDialog()
-    fun startTrip(isTrue: Boolean)
+    fun whenStatusArrived(isTrue: ResponseData?)
     fun openInvoice()
     fun closeBottomSheet()
 }

@@ -8,7 +8,6 @@
 
     <application>
         <activity android:name="com.xjek.taxiservice.views.main.ActivityTaxiMain"/>
-        <activity android:name="com.xjek.taxiservice.views.invoice.InvoiceActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

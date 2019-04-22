@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.xjek.base.base.BaseActivity
@@ -18,7 +17,6 @@ import com.xjek.provider.views.account.AccountFragment
 import com.xjek.provider.views.home.HomeFragment
 import com.xjek.provider.views.notification.NotificationFragment
 import com.xjek.provider.views.order.OrderFragment
-import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
 
 class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator {
@@ -77,19 +75,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
         if (getPermissionUtil().hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION))
-            isNeedLocagtionUpdate(true)
+            updateLocation(true)
         else if (getPermissionUtil().requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                         Enums.LOCATION_REQUEST_CODE)) startService(locationServiceIntent)
-
-        btStop.setOnClickListener {
-            Toast.makeText(baseContext, "Stop Service", Toast.LENGTH_SHORT).show()
-            isNeedLocagtionUpdate(false)
-        }
     }
 
-    private fun isNeedLocagtionUpdate(isTrue: Boolean) {
-        if (isTrue) startService(locationServiceIntent)
-        else stopService(locationServiceIntent)
+    private fun updateLocation(isTrue: Boolean) {
+//        if (isTrue) startService(locationServiceIntent)
+//        else stopService(locationServiceIntent)
     }
 
     override fun setTitle(title: String) {
@@ -128,7 +121,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     override fun isNeedLocationUpdate(isTrue: Boolean) {
 
-        isNeedLocagtionUpdate(isTrue)
+        updateLocation(isTrue)
     }
 
 }

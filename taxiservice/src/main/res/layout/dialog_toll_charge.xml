@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="tollmodel"
+            type="com.xjek.taxiservice.views.tollcharge.TollChargeViewModel">
+        </variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toll_label"
+            android:textColor="@color/black"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:textSize="@dimen/_13sdp"/>
+
+        <com.xjek.base.utils.PrefixCustomEditText
+            android:id="@+id/edt_amount"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_5sdp"
+            android:background="@drawable/bg_toll_square"
+            android:layout_weight="1.6"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:singleLine="true"
+            android:inputType="numberDecimal"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:padding="@dimen/_9sdp"
+            android:textSize="@dimen/_10sdp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+        <TextView
+            android:id="@+id/tv_toll_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toll_submit"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textColor="@color/toll_submit"
+            android:padding="@dimen/_5sdp"
+            android:onClick="@{() -> tollmodel.submit()}"
+            android:fontFamily="@font/avenirltstd_medium"/>
+    </LinearLayout>
+
+</layout>

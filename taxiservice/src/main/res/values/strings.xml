@@ -5,6 +5,7 @@
 
     <!-- Common -->
     <string name="submit">Submit</string>
+    <string name="waiting">Waiting Time</string>
 
     <!-- Taxi pickup -->
     <string name="taxi_pickup_location">Pickup Location</string>
@@ -22,12 +23,18 @@
     <string name="taxi_invoice_distance_fare">Distance Fare</string>
     <string name="taxi_invoice_tax">Tax</string>
     <string name="taxi_invoice_Tips">Tips</string>
+    <string name="taxi_invoice_toll">Toll</string>
+    <string name="taxi_invoie_add">ADD</string>
 
     <!-- OTP -->
     <string name="otp_label">Enter OTP</string>
     <string name="otp_call">Call</string>
     <string name="otp_chat">Chat</string>
     <string name="otp_start_trip">Start Trip</string>
+
+    <!-- Toll Charge -->
+    <string name="toll_label">TOLL CHARGE</string>
+    <string name="toll_submit">Submit</string>
 
     <!-- Rating -->
     <string name="rating_label">Rating</string>

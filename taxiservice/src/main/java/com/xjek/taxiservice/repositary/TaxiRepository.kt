@@ -25,6 +25,17 @@ class TaxiRepository : BaseRepository() {
                 })
     }
 
+    fun waitingTime(viewModel: ActivityTaxiModule, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .waitingTime(token, params)
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.waitingTimeLiveData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                })
+    }
+
     companion object {
         private val TAG = TaxiRepository::class.java.simpleName
         private var taxiRepository: TaxiRepository? = null
@@ -38,4 +49,6 @@ class TaxiRepository : BaseRepository() {
             return taxiRepository!!
         }
     }
+
+
 }

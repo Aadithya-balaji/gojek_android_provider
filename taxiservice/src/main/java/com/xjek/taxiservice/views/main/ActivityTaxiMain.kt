@@ -218,5 +218,19 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
                 }
             }
         }
+
+
+
+        //WaitingTIme
+        observeLiveData(mViewModel.waitingTimeLiveData){
+            if(mViewModel.waitingTimeLiveData.value!=null){
+                val waitingTime=   mViewModel.waitingTimeLiveData.value!!.waitingStatus
+                if(waitingTime==1){
+
+                }else{
+
+                }
+            }
+        }
     }
 }

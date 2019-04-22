@@ -8,4 +8,8 @@ class InvoiceViewModel : BaseViewModel<InvoiceNavigator>() {
     {
         navigator.confrimPayment()
     }
+
+   /* fun openTollDialog(){
+        navigator.showTollDialog()
+    }*/
 }

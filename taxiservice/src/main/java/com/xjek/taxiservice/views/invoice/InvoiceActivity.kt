@@ -7,9 +7,13 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.views.rating.RatingFragment
 import  com.xjek.taxiservice.databinding.ActivityInvoiceBinding
+import com.xjek.taxiservice.views.tollcharge.TollCharge
 
 
 class  InvoiceActivity : BaseActivity<com.xjek.taxiservice.databinding.ActivityInvoiceBinding>(), InvoiceNavigator {
+
+
+
     private  lateinit var  rlRideCompleted:RelativeLayout
     private  lateinit var  rlRideInProgress:RelativeLayout
 
@@ -38,6 +42,16 @@ class  InvoiceActivity : BaseActivity<com.xjek.taxiservice.databinding.ActivityI
 
         rlRideInProgress.visibility= View.GONE
         rlRideCompleted.visibility=View.VISIBLE
+
+    }
+
+    override fun showTollDialog() {
+        val tollChargeDialog=TollCharge()
+        tollChargeDialog.show(supportFragmentManager,"tollCharge")
+    }
+
+
+    override fun tollCharge(amount: String) {
 
     }
 

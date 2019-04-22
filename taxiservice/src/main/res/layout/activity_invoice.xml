@@ -60,64 +60,78 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.05"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.05"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:src="@drawable/grey_circle" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:src="@drawable/grey_circle" />
-
-                    <View
-                        android:layout_width="@dimen/_2sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:layout_marginBottom="@dimen/_3sdp"
-                        android:background="@color/grey" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_2sdp"
-                        android:src="@drawable/black_sqaure" />
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:layout_weight="0.95">
+                        <TextView
+                            android:id="@+id/tv_pickup_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/grey"
+                            android:textSize="@dimen/_8sdp"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:text="223323333333333333faffadfdfdaf\n dfdfdfdfadfadfadfdfdfdfdf"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.95"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_invoice_from_address"
-                        android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/grey"
-                        android:textSize="@dimen/_12sdp"
-                        tools:text="dfdfdf  fdfdf dfadfdf" />
+                        android:layout_weight="0.05"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <View
+                            android:layout_width="2dp"
+                            android:layout_height="@dimen/_30sdp"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:background="@color/grey"
+                            android:src="@drawable/grey_circle" />
 
-                    <TextView
-                        android:id="@+id/tv_invoice_to_address"
-                        android:layout_width="wrap_content"
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_30sdp"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:text="dfdfdfdfd"
-                        android:textColor="@color/grey" />
-
-
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:layout_weight="0.95">
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
 
-        </LinearLayout>
+
+</LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/ll_trip_status"
@@ -168,7 +182,7 @@
                     android:layout_weight="0.40"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:gravity="end"
-                    android:text="dfdaf"
+                    android:text="@={invoicemodel.bookingId}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
@@ -196,7 +210,7 @@
                     android:layout_weight="0.40"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:gravity="end"
-                    android:text="dfdaf"
+                    android:text="@={invoicemodel.distance}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
@@ -224,7 +238,7 @@
                     android:layout_weight="0.40"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:gravity="end"
-                    android:text="dfdaf"
+                    android:text="@={invoicemodel.timeTaken}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
@@ -252,7 +266,7 @@
                     android:layout_weight="0.40"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:gravity="end"
-                    android:text="dfdaf"
+                    android:text="@={invoicemodel.baseFare}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
@@ -280,7 +294,7 @@
                     android:layout_weight="0.40"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:gravity="end"
-                    android:text="dfdaf"
+                    android:text="@={invoicemodel.distanceFare}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
@@ -308,7 +322,7 @@
                     android:layout_weight="0.40"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:gravity="end"
-                    android:text="dfdaf"
+                    android:text="@={invoicemodel.tax}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
 
@@ -337,10 +351,39 @@
                     android:layout_weight="0.40"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:gravity="end"
-                    android:text="dfdaf"
+                    android:text="@={invoicemodel.tips}"
+                    android:textSize="@dimen/_12sdp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/tv_toll"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.60"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:text="@string/taxi_invoice_toll"
+                    android:textColor="@color/black"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/tv_add_toll"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.40"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:gravity="end"
+                    android:text="@string/taxi_invoie_add"
+                    android:textColor="#83d0f2"
+                    android:onClick="@{() -> invoicemodel.openTollDialog()}"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -373,6 +416,9 @@
                     android:gravity="end"
                     android:textSize="@dimen/_12sdp" />
             </LinearLayout>
+
+
+
         </LinearLayout>
 
 

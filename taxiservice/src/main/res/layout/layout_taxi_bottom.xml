@@ -68,15 +68,15 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_grey_left_full_square">
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/ll_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_alignParentLeft="true">
+                    android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_cancel"
@@ -87,14 +87,16 @@
                         app:civ_border_width="8dp" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:layout_toRightOf="@+id/iv_cancel"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_user_name"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="5dp"
                             android:text="@string/placeholder_string"
@@ -106,12 +108,44 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:numStars="5"
-                            android:padding="5dp"
                             android:stepSize="1" />
-
                     </LinearLayout>
 
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="end"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:layout_marginRight="@dimen/_12sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_waiting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_30sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_7sdp"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            app:backgroundTint="@color/white"
+                            app:cornerRadius="@dimen/_12sdp"
+                            android:text="@string/waiting"/>
+
+                        <Chronometer
+                            android:id="@+id/cm_waiting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_8sdp"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:text="00:00:00"/>
+                    </LinearLayout>
+
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -124,12 +158,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toLeftOf="@id/ibNavigation"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
                         android:text="@string/taxi_pickup_location"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13sdp"
-                        android:layout_toLeftOf="@id/ibNavigation" />
+                        android:textSize="@dimen/_13sdp" />
 
                     <TextView
                         android:id="@+id/tv_user_address_one"
@@ -137,10 +171,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_pickup_location"
                         android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toLeftOf="@id/ibNavigation"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
-                        android:textColor="@color/grey"
-                        android:layout_toLeftOf="@id/ibNavigation" />
+                        android:textColor="@color/grey" />
 
                     <TextView
                         android:id="@+id/tv_user_address_two"
@@ -148,22 +182,22 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_user_address_one"
                         android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toLeftOf="@id/ibNavigation"
                         android:padding="3dp"
-                        android:textColor="@color/grey"
-                        android:layout_toLeftOf="@id/ibNavigation" />
+                        android:textColor="@color/grey" />
 
                     <ImageButton
                         android:id="@+id/ibNavigation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_margin="5dp"
                         android:background="@color/white"
                         android:contentDescription="@string/app_name"
                         android:elevation="5dp"
                         android:padding="@dimen/_15sdp"
-                        app:srcCompat="@drawable/ic_location_arrow"
-                        android:layout_alignParentRight="true" />
+                        app:srcCompat="@drawable/ic_location_arrow" />
 
                 </RelativeLayout>
 
@@ -184,34 +218,39 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_cancel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
-                    android:background="@color/taxi_bg_yellow"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:onClick="@{() -> bottomsheetmodel.closeDialog()}"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/taxi_pickup_cancel"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:backgroundTint="@color/taxi_bg_yellow"
+                    app:cornerRadius="@dimen/_6sdp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_approve"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_weight=".5"
-                    android:background="@color/taxi_bg_yellow"
-                    android:fontFamily="@fo"
+                    android:fontFamily="@font/avenirltstd_medium"
                     android:onClick="@{() -> bottomsheetmodel.openOTPDialogFrag()}"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/taxi_pickup_arrived"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:textStyle="bold"
-                    android:layout_marginLeft="@dimen/_10sdp" />
-
+                    app:backgroundTint="@color/taxi_bg_yellow"
+                    app:cornerRadius="@dimen/_6sdp" />
             </LinearLayout>
 
             <Button

@@ -5,11 +5,13 @@ import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
 import com.xjek.taxiservice.model.CheckRequestModel
+import com.xjek.taxiservice.model.WaitingTime
 import com.xjek.taxiservice.repositary.TaxiRepository
 
 class ActivityTaxiModule :BaseViewModel<ActivityTaxMainNavigator>(){
 
     private val mRepository = TaxiRepository.instance()
+      var waitingTimeLiveData=MutableLiveData<WaitingTime>()
 
     var checkStatusTaxiLiveData = MutableLiveData<CheckRequestModel>()
 

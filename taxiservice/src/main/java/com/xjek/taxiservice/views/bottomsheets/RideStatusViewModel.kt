@@ -4,6 +4,10 @@ import com.xjek.base.base.BaseViewModel
 
 class RideStatusViewModel : BaseViewModel<BottomSheetNavigator>() {
 
+    fun onArrivedStatus(){
+        navigator.whenArrivedStatus()
+    }
+
     fun openOTPDialogFrag() {
         navigator.openOTPDialog()
     }

@@ -73,10 +73,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_alignParentLeft="true">
+                    android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_cancel"
@@ -124,12 +124,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toLeftOf="@id/ibNavigation"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
                         android:text="@string/taxi_pickup_location"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13sdp"
-                        android:layout_toLeftOf="@id/ibNavigation" />
+                        android:textSize="@dimen/_13sdp" />
 
                     <TextView
                         android:id="@+id/tv_user_address_one"
@@ -137,10 +137,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_pickup_location"
                         android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toLeftOf="@id/ibNavigation"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
-                        android:textColor="@color/grey"
-                        android:layout_toLeftOf="@id/ibNavigation" />
+                        android:textColor="@color/grey" />
 
                     <TextView
                         android:id="@+id/tv_user_address_two"
@@ -148,22 +148,22 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_user_address_one"
                         android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toLeftOf="@id/ibNavigation"
                         android:padding="3dp"
-                        android:textColor="@color/grey"
-                        android:layout_toLeftOf="@id/ibNavigation" />
+                        android:textColor="@color/grey" />
 
                     <ImageButton
                         android:id="@+id/ibNavigation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
                         android:layout_margin="5dp"
                         android:background="@color/white"
                         android:contentDescription="@string/app_name"
                         android:elevation="5dp"
                         android:padding="@dimen/_15sdp"
-                        app:srcCompat="@drawable/ic_location_arrow"
-                        android:layout_alignParentRight="true" />
+                        app:srcCompat="@drawable/ic_location_arrow" />
 
                 </RelativeLayout>
 
@@ -198,19 +198,35 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/btn_approve"
+                    android:id="@+id/btn_arrived"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_weight=".5"
+                    android:background="@color/taxi_bg_yellow"
+                    android:fontFamily="@fo"
+                    android:onClick="@{() -> bottomsheetmodel.onArrivedStatus()}"
+                    android:text="@string/taxi_pickup_arrived"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_picked_up"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_weight=".5"
                     android:background="@color/taxi_bg_yellow"
                     android:fontFamily="@fo"
                     android:onClick="@{() -> bottomsheetmodel.openOTPDialogFrag()}"
-                    android:text="@string/taxi_pickup_arrived"
+                    android:text="@string/taxi_pickup"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:textStyle="bold"
-                    android:layout_marginLeft="@dimen/_10sdp" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -224,7 +240,7 @@
                 android:background="@drawable/bg_yellow_curve"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:onClick="@{() -> bottomsheetmodel.gotoInvoicePage()}"
-                android:text="@string/taxi_tab_ariived"
+                android:text="@string/taxi_tab_dropped"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"

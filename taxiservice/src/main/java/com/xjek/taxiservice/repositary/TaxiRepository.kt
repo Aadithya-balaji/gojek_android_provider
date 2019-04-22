@@ -19,9 +19,37 @@ class TaxiRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.checkStatusTaxiLiveData.postValue(it)
+                    try {
+                        viewModel.checkStatusTaxiLiveData.postValue(it)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                    try {
+                        viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                })
+    }
+
+    fun taxiStatusUpdate(viewModel: ActivityTaxiModule, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .taxiStatusUpdate(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    try {
+                        viewModel.callTaxiCheckStatusAPI()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }, {
+                    try {
+                        viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 })
     }
 

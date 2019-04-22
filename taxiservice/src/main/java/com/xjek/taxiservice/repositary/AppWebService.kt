@@ -2,9 +2,7 @@ package com.xjek.taxiservice.repositary
 
 import com.xjek.taxiservice.model.CheckRequestModel
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface AppWebService {
 
@@ -13,6 +11,13 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @Query("latitude") lat: String,
             @Query("longitude") lon: String
+    ): Observable<CheckRequestModel>
+
+    @FormUrlEncoded
+    @POST("provider/update/ride/request")
+    fun taxiStatusUpdate(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
     ): Observable<CheckRequestModel>
 
 }

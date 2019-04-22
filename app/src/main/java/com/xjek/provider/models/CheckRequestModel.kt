@@ -12,15 +12,15 @@ data class CheckRequestModel(
 
 data class ResponseData(
         var account_status: String?,
+        var service_status: String?,
+        var requests: List<Request?>?,
         var provider_details: ProviderDetails?,
         var reasons: List<Any?>?,
-        var referral_amount: String?,
         var referral_count: String?,
-        var referral_total_amount: Int?,
-        var referral_total_count: String?,
-        var requests: List<Request?>?,
+        var referral_amount: String?,
         var ride_otp: String?,
-        var service_status: String?
+        var referral_total_count: String?,
+        var referral_total_amount: Int?
 ) : Serializable
 
 data class Request(
@@ -139,7 +139,7 @@ data class ProviderDetails(
         var payment_mode: String?,
         var picture: Any?,
         var qrcode_url: String?,
-        var rating: Int?,
+        var rating: Double?,
         var referal_count: Int?,
         var referral_unique_id: String?,
         var service: ServiceX?,

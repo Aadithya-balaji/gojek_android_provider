@@ -93,6 +93,7 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
         observeLiveData(incomingRequestViewModel.acceptRequestLiveData){
             loadingObservable.value=false
             if(incomingRequestViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")){
+                timertoTakeOrder.cancel()
                 val intent = Intent(activity,Class.forName("com.xjek.taxiservice.views.main.ActivityTaxiMain"))
                 activity!!.startActivity(intent)
                 dialog!!.dismiss()

@@ -67,12 +67,10 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
     fun isVehicleAdded(position: Int): Boolean {
         return when (serviceId) {
             transportId -> {
-                !(vehicleLiveData.value as SetupRideResponseModel).responseData[position]
-                        .providerService.isNullOrEmpty()
+                true
             }
             orderId -> {
-                !(vehicleLiveData.value as SetupShopResponseModel).responseData[position]
-                        .providerService.isNullOrEmpty()
+                true
             }
             else -> false
         }

@@ -14,7 +14,7 @@ data class SetupRideResponseModel(
             val id: Int,
             @SerializedName("ride_name") val rideName: String,
             val status: Int,
-            @SerializedName("providerservice") val providerService: List<ProviderService>,
+            @SerializedName("providerservice") val providerService: ProviderService,
             @SerializedName("servicelist") val serviceList: List<ServiceList>
     ) {
         data class ProviderService(

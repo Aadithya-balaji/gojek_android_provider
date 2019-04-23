@@ -2,6 +2,7 @@ package com.xjek.provider.views.manage_documents
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
@@ -45,6 +46,13 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(),
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getDocumentTypeObservable()) {
+            if(it.responseData.isNotEmpty()){
+                binding.llEmptyView.visibility = View.GONE
+                binding.rcvDocuments.visibility = View.VISIBLE
+            }else{
+                binding.llEmptyView.visibility = View.VISIBLE
+                binding.rcvDocuments.visibility = View.GONE
+            }
             loadingObservable.value = false
             viewModel.setAdapter()
         }

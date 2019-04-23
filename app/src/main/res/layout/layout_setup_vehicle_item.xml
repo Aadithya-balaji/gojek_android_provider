@@ -46,18 +46,17 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_end"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
-                android:background="@drawable/drawable_circle"
                 android:backgroundTint="@color/colorGreen"
                 android:contentDescription="@null"
                 android:padding="5dp"
                 android:scaleType="fitCenter"
                 app:setVisibility="@{setupVehicleViewModel.isVehicleAdded(position)}"
-                app:srcCompat="@drawable/ic_right_arrow" />
+                app:srcCompat="@drawable/ic_checked" />
         </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -27,6 +27,15 @@ class DocumentUploadViewModel : BaseViewModel<DocumentUploadNavigator>() {
 //        return expiryDate
 //    }
 
+
+    fun selectFrontImage(){
+
+    }
+
+    fun selectBackImage(){
+
+    }
+
     fun onExpiryDateClick(view: View) {
         navigator.onDateChanged()
     }

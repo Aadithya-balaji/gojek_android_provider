@@ -69,7 +69,7 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(), Bottom
         ctxt = context as AppCompatActivity
     }
 
-    override fun getLayout(): Int {
+    override fun getLayoutId(): Int {
         return R.layout.layout_taxi_bottom
     }
 

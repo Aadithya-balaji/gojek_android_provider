@@ -59,6 +59,9 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             viewModel.getOrderId() -> {
                 viewModel.getShops()
             }
+            else ->{
+                loadingObservable.value =false
+            }
         }
     }
 
@@ -67,19 +70,11 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         intent.putExtra(Constant.SERVICE_ID, viewModel.getServiceId())
         when (viewModel.getServiceId()) {
             viewModel.getTransportId() -> {
-                if (!(viewModel.getVehicleDataObservable().value as SetupRideResponseModel)
-                                .responseData[position].providerService.isNullOrEmpty()) {
-                    intent.putExtra(Constant.PROVIDER_VEHICLE,
-                            (viewModel.getVehicleDataObservable().value as SetupRideResponseModel)
-                                    .responseData[position].providerService[0].providerVehicle)
-                }
+                intent.putExtra(Constant.PROVIDER_VEHICLE,
+                        (viewModel.getVehicleDataObservable().value as SetupRideResponseModel)
+                                .responseData[position].providerService.providerVehicle)
             }
             viewModel.getOrderId() -> {
-                if (!(viewModel.getVehicleDataObservable().value as SetupShopResponseModel)
-                                .responseData[position].providerService.isNullOrEmpty())
-                    intent.putExtra(Constant.PROVIDER_VEHICLE,
-                            (viewModel.getVehicleDataObservable().value as SetupShopResponseModel)
-                                    .responseData[position].providerService[0].providerVehicle)
             }
         }
         launchNewActivity(intent, false)

@@ -22,6 +22,7 @@
             layout="@layout/layout_app_bar" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rcvDocuments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adapter="@{manageDocumentsViewModel.getAdapter()}"
@@ -37,15 +38,16 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar_layout"
             android:gravity="center"
-            android:visibility="visible"
+            android:visibility="gone"
             android:orientation="vertical"
-            >
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_70sdp"
                 android:layout_gravity="center"
-                android:src="@drawable/no_documents"/>
+                android:src="@drawable/no_documents"
+                android:contentDescription="@string/no_documents_found" />
 
             <TextView
                 android:layout_width="wrap_content"

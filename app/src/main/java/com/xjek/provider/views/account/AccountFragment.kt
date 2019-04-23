@@ -20,6 +20,7 @@ import com.xjek.provider.views.manage_services.ManageServicesActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
 import com.xjek.provider.views.privacypolicy.PrivacyActivity
 import com.xjek.provider.views.profile.ProfileActivity
+import com.xjek.provider.views.support.SupportActivity
 import kotlinx.android.synthetic.main.header_layout.*
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator {
@@ -49,20 +50,20 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         dashBoardNavigator.hideRightIcon(false)
         dashBoardNavigator.showLogo(false)
 
-//        dashBoardNavigator.getInstance().iv_right.setOnClickListener {
-//            ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
-//                override fun onPositiveButtonClick(dialog: DialogInterface) {
-//                    clearPreferences<String>()
-//                    launchNewActivity(OnBoardActivity::class.java, false)
-//                    activity!!.finishAffinity()
-//                    dialog.dismiss()
-//                }
-//
-//                override fun onNegativeButtonClick(dialog: DialogInterface) {
-//                    dialog.dismiss()
-//                }
-//            })
-//        }
+        dashBoardNavigator.getInstance().iv_right.setOnClickListener {
+            ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
+                override fun onPositiveButtonClick(dialog: DialogInterface) {
+                    clearPreferences<String>()
+                    launchNewActivity(OnBoardActivity::class.java, false)
+                    activity!!.finishAffinity()
+                    dialog.dismiss()
+                }
+
+                override fun onNegativeButtonClick(dialog: DialogInterface) {
+                    dialog.dismiss()
+                }
+            })
+        }
 
         val accountMenuTitles = resources.getStringArray(R.array.title_account)
         val accountMenuIcons = resources.obtainTypedArray(R.array.icon_account)
@@ -81,26 +82,39 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             }
 
             1 -> {
-                launchNewActivity(InviteReferalsActivity::class.java, false)
-            }
-
-            2 -> {
-                launchNewActivity(ManagePaymentActivity::class.java,false)
-            }
-
-            3 -> {
-                launchNewActivity(PrivacyActivity::class.java, false)
-            }
-
-            5 -> {
-                launchNewActivity(ManageServicesActivity::class.java, false)
-            }
-            6 -> {
                 launchNewActivity(ManageDocumentsActivity::class.java, false)
             }
 
-            7 -> {
+            2 -> {
+                launchNewActivity(ManageServicesActivity::class.java, false)
+            }
+
+            3 -> {
+                launchNewActivity(ManagePaymentActivity::class.java,false)
+            }
+
+            4 ->{
+                //Earnings
+            }
+
+            5 -> {
+                //Bank Details
+            }
+
+            6 -> {
+                launchNewActivity(InviteReferalsActivity::class.java, false)
+            }
+
+            7 ->{
                 launchNewActivity(LanguageActivity::class.java, false)
+            }
+
+            8 ->{
+                launchNewActivity(PrivacyActivity::class.java, false)
+            }
+
+            9 ->{
+                launchNewActivity(SupportActivity::class.java, false)
             }
         }
     }

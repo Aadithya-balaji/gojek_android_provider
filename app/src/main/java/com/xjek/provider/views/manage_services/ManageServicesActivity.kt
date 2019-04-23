@@ -56,9 +56,12 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getServicesObservable()) {
-            loadingObservable.value = false
-            viewModel.setServiceData(serviceData)
-            viewModel.setAdapter()
+            response ->
+            run {
+                loadingObservable.value = false
+                viewModel.setServiceData(serviceData)
+                viewModel.setAdapter()
+            }
         }
     }
 
@@ -75,9 +78,15 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
                 intent = Intent(applicationContext, SetupServicesActivity::class.java)
             }
         }
-        intent.putExtra(Constant.SERVICE_ID,
-                viewModel.getServicesObservable().value!!.responseData[position].id)
-        launchNewActivity(intent, false)
+
+        val response = viewModel.getServicesObservable().value!!.responseData
+        if (!response.isNullOrEmpty() && response.size > position) {
+            intent.putExtra(Constant.SERVICE_ID,
+                    viewModel.getServicesObservable().value!!.responseData[position].id)
+            launchNewActivity(intent, false)
+        }else{
+            ViewUtils.showToast(this,"Service not configured. Please contact admin",false)
+        }
     }
 
     override fun showError(error: String) {

@@ -85,12 +85,15 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                     when (this.requestCode) {
                         Enums.RC_VEHICLE_IMAGE -> {
                             viewModel.setVehicleUri(result.uri)
+                            binding.ivVehicle.setImageURI(result.uri)
                         }
                         Enums.RC_RC_BOOK_IMAGE -> {
                             viewModel.setRcBookUri(result.uri)
+                            binding.ivRcBook.setImageURI(result.uri)
                         }
                         Enums.RC_INSURANCE_IMAGE -> {
                             viewModel.setInsuranceUri(result.uri)
+                            binding.ivInsurance.setImageURI(result.uri)
                         }
                     }
                 }

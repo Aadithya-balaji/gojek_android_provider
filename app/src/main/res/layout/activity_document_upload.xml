@@ -47,6 +47,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginTop="10dp"
+                        android:onClick="@{() -> documentUploadViewModel.selectFrontImage()}"
                         android:background="@drawable/drawable_dashed_rectangle">
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -93,6 +94,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginTop="10dp"
+                        android:onClick="@{() -> documentUploadViewModel.selectBackImage()}"
                         android:background="@drawable/drawable_dashed_rectangle">
 
                         <androidx.appcompat.widget.AppCompatImageView

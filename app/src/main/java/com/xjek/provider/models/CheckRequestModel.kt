@@ -8,7 +8,7 @@ data class CheckRequestModel(
         var responseData: ResponseData?,
         var statusCode: String?,
         var title: String?
-) : Serializable
+)
 
 data class ResponseData(
         var account_status: String?,
@@ -21,7 +21,7 @@ data class ResponseData(
         var requests: List<Request?>?,
         var ride_otp: String?,
         var service_status: String?
-) : Serializable
+)
 
 data class Request(
         var admin_service_id: Int?,

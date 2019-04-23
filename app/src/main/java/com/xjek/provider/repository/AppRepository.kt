@@ -11,6 +11,7 @@ import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.home.HomeViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
+import com.xjek.provider.views.manage_bank_details.ManageBankDetailsViewModel
 import com.xjek.provider.views.notification.NotificationViewModel
 import com.xjek.provider.views.manage_documents.ManageDocumentsViewModel
 import com.xjek.provider.views.manage_services.ManageServicesViewModel
@@ -467,6 +468,21 @@ class AppRepository : BaseRepository() {
                         viewModel.getDocumentTypeObservable().postValue(it)
                 }, {
                     viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+
+    fun getBankTemplate(viewModel:ManageBankDetailsViewModel,token: String): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getBankTemplate(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.showLoading.value = false
+                    viewModel.bankTemplateLiveData.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }
 

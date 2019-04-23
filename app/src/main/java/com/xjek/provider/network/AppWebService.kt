@@ -169,4 +169,8 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<DocumentTypeResponseModel>
+
+    @GET("bankdetails/template")
+    fun getBankTemplate(@Header("Authorization") token: String): Observable<BankTemplateModel>
+
 }

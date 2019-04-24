@@ -71,7 +71,7 @@
                         android:transformPivotX="0dp"
                         android:transformPivotY="0dp"/>-->
 
-                    <com.xjek.provider.views.customviews.SmartRatingBar
+                    <com.xjek.base.views.customviews.SmartRatingBar
                         android:id="@+id/smart_rating_bar"
                         android:layout_width="wrap_content"
                         android:layout_height="13dp"

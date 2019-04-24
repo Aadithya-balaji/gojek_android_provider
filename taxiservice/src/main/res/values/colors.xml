@@ -4,7 +4,7 @@
     <!-- Basic colors -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="grey">#d1d4e7</color>
+    <color name="grey">#D3D3D3</color>
 
     <!-- vehicle detail -->
     <color name="bg_vehicle_profile">#F2F2F2</color>
@@ -19,5 +19,10 @@
 
     <!-- Toll Charge -->
     <color name="toll_submit">#83d0f2</color>
+
+    <!-- invoice -->
+    <color name="bg_invoice_image">#FF9E80</color>
+    <color name="greeen">#008000</color>
+    <color name="red">#FF0000</color>
 
 </resources>

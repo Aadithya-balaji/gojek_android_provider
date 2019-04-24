@@ -31,6 +31,7 @@ import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityTaxiMainBinding
 import com.xjek.taxiservice.views.bottomsheets.RideStatusBottomSheet
 import kotlinx.android.synthetic.main.activity_taxi_main.*
+import com.xjek.taxiservice.views.main.ActivityTaxiMain.Companion.showLoader
 import java.util.*
 
 class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
@@ -88,7 +89,6 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
 
     @SuppressLint("MissingPermission")
     private fun updateCurrentLocation() {
-
         runOnUiThread {
             mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
             mGoogleMap!!.uiSettings.isCompassEnabled = true

@@ -3,6 +3,7 @@ package com.xjek.taxiservice.views.bottomsheets
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -16,10 +17,12 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.gson.Gson
 import com.xjek.base.base.BaseBottomSheet
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.LayoutTaxiBottomBinding
 import com.xjek.taxiservice.model.ResponseData
+import com.xjek.taxiservice.views.invoice.InvoiceActivity
 import com.xjek.taxiservice.views.main.ActivityTaxiModule
 import com.xjek.taxiservice.views.verifyotp.VerifyOtpDialog
 import kotlinx.android.synthetic.main.layout_taxi_bottom.*
@@ -49,7 +52,11 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(),
     private var mCheckStatusModel: ResponseData? = null
 
     override fun openInvoice() {
-
+        val strCheckRequestModel = Gson().toJson(mCheckStatusModel)
+        val intent = Intent(activity!!, InvoiceActivity::class.java)
+        intent.putExtra("strRequestModel", strCheckRequestModel)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        activity!!.startActivity(intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,8 +104,6 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(),
     }
 
     override fun whenArrivedStatus() {
-        btn_arrived.visibility = View.GONE
-        btn_picked_up.visibility = View.VISIBLE
     }
 
     override fun openOTPDialog() {

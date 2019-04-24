@@ -49,6 +49,10 @@ object Constants {
         const val COMPLETED = "COMPLETED"
     }
 
+    object  ConfirmPayment{
+        const val ID="id"
+    }
+
 //    const val Rajaganapathi = true
 
 }

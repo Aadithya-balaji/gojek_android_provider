@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit
 
 class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
 
-
     private lateinit var dialogTaxiIncomingReqBinding: DialogTaxiIncomingRequestBinding
     private lateinit var incomingRequestViewModel: IncomingRequestViewModel
     private lateinit var circularProgressBar: FullCircularProgressBar
@@ -62,8 +61,7 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
         incomingRequestViewModel.navigator = this
         dialogTaxiIncomingReqBinding.requestmodel = incomingRequestViewModel
         dialogTaxiIncomingReqBinding.setLifecycleOwner(this)
-        //incomingRequestViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
-        // initCiruclarSeekbar(100f,"03:21")
+        incomingRequestViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
         if (incomingRequstModel != null) {
 
             if (incomingRequstModel!!.responseData!!.requests!!.size > 0) {
@@ -73,10 +71,14 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
                 val seconds = totalSeconds!! % 60
                 val time = String.format("%d:%d", minutes, seconds)
                 initCiruclarSeekbar(0f, time)
+
                 val totalMiliSeconds = totalSeconds!! * 1000
                 val totalTimeInLong = totalMiliSeconds.toLong()
                 timertoTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
                 timertoTakeOrder.start()
+
+                //setPickup and service type
+                incomingRequestViewModel.pickupLocation.value = incomingRequstModel!!.responseData!!.requests!![0]!!.request!!.s_address.toString()
             }
         }
 
@@ -86,7 +88,7 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
     }
 
     fun getApiResponse() {
-
+        
         //Accept Request model
         observeLiveData(incomingRequestViewModel.acceptRequestLiveData) {
             loadingObservable.value = false

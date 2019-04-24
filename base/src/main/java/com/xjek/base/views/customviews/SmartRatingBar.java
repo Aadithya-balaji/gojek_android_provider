@@ -1,4 +1,4 @@
-package com.xjek.provider.views.customviews;
+package com.xjek.base.views.customviews;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -12,7 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.xjek.provider.R;
+import com.xjek.base.R;
 
 public class SmartRatingBar extends View {
 
@@ -346,8 +346,8 @@ public class SmartRatingBar extends View {
             out.writeInt(mStarNum);
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR
-                = new Parcelable.Creator<SavedState>() {
+        public static final Creator<SavedState> CREATOR
+                = new Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }

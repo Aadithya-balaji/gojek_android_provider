@@ -41,8 +41,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams
-                .WRAP_CONTENT);
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +52,6 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     override fun onAttach(context: Context) {
         super.onAttach(context)
         dashBoardActivity = if (context is AppCompatActivity) context as DashBoardActivity else null
-
     }
 
     override fun initView(viewDataBinding: ViewDataBinding,view:View) {
@@ -61,7 +59,6 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
         pendginListViewModel = PendingListViewModel()
         pendginListViewModel.navigator = this
         pendingListDialogBinding.pendinglistModel = pendginListViewModel
-
         when (dialogType) {
             0 -> {
                 pendingListDialogBinding.llDocPending.visibility = View.VISIBLE

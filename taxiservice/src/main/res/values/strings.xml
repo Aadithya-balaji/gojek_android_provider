@@ -35,6 +35,9 @@
     <!-- Toll Charge -->
     <string name="toll_label">TOLL CHARGE</string>
     <string name="toll_submit">Submit</string>
+    <string name="toll_cancel">Cancel</string>
+    <string name="empty_toll_charge">Please enter the Toll charge</string>
+    <string name="invalid_toll_charge">Please enter the valid Toll charge</string>
 
     <!-- Rating -->
     <string name="rating_label">Rating</string>

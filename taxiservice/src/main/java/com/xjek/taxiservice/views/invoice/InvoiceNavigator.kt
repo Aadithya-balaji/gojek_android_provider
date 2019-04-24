@@ -4,4 +4,5 @@ interface InvoiceNavigator{
     fun openRatingDialog()
     fun showTollDialog()
     fun tollCharge(amount:String)
+    fun showErrorMessage(error:String)
 }

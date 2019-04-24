@@ -73,9 +73,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
             else {
-                 launchNewActivity(DashBoardActivity::class.java, true)
-                /*val intent = Intent(this, Class.forName("com.xjek.taxiservice.views.main.ActivityTaxiMain"))
-                startActivity(intent)*/
+               // launchNewActivity(DashBoardActivity::class.java, true)
+                val intent = Intent(this, Class.forName("com.xjek.taxiservice.views.main.ActivityTaxiMain"))
+                startActivity(intent)
             }
         }
     }

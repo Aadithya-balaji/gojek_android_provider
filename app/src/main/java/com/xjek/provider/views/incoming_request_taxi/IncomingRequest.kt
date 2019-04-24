@@ -2,11 +2,15 @@ package com.xjek.provider.views.incoming_request_taxi
 
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.appcompat.widget.ViewUtils
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
@@ -64,7 +68,7 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
         incomingRequestViewModel.navigator = this
         dialogTaxiIncomingReqBinding.requestmodel = incomingRequestViewModel
         dialogTaxiIncomingReqBinding.setLifecycleOwner(this)
-        //incomingRequestViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+        incomingRequestViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
        // initCiruclarSeekbar(100f,"03:21")
         if(incomingRequstModel!=null){
 
@@ -76,15 +80,26 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
                 val time = String.format("%d:%d", minutes, seconds)
                 initCiruclarSeekbar(0f, time)
                 val totalMiliSeconds=totalSeconds!!*1000
-                val totalTimeInLong=totalMiliSeconds.toLong()
+                 val totalTimeInLong=totalMiliSeconds.toLong()
                  timertoTakeOrder=MyCountDownTimer(totalTimeInLong,1000L)
                  timertoTakeOrder.start()
+
+                //setPickup and service type
+                incomingRequestViewModel.pickupLocation.value=incomingRequstModel!!.responseData!!.requests!![0]!!.request!!.s_address.toString()
             }
         }
 
 
         // Get Api Resposne
         getApiResponse()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)
+        if (dialog != null && dialog!!.getWindow() != null) {
+            dialog!!.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            dialog!!.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        }
     }
 
     fun getApiResponse(){

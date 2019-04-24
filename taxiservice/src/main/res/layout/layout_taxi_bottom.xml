@@ -246,6 +246,7 @@
                     android:paddingBottom="@dimen/_10sdp"
                    android:textColor="@color/white"
                     app:backgroundTint="@color/taxi_bg_yellow"
+                    android:onClick="@{() -> bottomsheetmodel.onArrivedStatus()}"
                     app:cornerRadius="@dimen/_5sdp"
                     android:text="@string/taxi_pickup_arrived"
                     android:textSize="@dimen/_10sdp"

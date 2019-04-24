@@ -1,6 +1,7 @@
 package com.xjek.taxiservice.repositary
 
 import com.xjek.taxiservice.model.CheckRequestModel
+import com.xjek.taxiservice.model.PaymentModel
 import com.xjek.taxiservice.model.WaitingTime
 import io.reactivex.Observable
 import retrofit2.http.*
@@ -24,5 +25,9 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<CheckRequestModel>
+
+    @POST("provider/transport/payment")
+    fun ConfirmPayment(@Header("Authorization") token:String,@FieldMap params: HashMap<String, String>):Observable<PaymentModel>
+
 
 }

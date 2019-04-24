@@ -30,6 +30,7 @@ import com.xjek.base.utils.LocationUtils
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityTaxiMainBinding
 import com.xjek.taxiservice.views.bottomsheets.RideStatusBottomSheet
+import com.xjek.taxiservice.views.main.ActivityTaxiMain.Companion.showLoader
 import java.util.*
 
 class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
@@ -75,7 +76,12 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         mGoogleMap = map
         try {
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json))
-            updateCurrentLocation()
+            taxiCheckStatusTimer.schedule(object : TimerTask() {
+                override fun run() {
+                    println("RRR :: ActivityTaxiMain.run")
+                    if (mGoogleMap != null) updateCurrentLocation()
+                }
+            }, 0, 8000)
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
@@ -90,9 +96,10 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
 
     @SuppressLint("MissingPermission")
     private fun updateCurrentLocation() {
-
-        mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
-        mGoogleMap!!.uiSettings.isCompassEnabled = true
+        runOnUiThread {
+            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
+            mGoogleMap!!.uiSettings.isCompassEnabled = true
+        }
 
         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION))
             LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
@@ -130,15 +137,7 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
     }
 
-    override fun onResume() {
-        super.onResume()
-        taxiCheckStatusTimer.schedule(object : TimerTask() {
-            override fun run() {
-                println("RRR :: ActivityTaxiMain.run")
-                if (mGoogleMap != null) updateCurrentLocation()
-            }
-        }, 0, 8000)
-    }
+
 
     override fun onDestroy() {
         super.onDestroy()

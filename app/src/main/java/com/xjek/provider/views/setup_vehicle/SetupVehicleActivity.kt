@@ -68,14 +68,13 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
     override fun onMenuItemClicked(position: Int) {
         val intent = Intent(applicationContext, AddVehicleActivity::class.java)
         intent.putExtra(Constant.SERVICE_ID, viewModel.getServiceId())
-        when (viewModel.getServiceId()) {
-            viewModel.getTransportId() -> {
-                intent.putExtra(Constant.PROVIDER_VEHICLE,
-                        (viewModel.getVehicleDataObservable().value as SetupRideResponseModel)
-                                .responseData[position].providerService.providerVehicle)
-            }
-            viewModel.getOrderId() -> {
-            }
+        val providerService = viewModel.getVehicleDataObservable().value
+
+        if(providerService is SetupRideResponseModel){
+            intent.putExtra(Constant.PROVIDER_VEHICLE,
+                    providerService.responseData[position].providerService!!.providerVehicle)
+        }else if(providerService is SetupShopResponseModel){
+
         }
         launchNewActivity(intent, false)
     }

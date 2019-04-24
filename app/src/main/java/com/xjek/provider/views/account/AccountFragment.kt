@@ -14,6 +14,7 @@ import com.xjek.provider.models.AccountMenuModel
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
 import com.xjek.provider.views.language.LanguageActivity
+import com.xjek.provider.views.manage_bank_details.ManageBankDetailsActivity
 import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
@@ -76,44 +77,45 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     }
 
     override fun onMenuItemClicked(position: Int) {
-        when (position) {
-            0 -> {
+        when (resources.getStringArray(R.array.title_account)[position]) {
+            getString(R.string.title_profile) -> {
                 launchNewActivity(ProfileActivity::class.java, false)
             }
 
-            1 -> {
+            getString(R.string.title_manage_documents) -> {
                 launchNewActivity(ManageDocumentsActivity::class.java, false)
             }
 
-            2 -> {
+            getString(R.string.title_manage_services) -> {
                 launchNewActivity(ManageServicesActivity::class.java, false)
             }
 
-            3 -> {
+            getString(R.string.title_payment) -> {
                 launchNewActivity(ManagePaymentActivity::class.java,false)
             }
 
-            4 ->{
+            getString(R.string.title_earnings) ->{
                 //Earnings
             }
 
-            5 -> {
+            getString(R.string.title_bank_details) -> {
                 //Bank Details
+                launchNewActivity(ManageBankDetailsActivity::class.java,false)
             }
 
-            6 -> {
+            getString(R.string.title_invite_referrals) -> {
                 launchNewActivity(InviteReferalsActivity::class.java, false)
             }
 
-            7 ->{
+            getString(R.string.title_language) ->{
                 launchNewActivity(LanguageActivity::class.java, false)
             }
 
-            8 ->{
+            getString(R.string.title_privacy_policy) ->{
                 launchNewActivity(PrivacyActivity::class.java, false)
             }
 
-            9 ->{
+            getString(R.string.title_support) ->{
                 launchNewActivity(SupportActivity::class.java, false)
             }
         }

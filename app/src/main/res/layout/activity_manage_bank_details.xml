@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View"/>
+
         <variable
             name="viewModel"
             type="com.xjek.provider.views.manage_bank_details.ManageBankDetailsViewModel"/>
@@ -19,27 +23,70 @@
             android:id="@+id/toolbar_layout"
             layout="@layout/toolbar_layout" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcvBankForm"
+        <LinearLayout
+            android:id="@+id/llBankForm"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.showEmpty ? View.GONE:View.VISIBLE}"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnSubmit"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcvBankForm"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:setAdapter="@{viewModel.adapter}"
+                tools:itemCount="3"
+                tools:listitem="@layout/bank_template_inflate"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                 />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_17sdp"
+                android:background="@drawable/bg_blue_rounded_corner_curved"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="@dimen/_10sdp"
+                android:onClick="@{()->viewModel.submitDetails()}"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="UnusedAttribute" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llEmptyView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_17sdp"
-            android:background="@drawable/bg_blue_rounded_corner_curved"
-            android:backgroundTint="@color/colorPrimary"
-            android:padding="@dimen/_10sdp"
-            android:text="@string/submit"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_12sdp"
-            tools:ignore="UnusedAttribute" />
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:visibility="@{viewModel.showEmpty ? View.VISIBLE:View.GONE}"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/no_documents"
+                android:contentDescription="@string/no_documents_found" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textSize="@dimen/_12sdp"
+                android:text="@string/no_documents_found"/>
+
+        </LinearLayout>
+
 
 
     </LinearLayout>

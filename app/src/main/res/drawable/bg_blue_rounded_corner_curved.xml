@@ -7,7 +7,7 @@
     <solid android:color="@color/card_left_bg"></solid>
 
     // The desired corner radius. reduce it to keep it less rounded
-    <corners android:radius="@dimen/_50sdp" />
+    <corners android:radius="@dimen/_60sdp" />
 
     // Add your desired padding
 

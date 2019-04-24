@@ -7,6 +7,9 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
+import retrofit2.http.POST
+
+
 
 interface AppWebService {
 
@@ -170,7 +173,19 @@ interface AppWebService {
             @FieldMap params: HashMap<String, String>
     ): Observable<DocumentTypeResponseModel>
 
-    @GET("bankdetails/template")
+    @GET("provider/bankdetails/template")
     fun getBankTemplate(@Header("Authorization") token: String): Observable<BankTemplateModel>
+
+    @GET("provider/providerservice/categories")
+    fun getCategories(@Header("Authorization") token: String): Observable<CategoriesResponseModel>
+
+    @Headers("Content-Type: application/json")
+    @POST("provider/addbankdetails")
+    fun postAddBankDetails(@Header("Authorization") token: String, @Body body: String): Observable<AddBankDetailsModel>
+
+    @Headers("Content-Type: application/json")
+    @POST("provider/editbankdetails")
+    fun postEditBankDetails(@Header("Authorization") token: String, @Body body: String): Observable<AddBankDetailsModel>
+
 
 }

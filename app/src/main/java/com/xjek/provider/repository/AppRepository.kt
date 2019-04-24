@@ -479,10 +479,37 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.showLoading.value = false
-                    viewModel.bankTemplateLiveData.postValue(it)
+                    viewModel.bankResponse.postValue(it)
                 }, {
                     viewModel.showLoading.value = false
                     viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+
+    fun postAddBankDetails(viewModel:ManageBankDetailsViewModel, token: String, body:String): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postAddBankDetails(token,body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.addEditBankResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.addEditBankErrorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun postEditBankDetails(viewModel:ManageBankDetailsViewModel, token: String, body:String): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postEditBankDetails(token,body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.addEditBankResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.addEditBankErrorResponse.value = getErrorMessage(it)
                 })
     }
 

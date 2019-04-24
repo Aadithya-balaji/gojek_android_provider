@@ -7,6 +7,7 @@ object Constant {
 
     const val SERVICE_ID = "service_id"
     const val PROVIDER_VEHICLE = "provider_vehicle"
+    const val PROVIDER_SERVICE = "provider_service"
     const val DOCUMENT_NAME = "document_name"
     const val DOCUMENT_ID = "document_id"
     const val IS_BACK_PAGE_REQUIRED = "is_back_page_required"

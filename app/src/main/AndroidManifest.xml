@@ -26,7 +26,14 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">
-        <activity android:name=".views.manage_bank_details.ManageBankDetailsActivity"></activity>
+        <activity
+            android:name=".views.earnings.EarningsActivity"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.manage_bank_details.ManageBankDetailsActivity"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".views.setup_services.SetupServicesActivity"
             android:screenOrientation="portrait" />

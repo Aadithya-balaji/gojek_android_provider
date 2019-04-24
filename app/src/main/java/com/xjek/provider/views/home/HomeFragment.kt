@@ -8,12 +8,14 @@ import android.content.Intent
 import android.content.res.Resources
 import android.location.Location
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.maps.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.gson.Gson
@@ -39,10 +41,7 @@ import kotlin.collections.HashMap
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         HomeNavigator,
-        OnMapReadyCallback,
-        GoogleMap.OnCameraMoveListener,
-        GoogleMap.OnCameraIdleListener,
-        LocationSource.OnLocationChangedListener {
+        OnMapReadyCallback {
 
     private lateinit var mHomeDataBinding: FragmentHomePageBinding
     private lateinit var dashBoardNavigator: DashBoardNavigator
@@ -145,7 +144,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                     }
                 }
 
-                println("RRR :: inside ")
                 if (checkStatusData.responseData!!.requests!!.isNotEmpty())
                     when (checkStatusData.responseData!!.requests!![0]!!.request!!.status) {
                         SEARCHING -> {
@@ -167,7 +165,10 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 //                            }
                         }
                         else -> when (checkStatusData.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                            "TRANSPORT" -> gotoTaxiModule()
+                            "TRANSPORT" -> {
+                                gotoTaxiModule()
+                                checkRequestTimer.cancel()
+                            }
                             "SERVICE" -> gotoXuberModule()
                             "ORDER" -> gotoFoodieModule()
                         }
@@ -231,15 +232,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
-    }
-
-    override fun onLocationChanged(currentLocation: Location?) {
-    }
-
-    override fun onCameraMove() {
-    }
-
-    override fun onCameraIdle() {
     }
 
     override fun onAttach(context: Context) {

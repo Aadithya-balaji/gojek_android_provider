@@ -19,6 +19,7 @@ interface AppWebService {
     fun waitingTime(@Header("Authorization") token: String,
                     @FieldMap params: HashMap<String, String>):Observable<WaitingTime>
 
+    @FormUrlEncoded
     @POST("provider/update/ride/request")
     fun taxiStatusUpdate(
             @Header("Authorization") token: String,

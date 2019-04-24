@@ -30,6 +30,7 @@ import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.Logger
 import com.xjek.base.utils.ViewUtils
+import com.xjek.provider.BuildConfig
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySignInBinding
 import com.xjek.provider.models.LoginResponseModel
@@ -62,6 +63,11 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         viewModel.navigator = this
         binding.signInViewModel = viewModel
         observeViewModel()
+
+        if (BuildConfig.DEBUG) {
+            viewModel.email.value = "android@provider.com"
+            viewModel.password.value = "112233"
+        }
     }
 
     private fun observeViewModel() {
@@ -70,10 +76,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
             message = if (!it.message.isNullOrBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)
             writePreferences(PreferencesKey.ACCESS_TOKEN, it.responseData.accessToken)
-            val user:LoginResponseModel.ResponseData.User=it.responseData.user
-            if(user!=null){
-                writePreferences(PreferencesKey.IS_ONLINE, it.responseData.user.isOnline)
-            }
+            val user: LoginResponseModel.ResponseData.User = it.responseData.user
+            writePreferences(PreferencesKey.IS_ONLINE, it.responseData.user.isOnline)
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             launchNewActivity(dashBoardIntent, false)

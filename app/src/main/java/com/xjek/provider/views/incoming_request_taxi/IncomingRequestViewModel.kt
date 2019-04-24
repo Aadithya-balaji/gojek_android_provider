@@ -8,21 +8,21 @@ import com.xjek.provider.models.AcceptRequestModel
 import com.xjek.provider.models.RejectRequestModel
 import com.xjek.provider.repository.AppRepository
 
-class  IncomingRequestViewModel:BaseViewModel<IncomingNavigator>(){
+class IncomingRequestViewModel : BaseViewModel<IncomingNavigator>() {
     val appRepository = AppRepository.instance()
 
-    var pickupLocation=MutableLiveData<String>()
-    var serviceType=MutableLiveData<String>()
-    var timeLeft= MutableLiveData<String>()
-    var  acceptRequestLiveData=MutableLiveData<AcceptRequestModel>()
-    var rejectRequestLiveData=MutableLiveData<RejectRequestModel>()
-    var showLoading=MutableLiveData<Boolean>()
+    var pickupLocation = MutableLiveData<String>()
+    var serviceType = MutableLiveData<String>()
+    var timeLeft = MutableLiveData<String>()
+    var acceptRequestLiveData = MutableLiveData<AcceptRequestModel>()
+    var rejectRequestLiveData = MutableLiveData<RejectRequestModel>()
+    var showLoading = MutableLiveData<Boolean>()
 
-    fun acceptReq(){
+    fun acceptReq() {
         navigator.accept()
     }
 
-    fun cancelReq(){
+    fun cancelReq() {
         navigator.cancel()
     }
 

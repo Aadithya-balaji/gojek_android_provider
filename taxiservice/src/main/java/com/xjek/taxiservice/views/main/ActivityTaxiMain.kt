@@ -30,13 +30,12 @@ import com.xjek.base.utils.LocationUtils
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityTaxiMainBinding
 import com.xjek.taxiservice.views.bottomsheets.RideStatusBottomSheet
+import kotlinx.android.synthetic.main.activity_taxi_main.*
 import java.util.*
 
 class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         ActivityTaxMainNavigator,
-        OnMapReadyCallback,
-        GoogleMap.OnCameraMoveListener,
-        GoogleMap.OnCameraIdleListener {
+        OnMapReadyCallback {
 
     private lateinit var activityTaxiMainBinding: ActivityTaxiMainBinding
     private lateinit var fragmentMap: SupportMapFragment
@@ -76,23 +75,24 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         try {
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json))
             updateCurrentLocation()
+            taxiCheckStatusTimer.schedule(object : TimerTask() {
+                override fun run() {
+                    println("RRR :: ActivityTaxiMain.run")
+                    if (mGoogleMap != null) updateCurrentLocation()
+                }
+            }, 0, 8000)
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
     }
 
-    override fun onCameraMove() {
-
-    }
-
-    override fun onCameraIdle() {
-    }
-
     @SuppressLint("MissingPermission")
     private fun updateCurrentLocation() {
 
-        mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
-        mGoogleMap!!.uiSettings.isCompassEnabled = true
+        runOnUiThread {
+            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
+            mGoogleMap!!.uiSettings.isCompassEnabled = true
+        }
 
         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION))
             LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
@@ -130,16 +130,6 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
     }
 
-    override fun onResume() {
-        super.onResume()
-        taxiCheckStatusTimer.schedule(object : TimerTask() {
-            override fun run() {
-                println("RRR :: ActivityTaxiMain.run")
-                if (mGoogleMap != null) updateCurrentLocation()
-            }
-        }, 0, 8000)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         taxiCheckStatusTimer.cancel()
@@ -154,57 +144,57 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
             if (checkStatusResponse?.statusCode.equals("200")) try {
                 if (checkStatusResponse?.responseData!!.provider_details != null) {
                     println("RRR :: Status = ${checkStatusResponse.responseData!!.request.status}")
-                    if (checkStatusResponse.responseData!!.request.status.isNullOrEmpty()) {
+                    btTempProviderStatus.text = checkStatusResponse.responseData!!.request.status
+                    if (!checkStatusResponse.responseData!!.request.status.isNullOrEmpty()) {
+                        println("RRR :: inside if = ")
                         when (checkStatusResponse.responseData!!.request.status) {
                             SCHEDULED -> {
-
+                                println("RRR :: inside SCHEDULED = ")
                             }
                             CANCELLED -> {
-
+                                println("RRR :: inside CANCELLED = ")
                             }
                             ACCEPTED -> {
-
+                                println("RRR :: inside ACCEPTED = ")
                             }
                             STARTED -> {
+                                println("RRR :: inside STARTED = ")
                                 mBottomSheet!!.whenStatusStarted(checkStatusResponse.responseData)
                             }
                             ARRIVED -> {
+                                println("RRR :: inside ARRIVED = ")
                                 mBottomSheet!!.whenStatusArrived(checkStatusResponse.responseData)
                             }
                             PICKED_UP -> {
+                                println("RRR :: inside PICKED_UP = ")
                                 mBottomSheet!!.whenStatusArrived(checkStatusResponse.responseData)
                             }
                             DROPPED -> {
+                                println("RRR :: inside DROPPED = ")
                                 mBottomSheet!!.whenStatusArrived(checkStatusResponse.responseData)
                             }
                             COMPLETED -> {
+                                println("RRR :: inside COMPLETED = ")
                                 mBottomSheet!!.whenStatusArrived(checkStatusResponse.responseData)
                             }
                         }
-                    }
-                    else {
-                        println("RRR :: inside else = ${checkStatusResponse.responseData!!.request.status}")
-                    }
+                    } else println("RRR :: inside else = ${checkStatusResponse.responseData!!.request.status}")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
 
+        //      WaitingTIme
+        observeLiveData(mViewModel.waitingTimeLiveData) {
+            if (mViewModel.waitingTimeLiveData.value != null) {
+                val waitingTime = mViewModel.waitingTimeLiveData.value!!.waitingStatus
+                if (waitingTime == 1) {
 
-
-        //WaitingTIme
-        observeLiveData(mViewModel.waitingTimeLiveData){
-            if(mViewModel.waitingTimeLiveData.value!=null){
-                val waitingTime=   mViewModel.waitingTimeLiveData.value!!.waitingStatus
-                if(waitingTime==1){
-
-                }else{
+                } else {
 
                 }
             }
         }
     }
-
-
 }

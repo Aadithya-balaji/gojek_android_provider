@@ -44,7 +44,6 @@ class VerifyOtpDialog : BaseDialogFragment<FragmentVerifyOtpBinding>(), VerifyOT
 
     override fun startDrip() {
         if (ed_otp.text.toString() == otp) {
-//            bottomSheetNavigator!!.whenStatusArrived(true)
             println("RRR :: otp = $otp")
 
             val params: HashMap<String, String> = HashMap()

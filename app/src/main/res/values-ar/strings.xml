@@ -369,6 +369,7 @@
     <string name="dummy_min">12mins</string>
     <string name="dummy_text">Lorem Ipsum has been the industry\'s standard dummy text</string>
     <string name="no_notification_found">No notification found</string>
+    <string name="something_went_wrong">Something went wrong</string>
 
 
 </resources>

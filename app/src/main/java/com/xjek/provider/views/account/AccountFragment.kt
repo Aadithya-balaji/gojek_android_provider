@@ -12,6 +12,7 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
 import com.xjek.provider.views.dashboard.DashBoardNavigator
+import com.xjek.provider.views.earnings.EarningsActivity
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
 import com.xjek.provider.views.language.LanguageActivity
 import com.xjek.provider.views.manage_bank_details.ManageBankDetailsActivity
@@ -77,46 +78,52 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     }
 
     override fun onMenuItemClicked(position: Int) {
-        when (resources.getStringArray(R.array.title_account)[position]) {
-            getString(R.string.title_profile) -> {
+        val accountMenuIcons = resources.obtainTypedArray(R.array.icon_account)
+        val selectedMenuIcon=accountMenuIcons.getResourceId(position,0)
+        accountMenuIcons.recycle()
+        when (selectedMenuIcon) {
+            R.drawable.ic_user -> {
                 launchNewActivity(ProfileActivity::class.java, false)
             }
 
-            getString(R.string.title_manage_documents) -> {
+            R.drawable.ic_document -> {
                 launchNewActivity(ManageDocumentsActivity::class.java, false)
             }
 
-            getString(R.string.title_manage_services) -> {
+            R.drawable.ic_services -> {
                 launchNewActivity(ManageServicesActivity::class.java, false)
             }
 
-            getString(R.string.title_payment) -> {
+            R.drawable.ic_card -> {
                 launchNewActivity(ManagePaymentActivity::class.java,false)
             }
 
-            getString(R.string.title_earnings) ->{
-                //Earnings
+            R.drawable.ic_earnings ->{
+                launchNewActivity(EarningsActivity::class.java,false)
             }
 
-            getString(R.string.title_bank_details) -> {
+            R.drawable.ic_bank_details -> {
                 //Bank Details
                 launchNewActivity(ManageBankDetailsActivity::class.java,false)
             }
 
-            getString(R.string.title_invite_referrals) -> {
+            R.drawable.ic_gift_card -> {
                 launchNewActivity(InviteReferalsActivity::class.java, false)
             }
 
-            getString(R.string.title_language) ->{
+            R.drawable.ic_language ->{
                 launchNewActivity(LanguageActivity::class.java, false)
             }
 
-            getString(R.string.title_privacy_policy) ->{
+            R.drawable.ic_policy ->{
                 launchNewActivity(PrivacyActivity::class.java, false)
             }
 
-            getString(R.string.title_support) ->{
+            R.drawable.ic_support ->{
                 launchNewActivity(SupportActivity::class.java, false)
+            }
+            else ->{
+                ViewUtils.showToast(activity!!,getString(R.string.something_went_wrong),false)
             }
         }
     }

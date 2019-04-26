@@ -1,6 +1,7 @@
 package com.xjek.provider.utils
 
 import android.Manifest
+import com.xjek.provider.BuildConfig
 import com.xjek.provider.models.ConfigResponseModel.ResponseData.AppSetting.Language
 
 object Constant {
@@ -26,7 +27,6 @@ object Constant {
     const val COUNTRYLIST_REQUEST_CODE = 100
     const val CITYLIST_REQUEST_CODE = 102
     const val COUNTRYCODE_PICKER_REQUEST_CODE = 111
-
 
     const val TEMP_FILE_NAME = "Gojek_Provider"
     lateinit var  privacyPolicyUrl:String

@@ -1,7 +1,11 @@
 package com.xjek.base.di
 
+import android.preference.PreferenceManager
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.xjek.base.BuildConfig
+import com.xjek.base.base.BaseApplication
+import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -36,6 +40,7 @@ class WebServiceModule {
 
     private fun getHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+                .addNetworkInterceptor(getRequestHeader())
                 .addInterceptor(getLoggingInterceptor())
                 .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -54,6 +59,7 @@ class WebServiceModule {
             val original = it.request()
             val request = original.newBuilder()
                     .header("X-Requested-With", "XMLHttpRequest")
+                    .header("Authorization", "Bearer "+ PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext).getString(PreferencesKey.ACCESS_TOKEN,""))
                     .method(original.method(), original.body())
                     .build()
 

@@ -173,6 +173,13 @@ interface AppWebService {
             @FieldMap params: HashMap<String, String>
     ): Observable<DocumentTypeResponseModel>
 
+
+    @FormUrlEncoded
+    @POST("provider/listdocuments")
+    fun getDocumentTypes(@FieldMap params: HashMap<String, String>
+    ): Observable<DocumentTypeResponseModel>
+
+
     @GET("provider/bankdetails/template")
     fun getBankTemplate(@Header("Authorization") token: String): Observable<BankTemplateModel>
 

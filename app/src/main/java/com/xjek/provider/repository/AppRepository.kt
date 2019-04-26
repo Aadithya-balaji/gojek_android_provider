@@ -2,8 +2,7 @@ package com.xjek.provider.repository
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModel
-import com.xjek.base.data.PreferencesHelper
-import com.xjek.base.data.PreferencesKey
+import com.xjek.base.data.Constants
 import com.xjek.base.repository.BaseRepository
 import com.xjek.provider.network.AppWebService
 import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
@@ -12,9 +11,9 @@ import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.home.HomeViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
 import com.xjek.provider.views.manage_bank_details.ManageBankDetailsViewModel
-import com.xjek.provider.views.notification.NotificationViewModel
 import com.xjek.provider.views.manage_documents.ManageDocumentsViewModel
 import com.xjek.provider.views.manage_services.ManageServicesViewModel
+import com.xjek.provider.views.notification.NotificationViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
 import com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel
@@ -34,7 +33,7 @@ import retrofit2.http.PartMap
 class AppRepository : BaseRepository() {
 
     private val serviceId: String
-        get() = PreferencesHelper.get(PreferencesKey.BASE_ID)
+        get() = Constants.BaseUrl.APP_BASE_URL
 
     @SuppressLint("CheckResult")
     fun getConfig(viewModel: SplashViewModel, params: HashMap<String, String>): Disposable {
@@ -461,6 +460,7 @@ class AppRepository : BaseRepository() {
                          params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getDocumentTypes(token, params)
+//                .getDocumentTypes(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

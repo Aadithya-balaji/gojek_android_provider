@@ -1,8 +1,9 @@
 package com.xjek.provider.views.splash
 
-import android.text.TextUtils
 import androidx.databinding.ViewDataBinding
+import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.Constants
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
@@ -13,12 +14,7 @@ import com.xjek.provider.databinding.ActivitySplashBinding
 import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.dashboard.DashBoardActivity
-import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
-import com.xjek.provider.views.profile.ProfileActivity
-import com.google.gson.Gson
-
-
 
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
@@ -48,16 +44,30 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             writePreferences(PreferencesKey.BASE_ID, "0")
 //            writePreferences(PreferencesKey.BASE_ID, "0")
 //            writePreferences(PreferencesKey.BASE_ID, "0")
-            writePreferences("0", it.responseData.baseUrl+"/")
+
+            Constants.BaseUrl.APP_BASE_URL = it.responseData.baseUrl
+
+            it.responseData.services.forEach { service ->
+                run {
+                    when (service.adminServiceName) {
+                        "TRANSPORT" -> Constants.BaseUrl.TAXI_BASE_URL = service.baseUrl
+                        "ORDER" -> Constants.BaseUrl.ORDER_BASE_URL = service.baseUrl
+                        "SERVICE" -> Constants.BaseUrl.SERVICE_BASE_URL = service.baseUrl
+                    }
+                }
+            }
+
+
+            writePreferences("0", it.responseData.baseUrl + "/")
             writePreferences(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id)
             writePreferences(it.responseData.services[0].id.toString(),
-                    it.responseData.services[0].baseUrl+"/")
+                    it.responseData.services[0].baseUrl + "/")
             writePreferences(PreferencesKey.ORDER_ID, it.responseData.services[1].id)
             writePreferences(it.responseData.services[1].id.toString(),
-                    it.responseData.services[1].baseUrl+"/")
+                    it.responseData.services[1].baseUrl + "/")
             writePreferences(PreferencesKey.SERVICE_ID, it.responseData.services[2].id)
             writePreferences(it.responseData.services[2].id.toString(),
-                    it.responseData.services[2].baseUrl+"/")
+                    it.responseData.services[2].baseUrl + "/")
             writePreferences(PreferencesKey.PRIVACY_POLICY,
                     it.responseData.appSetting.cmsPage.privacyPolicy)
             writePreferences(PreferencesKey.HELP, it.responseData.appSetting.cmsPage.help)
@@ -81,11 +91,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         }
     }
 
-    fun setPayment(it:ConfigResponseModel){
-        val paymentlist=it.responseData.appSetting.payments
+    fun setPayment(it: ConfigResponseModel) {
+        val paymentlist = it.responseData.appSetting.payments
         val gson = Gson()
-        val paymentString=gson.toJson(paymentlist)
-        writePreferences(PreferencesKey.PAYMENT_LIST,paymentString)
+        val paymentString = gson.toJson(paymentlist)
+        writePreferences(PreferencesKey.PAYMENT_LIST, paymentString)
     }
 
 

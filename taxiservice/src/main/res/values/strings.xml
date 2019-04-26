@@ -63,5 +63,6 @@
 
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
     <string name="taxi_pickup">Pick Up</string>
+    <string name="do_you_have_any_toll">Do you have andy Toll charge</string>
 
 </resources>

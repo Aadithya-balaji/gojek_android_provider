@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
-import com.xjek.taxiservice.views.main.ActivityTaxiMain
+import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
 class HomeAdapter(activity: AppCompatActivity) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>(), View.OnClickListener {
@@ -48,7 +48,7 @@ class HomeAdapter(activity: AppCompatActivity) : RecyclerView.Adapter<HomeAdapte
     }
 
     override fun onClick(v: View?) {
-        val intent = Intent(activity, ActivityTaxiMain::class.java)
+        val intent = Intent(activity, TaxiDashboardActivity::class.java)
         activity!!.startActivity(intent)
     }
 }

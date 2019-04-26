@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
 import com.xjek.provider.databinding.RowTaxiproviderItemBinding
-import com.xjek.taxiservice.views.main.ActivityTaxiMain
+import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 
 class TaxiProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<TaxiProviderAdapter.MyViewHolder>() {
     val activity = activity
@@ -23,7 +23,7 @@ class TaxiProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<Ta
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         holder.rowTaxiproviderItemBinding.tvApprove.setOnClickListener() {
-            activity!!.startActivity(Intent(activity, ActivityTaxiMain::class.java))
+            activity!!.startActivity(Intent(activity, TaxiDashboardActivity::class.java))
         }
     }
 

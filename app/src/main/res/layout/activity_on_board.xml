@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="viewModel"
+            name="dashboardViewModel"
             type="com.xjek.provider.views.on_board.OnBoardViewModel" />
     </data>
 
@@ -50,7 +50,7 @@
                 android:layout_marginRight="@dimen/_20sdp"
                 android:backgroundTint="@color/colorPrimary"
                 android:gravity="center"
-                android:onClick="@{viewModel::onSignUpClick}"
+                android:onClick="@{dashboardViewModel::onSignUpClick}"
                 android:paddingTop="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_10sdp"
                 android:text="@string/sign_up"
@@ -68,7 +68,7 @@
                 android:layout_marginRight="@dimen/_20sdp"
                 android:background="?android:attr/selectableItemBackground"
                 android:gravity="center"
-                android:onClick="@{viewModel::onSignInClick}"
+                android:onClick="@{dashboardViewModel::onSignInClick}"
                 android:paddingStart="@dimen/_25sdp"
                 android:paddingTop="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_25sdp"

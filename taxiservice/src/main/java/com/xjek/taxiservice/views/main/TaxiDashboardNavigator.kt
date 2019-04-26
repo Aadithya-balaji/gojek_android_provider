@@ -1,6 +1,6 @@
 package com.xjek.taxiservice.views.main
 
-interface ActivityTaxMainNavigator{
+interface TaxiDashboardNavigator{
 
     fun showErrorMessage(error: String)
 

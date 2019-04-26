@@ -393,7 +393,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                 val socialEmail = jsonObject.getString("email")
                 val img_value = "http://graph.facebook.com/" + jsonObject.getString("id") + "/picture?type=large"
                 Glide.with(this@SignupActivity).load(img_value).into(mViewDataBinding.profileImage)
-                Log.e("FB_ID", "-----" + socialId)
+                Log.e("FB_ID", "-----$socialId")
                 signupViewmodel.firstName.value = socialFirstName
                 signupViewmodel.lastName.value = socialLastName
                 signupViewmodel.email.value = socialEmail

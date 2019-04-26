@@ -33,11 +33,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
-    val loadingObservable: MutableLiveData<*>
-        get() = loadingLiveData
+    val loadingObservable: MutableLiveData<*> get() = loadingLiveData
 
-    protected val isNetworkConnected: Boolean
-        get() = NetworkUtils.isNetworkConnected(applicationContext)
+    protected val isNetworkConnected: Boolean get() = NetworkUtils.isNetworkConnected(applicationContext)
 
     protected abstract fun initView(mViewDataBinding: ViewDataBinding?)
 
@@ -45,9 +43,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     protected var runtimePermission: RunTimePermission? = null
 
-     fun getPermissionUtil(): PermissionUtils {
-         return mPermissionUtils ?: PermissionUtils()
-     }
+    fun getPermissionUtil(): PermissionUtils {
+        return mPermissionUtils ?: PermissionUtils()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,11 +64,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         mParentView = window.decorView.findViewById(R.id.content)
     }
 
-
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(LocaleUtils.setLocale(newBase!!))
     }
-
 
     protected fun setBindingVariable(variableId: Int, value: Any?) {
         mViewDataBinding.setVariable(variableId, value)
@@ -78,9 +74,13 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     }
 
     private fun showLoading() {
-        if (customDialog.window != null) {
-            customDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-            customDialog.show()
+        try {
+            if (customDialog.window != null) {
+                customDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+                customDialog.show()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -90,28 +90,25 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     protected fun launchNewActivity(cls: Class<*>, shouldCloseActivity: Boolean) {
         startActivity(Intent(applicationContext, cls))
-        if (shouldCloseActivity)
-            finish()
+        if (shouldCloseActivity) finish()
     }
 
     protected fun launchNewActivity(intent: Intent, shouldCloseActivity: Boolean) {
         startActivity(intent)
-        if (shouldCloseActivity)
-            finish()
+        if (shouldCloseActivity) finish()
     }
 
-    protected fun replaceExistingFragment(@IdRes containerViewId: Int, fragment: Fragment,
-                                          tag: String?, doRememberTransaction: Boolean) {
+    protected fun replaceExistingFragment(@IdRes id: Int, fragment: Fragment,
+                                          tag: String?, addToBackStack: Boolean) {
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(containerViewId, fragment, tag)
-        if (doRememberTransaction)
-            transaction.addToBackStack(tag)
+        transaction.replace(id, fragment, tag)
+        if (addToBackStack) transaction.addToBackStack(tag)
         transaction.commit()
     }
 
     protected fun showSnackBar(msg: String) {
-        val snackbar = Snackbar.make(mParentView, msg, Snackbar.LENGTH_LONG)
-        snackbar.setActionTextColor(Color.RED)
-        snackbar.show()
+        val snackBar = Snackbar.make(mParentView, msg, Snackbar.LENGTH_LONG)
+        snackBar.setActionTextColor(Color.RED)
+        snackBar.show()
     }
 }

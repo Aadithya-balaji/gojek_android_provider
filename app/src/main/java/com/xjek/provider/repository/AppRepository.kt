@@ -170,7 +170,7 @@ class AppRepository : BaseRepository() {
     }
 
     /*fun getProfile(viewModel: ProfileViewModel, token: String): Disposable {
-        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+        return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
                 .getProfile(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

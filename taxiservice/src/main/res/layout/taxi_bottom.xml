@@ -1,23 +1,21 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
         <variable
-            name="bottomsheetmodel"
-            type="com.xjek.taxiservice.views.bottomsheets.RideStatusViewModel" />
-
+            name="taximainmodule"
+            type="com.xjek.taxiservice.views.main.TaxiDashboardViewModel" />
     </data>
 
-    <LinearLayout
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/bsContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_20sdp"
         android:background="@android:color/transparent"
+        android:gravity="bottom"
         android:orientation="vertical"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="100dp"
-        app:layout_behavior="@string/bottom_sheet_behavior">
+        app:behavior_hideable="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,6 +28,7 @@
                 android:id="@+id/tv_sos"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_black_circle"
                 android:gravity="center"
                 android:text="@string/taxi_sos"
@@ -72,15 +71,10 @@
                 <RelativeLayout
                     android:id="@+id/ll_user"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerInParent="true"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/iv_cancel"
+                        android:id="@+id/civProfile"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:src="@drawable/flower"
@@ -90,8 +84,9 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_toRightOf="@+id/iv_cancel"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@id/llWaitingTimeContainer"
+                        android:layout_toEndOf="@id/civProfile"
                         android:gravity="center_vertical"
                         android:orientation="vertical">
 
@@ -99,6 +94,9 @@
                             android:id="@+id/tv_user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:minLines="1"
                             android:padding="5dp"
                             android:text="@string/placeholder_string"
                             android:textColor="@color/taxi_bg_yellow" />
@@ -122,7 +120,7 @@
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btn_waiting"
@@ -139,11 +137,10 @@
                             android:id="@+id/cm_waiting"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:fontFamily="@font/avenirltstd_medium"
+                            android:layout_margin="5dp"
                             android:text="00:00:00"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_8sdp" />
+                            android:textColor="@color/black" />
+
                     </LinearLayout>
 
                 </RelativeLayout>
@@ -159,7 +156,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@id/ibNavigation"
-                        android:layout_toLeftOf="@id/ibNavigation"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
                         android:text="@string/taxi_pickup_location"
@@ -172,7 +168,6 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_pickup_location"
                         android:layout_toStartOf="@id/ibNavigation"
-                        android:layout_toLeftOf="@id/ibNavigation"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
                         android:textColor="@color/grey" />
@@ -183,16 +178,15 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_user_address_one"
                         android:layout_toStartOf="@id/ibNavigation"
-                        android:layout_toLeftOf="@id/ibNavigation"
                         android:padding="3dp"
-                        android:textColor="@color/grey" />
+                        android:textColor="@color/grey"
+                        android:visibility="gone" />
 
                     <ImageButton
                         android:id="@+id/ibNavigation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:layout_margin="5dp"
                         android:background="@color/white"
                         android:contentDescription="@string/app_name"
@@ -225,13 +219,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight=".5"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:onClick="@{() -> bottomsheetmodel.closeDialog()}"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/taxi_pickup_cancel"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     app:backgroundTint="@color/taxi_bg_yellow"
                     app:cornerRadius="@dimen/_6sdp" />
 
@@ -240,16 +234,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_weight=".5"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:onClick="@{() -> bottomsheetmodel.onArrivedStatus()}"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/taxi_pickup_arrived"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     app:backgroundTint="@color/taxi_bg_yellow"
                     app:cornerRadius="@dimen/_5sdp" />
 
@@ -258,36 +251,32 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_weight=".5"
-                    android:background="@color/taxi_bg_yellow"
-                    android:fontFamily="@fo"
-                    android:onClick="@{() -> bottomsheetmodel.openOTPDialogFrag()}"
+                    android:fontFamily="@font/avenirltstd_medium"
                     android:text="@string/taxi_pickup"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"
                     android:textStyle="bold"
                     android:visibility="gone"
                     app:backgroundTint="@color/taxi_bg_yellow"
-                    app:cornerRadius="@dimen/_10sdp" />
+                    app:cornerRadius="@dimen/_5sdp" />
 
             </LinearLayout>
 
             <Button
-                android:id="@+id/tv_arrived"
+                android:id="@+id/btn_drop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
-                android:background="@drawable/bg_yellow_curve"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:onClick="@{() -> bottomsheetmodel.gotoInvoicePage()}"
                 android:text="@string/taxi_tab_dropped"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="visible"
+                app:backgroundTint="@color/taxi_bg_yellow"
+                app:cornerRadius="@dimen/_5sdp" />
 
         </LinearLayout>
 

@@ -27,6 +27,7 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
+import com.xjek.provider.BuildConfig
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.utils.location_service.BaseLocationService.EXTRA_LOCATION
@@ -34,10 +35,9 @@ import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequest
 import com.xjek.provider.views.pendinglist.PendingListDialog
-import com.xjek.taxiservice.views.main.ActivityTaxiMain
+import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 import permissions.dispatcher.NeedsPermission
 import java.util.*
-import kotlin.collections.HashMap
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         HomeNavigator,
@@ -106,6 +106,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         checkRequestTimer.schedule(object : TimerTask() {
             override fun run() = updateCurrentLocation()
         }, 0, 8000)
+
+        if (BuildConfig.DEBUG) startActivity(Intent(activity, TaxiDashboardActivity::class.java))
     }
 
     private fun getApiResponse() {
@@ -113,62 +115,46 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         observeLiveData(mHomeViewModel.checkRequestLiveData) { checkStatusData ->
 
             if (checkStatusData.statusCode.equals("200")) {
-                val providerDetailsModel = checkStatusData.responseData!!.provider_details
-                if (providerDetailsModel != null) {
+                val providerDetailsModel = checkStatusData.responseData.provider_details
 
-                    isDocumentNeed = providerDetailsModel.is_document
-                    isServiceNeed = providerDetailsModel.is_service
-                    isBankDetailNeed = providerDetailsModel.is_bankdetail
+                isDocumentNeed = providerDetailsModel.is_document
+                isServiceNeed = providerDetailsModel.is_service
+                isBankDetailNeed = providerDetailsModel.is_bankdetail
 
-                    if (providerDetailsModel.is_online == 1) {
-                        isOnline = true
-                        writePreferences(PreferencesKey.IS_ONLINE, 1)
-                        changeView(true)
-                    } else {
-                        isOnline = false
-                        writePreferences(PreferencesKey.IS_ONLINE, 0)
-                        dashBoardNavigator.isNeedLocationUpdate(false)
-                        changeView(false)
-                    }
-
-                    if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) {
-                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
-                            showPendingListDialog(1)
-                    } else if (!providerDetailsModel.status.equals("APPROVED")) {
-                        if (pendingListDialog != null && !pendingListDialog!!.isShown())
-                            showPendingListDialog(2)
-                    } else if (providerDetailsModel.wallet_balance!! < 1) {
-                        //for now  in api side not implmented the low balance
-                        //if (pendingListDialog != null && !pendingListDialog!!.isShown())
-                        //showPendingListDialog(3)
-                    }
+                if (providerDetailsModel.is_online == 1) {
+                    isOnline = true
+                    writePreferences(PreferencesKey.IS_ONLINE, 1)
+                    changeView(true)
+                } else {
+                    isOnline = false
+                    writePreferences(PreferencesKey.IS_ONLINE, 0)
+                    dashBoardNavigator.isNeedLocationUpdate(false)
+                    changeView(false)
                 }
 
-                if (checkStatusData.responseData!!.requests!!.isNotEmpty())
-                    when (checkStatusData.responseData!!.requests!![0]!!.request!!.status) {
-                        SEARCHING -> {
-                            val params: HashMap<String, String> = HashMap()
-                            params["id"] = checkStatusData.responseData!!.requests!![0]!!.request!!.id.toString()
-                            params["service_id"] = checkStatusData.responseData!!.provider_details!!.service!!.admin_service_id.toString()
-                            if (!incomingRequestDialog.isShown()) {
-                                val bundle = Bundle()
-                                val strRequest = Gson().toJson(checkStatusData)
-                                bundle.putString("requestModel", strRequest)
-                                incomingRequestDialog.arguments = bundle
-                                incomingRequestDialog.show(activity!!.supportFragmentManager, "incomingRequest")
-                            }
-//                            BROADCAST = when (checkStatusModel.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-//                                "TRANSPORT" -> BROADCAST + Constants.ProjectTypes.TRANSPORT
-//                                "SERVICE" -> BROADCAST + Constants.ProjectTypes.SERVICE
-//                                "ORDER" -> BROADCAST + Constants.ProjectTypes.ORDER
-//                                else -> "BASE_BROADCAST"
-//                            }
+                if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) {
+                    if (pendingListDialog != null && !pendingListDialog!!.isShown())
+                        showPendingListDialog(1)
+                } else if (!providerDetailsModel.status.equals("APPROVED")) {
+                    if (pendingListDialog != null && !pendingListDialog!!.isShown())
+                        showPendingListDialog(2)
+                } else if (providerDetailsModel.wallet_balance < 1) {
+                    //for now  in api side not implmented the low balance
+                    //if (pendingListDialog != null && !pendingListDialog!!.isShown())
+                    //showPendingListDialog(3)
+                }
+
+                if (checkStatusData.responseData.requests.isNotEmpty())
+                    when (checkStatusData.responseData.requests[0].request.status) {
+                        SEARCHING -> if (!incomingRequestDialog.isShown()) {
+                            val bundle = Bundle()
+                            val strRequest = Gson().toJson(checkStatusData)
+                            bundle.putString("requestModel", strRequest)
+                            incomingRequestDialog.arguments = bundle
+                            incomingRequestDialog.show(activity!!.supportFragmentManager, "incomingRequest")
                         }
-                        else -> when (checkStatusData.responseData!!.requests!![0]!!.service!!.admin_service_name) {
-                            "TRANSPORT" -> {
-                                gotoTaxiModule()
-                                checkRequestTimer.cancel()
-                            }
+                        else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
+                            "TRANSPORT" -> gotoTaxiModule()
                             "SERVICE" -> gotoXuberModule()
                             "ORDER" -> gotoFoodieModule()
                         }
@@ -198,20 +184,24 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     @SuppressLint("MissingPermission")
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     private fun updateCurrentLocation() {
-        println("RRR :: HomeFragment.updateCurrentLocation")
-        LocationUtils.getLastKnownLocation(activity!!.applicationContext, object : LocationCallBack.LastKnownLocation {
-            override fun onSuccess(location: Location?) {
-                currentLat = location!!.latitude
-                currentLong = location.longitude
-                mHomeViewModel.getRequest()
-            }
+        try {
+            println("RRR :: HomeFragment.updateCurrentLocation")
+            LocationUtils.getLastKnownLocation(activity!!.applicationContext, object : LocationCallBack.LastKnownLocation {
+                override fun onSuccess(location: Location?) {
+                    currentLat = location!!.latitude
+                    currentLong = location.longitude
+                    mHomeViewModel.getRequest()
+                }
 
-            override fun onFailure(messsage: String?) {
-                currentLat = 13.0561789
-                currentLong = 80.247998
-                mHomeViewModel.getRequest()
-            }
-        })
+                override fun onFailure(messsage: String?) {
+                    currentLat = 13.0561789
+                    currentLong = 80.247998
+                    mHomeViewModel.getRequest()
+                }
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun initializeMap() {
@@ -241,7 +231,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     override fun gotoTaxiModule() {
-        startActivity(Intent(activity!!, ActivityTaxiMain::class.java))
+        startActivity(Intent(activity!!, TaxiDashboardActivity::class.java))
         dashBoardNavigator.isNeedLocationUpdate(false)
     }
 

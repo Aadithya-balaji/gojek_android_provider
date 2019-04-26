@@ -21,14 +21,11 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
     private lateinit var rootView: View
     private var mActivity: FragmentActivity? = null
 
-
     private val loadingLiveData = MutableLiveData<Boolean>()
     private var customDialog: CustomDialog? = null
 
-    val loadingObservable: MutableLiveData<*>
-        get() = loadingLiveData
+    val loadingObservable: MutableLiveData<*> get() = loadingLiveData
     abstract fun initView(viewDataBinding: ViewDataBinding, view: View)
-
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -41,26 +38,19 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayout(), container, false)
-        rootView = mViewDataBinding!!.root
+        rootView = mViewDataBinding.root
         return rootView
-
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        customDialog = CustomDialog(mActivity!!,true)
+        customDialog = CustomDialog(mActivity!!, true)
         initView(mViewDataBinding, rootView)
         observeLiveData(loadingLiveData) { isShowLoading ->
-            if (isShowLoading) {
-                showLoading()
-            } else {
-                hideLoading()
-            }
+            if (isShowLoading) showLoading() else hideLoading()
         }
-
-
     }
+
     protected fun showLoading() {
         if (customDialog!!.window != null) {
             customDialog!!.window!!.setBackgroundDrawableResource(android.R.color.transparent)
@@ -68,7 +58,7 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
         }
     }
 
-    protected fun hideLoading() {
+    private fun hideLoading() {
         customDialog!!.cancel()
     }
 }

@@ -25,7 +25,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.xjek.base.R;
-import com.xjek.taxiservice.views.main.ActivityTaxiMain;
+import com.xjek.taxiservice.views.main.TaxiDashboardActivity;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -194,7 +194,7 @@ public class TaxiLocationService extends Service {
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         PendingIntent activity = PendingIntent.getActivity(this, 0,
-                new Intent(this, ActivityTaxiMain.class), 0);
+                new Intent(this, TaxiDashboardActivity.class), 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "123456")
 //                .addAction(R.mipmap.ic_launcher_round, getString(R.string.app_name), activity)

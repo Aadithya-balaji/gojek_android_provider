@@ -8,13 +8,14 @@ import com.xjek.taxiservice.model.CheckRequestModel
 import com.xjek.taxiservice.model.WaitingTime
 import com.xjek.taxiservice.repositary.TaxiRepository
 
-class ActivityTaxiModule : BaseViewModel<ActivityTaxMainNavigator>() {
+class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     private val mRepository = TaxiRepository.instance()
-      var waitingTimeLiveData=MutableLiveData<WaitingTime>()
 
+    var waitingTimeLiveData = MutableLiveData<WaitingTime>()
     var checkStatusTaxiLiveData = MutableLiveData<CheckRequestModel>()
 
+    var showLoading = MutableLiveData<Boolean>()
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
 

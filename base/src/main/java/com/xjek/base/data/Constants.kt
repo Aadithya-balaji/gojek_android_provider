@@ -48,11 +48,4 @@ object Constants {
         const val DROPPED = "DROPPED"
         const val COMPLETED = "COMPLETED"
     }
-
-    object  ConfirmPayment{
-        const val ID="id"
-    }
-
-//    const val Rajaganapathi = true
-
 }

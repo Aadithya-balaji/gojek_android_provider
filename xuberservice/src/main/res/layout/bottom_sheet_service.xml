@@ -31,6 +31,7 @@
                 android:background="@drawable/bg_timer"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:text="00:00:00"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingRight="@dimen/_10sdp"

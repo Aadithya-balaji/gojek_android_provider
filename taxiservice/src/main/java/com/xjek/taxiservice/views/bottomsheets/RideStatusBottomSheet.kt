@@ -174,7 +174,7 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(),
                         mLayoutTaxiBottomBinding.cmWaiting.base = (mLayoutTaxiBottomBinding.cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
                     else
                         mLayoutTaxiBottomBinding.cmWaiting.base = SystemClock.elapsedRealtime()
-                    mLayoutTaxiBottomBinding.cmWaiting.start()
+                         mLayoutTaxiBottomBinding.cmWaiting.start()
                 }
             }
         }

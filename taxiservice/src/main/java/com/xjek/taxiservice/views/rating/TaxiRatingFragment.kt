@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.extensions.observeLiveData
@@ -46,6 +47,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         val mViewModel = TaxiRatingViewModel()
         fragmentRatingBinding!!.ratingmodel = mViewModel
         mViewModel.navigator = this
+        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
         tvUserName.text = b.getString("name")!!
         tvBookingId.text = b.getString("bookingID")!!
@@ -67,15 +69,17 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         params["admin_service_id"] = b.getString("admin_service_id")!!
 
         tv_rating_submit.setOnClickListener {
+            mViewModel.showLoading.value = true
             params["comment"] = tvComments.text.toString()
             params["rating"] = rbRatingBar.rating.toInt().toString()
             mViewModel.submitRating(params)
         }
 
         observeLiveData(mViewModel.ratingLiveData) {
-            appCompatActivity!!.finish()
-//            if (mViewModel.ratingLiveData.value != null)
-//                if (mViewModel.ratingLiveData.value!!.statusCode.equals("200")) ratingLi.veData()
+            mViewModel.showLoading.value = false
+            if (mViewModel.ratingLiveData.value != null)
+                if (mViewModel.ratingLiveData.value!!.statusCode.equals("200"))
+                    activity!!.finish()
         }
     }
 }

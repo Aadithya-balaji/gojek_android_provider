@@ -1,6 +1,5 @@
 package com.xjek.taxiservice.views.tollcharge
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,7 +18,6 @@ import com.xjek.base.utils.PrefixCustomEditText
 import com.xjek.base.utils.ViewUtils
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.DialogTollChargeBinding
-import com.xjek.taxiservice.views.invoice.TaxiInvoiceNavigator
 import com.xjek.taxiservice.views.main.TaxiDashboardViewModel
 
 class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChargeNavigator {
@@ -27,8 +25,6 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
     private lateinit var dialogTollChargeBinding: DialogTollChargeBinding
     private lateinit var mViewModel: TollChargeViewModel
     private lateinit var mDashboardViewModel: TaxiDashboardViewModel
-    private lateinit var taxiInvoiceNavigator: TaxiInvoiceNavigator
-    private lateinit var strRequestID: String
 
     override fun getLayout(): Int = R.layout.dialog_toll_charge
 
@@ -40,11 +36,6 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.share_dialog)
-        getBundleValues()
-    }
-
-    private fun getBundleValues() {
-        strRequestID = if (arguments != null && arguments!!.containsKey("requestID")) arguments!!.getString("requestID") else ""
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
@@ -57,7 +48,11 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
         dialogTollChargeBinding.lifecycleOwner = this
         dialogTollChargeBinding.edtAmount.addTextChangedListener(EditListener())
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+
+        val strRequestID = if (arguments != null && arguments!!.containsKey("requestID")) arguments!!.getString("requestID") else ""
+
         if (strRequestID.isNotEmpty()) mViewModel.requestID.value = strRequestID
+
         observeLiveData(mViewModel.mLiveData) {
             if (mViewModel.mLiveData.value != null)
                 if (mViewModel.mLiveData.value!!.statusCode == "200") {
@@ -70,10 +65,6 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
         }
     }
 
-    override fun addTollCharge() {
-        mViewModel.callUpdateRequestApi()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (dialog != null && dialog!!.window != null) {
             dialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -84,11 +75,6 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
         }
 
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        taxiInvoiceNavigator = context as TaxiInvoiceNavigator
     }
 
     inner class EditListener : TextWatcher {

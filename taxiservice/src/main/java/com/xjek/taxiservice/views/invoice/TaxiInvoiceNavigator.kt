@@ -4,7 +4,6 @@ import com.xjek.taxiservice.model.ResponseData
 
 interface TaxiInvoiceNavigator{
     fun openRatingDialog(id: ResponseData?)
-    fun showTollDialog()
     fun tollCharge(amount:String)
     fun showErrorMessage(error:String)
 }

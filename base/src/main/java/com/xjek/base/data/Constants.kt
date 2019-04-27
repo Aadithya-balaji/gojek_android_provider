@@ -11,7 +11,6 @@ object Constants {
     object RequestCode {
         const val PERMISSIONS_CODE_LOCATION = 1001
         const val PERMISSIONS_CODE_FILE = 1002
-        const val ORDER = "ORDER"
     }
 
     object RequestPermission {

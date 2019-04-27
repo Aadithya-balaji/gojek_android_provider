@@ -1,6 +1,5 @@
 package com.xjek.provider.views.pendinglist
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -18,22 +17,16 @@ import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.document.DocumentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 
-@SuppressLint("ValidFragment")
 class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
 
-
     private lateinit var pendingListDialogBinding: PendingListDialogBinding
-    private lateinit var pendginListViewModel: PendingListViewModel
+    private lateinit var mViewModel: PendingListViewModel
     private var dashBoardActivity: DashBoardActivity? = null
     private var isDocumentNeed: Int? = 0
     private var isServiceNeed: Int? = 0
     private var isBankDetailNeed: Int? = 0
     private var dialogType: Int? = 0
-    private  var shown:Boolean?=false
-
-   /* init {
-        this.dialogType = typeOfDialog
-    }*/
+    private var shown: Boolean? = false
 
     override fun getLayout(): Int {
         return R.layout.pending_list_dialog
@@ -54,11 +47,11 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
         dashBoardActivity = if (context is AppCompatActivity) context as DashBoardActivity else null
     }
 
-    override fun initView(viewDataBinding: ViewDataBinding,view:View) {
+    override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         pendingListDialogBinding = viewDataBinding as PendingListDialogBinding
-        pendginListViewModel = PendingListViewModel()
-        pendginListViewModel.navigator = this
-        pendingListDialogBinding.pendinglistModel = pendginListViewModel
+        mViewModel = PendingListViewModel()
+        mViewModel.navigator = this
+        pendingListDialogBinding.pendinglistModel = mViewModel
         when (dialogType) {
             0 -> {
                 pendingListDialogBinding.llDocPending.visibility = View.VISIBLE
@@ -107,13 +100,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
         isDocumentNeed = if (arguments != null && arguments!!.containsKey("ISDOCUMENTNEED")) arguments!!.getInt("ISDOCUMENTNEED") else 0
         isServiceNeed = if (arguments != null && arguments!!.containsKey("ISSERVICENEED")) arguments!!.getInt("ISSERVICENEED") else 0
         isBankDetailNeed = if (arguments != null && arguments!!.containsKey("ISBANCKDETAILNEED")) arguments!!.getInt("ISBANCKDETAILNEED") else 0
-        dialogType=if(arguments!=null && arguments!!.containsKey("TYPE")) arguments!!.getInt("TYPE") else -1
-
-
-    }
-
-    fun  showDialogue(type:String){
-
+        dialogType = if (arguments != null && arguments!!.containsKey("TYPE")) arguments!!.getInt("TYPE") else -1
     }
 
     fun isShown(): Boolean {
@@ -121,43 +108,34 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     }
 
     override fun pickItem(view: View) {
-
         when (view.id) {
-            R.id.tv_add_document -> {
-                val intent = Intent(dashBoardActivity, DocumentActivity::class.java)
-                startActivity(intent)
-            }
+            R.id.tv_add_document -> startActivity(Intent(dashBoardActivity, DocumentActivity::class.java))
 
             R.id.tv_bank_details -> {
 
             }
 
-            R.id.tv_add_service -> {
-                val intent = Intent(dashBoardActivity, ManageServicesActivity::class.java)
-                startActivity(intent)
-            }
+            R.id.tv_add_service -> startActivity(Intent(dashBoardActivity, ManageServicesActivity::class.java))
 
-            R.id.btn_call_admin ->{
+            R.id.btn_call_admin -> {
 
             }
         }
     }
 
-
     override fun show(manager: FragmentManager, tag: String?) {
         try {
-            if (shown==false) {
+            if (shown == false) {
                 this.shown = true
                 super.show(manager, tag)
             }
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         }
-
     }
 
     override fun show(transaction: FragmentTransaction, tag: String?): Int {
-        if (shown==false) {
+        if (shown == false) {
             this.shown = true
             return super.show(transaction, tag)
         }
@@ -167,12 +145,10 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     override fun dismissAllowingStateLoss() {
         super.dismissAllowingStateLoss()
         this.shown = false
-
     }
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         this.shown = false
-
     }
 }

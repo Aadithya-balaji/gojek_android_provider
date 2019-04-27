@@ -1,4 +1,4 @@
-package com.xjek.taxiservice.location_service;
+package com.xjek.base.location_service;
 
 public class LocationPoint {
 

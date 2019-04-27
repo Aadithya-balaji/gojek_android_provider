@@ -65,7 +65,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         observeViewModel()
 
         if (BuildConfig.DEBUG) {
-            viewModel.email.value = "android@provider.com"
+            viewModel.email.value = "jobs@yopmail.com"
             viewModel.password.value = "112233"
         }
     }

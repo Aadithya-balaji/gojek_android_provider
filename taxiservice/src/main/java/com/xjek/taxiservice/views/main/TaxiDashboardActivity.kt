@@ -1,10 +1,10 @@
 package com.xjek.taxiservice.views.main
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.content.res.Resources
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -34,6 +35,8 @@ import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.RideStatus.SCHEDULED
 import com.xjek.base.data.Constants.RideStatus.STARTED
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.location_service.BaseLocationService
+import com.xjek.base.location_service.BaseLocationService.BROADCAST
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
@@ -42,6 +45,7 @@ import com.xjek.taxiservice.databinding.ActivityTaxiMainBinding
 import com.xjek.taxiservice.model.ResponseData
 import com.xjek.taxiservice.views.invoice.TaxiTaxiInvoiceActivity
 import com.xjek.taxiservice.views.tollcharge.TollChargeDialog
+import com.xjek.taxiservice.views.verifyotp.VerifyOtpDialog
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import kotlinx.android.synthetic.main.taxi_bottom.*
 import java.util.*
@@ -54,8 +58,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mViewModel: TaxiDashboardViewModel
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
-
-    private val taxiCheckStatusTimer = Timer()
 
     private var mGoogleMap: GoogleMap? = null
     private var mLastKnownLocation: Location? = null
@@ -77,6 +79,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         initializeMap()
         checkStatusAPIResponse()
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
     }
 
     private fun initializeMap() {
@@ -89,12 +93,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         try {
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json))
             updateCurrentLocation()
-            taxiCheckStatusTimer.schedule(object : TimerTask() {
-                override fun run() {
-                    println("RRR :: TaxiDashboardActivity.run")
-                    if (mGoogleMap != null) updateCurrentLocation()
-                }
-            }, 0, 8000)
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
@@ -115,8 +113,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         mViewModel.latitude.value = location.latitude
                         mViewModel.longitude.value = location.longitude
                         mViewModel.callTaxiCheckStatusAPI()
+                        updateMapLocation(LatLng(location.latitude, location.longitude))
                     }
-                    updateMapLocation(LatLng(location!!.latitude, location.longitude))
                 }
 
                 override fun onFailure(messsage: String?) {
@@ -129,8 +127,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         mViewModel.latitude.value = location.latitude
                         mViewModel.longitude.value = location.longitude
                         mViewModel.callTaxiCheckStatusAPI()
+                        updateMapLocation(LatLng(location.latitude, location.longitude))
                     }
-                    updateMapLocation(LatLng(location!!.latitude, location.longitude))
                 }
 
                 override fun onFailure(messsage: String?) {
@@ -141,11 +139,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
         if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        taxiCheckStatusTimer.cancel()
     }
 
     override fun showErrorMessage(error: String) {
@@ -213,6 +206,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
+    }
+
     private fun whenStatusStarted(responseData: ResponseData) {
         btn_cancel.visibility = View.VISIBLE
         btn_arrived.visibility = View.VISIBLE
@@ -257,6 +255,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         tv_user_name.text = responseData.request.user.first_name + " " + responseData.request.user.last_name
         tv_user_address_one.text = responseData.request.s_address
         rate.rating = responseData.request.user.rating.toFloat()
+
+        btn_picked_up.setOnClickListener {
+            val otpDialogFragment = VerifyOtpDialog.newInstance(
+                    responseData.request.otp,
+                    responseData.request.id
+            )
+            otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
+        }
     }
 
     private fun whenStatusPickedUp(responseData: ResponseData) {
@@ -285,12 +291,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         rate.rating = responseData.request.user.rating.toFloat()
 
         btn_drop.setOnClickListener {
-            //            val params: HashMap<String, String> = HashMap()
-//            params["id"] = responseData.request.id.toString()
-//            params["status"] = DROPPED
-//            params["_method"] = "PATCH"
-//            mViewModel.taxiStatusUpdate(params)
-
             ViewUtils.showAlert(this, resources.getString(R.string.do_you_have_any_toll), object : ViewUtils.ViewCallBack {
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     val tollChargeDialog = TollChargeDialog()
@@ -305,5 +305,23 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 }
             })
         }
+    }
+
+    private val mBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            println("RRRR:: TaxiDashboardActivity")
+            val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
+            if (location != null) {
+                mViewModel.latitude.value = location.latitude
+                mViewModel.longitude.value = location.longitude
+                mViewModel.callTaxiCheckStatusAPI()
+                updateMapLocation(LatLng(location.latitude, location.longitude))
+            }
+        }
+    }
+
+    private fun openNavigation(){
+
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345")))
     }
 }

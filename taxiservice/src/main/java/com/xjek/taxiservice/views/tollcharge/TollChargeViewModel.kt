@@ -16,10 +16,6 @@ class TollChargeViewModel : BaseViewModel<TollChargeNavigator>() {
     var showLoading = MutableLiveData<Boolean>()
     var requestID = MutableLiveData<String>()
 
-    fun submit() {
-        navigator.addTollCharge()
-    }
-
     fun callUpdateRequestApi() {
         if (navigator.isValidCharge()) {
             showLoading.value = true

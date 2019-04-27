@@ -26,10 +26,6 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
     var paymentLiveData = MutableLiveData<PaymentModel>()
     var showLoading = MutableLiveData<Boolean>()
 
-    fun openTollDialog() {
-        navigator.showTollDialog()
-    }
-
     fun confirmPayment() {
         val params = HashMap<String, String>()
         if (requestLiveData.value != null && requestLiveData.value != null) {

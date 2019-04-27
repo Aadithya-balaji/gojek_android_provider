@@ -274,7 +274,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:backgroundTint="@color/taxi_bg_yellow"
                 app:cornerRadius="@dimen/_5sdp" />
 

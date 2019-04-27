@@ -272,7 +272,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private fun showPendingListDialog(type: Int) {
         val pendingListDialog = PendingListDialog()
         val bundle = Bundle()
-
         bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
         bundle.putInt("ISSERVICENEED", isServiceNeed!!)
         bundle.putInt("ISBANCKDETAILNEED", isBankDetailNeed!!)

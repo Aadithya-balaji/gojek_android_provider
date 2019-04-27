@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources tools:ignore="MissingTranslation"
+    xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">xubermodule</string>
     <string name="location_permission_denied">Location permission denied</string>
     <string name="location_permission_rationale">    Location Permission is needed to get current location</string>
@@ -21,4 +22,19 @@
     <string name="submit">Submit</string>
     <string name="dummy_rate_your_service_with_christain_joseph">Rate your service with Christain Joseph</string>
     <string name="write_your_review">write your reviews</string>
+
+
+    <!-- Servie status -->
+    <string name="label_service">Service</string>
+    <string name="label_start">Start</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_compeleted">Completed</string>
+    <string name="label_instruction">Instruction</string>
+    <string name="label_arrived">Arrived</string>
+    <string name="after_service">After Service</string>
+    <string name="before_service">Before Service</string>
+
+
+    <!--  Upload Image -->
+    <string name="upload_image">Upload the Image</string>
 </resources>

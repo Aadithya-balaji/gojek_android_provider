@@ -74,7 +74,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                 launchNewActivity(OnBoardActivity::class.java, true)
             else {
                // launchNewActivity(DashBoardActivity::class.java, true)
-                val intent = Intent(this, Class.forName("com.xjek.taxiservice.views.main.ActivityTaxiMain"))
+                val intent = Intent(this, Class.forName("com.xjek.xuberservice.xuberMainActivity.XuberMainActivity"))
                 startActivity(intent)
             }
         }

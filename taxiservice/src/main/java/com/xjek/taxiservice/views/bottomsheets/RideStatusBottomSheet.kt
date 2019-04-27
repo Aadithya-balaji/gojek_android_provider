@@ -146,16 +146,6 @@ class RideStatusBottomSheet : BaseBottomSheet<LayoutTaxiBottomBinding>(),
         llButtonApprove = view!!.findViewById(R.id.ll_button_approve)
         tvStartTrip = view!!.findViewById(R.id.tv_arrived)
         ivMapBin.background = ContextCompat.getDrawable(ctxt!!, R.drawable.bg_status_complete)
-
-//        ivSteering.background = ContextCompat.getDrawable(ctxt!!, R.drawable.bg_status_complete)
-//         ivFlag.background = ContextCompat.getDrawable(ctxt!!, R.drawable.bg_status_complete)
-
-//        vlTripStarted.visibility = View.VISIBLE
-//        vlTripFinished.visibility = View.GONE
-//
-//        llButtonApprove.visibility = View.GONE
-//        tvStartTrip.visibility = View.VISIBLE
-
         mCheckStatusModel = checkStatusModel!!
         tv_user_name.text = checkStatusModel.request.user!!.first_name + " " + checkStatusModel.request.user!!.last_name
         tv_user_address_one.text = checkStatusModel.request.s_address

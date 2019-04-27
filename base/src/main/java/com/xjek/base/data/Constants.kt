@@ -1,6 +1,7 @@
 package com.xjek.base.data
 
 import android.Manifest
+import android.graphics.Camera
 import com.google.android.gms.maps.model.LatLng
 
 object Constants {
@@ -12,6 +13,7 @@ object Constants {
         const val PERMISSIONS_CODE_LOCATION = 1001
         const val PERMISSIONS_CODE_FILE = 1002
         const val ORDER = "ORDER"
+        const val  PERMISSION_CODE_CAMERA=1003
     }
 
     object RequestPermission {
@@ -19,10 +21,13 @@ object Constants {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         )
-        val PERMISSIONS_FILE = arrayOf(
+        val PERMISSION_CAMERA = arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
         )
+
+
     }
 
     object ProjectTypes {

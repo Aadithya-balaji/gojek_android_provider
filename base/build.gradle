@@ -114,13 +114,14 @@ dependencies {
     //Stripe payment
     api 'com.stripe:stripe-android:8.6.0'
 
+
     //flex layout
     api 'com.google.android:flexbox:1.1.0'
 
     //  Setho
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
-    implementation project(':cropperlibrary')
+    api project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

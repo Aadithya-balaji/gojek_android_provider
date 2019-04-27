@@ -61,7 +61,6 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
         mBottomSheet = RideStatusBottomSheet()
         mBottomSheet!!.show(supportFragmentManager, "bottomstatus")
         mBottomSheet!!.isCancelable = false
-
         initializeMap()
         checkStatusAPIResponse()
     }
@@ -93,7 +92,6 @@ class ActivityTaxiMain : BaseActivity<ActivityTaxiMainBinding>(),
             mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
             mGoogleMap!!.uiSettings.isCompassEnabled = true
         }
-
         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION))
             LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {

@@ -3,9 +3,17 @@
     <color name="xuber_white">#ffffff</color>
     <color name="xuber_button_blue">#045eab</color>
     <color name="xuber_grey">#dadada</color>
-    <color name="xuber_darkgrey">#B1B1B1</color>
+    <color name="xuber_darkgrey">#E6F0F6</color>
     <color name="xuber_black">#000000</color>
 
-    <color name="schedule_blue">#65fff2</color>
+    <color name="schedule_blue">#E9F1F7</color>
+    <color name="bg_inst">#FFE6F0F6</color>
+    <color name="xuper_blue">#4C8EBF</color>
+    <color name="bg_picture_option">#FFE9F1F7</color>
+    <color name="bg_xuper_submit">#ABABAB</color>
+    <color name="xuper_upload_image">#FF4C8EBF</color>
+    <color name="xuper_after_service">#FFABABAB</color>
+    <color name="transparent">#00000000</color>
+
 
 </resources>

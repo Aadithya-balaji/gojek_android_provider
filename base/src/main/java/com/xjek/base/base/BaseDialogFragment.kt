@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.LocaleUtils
+import com.xjek.base.utils.PermissionUtils
+import com.xjek.base.utils.RunTimePermission
 import com.xjek.base.views.CustomDialog
 
 abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
@@ -20,16 +22,18 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
     private lateinit var mViewDataBinding: T
     private lateinit var rootView: View
     private var mActivity: FragmentActivity? = null
-
-
     private val loadingLiveData = MutableLiveData<Boolean>()
     private var customDialog: CustomDialog? = null
+    protected val mPermissionUtils: PermissionUtils? = null
+
 
     val loadingObservable: MutableLiveData<*>
         get() = loadingLiveData
     abstract fun initView(viewDataBinding: ViewDataBinding, view: View)
 
-
+    fun getPermissionUtil(): PermissionUtils {
+        return mPermissionUtils ?: PermissionUtils()
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         LocaleUtils.setLocale(context)

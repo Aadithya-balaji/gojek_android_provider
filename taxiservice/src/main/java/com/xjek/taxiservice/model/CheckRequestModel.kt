@@ -20,7 +20,9 @@ data class ResponseData(
         var referral_total_count: String = "",
         var request: Request = Request(),
         var ride_otp: String = "",
-        var service_status: String = ""
+        var service_status: String = "",
+        var waitingStatus: Int = 0,
+        var waitingTime: Long = 0
 ) : Serializable
 
 data class ProviderDetails(

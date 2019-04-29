@@ -120,7 +120,7 @@
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/btnWaiting"

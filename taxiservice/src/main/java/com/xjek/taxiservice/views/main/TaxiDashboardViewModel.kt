@@ -9,7 +9,7 @@ import com.xjek.taxiservice.model.CheckRequestModel
 import com.xjek.taxiservice.model.WaitingTime
 import com.xjek.taxiservice.repositary.TaxiRepository
 
-    class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
+class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     private val mRepository = TaxiRepository.instance()
 
@@ -37,8 +37,8 @@ import com.xjek.taxiservice.repositary.TaxiRepository
     }
 
 
-        fun taxiWaitingTime(params: HashMap<String, String>){
-            getCompositeDisposable().add(mRepository.waitingTime(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
-        }
+    fun taxiWaitingTime(params: HashMap<String, String>) {
+        getCompositeDisposable().add(mRepository.waitingTime(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+    }
 
 }

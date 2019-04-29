@@ -19,7 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <include layout="@layout/taxi_bottom" />
+        <include
+            layout="@layout/taxi_bottom"
+            android:clickable="true"
+            android:focusable="true" />
 
         <!--<FrameLayout-->
         <!--android:id="@+id/flTaxiContainer"-->

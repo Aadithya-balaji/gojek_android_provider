@@ -1,6 +1,7 @@
 package com.xjek.taxiservice.views.main
 
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.maps.model.LatLng
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
@@ -14,6 +15,9 @@ import com.xjek.taxiservice.repositary.TaxiRepository
 
     var waitingTimeLiveData = MutableLiveData<WaitingTime>()
     var checkStatusTaxiLiveData = MutableLiveData<CheckRequestModel>()
+    var polyLineSrc = MutableLiveData<LatLng>()
+    var polyLineDest = MutableLiveData<LatLng>()
+    var currentStatus = MutableLiveData<String>()
 
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()

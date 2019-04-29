@@ -3,11 +3,14 @@ package com.xjek.taxiservice.views.main
 import android.annotation.SuppressLint
 import android.content.*
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
@@ -18,8 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
@@ -40,6 +42,9 @@ import com.xjek.base.location_service.BaseLocationService.BROADCAST
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
+import com.xjek.base.utils.polyline.DirectionUtils
+import com.xjek.base.utils.polyline.PolyLineListener
+import com.xjek.base.utils.polyline.PolylineUtil
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityTaxiMainBinding
 import com.xjek.taxiservice.model.ResponseData
@@ -52,7 +57,8 @@ import java.util.*
 
 class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         TaxiDashboardNavigator,
-        OnMapReadyCallback {
+        OnMapReadyCallback,
+        PolyLineListener {
 
     private lateinit var activityTaxiMainBinding: ActivityTaxiMainBinding
     private lateinit var fragmentMap: SupportMapFragment
@@ -61,6 +67,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var mGoogleMap: GoogleMap? = null
     private var mLastKnownLocation: Location? = null
+    private var canDrawPolyLine: Boolean = true
+    private var mPolyline: Polyline? = null
+    private var polyLine: List<LatLng> = ArrayList()
 
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
 
@@ -69,6 +78,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mViewModel = ViewModelProviders.of(this).get(TaxiDashboardViewModel::class.java)
         mViewModel.navigator = this
         activityTaxiMainBinding.taximainmodule = mViewModel
+        mViewModel.currentStatus.value = ""
 
         sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bsContainer)
         sheetBehavior.peekHeight = 250
@@ -76,6 +86,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+
+        ibNavigation.setOnClickListener {
+            openGoogleNavigation()
+        }
+
+        tvSos.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:911" )));
+        }
 
         initializeMap()
         checkStatusAPIResponse()
@@ -153,39 +171,45 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 if (checkStatusResponse.responseData.request.status.isNotEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
                     if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    when (checkStatusResponse.responseData.request.status) {
-                        SCHEDULED -> {
-                            println("RRR :: inside SCHEDULED = ")
-                        }
-                        CANCELLED -> {
-                            println("RRR :: inside CANCELLED = ")
-                        }
-                        ACCEPTED -> {
-                            println("RRR :: inside ACCEPTED = ")
-                        }
-                        STARTED -> {
-                            println("RRR :: inside STARTED = ")
-                            whenStatusStarted(checkStatusResponse.responseData)
-                        }
-                        ARRIVED -> {
-                            println("RRR :: inside ARRIVED = ")
-                            whenStatusArrived(checkStatusResponse.responseData)
-                        }
-                        PICKED_UP -> {
-                            println("RRR :: inside PICKED_UP = ")
-                            whenStatusPickedUp(checkStatusResponse.responseData)
-                        }
-                        DROPPED -> {
-                            println("RRR :: inside DROPPED = ")
-                            val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
-                            startActivity(Intent(this, TaxiTaxiInvoiceActivity::class.java).putExtra("ResponseData", strCheckRequestModel))
-                            finish()
-                        }
-                        COMPLETED -> {
-                            println("RRR :: inside COMPLETED = ")
-                            val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
-                            startActivity(Intent(this, TaxiTaxiInvoiceActivity::class.java).putExtra("ResponseData", strCheckRequestModel))
-                            finish()
+                    if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
+                        mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
+                        canDrawPolyLine = true
+                        when (checkStatusResponse.responseData.request.status) {
+                            SCHEDULED -> {
+                                println("RRR :: inside SCHEDULED = ")
+                            }
+                            CANCELLED -> {
+                                println("RRR :: inside CANCELLED = ")
+                            }
+                            ACCEPTED -> {
+                                println("RRR :: inside ACCEPTED = ")
+                            }
+                            STARTED -> {
+                                println("RRR :: inside STARTED = ")
+                                whenStatusStarted(checkStatusResponse.responseData)
+                            }
+                            ARRIVED -> {
+                                println("RRR :: inside ARRIVED = ")
+                                whenStatusArrived(checkStatusResponse.responseData)
+                            }
+                            PICKED_UP -> {
+                                println("RRR :: inside PICKED_UP = ")
+                                whenStatusPickedUp(checkStatusResponse.responseData)
+                            }
+                            DROPPED -> {
+                                println("RRR :: inside DROPPED = ")
+                                val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
+                                startActivity(Intent(this, TaxiTaxiInvoiceActivity::class.java)
+                                        .putExtra("ResponseData", strCheckRequestModel))
+                                finish()
+                            }
+                            COMPLETED -> {
+                                println("RRR :: inside COMPLETED = ")
+                                val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
+                                startActivity(Intent(this, TaxiTaxiInvoiceActivity::class.java)
+                                        .putExtra("ResponseData", strCheckRequestModel))
+                                finish()
+                            }
                         }
                     }
                 } else println("RRR :: inside else = ${checkStatusResponse.responseData.request.status}")
@@ -236,6 +260,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             params["_method"] = "PATCH"
             mViewModel.taxiStatusUpdate(params)
         }
+
+        drawRoute(LatLng(responseData.request.d_latitude, responseData.request.d_latitude), LatLng(responseData.request.s_latitude, responseData.request.s_longitude))
+
     }
 
     private fun whenStatusArrived(responseData: ResponseData) {
@@ -263,6 +290,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             )
             otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
         }
+
+        drawRoute(LatLng(responseData.request.d_latitude, responseData.request.d_latitude), LatLng(responseData.request.s_latitude, responseData.request.s_longitude))
     }
 
     private fun whenStatusPickedUp(responseData: ResponseData) {
@@ -275,6 +304,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btn_arrived.visibility = View.GONE
         btn_picked_up.visibility = View.GONE
         btn_drop.visibility = View.VISIBLE
+        tv_pickup_location.text = getText(R.string.taxi_drop_location)
 
         vl_trip_started.visibility = View.VISIBLE
 
@@ -305,6 +335,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 }
             })
         }
+
+        drawRoute(LatLng(responseData.request.d_latitude, responseData.request.d_latitude), LatLng(responseData.request.s_latitude, responseData.request.s_longitude))
     }
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
@@ -320,8 +352,74 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
     }
 
-    private fun openNavigation(){
+    private fun drawRoute(src: LatLng, dest: LatLng) {
+        if (canDrawPolyLine)
+            PolylineUtil(this).execute(DirectionUtils()
+                    .getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString()))
+        mViewModel.polyLineSrc.value = src
+        mViewModel.polyLineDest.value = dest
+    }
 
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?saddr=20.344,34.34&daddr=20.5666,45.345")))
+    override fun whenDone(output: PolylineOptions) {
+        canDrawPolyLine = false
+        mGoogleMap!!.clear()
+
+        mPolyline = mGoogleMap!!.addPolyline(output
+                .width(5f)
+                .color(ContextCompat.getColor(baseContext, R.color.taxi_bg_yellow))
+        )
+        polyLine = output.points
+
+        val builder = LatLngBounds.Builder()
+
+        for (latLng in polyLine) builder.include(latLng)
+
+        mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
+
+        mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0])
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_taxi_pin))))
+
+        mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 2])
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_taxi_pin))))
+
+    }
+
+    override fun whenFail(statusCode: String) {
+        println("RRR whenFail = $statusCode")
+        when (statusCode) {
+            "NOT_FOUND" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
+            "ZERO_RESULTS" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
+            "MAX_WAYPOINTS_EXCEEDED" -> Toast.makeText(this, "Way point limit exceeded...", Toast.LENGTH_SHORT).show()
+            "MAX_ROUTE_LENGTH_EXCEEDED" -> Toast.makeText(this, "Road map limit exceeded...", Toast.LENGTH_SHORT).show()
+            "INVALID_REQUEST" -> Toast.makeText(this, "Invalid inputs...", Toast.LENGTH_SHORT).show()
+            "OVER_DAILY_LIMIT" -> Toast.makeText(this, "MayBe invalid API/Billing pending/Method Deprecated...", Toast.LENGTH_SHORT).show()
+            "OVER_QUERY_LIMIT" -> Toast.makeText(this, "Too many request, limit exceeded...", Toast.LENGTH_SHORT).show()
+            "REQUEST_DENIED" -> Toast.makeText(this, "Directions service not enabled...", Toast.LENGTH_SHORT).show()
+            "UNKNOWN_ERROR" -> Toast.makeText(this, "Server Error...", Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(this, statusCode, Toast.LENGTH_SHORT).show()
+        }
+
+    }
+
+    private fun bitmapFromVector(context: Context, drawableId: Int): Bitmap {
+        val drawable = ContextCompat.getDrawable(context, drawableId)
+        val bitmap = Bitmap.createBitmap(drawable!!.intrinsicWidth,
+                drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        return bitmap
+    }
+
+    private fun openGoogleNavigation() {
+        if (mViewModel.polyLineSrc.value != null && mViewModel.polyLineDest.value != null)
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
+                    "http://maps.google.com/maps?saddr=" +
+                            "${mViewModel.polyLineSrc.value!!.latitude}," +
+                            "${mViewModel.polyLineSrc.value!!.longitude}" +
+                            "&daddr=" +
+                            "${mViewModel.polyLineDest.value!!.latitude}," +
+                            "${mViewModel.polyLineDest.value!!.longitude}")))
     }
 }

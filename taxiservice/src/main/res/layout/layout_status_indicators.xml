@@ -5,16 +5,12 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_grey_square"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/_10sdp"
-    android:paddingTop="@dimen/_10sdp"
-    android:paddingRight="@dimen/_10sdp"
-    android:paddingBottom="@dimen/_10sdp">
+    android:padding="15dp">
 
     <RelativeLayout
         android:id="@+id/rl_status_unselected"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="visible">
+        android:layout_height="wrap_content">
 
         <ImageButton
             android:id="@+id/ib_location_pin"
@@ -22,12 +18,12 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/_12sdp"
+            android:padding="15dp"
             app:srcCompat="@drawable/ic_pin" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_10sdp"
+            android:layout_height="15dp"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/ib_steering"
             android:layout_toEndOf="@+id/ib_location_pin"
@@ -50,12 +46,12 @@
             android:layout_centerInParent="true"
             android:background="@color/white"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/_12sdp"
+            android:padding="15dp"
             app:srcCompat="@drawable/ic_steering" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_10sdp"
+            android:layout_height="15dp"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/ib_flag"
             android:layout_toEndOf="@+id/ib_steering"
@@ -78,7 +74,7 @@
             android:layout_alignParentEnd="true"
             android:background="@color/white"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/_12sdp"
+            android:padding="15dp"
             app:srcCompat="@drawable/ic_flag" />
 
     </RelativeLayout>
@@ -95,13 +91,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_status_complete"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/_12sdp"
+            android:padding="15dp"
             android:tint="@color/taxi_bg_yellow"
             app:srcCompat="@drawable/ic_pin" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_10sdp"
+            android:layout_height="15dp"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/ib_location_pin_complete"
             android:background="@color/white"
@@ -121,7 +117,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/bg_status_complete"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/_12sdp"
+            android:padding="15dp"
             android:tint="@color/taxi_bg_yellow"
             app:srcCompat="@drawable/ic_steering" />
 
@@ -132,7 +128,7 @@
             android:layout_alignParentEnd="true"
             android:background="@drawable/bg_status_complete"
             android:contentDescription="@string/app_name"
-            android:padding="@dimen/_12sdp"
+            android:padding="15dp"
             android:tint="@color/taxi_bg_yellow"
             app:srcCompat="@drawable/ic_flag" />
 

@@ -20,14 +20,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginEnd="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@android:color/transparent">
 
             <TextView
-                android:id="@+id/tv_sos"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:id="@+id/tvSos"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_black_circle"
                 android:gravity="center"
@@ -58,10 +58,10 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical"
-            android:paddingStart="20dp"
+            android:paddingStart="10dp"
             android:paddingTop="10dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="20dp">
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -155,7 +155,7 @@
                         android:id="@+id/tv_pickup_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toStartOf="@id/cvNavigationContainer"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
                         android:text="@string/taxi_pickup_location"
@@ -167,7 +167,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_pickup_location"
-                        android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toStartOf="@id/cvNavigationContainer"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="3dp"
                         android:textColor="@color/grey" />
@@ -177,22 +177,29 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_user_address_one"
-                        android:layout_toStartOf="@id/ibNavigation"
+                        android:layout_toStartOf="@id/cvNavigationContainer"
                         android:padding="3dp"
                         android:textColor="@color/grey"
                         android:visibility="gone" />
 
-                    <ImageButton
-                        android:id="@+id/ibNavigation"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cvNavigationContainer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_margin="5dp"
-                        android:background="@color/white"
-                        android:contentDescription="@string/app_name"
-                        android:elevation="5dp"
-                        android:padding="@dimen/_15sdp"
-                        app:srcCompat="@drawable/ic_location_arrow" />
+                        app:cardCornerRadius="10dp"
+                        app:cardElevation="10dp">
+
+                        <ImageButton
+                            android:id="@+id/ibNavigation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:contentDescription="@string/app_name"
+                            android:padding="20dp"
+                            app:srcCompat="@drawable/ic_location_arrow" />
+
+                    </androidx.cardview.widget.CardView>
 
                 </RelativeLayout>
 
@@ -202,13 +209,13 @@
                 layout="@layout/layout_status_indicators"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="10dp" />
 
             <LinearLayout
                 android:id="@+id/ll_button_approve"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="1">
@@ -267,8 +274,8 @@
                 android:id="@+id/btn_drop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:text="@string/taxi_tab_dropped"
                 android:textColor="@color/white"

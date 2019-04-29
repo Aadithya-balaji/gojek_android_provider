@@ -51,6 +51,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityDashboardBinding
         mViewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
+        mViewModel.navigator = this
         binding.dashboardModel = mViewModel
 
         setSupportActionBar(binding.tbrHome.app_bar)

@@ -1,53 +1,67 @@
 package com.xjek.provider.views.dashboard
 
-import android.Manifest
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.location.Location
+import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.Constants.ProjectTypes.ORDER
+import com.xjek.base.data.Constants.ProjectTypes.SERVICE
+import com.xjek.base.data.Constants.ProjectTypes.TRANSPORT
+import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
+import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
+import com.xjek.base.data.Constants.RideStatus.SEARCHING
+import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.location_service.BaseLocationService
+import com.xjek.base.location_service.BaseLocationService.BROADCAST
+import com.xjek.base.utils.LocationCallBack
+import com.xjek.base.utils.LocationUtils
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityDashboardBinding
-import com.xjek.provider.utils.Enums
-import com.xjek.provider.utils.location_service.BaseLocationService
 import com.xjek.provider.views.account.AccountFragment
 import com.xjek.provider.views.home.HomeFragment
+import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
 import com.xjek.provider.views.notification.NotificationFragment
 import com.xjek.provider.views.order.OrderFragment
+import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
 
 class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator {
 
     private lateinit var binding: ActivityDashboardBinding
-    private lateinit var viewModel: DashBoardViewModel
-    private lateinit var tvTitle: TextView
-    private lateinit var ivArrow: ImageView
-    private lateinit var tbrRlLeft: RelativeLayout
-    private lateinit var tbrIvLogo: ImageView
+    private lateinit var mViewModel: DashBoardViewModel
+
+    private var mIncomingRequestDialog = IncomingRequestDialog()
     private var locationServiceIntent: Intent? = null
+    private var currentLat: Double = 13.0561789
+    private var currentLong: Double = 80.247998
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityDashboardBinding
-        viewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
-        binding.dashboardModel = viewModel
+        mViewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
+        mViewModel.navigator = this
+        binding.dashboardModel = mViewModel
 
         setSupportActionBar(binding.tbrHome.app_bar)
 
-        tvTitle = findViewById(R.id.tv_header)
-        ivArrow = findViewById(R.id.iv_back)
-        tbrRlLeft = findViewById(R.id.tbr_rl_right)
-        tbrIvLogo = findViewById(R.id.tbr_iv_logo)
+        mViewModel.latitude.value = currentLat
+        mViewModel.longitude.value = currentLong
 
         supportFragmentManager.beginTransaction().add(R.id.frame_home_container, HomeFragment()).commit()
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
-
             when (it.itemId) {
                 R.id.action_home -> {
                     supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, HomeFragment()).commit()
@@ -73,38 +87,45 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
-        if (getPermissionUtil().hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION))
+
+        if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
             updateLocation(true)
-        else if (getPermissionUtil().requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                        Enums.LOCATION_REQUEST_CODE)) startService(locationServiceIntent)
+            updateCurrentLocation()
+        } else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION)) {
+            updateLocation(true)
+            updateCurrentLocation()
+        }
+
+        getApiResponse()
+
     }
 
-    private fun updateLocation(isTrue: Boolean) {
-//        if (isTrue) startService(locationServiceIntent)
-//        else stopService(locationServiceIntent)
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
     }
 
     override fun setTitle(title: String) {
-        tvTitle.text = title
+        tv_header.text = title
     }
 
     override fun hideLeftArrow(isTrue: Boolean) {
-        if (isTrue) ivArrow.visibility = View.GONE else ivArrow.visibility = View.VISIBLE
+        if (isTrue) iv_back.visibility = View.GONE else iv_back.visibility = View.VISIBLE
     }
 
     override fun setLeftTitle(strTitle: String) {
-        tbrIvLogo.visibility = View.GONE
-        tbrRlLeft.visibility = View.VISIBLE
-        tvTitle.text = strTitle
+        tbr_iv_logo.visibility = View.GONE
+        tbr_rl_right.visibility = View.VISIBLE
+        tv_header.text = strTitle
     }
 
     override fun showLogo(isNeedShow: Boolean) {
         if (isNeedShow) {
-            tbrIvLogo.visibility = View.VISIBLE
-            tbrRlLeft.visibility = View.GONE
+            tbr_iv_logo.visibility = View.VISIBLE
+            tbr_rl_right.visibility = View.GONE
         } else {
-            tbrRlLeft.visibility = View.VISIBLE
-            tbrIvLogo.visibility = View.GONE
+            tbr_rl_right.visibility = View.VISIBLE
+            tbr_iv_logo.visibility = View.GONE
         }
     }
 
@@ -116,13 +137,89 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         if (isNeedHide) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
     }
 
-    override fun getInstance(): DashBoardActivity = this
-
-    override fun isNeedLocationUpdate(isTrue: Boolean) {
-
-        updateLocation(isTrue)
+    override fun updateLocation(isTrue: Boolean) {
+        if (isTrue) {
+            LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
+            startService(locationServiceIntent)
+        } else {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
+            stopService(locationServiceIntent)
+        }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun updateCurrentLocation() {
+        try {
+            LocationUtils.getLastKnownLocation(this, object : LocationCallBack.LastKnownLocation {
+                override fun onSuccess(location: Location?) {
+                    currentLat = location!!.latitude
+                    currentLong = location.longitude
+                    mViewModel.getRequest()
+                }
+
+                override fun onFailure(messsage: String?) {
+                    currentLat = 13.0561789
+                    currentLong = 80.247998
+                    mViewModel.getRequest()
+                }
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun getApiResponse() {
+        println("RRR :: HomeFragment.getApiResponse")
+        observeLiveData(mViewModel.checkRequestLiveData) { checkStatusData ->
+            if (checkStatusData.statusCode == "200") {
+                if (checkStatusData.responseData.requests.isNotEmpty())
+                    when (checkStatusData.responseData.requests[0].request.status) {
+                        SEARCHING -> {
+                            if (!mIncomingRequestDialog.isShown()) {
+                                val bundle = Bundle()
+                                val strRequest = Gson().toJson(checkStatusData)
+                                bundle.putString("requestModel", strRequest)
+                                mIncomingRequestDialog.arguments = bundle
+                                mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
+                            }
+                        }
+                        else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
+                            TRANSPORT -> {
+                                BROADCAST = TRANSPORT + BROADCAST
+                                startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                            }
+                            SERVICE -> {
+                                BROADCAST = TRANSPORT + SERVICE
+                                startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                            }
+                            ORDER -> {
+                                BROADCAST = TRANSPORT + ORDER
+                                startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                            }
+                            else -> BROADCAST = "BASE_BROADCAST"
+                        }
+                    }
+            }
+        }
+    }
+
+    private val mBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            println("RRRR:: DashboardActivity")
+            val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
+            if (location != null) {
+                currentLat = location.latitude
+                currentLong = location.longitude
+
+                mViewModel.latitude.value = currentLat
+                mViewModel.longitude.value = currentLong
+
+                mViewModel.getRequest()
+            }
+        }
+    }
+
+    override fun showErrorMessage(s: String) {
+        ViewUtils.showNormalToast(this, s)
+    }
 }
-
-

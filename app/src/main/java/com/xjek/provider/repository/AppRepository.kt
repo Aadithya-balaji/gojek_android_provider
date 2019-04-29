@@ -7,6 +7,7 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.repository.BaseRepository
 import com.xjek.provider.network.AppWebService
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
+import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.home.HomeViewModel
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestViewModel
@@ -309,7 +310,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun checkRequest(viewModel: HomeViewModel, token: String, lat: String, lon: String): Disposable {
+    fun checkRequest(viewModel: DashBoardViewModel, token: String, lat: String, lon: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getRequest(token, lat, lon)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -317,7 +318,7 @@ class AppRepository : BaseRepository() {
                 .subscribe({
                     viewModel.checkRequestLiveData.postValue(it)
                 }, {
-                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })
     }
 
@@ -368,7 +369,7 @@ class AppRepository : BaseRepository() {
                 .subscribe({
                     viewModel.onlineStatusLiveData.postValue(it)
                 }, {
-                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })
     }
 

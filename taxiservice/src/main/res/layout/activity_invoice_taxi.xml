@@ -405,7 +405,6 @@
                         android:layout_weight="0.40"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:gravity="end"
-                        android:onClick="@{() -> invoicemodel.openTollDialog()}"
                         android:text="@={invoicemodel.tollCharge}"
                         android:textColor="@color/blue_color"
                         android:textSize="@dimen/_12sdp" />

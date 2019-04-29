@@ -19,21 +19,22 @@
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/ll_offline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="@dimen/_50sdp"
-            android:paddingRight="@dimen/_50sdp"
-            android:gravity="center">
+            android:gravity="center"
+            android:padding="100dp">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/offline_status"/>
-        </LinearLayout>
+                android:contentDescription="@string/app_name"
+                app:srcCompat="@drawable/offline_status" />
 
+        </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_change_status"
@@ -41,12 +42,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:onClick="@{(v) -> homemodel.changeStatus(v)}"
             android:text="@string/online"
             android:textColor="@color/white"
-            android:fontFamily="@font/avenirltstd_medium"
             android:textStyle="bold"
-            android:onClick="@{(v) -> homemodel.changeStatus(v)}"
-            android:layout_marginBottom="@dimen/_15sdp"
-            app:cornerRadius="@dimen/_6sdp"/>
+            app:cornerRadius="@dimen/_6sdp" />
+
     </RelativeLayout>
+
 </layout>

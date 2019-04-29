@@ -9,6 +9,7 @@
 
     <!-- Taxi pickup -->
     <string name="taxi_pickup_location">Pickup Location</string>
+    <string name="taxi_drop_location" tools:ignore="ExtraTranslation">Drop Location</string>
     <string name="taxi_sos">SOS</string>
 
     <!-- invoice -->

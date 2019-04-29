@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:onClick="@{() -> tollmodel.submit()}"
+                android:onClick="@{() -> tollmodel.callUpdateRequestApi()}"
                 android:padding="5dp"
                 android:text="@string/submit"
                 android:textAllCaps="false"

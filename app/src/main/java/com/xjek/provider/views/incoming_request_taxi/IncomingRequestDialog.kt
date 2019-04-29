@@ -22,7 +22,7 @@ import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
 import java.util.concurrent.TimeUnit
 
-class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
+class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
 
     private lateinit var dialogTaxiIncomingReqBinding: DialogTaxiIncomingRequestBinding
     private lateinit var incomingRequestViewModel: IncomingRequestViewModel
@@ -58,21 +58,19 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
         dialogTaxiIncomingReqBinding.requestmodel = incomingRequestViewModel
         dialogTaxiIncomingReqBinding.lifecycleOwner = this
         incomingRequestViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData!!.requests!!.isNotEmpty()) {
-            totalSeconds = Math.abs(incomingRequestModel!!.responseData!!.requests!![0]!!.time_left_to_respond!!)
-            totalSeconds = 120
+        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()) {
+            totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond)
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
             val time = String.format("%d:%d", minutes, seconds)
             initCircularSeekbar(0f, time)
-
             val totalMilliSeconds = totalSeconds!! * 1000
             val totalTimeInLong = totalMilliSeconds.toLong()
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
             timerToTakeOrder.start()
 
-            incomingRequestViewModel.pickupLocation.value = incomingRequestModel!!.responseData!!.requests!![0]!!.request!!.s_address.toString()
-            incomingRequestViewModel.serviceType.value = incomingRequestModel!!.responseData!!.requests!![0]!!.service!!.display_name?.toString()
+            incomingRequestViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.s_address
+            incomingRequestViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
 
         getApiResponse()
@@ -103,8 +101,8 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
     override fun accept() {
         loadingObservable.value = true
         val params: HashMap<String, String> = HashMap()
-        params["id"] = incomingRequestModel!!.responseData!!.requests!![0]!!.request!!.id.toString()
-        params["service_id"] = incomingRequestModel!!.responseData!!.requests!![0]!!.service!!.id.toString()
+        params["id"] = incomingRequestModel!!.responseData.requests[0].request.id.toString()
+        params["service_id"] = incomingRequestModel!!.responseData.requests[0].service.id.toString()
         incomingRequestViewModel.acceptRequest(params)
 
     }
@@ -112,16 +110,16 @@ class IncomingRequest : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), 
     override fun cancel() {
         loadingObservable.value = true
         val params: HashMap<String, String> = HashMap()
-        params["id"] = incomingRequestModel!!.responseData!!.requests!![0]!!.request!!.id.toString()
-        params["service_id"] = incomingRequestModel!!.responseData!!.requests!![0]!!.service!!.id.toString()
+        params["id"] = incomingRequestModel!!.responseData.requests[0].request.id.toString()
+        params["service_id"] = incomingRequestModel!!.responseData.requests[0].service.id.toString()
         incomingRequestViewModel.rejectRequest(params)
     }
 
     fun initCircularSeekbar(percentage: Float, time: String) {
         circularProgressBar = dialogTaxiIncomingReqBinding.ivRequestTime
         val circularProgressBarModel = CircularProgressBarModel()
-        circularProgressBarModel.color = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
-        circularProgressBarModel.backgroundColor = ContextCompat.getColor(context!!, R.color.grey)
+        circularProgressBarModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
+        circularProgressBarModel.color = ContextCompat.getColor(context!!, R.color.grey)
         circularProgressBarModel.strokeWidth = 15.0f
         circularProgressBarModel.backgroundStrokeWidth = 15.0f
         circularProgressBarModel.blur = 1

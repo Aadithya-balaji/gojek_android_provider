@@ -211,7 +211,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
             if (card.validateNumber() && card.validateCVC()) {
                 loadingProgress?.value = true
                 val stripe = Stripe(activity!!, "pk_test_DbfzA8Pv1MDErUiHakK9XfLe")
-             /*   if (stripe != null) {
+                if (stripe != null) {
                     stripe.createToken(
                             card,
                             object : TokenCallback {
@@ -219,9 +219,9 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
                                     Log.e("card", "-----" + token.id)
                                     loadingProgress!!.value = false
                                     // Send token to your server
-                                    *//*if (!TextUtils.isEmpty(token.id))
+                                    if (!TextUtils.isEmpty(token.id))
                                         walletViewModel.callAddCardApi(token.id)
-*//*
+
                                 }
 
                                 override fun onError(error: Exception) {
@@ -236,7 +236,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
                 } else {
                     loadingProgress!!.value = false
                     ViewUtils.showToast(activity!!, "Please Enter Valid Card", false)
-                }*/
+                }
             }else{
                 loadingProgress!!.value=false
             }

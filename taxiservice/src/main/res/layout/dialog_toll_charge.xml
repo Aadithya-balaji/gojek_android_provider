@@ -41,7 +41,7 @@
             android:padding="@dimen/_9sdp"
             android:singleLine="true"
             android:text="@={tollmodel.tollChargeLiveData}"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_10sdp"/>
 
 
         <LinearLayout

@@ -109,6 +109,7 @@
             android:layout_below="@+id/rbRatingBar"
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginRight="@dimen/_15sdp"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="@dimen/_5sdp"
             app:cardElevation="@dimen/_15sdp">
 
@@ -144,7 +145,5 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
-
     </RelativeLayout>
-
 </layout>

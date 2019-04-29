@@ -120,10 +120,10 @@
                         android:layout_margin="5dp"
                         android:gravity="center"
                         android:orientation="vertical"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_waiting"
+                            android:id="@+id/btnWaiting"
                             android:layout_width="wrap_content"
                             android:layout_height="@dimen/_30sdp"
                             android:fontFamily="@font/avenirltstd_medium"
@@ -134,7 +134,7 @@
                             app:cornerRadius="@dimen/_12sdp" />
 
                         <Chronometer
-                            android:id="@+id/cm_waiting"
+                            android:id="@+id/cmWaiting"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"

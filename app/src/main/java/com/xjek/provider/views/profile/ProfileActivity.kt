@@ -206,7 +206,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             }
         }
 
-
         // handle result of CropImageActivity
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)

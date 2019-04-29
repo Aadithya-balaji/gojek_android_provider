@@ -11,6 +11,8 @@ object Constants {
     object RequestCode {
         const val PERMISSIONS_CODE_LOCATION = 1001
         const val PERMISSIONS_CODE_FILE = 1002
+        const val ORDER = "ORDER"
+        const val PERMISSION_CODE_CAMERA = 1003
     }
 
     object RequestPermission {
@@ -18,10 +20,13 @@ object Constants {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
         )
-        val PERMISSIONS_FILE = arrayOf(
+        val PERMISSION_CAMERA = arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
         )
+
+
     }
 
     object ProjectTypes {
@@ -46,5 +51,22 @@ object Constants {
         const val PICKED_UP = "PICKEDUP"
         const val DROPPED = "DROPPED"
         const val COMPLETED = "COMPLETED"
+        const val PAYMENT = "PAYMENT"
+    }
+
+    object Common {
+        const val ID = "id"
+        const val RATING = "rating"
+        const val COMMENT = "comment"
+        const val ADMIN_SERVICE_ID = "admin_service_id"
+        const val OTP = "otp"
+    }
+
+    object XuperProvider {
+        const val AFTER_IMAGE = "after_picture"
+        const val BEFORE_IMAGE = "before_picture"
+        const val EXTRA_CHARGE = "extra_charge"
+        const val EXTRA_CHARGE_NOTES = "extra_charge_notes"
+
     }
 }

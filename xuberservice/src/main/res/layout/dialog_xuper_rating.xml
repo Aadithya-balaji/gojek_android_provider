@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/xuper_rating"
+            android:textColor="@color/xuber_black"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:textSize="@dimen/_14sdp"/>
+
+       <de.hdodenhof.circleimageview.CircleImageView
+           android:id="@+id/ivXuperRatingUser"
+
+
+           android:layout_width="@dimen/_35sdp"
+           android:layout_height="@dimen/_35sdp"
+           android:layout_marginTop="@dimen/_10sdp"
+           android:src="@drawable/kittty"/>
+        <TextView
+            android:id="@+id/tvRateWithUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/xuper_light_black"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:text="@string/xuper_rate"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:textSize="@dimen/_11sdp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+            <TextView
+                android:id="@+id/tvXuperRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/xuber_grey"
+                android:text="2.1"
+                android:textSize="@dimen/_10sdp"
+                android:fontFamily="@font/avenirltstd_medium"/>
+            <ImageView
+                android:id="@+id/ivXuperRate"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:tint="@color/chip_yellow_inner_color"
+                android:src="@drawable/star"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/edtCommands"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/_80sdp"
+            android:background="@drawable/bg_write_commands"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:hint="@string/write_your_review"
+            android:textSize="@dimen/_10sdp"
+            android:gravity="start"
+            android:padding="@dimen/_5sdp"
+            android:maxHeight="@dimen/_100sdp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/xuber_grey"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+
+        <TextView
+            android:id="@+id/tvXuperSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/submit"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:textAllCaps="true"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@color/xuper_invoice_confirm_pay"/>
+    </LinearLayout>
+
+</layout>

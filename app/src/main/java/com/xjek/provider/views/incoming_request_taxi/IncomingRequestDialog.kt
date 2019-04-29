@@ -60,12 +60,10 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         incomingRequestViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()) {
             totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond)
-            totalSeconds = 120
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
             val time = String.format("%d:%d", minutes, seconds)
             initCircularSeekbar(0f, time)
-
             val totalMilliSeconds = totalSeconds!! * 1000
             val totalTimeInLong = totalMilliSeconds.toLong()
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
@@ -120,8 +118,8 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     fun initCircularSeekbar(percentage: Float, time: String) {
         circularProgressBar = dialogTaxiIncomingReqBinding.ivRequestTime
         val circularProgressBarModel = CircularProgressBarModel()
-        circularProgressBarModel.color = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
-        circularProgressBarModel.backgroundColor = ContextCompat.getColor(context!!, R.color.grey)
+        circularProgressBarModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
+        circularProgressBarModel.color = ContextCompat.getColor(context!!, R.color.grey)
         circularProgressBarModel.strokeWidth = 15.0f
         circularProgressBarModel.backgroundStrokeWidth = 15.0f
         circularProgressBarModel.blur = 1

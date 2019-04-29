@@ -8,7 +8,9 @@ import android.graphics.Canvas
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.View
+import android.widget.Chronometer
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -35,6 +37,7 @@ import com.xjek.base.data.Constants.RideStatus.COMPLETED
 import com.xjek.base.data.Constants.RideStatus.DROPPED
 import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.RideStatus.SCHEDULED
+import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.Constants.RideStatus.STARTED
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.location_service.BaseLocationService
@@ -54,22 +57,28 @@ import com.xjek.taxiservice.views.verifyotp.VerifyOtpDialog
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import kotlinx.android.synthetic.main.taxi_bottom.*
 import java.util.*
+import kotlin.collections.HashMap
 
 class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         TaxiDashboardNavigator,
         OnMapReadyCallback,
-        PolyLineListener {
+        PolyLineListener,
+        Chronometer.OnChronometerTickListener,
+        View.OnClickListener {
+
 
     private lateinit var activityTaxiMainBinding: ActivityTaxiMainBinding
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mViewModel: TaxiDashboardViewModel
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
-
+    private var isWaitingTime: Boolean? = false
+    private var lastWaitingTime: Long? = 0
     private var mGoogleMap: GoogleMap? = null
     private var mLastKnownLocation: Location? = null
     private var canDrawPolyLine: Boolean = true
     private var mPolyline: Polyline? = null
     private var polyLine: List<LatLng> = ArrayList()
+    private var isNeedtoUpdateWaiting: Boolean = false
 
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
 
@@ -79,9 +88,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mViewModel.navigator = this
         activityTaxiMainBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
-
         sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bsContainer)
         sheetBehavior.peekHeight = 250
+        btnWaiting.setOnClickListener(this)
+        cmWaiting.onChronometerTickListener = this
 
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
@@ -97,7 +107,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         initializeMap()
         checkStatusAPIResponse()
-
+        isNeedtoUpdateWaiting = true
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
     }
 
@@ -175,9 +185,18 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
                         canDrawPolyLine = true
                         when (checkStatusResponse.responseData.request.status) {
+
+                            SEARCHING -> {
+                                val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                                val params = HashMap<String, String>()
+                                params.put(com.xjek.base.data.Constants.Common.ID, requestID)
+                                mViewModel.taxiWaitingTime(params)
+                            }
+
                             SCHEDULED -> {
                                 println("RRR :: inside SCHEDULED = ")
                             }
+
                             CANCELLED -> {
                                 println("RRR :: inside CANCELLED = ")
                             }
@@ -187,14 +206,20 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             STARTED -> {
                                 println("RRR :: inside STARTED = ")
                                 whenStatusStarted(checkStatusResponse.responseData)
+                                llWaitingTimeContainer.visibility = View.VISIBLE
+                                setWatitingTime()
+
                             }
                             ARRIVED -> {
                                 println("RRR :: inside ARRIVED = ")
+                                llWaitingTimeContainer.visibility = View.VISIBLE
                                 whenStatusArrived(checkStatusResponse.responseData)
                             }
                             PICKED_UP -> {
                                 println("RRR :: inside PICKED_UP = ")
+                                llWaitingTimeContainer.visibility = View.VISIBLE
                                 whenStatusPickedUp(checkStatusResponse.responseData)
+                                setWatitingTime()
                             }
                             DROPPED -> {
                                 println("RRR :: inside DROPPED = ")
@@ -321,7 +346,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         rate.rating = responseData.request.user.rating.toFloat()
 
         btn_drop.setOnClickListener {
-            ViewUtils.showAlert(this, resources.getString(R.string.do_you_have_any_toll), object : ViewUtils.ViewCallBack {
+            //            val params: HashMap<String, String> = HashMap()
+//            params["id"] = responseData.request.id.toString()
+//            params["status"] = DROPPED
+//            params["_method"] = "PATCH"
+//            mViewModel.taxiStatusUpdate(params)
+
+            ViewUtils.showAlert(this, "Do you have andy Toll charge", object : ViewUtils.ViewCallBack {
+
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     val tollChargeDialog = TollChargeDialog()
                     val bundle = Bundle()
@@ -351,6 +383,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             }
         }
     }
+
+
 
     private fun drawRoute(src: LatLng, dest: LatLng) {
         val s = DirectionUtils().getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString())
@@ -428,5 +462,81 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             "&daddr=" +
                             "${mViewModel.polyLineDest.value!!.latitude}," +
                             "${mViewModel.polyLineDest.value!!.longitude}")))
+    }
+
+    override fun onChronometerTick(chronometer: Chronometer?) {
+        val time = SystemClock.elapsedRealtime() - chronometer!!.getBase()
+        val h = (time / 3600000).toInt()
+        val m = (time - h * 3600000).toInt() / 60000
+        val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
+        val t = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+        chronometer!!.setText(t)
+    }
+
+    override fun onClick(view: View?) {
+        when (view!!.id) {
+            R.id.btnWaiting -> {
+                if (isWaitingTime == true) {
+                    changeWaitingTimeBackground(false)
+                    isWaitingTime = false
+                    lastWaitingTime = SystemClock.elapsedRealtime()
+                    val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                    val params = HashMap<String, String>()
+                    params.put(com.xjek.base.data.Constants.Common.ID, requestID)
+                    params.put("status", "1")
+                    mViewModel.taxiWaitingTime(params)
+                    cmWaiting.stop()
+                } else {
+                    changeWaitingTimeBackground(true)
+                    isWaitingTime = true
+                    val temp: Long = 0
+                    if (lastWaitingTime != temp)
+                        cmWaiting.base = (cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
+                    else
+                        cmWaiting.base = SystemClock.elapsedRealtime()
+                    if (mViewModel.checkStatusTaxiLiveData !== null && mViewModel.checkStatusTaxiLiveData.value != null) {
+                        val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                        val params = HashMap<String, String>()
+                        params.put(com.xjek.base.data.Constants.Common.ID, requestID)
+                        params.put("status", "1")
+                        mViewModel.taxiWaitingTime(params)
+                    }
+                    cmWaiting.start()
+                }
+            }
+        }
+    }
+
+    fun setWatitingTime() {
+        val time = mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingTime
+        if (isNeedtoUpdateWaiting == true && time > 0) {
+            if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingTime != null) {
+                cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
+                val h = (time / 3600000).toInt()
+                val m = (time - h * 3600000).toInt() / 60000
+                val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
+                val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+                cmWaiting.setText(formatedTime)
+                if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingStatus == 1) {
+                    cmWaiting.start()
+                }
+            }
+            isWaitingTime=true
+            changeWaitingTimeBackground(true)
+        }else{
+            isWaitingTime=false
+            changeWaitingTimeBackground(false)
+        }
+    }
+
+
+    fun changeWaitingTimeBackground(isWaitingTime: Boolean) {
+        if (isWaitingTime) {
+            btnWaiting.backgroundTintList = ContextCompat.getColorStateList(this@TaxiDashboardActivity, R.color.taxi_bg_yellow)
+            btnWaiting.setTextColor(ContextCompat.getColor(this@TaxiDashboardActivity, R.color.white))
+        } else {
+            btnWaiting.backgroundTintList = ContextCompat.getColorStateList(this@TaxiDashboardActivity, R.color.white)
+            btnWaiting.setTextColor(ContextCompat.getColor(this@TaxiDashboardActivity, R.color.black))
+        }
     }
 }

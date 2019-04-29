@@ -1,0 +1,113 @@
+package com.xjek.xuberservice.uploadImage
+
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
+import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.DialogFragment
+import com.theartofdev.edmodo.cropper.CropImage
+import com.xjek.base.base.BaseDialogFragment
+import com.xjek.base.data.Constants
+import com.xjek.base.utils.CommonMethods
+import com.xjek.xuberservice.R
+import com.xjek.xuberservice.databinding.DialogUploadImageBinding
+import java.io.File
+
+class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUploadPictureNavigator {
+
+
+    private lateinit var dialogUploadImageBinding: DialogUploadImageBinding
+    private lateinit var dialogUploadPictureViewModel: DialogUploadPictureViewModel
+    private lateinit var mediaUri: Uri
+    private lateinit var mediaFile: File
+    private lateinit var appCompatActivity: AppCompatActivity
+    private var localPath: Uri? = null
+
+
+    override fun getLayout(): Int {
+        return R.layout.dialog_upload_image
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        appCompatActivity = context as AppCompatActivity
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.CustomDialog)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getDialog()!!.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+
+    override fun initView(viewDataBinding: ViewDataBinding, view: View) {
+        dialogUploadImageBinding = viewDataBinding as DialogUploadImageBinding
+        dialogUploadPictureViewModel = DialogUploadPictureViewModel()
+        dialogUploadPictureViewModel.navigator = this
+        dialogUploadImageBinding.setLifecycleOwner(this)
+        dialogUploadImageBinding.uploadImageModel = dialogUploadPictureViewModel
+    }
+
+
+    override fun takePicture() {
+        if (getPermissionUtil().hasPermission(appCompatActivity, Constants.RequestPermission.PERMISSION_CAMERA)) {
+            captureImage(202)
+        } else {
+            getPermissionUtil().requestPermissions(appCompatActivity, Constants.RequestPermission.PERMISSION_CAMERA, Constants.RequestCode.PERMISSION_CODE_CAMERA)
+        }
+    }
+
+    override fun submit() {
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("ResultCode", "------" + resultCode + "---" + requestCode)
+        if (resultCode == Activity.RESULT_OK) {
+
+            when (requestCode) {
+                202 -> {
+                    CommonMethods.refreshGallery(activity!!, mediaFile)
+                    val intent = CropImage.activity(mediaUri).getIntent(getContext()!!);
+                    startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+                }
+
+                CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                    val result = CropImage.getActivityResult(data)
+                    if (resultCode == Activity.RESULT_OK) {
+                        localPath = result.uri
+                        dialogUploadImageBinding.llCaptureImage.visibility = View.GONE
+                        dialogUploadImageBinding.ivServiceImg.setImageURI(localPath)
+                        dialogUploadImageBinding.ivServiceImg.visibility = View.VISIBLE
+                    } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                        Toast.makeText(activity!!, "Cropping failed: ", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+
+    }
+
+    fun captureImage(requestCode: Int) {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        mediaFile = CommonMethods.createImageFile(activity!!)
+        //Kindly change the application id if any changes made in  app application id means
+        mediaUri = FileProvider.getUriForFile(activity!!, "com.xjek.provider" + ".provider", mediaFile)
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri)
+        startActivityForResult(intent, requestCode)
+    }
+
+}

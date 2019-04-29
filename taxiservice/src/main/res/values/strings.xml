@@ -9,7 +9,7 @@
 
     <!-- Taxi pickup -->
     <string name="taxi_pickup_location">Pickup Location</string>
-    <string name="taxi_drop_location">Drop Location</string>
+    <string name="taxi_drop_location" tools:ignore="ExtraTranslation">Drop Location</string>
     <string name="taxi_sos">SOS</string>
 
     <!-- invoice -->
@@ -64,6 +64,6 @@
 
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
     <string name="taxi_pickup">Pick Up</string>
-    <string name="do_you_have_any_toll">Do you have andy Toll charge</string>
+    <string name="any_toll" translatable="false" tools:ignore="ExtraTranslation">Do you have andy Toll charge</string>
 
 </resources>

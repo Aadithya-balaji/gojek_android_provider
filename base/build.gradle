@@ -118,6 +118,8 @@ dependencies {
     //flex layout
     api 'com.google.android:flexbox:1.1.0'
 
+    api 'com.github.jkwiecien:EasyImage:2.0.4'
+
     implementation project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'

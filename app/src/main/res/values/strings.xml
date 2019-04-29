@@ -121,27 +121,27 @@
     <string name="title_my_account">My Account</string>
     <integer-array name="icon_account">
         <item>@drawable/ic_user</item>
-        <item>@drawable/ic_document</item>
         <item>@drawable/ic_services</item>
+        <item>@drawable/ic_document</item>
+        <item>@drawable/ic_bank_details</item>
         <item>@drawable/ic_card</item>
         <item>@drawable/ic_earnings</item>
-        <item>@drawable/ic_bank_details</item>
         <item>@drawable/ic_gift_card</item>
-        <item>@drawable/ic_language</item>
         <item>@drawable/ic_policy</item>
         <item>@drawable/ic_support</item>
+        <item>@drawable/ic_language</item>
     </integer-array>
     <string-array name="title_account">
         <item>@string/title_profile</item>
-        <item>@string/title_manage_documents</item>
         <item>@string/title_manage_services</item>
+        <item>@string/title_manage_documents</item>
+        <item>@string/title_bank_details</item>
         <item>@string/title_payment</item>
         <item>@string/title_earnings</item>
-        <item>@string/title_bank_details</item>
         <item>@string/title_invite_referrals</item>
-        <item>@string/title_language</item>
         <item>@string/title_privacy_policy</item>
         <item>@string/title_support</item>
+        <item>@string/title_language</item>
     </string-array>
 
     <!--Profile Screen-->
@@ -392,5 +392,11 @@
     <string name="call_admin">Call Admin</string>
     <string name="alert">Alert</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="bank_detais_not_found">Bank detais not found</string>
+    <string name="common_documents">Common Documents</string>
+    <string name="transport_documents">Transport Documents</string>
+    <string name="delievery_documents">Delievery Documents</string>
+    <string name="services_documents">Services Documents</string>
+    <string name="upload">Upload</string>
 
 </resources>

@@ -16,6 +16,8 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.PendingListDialogBinding
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.document.DocumentActivity
+import com.xjek.provider.views.manage_bank_details.ManageBankDetailsActivity
+import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 
 @SuppressLint("ValidFragment")
@@ -127,12 +129,13 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
 
         when (view.id) {
             R.id.tv_add_document -> {
-                val intent = Intent(dashBoardActivity, DocumentActivity::class.java)
+                val intent = Intent(dashBoardActivity, ManageDocumentsActivity::class.java)
                 startActivity(intent)
             }
 
             R.id.tv_bank_details -> {
-
+                val intent = Intent(dashBoardActivity, ManageBankDetailsActivity::class.java)
+                startActivity(intent)
             }
 
             R.id.tv_add_service -> {

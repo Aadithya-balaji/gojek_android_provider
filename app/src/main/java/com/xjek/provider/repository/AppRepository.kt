@@ -7,11 +7,11 @@ import com.xjek.base.repository.BaseRepository
 import com.xjek.provider.network.AppWebService
 import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
+import com.xjek.provider.views.add_edit_document.AddEditDocumentViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.home.HomeViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
 import com.xjek.provider.views.manage_bank_details.ManageBankDetailsViewModel
-import com.xjek.provider.views.manage_documents.ManageDocumentsViewModel
 import com.xjek.provider.views.manage_services.ManageServicesViewModel
 import com.xjek.provider.views.notification.NotificationViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
@@ -370,8 +370,10 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.onlineStatusLiveData.postValue(it)
+                    viewModel.showLoading.value = false
                 }, {
                     viewModel.navigator.showErrormessage(getErrorMessage(it))
+                    viewModel.showLoading.value = false
                 })
     }
 
@@ -456,20 +458,6 @@ class AppRepository : BaseRepository() {
 //                })
 //    }
 
-    fun getDocumentTypes(viewModel: ManageDocumentsViewModel, token: String,
-                         params: HashMap<String, String>): Disposable {
-        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getDocumentTypes(token, params)
-//                .getDocumentTypes(params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getDocumentTypeObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
-    }
 
 
     fun getBankTemplate(viewModel:ManageBankDetailsViewModel,token: String): Disposable{
@@ -510,6 +498,20 @@ class AppRepository : BaseRepository() {
                 }, {
                     viewModel.showLoading.value = false
                     viewModel.addEditBankErrorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun getDocumentList(viewModel:AddEditDocumentViewModel,documentType:String): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getDocuments(documentType)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.showLoading.value = false
+                    viewModel.documentResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }
 

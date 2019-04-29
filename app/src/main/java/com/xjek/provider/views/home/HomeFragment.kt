@@ -29,6 +29,7 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.utils.location_service.BaseLocationService.BROADCAST
@@ -65,9 +66,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
 
-    companion object {
+   /* companion object {
         var loadingProgress: MutableLiveData<Boolean>? = null
-    }
+    }*/
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
@@ -83,8 +84,12 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mHomeViewModel.longitude.value = currentLong
         callCheckRequestApi()
         val activity: DashBoardActivity = activity as DashBoardActivity
-        loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
-        mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+        /*loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
+        mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>*/
+
+        observeLiveData(mHomeViewModel.showLoading){
+            loadingObservable.value = it
+        }
         pendingListDialog = PendingListDialog()
         incomingRequestDialog=IncomingRequest()
 
@@ -345,7 +350,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     override fun showErrormessage(error: String) {
-        loadingProgress!!.value = false
+        //loadingProgress!!.value = false
+        ViewUtils.showToast(activity!!,error,false)
     }
 
     private fun showPendingListDialog(type: Int) {

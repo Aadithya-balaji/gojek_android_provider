@@ -168,16 +168,8 @@ interface AppWebService {
 
     @FormUrlEncoded
     @POST("provider/listdocuments")
-    fun getDocumentTypes(
-            @Header("Authorization") token: String,
-            @FieldMap params: HashMap<String, String>
-    ): Observable<DocumentTypeResponseModel>
-
-
-    @FormUrlEncoded
-    @POST("provider/listdocuments")
-    fun getDocumentTypes(@FieldMap params: HashMap<String, String>
-    ): Observable<DocumentTypeResponseModel>
+    fun getDocuments(@Field("type")documentType:String
+    ): Observable<ListDocumentResponse>
 
 
     @GET("provider/bankdetails/template")

@@ -370,6 +370,12 @@
     <string name="dummy_text">Lorem Ipsum has been the industry\'s standard dummy text</string>
     <string name="no_notification_found">No notification found</string>
     <string name="something_went_wrong">Something went wrong</string>
+    <string name="bank_detais_not_found">Bank detais not found</string>
+    <string name="common_documents">Common Documents</string>
+    <string name="transport_documents">Transport Documents</string>
+    <string name="delievery_documents">Delievery Documents</string>
+    <string name="services_documents">Services Documents</string>
+    <string name="upload">Upload</string>
 
 
 </resources>

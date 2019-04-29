@@ -41,7 +41,7 @@
             android:name=".views.language.LanguageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.document_upload.DocumentUploadActivity"
+            android:name=".views.add_edit_document.AddEditDocumentActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.setup_vehicle.SetupVehicleActivity"

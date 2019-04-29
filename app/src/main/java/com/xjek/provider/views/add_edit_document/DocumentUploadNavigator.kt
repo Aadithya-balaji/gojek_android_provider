@@ -1,4 +1,4 @@
-package com.xjek.provider.views.document_upload
+package com.xjek.provider.views.add_edit_document
 
 interface DocumentUploadNavigator {
 

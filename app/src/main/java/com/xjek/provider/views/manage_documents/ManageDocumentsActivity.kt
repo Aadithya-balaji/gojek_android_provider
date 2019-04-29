@@ -1,17 +1,14 @@
 package com.xjek.provider.views.manage_documents
 
 import android.content.Intent
-import android.os.Bundle
-import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
-import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityManageDocumentsBinding
 import com.xjek.provider.utils.Constant
-import com.xjek.provider.views.document_upload.DocumentUploadActivity
+import com.xjek.provider.views.add_edit_document.AddEditDocumentActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(),
@@ -19,6 +16,13 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(),
 
     private lateinit var binding: ActivityManageDocumentsBinding
     private lateinit var viewModel: ManageDocumentsViewModel
+
+    private object DocumentType{
+        const val ALL="All"
+        const val TRANSPORT="Transport"
+        const val DELIVERY="Order"
+        const val SERVICES="Service"
+    }
 
     override fun getLayoutId(): Int {
         return R.layout.activity_manage_documents
@@ -40,54 +44,43 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(),
 
         observeViewModel()
 
-        loadingObservable.value = true
-        viewModel.getDocumentTypes()
     }
 
     private fun observeViewModel() {
-        observeLiveData(viewModel.getDocumentTypeObservable()) {
-            if(it.responseData.isNotEmpty()){
-                binding.llEmptyView.visibility = View.GONE
-                binding.rcvDocuments.visibility = View.VISIBLE
-            }else{
-                binding.llEmptyView.visibility = View.VISIBLE
-                binding.rcvDocuments.visibility = View.GONE
-            }
-            loadingObservable.value = false
-            viewModel.setAdapter()
-        }
+
     }
 
-    override fun onMenuItemClicked(position: Int) {
-        val intent = Intent(applicationContext, DocumentUploadActivity::class.java)
-        val bundle = Bundle()
-        bundle.putInt(Constant.DOCUMENT_ID,
-                viewModel.getDocumentTypeObservable().value!!.responseData[position].id)
-        bundle.putString(Constant.DOCUMENT_NAME,
-                viewModel.getDocumentTypeObservable().value!!.responseData[position].name)
-        bundle.putString(Constant.IS_BACK_PAGE_REQUIRED,
-                viewModel.getDocumentTypeObservable().value!!.responseData[position].isBackside)
-        if (viewModel.getDocumentTypeObservable().value!!.responseData[position].providerDocument
-                != null) {
-            bundle.putString(Constant.DOCUMENT_FRONT_PAGE_URL,
-                    viewModel.getDocumentTypeObservable().value!!.responseData[position]
-                            .providerDocument!!.url[0].url)
-            if (viewModel.getDocumentTypeObservable().value!!.responseData[position]
-                            .providerDocument!!.url.size > 1)
-                bundle.putString(Constant.DOCUMENT_BACK_PAGE_URL,
-                        viewModel.getDocumentTypeObservable().value!!.responseData[position]
-                                .providerDocument!!.url[1].url)
-        }
-        bundle.putString(Constant.IS_BACK_PAGE_REQUIRED,
-                viewModel.getDocumentTypeObservable().value!!.responseData[position].isBackside)
-        bundle.putInt(Constant.IS_EXPIRY_DATE_REQUIRED,
-                viewModel.getDocumentTypeObservable().value!!.responseData[position].isExpire)
-        intent.putExtras(bundle)
-        launchNewActivity(intent, false)
-    }
+
 
     override fun showError(error: String) {
-        loadingObservable.value = false
         ViewUtils.showToast(applicationContext, error, false)
+    }
+
+    override fun showAllDocuments() {
+        val intent = Intent(this@ManageDocumentsActivity,AddEditDocumentActivity::class.java)
+        intent.putExtra(Constant.DOCUMENT_NAME,getString(R.string.common_documents))
+        intent.putExtra(Constant.DOCUMENT_TYPE,DocumentType.ALL)
+        launchNewActivity(intent,false)
+    }
+
+    override fun showTransportDocuments() {
+        val intent = Intent(this@ManageDocumentsActivity,AddEditDocumentActivity::class.java)
+        intent.putExtra(Constant.DOCUMENT_NAME,getString(R.string.transport_documents))
+        intent.putExtra(Constant.DOCUMENT_TYPE,DocumentType.TRANSPORT)
+        launchNewActivity(intent,false)
+    }
+
+    override fun showDelieveryDocuments() {
+        val intent = Intent(this@ManageDocumentsActivity,AddEditDocumentActivity::class.java)
+        intent.putExtra(Constant.DOCUMENT_NAME,getString(R.string.delievery_documents))
+        intent.putExtra(Constant.DOCUMENT_TYPE,DocumentType.DELIVERY)
+        launchNewActivity(intent,false)
+    }
+
+    override fun showServicesDocuments() {
+        val intent = Intent(this@ManageDocumentsActivity,AddEditDocumentActivity::class.java)
+        intent.putExtra(Constant.DOCUMENT_NAME,getString(R.string.services_documents))
+        intent.putExtra(Constant.DOCUMENT_TYPE,DocumentType.SERVICES)
+        launchNewActivity(intent,false)
     }
 }

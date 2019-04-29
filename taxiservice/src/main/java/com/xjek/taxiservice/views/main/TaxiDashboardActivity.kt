@@ -92,7 +92,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         tvSos.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:911" )));
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:911")));
         }
 
         initializeMap()
@@ -353,9 +353,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun drawRoute(src: LatLng, dest: LatLng) {
+        val s = DirectionUtils().getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString())
+        println("RRR :: s = $s")
         if (canDrawPolyLine)
-            PolylineUtil(this).execute(DirectionUtils()
-                    .getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString()))
+            PolylineUtil(this).execute(s)
         mViewModel.polyLineSrc.value = src
         mViewModel.polyLineDest.value = dest
     }
@@ -413,6 +414,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun openGoogleNavigation() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
+                "http://maps.google.com/maps?saddr=" +
+                        "13.058552, 80.253461" +
+                        "&daddr=" +
+                        "13.036068, 80.230472")))
+
         if (mViewModel.polyLineSrc.value != null && mViewModel.polyLineDest.value != null)
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
                     "http://maps.google.com/maps?saddr=" +

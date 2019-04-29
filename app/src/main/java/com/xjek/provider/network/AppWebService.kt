@@ -128,6 +128,7 @@ interface AppWebService {
 
     @GET("provider/onlinestatus/{status_id}")
     fun changeOnlineStatus(@Header("Authorization") token: String,@Path("status_id") statusID: String): Observable<StatusResponseModel>
+
     @FormUrlEncoded
     @POST("provider/accept/request")
     fun acceptIncomingRequest(

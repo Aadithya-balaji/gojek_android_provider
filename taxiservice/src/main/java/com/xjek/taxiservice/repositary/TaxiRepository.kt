@@ -18,7 +18,8 @@ class TaxiRepository : BaseRepository() {
 
     fun checkRequest(viewModel: TaxiDashboardViewModel, token: String, lat: Double, lon: Double): Disposable {
         return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
-                .taxiCheckRequestAPI(token, lat, lon)
+//                .taxiCheckRequestAPI(token, lat, lon)
+                .taxiCheckRequestAPI(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

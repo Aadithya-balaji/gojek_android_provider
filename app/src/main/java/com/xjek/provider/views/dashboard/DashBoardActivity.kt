@@ -185,15 +185,15 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                         }
                         else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
                             TRANSPORT -> {
-                                BROADCAST = TRANSPORT + BROADCAST
+                                BROADCAST = TRANSPORT
                                 startActivity(Intent(this, TaxiDashboardActivity::class.java))
                             }
                             SERVICE -> {
-                                BROADCAST = TRANSPORT + SERVICE
+                                BROADCAST = SERVICE
                                 startActivity(Intent(this, TaxiDashboardActivity::class.java))
                             }
                             ORDER -> {
-                                BROADCAST = TRANSPORT + ORDER
+                                BROADCAST = ORDER
                                 startActivity(Intent(this, TaxiDashboardActivity::class.java))
                             }
                             else -> BROADCAST = "BASE_BROADCAST"

@@ -9,9 +9,10 @@ import com.xjek.taxiservice.model.CheckRequestModel
 import com.xjek.taxiservice.repositary.TaxiRepository
 
 class TollChargeViewModel : BaseViewModel<TollChargeNavigator>() {
+
     val appRepository: TaxiRepository = TaxiRepository.instance()
     var tollChargeLiveData = MutableLiveData<String>()
-    var updateRequestLiveData = MutableLiveData<CheckRequestModel>()
+    var mLiveData = MutableLiveData<CheckRequestModel>()
     var showLoading = MutableLiveData<Boolean>()
     var requestID = MutableLiveData<String>()
 
@@ -19,19 +20,15 @@ class TollChargeViewModel : BaseViewModel<TollChargeNavigator>() {
         navigator.addTollCharge()
     }
 
-
-    fun dismisss() {
-        navigator.dismissDialog()
-    }
-
     fun callUpdateRequestApi() {
         if (navigator.isValidCharge()) {
             showLoading.value = true
             val params = HashMap<String, String>()
-            params.put("id", requestID.value.toString())
-            params.put("status", DROPPED)
-            params.put("_method", "PATCH")
-            appRepository.updateRequest(this,"Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params)
+            params["id"] = requestID.value.toString()
+            params["status"] = DROPPED
+            params["_method"] = "PATCH"
+            params["toll_price"] = tollChargeLiveData.value!!
+            appRepository.updateRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params)
         }
     }
 }

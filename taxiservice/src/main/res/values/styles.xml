@@ -3,6 +3,8 @@
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
     </style>
 
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
@@ -25,4 +27,5 @@
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlActivated">@color/taxi_bg_yellow</item>
     </style>
+
 </resources>

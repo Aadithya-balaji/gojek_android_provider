@@ -37,4 +37,23 @@
 
     <!--  Upload Image -->
     <string name="upload_image">Upload the Image</string>
+
+
+    <!-- Invoice -->
+    <string name="xuper_label_time">Time Taken</string>
+    <string name="xuper_label_additional_charge">+ Additional Charge</string>
+    <string name="xuper_amount_to_be_paid">Amount to be paid</string>
+    <string name="xuper_confirm_payment">Confirm Payment</string>
+    <string name="xuper_invoice">Invoice</string>
+
+    <!-- Additional Charges -->
+    <string name="xuper_additional_charge">Additional Charges</string>
+    <string name="xuper_label_description">Description</string>
+    <string name="xuper_label_amount">Amount</string>
+
+    <!-- Rating -->
+    <string name="xuper_rating">Rating</string>
+    <string name="xuper_rate">Rate your service with %s</string>
+    <string name="xuper_comments">Write Comments</string>
+
 </resources>

@@ -2,15 +2,18 @@ package com.xjek.taxiservice.views.invoice
 
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
-import com.xjek.base.data.Constants
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
-import com.xjek.taxiservice.model.CheckRequestModel
 import com.xjek.taxiservice.model.PaymentModel
+import com.xjek.taxiservice.model.ResponseData
 import com.xjek.taxiservice.repositary.TaxiRepository
 
-class InvoiceModule : BaseViewModel<InvoiceNavigator>() {
-    val taxiRepository = TaxiRepository.instance()
+class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
+
+    private val taxiRepository = TaxiRepository.instance()
+
+    var dropLocation = MutableLiveData<String>()
+    var pickuplocation = MutableLiveData<String>()
     var bookingId = MutableLiveData<String>()
     var distance = MutableLiveData<String>()
     var timeTaken = MutableLiveData<String>()
@@ -19,13 +22,9 @@ class InvoiceModule : BaseViewModel<InvoiceNavigator>() {
     var tax = MutableLiveData<String>()
     var tips = MutableLiveData<String>()
     var tollCharge = MutableLiveData<String>()
-    var requestLiveData = MutableLiveData<CheckRequestModel>()
+    var requestLiveData = MutableLiveData<ResponseData>()
     var paymentLiveData = MutableLiveData<PaymentModel>()
     var showLoading = MutableLiveData<Boolean>()
-
-    fun openRatingDialog() {
-        navigator.openRatingDialog()
-    }
 
     fun openTollDialog() {
         navigator.showTollDialog()
@@ -33,10 +32,11 @@ class InvoiceModule : BaseViewModel<InvoiceNavigator>() {
 
     fun confirmPayment() {
         val params = HashMap<String, String>()
-        if (requestLiveData.value != null && requestLiveData.value!!.responseData != null) {
+        if (requestLiveData.value != null && requestLiveData.value != null) {
             showLoading.value = true
-            params.put(Constants.ConfirmPayment.ID, requestLiveData.value!!.responseData!!.request!!.id.toString())
-            getCompositeDisposable().add(taxiRepository.confirmPayment(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+            params["id"] = requestLiveData.value!!.request.id.toString()
+            getCompositeDisposable().add(taxiRepository.confirmPayment
+            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
         }
     }
 }

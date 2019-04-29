@@ -7,8 +7,7 @@
                 android:color="@color/colorBasePrimary"
                 android:width="2dp"
                 android:dashGap="4dp"
-                android:dashWidth="10dp"
-                />
+                android:dashWidth="10dp"/>
         </shape>
     </item>
 </selector>

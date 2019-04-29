@@ -5,7 +5,7 @@
 
         <variable
             name="tollmodel"
-            type="com.xjek.taxiservice.views.tollcharge.TollChargeViewModel"></variable>
+            type="com.xjek.taxiservice.views.tollcharge.TollChargeViewModel" />
     </data>
 
     <LinearLayout
@@ -31,18 +31,17 @@
             android:id="@+id/edt_amount"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_8sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:background="@drawable/bg_toll_square"
             android:fontFamily="@font/avenirltstd_medium"
-            android:layout_marginLeft="@dimen/_8sdp"
             android:inputType="numberDecimal"
             android:padding="@dimen/_9sdp"
             android:singleLine="true"
-            android:layout_marginBottom="@dimen/_15sdp"
             android:text="@={tollmodel.tollChargeLiveData}"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_10sdp"/>
 
 
         <LinearLayout
@@ -52,25 +51,6 @@
             android:layout_marginTop="@dimen/_12sdp"
             android:background="@drawable/bg_toll_confirm"
             android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_allow"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:onClick="@{() -> tollmodel.dismisss()}"
-                android:padding="5dp"
-                android:text="@string/toll_cancel"
-                android:textAllCaps="false"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/_12sdp" />
-
-            <View
-                android:layout_width="0.8dp"
-                android:layout_height="match_parent"
-                android:background="@color/grey" />
 
             <TextView
                 android:id="@+id/tv_toll_submit"

@@ -2,12 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <data>
 
         <variable
             name="invoicemodel"
-            type="com.xjek.taxiservice.views.invoice.InvoiceModule" />
+            type="com.xjek.taxiservice.views.invoice.TaxiInvoiceViewModel" />
     </data>
 
     <ScrollView
@@ -43,13 +42,16 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_13sdp"
                     android:layout_marginBottom="@dimen/_13sdp"
-                    android:background="@drawable/grey_circle" />
+                    android:background="@drawable/grey_circle"
+                    android:contentDescription="@string/app_name" />
 
                 <ImageView
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_centerInParent="true"
+                    android:contentDescription="@string/app_name"
                     app:srcCompat="@drawable/ic_invoice_icon" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -57,20 +59,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rl_header"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/bg_grey_square"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/_12sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingRight="@dimen/_12sdp"
-                android:paddingBottom="@dimen/_10sdp">
+                android:padding="12dp">
 
                 <TextView
                     android:id="@+id/tv_source"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
+                    android:padding="5dp"
                     android:text="@string/taxi_source_destination"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_12sdp" />
@@ -78,109 +78,89 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="3dp">
 
-                        <RelativeLayout
-                            android:layout_width="0dp"
+                        <ImageView
+                            android:id="@+id/iv_pickup_dot"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.05">
+                            android:contentDescription="@string/app_name"
+                            android:padding="5dp"
+                            android:src="@drawable/grey_circle"
+                            android:tint="@color/greeen" />
 
-                            <ImageView
-                                android:id="@+id/iv_pickup_dot"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:tint="@color/greeen"
-                                android:src="@drawable/grey_circle" />
+                        <View
+                            android:layout_width="2dp"
+                            android:layout_height="25dp"
+                            android:background="@color/grey" />
 
-                            <View
-                                android:layout_width="2dp"
-                                android:layout_height="@dimen/_40sdp"
-                                android:layout_below="@+id/iv_pickup_dot"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginTop="@dimen/_2sdp"
-                                android:background="@color/grey" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
+                        <ImageView
+                            android:id="@+id/iv_drop_dot"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.95"
-                            android:gravity="center_vertical"
-                            android:orientation="vertical">
+                            android:contentDescription="@string/app_name"
+                            android:padding="5dp"
+                            android:src="@drawable/grey_circle"
+                            android:tint="@color/red" />
 
-                            <TextView
-                                android:id="@+id/tv_pickup_location"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/avenirltstd_medium"
-                                android:text="The architecture of Flutter supports this model well: after all, every Flutter app includes a host Android and iOS container. But we've been working to make it easier to incrementally adopt Flutter by updating our templates, tooling and guidance for existing "
-                                android:textColor="@color/grey"
-                                android:textSize="@dimen/_8sdp" />
-                        </RelativeLayout>
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
+                        android:baselineAligned="false"
+                        android:orientation="vertical">
 
-                        <RelativeLayout
-                            android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/tv_pickup_location"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="0.05">
-
-                            <ImageView
-                                android:id="@+id/iv_drop_dot"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:tint="@color/red"
-                                android:src="@drawable/grey_circle" />
-                        </RelativeLayout>
-
-                        <RelativeLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.95"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="center_vertical"
-                            android:orientation="vertical">
+                            android:maxLines="2"
+                            android:minLines="2"
+                            android:padding="3dp"
+                            android:text="@={invoicemodel.pickuplocation}"
+                            android:textColor="@color/grey"
+                            android:textSize="12sp" />
 
-                            <TextView
-                                android:id="@+id/tv_drop_location"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/avenirltstd_medium"
-                                android:text="The architecture of Flutter supports this model well: after all, every Flutter app includes a host Android and iOS container. But we've been working to make it easier to incrementally adopt Flutter by updating our templates, tooling and guidance for existing "
-                                android:textColor="@color/grey"
-                                android:textSize="@dimen/_8sdp" />
-                        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tv_drop_location"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:gravity="center_vertical"
+                            android:maxLines="2"
+                            android:minLines="2"
+                            android:padding="3dp"
+                            android:text="@={invoicemodel.dropLocation}"
+                            android:textColor="@color/grey"
+                            android:textSize="12sp" />
+
                     </LinearLayout>
-
 
                 </LinearLayout>
 
-
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/ll_trip_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_trip_address"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_margin="15dp"
                 android:background="@drawable/bg_grey_square"
                 android:orientation="vertical">
 
@@ -193,14 +173,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_trip_status"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
                 android:background="@drawable/bg_grey_square"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingRight="@dimen/_10sdp"
+                android:padding="15dp"
                 android:weightSum="1">
 
                 <LinearLayout
@@ -216,7 +193,7 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/taxi_invoice_booking_id"
                         android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_mng_consigner"
@@ -227,6 +204,7 @@
                         android:gravity="end"
                         android:text="@={invoicemodel.bookingId}"
                         android:textSize="@dimen/_12sdp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -244,7 +222,7 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/taxi_distance_travelled"
                         android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv"
@@ -255,6 +233,7 @@
                         android:gravity="end"
                         android:text="@={invoicemodel.distance}"
                         android:textSize="@dimen/_12sdp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -272,7 +251,7 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/taxi_invoice_time_taken"
                         android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_invoice_time"
@@ -283,6 +262,7 @@
                         android:gravity="end"
                         android:text="@={invoicemodel.timeTaken}"
                         android:textSize="@dimen/_12sdp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -300,7 +280,7 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/taxi_invoice_base_fare"
                         android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_fare"
@@ -311,6 +291,7 @@
                         android:gravity="end"
                         android:text="@={invoicemodel.baseFare}"
                         android:textSize="@dimen/_12sdp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -328,7 +309,7 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/taxi_invoice_distance_fare"
                         android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_distance_fare"
@@ -339,6 +320,7 @@
                         android:gravity="end"
                         android:text="@={invoicemodel.distanceFare}"
                         android:textSize="@dimen/_12sdp" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -356,7 +338,7 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/taxi_invoice_tax"
                         android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_invoice_tax"
@@ -367,8 +349,8 @@
                         android:gravity="end"
                         android:text="@={invoicemodel.tax}"
                         android:textSize="@dimen/_12sdp" />
-                </LinearLayout>
 
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -385,7 +367,7 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/taxi_invoice_Tips"
                         android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_invoice_tips"
@@ -414,7 +396,7 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/taxi_invoice_toll"
                         android:textColor="@color/black"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tv_add_toll"
@@ -427,19 +409,20 @@
                         android:text="@={invoicemodel.tollCharge}"
                         android:textColor="@color/blue_color"
                         android:textSize="@dimen/_12sdp" />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginBottom="10dp"
                     android:background="#DEDEDE"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/_5sdp"
                     android:paddingTop="@dimen/_10sdp"
                     android:paddingRight="@dimen/_5sdp"
                     android:paddingBottom="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
                     android:weightSum="1">
 
                     <TextView
@@ -461,21 +444,17 @@
                         android:fontFamily="@font/avenirltstd_medium"
                         android:gravity="end"
                         android:textSize="@dimen/_12sdp" />
+
                 </LinearLayout>
 
-
             </LinearLayout>
-
 
             <TextView
                 android:id="@+id/tv_confirm_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ll_booking_detail"
-                android:layout_marginLeft="@dimen/_13sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:layout_marginRight="@dimen/_13sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_margin="15dp"
                 android:background="@drawable/bg_yellow_curve"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:gravity="center"
@@ -485,6 +464,9 @@
                 android:text="@string/taxi_confirm_payment"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_13sdp" />
+
         </RelativeLayout>
+
     </ScrollView>
+
 </layout>

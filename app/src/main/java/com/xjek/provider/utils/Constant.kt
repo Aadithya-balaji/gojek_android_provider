@@ -1,6 +1,5 @@
 package com.xjek.provider.utils
 
-import android.Manifest
 import com.xjek.provider.models.ConfigResponseModel.ResponseData.AppSetting.Language
 
 object Constant {
@@ -19,8 +18,7 @@ object Constant {
 
 
     const val TEMP_FILE_NAME = "Gojek_Provider"
-    lateinit var  privacyPolicyUrl:String
-    const val CARD_ID = "card_1ENH9aG9bvHy22wUda2eyiFX"
+    lateinit var privacyPolicyUrl: String
     const val TYPE_PROVIDER = "provider"
-    lateinit var languages :List<Language>
-   }
+    lateinit var languages: List<Language>
+}

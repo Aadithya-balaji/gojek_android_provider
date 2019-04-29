@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -34,11 +35,11 @@
             android:layout_margin="20dp"
             android:background="@drawable/bg_grey_square"
             android:ems="6"
-            android:maxLength="4"
             android:gravity="center"
             android:hint="1234"
             android:inputType="number"
             android:letterSpacing="0.35"
+            android:maxLength="4"
             android:padding="10dp" />
 
         <LinearLayout
@@ -63,7 +64,7 @@
             <Button
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginStart="@dimen/_15sdp"
                 android:layout_weight="0.5"
                 android:background="@drawable/black_sqaure"
                 android:text="@string/otp_chat"
@@ -71,7 +72,7 @@
 
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/bt_start_trip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -79,12 +80,12 @@
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:layout_marginRight="@dimen/_15sdp"
-            android:background="@drawable/bg_yellow_curve"
             android:fontFamily="@font/avenirltstd_medium"
-            android:onClick="@{() -> otpviewmodel.proceedTrip()}"
             android:text="@string/otp_start_trip"
             android:textColor="@color/white"
-            android:textSize="@dimen/_13sdp" />
+            android:textSize="@dimen/_13sdp"
+            app:backgroundTint="@color/taxi_bg_yellow"
+            app:cornerRadius="5dp"/>
 
     </RelativeLayout>
 

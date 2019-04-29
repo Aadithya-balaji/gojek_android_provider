@@ -6,7 +6,7 @@ import com.xjek.taxiservice.model.WaitingTime
 import io.reactivex.Observable
 import retrofit2.http.*
 
-interface AppWebService {
+interface TaxiWebService {
 
     @GET("provider/check/ride/request")
     fun taxiCheckRequestAPI(
@@ -17,8 +17,10 @@ interface AppWebService {
 
     @FormUrlEncoded
     @POST("provider/waiting")
-    fun waitingTime(@Header("Authorization") token: String,
-                    @FieldMap params: HashMap<String, String>):Observable<WaitingTime>
+    fun waitingTime(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<WaitingTime>
 
     @FormUrlEncoded
     @POST("provider/update/ride/request")
@@ -27,8 +29,18 @@ interface AppWebService {
             @FieldMap params: HashMap<String, String>
     ): Observable<CheckRequestModel>
 
+    @FormUrlEncoded
     @POST("provider/transport/payment")
-    fun ConfirmPayment(@Header("Authorization") token:String,@FieldMap params: HashMap<String, String>):Observable<PaymentModel>
+    fun confirmPayment(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<PaymentModel>
 
+    @FormUrlEncoded
+    @POST("provider/rate/ride")
+    fun submitRating(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<PaymentModel>
 
 }

@@ -16,6 +16,7 @@ import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.PermissionUtils
 import com.xjek.base.utils.RunTimePermission
 import com.xjek.base.views.CustomDialog
+import retrofit2.http.HEAD
 
 abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
 
@@ -27,13 +28,13 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
     protected val mPermissionUtils: PermissionUtils? = null
 
 
-    val loadingObservable: MutableLiveData<*>
-        get() = loadingLiveData
+    val loadingObservable: MutableLiveData<*> get() = loadingLiveData
     abstract fun initView(viewDataBinding: ViewDataBinding, view: View)
 
     fun getPermissionUtil(): PermissionUtils {
         return mPermissionUtils ?: PermissionUtils()
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         LocaleUtils.setLocale(context)
@@ -45,26 +46,19 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayout(), container, false)
-        rootView = mViewDataBinding!!.root
+        rootView = mViewDataBinding.root
         return rootView
-
     }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        customDialog = CustomDialog(mActivity!!,true)
+        customDialog = CustomDialog(mActivity!!, true)
         initView(mViewDataBinding, rootView)
         observeLiveData(loadingLiveData) { isShowLoading ->
-            if (isShowLoading) {
-                showLoading()
-            } else {
-                hideLoading()
-            }
+            if (isShowLoading) showLoading() else hideLoading()
         }
-
-
     }
+
     protected fun showLoading() {
         if (customDialog!!.window != null) {
             customDialog!!.window!!.setBackgroundDrawableResource(android.R.color.transparent)
@@ -72,7 +66,7 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment() {
         }
     }
 
-    protected fun hideLoading() {
+    private fun hideLoading() {
         customDialog!!.cancel()
     }
 }

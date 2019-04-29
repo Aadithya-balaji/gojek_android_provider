@@ -2,14 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <data>
 
         <variable
             name="ratingmodel"
-            type="com.xjek.taxiservice.views.rating.RatingViewModel" />
-    </data>
+            type="com.xjek.taxiservice.views.rating.TaxiRatingViewModel" />
 
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,41 +41,44 @@
             android:paddingTop="@dimen/_15sdp"
             android:paddingBottom="@dimen/_15sdp">
 
-
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civProfileImg"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:src="@drawable/flower" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/bg_grey_square"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/_15sdp"
+                android:paddingStart="@dimen/_15sdp"
                 android:paddingTop="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_1sdp"
                 android:paddingBottom="@dimen/_15sdp">
 
                 <TextView
-                    android:id="@+id/tv_rating_user_name"
+                    android:id="@+id/tvUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:text="boopathi"
+                    android:text="@string/placeholder_string"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp" />
 
                 <TextView
-                    android:id="@+id/tv_booking_id"
+                    android:id="@+id/tvBookingId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:text="Booking ID"
+                    android:text="@string/placeholder_string"
                     android:textColor="@color/black" />
+
             </LinearLayout>
+
         </LinearLayout>
 
         <TextView
@@ -90,8 +92,8 @@
             android:textColor="@color/taxi_bg_yellow"
             android:textSize="@dimen/_15sdp" />
 
-        <RatingBar
-            android:id="@+id/rv_user"
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/rbRatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_rating_label"
@@ -104,23 +106,26 @@
             android:id="@+id/cv_rating_comments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rv_user"
+            android:layout_below="@+id/rbRatingBar"
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginRight="@dimen/_15sdp"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="@dimen/_5sdp"
             app:cardElevation="@dimen/_15sdp">
 
-            <TextView
+            <EditText
+                android:id="@+id/tvComments"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
+                android:background="@null"
                 android:fontFamily="@font/avenirltstd_medium"
+                android:gravity="start"
                 android:hint="@string/rate_comments"
-                android:inputType="text"
                 android:minHeight="@dimen/_80sdp"
                 android:textSize="@dimen/_13sdp" />
+
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
@@ -134,7 +139,6 @@
             android:background="@drawable/bg_yellow_curve"
             android:fontFamily="@font/avenirltstd_medium"
             android:gravity="center"
-            android:onClick="@{() -> ratingmodel.gotoAppModule()}"
             android:paddingTop="@dimen/_15sdp"
             android:paddingBottom="@dimen/_15sdp"
             android:text="@string/submit"

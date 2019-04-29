@@ -42,7 +42,7 @@ class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>(), OnBoardNavigator
             OnBoardViewModel()
         }
         viewModel.navigator = this
-        mViewDataBinding.viewModel = viewModel
+        mViewDataBinding.dashboardViewModel = viewModel
         viewPager = mViewDataBinding.viewpagerOnboard
         viewPager.adapter = ScreenSlidePagerAdapter(supportFragmentManager)
         initSpritz()

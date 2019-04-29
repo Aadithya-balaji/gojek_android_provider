@@ -3,12 +3,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <activity android:name="com.xjek.taxiservice.views.main.ActivityTaxiMain"/>
-        <activity android:name=".views.invoice.InvoiceActivity"/>
+        <activity android:name="com.xjek.taxiservice.views.main.TaxiDashboardActivity"/>
+        <activity android:name=".views.invoice.TaxiTaxiInvoiceActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

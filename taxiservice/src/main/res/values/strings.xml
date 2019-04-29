@@ -63,5 +63,6 @@
 
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
     <string name="taxi_pickup">Pick Up</string>
+    <string name="any_toll" translatable="false" tools:ignore="ExtraTranslation">Do you have andy Toll charge</string>
 
 </resources>

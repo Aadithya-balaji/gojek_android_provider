@@ -10,10 +10,23 @@
     <color name="bg_inst">#FFE6F0F6</color>
     <color name="xuper_blue">#4C8EBF</color>
     <color name="bg_picture_option">#FFE9F1F7</color>
-    <color name="bg_xuper_submit">#ABABAB</color>
-    <color name="xuper_upload_image">#FF4C8EBF</color>
-    <color name="xuper_after_service">#FFABABAB</color>
+    <color name="bg_xuper_submit">#D1D1D1</color>
+    <color name="xuper_upload_image">#297BB5</color>
+    <color name="xuper_after_service">#626262</color>
     <color name="transparent">#00000000</color>
+
+
+    <!-- InVoice -->
+    <color name="xuper_invoice_grey">#DDDDDD</color>
+    <color name="xuper_light_black">#FF626262</color>
+    <color name="xuper_invoice_paid">#FF5597C4</color>
+    <color name="xuper_invoice_confirm_pay">#FF297BB5</color>
+
+    <!-- Rating -->
+    <color name="xuper_cmt_bg">#FFF6F6F6</color>
+
+    <!-- Additional Charges -->
+    <color name="xuper_extra_amt_bg">#FFDDDDDD</color>
 
 
 </resources>

@@ -376,6 +376,7 @@
     <string name="delievery_documents">Delievery Documents</string>
     <string name="services_documents">Services Documents</string>
     <string name="upload">Upload</string>
+    <string name="view">View</string>
 
 
 </resources>

@@ -14,7 +14,7 @@ data class ListDocumentResponse(
             val is_backside: Any? = Any(),
             val is_expire: String = "",
             val name: String = "",
-            val provider_document: ProviderDocument = ProviderDocument(),
+            val provider_document: ProviderDocument? = ProviderDocument(),
             val service: Any? = Any(),
             val status: Int = 0,
             val type: String = ""

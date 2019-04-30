@@ -5,6 +5,7 @@
     tools:context=".views.add_edit_document.AddEditDocumentActivity">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.xjek.provider.views.add_edit_document.AddEditDocumentViewModel" />
@@ -47,7 +48,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
-                            android:text="@{viewModel.getDocumentFrontName()}"
+                            android:text="@{viewModel.documentFrontName}"
                             tools:text="Voter ID (Front)" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -56,7 +57,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:textColor="@color/colorPrimary"
-                            android:text="View" />
+                            android:text="@string/view" />
 
                     </RelativeLayout>
 
@@ -64,6 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginTop="10dp"
+                        android:onClick="@{() -> viewModel.selectFrontImage()}"
                         android:background="@drawable/drawable_dashed_rectangle">
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -96,7 +98,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:orientation="vertical"
-                    tools:visibility="visible">
+                    android:visibility="@{viewModel.showBack ? View.VISIBLE:View.GONE}"
+                    >
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -108,7 +111,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
-                            android:text="@{viewModel.getDocumentFrontName()}"
+                            android:text="@{viewModel.documentBackName}"
                             tools:text="Voter ID (Back)" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -117,7 +120,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:textColor="@color/colorPrimary"
-                            android:text="View" />
+                            android:text="@string/view" />
 
                     </RelativeLayout>
 
@@ -125,6 +128,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginTop="10dp"
+                        android:onClick="@{() -> viewModel.selectBackImage()}"
                         android:background="@drawable/drawable_dashed_rectangle">
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -156,6 +160,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
+                    android:visibility="@{viewModel.showExpiry ? View.VISIBLE:View.GONE}"
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -219,6 +224,7 @@
             android:background="@drawable/bg_blue_rounded_corner_curved"
             android:backgroundTint="@color/colorPrimary"
             android:padding="@dimen/_10sdp"
+            android:onClick="@{()->viewModel.submitDocument()}"
             android:text="@string/upload"
             android:textAllCaps="false"
             android:textColor="@android:color/white"

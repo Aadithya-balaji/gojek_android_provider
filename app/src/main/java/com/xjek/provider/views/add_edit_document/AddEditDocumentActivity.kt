@@ -4,30 +4,31 @@ import android.app.DatePickerDialog
 import android.widget.DatePicker
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.DateTimeUtil
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityDocumentUploadBinding
+import com.xjek.provider.databinding.ActivityAddEditDocumentBinding
 import com.xjek.provider.utils.Constant
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-class AddEditDocumentActivity : BaseActivity<ActivityDocumentUploadBinding>(),
+class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         DocumentUploadNavigator, DatePickerDialog.OnDateSetListener {
 
-    private lateinit var binding: ActivityDocumentUploadBinding
+    private lateinit var binding: ActivityAddEditDocumentBinding
     private lateinit var viewModelAddEdit: AddEditDocumentViewModel
 
     private lateinit var calendar: Calendar
-
     override fun getLayoutId(): Int {
-        return R.layout.activity_document_upload
+        return R.layout.activity_add_edit_document
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivityDocumentUploadBinding
+        binding = mViewDataBinding as ActivityAddEditDocumentBinding
         binding.lifecycleOwner = this
         viewModelAddEdit = provideViewModel {
             AddEditDocumentViewModel()
@@ -45,7 +46,29 @@ class AddEditDocumentActivity : BaseActivity<ActivityDocumentUploadBinding>(),
         val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         viewModelAddEdit.expiryDate.value = simpleDateFormat.format(calendar.time)
 
+        observeLiveData(viewModelAddEdit.showLoading){
+            loadingObservable.value = it
+        }
+
         viewModelAddEdit.getDocumentList(intent.getStringExtra(Constant.DOCUMENT_TYPE))
+
+        observeResponses()
+    }
+
+    private fun observeResponses() {
+
+        observeLiveData(viewModelAddEdit.documentResponse) { data ->
+            run {
+                viewModelAddEdit.setData(data.responseData)
+            }
+        }
+
+        observeLiveData(viewModelAddEdit.errorResponse) { error ->
+            run {
+                ViewUtils.showToast(this,error,false)
+                viewModelAddEdit.showEmpty.value = true
+            }
+        }
     }
 
 
@@ -60,4 +83,17 @@ class AddEditDocumentActivity : BaseActivity<ActivityDocumentUploadBinding>(),
         datePickerDialog.datePicker.minDate = calendar.timeInMillis
         datePickerDialog.show()
     }
+
+    override fun selectFrontImage() {
+
+    }
+
+    override fun selectBackImage() {
+
+    }
+
+    override fun submitDocument() {
+        ViewUtils.showToast(this,"Something went wrong",false)
+    }
+
 }

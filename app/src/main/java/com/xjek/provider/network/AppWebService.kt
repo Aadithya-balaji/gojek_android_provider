@@ -7,8 +7,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
-import retrofit2.http.POST
-
 
 
 interface AppWebService {
@@ -123,7 +121,8 @@ interface AppWebService {
     fun getNotification(@Header("Authorization") token: String): Observable<NotificationResponse>
 
     @GET("provider/onlinestatus/{status_id}")
-    fun changeOnlineStatus(@Header("Authorization") token: String,@Path("status_id") statusID: String): Observable<StatusResponseModel>
+    fun changeOnlineStatus(@Header("Authorization") token: String, @Path("status_id") statusID: String): Observable<StatusResponseModel>
+
     @FormUrlEncoded
     @POST("provider/accept/request")
     fun acceptIncomingRequest(
@@ -137,6 +136,7 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<RejectRequestModel>
+
     fun updateProfile(
             @FieldMap params: HashMap<String, RequestBody>,
             @Part fileName: MultipartBody.Part?
@@ -168,7 +168,7 @@ interface AppWebService {
 
     @FormUrlEncoded
     @POST("provider/listdocuments")
-    fun getDocuments(@Field("type")documentType:String
+    fun getDocuments(@Field("type") documentType: String
     ): Observable<ListDocumentResponse>
 
 
@@ -186,5 +186,10 @@ interface AppWebService {
     @POST("provider/editbankdetails")
     fun postEditBankDetails(@Header("Authorization") token: String, @Body body: String): Observable<AddBankDetailsModel>
 
+    @Multipart
+    @POST("provider/documents")
+    fun postDocument(@PartMap params: java.util.HashMap<String, RequestBody>,
+                     @Part frontImage: MultipartBody.Part?, @Part backImage: MultipartBody.Part?
+    ): Observable<AddDocumentResponse>
 
 }

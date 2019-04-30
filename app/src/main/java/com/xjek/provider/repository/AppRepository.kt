@@ -515,6 +515,21 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+
+    fun postDocument(viewModel:AddEditDocumentViewModel,@PartMap params: HashMap<String, RequestBody>, @Part frontImage: MultipartBody.Part?,@Part backImage:MultipartBody.Part?): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postDocument(params,frontImage,backImage)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.showLoading.value = false
+                    viewModel.addDocumentResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
     companion object {
         private val TAG = AppRepository::class.java.simpleName
         private var appRepository: AppRepository? = null

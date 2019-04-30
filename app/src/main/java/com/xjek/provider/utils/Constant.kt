@@ -27,6 +27,8 @@ object Constant {
     const val STATELIST_REQUEST_CODE = 101
     const val COUNTRYLIST_REQUEST_CODE = 100
     const val CITYLIST_REQUEST_CODE = 102
+    const val PICK_FRONT_IMAGE = 103
+    const val PICK_BACK_IMAGE = 104
     const val COUNTRYCODE_PICKER_REQUEST_CODE = 111
 
     const val TEMP_FILE_NAME = "Gojek_Provider"

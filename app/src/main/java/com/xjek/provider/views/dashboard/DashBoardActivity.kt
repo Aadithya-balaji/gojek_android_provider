@@ -222,4 +222,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     override fun showErrorMessage(s: String) {
         ViewUtils.showNormalToast(this, s)
     }
+
+    override fun getInstance(): DashBoardActivity = this@DashBoardActivity
 }

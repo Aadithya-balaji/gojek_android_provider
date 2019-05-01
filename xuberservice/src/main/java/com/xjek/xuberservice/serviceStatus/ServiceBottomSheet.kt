@@ -19,7 +19,7 @@ class ServiceBottomSheet : BaseBottomSheet<BottomSheetServiceBinding>(), Service
     private var lastWaitingTime: Long? = 0
 
 
-    override fun getLayout(): Int {
+    override fun getLayoutId(): Int {
         return R.layout.bottom_sheet_service
     }
 
@@ -29,7 +29,7 @@ class ServiceBottomSheet : BaseBottomSheet<BottomSheetServiceBinding>(), Service
     }
 
 
-    override fun initView(mViewDataBinding: ViewDataBinding) {
+    override fun initView(mViewDataBinding: ViewDataBinding?) {
         bottomSheetServiceBinding = mViewDataBinding as BottomSheetServiceBinding
         bottomSheetViewModel = ServiceBottomSheetViewModel()
         bottomSheetViewModel.navigator = this

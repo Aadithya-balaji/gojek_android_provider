@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.InputType"/>
+
+        <variable
+            name="position"
+            type="java.lang.Integer" />
+
+        <variable
+            name="bankViewModel"
+            type="com.xjek.provider.views.manage_bank_details.ManageBankDetailsViewModel" />
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        tools:ignore="UseCompoundDrawables">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvLabelName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:fontFamily="@font/avenir_lt_std_medium"
+            style="@style/SmallText.Black"
+            android:text="@{bankViewModel.getBankLabelName(position)}"
+            tools:text="Bank Name"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:cardElevation="@dimen/_20sdp"
+            app:cardPreventCornerOverlap="true"
+            android:descendantFocusability="beforeDescendants"
+            app:cardUseCompatPadding="false">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etLabelValue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/_15sdp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:background="@null"
+                android:inputType="@{bankViewModel.getInputTypeIsNumber(position)?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT}"
+                android:fontFamily="@font/avenir_lt_std_medium"
+                tools:text="HDFC Bank Ltd"
+                android:afterTextChanged="@{(edtitable)->bankViewModel.afterValueChanged(edtitable,position)}"
+                android:text="@{bankViewModel.getBankLabelValue(position)}"
+                style="@style/SmallText.Grey"
+                />
+        </com.google.android.material.card.MaterialCardView>
+
+
+
+    </LinearLayout>
+
+
+</layout>

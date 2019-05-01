@@ -96,6 +96,7 @@ dependencies {
     // Dependency to log network requests and responses.
     api 'com.squareup.okhttp3:logging-interceptor:3.12.0'
     api 'com.squareup.retrofit2:converter-gson:2.5.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.3.0'
     api 'com.squareup.retrofit2:retrofit:2.5.0'
 
     // Toasty
@@ -125,6 +126,9 @@ dependencies {
     api 'com.google.firebase:firebase-database:16.1.0'
 
     api project(':cropperlibrary')
+    api 'com.github.jkwiecien:EasyImage:2.0.4'
+
+    implementation project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

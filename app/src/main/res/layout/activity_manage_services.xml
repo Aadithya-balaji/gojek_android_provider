@@ -24,10 +24,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adapter="@{manageServicesViewModel.getAdapter()}"
             android:clipToPadding="false"
-            android:padding="@dimen/_8sdp"
+            android:padding="10dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:setAdapter="@{manageServicesViewModel.getAdapter()}"
+            tools:itemCount="3"
             tools:listitem="@layout/layout_manage_services_item" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

@@ -29,6 +29,9 @@ class Enums {
         const val CITYLIST_REQUEST_CODE = 125
         const val FILE_REQ_CODE = 126
         const val LOCATION_REQUEST_CODE = 126
+        const val RC_VEHICLE_IMAGE = 102
+        const val RC_RC_BOOK_IMAGE = 103
+        const val RC_INSURANCE_IMAGE = 104
 
         //PaymentType
         const val PAYMENT_CASH = 1

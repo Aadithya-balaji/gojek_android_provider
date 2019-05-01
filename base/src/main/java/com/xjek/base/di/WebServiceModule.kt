@@ -1,7 +1,11 @@
 package com.xjek.base.di
 
+import android.preference.PreferenceManager
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.xjek.base.BuildConfig
+import com.xjek.base.base.BaseApplication
+import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -9,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -26,6 +31,7 @@ class WebServiceModule {
     internal fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BuildConfig.BASE_URL)
                 .client(getHttpClient())
@@ -34,6 +40,7 @@ class WebServiceModule {
 
     private fun getHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
+                .addNetworkInterceptor(getRequestHeader())
                 .addInterceptor(getLoggingInterceptor())
                 .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -52,6 +59,7 @@ class WebServiceModule {
             val original = it.request()
             val request = original.newBuilder()
                     .header("X-Requested-With", "XMLHttpRequest")
+                    .header("Authorization", "Bearer "+ PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext).getString(PreferencesKey.ACCESS_TOKEN,""))
                     .method(original.method(), original.body())
                     .build()
 

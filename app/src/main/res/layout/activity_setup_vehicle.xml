@@ -24,9 +24,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adapter="@{setupVehicleViewModel.getAdapter()}"
             android:clipToPadding="false"
-            android:padding="@dimen/_8sdp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:padding="10dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:setAdapter="@{setupVehicleViewModel.adapter}"
+            tools:itemCount="3"
+            tools:listitem="@layout/layout_setup_vehicle_item" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

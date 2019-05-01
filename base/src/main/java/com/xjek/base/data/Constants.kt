@@ -2,6 +2,7 @@ package com.xjek.base.data
 
 import android.Manifest
 import com.google.android.gms.maps.model.LatLng
+import com.xjek.base.BuildConfig
 
 object Constants {
 
@@ -27,6 +28,15 @@ object Constants {
         )
 
 
+    }
+
+
+    object BaseUrl {
+        @JvmField
+        var APP_BASE_URL: String = BuildConfig.BASE_URL
+        var TAXI_BASE_URL: String? = null
+        var ORDER_BASE_URL: String? = null
+        var SERVICE_BASE_URL: String? = null
     }
 
     object ProjectTypes {

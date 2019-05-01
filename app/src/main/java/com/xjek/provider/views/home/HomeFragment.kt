@@ -7,7 +7,6 @@ import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -23,6 +22,7 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.views.dashboard.DashBoardActivity
@@ -53,9 +53,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
 
-    companion object {
+   /* companion object {
         var loadingProgress: MutableLiveData<Boolean>? = null
-    }
+    }*/
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
@@ -68,8 +68,14 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         initializeMap()
 
         val activity: DashBoardActivity = activity as DashBoardActivity
-        loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
-        mViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+       // loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
+//        mViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+        /*loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
+        mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>*/
+
+        observeLiveData(mViewModel.showLoading){
+            loadingObservable.value = it
+        }
         pendingListDialog = PendingListDialog()
         incomingRequestDialogDialog = IncomingRequestDialog()
 
@@ -200,8 +206,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
     }
 
+
     override fun showErrorMessage(error: String) {
-        loadingProgress!!.value = false
+        ViewUtils.showToast(activity!!, error, false)
     }
 
     private fun showPendingListDialog(type: Int) {

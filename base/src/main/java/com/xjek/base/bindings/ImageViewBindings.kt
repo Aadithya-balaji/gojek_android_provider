@@ -21,7 +21,8 @@ fun setImage(imageView: ImageView, resId: Int) {
     imageView.setImageResource(resId)
 }
 
-//@BindingAdapter("android:src")
-//fun setImage(imageView: ImageView, imageUrl: String) {
-//    Glide.with(imageView).load(imageUrl).into(imageView)
-//}
+@BindingAdapter("app:setImageResource")
+fun setImage(imageView: ImageView, imageUrl: String?) {
+    if (imageUrl.isNullOrBlank())
+        Glide.with(imageView).load(imageUrl).into(imageView)
+}

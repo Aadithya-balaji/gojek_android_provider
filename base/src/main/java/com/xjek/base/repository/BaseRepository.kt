@@ -4,12 +4,15 @@ import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.xjek.base.base.BaseApplication
 import com.xjek.base.data.NetworkError
 import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.session.SessionManager
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Retrofit
 import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
+import javax.inject.Singleton
 
 open class BaseRepository {
 
@@ -24,23 +27,37 @@ open class BaseRepository {
         return retrofit.create(service)
     }
 
-    fun <T> createApiClient(serviceId: String, service: Class<T>): T {
+    fun <T> createApiClient(baseUrl: String, service: Class<T>): T {
+        return reconstructedRetrofit(baseUrl).create(service)
+    }
+
+    @Singleton
+    fun reconstructedRetrofit(baseUrl: String): Retrofit {
+        return retrofit.newBuilder()
+                .baseUrl("$baseUrl/")
+                .build()
+    }
+
+   /* fun <T> createApiClient(serviceId: String, service: Class<T>): T {
         return reconstructedRetrofit(serviceId).create(service)
     }
 
     private fun reconstructedRetrofit(serviceId: String): Retrofit {
         return retrofit.newBuilder()
-                .baseUrl(PreferencesHelper.get<String>(serviceId))
+                .baseUrl(StringBuilder(PreferencesHelper.get<String>(serviceId))
+                        .toString())
                 .build()
-    }
+    }*/
+
+
 
 
     fun getErrorMessage(e: Throwable): String {
         return when (e) {
             is HttpException -> {
                 val responseBody = e.response().errorBody()
-                if (e.code() == 401){
-
+                if (e.code() == 401 && !PreferencesHelper.get(PreferencesKey.ACCESS_TOKEN,"").equals("")){
+                    SessionManager.clearSession()
                 }
                 getErrorMessage(responseBody!!)
             }

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.Constants
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
@@ -44,6 +45,23 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             writePreferences(PreferencesKey.BASE_ID, "0")
             writePreferences(PreferencesKey.BASE_ID, "0")
             writePreferences(PreferencesKey.BASE_ID, "0")
+            writePreferences("0", it.responseData.baseUrl + "/")
+//            writePreferences(PreferencesKey.BASE_ID, "0")
+//            writePreferences(PreferencesKey.BASE_ID, "0")
+
+            Constants.BaseUrl.APP_BASE_URL = it.responseData.baseUrl
+
+            it.responseData.services.forEach { service ->
+                run {
+                    when (service.adminServiceName) {
+                        "TRANSPORT" -> Constants.BaseUrl.TAXI_BASE_URL = service.baseUrl
+                        "ORDER" -> Constants.BaseUrl.ORDER_BASE_URL = service.baseUrl
+                        "SERVICE" -> Constants.BaseUrl.SERVICE_BASE_URL = service.baseUrl
+                    }
+                }
+            }
+
+
             writePreferences("0", it.responseData.baseUrl + "/")
             writePreferences(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id)
             writePreferences(it.responseData.services[0].id.toString(),

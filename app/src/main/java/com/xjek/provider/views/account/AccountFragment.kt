@@ -20,7 +20,6 @@ import com.xjek.provider.views.manage_services.ManageServicesActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
 import com.xjek.provider.views.privacypolicy.PrivacyActivity
 import com.xjek.provider.views.profile.ProfileActivity
-import kotlinx.android.synthetic.main.header_layout.*
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator {
 
@@ -78,6 +77,18 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         when (position) {
             0 -> {
                 launchNewActivity(ProfileActivity::class.java, false)
+              /*  ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
+                    override fun onPositiveButtonClick(dialog: DialogInterface) {
+                        clearPreferences<String>()
+                        launchNewActivity(OnBoardActivity::class.java, false)
+                        activity!!.finishAffinity()
+                        dialog.dismiss()
+                    }
+
+                    override fun onNegativeButtonClick(dialog: DialogInterface) {
+                        dialog.dismiss()
+                    }
+                })*/
             }
 
             1 -> {
@@ -85,7 +96,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             }
 
             2 -> {
-                launchNewActivity(ManagePaymentActivity::class.java,false)
+                launchNewActivity(ManagePaymentActivity::class.java, false)
             }
 
             3 -> {

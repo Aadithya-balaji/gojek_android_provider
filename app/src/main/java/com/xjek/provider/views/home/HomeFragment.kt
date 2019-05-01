@@ -1,7 +1,9 @@
 package com.xjek.provider.views.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -19,6 +21,8 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
+import com.xjek.base.utils.LocationCallBack
+import com.xjek.base.utils.LocationUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.views.dashboard.DashBoardActivity
@@ -145,19 +149,35 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         fragmentMap.getMapAsync(this)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap?) {
         mGoogleMap = map
         try {
             mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
-            mGoogleMap!!.uiSettings.isCompassEnabled = true
+            mGoogleMap!!.uiSettings.isCompassEnabled = false
 
-            val latLng = LatLng(mDashboardViewModel.latitude.value!!, mDashboardViewModel.longitude.value!!)
+            LocationUtils.getLastKnownLocation(activity!!, object : LocationCallBack.LastKnownLocation {
+                override fun onSuccess(location: Location) {
+                    updateMapLocation(LatLng(location.latitude, location.longitude))
+                }
+
+                override fun onFailure(messsage: String?) {
+                    val latLng = LatLng(mDashboardViewModel.latitude.value!!, mDashboardViewModel.longitude.value!!)
+                    updateMapLocation(latLng)
+                }
+            })
+
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.xjek.taxiservice.R.raw.style_json))
-            mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
 
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
+    }
+
+
+    fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
+        if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
+        else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
     }
 
     override fun onAttach(context: Context) {

@@ -9,11 +9,12 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.Gson
-import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ProjectTypes.ORDER
@@ -39,6 +40,7 @@ import com.xjek.provider.views.notification.NotificationFragment
 import com.xjek.provider.views.order.OrderFragment
 import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 import com.xjek.xuberservice.xuberMainActivity.XuberMainActivity
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
@@ -56,6 +58,9 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
+
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
         binding = mViewDataBinding as ActivityDashboardBinding
         mViewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
         mViewModel.navigator = this
@@ -97,6 +102,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
             updateLocation(true)
             updateCurrentLocation()
         }
+
+        mViewModel.getProfile()
 
         getApiResponse()
 
@@ -158,13 +165,13 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 override fun onSuccess(location: Location?) {
                     currentLat = location!!.latitude
                     currentLong = location.longitude
-                    mViewModel.getRequest()
+                    //mViewModel.getRequest()
                 }
 
                 override fun onFailure(messsage: String?) {
                     currentLat = 13.0561789
                     currentLong = 80.247998
-                    mViewModel.getRequest()
+                    // mViewModel.getRequest()
                 }
             })
         } catch (e: Exception) {
@@ -174,44 +181,78 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     private fun getApiResponse() {
         println("RRR :: HomeFragment.getApiResponse")
-        observeLiveData(mViewModel.checkRequestLiveData) { checkStatusData ->
-            if (checkStatusData.statusCode == "200") {
-                if (checkStatusData.responseData.requests.isNotEmpty())
-                    Log.e("CheckStatus", "-----" + checkStatusData.responseData.requests[0].status)
-                when (checkStatusData.responseData.requests[0].request.status) {
-                    SEARCHING -> {
-                        if (!mIncomingRequestDialog.isShown()) {
-                            val bundle = Bundle()
-                            val strRequest = Gson().toJson(checkStatusData)
-                            bundle.putString("requestModel", strRequest)
-                            mIncomingRequestDialog.arguments = bundle
-                            mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
+        /*observeLiveData(mViewModel.checkRequestLiveData) { checkStatusData ->
+            run {
+
+            }
+
+        }*/
+
+        mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
+            run {
+                if (checkStatusData.statusCode == "200") {
+                    if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
+                        Log.e("CheckStatus", "-----" + checkStatusData.responseData.requests[0].status)
+                        when (checkStatusData.responseData.requests[0].request.status) {
+                            SEARCHING -> {
+                                if (!mIncomingRequestDialog.isShown()) {
+                                    val bundle = Bundle()
+                                    val strRequest = Gson().toJson(checkStatusData)
+                                    bundle.putString("requestModel", strRequest)
+                                    mIncomingRequestDialog.arguments = bundle
+                                    mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
+                                }
+                            }
+
+                            else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
+                                TRANSPORT -> {
+                                    BROADCAST = TRANSPORT
+                                    startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                                }
+                                SERVICE -> {
+                                    if (!BROADCAST.equals(SERVICE)) {
+                                        BROADCAST = SERVICE
+                                        startActivity(Intent(this, XuberMainActivity::class.java))
+                                    }
+                                }
+                                ORDER -> {
+                                    if (BROADCAST != ORDER) {
+                                        BROADCAST = ORDER
+                                        startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                                    }
+                                }
+
+                                else -> BROADCAST = "BASE_BROADCAST"
+                            }
                         }
                     }
 
-                    else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
-                        TRANSPORT -> {
-                            BROADCAST = TRANSPORT
-                            startActivity(Intent(this, TaxiDashboardActivity::class.java))
-                        }
-                        SERVICE -> {
-                            if (!BROADCAST.equals(SERVICE)) {
-                                BROADCAST = SERVICE
-                                startActivity(Intent(this, XuberMainActivity::class.java))
-                            }
-                        }
-                        ORDER -> {
-                            if (BROADCAST != ORDER) {
-                                BROADCAST = ORDER
-                                startActivity(Intent(this, TaxiDashboardActivity::class.java))
-                            }
-                        }
-
-                        else -> BROADCAST = "BASE_BROADCAST"
-                    }
                 }
             }
+        })
+
+        observeLiveData(mViewModel.mProfileResponse) {
+            Constants.CITY_ID = it.profileData?.cityName?.id?.toIntOrNull() ?: 18422
+            SocketManager.emit(Constants.ROOM_NAME.COMMON_ROOM_NAME, Constants.ROOM_ID.COMMON_ROOM)
         }
+
+        SocketManager.onEvent(Constants.ROOM_NAME.NEW_REQ, Emitter.Listener {
+            Log.e("SOCKET", "SOCKET_SK new request " + it[0])
+            mViewModel.getRequest()
+        })
+
+        SocketManager.setOnSocketRefreshListener(object : SocketListener.connectionRefreshCallBack {
+            override fun onRefresh() {
+                SocketManager.emit(Constants.ROOM_NAME.COMMON_ROOM_NAME, Constants.ROOM_ID.COMMON_ROOM)
+            }
+        })
+
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        mViewModel.getRequest()
     }
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
@@ -225,7 +266,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 mViewModel.latitude.value = currentLat
                 mViewModel.longitude.value = currentLong
 
-                mViewModel.getRequest()
+                //mViewModel.getRequest()
             }
         }
     }

@@ -215,10 +215,9 @@ class AppRepository : BaseRepository() {
                     if (viewModel is ProfileViewModel) {
                         viewModel.mProfileResponse.value = it
                         viewModel.loadingProgress.value = false
-                    } /*else if (viewModel is InviteReferalsViewModel) {
+                    } else if (viewModel is DashBoardViewModel) {
                         viewModel.mProfileResponse.value = it
-                        viewModel.loadingProgress.value = false
-                    }*/
+                    }
                 }, {
                     if (viewModel is ProfileViewModel) {
                         viewModel.errorResponse.value = getErrorMessage(it)

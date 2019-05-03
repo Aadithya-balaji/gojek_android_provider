@@ -2,7 +2,7 @@ package com.xjek.base.socket
 
 interface SocketListener{
 
-    interface ConnectionListener{
+    interface CallBack{
         fun onConnected()
 
         fun onDisconnected()
@@ -10,6 +10,10 @@ interface SocketListener{
         fun onConnectionError()
 
         fun onConnectionTimeOut()
+    }
+
+    interface connectionRefreshCallBack{
+        fun onRefresh()
     }
 
 }

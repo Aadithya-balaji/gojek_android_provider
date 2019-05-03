@@ -11,40 +11,48 @@ object SocketManager {
     private var mSocket: Socket? = null
     private lateinit var mURL: String
 
-    private var mSocketConnectionListener: SocketListener.ConnectionListener? = null
+    private var mSocketCallBack: SocketListener.CallBack? = null
+    private var mConnectionListener: SocketListener.connectionRefreshCallBack? = null
 
     private var onConnected: Emitter.Listener = Emitter.Listener {
-        if (mSocketConnectionListener != null)
-            mSocketConnectionListener!!.onConnected()
+        if (mSocketCallBack != null)
+            mSocketCallBack!!.onConnected()
+        if(mConnectionListener!=null)
+            mConnectionListener!!.onRefresh()
         Log.e("SocketManager", "SocketManager connected ")
     }
 
     private var onDisconnected: Emitter.Listener = Emitter.Listener {
-        if (mSocketConnectionListener != null)
-            mSocketConnectionListener!!.onDisconnected()
+        if (mSocketCallBack != null)
+            mSocketCallBack!!.onDisconnected()
         Log.e("SocketManager", "SocketManager DisConnected ")
 
     }
 
 
     private var onConnectionError: Emitter.Listener = Emitter.Listener {
-        if (mSocketConnectionListener != null)
-            mSocketConnectionListener!!.onConnectionError()
+        if (mSocketCallBack != null)
+            mSocketCallBack!!.onConnectionError()
         Log.e("SocketManager", "SocketManager ConnectionError ")
 
     }
 
     private var onConnectionTimeOut: Emitter.Listener = Emitter.Listener {
-        if (mSocketConnectionListener != null)
-            mSocketConnectionListener!!.onConnectionTimeOut()
+        if (mSocketCallBack != null)
+            mSocketCallBack!!.onConnectionTimeOut()
         Log.e("SocketManager", "SocketManager ConnectionTimeout ")
 
     }
 
 
-    fun setOnConnectionListener(socketConnectionListener: SocketListener.ConnectionListener) {
-        mSocketConnectionListener = socketConnectionListener
+    fun setOnConnectionListener(socketCallBack: SocketListener.CallBack) {
+        mSocketCallBack = socketCallBack
     }
+
+    fun setOnSocketRefreshListener(connectionRefreshCallback: SocketListener.connectionRefreshCallBack){
+        mConnectionListener = connectionRefreshCallback
+    }
+
 
 
     fun connect(url: String) {

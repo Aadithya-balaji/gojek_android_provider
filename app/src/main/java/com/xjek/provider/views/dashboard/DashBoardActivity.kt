@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.databinding.ViewDataBinding
@@ -214,7 +215,9 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
                                 TRANSPORT -> {
                                     BROADCAST = TRANSPORT
-                                    startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                                    val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    startActivity(intent)
                                 }
                                 SERVICE -> {
                                     if (!BROADCAST.equals(SERVICE)) {

@@ -2,7 +2,6 @@ package com.xjek.base.data
 
 import android.Manifest
 import android.util.Base64
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.xjek.base.BuildConfig
@@ -14,6 +13,7 @@ object Constants {
     val DEFAULT_LOCATION = LatLng(-33.8523341, 151.2106085)
     var COMPANY_ID:String = String(Base64.decode(BuildConfig.SALT_KEY,Base64.DEFAULT), Charset.defaultCharset())
     var CITY_ID:Int = 0
+    var REQ_ID:Int = 0
     var isSocketFailed:MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
 
     object RequestCode {
@@ -48,6 +48,7 @@ object Constants {
         var COMMON_ROOM_NAME:String = "joinCommonRoom"
         var STATUS:String = "socketStatus"
         var NEW_REQ:String = "newRequest"
+        var RIDE_REQ:String = "rideRequest"
         var TRANSPORT_ROOM_NAME:String = "joinPrivateRoom"
         var SERVICE_ROOM_NAME:String?=null
     }
@@ -56,7 +57,7 @@ object Constants {
 
     object ROOM_ID{
         var COMMON_ROOM:String = "room_${COMPANY_ID}_$CITY_ID"
-        var TRANSPORT_ROOM:String = ""
+        var TRANSPORT_ROOM:String = "room_${COMPANY_ID}_${REQ_ID}_TRANSPORT"
         var SERVICE_ROOM:String = ""
     }
 

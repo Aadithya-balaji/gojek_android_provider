@@ -56,7 +56,7 @@ data class ProviderDetails(
         var payment_mode: String = "",
         var picture: Any = Any(),
         var qrcode_url: String = "",
-        var rating: Int = 0,
+        var rating: Double = 0.0,
         var referal_count: Int = 0,
         var referral_unique_id: String = "",
         var service: Service = Service(),

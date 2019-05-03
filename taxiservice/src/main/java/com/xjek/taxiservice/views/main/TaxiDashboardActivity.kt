@@ -10,7 +10,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.Chronometer
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
 import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
@@ -47,6 +50,8 @@ import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.persistence.AppDatabase
+import com.xjek.base.socket.SocketListener
+import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.*
 import com.xjek.base.utils.polyline.DirectionUtils
 import com.xjek.base.utils.polyline.PolyLineListener
@@ -57,6 +62,7 @@ import com.xjek.taxiservice.model.ResponseData
 import com.xjek.taxiservice.views.invoice.TaxiInvoiceActivity
 import com.xjek.taxiservice.views.tollcharge.TollChargeDialog
 import com.xjek.taxiservice.views.verifyotp.VerifyOtpDialog
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import kotlinx.android.synthetic.main.layout_taxi_status_container.*
 
@@ -89,13 +95,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var polyLine: ArrayList<LatLng> = ArrayList()
     private var checkStatusApiCounter = 0
+    private var roomConnected:Boolean = false
 
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         this.activityTaxiMainBinding = mViewDataBinding as ActivityTaxiMainBinding
         mViewModel = ViewModelProviders.of(this).get(TaxiDashboardViewModel::class.java)
         mViewModel.navigator = this
+        activityTaxiMainBinding.lifecycleOwner = this
         activityTaxiMainBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
         sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bsContainer)
@@ -213,9 +222,17 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
                         writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
+
+                        val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                        Constants.REQ_ID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id
+
+                        if(!roomConnected){
+                            roomConnected= true
+                            SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
+                        }
+
                         when (checkStatusResponse.responseData.request.status) {
                             SEARCHING -> {
-                                val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                                 val params = HashMap<String, String>()
                                 params.put(com.xjek.base.data.Constants.Common.ID, requestID)
                                 mViewModel.taxiWaitingTime(params)
@@ -285,6 +302,20 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 }
             }
         }
+
+        SocketManager.onEvent(Constants.ROOM_NAME.RIDE_REQ, Emitter.Listener {
+            Log.e("SOCKET", "SOCKET_SK transport request " + it[0])
+            mViewModel.callTaxiCheckStatusAPI()
+        })
+
+        SocketManager.setOnSocketRefreshListener(object : SocketListener.connectionRefreshCallBack {
+            override fun onRefresh() {
+                if (roomConnected) {
+                    roomConnected = false
+                    SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
+                }
+            }
+        })
     }
 
     override fun onResume() {

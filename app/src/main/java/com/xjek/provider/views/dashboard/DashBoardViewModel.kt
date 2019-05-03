@@ -16,7 +16,7 @@ class DashBoardViewModel :BaseViewModel<DashBoardNavigator>(){
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
 
-    fun getRequest() {
+    fun callCheckStatusAPI() {
         getCompositeDisposable()
                 .add(appRepository.checkRequest(
                         this,

@@ -25,14 +25,19 @@ object Constants {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA
         )
-
-
     }
 
-    object ProjectTypes {
+    object ModuleTypes {
         const val TRANSPORT = "TRANSPORT"
         const val SERVICE = "SERVICE"
         const val ORDER = "ORDER"
+    }
+
+    object BroadCastTypes {
+        const val TRANSPORT_BROADCAST = "TRANSPORT_BROADCAST"
+        const val SERVICE_BROADCAST = "SERVICE_BROADCAST"
+        const val ORDER_BROADCAST = "ORDER_BROADCAST"
+        const val BASE_BROADCAST = "BASE_BROADCAST"
     }
 
     object ProviderStatus {

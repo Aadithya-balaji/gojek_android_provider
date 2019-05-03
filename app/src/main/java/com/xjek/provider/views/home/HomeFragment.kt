@@ -68,7 +68,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
         pendingListDialog = PendingListDialog()
         incomingRequestDialogDialog = IncomingRequestDialog()
-
+        incomingRequestDialogDialog.isCancelable = false
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE

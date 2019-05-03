@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
@@ -39,7 +40,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     protected abstract fun initView(mViewDataBinding: ViewDataBinding?)
 
-    protected val mPermissionUtils: PermissionUtils? = null
+    private val mPermissionUtils: PermissionUtils? = null
 
     protected var runtimePermission: RunTimePermission? = null
 
@@ -110,5 +111,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         val snackBar = Snackbar.make(mParentView, msg, Snackbar.LENGTH_LONG)
         snackBar.setActionTextColor(Color.RED)
         snackBar.show()
+    }
+
+    private fun longLog(str: String) {
+        if (str.length > 4000) {
+            Log.d("RRRR:: ", str.substring(0, 4000))
+            longLog(str.substring(4000))
+        } else Log.d("RRRR:: ", str)
     }
 }

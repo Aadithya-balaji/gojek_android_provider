@@ -35,9 +35,9 @@ class XuperRepoitory : BaseRepository() {
     }
 
 
-    fun xuperUpdateRequest(viewModel: XuberMainViewModel, token: String, params: HashMap<String, RequestBody>, @Part image: MultipartBody.Part?): Disposable {
+    fun xuperUpdateRequest(viewModel: XuberMainViewModel, token: String, params: HashMap<String, RequestBody>,  image: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
-                .xuperUpdateServcie(token, params, image!!)
+                .xuperUpdateServcie(token, params, image)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

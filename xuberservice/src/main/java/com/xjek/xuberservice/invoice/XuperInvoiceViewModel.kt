@@ -13,6 +13,7 @@ import okhttp3.RequestBody
 class XuperInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
     val xuperRepository = XuperRepoitory.instance()
     var userImage = MutableLiveData<String>()
+    var userName=MutableLiveData<String>()
     var rating = MutableLiveData<String>()
     var serviceName = MutableLiveData<String>()
     var timeTaken = MutableLiveData<String>()

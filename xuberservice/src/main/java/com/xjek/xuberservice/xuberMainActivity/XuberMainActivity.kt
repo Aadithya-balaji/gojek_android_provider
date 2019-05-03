@@ -35,7 +35,7 @@ import com.xjek.base.data.Constants.XuperProvider.CANCEL
 import com.xjek.base.data.Constants.XuperProvider.START
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.utils.CommonMethods
-import com.xjek.base.utils.Constants.Companion.SERVICESIMPLEDATEFORMAT
+import com.xjek.base.utils.Constants.Companion.UTCTIME
 import com.xjek.base.utils.ViewUtils
 import com.xjek.xuberservice.R
 import com.xjek.xuberservice.databinding.ActivityXubermainBinding
@@ -67,8 +67,11 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     private val taxiCheckStatusTimer = Timer()
     private var frontImgFile: File? = null
     private var backImgFile: File? = null
+    private var frontImgMutlipart: MultipartBody.Part? = null
+    private var backImagMultiPart: MultipartBody.Part? = null
     private lateinit var activityXuberMainBinding: ActivityXubermainBinding
     private lateinit var sheetBehavior: BottomSheetBehavior<FrameLayout>
+    val invoicePage = DialogXuperInvoice()
     override fun getLayoutId(): Int = R.layout.activity_xubermain
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
@@ -85,14 +88,11 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     fun getApiResponse() {
         xuberMainViewModel.xuperCheckRequest.observe(this, object : androidx.lifecycle.Observer<XuperCheckRequest> {
             override fun onChanged(xuperCheckRequest: XuperCheckRequest?) {
-                xuberMainViewModel.xuperCheckRequest.value = xuperCheckRequest
                 val status = xuperCheckRequest?.let { it.responseData!!.requests!!.status }
                 when (status) {
                     ACCEPTED -> {
                         whenAccepted()
-
                     }
-
                     ARRIVED -> {
                         whenArrvied()
                     }
@@ -126,6 +126,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
 
                         PICKED_UP -> {
                             whenStarted()
+                            startTheTimer()
                         }
 
                         DROPPED -> {
@@ -147,6 +148,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
             override fun onChanged(t: CancelRequestModel?) {
                 loadingObservable.value = false
                 ViewUtils.showToast(this@XuberMainActivity, resources.getString(R.string.request_canceled), true)
+                finish()
             }
 
         })
@@ -254,6 +256,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
 
     //When ride accepted
     fun whenAccepted() {
+        activityXuberMainBinding.llBottomService.llServiceTime.visibility = View.GONE
         activityXuberMainBinding.llBottomService.llConfirm.tvCancel.visibility = View.VISIBLE
         activityXuberMainBinding.llBottomService.llConfirm.tvAllow.setText(Constants.RideStatus.ARRIVED)
         activityXuberMainBinding.llBottomService.llConfirm.tvCancel.setText(CANCEL)
@@ -261,23 +264,27 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
 
     //When ride arrived
     fun whenArrvied() {
+        activityXuberMainBinding.llBottomService.llServiceTime.visibility = View.GONE
+        edtXuperOtp.visibility = View.VISIBLE
         activityXuberMainBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         activityXuberMainBinding.llBottomService.llConfirm.tvAllow.setText(START)
     }
 
     fun whenStarted() {
+        edtXuperOtp.visibility = View.GONE
         activityXuberMainBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         activityXuberMainBinding.llBottomService.llConfirm.tvAllow.setText(Constants.RideStatus.COMPLETED)
     }
 
     //Completed Not Payment Successful
     fun whenDropped(responseData: XuperCheckRequest.ResponseData) {
-        val invoicePage = DialogXuperInvoice()
         val bundle = Bundle()
         val strCheckRequest = Gson().toJson(xuberMainViewModel.xuperCheckRequest.value!!)
         bundle.putString("strCheckReq", strCheckRequest)
+        bundle.putBoolean("fromCheckReq", true)
         invoicePage.arguments = bundle
-        invoicePage.show(supportFragmentManager, "xuperinvoice")
+        if (invoicePage.isShown() == false)
+            invoicePage.show(supportFragmentManager, "xuperinvoice")
     }
 
     //After Payment Successfull
@@ -312,6 +319,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
 
                     ARRIVED -> {
                         edtXuperOtp.visibility = View.VISIBLE
+                        xuberMainViewModel.updateRequest(Constants.RideStatus.ARRIVED, null)
                     }
 
                     START -> {
@@ -319,18 +327,18 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
                             ViewUtils.showToast(this@XuberMainActivity, resources.getString(R.string.empty_front_image), false)
                         } else if (xuberMainViewModel.otp.value.isNullOrEmpty()) {
                             ViewUtils.showToast(this@XuberMainActivity, resources.getString(R.string.empty_otp), false)
+                        } else {
+                            frontImgMutlipart = getImageMutiPart(frontImgFile!!)
+                            xuberMainViewModel.updateRequest(Constants.RideStatus.PICKED_UP, frontImgMutlipart)
                         }
-                    }
-
-                    CANCEL -> {
-
                     }
 
                     COMPLETED -> {
                         if (backImgFile == null) {
                             ViewUtils.showToast(this@XuberMainActivity, resources.getString(R.string.empty_back_image), false)
                         } else {
-
+                            backImagMultiPart = getImageMutiPart(backImgFile!!)
+                            xuberMainViewModel.updateRequest(Constants.RideStatus.DROPPED, backImagMultiPart)
                         }
                     }
 
@@ -339,8 +347,8 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
             }
 
             R.id.tvCancel -> {
-                val reasonDialogFrag=ReasonFragment()
-                reasonDialogFrag.show(supportFragmentManager,"reasonDialog")
+                val reasonDialogFrag = ReasonFragment()
+                reasonDialogFrag.show(supportFragmentManager, "reasonDialog")
             }
         }
     }
@@ -357,8 +365,8 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     fun startTheTimer() {
         val startedTime = xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at
         if (!startedTime.isNullOrEmpty()) {
-            val serviceDate = CommonMethods.getDateinNeededFormat(startedTime!!, SERVICESIMPLEDATEFORMAT)
-            val timeinMilliSec = serviceDate.time
+            val serviceDate = CommonMethods.getLocalTime(startedTime!!, UTCTIME)
+            val timeinMilliSec = serviceDate
             cm_service_time.base = SystemClock.elapsedRealtime() - (timeinMilliSec)
             val h = (timeinMilliSec / 3600000).toInt()
             val m = (timeinMilliSec - h * 3600000).toInt() / 60000
@@ -372,8 +380,8 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         }
     }
 
-    fun getImageMutiPart(uri: Uri): MultipartBody.Part {
-        val pictureFile = File(uri.path)
+    fun getImageMutiPart(file: File): MultipartBody.Part {
+        val pictureFile = file
         val requestFile = RequestBody.create(MediaType.parse("*/*"), pictureFile)
         val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
         return fileBody
@@ -388,14 +396,14 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     }
 
     override fun getFilePath(filePath: Uri) {
-        if (xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.service_status.equals(ARRIVED))
+        if (xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED))
             getImageFile(true, filePath)
         else if (xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.service_status.equals(DROPPED))
             getImageFile(false, filePath)
     }
 
     override fun reasonForCancel(reason: String) {
-        if (!!reason.isNullOrEmpty()) {
+        if (!reason.isNullOrEmpty()) {
             val params = HashMap<String, String>()
             val id = xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.id.toString()
             params.put(Constants.Common.ID, id)

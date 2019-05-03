@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.base.data.Constants.Common.ID
 import com.xjek.base.data.Constants.Common.METHOD
 import com.xjek.base.data.Constants.XuperProvider.STATUS
 import com.xjek.base.data.PreferencesKey
@@ -13,6 +14,7 @@ import com.xjek.xuberservice.model.UpdateRequest
 import com.xjek.xuberservice.model.XuperCheckRequest
 import com.xjek.xuberservice.repositary.XuperRepoitory
 import okhttp3.MediaType
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class XuberMainViewModel : BaseViewModel<XuberMainNavigator>() {
@@ -65,14 +67,16 @@ class XuberMainViewModel : BaseViewModel<XuberMainNavigator>() {
         getCompositeDisposable().add(xuperRepository.xuperCheckRequesst(this,"Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),latitude.value.toString(),longitude.value.toString()))
     }
 
-    fun updateRequest(status:String){
+    fun updateRequest(status:String,file:MultipartBody.Part?){
         val params=HashMap<String,RequestBody>()
+        params.put(ID, RequestBody.create(MediaType.parse("text/plain"),xuperCheckRequest.value!!.responseData!!.requests!!.id.toString()))
         params.put( STATUS, RequestBody.create(MediaType.parse("text/plain"), status))
         params.put(METHOD,RequestBody.create(MediaType.parse("text/plain"), "PATCH"))
-      //  getCompositeDisposable().add(xuperRepository.xuper)
+       getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this,"Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),params,file))
     }
 
     fun  cancelRequest(params:HashMap<String,String>){
+        showLoading.value=true
         getCompositeDisposable().add(xuperRepository.xuperCancelRequest(this,"Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),params))
     }
 }

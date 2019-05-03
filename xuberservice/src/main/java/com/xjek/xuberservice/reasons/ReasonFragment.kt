@@ -30,6 +30,7 @@ class ReasonFragment : BaseDialogFragment<DialogReasonBinding>(), CustomClickLis
         mReasonFragmentBinding.setLifecycleOwner(this)
         getApiResponse()
         mViewModel.getReason(com.xjek.base.data.Constants.Reasons.SERVICE)
+
         // mReasonFragmentBinding.
     }
 
@@ -46,6 +47,9 @@ class ReasonFragment : BaseDialogFragment<DialogReasonBinding>(), CustomClickLis
     }
 
     override fun onListClickListner(position: Int) {
+        val reason = mViewModel.mReasonResponseData.value!!.responseData!!.get(position)!!.reason
+        getReasons.reasonForCancel(reason!!)
+        dialog!!.cancel()
     }
 
     override fun getLayout(): Int {

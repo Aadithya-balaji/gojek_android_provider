@@ -54,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/reason_label_tv"
                 android:layout_centerHorizontal="true"
+                android:adapter="@{reasonadapter}"
                 android:minHeight="150dp"
                 android:padding="@dimen/_5sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

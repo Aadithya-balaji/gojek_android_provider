@@ -9,6 +9,7 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
 import java.io.File
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,6 +39,23 @@ companion object {
         return  date
     }
 
+    fun  getLocalTime(strDate:String,dateFormat:String):Long{
+        val df = SimpleDateFormat(dateFormat, Locale.getDefault())
+        df.timeZone = TimeZone.getTimeZone("UTC")
+        var date: Date? = null
+        var calendar: Calendar? = null
+        try {
+            date = df.parse(strDate)
+            calendar = Calendar.getInstance(TimeZone.getDefault())
+            calendar.time.time=date.time
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+
+        return calendar!!.time.time
+    }
+
     fun decodeSampledBitmapFromFile(path: String, reqWidth: Int, reqHeight: Int): Bitmap? { // BEST QUALITY MATCH
         val orientation: Int
         try {
@@ -56,15 +74,12 @@ companion object {
             if (height > reqHeight) {
                 inSampleSize = Math.round(height.toFloat() / reqHeight.toFloat())
             }
-
             val expectedWidth = width / inSampleSize
-
             if (expectedWidth > reqWidth) {
                 //if(Math.round((float)width / (float)reqWidth) > inSampleSize) // If bigger SampSize..
                 inSampleSize = Math.round(width.toFloat() / reqWidth.toFloat())
             }
             options.inSampleSize = inSampleSize
-
             // Decode bitmap with inSampleSize set
             options.inJustDecodeBounds = false
             val bm = BitmapFactory.decodeFile(path, options)

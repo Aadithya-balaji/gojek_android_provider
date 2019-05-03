@@ -15,17 +15,17 @@ interface XuperApiService{
 
     @Multipart
     @POST("provider/update/serve/request")
-    fun xuperUpdateServcie(@Header("Authorization") token:String,@PartMap params:HashMap<String,RequestBody>,  @Part image: MultipartBody.Part):Observable<UpdateRequest>
+    fun xuperUpdateServcie(@Header("Authorization") token:String,@PartMap params:HashMap<String,RequestBody>,  @Part image: MultipartBody.Part?):Observable<UpdateRequest>
 
     @FormUrlEncoded
     @POST("provider/rate/serve")
     fun xuperRating(@Header("Authorization") token:String,@FieldMap params:HashMap<String,String>):Observable<XuperRatingModel>
 
     @GET("provider/reasons")
-    fun getReasons(@Header("Authorization") token:String,type:String):Observable<ReasonModel>
+    fun getReasons(@Header("Authorization") token:String,@Query("type") type:String):Observable<ReasonModel>
 
     @FormUrlEncoded
     @POST("provider/cancel/serve/request")
-    fun cancelRequest(@Header("Authorization") token: String,params:HashMap<String,String>):Observable<CancelRequestModel>
+    fun cancelRequest(@Header("Authorization") token: String,@FieldMap params:HashMap<String,String>):Observable<CancelRequestModel>
 
 }

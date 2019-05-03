@@ -59,8 +59,7 @@ object Constants {
         const val STARTED = "STARTED"
         const val ARRIVED = "ARRIVED"
         const val PICKED_UP = "PICKEDUP"
-        const val
-                DROPPED = "DROPPED"
+        const val DROPPED = "DROPPED"
         const val COMPLETED = "COMPLETED"
 
     }

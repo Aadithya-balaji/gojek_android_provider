@@ -26,7 +26,7 @@ class ReasonViewModel : BaseViewModel<ReasonNavigator>() {
     }
 
     fun getReason(type: String) {
-       getCompositeDisposable().add(xuperAppRepository.xuperGetReason(this,"Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), Constants.Reasons.ORDER))
+       getCompositeDisposable().add(xuperAppRepository.xuperGetReason(this,"Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), Constants.Reasons.SERVICE))
     }
 
 

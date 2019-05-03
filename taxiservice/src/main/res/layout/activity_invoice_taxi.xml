@@ -442,6 +442,7 @@
                         android:layout_weight="0.40"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:gravity="end"
+                        android:text="@={invoicemodel.total}"
                         android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>

@@ -3,4 +3,9 @@
     <color name="colorBasePrimary" >#364bea</color>
     <color name="colorBaseTheme">#364bea</color>
     <color name="colorBaseWhite">#FFFFFF</color>
+
+    <color name="colorTaxiYellow">#FFA200</color>
+    <color name="schedule_blue_txt">#11aba9</color>
+
+
 </resources>

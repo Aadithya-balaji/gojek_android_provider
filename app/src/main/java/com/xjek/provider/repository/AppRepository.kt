@@ -1,25 +1,34 @@
 package com.xjek.provider.repository
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.xjek.base.data.PreferencesHelper
-import com.xjek.base.data.PreferencesKey
+import com.xjek.base.data.Constants
 import com.xjek.base.repository.BaseRepository
 import com.xjek.provider.network.AppWebService
+import com.xjek.provider.utils.Constant
+import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
+import com.xjek.provider.views.add_edit_document.AddEditDocumentViewModel
+import com.xjek.provider.views.currentorder_fragment.CurrentOrderViewModel
 import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
+import com.xjek.provider.views.history_details.HistoryDetailViewModel
 import com.xjek.provider.views.home.HomeViewModel
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestViewModel
 import com.xjek.provider.views.invitereferals.InviteReferalsViewModel
+import com.xjek.provider.views.manage_bank_details.ManageBankDetailsViewModel
+import com.xjek.provider.views.manage_services.ManageServicesViewModel
 import com.xjek.provider.views.notification.NotificationViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
+import com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel
 import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
 import com.xjek.provider.views.splash.SplashViewModel
 import com.xjek.provider.views.transaction.TransactionViewModel
 import com.xjek.provider.views.wallet.WalletViewModel
+import com.xjek.xjek.ui.pastorder_fragment.PastOrderViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -31,7 +40,7 @@ import retrofit2.http.PartMap
 class AppRepository : BaseRepository() {
 
     private val serviceId: String
-        get() = PreferencesHelper.get(PreferencesKey.BASE_ID)
+        get() = Constants.BaseUrl.APP_BASE_URL
 
     @SuppressLint("CheckResult")
     fun getConfig(viewModel: SplashViewModel, params: HashMap<String, String>): Disposable {
@@ -171,7 +180,7 @@ class AppRepository : BaseRepository() {
     }
 
     /*fun getProfile(viewModel: ProfileViewModel, token: String): Disposable {
-        return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getProfile(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -368,10 +377,290 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.onlineStatusLiveData.postValue(it)
+                    viewModel.showLoading.value = false
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                    viewModel.showLoading.value = false
                 })
     }
+
+    fun getServices(viewModel: ManageServicesViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getServices(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getServicesObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getRides(viewModel: SetupVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getRides(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleDataObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getShops(viewModel: SetupVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getShops(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleDataObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getVehicleCategories(viewModel: AddVehicleViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getVehicleCategories(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleCategoryObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun postVehicle(viewModel: AddVehicleViewModel, token: String,
+                    params: HashMap<String, RequestBody>,
+                    rcBookMultipart: MultipartBody.Part, insuranceMultipart: MultipartBody.Part
+    ): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postVehicle(token, params, rcBookMultipart, insuranceMultipart)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleResponseObservable().postValue(it)
+                }, {
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+//    fun getServices(viewModel: SetupVehicleViewModel, token: String): Disposable {
+//        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+//                .getRides(token)
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io())
+//                .subscribe({
+//                    if (it.statusCode == "200")
+//                        viewModel.getVehicleDataObservable().postValue(it)
+//                }, {
+//                    viewModel.navigator.showError(getErrorMessage(it))
+//                })
+//    }
+
+
+
+    fun getBankTemplate(viewModel:ManageBankDetailsViewModel,token: String): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getBankTemplate(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.showLoading.value = false
+                    viewModel.bankResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+
+    fun postAddBankDetails(viewModel:ManageBankDetailsViewModel, token: String, body:String): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postAddBankDetails(token,body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.addEditBankResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.addEditBankErrorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun postEditBankDetails(viewModel:ManageBankDetailsViewModel, token: String, body:String): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postEditBankDetails(token,body)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.addEditBankResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.addEditBankErrorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun getDocumentList(viewModel:AddEditDocumentViewModel,documentType:String): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getDocuments(documentType)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.showLoading.value = false
+                    viewModel.documentResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+
+    fun postDocument(viewModel:AddEditDocumentViewModel,@PartMap params: HashMap<String, RequestBody>, @Part frontImage: MultipartBody.Part?,@Part backImage:MultipartBody.Part?): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postDocument(params,frontImage,backImage)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.showLoading.value = false
+                    viewModel.addDocumentResponse.postValue(it)
+                }, {
+                    viewModel.showLoading.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+
+    fun getTransaportCurrentHistory(viewModel: CurrentOrderViewModel, token: String, hashMap: HashMap<String, String>
+                                    , selectedservice : String): Disposable {
+
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getTransportHistory(token,selectedservice, hashMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.transportCurrentHistoryResponse.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun getTransaportHistory(viewModel: PastOrderViewModel, token: String, params: HashMap<String, String>
+                             , selectedservice: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getTransportHistory(token, selectedservice ,params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.transportHistoryResponse.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun getServiceCurrentHistory(viewModel: CurrentOrderViewModel, token: String, hashMap: HashMap<String
+            , String>): Disposable {
+
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getServiceHistory(token, hashMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.transportCurrentHistoryResponse.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+
+
+    fun getHistoryDetail(viewModel: HistoryDetailViewModel, token: String, selected_id: String): Disposable {
+
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getHistoryDetail(token, selected_id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.historyDetailResponse.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun getUpcomingHistoryDetail(viewModel: HistoryDetailViewModel, token: String, selectedID: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getUpcomingHistoryDetail(token, selectedID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.historyUpcomingDetailResponse.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                    Log.d("_D_ERROR", it.message)
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+
+    fun getDisputeList(viewModel: HistoryDetailViewModel, token: String): Disposable {
+
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getDisputeList(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.disputeListData.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun addDispute(viewModel: HistoryDetailViewModel, token: String, hashMap: HashMap<String, String>): Disposable {
+
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .addDispute(token, hashMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                }, {
+                    viewModel.loadingProgress.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun getDisputeStatus(viewModel: HistoryDetailViewModel, token: String, selected_id: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getDisputeStatus(token, selected_id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.disputeStatusResponse.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
 
     companion object {
         private val TAG = AppRepository::class.java.simpleName

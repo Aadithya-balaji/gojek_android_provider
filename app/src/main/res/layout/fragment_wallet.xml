@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -82,17 +83,18 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_5sdp"
-                        android:layout_marginRight="@dimen/_5sdp"
                         android:layout_weight="1.6"
                         android:background="@drawable/custom_roundcorner_button"
                         android:backgroundTint="@color/colorScreenBackground"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:singleLine="true"
                         android:hint="@string/enter_amount"
+                        android:maxLines="1"
                         android:inputType="numberDecimal"
                         android:text="@={walletmodel.walletAmount}"
                         android:padding="@dimen/_9sdp"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_10sdp"
+                        tools:targetApi="lollipop" />
 
 
                     <com.google.android.material.button.MaterialButton

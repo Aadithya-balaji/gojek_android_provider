@@ -88,6 +88,7 @@ dependencies {
 
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.3.0"
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"
+
     implementation project(':base')
     implementation project(':foodservice')
     implementation project(':taxiservice')

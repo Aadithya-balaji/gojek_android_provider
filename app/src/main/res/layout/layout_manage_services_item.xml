@@ -17,10 +17,10 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_8sdp"
+        android:layout_margin="10dp"
         android:onClick="@{() -> manageServicesViewModel.onItemClick(position)}"
         app:cardBackgroundColor="@color/colorWhite"
-        app:cardCornerRadius="@dimen/_4sdp"
+        app:cardCornerRadius="4dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="false">
 
@@ -30,7 +30,7 @@
 
             <View
                 android:id="@+id/view_start"
-                android:layout_width="@dimen/_4sdp"
+                android:layout_width="4dp"
                 android:layout_height="0dp"
                 android:background="@{manageServicesViewModel.getService(position).component1()}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@null"
-                android:padding="@dimen/_15sdp"
+                android:padding="15dp"
                 android:src="@{manageServicesViewModel.getService(position).component2()}"
                 android:tint="@{manageServicesViewModel.getService(position).component1()}"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -53,16 +53,16 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_title"
+                style="@style/Theme.TextView.Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="15dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="@{manageServicesViewModel.getService(position).component3()}"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/tv_description"
                 app:layout_constraintEnd_toStartOf="@+id/iv_end"
                 app:layout_constraintStart_toEndOf="@id/iv_start"
@@ -72,16 +72,15 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_description"
+                style="@style/Theme.TextView.Small.Gray"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="5dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="@{manageServicesViewModel.getService(position).component4()}"
-                android:textColor="@color/colorGray"
-                android:textSize="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/tv_title"
                 app:layout_constraintStart_toStartOf="@id/tv_title"
@@ -90,9 +89,9 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_end"
-                android:layout_width="@dimen/_12sdp"
-                android:layout_height="@dimen/_12sdp"
-                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_marginEnd="15dp"
                 android:contentDescription="@null"
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"

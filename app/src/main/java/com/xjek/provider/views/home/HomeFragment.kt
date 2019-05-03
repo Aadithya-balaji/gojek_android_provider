@@ -1,11 +1,12 @@
 package com.xjek.provider.views.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,6 +20,9 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
+import com.xjek.base.utils.LocationCallBack
+import com.xjek.base.utils.LocationUtils
+import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.views.dashboard.DashBoardActivity
@@ -49,9 +53,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
 
-    companion object {
+   /* companion object {
         var loadingProgress: MutableLiveData<Boolean>? = null
-    }
+    }*/
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
@@ -64,8 +68,14 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         initializeMap()
 
         val activity: DashBoardActivity = activity as DashBoardActivity
-        loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
-        mViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+       // loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
+//        mViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+        /*loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
+        mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>*/
+
+        observeLiveData(mViewModel.showLoading){
+            loadingObservable.value = it
+        }
         pendingListDialog = PendingListDialog()
         incomingRequestDialogDialog = IncomingRequestDialog()
         incomingRequestDialogDialog.isCancelable = false
@@ -145,25 +155,42 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         fragmentMap.getMapAsync(this)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap?) {
         mGoogleMap = map
         try {
             mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
-            mGoogleMap!!.uiSettings.isCompassEnabled = true
+            mGoogleMap!!.uiSettings.isCompassEnabled = false
 
-            val latLng = LatLng(mDashboardViewModel.latitude.value!!, mDashboardViewModel.longitude.value!!)
+            LocationUtils.getLastKnownLocation(activity!!, object : LocationCallBack.LastKnownLocation {
+                override fun onSuccess(location: Location) {
+                    updateMapLocation(LatLng(location.latitude, location.longitude))
+                }
+
+                override fun onFailure(messsage: String?) {
+                    val latLng = LatLng(mDashboardViewModel.latitude.value!!, mDashboardViewModel.longitude.value!!)
+                    updateMapLocation(latLng)
+                }
+            })
+
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.xjek.taxiservice.R.raw.style_json))
-            mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM))
 
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
     }
 
+
+    fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
+        if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
+        else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
         dashBoardNavigator.hideRightIcon(true)
+        dashBoardNavigator.showLogo(true)
     }
 
     override fun changeStatus(view: View) {
@@ -180,8 +207,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
     }
 
+
     override fun showErrorMessage(error: String) {
-        loadingProgress!!.value = false
+        ViewUtils.showToast(activity!!, error, false)
     }
 
     private fun showPendingListDialog(type: Int) {

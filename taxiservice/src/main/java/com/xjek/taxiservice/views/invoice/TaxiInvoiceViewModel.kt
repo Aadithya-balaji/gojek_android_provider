@@ -22,6 +22,7 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
     var tax = MutableLiveData<String>()
     var tips = MutableLiveData<String>()
     var tollCharge = MutableLiveData<String>()
+    var total = MutableLiveData<String>()
     var requestLiveData = MutableLiveData<ResponseData>()
     var paymentLiveData = MutableLiveData<PaymentModel>()
     var showLoading = MutableLiveData<Boolean>()

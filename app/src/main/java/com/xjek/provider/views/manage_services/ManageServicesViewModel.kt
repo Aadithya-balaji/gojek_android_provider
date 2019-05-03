@@ -1,23 +1,30 @@
 package com.xjek.provider.views.manage_services
 
+import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.ManageServicesDataModel
+import com.xjek.provider.models.ManageServicesResponseModel
+import com.xjek.provider.repository.AppRepository
 
 class ManageServicesViewModel : BaseViewModel<ManageServicesNavigator>() {
 
-    private lateinit var adapter: ManageServicesAdapter
-    private lateinit var services: List<ManageServicesDataModel>
+    private val appRepository = AppRepository.instance()
+    private val servicesLiveData = MutableLiveData<ManageServicesResponseModel>()
 
-    fun setServices(services: List<ManageServicesDataModel>) {
-        this.services = services
+    private var serviceData: List<ManageServicesDataModel> = emptyList()
+    private val adapter: ManageServicesAdapter = ManageServicesAdapter(this)
+
+    fun setServiceData(serviceData: List<ManageServicesDataModel>) {
+        this.serviceData = serviceData
     }
 
-    fun getServices(): List<ManageServicesDataModel> {
-        return services
+    fun getServiceData(): List<ManageServicesDataModel> {
+        return serviceData
     }
 
     fun setAdapter() {
-        adapter = ManageServicesAdapter(this)
         adapter.notifyDataSetChanged()
     }
 
@@ -26,8 +33,17 @@ class ManageServicesViewModel : BaseViewModel<ManageServicesNavigator>() {
     }
 
     fun getService(position: Int): ManageServicesDataModel {
-        return services[position]
+        return serviceData[position]
     }
+
+    internal fun getServices() {
+        val token = StringBuilder("Bearer ")
+                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
+                .toString()
+        getCompositeDisposable().add(appRepository.getServices(this, token))
+    }
+
+    fun getServicesObservable() = servicesLiveData
 
     fun onItemClick(position: Int) {
         navigator.onMenuItemClicked(position)

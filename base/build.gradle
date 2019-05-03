@@ -98,6 +98,7 @@ dependencies {
     // Dependency to log network requests and responses.
     api 'com.squareup.okhttp3:logging-interceptor:3.12.0'
     api 'com.squareup.retrofit2:converter-gson:2.5.0'
+    api 'com.squareup.retrofit2:converter-scalars:2.3.0'
     api 'com.squareup.retrofit2:retrofit:2.5.0'
 
     // Toasty
@@ -138,6 +139,14 @@ dependencies {
     // For Kotlin use kapt instead of annotationProcessor
 
     api project(':cropperlibrary')
+    api 'com.github.jkwiecien:EasyImage:2.0.4'
+
+    //Socket IO
+    api ('io.socket:socket.io-client:1.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+
+    implementation project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

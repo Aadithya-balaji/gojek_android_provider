@@ -42,14 +42,13 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         notificationViewModel.getNotificationList()
 
         dashBoardNavigator.setTitle(resources.getString(R.string.title_notification))
-        dashBoardNavigator.setRightIcon(R.drawable.ic_logout)
         dashBoardNavigator.hideRightIcon(false)
         dashBoardNavigator.showLogo(false)
 
         observeLiveData(notificationViewModel.notificationResponse) {
             notificationViewModel.loadingProgress.value = false
             //show empty view if no data
-            notificationViewModel.showEmptyView.value = it.responseData.data.isEmpty()
+            notificationViewModel.showEmptyView.value = it.responseData.data.isNullOrEmpty()
             setNotificationAdapter(it.responseData)
 
         }

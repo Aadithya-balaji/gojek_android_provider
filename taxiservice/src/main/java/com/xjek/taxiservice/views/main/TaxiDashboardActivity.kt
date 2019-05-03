@@ -102,9 +102,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         sheetBehavior.peekHeight = 250
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
-
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
         ibNavigation.setOnClickListener {
@@ -396,7 +394,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 //            params["_method"] = "PATCH"
 //            mViewModel.taxiStatusUpdate(params)
 
-            ViewUtils.showAlert(this, "Do you have andy Toll charge", object : ViewUtils.ViewCallBack {
+            ViewUtils.showAlert(this, "Do you have any Toll charge", object : ViewUtils.ViewCallBack {
 
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     val tollChargeDialog = TollChargeDialog()
@@ -594,12 +592,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun setWaitingTime() {
         val time = mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingTime
-        if (isNeedToUpdateWaiting && time > 0) {
+
+        if (isNeedToUpdateWaiting == true && time > 0) {
             cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
             val h = (time / 3600000).toInt()
             val m = (time - h * 3600000).toInt() / 60000
             val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" +
+                    (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
             cmWaiting.text = formattedTime
             if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingStatus == 1) cmWaiting.start()
             isWaitingTime = true

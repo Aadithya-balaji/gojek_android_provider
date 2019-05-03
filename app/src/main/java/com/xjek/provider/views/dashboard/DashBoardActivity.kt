@@ -40,6 +40,7 @@ import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
 import com.xjek.provider.views.notification.NotificationFragment
 import com.xjek.provider.views.order.OrderFragment
 import com.xjek.taxiservice.views.main.TaxiDashboardActivity
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
 
@@ -58,14 +59,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         mViewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
         mViewModel.navigator = this
         binding.dashboardModel = mViewModel
-
         setSupportActionBar(binding.tbrHome.app_bar)
 
         mViewModel.latitude.value = 0.0
         mViewModel.longitude.value = 0.0
-
         supportFragmentManager.beginTransaction().add(R.id.frame_home_container, HomeFragment()).commit()
-
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.action_home -> {
@@ -92,7 +90,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
-
         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
             updateLocation(true)
             updateCurrentLocation()
@@ -133,6 +130,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
             tbr_rl_right.visibility = View.VISIBLE
             tbr_iv_logo.visibility = View.GONE
         }
+
+        tbr_home.visibility = View.VISIBLE
     }
 
     override fun setRightIcon(rightIcon: Int) {
@@ -206,7 +205,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             else -> BROADCAST = BASE_BROADCAST
                         }
                     }
-                } else BROADCAST = BASE_BROADCAST
+                }
             }
         }
     }
@@ -226,4 +225,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     override fun showErrorMessage(s: String) {
         ViewUtils.showNormalToast(this, s)
     }
+
+    override fun getInstance(): DashBoardActivity = this@DashBoardActivity
 }

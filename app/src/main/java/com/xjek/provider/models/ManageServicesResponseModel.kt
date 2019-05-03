@@ -1,5 +1,6 @@
 package com.xjek.provider.models
 
+import com.google.gson.annotations.SerializedName
 import com.xjek.base.models.CommonResponse
 
 data class ManageServicesResponseModel(
@@ -11,25 +12,25 @@ data class ManageServicesResponseModel(
 ) : CommonResponse {
     data class ResponseData(
             val id: Int,
-            val adminServiceName: String,
-            val displayName: String,
-            val baseUrl: String,
+            @SerializedName("admin_service_name") val adminServiceName: String,
+            @SerializedName("display_name") val displayName: String,
+            @SerializedName("base_url") val baseUrl: String,
             val status: Int,
-            val providerservices: Providerservices
+            @SerializedName("providerservices") val providerServices: ProviderServices
     ) {
-        data class Providerservices(
+        data class ProviderServices(
                 val id: Int,
-                val providerId: Int,
-                val adminServiceId: Int,
-                val providerVehicleId: Any,
-                val rideDeliveryId: Any,
-                val serviceId: Any,
-                val categoryId: Int,
-                val subCategoryId: Int,
-                val companyId: Int,
-                val baseFare: String,
-                val perMiles: String,
-                val perMins: String,
+                @SerializedName("provider_id") val providerId: Int,
+                @SerializedName("admin_service_id") val adminServiceId: Int,
+                @SerializedName("provider_vehicle_id") val providerVehicleId: Any,
+                @SerializedName("ride_delivery_id") val rideDeliveryId: Any,
+                @SerializedName("service_id") val serviceId: Any,
+                @SerializedName("category_id") val categoryId: Int,
+                @SerializedName("sub_category_id") val subCategoryId: Int,
+                @SerializedName("company_id") val companyId: Int,
+                @SerializedName("base_fare") val baseFare: String,
+                @SerializedName("per_miles") val perMiles: String,
+                @SerializedName("per_mins") val perMins: String,
                 val status: String
         )
     }

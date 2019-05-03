@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="itemClickListener"
+            type="com.xjek.provider.interfaces.CustomClickListner" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:onClick="@{()->itemClickListener.onListClickListner()}"
+        android:padding="@dimen/_5sdp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/filterservice_name_tv"
+            style="@style/SmallText.Black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/transport"
+            android:elevation="@dimen/_10sdp"
+            android:background="@drawable/custom_roundcorner_unselectedorder"
+            android:textAllCaps="false"
+            tools:ignore="UnusedAttribute" />
+
+    </RelativeLayout>
+
+</layout>

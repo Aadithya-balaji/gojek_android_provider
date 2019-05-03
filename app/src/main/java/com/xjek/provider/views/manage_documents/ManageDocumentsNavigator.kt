@@ -1,5 +1,9 @@
 package com.xjek.provider.views.manage_documents
 
 interface ManageDocumentsNavigator {
-    fun onMenuItemClicked(position: Int)
+    fun showAllDocuments()
+    fun showTransportDocuments()
+    fun showDelieveryDocuments()
+    fun showServicesDocuments()
+    fun showError(error: String)
 }

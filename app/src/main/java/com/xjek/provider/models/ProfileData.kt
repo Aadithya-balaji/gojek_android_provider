@@ -35,7 +35,7 @@ class ProfileData {
     @SerializedName("wallet_balance")
     var walletBalance: Int? = null
     @SerializedName("rating")
-    var rating: Int? = null
+    var rating: Float? = null
     @SerializedName("status")
     var status: String? = null
     @SerializedName("admin_id")

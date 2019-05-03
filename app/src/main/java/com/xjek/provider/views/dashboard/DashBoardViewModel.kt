@@ -9,7 +9,7 @@ import com.xjek.provider.models.ProfileResponse
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Constant
 
-class DashBoardViewModel :BaseViewModel<DashBoardNavigator>(){
+class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
 
     val appRepository = AppRepository.instance()
 
@@ -19,11 +19,9 @@ class DashBoardViewModel :BaseViewModel<DashBoardNavigator>(){
 
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
+    var selectedFilterService = MutableLiveData<String>()
 
-    var selectedFilterService= MutableLiveData<String>()
-
-
-    fun getRequest() {
+    fun callCheckStatusAPI() {
         getCompositeDisposable()
                 .add(appRepository.checkRequest(
                         this,

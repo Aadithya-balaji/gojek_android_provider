@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.databinding.ViewDataBinding
@@ -17,15 +16,22 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
-import com.xjek.base.data.Constants.ProjectTypes.ORDER
-import com.xjek.base.data.Constants.ProjectTypes.SERVICE
-import com.xjek.base.data.Constants.ProjectTypes.TRANSPORT
+import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
+import com.xjek.base.data.Constants.BroadCastTypes.ORDER_BROADCAST
+import com.xjek.base.data.Constants.BroadCastTypes.SERVICE_BROADCAST
+import com.xjek.base.data.Constants.BroadCastTypes.TRANSPORT_BROADCAST
+import com.xjek.base.data.Constants.ModuleTypes.ORDER
+import com.xjek.base.data.Constants.ModuleTypes.SERVICE
+import com.xjek.base.data.Constants.ModuleTypes.TRANSPORT
 import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
 import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
+import com.xjek.base.data.PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
-import com.xjek.base.location_service.BaseLocationService.BROADCAST
+import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
+import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.LocationCallBack
@@ -52,8 +58,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     private var mIncomingRequestDialog = IncomingRequestDialog()
     private var locationServiceIntent: Intent? = null
-    private var currentLat: Double = 13.0561789
-    private var currentLong: Double = 80.247998
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -66,8 +70,9 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         mViewModel.navigator = this
         binding.dashboardModel = mViewModel
         setSupportActionBar(binding.tbrHome.app_bar)
-        mViewModel.latitude.value = currentLat
-        mViewModel.longitude.value = currentLong
+
+        mViewModel.latitude.value = 0.0
+        mViewModel.longitude.value = 0.0
         supportFragmentManager.beginTransaction().add(R.id.frame_home_container, HomeFragment()).commit()
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -109,9 +114,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     }
 
-    override fun onPause() {
-        super.onPause()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
+    override fun onResume() {
+        super.onResume()
+        mViewModel.callCheckStatusAPI()
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
+        AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
     }
 
     override fun setTitle(title: String) {
@@ -163,15 +170,15 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         try {
             LocationUtils.getLastKnownLocation(this, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {
-                    currentLat = location!!.latitude
-                    currentLong = location.longitude
-                    //mViewModel.getRequest()
+                    mViewModel.latitude.value = location!!.latitude
+                    mViewModel.longitude.value = location.longitude
+                    mViewModel.callCheckStatusAPI()
                 }
 
                 override fun onFailure(messsage: String?) {
-                    currentLat = 13.0561789
-                    currentLong = 80.247998
-                    // mViewModel.getRequest()
+                    mViewModel.latitude.value = 0.0
+                    mViewModel.longitude.value = 0.0
+                    mViewModel.callCheckStatusAPI()
                 }
             })
         } catch (e: Exception) {
@@ -238,7 +245,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
         SocketManager.onEvent(Constants.ROOM_NAME.NEW_REQ, Emitter.Listener {
             Log.e("SOCKET", "SOCKET_SK new request " + it[0])
-            mViewModel.getRequest()
+            mViewModel.callCheckStatusAPI()
         })
 
         SocketManager.setOnSocketRefreshListener(object : SocketListener.connectionRefreshCallBack {
@@ -250,23 +257,15 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        mViewModel.getRequest()
-    }
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
             println("RRRR:: DashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             if (location != null) {
-                currentLat = location.latitude
-                currentLong = location.longitude
-
-                mViewModel.latitude.value = currentLat
-                mViewModel.longitude.value = currentLong
-
-                //mViewModel.getRequest()
+                mViewModel.latitude.value = location.latitude
+                mViewModel.longitude.value = location.longitude
+                mViewModel.callCheckStatusAPI()
             }
         }
     }

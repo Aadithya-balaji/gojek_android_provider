@@ -12,15 +12,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:background="@drawable/bg_incoming_request_dialog"
+        android:background="@drawable/bg_taxi_dialog"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/_20sdp"
-        android:paddingTop="@dimen/_25sdp"
-        android:paddingRight="@dimen/_20sdp"
-        android:paddingBottom="@dimen/_20sdp">
+        android:padding="40dp">
 
         <TextView
             android:id="@+id/tv_request_label"
@@ -31,18 +26,10 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_130sdp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
-                android:id="@+id/iv_request_time"
-                android:layout_width="@dimen/_130sdp"
-                android:layout_height="@dimen/_130sdp" />
-
-        </LinearLayout>
+        <com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
+            android:id="@+id/iv_request_time"
+            android:layout_width="150dp"
+            android:layout_height="150dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,8 +51,8 @@
                     android:layout_width="@dimen/_5sdp"
                     android:layout_height="@dimen/_5sdp"
                     android:layout_gravity="end"
-                    android:src="@drawable/circle_blue"
-                    android:contentDescription="@string/app_name" />
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/circle_blue" />
 
             </LinearLayout>
 
@@ -95,8 +82,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_7sdp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -137,9 +124,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_weight="1"
+            android:baselineAligned="false"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -153,8 +140,8 @@
                     android:layout_width="@dimen/_5sdp"
                     android:layout_height="@dimen/_5sdp"
                     android:layout_gravity="end"
-                    android:src="@drawable/circle_blue"
-                    android:contentDescription="@string/app_name" />
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/circle_blue" />
 
             </LinearLayout>
 
@@ -184,8 +171,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_7sdp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -219,53 +206,33 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:baselineAligned="false">
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="@dimen/_15sdp"
-                        android:layout_weight="0.5"
-                        android:gravity="start">
+                        android:layout_weight="1"
+                        android:layout_marginEnd="10dp"
+                        android:onClick="@{() -> requestmodel.cancelReq()}"
+                        android:padding="10dp"
+                        android:text="@string/taxi_rejcet"
+                        android:textSize="@dimen/_10sdp"
+                        app:backgroundTint="#ba160c"
+                        app:cornerRadius="20dp" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="@{() -> requestmodel.cancelReq()}"
-                            android:paddingLeft="@dimen/_28sdp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:paddingRight="@dimen/_28sdp"
-                            android:paddingBottom="@dimen/_5sdp"
-                            android:text="@string/taxi_rejcet"
-                            android:textSize="@dimen/_10sdp"
-                            app:backgroundTint="#ba160c"
-                            app:cornerRadius="@dimen/_13sdp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <com.google.android.material.button.MaterialButton
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:gravity="start">
-
-                        <com.google.android.material.button.MaterialButton
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:onClick="@{() -> requestmodel.acceptReq()}"
-                            android:paddingLeft="@dimen/_28sdp"
-                            android:paddingTop="@dimen/_5sdp"
-                            android:paddingRight="@dimen/_28sdp"
-                            android:paddingBottom="@dimen/_5sdp"
-                            android:text="@string/taxi_accept"
-                            android:textSize="@dimen/_10sdp"
-                            app:cornerRadius="@dimen/_13sdp" />
-
-                    </LinearLayout>
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:onClick="@{() -> requestmodel.acceptReq()}"
+                        android:padding="10dp"
+                        android:text="@string/taxi_accept"
+                        android:textSize="@dimen/_10sdp"
+                        app:cornerRadius="20dp" />
 
                 </LinearLayout>
 

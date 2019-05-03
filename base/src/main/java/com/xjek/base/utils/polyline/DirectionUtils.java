@@ -20,8 +20,11 @@ public class DirectionUtils {
         String parameters = strOrigin + "&" + strDest + "&" + sensor + "&" + mode;
         String output = "json";
 
-        return "https://maps.googleapis.com/maps/api/directions/"
+        String  url = "https://maps.googleapis.com/maps/api/directions/"
                 + output + "?" + parameters + "&key=" + key;
+        System.out.println("RRR Google PolyLine URL = " + url);
+
+        return url;
     }
 
     String downloadUrl(String strUrl) throws IOException {

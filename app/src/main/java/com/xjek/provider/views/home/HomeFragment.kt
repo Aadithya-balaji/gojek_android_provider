@@ -78,7 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
         pendingListDialog = PendingListDialog()
         incomingRequestDialogDialog = IncomingRequestDialog()
-
+        incomingRequestDialogDialog.isCancelable = false
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE

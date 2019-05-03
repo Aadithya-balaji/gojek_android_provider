@@ -36,7 +36,6 @@ object Constants {
 
     }
 
-
     object BaseUrl {
         @JvmField
         var APP_BASE_URL: String = BuildConfig.BASE_URL
@@ -67,6 +66,19 @@ object Constants {
         const val ORDER = "ORDER"
     }
 
+    object ModuleTypes {
+        const val TRANSPORT = "TRANSPORT"
+        const val SERVICE = "SERVICE"
+        const val ORDER = "ORDER"
+    }
+
+    object BroadCastTypes {
+        const val TRANSPORT_BROADCAST = "TRANSPORT_BROADCAST"
+        const val SERVICE_BROADCAST = "SERVICE_BROADCAST"
+        const val ORDER_BROADCAST = "ORDER_BROADCAST"
+        const val BASE_BROADCAST = "BASE_BROADCAST"
+    }
+
     object ProviderStatus {
         const val ACTIVE = "ACTIVE"
         const val RIDING = "RIDING"
@@ -81,8 +93,7 @@ object Constants {
         const val STARTED = "STARTED"
         const val ARRIVED = "ARRIVED"
         const val PICKED_UP = "PICKEDUP"
-        const val
-                DROPPED = "DROPPED"
+        const val DROPPED = "DROPPED"
         const val COMPLETED = "COMPLETED"
 
     }
@@ -94,7 +105,7 @@ object Constants {
         const val ADMIN_SERVICE_ID = "admin_service_id"
         const val OTP = "otp"
         const val METHOD = "_method"
-        const val SERVICEID="service_id"
+        const val SERVICEID = "service_id"
     }
 
     object XuperProvider {
@@ -106,9 +117,9 @@ object Constants {
         const val START = "START"
         const val CANCEL = "CANCEL"
         const val STATUS = "status"
-        const val   REQCANCEL="cancel"
-        const val   RATING="rating"
-        const val COMMENT="comment"
+        const val REQCANCEL = "cancel"
+        const val RATING = "rating"
+        const val COMMENT = "comment"
     }
 
     object Reasons {

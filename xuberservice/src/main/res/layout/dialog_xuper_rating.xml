@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="ratingmodel"
+            type="com.xjek.xuberservice.rating.XuperRatingViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,8 +25,6 @@
 
        <de.hdodenhof.circleimageview.CircleImageView
            android:id="@+id/ivXuperRatingUser"
-
-
            android:layout_width="@dimen/_35sdp"
            android:layout_height="@dimen/_35sdp"
            android:layout_marginTop="@dimen/_10sdp"
@@ -67,6 +71,7 @@
             android:hint="@string/write_your_review"
             android:textSize="@dimen/_10sdp"
             android:gravity="start"
+            android:text="@={ratingmodel.comment}"
             android:padding="@dimen/_5sdp"
             android:maxHeight="@dimen/_100sdp"/>
 

@@ -92,9 +92,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         sheetBehavior.peekHeight = 250
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
-
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
         ibNavigation.setOnClickListener {
@@ -384,8 +382,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
     }
 
-
-
     private fun drawRoute(src: LatLng, dest: LatLng) {
         val s = DirectionUtils().getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString())
         println("RRR :: s = $s")
@@ -521,10 +517,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     cmWaiting.start()
                 }
             }
-            isWaitingTime=true
+            isWaitingTime = true
             changeWaitingTimeBackground(true)
-        }else{
-            isWaitingTime=false
+        } else {
+            isWaitingTime = false
             changeWaitingTimeBackground(false)
         }
     }

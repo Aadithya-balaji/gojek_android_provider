@@ -18,8 +18,10 @@ import com.theartofdev.edmodo.cropper.CropImage
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.data.Constants
 import com.xjek.base.utils.CommonMethods
+import com.xjek.base.utils.ViewUtils
 import com.xjek.xuberservice.R
 import com.xjek.xuberservice.databinding.DialogUploadImageBinding
+import com.xjek.xuberservice.interfaces.GetFilePathInterface
 import java.io.File
 
 class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUploadPictureNavigator {
@@ -31,6 +33,7 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
     private lateinit var mediaFile: File
     private lateinit var appCompatActivity: AppCompatActivity
     private var localPath: Uri? = null
+    private  lateinit var  getFilePath: GetFilePathInterface
 
 
     override fun getLayout(): Int {
@@ -40,6 +43,7 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
     override fun onAttach(context: Context) {
         super.onAttach(context)
         appCompatActivity = context as AppCompatActivity
+        getFilePath=context as GetFilePathInterface
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +75,12 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
     }
 
     override fun submit() {
+        if(localPath!=null){
+            getFilePath.getFilePath(localPath!!)
+            dialog!!.dismiss()
+        }else{
+            ViewUtils.showToast(appCompatActivity,resources.getString(R.string.empty_image),false)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -109,5 +119,7 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri)
         startActivityForResult(intent, requestCode)
     }
+
+
 
 }

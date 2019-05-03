@@ -33,6 +33,11 @@ companion object {
         return File.createTempFile(imageFileName, ".jpg", storageDir)
     }
 
+    fun getDateinNeededFormat(strDate:String,fromSimpleFormat:SimpleDateFormat):Date{
+        val date:Date= fromSimpleFormat.parse(strDate)
+        return  date
+    }
+
     fun decodeSampledBitmapFromFile(path: String, reqWidth: Int, reqHeight: Int): Bitmap? { // BEST QUALITY MATCH
         val orientation: Int
         try {

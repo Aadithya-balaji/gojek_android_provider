@@ -51,7 +51,7 @@ object Constants {
         const val PICKED_UP = "PICKEDUP"
         const val DROPPED = "DROPPED"
         const val COMPLETED = "COMPLETED"
-        const val PAYMENT = "PAYMENT"
+
     }
 
     object Common {
@@ -60,6 +60,8 @@ object Constants {
         const val COMMENT = "comment"
         const val ADMIN_SERVICE_ID = "admin_service_id"
         const val OTP = "otp"
+        const val METHOD = "_method"
+        const val SERVICEID="service_id"
     }
 
     object XuperProvider {
@@ -67,6 +69,18 @@ object Constants {
         const val BEFORE_IMAGE = "before_picture"
         const val EXTRA_CHARGE = "extra_charge"
         const val EXTRA_CHARGE_NOTES = "extra_charge_notes"
+        const val PAYMENT = "PAYMENT"
+        const val START = "START"
+        const val CANCEL = "CANCEL"
+        const val STATUS = "status"
+        const val   REQCANCEL="cancel"
+        const val   RATING="rating"
+        const val COMMENT="comment"
+    }
 
+    object Reasons {
+        const val TRANSPORT = "TRANSPORT"
+        const val SERVICE = "SERVICE"
+        const val ORDER = "ORDER"
     }
 }

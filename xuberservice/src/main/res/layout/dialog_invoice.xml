@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="invoicemodel"
+            type="com.xjek.xuberservice.invoice.XuperInvoiceViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -207,6 +213,7 @@
             android:textAllCaps="true"
             android:layout_gravity="center"
             android:textColor="@color/xuper_blue"
+            android:onClick="@{() -> invoicemodel.confirmPayment()}"
             android:fontFamily="@font/avenirltstd_medium"
             android:layout_marginBottom="@dimen/_10sdp"/>
 

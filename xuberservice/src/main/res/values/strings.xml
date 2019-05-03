@@ -33,10 +33,16 @@
     <string name="label_arrived">Arrived</string>
     <string name="after_service">After Service</string>
     <string name="before_service">Before Service</string>
+    <string name="hit_otp">Please Enter Otp</string>
+    <string name="empty_otp">Please Enter the Otp</string>
+    <string name="request_canceled">Request Canceled Successfully</string>
 
 
     <!--  Upload Image -->
     <string name="upload_image">Upload the Image</string>
+    <string name="empty_image">Please add Image</string>
+    <string name="empty_front_image">Please add an Image Before Start your work</string>
+    <string name="empty_back_image">Please add an Image of completed work item</string>
 
 
     <!-- Invoice -->

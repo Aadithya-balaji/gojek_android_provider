@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
@@ -33,6 +34,7 @@ import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
 import com.xjek.provider.views.notification.NotificationFragment
 import com.xjek.provider.views.order.OrderFragment
 import com.xjek.taxiservice.views.main.TaxiDashboardActivity
+import com.xjek.xuberservice.xuberMainActivity.XuberMainActivity
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
 
@@ -53,14 +55,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         mViewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
         mViewModel.navigator = this
         binding.dashboardModel = mViewModel
-
         setSupportActionBar(binding.tbrHome.app_bar)
-
         mViewModel.latitude.value = currentLat
         mViewModel.longitude.value = currentLong
-
         supportFragmentManager.beginTransaction().add(R.id.frame_home_container, HomeFragment()).commit()
-
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.action_home -> {
@@ -87,7 +85,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
-
         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
             updateLocation(true)
             updateCurrentLocation()
@@ -173,32 +170,34 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         observeLiveData(mViewModel.checkRequestLiveData) { checkStatusData ->
             if (checkStatusData.statusCode == "200") {
                 if (checkStatusData.responseData.requests.isNotEmpty())
-                    when (checkStatusData.responseData.requests[0].request.status) {
-                        SEARCHING -> {
-                            if (!mIncomingRequestDialog.isShown()) {
-                                val bundle = Bundle()
-                                val strRequest = Gson().toJson(checkStatusData)
-                                bundle.putString("requestModel", strRequest)
-                                mIncomingRequestDialog.arguments = bundle
-                                mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
-                            }
-                        }
-                        else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
-                            TRANSPORT -> {
-                                BROADCAST = TRANSPORT + BROADCAST
-                                startActivity(Intent(this, TaxiDashboardActivity::class.java))
-                            }
-                            SERVICE -> {
-                                BROADCAST = TRANSPORT + SERVICE
-                                startActivity(Intent(this, TaxiDashboardActivity::class.java))
-                            }
-                            ORDER -> {
-                                BROADCAST = TRANSPORT + ORDER
-                                startActivity(Intent(this, TaxiDashboardActivity::class.java))
-                            }
-                            else -> BROADCAST = "BASE_BROADCAST"
+                    Log.e("CheckStatus", "-----" + checkStatusData.responseData.requests[0].status)
+                when (checkStatusData.responseData.requests[0].request.status) {
+                    SEARCHING -> {
+                        if (!mIncomingRequestDialog.isShown()) {
+                            val bundle = Bundle()
+                            val strRequest = Gson().toJson(checkStatusData)
+                            bundle.putString("requestModel", strRequest)
+                            mIncomingRequestDialog.arguments = bundle
+                            mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
                         }
                     }
+                    else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
+                        TRANSPORT -> {
+                            BROADCAST = TRANSPORT + BROADCAST
+                            startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                        }
+                        SERVICE -> {
+                            BROADCAST = TRANSPORT + SERVICE
+                            startActivity(Intent(this, XuberMainActivity::class.java))
+                            finish()
+                        }
+                        ORDER -> {
+                            BROADCAST = TRANSPORT + ORDER
+                            startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                        }
+                        else -> BROADCAST = "BASE_BROADCAST"
+                    }
+                }
             }
         }
     }

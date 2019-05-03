@@ -4,104 +4,107 @@
 
     <data>
 
+        <variable
+            name="itemClickListener"
+            type="com.xjek.provider.interfaces.CustomClickListner" />
 
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="@dimen/_100sdp">
 
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_8sdp"
+            android:onClick="@{()->itemClickListener.onListClickListner()}"
             android:padding="@dimen/_5sdp"
             app:cardCornerRadius="@dimen/_5sdp">
 
 
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:id="@+id/date_time_laoyut"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_round_corner"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/xuber_bg_round_corner"
                     android:orientation="vertical"
-                    android:padding="@dimen/_15sdp">
+                    android:padding="@dimen/_8sdp">
 
                     <TextView
                         android:id="@+id/date_past_list_tv"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
-                        android:text="Date"
-                        android:textColor="@android:color/white"
-                        android:textSize="@dimen/_13sdp" />
+                        android:text="@string/dummy_date"
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/time_past_list_tv"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:padding="@dimen/_5sdp"
-                        android:text="Time"
-                        android:textColor="@color/xuber_white"
-                        android:textSize="@dimen/_13sdp" />
+                        android:text="@string/dummy_time"
+                        android:textColor="@color/colorWhite" />
                 </LinearLayout>
 
                 <TextView
                     android:id="@+id/title_past_list_tv"
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_toRightOf="@+id/date_time_laoyut"
+                    android:layout_toEndOf="@+id/date_time_laoyut"
                     android:padding="@dimen/_5sdp"
-                    android:text="Title"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/_14sdp" />
+                    android:text="@string/dummy_title"
+                    android:textColor="@android:color/black" />
 
                 <TextView
                     android:id="@+id/ordered_item_tv"
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/title_past_list_tv"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_toRightOf="@+id/date_time_laoyut"
+                    android:layout_toEndOf="@+id/date_time_laoyut"
                     android:padding="@dimen/_5sdp"
-                    android:text="Sedan Type"
-                    android:textColor="@color/xuber_grey" />
+                    android:text="@string/dummy_type"
+                    android:textColor="@color/grey" />
 
                 <TextView
                     android:id="@+id/rating_past_tv"
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ordered_item_tv"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_toRightOf="@+id/date_time_laoyut"
-                    android:drawableLeft="@drawable/ic_star"
+                    android:layout_toEndOf="@+id/date_time_laoyut"
+                    android:drawableStart="@drawable/ic_star"
                     android:drawablePadding="@dimen/_5sdp"
                     android:drawableTint="@color/dark_grey"
                     android:padding="@dimen/_5sdp"
-                    android:text="4.5"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/_12sdp" />
+                    android:text="@string/dummy_rating"
+                    android:textColor="@color/dark_grey" />
 
                 <Button
                     android:id="@+id/status_past_tv"
-                    android:layout_width="@dimen/_90sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/custom_cancelled_full_round_corner"
+                    android:background="@drawable/custom_full_round_corner"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/cancelled"
                     android:textColor="@color/red"
-                    android:textSize="@dimen/_8sdp" />
+                    android:textSize="@dimen/_6sdp" />
 
 
             </RelativeLayout>

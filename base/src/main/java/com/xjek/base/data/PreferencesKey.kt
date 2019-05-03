@@ -2,6 +2,7 @@ package com.xjek.base.data
 
 object PreferencesKey {
     const val BASE_ID = "base_id"
+    const val BASE_CONFIG_RESPONSE = "base_config_response"
     const val TRANSPORT_ID = "transport_id"
     const val ORDER_ID = "order_id"
     const val SERVICE_ID = "service_id"

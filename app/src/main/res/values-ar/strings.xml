@@ -377,6 +377,29 @@
     <string name="services_documents">Services Documents</string>
     <string name="upload">Upload</string>
     <string name="view">View</string>
+    <string name="you_have_no_current_ride">You have no current ride</string>
+    <string name="dummy_type">Sedan Type</string>
+    <string name="transport">Transport</string>
+    <string name="past">Past</string>
+    <string name="current">Current</string>
+    <string name="you_have_no_past_records">you have no past records</string>
+    <string name="apply">Apply</string>
+    <string name="filter_by">Filter By</string>
+    <string name="source">Source</string>
+    <string name="destination">Destination</string>
+    <string name="comments_for_trip">Comments for Trip</string>
+    <string name="payment_via">Payment via</string>
+    <string name="did_you_loss_something">Did you loss something?</string>
+    <string name="press_the_icon_to_mention_the_loss_item">Press the icon to mention the loss item</string>
+    <string name="view_receipt">View Receipt</string>
+    <string name="dispute">Dispute</string>
+    <string name="dispute_status">Dispute Status</string>
+    <string name="tax_fare">Tax Fare</string>
+    <string name="hourly_fare">Hourly Fare</string>
+    <string name="discount_applied">Discount Applied</string>
+    <string name="tips">Tips</string>
+    <string name="total_charge">Total charge</string>
+    <string name="support_mail">Support Mail</string>
 
 
 </resources>

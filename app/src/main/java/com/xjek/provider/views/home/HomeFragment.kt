@@ -190,6 +190,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
         dashBoardNavigator.hideRightIcon(true)
+        dashBoardNavigator.showLogo(true)
     }
 
     override fun changeStatus(view: View) {

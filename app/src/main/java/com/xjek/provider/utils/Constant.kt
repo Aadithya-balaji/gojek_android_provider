@@ -35,4 +35,5 @@ object Constant {
     lateinit var privacyPolicyUrl: String
     const val TYPE_PROVIDER = "provider"
     lateinit var languages: List<Language>
+
 }

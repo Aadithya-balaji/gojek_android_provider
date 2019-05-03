@@ -6,7 +6,7 @@
 
         <variable
             name="currentorderviewmodel"
-            type="com.xjek.xjek.ui.currentorder_fragment.CurrentOrderViewModel" />
+            type="com.xjek.provider.views.currentorder_fragment.CurrentOrderViewModel" />
 
         <variable
             name="currrentOrdersAdapter"
@@ -23,8 +23,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adapter="@{currrentOrdersAdapter}"
+            android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <LinearLayout
+            android:id="@+id/empty_view_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_no_history" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:text="@string/you_have_no_current_ride"
+                android:textColor="@color/darkgrey" />
+        </LinearLayout>
 
 
     </RelativeLayout>
+
+
 </layout>

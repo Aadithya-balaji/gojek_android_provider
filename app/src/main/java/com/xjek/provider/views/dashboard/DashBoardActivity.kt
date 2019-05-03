@@ -7,12 +7,15 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.Gson
+import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ProjectTypes.ORDER
 import com.xjek.base.data.Constants.ProjectTypes.SERVICE
 import com.xjek.base.data.Constants.ProjectTypes.TRANSPORT
@@ -22,6 +25,8 @@ import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.BROADCAST
+import com.xjek.base.socket.SocketListener
+import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
@@ -33,6 +38,7 @@ import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
 import com.xjek.provider.views.notification.NotificationFragment
 import com.xjek.provider.views.order.OrderFragment
 import com.xjek.taxiservice.views.main.TaxiDashboardActivity
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
 
@@ -60,6 +66,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         mViewModel.longitude.value = currentLong
 
         supportFragmentManager.beginTransaction().add(R.id.frame_home_container, HomeFragment()).commit()
+
+
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -127,6 +135,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
             tbr_rl_right.visibility = View.VISIBLE
             tbr_iv_logo.visibility = View.GONE
         }
+
+        tbr_home.visibility = View.VISIBLE
     }
 
     override fun setRightIcon(rightIcon: Int) {

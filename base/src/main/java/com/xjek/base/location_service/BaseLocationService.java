@@ -162,7 +162,7 @@ public class BaseLocationService extends Service {
         intent.putExtra(EXTRA_LOCATION, location);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 //        FirebaseApp.initializeApp(getApplicationContext());
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        FirebaseDatabase database = FirebaseDatabase.connect();
 //        DatabaseReference myRef = database.getReference("message");
 //
 //        myRef.setValue("Hello, World!");

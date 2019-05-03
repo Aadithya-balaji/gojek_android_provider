@@ -1,13 +1,22 @@
 package com.xjek.base.base
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+import com.xjek.base.data.NetworkError
 import io.reactivex.disposables.CompositeDisposable
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import java.io.IOException
 import java.lang.ref.WeakReference
+import java.net.SocketTimeoutException
 
 open class BaseViewModel<N> : ViewModel() {
 
     private var compositeDisposable = CompositeDisposable()
     private lateinit var mNavigator: WeakReference<N>
+    private var liveErrorResponse = MutableLiveData<String>()
+
 
     var navigator: N
         get() = mNavigator.get()!!
@@ -20,5 +29,46 @@ open class BaseViewModel<N> : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.clear()
+    }
+
+    fun getErrorObservable(): MutableLiveData<String> {
+        return liveErrorResponse
+    }
+
+
+    fun processException(e: Throwable): String? {
+        return when (e) {
+            is HttpException -> {
+                val responseBody = e.response().errorBody()
+                getErrorMessage(responseBody!!)
+            }
+            is SocketTimeoutException -> NetworkError.TIME_OUT
+            is IOException -> NetworkError.IO_EXCEPTION
+            else -> {
+                NetworkError.SERVER_EXCEPTION
+            }
+        }
+    }
+
+
+    private fun getErrorMessage(responseBody: ResponseBody): String? {
+        return try {
+            val jsonObject = JSONObject(responseBody.string())
+            jsonObject.getString("message")
+        } catch (e: Exception) {
+            e.message
+        }
+
+    }
+
+
+    private fun getErrorMessage(responseBody: Any): String? {
+        return try {
+            val jsonObject = JSONObject(responseBody.toString())
+            jsonObject.getString("message")
+        } catch (e: Exception) {
+            e.message
+        }
+
     }
 }

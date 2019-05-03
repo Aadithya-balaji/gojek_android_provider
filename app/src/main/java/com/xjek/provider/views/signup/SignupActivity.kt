@@ -56,7 +56,6 @@ import com.xjek.provider.views.citylist.CityListActivity
 import com.xjek.provider.views.countrylist.CountryListActivity
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
 import com.xjek.provider.views.dashboard.DashBoardActivity
-import com.xjek.provider.views.document.DocumentActivity
 import com.xjek.provider.views.sign_in.SignInActivity
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -275,8 +274,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun gotoDocumentPage() {
-        val intent = Intent(this@SignupActivity, DocumentActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this@SignupActivity, DocumentActivity::class.java)
+//        startActivity(intent)
     }
 
 

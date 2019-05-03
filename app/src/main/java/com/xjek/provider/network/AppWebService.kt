@@ -8,6 +8,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.http.*
 
+
 interface AppWebService {
 
     @FormUrlEncoded
@@ -72,13 +73,6 @@ interface AppWebService {
     ): Observable<ResProfileUpdate>
 
 
-    @FormUrlEncoded
-    @POST("provider/signup")
-    fun updateProfile(
-            @FieldMap params: HashMap<String, RequestBody>,
-            @Part fileName: MultipartBody.Part?
-    ): Observable<CommonResponse>
-
     @GET("provider/card")
     fun getCardList(
             @Header("Authorization") token: String,
@@ -128,6 +122,7 @@ interface AppWebService {
 
     @GET("provider/onlinestatus/{status_id}")
     fun changeOnlineStatus(@Header("Authorization") token: String,@Path("status_id") statusID: String): Observable<StatusResponseModel>
+
     @FormUrlEncoded
     @POST("provider/accept/request")
     fun acceptIncomingRequest(
@@ -141,6 +136,62 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<RejectRequestModel>
+
+    fun updateProfile(
+            @FieldMap params: HashMap<String, RequestBody>,
+            @Part fileName: MultipartBody.Part?
+    ): Observable<CommonResponse>
+
+    @GET("provider/adminservices")
+    fun getServices(@Header("Authorization") token: String):
+            Observable<ManageServicesResponseModel>
+
+    @GET("provider/ridetype")
+    fun getRides(@Header("Authorization") token: String): Observable<SetupRideResponseModel>
+
+    @GET("provider/shoptype")
+    fun getShops(@Header("Authorization") token: String): Observable<SetupShopResponseModel>
+
+    @GET("provider/services/list")
+    fun getVehicleCategories(@Header("Authorization") token: String):
+            Observable<VehicleCategoryResponseModel>
+
+    @Multipart
+    @POST("provider/vechile/add")
+    fun postVehicle(
+            @Header("Authorization") token: String,
+            @PartMap params: HashMap<String, RequestBody>,
+//            @Part vehicleImage: MultipartBody.Part,
+            @Part rcBookMultipart: MultipartBody.Part,
+            @Part insuranceMultipart: MultipartBody.Part
+    ): Observable<AddVehicleResponseModel>
+
+    @FormUrlEncoded
+    @POST("provider/listdocuments")
+    fun getDocuments(@Field("type") documentType: String
+    ): Observable<ListDocumentResponse>
+
+
+    @GET("provider/bankdetails/template")
+    fun getBankTemplate(@Header("Authorization") token: String): Observable<BankTemplateModel>
+
+    @GET("provider/providerservice/categories")
+    fun getCategories(@Header("Authorization") token: String): Observable<CategoriesResponseModel>
+
+    @Headers("Content-Type: application/json")
+    @POST("provider/addbankdetails")
+    fun postAddBankDetails(@Header("Authorization") token: String, @Body body: String): Observable<AddBankDetailsModel>
+
+    @Headers("Content-Type: application/json")
+    @POST("provider/editbankdetails")
+    fun postEditBankDetails(@Header("Authorization") token: String, @Body body: String): Observable<AddBankDetailsModel>
+
+    @Multipart
+    @POST("provider/documents")
+    fun postDocument(@PartMap params: java.util.HashMap<String, RequestBody>,
+                     @Part frontImage: MultipartBody.Part?, @Part backImage: MultipartBody.Part?
+    ): Observable<AddDocumentResponse>
+
 
 
 }

@@ -10,7 +10,7 @@ import retrofit2.http.*
 interface XuperApiService{
 
 
-    @GET("provider/check/request")
+    @GET("provider/check/serve/request")
     fun xuperCheckRequest(@Header("Authorization") token:String,@Query("latitude") latitude:String,@Query("longitude") longitude:String):Observable<XuperCheckRequest>
 
     @Multipart

@@ -350,7 +350,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 //            params["_method"] = "PATCH"
 //            mViewModel.taxiStatusUpdate(params)
 
-            ViewUtils.showAlert(this, "Do you have andy Toll charge", object : ViewUtils.ViewCallBack {
+            ViewUtils.showAlert(this, "Do you have any Toll charge", object : ViewUtils.ViewCallBack {
 
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     val tollChargeDialog = TollChargeDialog()
@@ -383,8 +383,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun drawRoute(src: LatLng, dest: LatLng) {
+        val s = DirectionUtils().getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString())
+        println("RRR :: s = $s")
         if (canDrawPolyLine)
-            PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString()))
+            PolylineUtil(this).execute(s)
         mViewModel.polyLineSrc.value = src
         mViewModel.polyLineDest.value = dest
     }
@@ -415,7 +417,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     override fun whenFail(statusCode: String) {
         println("RRR whenFail = $statusCode")
-        when (statusCode) {
+       /* when (statusCode) {
             "NOT_FOUND" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
             "ZERO_RESULTS" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
             "MAX_WAYPOINTS_EXCEEDED" -> Toast.makeText(this, "Way point limit exceeded...", Toast.LENGTH_SHORT).show()
@@ -426,7 +428,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             "REQUEST_DENIED" -> Toast.makeText(this, "Directions service not enabled...", Toast.LENGTH_SHORT).show()
             "UNKNOWN_ERROR" -> Toast.makeText(this, "Server Error...", Toast.LENGTH_SHORT).show()
             else -> Toast.makeText(this, statusCode, Toast.LENGTH_SHORT).show()
-        }
+        }*/
 
     }
 
@@ -442,6 +444,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun openGoogleNavigation() {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
+                "http://maps.google.com/maps?saddr=" +
+                        "13.058552, 80.253461" +
+                        "&daddr=" +
+                        "13.036068, 80.230472")))
+
         if (mViewModel.polyLineSrc.value != null && mViewModel.polyLineDest.value != null)
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
                     "http://maps.google.com/maps?saddr=" +

@@ -15,7 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
+import com.xjek.base.extensions.clearPreferences
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.session.SessionListener
+import com.xjek.base.session.SessionManager
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.utils.PermissionUtils
@@ -111,4 +114,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         snackBar.setActionTextColor(Color.RED)
         snackBar.show()
     }
+
+
 }

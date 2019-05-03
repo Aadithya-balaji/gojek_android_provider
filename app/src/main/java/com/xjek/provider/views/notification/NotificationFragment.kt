@@ -49,7 +49,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         observeLiveData(notificationViewModel.notificationResponse) {
             notificationViewModel.loadingProgress.value = false
             //show empty view if no data
-            notificationViewModel.showEmptyView.value = it.responseData.data.isEmpty()
+            notificationViewModel.showEmptyView.value = it.responseData.data.isNullOrEmpty()
             setNotificationAdapter(it.responseData)
 
         }

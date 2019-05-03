@@ -40,7 +40,7 @@ object PreferencesHelper {
             Float::class -> preferences.getFloat(key, -1f) as T
             Int::class -> preferences.getInt(key, -1) as T
             Long::class -> preferences.getLong(key, -1L) as T
-            String::class -> preferences.getString(key, null) as T
+            String::class -> preferences.getString(key, "") as T
             Set::class -> preferences.getStringSet(key, null) as T
             else -> throw UnsupportedOperationException(message)
         }

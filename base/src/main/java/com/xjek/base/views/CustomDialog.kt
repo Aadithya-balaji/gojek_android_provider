@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
 import androidx.databinding.DataBindingUtil
+import com.xjek.base.BuildConfig
 import com.xjek.base.R
 
 
@@ -24,7 +25,7 @@ class CustomDialog(context: Context) : Dialog(context) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         mCustomDialogBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.custom_dialog, null, false)
         setContentView(mCustomDialogBinding.root)
-        setCancelable(false)
+        setCancelable(BuildConfig.DEBUG)
 
         if (enableLottie) {
             mCustomDialogBinding.lottieIndicator.visibility = View.VISIBLE

@@ -1,5 +1,6 @@
 package com.xjek.xuberservice.repositary
 
+import com.xjek.base.data.Constants
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.repository.BaseRepository
@@ -16,8 +17,8 @@ import retrofit2.http.Part
 
 
 class XuperRepoitory : BaseRepository() {
-    private val serviceId: String
-        get() = PreferencesHelper.get(PreferencesKey.BASE_ID)
+     private val serviceId: String
+        get() = Constants.BaseUrl.APP_BASE_URL
 
 
     fun xuperCheckRequesst(viewModel: XuberMainViewModel, token: String, lat: String, lon: String): Disposable {
@@ -28,7 +29,7 @@ class XuperRepoitory : BaseRepository() {
                 .subscribe({
                     viewModel.xuperCheckRequest.postValue(it)
                 }, {
-
+                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })
 
     }

@@ -1,16 +1,17 @@
 package com.xjek.base.utils
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory

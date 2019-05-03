@@ -11,9 +11,9 @@ interface TaxiWebService {
 
     @GET("provider/check/ride/request")
     fun taxiCheckRequestAPI(
-            @Header("Authorization") token: String,
-            @Query("latitude") lat: Double,
-            @Query("longitude") lon: Double
+            @Header("Authorization") token: String
+//            @Query("latitude") lat: Double,
+//            @Query("longitude") lon: Double
     ): Observable<CheckRequestModel>
 
     @FormUrlEncoded

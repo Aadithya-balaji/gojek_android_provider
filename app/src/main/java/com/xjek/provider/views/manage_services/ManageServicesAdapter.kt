@@ -23,7 +23,7 @@ class ManageServicesAdapter(private val manageServicesViewModel: ManageServicesV
     }
 
     override fun getItemCount(): Int {
-        return manageServicesViewModel.getServices().size
+        return manageServicesViewModel.getServiceData().size
     }
 
     override fun onBindViewHolder(holder: ManageServicesAdapter.ViewHolder, position: Int) {

@@ -130,6 +130,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
 
                         DROPPED -> {
                             // xuberMainViewModel.xuperUdpateRequest
+
                         }
 
                         COMPLETED -> {

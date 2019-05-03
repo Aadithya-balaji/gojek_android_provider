@@ -65,7 +65,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         observeViewModel()
 
         if (BuildConfig.DEBUG) {
-            viewModel.email.value = "jobs@yopmail.com"
+            viewModel.email.value = "toni@yopmail.com"
             viewModel.password.value = "112233"
         }
     }
@@ -200,7 +200,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
 
     override fun onSignInClicked() {
         performValidation()
-        // launchNewActivity(DashBoardActivity::class.java, false)
     }
 
     override fun onGoogleSignInClicked() {

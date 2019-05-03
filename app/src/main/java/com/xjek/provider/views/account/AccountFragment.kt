@@ -12,14 +12,17 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
 import com.xjek.provider.views.dashboard.DashBoardNavigator
+import com.xjek.provider.views.earnings.EarningsActivity
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
 import com.xjek.provider.views.language.LanguageActivity
+import com.xjek.provider.views.manage_bank_details.ManageBankDetailsActivity
 import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
 import com.xjek.provider.views.privacypolicy.PrivacyActivity
 import com.xjek.provider.views.profile.ProfileActivity
+import com.xjek.provider.views.support.SupportActivity
 import kotlinx.android.synthetic.main.header_layout.*
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator {
@@ -49,20 +52,20 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         dashBoardNavigator.hideRightIcon(false)
         dashBoardNavigator.showLogo(false)
 
-//        dashBoardNavigator.getInstance().iv_right.setOnClickListener {
-//            ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
-//                override fun onPositiveButtonClick(dialog: DialogInterface) {
-//                    clearPreferences<String>()
-//                    launchNewActivity(OnBoardActivity::class.java, false)
-//                    activity!!.finishAffinity()
-//                    dialog.dismiss()
-//                }
-//
-//                override fun onNegativeButtonClick(dialog: DialogInterface) {
-//                    dialog.dismiss()
-//                }
-//            })
-//        }
+        dashBoardNavigator.getInstance().iv_right.setOnClickListener {
+            ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
+                override fun onPositiveButtonClick(dialog: DialogInterface) {
+                    clearPreferences<String>()
+                    launchNewActivity(OnBoardActivity::class.java, false)
+                    activity!!.finishAffinity()
+                    dialog.dismiss()
+                }
+
+                override fun onNegativeButtonClick(dialog: DialogInterface) {
+                    dialog.dismiss()
+                }
+            })
+        }
 
         val accountMenuTitles = resources.getStringArray(R.array.title_account)
         val accountMenuIcons = resources.obtainTypedArray(R.array.icon_account)
@@ -75,32 +78,52 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     }
 
     override fun onMenuItemClicked(position: Int) {
-        when (position) {
-            0 -> {
+        val accountMenuIcons = resources.obtainTypedArray(R.array.icon_account)
+        val selectedMenuIcon=accountMenuIcons.getResourceId(position,0)
+        accountMenuIcons.recycle()
+        when (selectedMenuIcon) {
+            R.drawable.ic_user -> {
                 launchNewActivity(ProfileActivity::class.java, false)
             }
 
-            1 -> {
-                launchNewActivity(InviteReferalsActivity::class.java, false)
-            }
-
-            2 -> {
-                launchNewActivity(ManagePaymentActivity::class.java,false)
-            }
-
-            3 -> {
-                launchNewActivity(PrivacyActivity::class.java, false)
-            }
-
-            5 -> {
-                launchNewActivity(ManageServicesActivity::class.java, false)
-            }
-            6 -> {
+            R.drawable.ic_document -> {
                 launchNewActivity(ManageDocumentsActivity::class.java, false)
             }
 
-            7 -> {
+            R.drawable.ic_services -> {
+                launchNewActivity(ManageServicesActivity::class.java, false)
+            }
+
+            R.drawable.ic_card -> {
+                launchNewActivity(ManagePaymentActivity::class.java,false)
+            }
+
+            R.drawable.ic_earnings ->{
+                launchNewActivity(EarningsActivity::class.java,false)
+            }
+
+            R.drawable.ic_bank_details -> {
+                //Bank Details
+                launchNewActivity(ManageBankDetailsActivity::class.java,false)
+            }
+
+            R.drawable.ic_gift_card -> {
+                launchNewActivity(InviteReferalsActivity::class.java, false)
+            }
+
+            R.drawable.ic_language ->{
                 launchNewActivity(LanguageActivity::class.java, false)
+            }
+
+            R.drawable.ic_policy ->{
+                launchNewActivity(PrivacyActivity::class.java, false)
+            }
+
+            R.drawable.ic_support ->{
+                launchNewActivity(SupportActivity::class.java, false)
+            }
+            else ->{
+                ViewUtils.showToast(activity!!,getString(R.string.something_went_wrong),false)
             }
         }
     }

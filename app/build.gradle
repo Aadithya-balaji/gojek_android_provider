@@ -57,8 +57,8 @@ dependencies {
     // The data binding library for Kotlin that allows to bind UI components in your layouts to
     // data sources.
     kapt "com.android.databinding:compiler:$compiler_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha03'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha04'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -87,6 +87,7 @@ dependencies {
 
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.3.0"
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"
+
     implementation project(':base')
     implementation project(':foodservice')
     implementation project(':taxiservice')

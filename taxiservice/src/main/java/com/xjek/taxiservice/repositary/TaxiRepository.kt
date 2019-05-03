@@ -1,7 +1,6 @@
 package com.xjek.taxiservice.repositary
 
-import com.xjek.base.data.PreferencesHelper
-import com.xjek.base.data.PreferencesKey
+import com.xjek.base.data.Constants
 import com.xjek.base.repository.BaseRepository
 import com.xjek.taxiservice.views.invoice.TaxiInvoiceViewModel
 import com.xjek.taxiservice.views.main.TaxiDashboardViewModel
@@ -14,11 +13,12 @@ import io.reactivex.schedulers.Schedulers
 class TaxiRepository : BaseRepository() {
 
     private val serviceId: String
-        get() = PreferencesHelper.get(PreferencesKey.BASE_ID)
+        get() = Constants.BaseUrl.APP_BASE_URL
 
     fun checkRequest(viewModel: TaxiDashboardViewModel, token: String, lat: Double, lon: Double): Disposable {
         return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
-                .taxiCheckRequestAPI(token, lat, lon)
+//                .taxiCheckRequestAPI(token, lat, lon)
+                .taxiCheckRequestAPI(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

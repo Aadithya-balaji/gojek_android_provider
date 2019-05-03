@@ -1,4 +1,4 @@
-package com.xjek.provider.views.manage_documents
+package com.xjek.provider.views.manage_bank_details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,32 +7,33 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.BR
 import com.xjek.provider.R
-import com.xjek.provider.databinding.LayoutSetupVehicleItemBinding
+import com.xjek.provider.databinding.BankTemplateInflateBinding
 
-class ManageDocumentsAdapter(private val manageDocumentsViewModel: ManageDocumentsViewModel) :
-        RecyclerView.Adapter<ManageDocumentsAdapter.ViewHolder>() {
+class SetupBankTemplateAdapter
+(private val bankViewModel: ManageBankDetailsViewModel) :
+        RecyclerView.Adapter<SetupBankTemplateAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = DataBindingUtil.inflate<LayoutSetupVehicleItemBinding>(
+        val binding = DataBindingUtil.inflate<BankTemplateInflateBinding>(
                 layoutInflater,
-                R.layout.layout_setup_vehicle_item,
+                R.layout.bank_template_inflate,
                 parent,
                 false)
         return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return 4
+        return bankViewModel.getItemCount()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(manageDocumentsViewModel, position)
+        holder.bind(bankViewModel, position)
     }
 
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(manageDocumentsViewModel: ManageDocumentsViewModel, position: Int) {
-            binding.setVariable(BR.manageDocumentsViewModel, manageDocumentsViewModel)
+        fun bind(bankViewModel: ManageBankDetailsViewModel, position: Int) {
+            binding.setVariable(BR.bankViewModel, bankViewModel)
             binding.setVariable(BR.position, position)
             binding.executePendingBindings()
         }

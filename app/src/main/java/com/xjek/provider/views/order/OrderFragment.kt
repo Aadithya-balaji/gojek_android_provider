@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseFragment
+import com.xjek.base.extensions.provideViewModel
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentOrderBinding
 import com.xjek.provider.views.dashboard.DashBoardNavigator
@@ -15,14 +16,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
 
 
     private lateinit var mFragmentOrderBinding: FragmentOrderBinding
-    private var mOrderViewModel: OrderViewModel? = null
+    private lateinit var mOrderViewModel: OrderViewModel
     private lateinit var dashBoardNavigator: DashBoardNavigator
     override fun getLayoutId(): Int = R.layout.fragment_order
 
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mFragmentOrderBinding = mViewDataBinding as FragmentOrderBinding
-        mOrderViewModel = OrderViewModel()
+        mOrderViewModel = provideViewModel {
+            OrderViewModel()
+        }
+        mOrderViewModel.navigator = this
         mFragmentOrderBinding.ordermodel = mOrderViewModel
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.order_container, PastOrderFragment())?.commit()
         dashBoardNavigator.setTitle(resources.getString(R.string.title_history))
@@ -35,7 +39,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderNavigator {
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
     }
-
 
 
     override fun getCurrentOrder() {

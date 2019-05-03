@@ -181,20 +181,25 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
                         }
                     }
+
                     else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
                         TRANSPORT -> {
-                            BROADCAST = TRANSPORT + BROADCAST
+                            BROADCAST = TRANSPORT
                             startActivity(Intent(this, TaxiDashboardActivity::class.java))
                         }
                         SERVICE -> {
-                            BROADCAST = TRANSPORT + SERVICE
-                            startActivity(Intent(this, XuberMainActivity::class.java))
-                            finish()
+                            if (!BROADCAST.equals(SERVICE)) {
+                                BROADCAST = SERVICE
+                                startActivity(Intent(this, XuberMainActivity::class.java))
+                            }
                         }
                         ORDER -> {
-                            BROADCAST = TRANSPORT + ORDER
-                            startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                            if (BROADCAST != ORDER) {
+                                BROADCAST = ORDER
+                                startActivity(Intent(this, TaxiDashboardActivity::class.java))
+                            }
                         }
+
                         else -> BROADCAST = "BASE_BROADCAST"
                     }
                 }
@@ -221,4 +226,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     override fun showErrorMessage(s: String) {
         ViewUtils.showNormalToast(this, s)
     }
+
+    override fun getInstance(): DashBoardActivity = this@DashBoardActivity
 }

@@ -161,6 +161,11 @@ public class BaseLocationService extends Service {
         Intent intent = new Intent(BROADCAST);
         intent.putExtra(EXTRA_LOCATION, location);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+//        FirebaseApp.initializeApp(getApplicationContext());
+//        FirebaseDatabase database = FirebaseDatabase.getInstance();
+//        DatabaseReference myRef = database.getReference("message");
+//
+//        myRef.setValue("Hello, World!");
 
         int NOTIFICATION_ID = 12345678;
         if (serviceIsRunningInForeground(this))

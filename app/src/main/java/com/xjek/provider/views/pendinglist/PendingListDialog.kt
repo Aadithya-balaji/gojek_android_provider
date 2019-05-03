@@ -14,7 +14,8 @@ import com.xjek.base.base.BaseDialogFragment
 import com.xjek.provider.R
 import com.xjek.provider.databinding.PendingListDialogBinding
 import com.xjek.provider.views.dashboard.DashBoardActivity
-import com.xjek.provider.views.document.DocumentActivity
+import com.xjek.provider.views.manage_bank_details.ManageBankDetailsActivity
+import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 
 class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
@@ -109,10 +110,11 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
 
     override fun pickItem(view: View) {
         when (view.id) {
-            R.id.tv_add_document -> startActivity(Intent(dashBoardActivity, DocumentActivity::class.java))
+            R.id.tv_add_document -> startActivity(Intent(dashBoardActivity, ManageDocumentsActivity::class.java))
 
             R.id.tv_bank_details -> {
-
+                val intent = Intent(dashBoardActivity, ManageBankDetailsActivity::class.java)
+                startActivity(intent)
             }
 
             R.id.tv_add_service -> startActivity(Intent(dashBoardActivity, ManageServicesActivity::class.java))

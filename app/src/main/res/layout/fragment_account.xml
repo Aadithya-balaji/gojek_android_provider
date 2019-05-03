@@ -16,6 +16,7 @@
         android:adapter="@{accountViewModel.getAdapter()}"
         android:background="@color/colorScreenBackground"
         android:clipToPadding="false"
+        android:overScrollMode="never"
         android:padding="@dimen/_8sdp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"

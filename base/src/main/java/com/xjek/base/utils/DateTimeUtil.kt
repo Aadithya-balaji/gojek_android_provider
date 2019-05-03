@@ -1,5 +1,6 @@
 package com.xjek.base.utils
 
+import java.text.DecimalFormat
 import java.util.*
 
 class DateTimeUtil {
@@ -7,7 +8,7 @@ class DateTimeUtil {
     fun constructDateString(date: Date, separator: String): String {
         return StringBuilder().append(date.date)
                 .append(separator)
-                .append(date.month)
+                .append(DecimalFormat("00").format(date.month + 1))
                 .append(separator)
                 .append(date.year).toString()
     }
@@ -15,7 +16,7 @@ class DateTimeUtil {
     fun constructDateString(year: Int, month: Int, dayOfMonth: Int, separator: String): String {
         return StringBuilder().append(dayOfMonth)
                 .append(separator)
-                .append(month)
+                .append(DecimalFormat("00").format(month + 1))
                 .append(separator)
                 .append(year).toString()
     }

@@ -44,6 +44,7 @@ import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.RideStatus.SCHEDULED
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.Constants.RideStatus.STARTED
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.CAN_SAVE_LOCATION
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.xjek.base.extensions.observeLiveData
@@ -96,7 +97,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var polyLine: ArrayList<LatLng> = ArrayList()
     private var checkStatusApiCounter = 0
-    private var roomConnected:Boolean = false
+    private var roomConnected: Boolean = false
 
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
 
@@ -221,14 +222,15 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
                     if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
+                        writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusResponse.responseData.provider_details.id)
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
                         writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
 
                         val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                         Constants.REQ_ID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id
 
-                        if(!roomConnected){
-                            roomConnected= true
+                        if (!roomConnected) {
+                            roomConnected = true
                             SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
                         }
 

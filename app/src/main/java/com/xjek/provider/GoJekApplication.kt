@@ -32,7 +32,7 @@ class GoJekApplication : BaseApplication() {
         SocketManager.setOnConnectionListener(object : SocketListener.CallBack {
             override fun onConnected() {
                 SocketManager.onEvent(Constants.ROOM_NAME.STATUS, Emitter.Listener {
-                    Log.e("SOCKET","SOCKET_SK status"+it[0])
+                    Log.e("SOCKET","SOCKET_SK status "+it[0])
                 })
             }
 

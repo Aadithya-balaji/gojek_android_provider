@@ -14,6 +14,7 @@ object Constants {
     var COMPANY_ID: String = String(Base64.decode(BuildConfig.SALT_KEY, Base64.DEFAULT), Charset.defaultCharset())
     var CITY_ID: Int = 0
     var isSocketFailed: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
+    var REQ_ID:Int = 0
 
     object RequestCode {
         const val PERMISSIONS_CODE_LOCATION = 1001
@@ -43,25 +44,19 @@ object Constants {
         var SERVICE_BASE_URL: String? = null
     }
 
-    object ROOM_NAME {
-        var COMMON_ROOM_NAME: String = "joinCommonRoom"
-        var STATUS: String = "socketStatus"
-        var NEW_REQ: String = "newRequest"
-        var TRANSPORT_ROOM_NAME: String = "joinPrivateRoom"
-        var SERVICE_ROOM_NAME: String? = null
+    object ROOM_NAME{
+        var COMMON_ROOM_NAME:String = "joinCommonRoom"
+        var STATUS:String = "socketStatus"
+        var NEW_REQ:String = "newRequest"
+        var RIDE_REQ:String = "rideRequest"
+        var TRANSPORT_ROOM_NAME:String = "joinPrivateRoom"
+        var SERVICE_ROOM_NAME:String?=null
     }
 
-
-    object ROOM_ID {
-        var COMMON_ROOM: String = "room_${COMPANY_ID}_$CITY_ID"
-        var TRANSPORT_ROOM: String = ""
-        var SERVICE_ROOM: String = ""
-    }
-
-    object ProjectTypes {
-        const val TRANSPORT = "TRANSPORT"
-        const val SERVICE = "SERVICE"
-        const val ORDER = "ORDER"
+    object ROOM_ID{
+        var COMMON_ROOM:String = "room_${COMPANY_ID}_$CITY_ID"
+        var TRANSPORT_ROOM:String = "room_${COMPANY_ID}_${REQ_ID}_TRANSPORT"
+        var SERVICE_ROOM:String = ""
     }
 
     object ModuleTypes {

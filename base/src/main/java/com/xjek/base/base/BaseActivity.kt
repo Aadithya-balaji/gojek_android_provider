@@ -16,10 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
-import com.xjek.base.extensions.clearPreferences
 import com.xjek.base.extensions.observeLiveData
-import com.xjek.base.session.SessionListener
-import com.xjek.base.session.SessionManager
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.utils.PermissionUtils
@@ -116,10 +113,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         snackBar.show()
     }
 
-    private fun longLog(str: String) {
+    fun longLog(str: String) {
         if (str.length > 4000) {
-            Log.d("RRRR:: ", str.substring(0, 4000))
+            Log.d("RRRR:: Points : ", str.substring(0, 4000))
             longLog(str.substring(4000))
-        } else Log.d("RRRR:: ", str)
+        } else Log.d("RRRR:: Points : ", str)
     }
 }

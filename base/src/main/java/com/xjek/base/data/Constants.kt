@@ -2,7 +2,6 @@ package com.xjek.base.data
 
 import android.Manifest
 import android.util.Base64
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.xjek.base.BuildConfig
@@ -12,9 +11,9 @@ object Constants {
 
     const val DEFAULT_ZOOM = 15.0f
     val DEFAULT_LOCATION = LatLng(-33.8523341, 151.2106085)
-    var COMPANY_ID:String = String(Base64.decode(BuildConfig.SALT_KEY,Base64.DEFAULT), Charset.defaultCharset())
-    var CITY_ID:Int = 0
-    var isSocketFailed:MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
+    var COMPANY_ID: String = String(Base64.decode(BuildConfig.SALT_KEY, Base64.DEFAULT), Charset.defaultCharset())
+    var CITY_ID: Int = 0
+    var isSocketFailed: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
 
     object RequestCode {
         const val PERMISSIONS_CODE_LOCATION = 1001
@@ -44,20 +43,19 @@ object Constants {
         var SERVICE_BASE_URL: String? = null
     }
 
-    object ROOM_NAME{
-        var COMMON_ROOM_NAME:String = "joinCommonRoom"
-        var STATUS:String = "socketStatus"
-        var NEW_REQ:String = "newRequest"
-        var TRANSPORT_ROOM_NAME:String = "joinPrivateRoom"
-        var SERVICE_ROOM_NAME:String?=null
+    object ROOM_NAME {
+        var COMMON_ROOM_NAME: String = "joinCommonRoom"
+        var STATUS: String = "socketStatus"
+        var NEW_REQ: String = "newRequest"
+        var TRANSPORT_ROOM_NAME: String = "joinPrivateRoom"
+        var SERVICE_ROOM_NAME: String? = null
     }
 
 
-
-    object ROOM_ID{
-        var COMMON_ROOM:String = "room_${COMPANY_ID}_$CITY_ID"
-        var TRANSPORT_ROOM:String = ""
-        var SERVICE_ROOM:String = ""
+    object ROOM_ID {
+        var COMMON_ROOM: String = "room_${COMPANY_ID}_$CITY_ID"
+        var TRANSPORT_ROOM: String = ""
+        var SERVICE_ROOM: String = ""
     }
 
     object ProjectTypes {

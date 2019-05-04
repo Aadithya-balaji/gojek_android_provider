@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.persistence.LocationPointsEntity
+import com.xjek.base.utils.ViewUtils
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityInvoiceTaxiBinding
 import com.xjek.taxiservice.model.ResponseData
@@ -32,7 +34,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         activityInvoiceBinding = mViewDataBinding as ActivityInvoiceTaxiBinding
-        mViewModel = TaxiInvoiceViewModel()
+        mViewModel = ViewModelProviders.of(this).get(TaxiInvoiceViewModel::class.java)
         mViewModel.navigator = this
         activityInvoiceBinding!!.invoicemodel = mViewModel
         activityInvoiceBinding!!.lifecycleOwner = this
@@ -43,6 +45,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         getIntentValues()
         getApiResponse()
         points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints()
+        longLog(Gson().toJson(points))
     }
 
     private fun getApiResponse() {
@@ -96,6 +99,10 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     }
 
     override fun showErrorMessage(error: String) {
-        com.xjek.base.utils.ViewUtils.showToast(this, error, false)
+        ViewUtils.showToast(this, error, false)
+    }
+
+    override fun closeInvoiceActivity() {
+        finish()
     }
 }

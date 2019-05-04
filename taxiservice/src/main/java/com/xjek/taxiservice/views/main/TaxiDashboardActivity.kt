@@ -41,6 +41,7 @@ import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.RideStatus.SCHEDULED
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.Constants.RideStatus.STARTED
+import com.xjek.base.data.PreferencesKey.CAN_SAVE_LOCATION
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.writePreferences
@@ -217,7 +218,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             SEARCHING -> {
                                 val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                                 val params = HashMap<String, String>()
-                                params.put(com.xjek.base.data.Constants.Common.ID, requestID)
+                                params[com.xjek.base.data.Constants.Common.ID] = requestID
                                 mViewModel.taxiWaitingTime(params)
                             }
 
@@ -236,19 +237,23 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             STARTED -> {
                                 println("RRR :: inside STARTED = ")
                                 whenStatusStarted(checkStatusResponse.responseData)
+                                writePreferences(CAN_SAVE_LOCATION, true)
                             }
 
                             ARRIVED -> {
                                 println("RRR :: inside ARRIVED = ")
                                 whenStatusArrived(checkStatusResponse.responseData)
+                                writePreferences(CAN_SAVE_LOCATION, true)
                             }
 
                             PICKED_UP -> {
                                 println("RRR :: inside PICKED_UP = ")
                                 whenStatusPickedUp(checkStatusResponse.responseData)
+                                writePreferences(CAN_SAVE_LOCATION, true)
                             }
 
                             DROPPED -> {
+                                writePreferences(CAN_SAVE_LOCATION, false)
                                 println("RRR :: inside DROPPED = ")
                                 val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
                                 startActivity(Intent(this, TaxiInvoiceActivity::class.java)
@@ -257,6 +262,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             }
 
                             COMPLETED -> {
+                                writePreferences(CAN_SAVE_LOCATION, false)
                                 println("RRR :: inside COMPLETED = ")
                                 val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
                                 startActivity(Intent(this, TaxiInvoiceActivity::class.java)
@@ -430,7 +436,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 if (endLatLng.latitude > 0 && polyLine.size > 0) try {
                     CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
                     polyLineRerouting(endLatLng, polyLine)
-
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -438,23 +443,21 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 //                updateMapLocation(LatLng(location.latitude, location.longitude))
 //                PY 01 K 3875
 
-                val pointList = AppDatabase.getAppDataBase(this@TaxiDashboardActivity)!!.locationPointsDao().getAllPoints()
-
-                println("RRRR :: pointList = ${Gson().toJson(pointList)}")
+                longLog(Gson().toJson(AppDatabase.getAppDataBase(this@TaxiDashboardActivity)!!.locationPointsDao().getAllPoints()))
             }
         }
     }
 
     private fun polyLineRerouting(point: LatLng, polyLine: ArrayList<LatLng>) {
         println("----->     RRR TaxiDashBoardActivity.polyLineRerouting     <-----")
-        System.out.println("RRR containsLocation = " + polyUtil.containsLocation(point, polyLine, true))
-        System.out.println("RRR isLocationOnEdge = " + polyUtil.isLocationOnEdge(point, polyLine, true, 10.0))
-        System.out.println("RRR locationIndexOnPath = " + polyUtil.locationIndexOnPath(point, polyLine, true, 10.0))
-        System.out.println("RRR locationIndexOnEdgeOrPath = " + polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 10.0))
+        println("RRR containsLocation = " + polyUtil.containsLocation(point, polyLine, true))
+        println("RRR isLocationOnEdge = " + polyUtil.isLocationOnEdge(point, polyLine, true, 10.0))
+        println("RRR locationIndexOnPath = " + polyUtil.locationIndexOnPath(point, polyLine, true, 10.0))
+        println("RRR locationIndexOnEdgeOrPath = " + polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 10.0))
 
         val index = polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 10.0)
         if (index >= 0) {
-            polyLine.subList(0, index + 1).clear()
+            polyLine.subList(0, index + 2).clear()
             polyLine.add(0, point)
             mPolyline!!.remove()
             val options = PolylineOptions()
@@ -593,7 +596,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun setWaitingTime() {
         val time = mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingTime
 
-        if (isNeedToUpdateWaiting == true && time > 0) {
+        if (isNeedToUpdateWaiting && time > 0) {
             cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
             val h = (time / 3600000).toInt()
             val m = (time - h * 3600000).toInt() / 60000
@@ -618,5 +621,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             btnWaiting.backgroundTintList = ContextCompat.getColorStateList(this, R.color.white)
             btnWaiting.setTextColor(ContextCompat.getColor(this, R.color.black))
         }
+    }
+
+    override fun onBackPressed() {
+        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 }

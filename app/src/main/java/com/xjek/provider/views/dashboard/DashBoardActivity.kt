@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import androidx.databinding.ViewDataBinding
@@ -16,22 +17,18 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
-import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
-import com.xjek.base.data.Constants.BroadCastTypes.ORDER_BROADCAST
-import com.xjek.base.data.Constants.BroadCastTypes.SERVICE_BROADCAST
-import com.xjek.base.data.Constants.BroadCastTypes.TRANSPORT_BROADCAST
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
 import com.xjek.base.data.Constants.ModuleTypes.SERVICE
 import com.xjek.base.data.Constants.ModuleTypes.TRANSPORT
 import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
 import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
-import com.xjek.base.data.PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
-import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.LocationCallBack
@@ -58,6 +55,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     private var mIncomingRequestDialog = IncomingRequestDialog()
     private var locationServiceIntent: Intent? = null
+    private var checkStatusApiCounter = 0
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -117,8 +115,9 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     override fun onResume() {
         super.onResume()
         mViewModel.callCheckStatusAPI()
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
-        AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
+//        AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
     }
 
     override fun setTitle(title: String) {
@@ -188,52 +187,45 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     private fun getApiResponse() {
         println("RRR :: HomeFragment.getApiResponse")
-        /*observeLiveData(mViewModel.checkRequestLiveData) { checkStatusData ->
-            run {
-
-            }
-
-        }*/
-
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
-                if (checkStatusData.statusCode == "200") {
-                    if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
-                        Log.e("CheckStatus", "-----" + checkStatusData.responseData.requests[0].status)
-                        when (checkStatusData.responseData.requests[0].request.status) {
-                            SEARCHING -> {
-                                if (!mIncomingRequestDialog.isShown()) {
-                                    val bundle = Bundle()
-                                    val strRequest = Gson().toJson(checkStatusData)
-                                    bundle.putString("requestModel", strRequest)
-                                    mIncomingRequestDialog.arguments = bundle
-                                    mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
-                                }
-                            }
-
-                            else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
-                                TRANSPORT -> {
-                                    BROADCAST = TRANSPORT
-                                    startActivity(Intent(this, TaxiDashboardActivity::class.java))
-                                }
-                                SERVICE -> {
-                                    if (!BROADCAST.equals(SERVICE)) {
-                                        BROADCAST = SERVICE
-                                        startActivity(Intent(this, XuberMainActivity::class.java))
-                                    }
-                                }
-                                ORDER -> {
-                                    if (BROADCAST != ORDER) {
-                                        BROADCAST = ORDER
-                                        startActivity(Intent(this, TaxiDashboardActivity::class.java))
-                                    }
-                                }
-
-                                else -> BROADCAST = "BASE_BROADCAST"
+                if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
+                    Log.e("CheckStatus", "-----" + checkStatusData.responseData.requests[0].status)
+                    writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
+                    when (checkStatusData.responseData.requests[0].request.status) {
+                        SEARCHING -> {
+                            if (!mIncomingRequestDialog.isShown()) {
+                                val bundle = Bundle()
+                                val strRequest = Gson().toJson(checkStatusData)
+                                bundle.putString("requestModel", strRequest)
+                                mIncomingRequestDialog.arguments = bundle
+                                mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
                             }
                         }
-                    }
 
+                        else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
+                            TRANSPORT -> {
+                                BROADCAST = TRANSPORT
+                                val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                startActivity(intent)
+                            }
+                            SERVICE -> if (!BROADCAST.equals(SERVICE)) {
+                                BROADCAST = SERVICE
+                                val intent = Intent(this, XuberMainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                startActivity(intent)
+                            }
+                            ORDER -> if (BROADCAST != ORDER) {
+                                BROADCAST = ORDER
+                                val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                startActivity(intent)
+                            }
+
+                            else -> BROADCAST = "BASE_BROADCAST"
+                        }
+                    }
                 }
             }
         })
@@ -253,10 +245,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 SocketManager.emit(Constants.ROOM_NAME.COMMON_ROOM_NAME, Constants.ROOM_ID.COMMON_ROOM)
             }
         })
-
     }
-
-
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
@@ -265,7 +254,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-                mViewModel.callCheckStatusAPI()
+                if (checkStatusApiCounter++ % 10 == 0) mViewModel.callCheckStatusAPI()
             }
         }
     }

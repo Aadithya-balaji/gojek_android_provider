@@ -28,6 +28,7 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
+import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.LocationCallBack
@@ -108,7 +109,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         mViewModel.getProfile()
 
         getApiResponse()
-
     }
 
     override fun onResume() {
@@ -117,6 +117,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
 //        AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
+        updateCurrentLocation()
     }
 
     override fun setTitle(title: String) {

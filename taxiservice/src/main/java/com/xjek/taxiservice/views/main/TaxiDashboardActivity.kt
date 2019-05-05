@@ -434,7 +434,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 //            mViewModel.taxiStatusUpdate(params)
 
             ViewUtils.showAlert(this, "Do you have any Toll charge", object : ViewUtils.ViewCallBack {
-
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     val tollChargeDialog = TollChargeDialog()
                     val bundle = Bundle()
@@ -476,7 +475,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 //                updateMapLocation(LatLng(location.latitude, location.longitude))
 //                PY 01 K 3875
 
-                longLog(Gson().toJson(AppDatabase.getAppDataBase(this@TaxiDashboardActivity)!!.locationPointsDao().getAllPoints()))
+                longLog(Gson().toJson(AppDatabase.getAppDataBase(this@TaxiDashboardActivity)!!.locationPointsDao().getAllPoints()), "AAA")
             }
         }
     }

@@ -20,6 +20,7 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
+import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
@@ -30,6 +31,7 @@ import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
 import com.xjek.provider.views.pendinglist.PendingListDialog
+import kotlinx.android.synthetic.main.fragment_home_page.*
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         HomeNavigator,
@@ -53,9 +55,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
 
-   /* companion object {
-        var loadingProgress: MutableLiveData<Boolean>? = null
-    }*/
+    /* companion object {
+         var loadingProgress: MutableLiveData<Boolean>? = null
+     }*/
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
@@ -68,12 +70,12 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         initializeMap()
 
         val activity: DashBoardActivity = activity as DashBoardActivity
-       // loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
+        // loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
 //        mViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
         /*loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
         mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>*/
 
-        observeLiveData(mViewModel.showLoading){
+        observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
         pendingListDialog = PendingListDialog()
@@ -97,6 +99,10 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
 
         getApiResponse()
+
+        clearDatabase.setOnClickListener {
+            AppDatabase.getAppDataBase(context!!)!!.locationPointsDao().deleteAllPoint()
+        }
     }
 
     private fun getApiResponse() {

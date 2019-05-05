@@ -17,19 +17,15 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
-import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
-import com.xjek.base.data.Constants.BroadCastTypes.ORDER_BROADCAST
-import com.xjek.base.data.Constants.BroadCastTypes.SERVICE_BROADCAST
-import com.xjek.base.data.Constants.BroadCastTypes.TRANSPORT_BROADCAST
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
 import com.xjek.base.data.Constants.ModuleTypes.SERVICE
 import com.xjek.base.data.Constants.ModuleTypes.TRANSPORT
 import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
 import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
-import com.xjek.base.data.PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY
+import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
-import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.persistence.AppDatabase
@@ -242,7 +238,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         })
 
         observeLiveData(mViewModel.mProfileResponse) {
-            Constants.CITY_ID = it.profileData?.cityName?.id?.toIntOrNull() ?: 18422
+            val cityID = it.profileData?.cityName?.id?.toInt() ?: 0
+            PreferencesHelper.put(PreferencesKey.CITY_ID,cityID)
             SocketManager.emit(Constants.ROOM_NAME.COMMON_ROOM_NAME, Constants.ROOM_ID.COMMON_ROOM)
         }
 

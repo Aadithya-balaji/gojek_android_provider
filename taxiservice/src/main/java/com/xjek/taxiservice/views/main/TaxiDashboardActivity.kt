@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
@@ -44,6 +45,8 @@ import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.RideStatus.SCHEDULED
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.Constants.RideStatus.STARTED
+import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.writePreferences
@@ -213,28 +216,32 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun checkStatusAPIResponse() {
         mViewModel.showLoading.value = true
-        observeLiveData(mViewModel.checkStatusTaxiLiveData) { checkStatusResponse ->
+
+        mViewModel.checkStatusTaxiLiveData.observe(this,Observer {
+           checkStatusResponse -> run{
             if (checkStatusResponse?.statusCode.equals("200")) try {
                 mViewModel.showLoading.value = false
                 if (checkStatusResponse.responseData.request.status.isNotEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-                    if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    //if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
                         writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
 
-                        val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-                        Constants.REQ_ID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id
+                        val requestID = checkStatusResponse.responseData.request.id.toString()
 
-                        if(!roomConnected){
-                            roomConnected= true
+                        if (!roomConnected) {
+                            roomConnected = true
+                            val reqID = checkStatusResponse.responseData.request.id
+                            PreferencesHelper.put(PreferencesKey.REQ_ID,reqID)
                             SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
                         }
+
 
                         when (checkStatusResponse.responseData.request.status) {
                             SEARCHING -> {
                                 val params = HashMap<String, String>()
-                                params.put(com.xjek.base.data.Constants.Common.ID, requestID)
+                                params.put(Constants.Common.ID, requestID)
                                 mViewModel.taxiWaitingTime(params)
                             }
 
@@ -291,6 +298,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 e.printStackTrace()
             }
         }
+        })
 
         observeLiveData(mViewModel.waitingTimeLiveData) {
             if (mViewModel.waitingTimeLiveData.value != null) {
@@ -597,7 +605,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     lastWaitingTime = SystemClock.elapsedRealtime()
                     val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                     val params = HashMap<String, String>()
-                    params[com.xjek.base.data.Constants.Common.ID] = requestID
+                    params[Constants.Common.ID] = requestID
                     params["status"] = "1"
                     mViewModel.taxiWaitingTime(params)
                     cmWaiting.stop()
@@ -611,7 +619,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     if (mViewModel.checkStatusTaxiLiveData.value != null) {
                         val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                         val params = HashMap<String, String>()
-                        params.put(com.xjek.base.data.Constants.Common.ID, requestID)
+                        params.put(Constants.Common.ID, requestID)
                         params.put("status", "1")
                         mViewModel.taxiWaitingTime(params)
                     }

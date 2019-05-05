@@ -2,6 +2,7 @@ package com.xjek.provider.views.setup_services
 
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
@@ -30,6 +31,16 @@ class SetupServicesActivity : BaseActivity<ActivitySetupServicesBinding>(), Setu
         binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
         binding.toolbar.tbApp.tv_toolbar_title.text =
                 resources.getString(R.string.title_setup_services)
+
+        viewModel.getCategories()
+
+        checkAPIResponse()
+    }
+
+    private fun checkAPIResponse() {
+        observeLiveData(viewModel.getServicesDataObservable()) {
+
+        }
     }
 
     override fun onMenuItemClicked(position: Int) {

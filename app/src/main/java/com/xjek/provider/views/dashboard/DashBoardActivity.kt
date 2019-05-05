@@ -25,8 +25,8 @@ import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
-import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.socket.SocketListener

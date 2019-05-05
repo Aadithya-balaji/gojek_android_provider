@@ -14,10 +14,10 @@ import com.google.android.gms.location.*
 import com.google.firebase.database.FirebaseDatabase
 import com.xjek.base.R
 import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.persistence.AppDatabase
-import com.xjek.base.persistence.LocationPointsDao
 import com.xjek.base.persistence.LocationPointsEntity
 import java.io.Serializable
 import java.text.DateFormat
@@ -41,7 +41,7 @@ class BaseLocationService : Service() {
     private var mLocationCallback: LocationCallback? = null
 
     private var mLocation: Location? = null
-    private var pointsDao: LocationPointsDao? = null
+    private var tempLocation: Location? = null
 
     private val notification: Notification
         get() {
@@ -66,8 +66,6 @@ class BaseLocationService : Service() {
     override fun onCreate() {
         println("RRRR:: BaseLocationService.onCreate")
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        pointsDao = AppDatabase.getAppDataBase(this)!!.locationPointsDao()
 
         h = Handler()
         r = Runnable {
@@ -169,13 +167,10 @@ class BaseLocationService : Service() {
 
         val point = LocationPointsEntity(null, location.latitude, location.longitude,
                 DateFormat.getDateTimeInstance().format(Date()))
-//        point.lat = location.latitude
-//        point.lng = location.longitude
-//        point.time = DateFormat.getDateTimeInstance().format(Date())
 
-        if (providerId!! > 0) {
+        if (providerId!! > 0 && readPreferences(PreferencesKey.CAN_SAVE_LOCATION, false)!!) {
             FirebaseDatabase.getInstance().getReference("providerId$providerId").setValue(point)
-            pointsDao!!.insertPoint(point)
+            AppDatabase.getAppDataBase(this)!!.locationPointsDao().insertPoint(point)
         }
 
         val notificationId = 12345678

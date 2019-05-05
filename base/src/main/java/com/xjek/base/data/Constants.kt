@@ -66,12 +66,6 @@ object Constants {
         var SERVICE_ROOM:String = ""
     }
 
-    object ProjectTypes {
-        const val TRANSPORT = "TRANSPORT"
-        const val SERVICE = "SERVICE"
-        const val ORDER = "ORDER"
-    }
-
     object ModuleTypes {
         const val TRANSPORT = "TRANSPORT"
         const val SERVICE = "SERVICE"
@@ -101,7 +95,6 @@ object Constants {
         const val PICKED_UP = "PICKEDUP"
         const val DROPPED = "DROPPED"
         const val COMPLETED = "COMPLETED"
-
     }
 
     object Common {

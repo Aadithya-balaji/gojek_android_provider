@@ -5,7 +5,6 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.xjek.base.base.BaseDialogFragment
-import com.xjek.taximodule.ui.fragment.reason.ReasonViewModel
 import com.xjek.xuberservice.R
 import com.xjek.xuberservice.adapters.ReasonAdapter
 import com.xjek.xuberservice.databinding.DialogReasonBinding
@@ -30,6 +29,7 @@ class ReasonFragment : BaseDialogFragment<DialogReasonBinding>(), CustomClickLis
         mReasonFragmentBinding.setLifecycleOwner(this)
         getApiResponse()
         mViewModel.getReason(com.xjek.base.data.Constants.Reasons.SERVICE)
+
         // mReasonFragmentBinding.
     }
 
@@ -46,6 +46,9 @@ class ReasonFragment : BaseDialogFragment<DialogReasonBinding>(), CustomClickLis
     }
 
     override fun onListClickListner(position: Int) {
+        val reason = mViewModel.mReasonResponseData.value!!.responseData!!.get(position)!!.reason
+        getReasons.reasonForCancel(reason!!)
+        dialog!!.cancel()
     }
 
     override fun getLayout(): Int {

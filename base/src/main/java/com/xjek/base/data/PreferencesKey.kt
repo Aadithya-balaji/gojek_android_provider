@@ -18,4 +18,5 @@ object PreferencesKey {
     const val CURRENT_TRANXIT_STATUS = "CURRENT_TRANXIT_STATUS"
     const val CITY_ID = "city_id"
     const val REQ_ID = "req_id"
+    const val CAN_SAVE_LOCATION = "CAN_SAVE_LOCATION"
 }

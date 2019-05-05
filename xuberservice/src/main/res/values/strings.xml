@@ -61,5 +61,7 @@
     <string name="xuper_rating">Rating</string>
     <string name="xuper_rate">Rate your service with %s</string>
     <string name="xuper_comments">Write Comments</string>
+    <string name="xuper_service_location">Service Location</string>
+    <string name="xuper_rating_user">%.2f</string>
 
 </resources>

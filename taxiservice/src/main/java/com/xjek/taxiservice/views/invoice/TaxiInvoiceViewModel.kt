@@ -36,4 +36,8 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
             (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
         }
     }
+
+    fun closeActivity(){
+        navigator.closeInvoiceActivity()
+    }
 }

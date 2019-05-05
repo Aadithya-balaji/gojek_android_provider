@@ -127,7 +127,9 @@ data class XuperCheckRequest(
                 val use_wallet: Int? = 0,
                 val user: User? = User(),
                 val user_id: Int? = 0,
-                val user_rated: Int? = 0
+                val user_rated: Int? = 0,
+                val category: Category? = Category(),
+                val subcategory: Subcategory? =Subcategory()
         ) {
             data class Service(
                     val allow_after_image: Int? = 0,
@@ -216,6 +218,26 @@ data class XuperCheckRequest(
                 val service: String? = "",
                 val status: String? = "",
                 val type: String? = ""
+        )
+
+        data class Category(
+                val company_id: Int? = 0,
+                val id: Int? = 0,
+                val picture: String? = "",
+                val price_choose: String? = "",
+                val service_category_name: String? = "",
+                val service_category_order: Int? = 0,
+                val service_category_status: Int? = 0
+        )
+
+        data class Subcategory(
+                val company_id: Int? = 0,
+                val id: Int? = 0,
+                val picture: String? = "",
+                val service_category_id: Int? = 0,
+                val service_subcategory_name: String? = "",
+                val service_subcategory_order: Int? = 0,
+                val service_subcategory_status: Int? = 0
         )
     }
 }

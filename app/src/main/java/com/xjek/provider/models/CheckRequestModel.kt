@@ -212,7 +212,7 @@ data class Invoice(
 
 data class Payment(
         var card: Int = 0,
-        var cash: Int = 0,
+        var cash: Double = 0.0,
         var commision: Double = 0.0,
         var commision_percent: Int = 0,
         var company_id: Int = 0,

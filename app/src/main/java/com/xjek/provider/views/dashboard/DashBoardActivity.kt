@@ -23,6 +23,7 @@ import com.xjek.base.data.Constants.ModuleTypes.TRANSPORT
 import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
 import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
+import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.writePreferences
@@ -151,7 +152,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun hideRightIcon(isNeedHide: Boolean) {
-        if (isNeedHide) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
+        // if (isNeedHide) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
     }
 
     override fun updateLocation(isTrue: Boolean) {
@@ -187,6 +188,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     private fun getApiResponse() {
         println("RRR :: HomeFragment.getApiResponse")
+
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
@@ -213,6 +215,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             SERVICE -> if (!BROADCAST.equals(SERVICE)) {
                                 BROADCAST = SERVICE
                                 val intent = Intent(this, XuberMainActivity::class.java)
+                                intent.putExtra("lat", mViewModel.latitude.value)
+                                intent.putExtra("lon", mViewModel.longitude.value)
                                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                 startActivity(intent)
 
@@ -229,10 +233,12 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                     }
                 }
             }
+
         })
 
         observeLiveData(mViewModel.mProfileResponse) {
-            Constants.CITY_ID = it.profileData?.cityName?.id?.toIntOrNull() ?: 18422
+            val cityID = it.profileData?.cityName?.id?.toInt() ?: 0
+            PreferencesHelper.put(PreferencesKey.CITY_ID,cityID)
             SocketManager.emit(Constants.ROOM_NAME.COMMON_ROOM_NAME, Constants.ROOM_ID.COMMON_ROOM)
         }
 

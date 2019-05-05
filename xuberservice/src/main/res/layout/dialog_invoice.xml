@@ -12,6 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_dash_square"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
         android:orientation="vertical">
 
         <TextView
@@ -58,7 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="Sundarmoorthu koapakris"
+                        android:text="@{invoicemodel.userName}"
                         android:textColor="@color/xuper_light_black"
                         android:textSize="@dimen/_12sdp" />
 

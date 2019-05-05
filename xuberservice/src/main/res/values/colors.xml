@@ -19,7 +19,7 @@
     <!-- InVoice -->
     <color name="xuper_invoice_grey">#DDDDDD</color>
     <color name="xuper_light_black">#FF626262</color>
-    <color name="xuper_invoice_paid">#FF5597C4</color>
+    <color name="xuper_invoice_paid">#02AFEF</color>
     <color name="xuper_invoice_confirm_pay">#FF297BB5</color>
 
     <!-- Rating -->
@@ -27,6 +27,7 @@
 
     <!-- Additional Charges -->
     <color name="xuper_extra_amt_bg">#FFDDDDDD</color>
+    <color name="xuper_circle_blue">#FF02AFEF</color>
 
 
 </resources>

@@ -16,5 +16,7 @@ object PreferencesKey {
     const val PAYMENT_LIST = "paymentlist"
     const val FIRE_BASE_PROVIDER_IDENTITY = "FIRE_BASE_PROVIDER_IDENTITY"
     const val CURRENT_TRANXIT_STATUS = "CURRENT_TRANXIT_STATUS"
+    const val CITY_ID = "city_id"
+    const val REQ_ID = "req_id"
     const val CAN_SAVE_LOCATION = "CAN_SAVE_LOCATION"
 }

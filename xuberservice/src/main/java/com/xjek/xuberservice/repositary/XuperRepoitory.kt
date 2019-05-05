@@ -1,5 +1,6 @@
 package com.xjek.xuberservice.repositary
 
+import android.util.Log
 import com.xjek.base.data.Constants
 import com.xjek.base.repository.BaseRepository
 import com.xjek.xuberservice.reasons.ReasonViewModel
@@ -28,14 +29,15 @@ class XuperRepoitory : BaseRepository() {
                     viewModel.xuperCheckRequest.postValue(it)
                 }, {
                      viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                    Log.e("Error","------"+getErrorMessage(it))
                 })
 
     }
 
 
-    fun xuperUpdateRequest(viewModel: XuberMainViewModel, token: String, params: HashMap<String, RequestBody>, @Part image: MultipartBody.Part?): Disposable {
+    fun xuperUpdateRequest(viewModel: XuberMainViewModel, token: String, params: HashMap<String, RequestBody>,@Part frontImage:MultipartBody.Part?,@Part backImage:MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
-                .xuperUpdateServcie(token, params, image!!)
+                .xuperUpdateServcie(token, params,frontImage,backImage)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -46,9 +48,9 @@ class XuperRepoitory : BaseRepository() {
 
     }
 
-    fun confirmPayment(viewModel: XuperInvoiceViewModel, token: String, params: HashMap<String, RequestBody>, @Part image: MultipartBody.Part?): Disposable {
+    fun confirmPayment(viewModel: XuperInvoiceViewModel, token: String, params: HashMap<String, RequestBody>, @Part frontImag: MultipartBody.Part?,@Part backImage:MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
-                .xuperUpdateServcie(token, params, image!!)
+                .xuperUpdateServcie(token, params,frontImag,backImage)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

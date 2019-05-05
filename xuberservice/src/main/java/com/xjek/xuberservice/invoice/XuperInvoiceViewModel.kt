@@ -31,7 +31,7 @@ class XuperInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
         params.put(Constants.Common.ID, RequestBody.create(MediaType.parse("text/plain"), requestID.value))
         params.put(Constants.XuperProvider.STATUS, RequestBody.create(MediaType.parse("text/plain"), "PAYMENT"))
         params.put(Constants.Common.METHOD, RequestBody.create(MediaType.parse("text/plain"), "PATCH"))
-        getCompositeDisposable().add(xuperRepository.confirmPayment(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null))
+        getCompositeDisposable().add(xuperRepository.confirmPayment(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null,null))
     }
 }
 

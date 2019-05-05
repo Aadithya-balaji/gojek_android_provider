@@ -169,7 +169,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         println("RRR :: HomeFragment.getApiResponse")
         observeLiveData(mViewModel.checkRequestLiveData) { checkStatusData ->
             if (checkStatusData.statusCode == "200") {
-                if (checkStatusData.responseData.requests.isNotEmpty())
+                if (checkStatusData.responseData.requests.isNotEmpty()){
                     Log.e("CheckStatus", "-----" + checkStatusData.responseData.requests[0].status)
                 when (checkStatusData.responseData.requests[0].request.status) {
                     SEARCHING -> {
@@ -190,7 +190,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                         SERVICE -> {
                             if (!BROADCAST.equals(SERVICE)) {
                                 BROADCAST = SERVICE
-                                startActivity(Intent(this, XuberMainActivity::class.java))
+                                val intent = Intent(this, XuberMainActivity::class.java)
+                                intent.putExtra("lat", currentLat)
+                                intent.putExtra("lon", currentLong)
+                                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                startActivity(intent)
                             }
                         }
                         ORDER -> {
@@ -202,6 +206,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
                         else -> BROADCAST = "BASE_BROADCAST"
                     }
+                }
                 }
             }
         }

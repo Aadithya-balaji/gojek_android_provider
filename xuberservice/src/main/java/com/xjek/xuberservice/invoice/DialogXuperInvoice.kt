@@ -49,6 +49,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         dialogInvoiceBinding = viewDataBinding as DialogInvoiceBinding
         xuperInvoiceModel = XuperInvoiceViewModel()
+        xuperInvoiceModel.navigator=this
         dialogInvoiceBinding.invoicemodel = xuperInvoiceModel
         xuperInvoiceModel.showProgress = loadingObservable as MutableLiveData<Boolean>
         updateUi()
@@ -61,6 +62,11 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                 xuperInvoiceModel.showProgress.value = false
                 if (updateRequest!!.statusCode.equals("200")) {
                     val ratingDialog = DialogXuperRating()
+                    val strupdateRequest=Gson().toJson(updateRequest)
+                    val bundle=Bundle()
+                    bundle.putBoolean("isFromCheckRequest",false)
+                    bundle.putString("updateRequestModel",strupdateRequest)
+                    ratingDialog.arguments=bundle
                     ratingDialog.show(childFragmentManager, "ratingDialog")
                 }
             }
@@ -77,7 +83,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
         } else {
             strUpdateRequest = if (arguments!!.containsKey("strUpdateReq")) arguments!!.getString("strUpdateReq") else ""
             if (!strUpdateRequest.isNullOrEmpty())
-                xuperCheckRequest = Gson().fromJson("strUpdateReq", XuperCheckRequest::class.java)
+                xuperCheckRequest = Gson().fromJson(strUpdateRequest, XuperCheckRequest::class.java)
         }
     }
 

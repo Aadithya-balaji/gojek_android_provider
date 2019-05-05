@@ -10,6 +10,7 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
+import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySplashBinding
 import com.xjek.provider.models.ConfigResponseModel
@@ -91,7 +92,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
             else {
-
                 launchNewActivity(DashBoardActivity::class.java, true)
             }
         }

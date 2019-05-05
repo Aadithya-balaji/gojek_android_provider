@@ -9,6 +9,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.View
 import android.widget.Chronometer
 import android.widget.FrameLayout
@@ -71,7 +72,11 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     private var backImagMultiPart: MultipartBody.Part? = null
     private lateinit var activityXuberMainBinding: ActivityXubermainBinding
     private lateinit var sheetBehavior: BottomSheetBehavior<FrameLayout>
+    private var currentLatitude: Double? = 0.0
+    private var currentLontidue: Double? = 0.0
     val invoicePage = DialogXuperInvoice()
+    val ratingPage = DialogXuperRating()
+
     override fun getLayoutId(): Int = R.layout.activity_xubermain
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
@@ -83,34 +88,44 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         xuberMainViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         initialiseMap()
         getApiResponse()
+        getBundleValues()
+    }
+
+    fun getBundleValues() {
+        currentLatitude = if (intent.hasExtra("lat")) intent.getDoubleExtra("lat", 0.0) else 0.0
+        currentLontidue = if (intent.hasExtra("lon")) intent.getDoubleExtra("lon", 0.0) else 0.0
     }
 
     fun getApiResponse() {
         xuberMainViewModel.xuperCheckRequest.observe(this, object : androidx.lifecycle.Observer<XuperCheckRequest> {
             override fun onChanged(xuperCheckRequest: XuperCheckRequest?) {
-                val status = xuperCheckRequest?.let { it.responseData!!.requests!!.status }
-                when (status) {
-                    ACCEPTED -> {
-                        whenAccepted()
-                    }
-                    ARRIVED -> {
-                        whenArrvied()
+                if (xuperCheckRequest!!.responseData!!.requests != null) {
+                    val status = xuperCheckRequest?.let { it.responseData!!.requests!!.status }
+                    var serviceLcoation = xuperCheckRequest?.let { it.responseData!!.requests!!.s_address }
+                    activityXuberMainBinding.tvXuberPickupLocation.setText(serviceLcoation)
+                    when (status) {
+                        ACCEPTED -> {
+                            whenAccepted()
+                        }
+                        ARRIVED -> {
+                            whenArrvied()
+                        }
+
+                        PICKED_UP -> {
+                            whenStarted()
+                            startTheTimer()
+                        }
+
+                        DROPPED -> {
+                            whenDropped(xuperCheckRequest.responseData!!)
+                        }
+
+                        COMPLETED -> {
+                            whenPayment(xuperCheckRequest.responseData!!)
+                        }
                     }
 
-                    PICKED_UP -> {
-                        whenStarted()
-                        startTheTimer()
-                    }
-
-                    DROPPED -> {
-                        whenDropped(xuperCheckRequest.responseData!!)
-                    }
-
-                    COMPLETED -> {
-                        whenPayment(xuperCheckRequest.responseData!!)
-                    }
                 }
-
             }
         })
 
@@ -209,6 +224,11 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         this.mGoogleMap = mGoogleMap
         this.mGoogleMap?.setOnCameraMoveListener(this@XuberMainActivity)
         this.mGoogleMap?.setOnCameraIdleListener(this@XuberMainActivity)
+        xuberMainViewModel.latitude.value = currentLatitude
+        xuberMainViewModel.longitude.value = currentLontidue
+        updateMapLocation(LatLng(currentLatitude!!, currentLontidue!!))
+        Log.e("currentloc", "----" + currentLatitude + "---" + currentLontidue)
+        xuberMainViewModel.callXuperCheckRequest()
     }
 
     override fun onCameraMove() {
@@ -289,12 +309,14 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
 
     //After Payment Successfull
     fun whenPayment(responseData: XuperCheckRequest.ResponseData) {
-        val ratingPage = DialogXuperRating()
         val bundle = Bundle()
         val strCheckRequest = Gson().toJson(xuberMainViewModel.xuperCheckRequest.value)
         bundle.putString("strCheckReq", strCheckRequest)
-        ratingPage.arguments = bundle
-        ratingPage.show(supportFragmentManager, "ratingPage")
+        bundle.putBoolean("isFromCheckRequest", true)
+        if (ratingPage.isShown() == false) {
+            ratingPage.arguments = bundle
+            ratingPage.show(supportFragmentManager, "ratingPage")
+        }
     }
 
 
@@ -319,7 +341,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
 
                     ARRIVED -> {
                         edtXuperOtp.visibility = View.VISIBLE
-                        xuberMainViewModel.updateRequest(Constants.RideStatus.ARRIVED, null)
+                        xuberMainViewModel.updateRequest(Constants.RideStatus.ARRIVED, null, false)
                     }
 
                     START -> {
@@ -328,8 +350,8 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
                         } else if (xuberMainViewModel.otp.value.isNullOrEmpty()) {
                             ViewUtils.showToast(this@XuberMainActivity, resources.getString(R.string.empty_otp), false)
                         } else {
-                            frontImgMutlipart = getImageMutiPart(frontImgFile!!)
-                            xuberMainViewModel.updateRequest(Constants.RideStatus.PICKED_UP, frontImgMutlipart)
+                            frontImgMutlipart = getImageMutiPart(frontImgFile!!, true)
+                            xuberMainViewModel.updateRequest(Constants.RideStatus.PICKED_UP, frontImgMutlipart, true)
                         }
                     }
 
@@ -337,8 +359,8 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
                         if (backImgFile == null) {
                             ViewUtils.showToast(this@XuberMainActivity, resources.getString(R.string.empty_back_image), false)
                         } else {
-                            backImagMultiPart = getImageMutiPart(backImgFile!!)
-                            xuberMainViewModel.updateRequest(Constants.RideStatus.DROPPED, backImagMultiPart)
+                            backImagMultiPart = getImageMutiPart(backImgFile!!, false)
+                            xuberMainViewModel.updateRequest(Constants.RideStatus.DROPPED, backImagMultiPart, false)
                         }
                     }
 
@@ -367,29 +389,34 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         if (!startedTime.isNullOrEmpty()) {
             val serviceDate = CommonMethods.getLocalTime(startedTime!!, UTCTIME)
             val timeinMilliSec = serviceDate
-            cm_service_time.base = SystemClock.elapsedRealtime() - (timeinMilliSec)
+            //  cm_service_time.base = SystemClock.elapsedRealtime() - (timeinMilliSec)
             val h = (timeinMilliSec / 3600000).toInt()
             val m = (timeinMilliSec - h * 3600000).toInt() / 60000
             val s = (timeinMilliSec - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
             val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
             cm_service_time.setText(formatedTime)
-            cm_service_time.start()
+            //   cm_service_time.start()
         } else {
             cm_service_time.base = SystemClock.elapsedRealtime()
             cm_service_time.start()
         }
     }
 
-    fun getImageMutiPart(file: File): MultipartBody.Part {
+    fun getImageMutiPart(file: File, isFrontImage: Boolean): MultipartBody.Part {
+        var fileBody: MultipartBody.Part
         val pictureFile = file
         val requestFile = RequestBody.create(MediaType.parse("*/*"), pictureFile)
-        val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
+        if (isFrontImage)
+            fileBody = MultipartBody.Part.createFormData("before_picture", pictureFile.name, requestFile)
+        else
+            fileBody = MultipartBody.Part.createFormData("after_picture", pictureFile.name, requestFile)
+
         return fileBody
     }
 
 
     fun getImageFile(isFront: Boolean, fileUri: Uri) {
-        if (isFront)
+        if (isFront == true)
             frontImgFile = File(fileUri.path)
         else
             backImgFile = File(fileUri.path)
@@ -398,7 +425,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     override fun getFilePath(filePath: Uri) {
         if (xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED))
             getImageFile(true, filePath)
-        else if (xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.service_status.equals(DROPPED))
+        else if (xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP) || activityXuberMainBinding.llBottomService.llConfirm.tvAllow.text.equals(COMPLETED))
             getImageFile(false, filePath)
     }
 

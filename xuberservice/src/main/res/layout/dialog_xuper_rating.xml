@@ -48,7 +48,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/xuber_grey"
-                android:text="2.1"
                 android:textSize="@dimen/_10sdp"
                 android:fontFamily="@font/avenirltstd_medium"/>
             <ImageView
@@ -91,6 +90,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:fontFamily="@font/avenirltstd_medium"
             android:textAllCaps="true"
+            android:onClick="@{() -> ratingmodel.callRateApi()}"
             android:textSize="@dimen/_14sdp"
             android:textColor="@color/xuper_invoice_confirm_pay"/>
     </LinearLayout>

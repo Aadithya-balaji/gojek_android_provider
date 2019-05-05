@@ -26,7 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "BASE_URL", "\"https://xjekapi.xtikr.com/\"")
             buildConfigField("String", "SALT_KEY", "\"MQ==\"")
-            buildConfigField("String","STRIPE_KEY","\"pk_test_DbfzA8Pv1MDErUiHakK9XfLe\"")
+            buildConfigField("String", "STRIPE_KEY", "\"pk_test_DbfzA8Pv1MDErUiHakK9XfLe\"")
         }
     }
     // Configured Java 8 language features for each module.
@@ -83,6 +83,8 @@ dependencies {
     api 'com.google.android.gms:play-services-maps:16.1.0'
     api 'com.google.maps:google-maps-services:0.2.7'
     api 'com.google.android.gms:play-services-location:16.0.0'
+    //      Map Utils
+    api 'com.google.maps.android:android-maps-utils:0.5'
 //    api ("com.google.android.libraries.places:places:1.0.0") {
 //        exclude group: 'com.google.common.util.concurrent', module: 'ListenableFuture'
 //    }
@@ -123,10 +125,26 @@ dependencies {
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
 
     //Firebase
+    api 'com.google.firebase:firebase-core:16.0.8'
     api 'com.google.firebase:firebase-database:16.1.0'
+
+    //      Room Database
+//    implementation "androidx.room:room-runtime:2.1.0-alpha07"
+//    annotationProcessor "androidx.room:room-compiler:2.1.0-alpha07"
+
+    api "androidx.room:room-runtime:2.1.0-alpha07"
+    api "androidx.room:room-ktx:2.1.0-alpha07"
+    kapt "androidx.room:room-compiler:2.1.0-alpha07"
+
+    // For Kotlin use kapt instead of annotationProcessor
 
     api project(':cropperlibrary')
     api 'com.github.jkwiecien:EasyImage:2.0.4'
+
+    //Socket IO
+    api ('io.socket:socket.io-client:1.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
 
     implementation project(':cropperlibrary')
 
@@ -134,3 +152,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+//apply plugin: 'com.google.gms.google-services'

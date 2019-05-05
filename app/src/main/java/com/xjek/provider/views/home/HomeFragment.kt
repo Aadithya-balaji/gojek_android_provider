@@ -78,7 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
         pendingListDialog = PendingListDialog()
         incomingRequestDialogDialog = IncomingRequestDialog()
-
+        incomingRequestDialogDialog.isCancelable = false
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
@@ -190,6 +190,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         super.onAttach(context)
         dashBoardNavigator = context as DashBoardNavigator
         dashBoardNavigator.hideRightIcon(true)
+        dashBoardNavigator.showLogo(true)
     }
 
     override fun changeStatus(view: View) {

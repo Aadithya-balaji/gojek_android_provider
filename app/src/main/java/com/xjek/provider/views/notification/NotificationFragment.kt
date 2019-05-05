@@ -42,7 +42,6 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         notificationViewModel.getNotificationList()
 
         dashBoardNavigator.setTitle(resources.getString(R.string.title_notification))
-        dashBoardNavigator.setRightIcon(R.drawable.ic_logout)
         dashBoardNavigator.hideRightIcon(false)
         dashBoardNavigator.showLogo(false)
 

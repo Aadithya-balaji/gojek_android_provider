@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
@@ -34,13 +35,12 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     private var totalSeconds: Int? = 0
     private var incomingRequestModel: CheckRequestModel? = null
 
-    override fun getLayout(): Int {
-        return R.layout.dialog_taxi_incoming_request
-    }
+    override fun getLayout(): Int = R.layout.dialog_taxi_incoming_request
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getBundleArugment()
+        setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
     }
 
     fun isShown(): Boolean {
@@ -50,6 +50,11 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timerToTakeOrder.cancel()
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
@@ -64,7 +69,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
             val time = String.format("%d:%d", minutes, seconds)
-            initCircularSeekbar(0f, time)
+            initCircularSeekBar(0f, time)
             val totalMilliSeconds = totalSeconds!! * 1000
             val totalTimeInLong = totalMilliSeconds.toLong()
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
@@ -121,7 +126,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         incomingRequestViewModel.rejectRequest(params)
     }
 
-    fun initCircularSeekbar(percentage: Float, time: String) {
+    fun initCircularSeekBar(percentage: Float, time: String) {
         circularProgressBar = dialogTaxiIncomingReqBinding.ivRequestTime
         val circularProgressBarModel = CircularProgressBarModel()
         circularProgressBarModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
@@ -176,6 +181,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     inner class MyCountDownTimer(startTime: Long, interval: Long) : CountDownTimer(startTime, interval) {
 
         override fun onFinish() {
+            dismiss()
         }
 
         override fun onTick(millisUntilFinished: Long) {
@@ -187,7 +193,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             val toPercent = interval / (totalSeconds!! * 1000)
             val result = 100 - toPercent
             Log.e("percentage", "----" + result.toFloat())
-            initCircularSeekbar(result.toFloat(), time)
+            initCircularSeekBar(result.toFloat(), time)
         }
     }
 

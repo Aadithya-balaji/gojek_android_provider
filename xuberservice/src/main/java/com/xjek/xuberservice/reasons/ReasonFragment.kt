@@ -5,7 +5,6 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.xjek.base.base.BaseDialogFragment
-import com.xjek.taximodule.ui.fragment.reason.ReasonViewModel
 import com.xjek.xuberservice.R
 import com.xjek.xuberservice.adapters.ReasonAdapter
 import com.xjek.xuberservice.databinding.DialogReasonBinding

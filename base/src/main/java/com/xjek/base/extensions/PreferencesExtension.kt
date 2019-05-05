@@ -1,5 +1,6 @@
 package com.xjek.base.extensions
 
+import android.app.Service
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -12,6 +13,10 @@ inline fun <reified T> FragmentActivity.writePreferences(key: String, value: T) 
 }
 
 inline fun <reified T> Fragment.writePreferences(key: String, value: T) {
+    preferencesHelper.put(key, value)
+}
+
+inline fun <reified T> Service.writePreferences(key: String, value: T) {
     preferencesHelper.put(key, value)
 }
 
@@ -40,6 +45,10 @@ inline fun <reified T> ViewModel.readPreferences(key: String): T {
 }
 
 inline fun <reified T> ViewModel.readPreferences(key: String, value: T): T? {
+    return preferencesHelper.get(key, value)
+}
+
+inline fun <reified T> Service.readPreferences(key: String, value: T): T? {
     return preferencesHelper.get(key, value)
 }
 

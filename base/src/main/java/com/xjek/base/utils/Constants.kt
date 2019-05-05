@@ -9,5 +9,7 @@ class  Constants{
         val UTCTIME="yyyy-dd-MM HH:mm:ss"
         val SERVICESIMPLEDATEFORMAT = SimpleDateFormat(UTCTIME, Locale.getDefault())
 
+        val currency = "$"
+
     }
 }

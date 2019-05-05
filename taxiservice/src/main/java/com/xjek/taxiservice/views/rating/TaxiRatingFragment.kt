@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.FragmentRatingBinding
+import com.xjek.taxiservice.views.invoice.TaxiInvoiceViewModel
 import kotlinx.android.synthetic.main.fragment_rating.*
 
 class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBinding>(), TaxiRatingNavigator {
@@ -25,11 +27,6 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
     override fun onAttach(context: Context) {
         super.onAttach(context)
         appCompatActivity = context as AppCompatActivity
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //setStyle(STYLE_NO_TITLE, R.style.RatingTheme)
     }
 
     override fun onStart() {
@@ -49,6 +46,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         fragmentRatingBinding = viewDataBinding as FragmentRatingBinding
+        val mTaxiInvoiceViewModel = ViewModelProviders.of(activity!!).get(TaxiInvoiceViewModel::class.java)
         val mViewModel = TaxiRatingViewModel()
         fragmentRatingBinding!!.ratingmodel = mViewModel
         mViewModel.navigator = this
@@ -83,8 +81,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         observeLiveData(mViewModel.ratingLiveData) {
             mViewModel.showLoading.value = false
             if (mViewModel.ratingLiveData.value != null)
-                if (mViewModel.ratingLiveData.value!!.statusCode.equals("200"))
-                    activity!!.finish()
+                if (mViewModel.ratingLiveData.value!!.statusCode.equals("200")) mTaxiInvoiceViewModel.closeActivity()
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.xjek.provider.network
 
-import com.xjek.provider.model.CountryListResponse
+import com.xjek.provider.model.*
 import com.xjek.provider.models.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -192,6 +192,34 @@ interface AppWebService {
                      @Part frontImage: MultipartBody.Part?, @Part backImage: MultipartBody.Part?
     ): Observable<AddDocumentResponse>
 
+    @GET("provider/history/{selcetedservice}")
+    fun getTransportHistory(@Header("Authorization") token: String,
+                            @Path("selcetedservice") selectedservice: String,
+                            @QueryMap params: HashMap<String, String>): Observable<TransportHistory>
+
+    @GET("provider/upcoming/trips/transport")
+    fun getServiceHistory(@Header("Authorization") token: String,
+                          @QueryMap params: HashMap<String, String>): Observable<TransportHistory>
+
+
+    @GET("provider/history/transport/{id}")
+    fun getHistoryDetail(@Header("Authorization") token: String,
+                         @Path("id") id: String): Observable<HistoryDetailModel>
+
+    @GET("provider/history/transport/{id}")
+    fun getUpcomingHistoryDetail(@Header("Authorization") token: String,
+                                 @Path("id") id: String): Observable<HistoryDetailModel>
+    @GET("provider/ride/dispute")
+    fun getDisputeList(@Header("Authorization") token: String): Observable<DisputeListModel>
+
+    @FormUrlEncoded
+    @POST("provider/ride/dispute")
+    abstract fun addDispute(@Header("Authorization") token: String,
+                            @FieldMap params: HashMap<String, String>): Observable<ResponseData>
+
+    @GET("provider/ride/dispute/{id}")
+    fun getDisputeStatus(@Header("Authorization") token: String,
+                         @Path("id") id: String): Observable<DisputeStatusModel>
 
 
 }

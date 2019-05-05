@@ -39,6 +39,49 @@ class CommanMethods {
         }
 
 
+        fun getLocalTimeStamp(dateStr: String, request: String): String {
+            val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            df.timeZone = TimeZone.getTimeZone("UTC")
+            var date: Date? = null
+            val localTime = ""
+            var calendar: Calendar? = null
+            var strDate = ""
+            try {
+                date = df.parse(dateStr)
+                calendar = Calendar.getInstance(TimeZone.getDefault())
+                calendar!!.time = date!!
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+            val dayOfTheWeek =  SimpleDateFormat("EEEE").format(date) // Thursday
+            val day = SimpleDateFormat("dd").format(date) // 20
+            val monthString = SimpleDateFormat("MMM").format(date) // Jun
+            val monthNumber = SimpleDateFormat("MM").format(date) // 06
+            val hours = SimpleDateFormat("hh").format(date) // 12
+            val mins = SimpleDateFormat("mm").format(date) // 60
+            val am_pm = SimpleDateFormat("a").format(date) // 60
+
+            val year = calendar!!.get(Calendar.YEAR)
+
+            Log.d("Date", day + "-" + dayOfTheWeek + "-" + monthString + "-" + monthNumber +
+                    "-"+year+"/" + hours + ":" + mins + ":" + am_pm)
+
+            if(request.equals("Req_Date_Month")) return day+" "+monthString
+            if (request.equals("Req_time")) return hours+":"+mins+" "+am_pm
+
+            val day_month = calendar!!.get(Calendar.DAY_OF_MONTH)
+            val strMonth = SimpleDateFormat("MMM").format(calendar.time)
+
+            if (strMonth != null) {
+                strDate = Integer.toString(day_month) + "-" + strMonth + "-" + Integer.toString(year)
+            }
+
+            return strDate
+
+        }
+
+
         fun getLocalTimeStamp(dateStr: String): String {
             val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             df.timeZone = TimeZone.getTimeZone("UTC")

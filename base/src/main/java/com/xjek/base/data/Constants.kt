@@ -1,13 +1,20 @@
 package com.xjek.base.data
 
 import android.Manifest
+import android.util.Base64
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.xjek.base.BuildConfig
+import java.nio.charset.Charset
 
 object Constants {
 
     const val DEFAULT_ZOOM = 15.0f
     val DEFAULT_LOCATION = LatLng(-33.8523341, 151.2106085)
+    var COMPANY_ID: String = String(Base64.decode(BuildConfig.SALT_KEY, Base64.DEFAULT), Charset.defaultCharset())
+    var CITY_ID: Int = 0
+    var isSocketFailed: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
+    var REQ_ID:Int = 0
 
     object RequestCode {
         const val PERMISSIONS_CODE_LOCATION = 1001
@@ -27,9 +34,7 @@ object Constants {
                 Manifest.permission.CAMERA
         )
 
-
     }
-
 
     object BaseUrl {
         @JvmField
@@ -39,10 +44,32 @@ object Constants {
         var SERVICE_BASE_URL: String? = null
     }
 
-    object ProjectTypes {
+    object ROOM_NAME{
+        var COMMON_ROOM_NAME:String = "joinCommonRoom"
+        var STATUS:String = "socketStatus"
+        var NEW_REQ:String = "newRequest"
+        var RIDE_REQ:String = "rideRequest"
+        var TRANSPORT_ROOM_NAME:String = "joinPrivateRoom"
+        var SERVICE_ROOM_NAME:String?=null
+    }
+
+    object ROOM_ID{
+        var COMMON_ROOM:String = "room_${COMPANY_ID}_$CITY_ID"
+        var TRANSPORT_ROOM:String = "room_${COMPANY_ID}_${REQ_ID}_TRANSPORT"
+        var SERVICE_ROOM:String = ""
+    }
+
+    object ModuleTypes {
         const val TRANSPORT = "TRANSPORT"
         const val SERVICE = "SERVICE"
         const val ORDER = "ORDER"
+    }
+
+    object BroadCastTypes {
+        const val TRANSPORT_BROADCAST = "TRANSPORT_BROADCAST"
+        const val SERVICE_BROADCAST = "SERVICE_BROADCAST"
+        const val ORDER_BROADCAST = "ORDER_BROADCAST"
+        const val BASE_BROADCAST = "BASE_BROADCAST"
     }
 
     object ProviderStatus {
@@ -61,7 +88,6 @@ object Constants {
         const val PICKED_UP = "PICKEDUP"
         const val DROPPED = "DROPPED"
         const val COMPLETED = "COMPLETED"
-
     }
 
     object Common {
@@ -71,7 +97,7 @@ object Constants {
         const val ADMIN_SERVICE_ID = "admin_service_id"
         const val OTP = "otp"
         const val METHOD = "_method"
-        const val SERVICEID="service_id"
+        const val SERVICEID = "service_id"
     }
 
     object XuperProvider {
@@ -83,9 +109,9 @@ object Constants {
         const val START = "START"
         const val CANCEL = "CANCEL"
         const val STATUS = "status"
-        const val   REQCANCEL="cancel"
-        const val   RATING="rating"
-        const val COMMENT="comment"
+        const val REQCANCEL = "cancel"
+        const val RATING = "rating"
+        const val COMMENT = "comment"
     }
 
     object Reasons {

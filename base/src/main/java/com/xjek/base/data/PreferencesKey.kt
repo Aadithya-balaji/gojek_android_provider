@@ -2,6 +2,7 @@ package com.xjek.base.data
 
 object PreferencesKey {
     const val BASE_ID = "base_id"
+    const val BASE_CONFIG_RESPONSE = "base_config_response"
     const val TRANSPORT_ID = "transport_id"
     const val ORDER_ID = "order_id"
     const val SERVICE_ID = "service_id"
@@ -12,7 +13,8 @@ object PreferencesKey {
     const val CONTACT_EMAIL = "contact_email"
     const val ACCESS_TOKEN = "access_token"
     const val IS_ONLINE = "is_online"
-    const val IS_FIRSTTIME = "is_first_time"
     const val PAYMENT_LIST = "paymentlist"
-    const val TAXI_CHECK_REQUEST_DATA = "TAXI_CHECK_REQUEST_DATA"
+    const val FIRE_BASE_PROVIDER_IDENTITY = "FIRE_BASE_PROVIDER_IDENTITY"
+    const val CURRENT_TRANXIT_STATUS = "CURRENT_TRANXIT_STATUS"
+    const val CAN_SAVE_LOCATION = "CAN_SAVE_LOCATION"
 }

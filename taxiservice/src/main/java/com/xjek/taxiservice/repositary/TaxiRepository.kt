@@ -106,10 +106,8 @@ class TaxiRepository : BaseRepository() {
         private var taxiRepository: TaxiRepository? = null
 
         fun instance(): TaxiRepository {
-            if (taxiRepository == null) {
-                synchronized(TaxiRepository) {
-                    taxiRepository = TaxiRepository()
-                }
+            if (taxiRepository == null) synchronized(TaxiRepository) {
+                taxiRepository = TaxiRepository()
             }
             return taxiRepository!!
         }

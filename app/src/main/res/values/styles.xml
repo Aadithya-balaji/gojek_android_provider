@@ -23,6 +23,17 @@
 
     </style>
 
+    <style name="selectedTabButton" parent="@style/Widget.AppCompat.Button">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:background">@drawable/custom_roundcorner_selectedorder</item>
+    </style>
+
+    <style name="unSelectedTabButton" parent="@style/Widget.AppCompat.Button">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:background">@drawable/custom_roundcorner_unselectedorder</item>
+    </style>
+
+
     <style name="Theme.ImageCropper" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
     </style>

@@ -4,27 +4,37 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.persistence.AppDatabase
+import com.xjek.base.persistence.LocationPointsEntity
+import com.xjek.base.utils.ViewUtils
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityInvoiceTaxiBinding
 import com.xjek.taxiservice.model.ResponseData
 import com.xjek.taxiservice.views.rating.TaxiRatingFragment
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 
-class TaxiTaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvoiceNavigator {
+class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvoiceNavigator {
 
     private var activityInvoiceBinding: ActivityInvoiceTaxiBinding? = null
     private lateinit var mViewModel: TaxiInvoiceViewModel
     private var requestModel: ResponseData? = null
     private var strCheckRequestModel: String? = null
 
+    private var points: List<LocationPointsEntity>? = null
+    private var normalPoints: ArrayList<LatLng>? = null
+    private var iteratedPoints: ArrayList<LatLng>? = null
+    private var tempPoint: LatLng? = null
+
     override fun getLayoutId(): Int = R.layout.activity_invoice_taxi
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         activityInvoiceBinding = mViewDataBinding as ActivityInvoiceTaxiBinding
-        mViewModel = TaxiInvoiceViewModel()
+        mViewModel = ViewModelProviders.of(this).get(TaxiInvoiceViewModel::class.java)
         mViewModel.navigator = this
         activityInvoiceBinding!!.invoicemodel = mViewModel
         activityInvoiceBinding!!.lifecycleOwner = this
@@ -34,6 +44,8 @@ class TaxiTaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), Taxi
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         getIntentValues()
         getApiResponse()
+        points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints()
+        longLog(Gson().toJson(points))
     }
 
     private fun getApiResponse() {
@@ -87,6 +99,10 @@ class TaxiTaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), Taxi
     }
 
     override fun showErrorMessage(error: String) {
-        com.xjek.base.utils.ViewUtils.showToast(this, error, false)
+        ViewUtils.showToast(this, error, false)
+    }
+
+    override fun closeInvoiceActivity() {
+        finish()
     }
 }

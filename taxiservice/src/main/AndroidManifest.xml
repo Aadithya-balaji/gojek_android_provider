@@ -7,16 +7,12 @@
 
     <application>
         <activity android:name="com.xjek.taxiservice.views.main.TaxiDashboardActivity"/>
-        <activity android:name=".views.invoice.TaxiTaxiInvoiceActivity"/>
+        <activity android:name=".views.invoice.TaxiInvoiceActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />
 
-        <service
-            android:name=".location_service.TaxiLocationService"
-            android:enabled="true"
-            android:exported="true" />
     </application>
 
 </manifest>

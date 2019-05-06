@@ -61,8 +61,7 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
             }
         }
 
-        observeLiveData(viewModel.addEditBankErrorResponse){
-            errorMessage ->
+        observeLiveData(viewModel.addEditBankErrorResponse) { errorMessage ->
             run {
                 viewModel.showLoading.value = false
                 ViewUtils.showToast(this, errorMessage, false)

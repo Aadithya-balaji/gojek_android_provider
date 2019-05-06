@@ -92,7 +92,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     }
 
     fun incrementPosition() {
-        if (data.size > (currentPosition+1)) {
+        if (data.size > (currentPosition + 1)) {
             currentPosition += 1
             updateDetails()
         }

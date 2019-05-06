@@ -4,8 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-
-class  WalletModel{
+class WalletModel {
     @SerializedName("wallet_balance")
     @Expose
     private var walletBalance: Double? = null

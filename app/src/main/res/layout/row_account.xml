@@ -1,45 +1,42 @@
-
-
-    <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="@dimen/_140sdp"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/_140sdp"
+    android:layout_height="wrap_content"
+    android:clipToPadding="true"
+    android:elevation="@dimen/_2sdp"
+    app:cardCornerRadius="@dimen/_8sdp">
+    <!--profile relativelayout-->
+    <RelativeLayout
+        android:id="@+id/rl_account"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/_8sdp"
-        android:clipToPadding="true"
-        android:elevation="@dimen/_2sdp">
-        <!--profile relativelayout-->
-        <RelativeLayout
-            android:id="@+id/rl_account"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="@dimen/_20sdp"
+        android:paddingTop="@dimen/_20sdp"
+        android:paddingRight="@dimen/_20sdp"
+        android:paddingBottom="@dimen/_20sdp">
+
+        <ImageView
+            android:id="@+id/iv_account"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_70sdp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/drawable_circle"
+            android:padding="@dimen/_20sdp"
+            android:tint="@color/xuber_white"
+            app:srcCompat="@drawable/ic_user" />
+
+        <TextView
+            android:id="@+id/tv_account_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingLeft="@dimen/_20sdp"
-            android:paddingTop="@dimen/_20sdp"
-            android:paddingRight="@dimen/_20sdp"
-            android:paddingBottom="@dimen/_20sdp">
-
-            <ImageView
-                android:id="@+id/iv_account"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_70sdp"
-                android:layout_centerInParent="true"
-                android:background="@drawable/drawable_circle"
-                android:padding="@dimen/_20sdp"
-                android:tint="@color/xuber_white"
-                app:srcCompat="@drawable/ic_user" />
-
-            <TextView
-                android:id="@+id/tv_account_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_account"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:singleLine="true"
-                android:text="@string/title_profile"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_12sdp" />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+            android:layout_below="@+id/iv_account"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:singleLine="true"
+            android:text="@string/title_profile"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_12sdp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
 

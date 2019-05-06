@@ -31,9 +31,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             app:itemBackground="@color/xuber_white"
-            app:labelVisibilityMode="labeled"
             app:itemIconTint="@drawable/bottom_menu_selector"
             app:itemTextColor="@drawable/bottom_menu_selector"
+            app:labelVisibilityMode="labeled"
             app:menu="@menu/home_bottom_menu" />
 
     </RelativeLayout>

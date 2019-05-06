@@ -6,7 +6,7 @@ import com.xjek.base.repository.BaseRepository
 import com.xjek.xuberservice.reasons.ReasonViewModel
 import com.xjek.xuberservice.invoice.XuperInvoiceViewModel
 import com.xjek.xuberservice.rating.XuperRatingViewModel
-import com.xjek.xuberservice.xuberMainActivity.XuberMainViewModel
+import com.xjek.xuberservice.xuberMainActivity.XuberDashboardViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -20,7 +20,7 @@ class XuperRepoitory : BaseRepository() {
         get() = Constants.BaseUrl.APP_BASE_URL
 
 
-    fun xuperCheckRequesst(viewModel: XuberMainViewModel, token: String, lat: String, lon: String): Disposable {
+    fun xuperCheckRequesst(viewModel: XuberDashboardViewModel, token: String, lat: String, lon: String): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
                 .xuperCheckRequest(token, lat, lon)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -35,7 +35,7 @@ class XuperRepoitory : BaseRepository() {
     }
 
 
-    fun xuperUpdateRequest(viewModel: XuberMainViewModel, token: String, params: HashMap<String, RequestBody>,@Part frontImage:MultipartBody.Part?,@Part backImage:MultipartBody.Part?): Disposable {
+    fun xuperUpdateRequest(viewModel: XuberDashboardViewModel, token: String, params: HashMap<String, RequestBody>, @Part frontImage:MultipartBody.Part?, @Part backImage:MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
                 .xuperUpdateServcie(token, params,frontImage,backImage)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -72,7 +72,7 @@ class XuperRepoitory : BaseRepository() {
                 })
     }
 
-    fun xuperCancelRequest(viewModel: XuberMainViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun xuperCancelRequest(viewModel: XuberDashboardViewModel, token: String, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
                 .cancelRequest(token, params)
                 .observeOn(AndroidSchedulers.mainThread())

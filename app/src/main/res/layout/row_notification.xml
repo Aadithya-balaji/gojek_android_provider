@@ -30,10 +30,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:textColor="@color/xuber_white"
-                android:textSize="@dimen/_12sdp"
                 android:text="@string/notificaiton_valid_label"
-                />
+                android:textColor="@color/xuber_white"
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/tv_notification_date"
@@ -41,9 +40,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_11sdp"
                 android:fontFamily="@font/avenirltstd_medium"
+                android:text="dummy"
                 android:textColor="@color/xuber_white"
-                android:textSize="@dimen/_12sdp"
-                android:text="dummy" />
+                android:textSize="@dimen/_12sdp" />
 
         </LinearLayout>
 

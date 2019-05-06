@@ -5,9 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
-import com.xjek.provider.models.AcceptRequestModel
-import com.xjek.provider.models.CheckRequestModel
-import com.xjek.provider.models.RejectRequestModel
 import com.xjek.provider.models.StatusResponseModel
 import com.xjek.provider.repository.AppRepository
 

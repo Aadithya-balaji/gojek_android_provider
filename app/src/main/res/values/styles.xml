@@ -44,7 +44,6 @@
     </style>
 
 
-
     <style name="Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
         <item name="backgroundTint">@color/colorPrimary</item>
@@ -140,7 +139,8 @@
         <item name="errorTextAppearance">@style/AppTheme.TextErrorAppearance</item>
         <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
         <item name="hintTextColor">@color/grey</item>
-        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
+        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow
+        </item>
         <item name="android:strokeColor">@color/xuber_grey</item>
     </style>
 

@@ -9,7 +9,8 @@
 
         <include
             android:id="@+id/toolbar_layout"
-            layout="@layout/layout_app_bar"/>
+            layout="@layout/layout_app_bar" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tbr_payment"
             android:layout_width="match_parent"
@@ -36,6 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
-            android:visibility="visible"/>
+            android:visibility="visible" />
     </LinearLayout>
 </layout>

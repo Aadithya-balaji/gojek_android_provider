@@ -1,6 +1,6 @@
 package com.xjek.provider.views.transaction_status
 
-interface TransactionStatusNavigator{
+interface TransactionStatusNavigator {
 
- fun showStatus()
+    fun showStatus()
 }

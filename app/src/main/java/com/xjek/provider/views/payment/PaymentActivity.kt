@@ -1,34 +1,31 @@
 package com.xjek.provider.views.payment
 
-import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModelProviders
-import com.xjek.base.base.BaseActivity
-import com.xjek.provider.databinding.ActivityPaymentBinding
-import com.xjek.provider.views.adapters.TransactionListAdapter
-import com.xjek.provider.views.transaction_status.TransactionStatusActivity
-import com.xjek.xjek.ui.payment.PaymentNavigator
-import kotlinx.android.synthetic.main.toolbar_layout.view.*
-import com.cooltechworks.creditcarddesign.CardEditActivity
 import android.content.Intent
 import android.util.Log
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProviders
+import com.cooltechworks.creditcarddesign.CardEditActivity
 import com.cooltechworks.creditcarddesign.CreditCardUtils
 import com.stripe.android.Stripe
 import com.stripe.android.TokenCallback
 import com.stripe.android.model.Card
 import com.stripe.android.model.Token
+import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityPaymentBinding
+import com.xjek.provider.views.transaction_status.TransactionStatusActivity
+import com.xjek.xjek.ui.payment.PaymentNavigator
+import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 
 class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator {
 
 
-
-
     lateinit var mViewDataBinding: ActivityPaymentBinding
-    private  var mCardNumber:String?=""
-    private  var mCardCVV:String?=""
-    private  var mCardExpiryDate:String?=""
-    private  var mCardHolderName:String?=""
+    private var mCardNumber: String? = ""
+    private var mCardCVV: String? = ""
+    private var mCardExpiryDate: String? = ""
+    private var mCardHolderName: String? = ""
 
     override fun getLayoutId(): Int = com.xjek.provider.R.layout.activity_payment
 
@@ -62,10 +59,10 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mCardNumber = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER)}
-         mCardExpiryDate = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY)}
-        mCardCVV = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV)}
-        mCardHolderName=data?.let{it.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME)}
+        mCardNumber = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER) }
+        mCardExpiryDate = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY) }
+        mCardCVV = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV) }
+        mCardHolderName = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME) }
 
         // Your processing goes here.
         val temp = mCardExpiryDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -80,7 +77,7 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
                 mCardCVV
         )
 
-        card.name=mCardHolderName
+        card.name = mCardHolderName
 
         if (card.validateNumber() && card.validateCVC()) {
             //showSnackBar("Card Added Successfully");
@@ -90,7 +87,7 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
                     object : TokenCallback {
                         override fun onSuccess(token: Token) {
                             // Send token to your server
-                            Log.e("payment","-----"+token.id)
+                            Log.e("payment", "-----" + token.id)
 
                         }
 

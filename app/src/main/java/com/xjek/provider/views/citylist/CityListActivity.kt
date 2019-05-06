@@ -33,7 +33,7 @@ class CityListActivity : BaseActivity<ActivityCityListBinding>(), CityListNaviga
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         mViewDataBinding.cityListAdapter!!.filter.filter(query)
-        return  true
+        return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {

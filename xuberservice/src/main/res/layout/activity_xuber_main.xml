@@ -7,7 +7,7 @@
 
         <variable
             name="xuberViewModel"
-            type="com.xjek.xuberservice.xuberMainActivity.XuberMainViewModel" />
+            type="com.xjek.xuberservice.xuberMainActivity.XuberDashboardViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -18,16 +18,18 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/status_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_40sdp"
-                android:visibility="visible"
                 android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_40sdp"
                 android:layout_marginRight="@dimen/_20sdp"
+                android:visibility="visible"
                 app:cardBackgroundColor="@color/xuber_white"
                 app:cardElevation="@dimen/_5sdp">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -39,19 +41,21 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/tvXuberLabellocation"
                             style="@style/SmallText.colorWhite"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableStart="@drawable/xuber_custom_circle"
-                            android:padding="@dimen/_5sdp"
-                            android:textColor="@color/xuber_white"
-                            android:fontFamily="@font/avenirltstd_medium"
-                            android:textSize="@dimen/_9sdp"
-                            android:gravity="center_vertical"
                             android:drawablePadding="@dimen/_9sdp"
-                            android:text="@string/xuper_service_location" />
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:gravity="center_vertical"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/xuper_service_location"
+                            android:textColor="@color/xuber_white"
+                            android:textSize="@dimen/_9sdp" />
+
                         <TextView
                             android:id="@+id/tvXuberPickupLocation"
                             style="@style/SmallText.colorWhite"
@@ -59,17 +63,18 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="5"
                             android:fontFamily="@font/avenirltstd_medium"
+                            android:padding="@dimen/_5sdp"
                             android:textColor="@color/xuber_white"
-                            android:textSize="@dimen/_9sdp"
-                            android:padding="@dimen/_5sdp" />
+                            android:textSize="@dimen/_9sdp" />
                     </LinearLayout>
                 </RelativeLayout>
             </androidx.cardview.widget.CardView>
-        <fragment
-            android:id="@+id/fragmentMap"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+
+            <fragment
+                android:id="@+id/fragmentMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </RelativeLayout>
 

@@ -198,9 +198,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
+                                android:enabled="false"
                                 android:focusable="false"
                                 android:imeOptions="actionDone"
-                                android:enabled="false"
                                 android:onClick="@{() -> profileviewmodel.getCityList()}"
                                 android:text="@={profileviewmodel.MCity}"
                                 android:textColor="@color/et_text_color"
@@ -213,11 +213,11 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:layout_marginTop="@dimen/_5sdp"
+                            android:onClick="@{() -> profileviewmodel.changePassord()}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/change_password"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_12sdp"
-                            android:onClick="@{() -> profileviewmodel.changePassord()}"
                             tools:ignore="RtlHardcoded" />
 
                     </LinearLayout>

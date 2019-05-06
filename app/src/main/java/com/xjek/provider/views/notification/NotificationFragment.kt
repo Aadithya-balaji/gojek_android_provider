@@ -3,7 +3,6 @@ package com.xjek.provider.views.notification
 import android.content.Context
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
@@ -35,7 +34,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         mViewDataBinding.notificationviewmodel = notificationViewModel
         mViewDataBinding.setLifecycleOwner(this)
 
-        observeLiveData(notificationViewModel.loadingProgress){
+        observeLiveData(notificationViewModel.loadingProgress) {
             loadingObservable.value = it
         }
 

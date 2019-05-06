@@ -60,12 +60,12 @@ class PlacesAdapter(val ctxt: Context, isCountry: Boolean, isCity: Boolean, isSt
         }
 
         // If weren't re-ordering this you could rely on what you set last time
-        if ( isCountry) {
+        if (isCountry) {
             holder.text!!.setText(filteredData.get(position).countryName.toString())
-        }else if(isState){
+        } else if (isState) {
             holder.text!!.setText(filteredData.get(position).stateName.toString())
 
-        }else if (isCity) {
+        } else if (isCity) {
 
             holder.text!!.setText(filteredData.get(position).cityName.toString())
         }
@@ -107,14 +107,14 @@ class PlacesAdapter(val ctxt: Context, isCountry: Boolean, isCity: Boolean, isSt
 
             val count = list.size
             val nlist = ArrayList<PlaceResponseModel>(count)
-            var filterableString: String=""
+            var filterableString: String = ""
             for (i in 0 until count) {
-                if(isCountry) {
+                if (isCountry) {
                     filterableString = list.get(i).countryName.toString()
-                }else if(isState){
+                } else if (isState) {
                     filterableString = list.get(i).stateName.toString()
 
-                }else if(isCity){
+                } else if (isCity) {
                     filterableString = list.get(i).cityName.toString()
 
                 }

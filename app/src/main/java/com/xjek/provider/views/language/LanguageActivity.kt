@@ -9,11 +9,11 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityLanguageBinding
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
-class LanguageActivity : BaseActivity<ActivityLanguageBinding>(),LanguageNavigator {
+class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), LanguageNavigator {
 
     private lateinit var binding: ActivityLanguageBinding
     private lateinit var viewModel: LanguageViewModel
-    private lateinit var selectedLanguage:String
+    private lateinit var selectedLanguage: String
 
     override fun getLayoutId(): Int = R.layout.activity_language
 
@@ -39,11 +39,11 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(),LanguageNavigat
     }
 
     override fun onLanguageChanged() {
-        if(viewModel.getCurrentLanguage() != selectedLanguage){
-            LocaleUtils.setNewLocale(this,viewModel.getCurrentLanguage())
+        if (viewModel.getCurrentLanguage() != selectedLanguage) {
+            LocaleUtils.setNewLocale(this, viewModel.getCurrentLanguage())
             recreate()
         }
 
-        ViewUtils.showToast(this@LanguageActivity,getString(R.string.language_change_success),true)
+        ViewUtils.showToast(this@LanguageActivity, getString(R.string.language_change_success), true)
     }
 }

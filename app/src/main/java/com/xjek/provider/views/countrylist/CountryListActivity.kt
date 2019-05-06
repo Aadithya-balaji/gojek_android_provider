@@ -1,7 +1,5 @@
 package com.xjek.provider.views.countrylist
 
-import android.text.Editable
-import android.text.TextWatcher
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
@@ -11,7 +9,7 @@ import com.xjek.provider.databinding.ActivityCountryListBinding
 import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.views.adapters.CountryListAdapter
 
-class CountryListActivity : BaseActivity<ActivityCountryListBinding>(), SearchView.OnQueryTextListener,CountryNavigator {
+class CountryListActivity : BaseActivity<ActivityCountryListBinding>(), SearchView.OnQueryTextListener, CountryNavigator {
 
 
     lateinit var mViewDataBinding: ActivityCountryListBinding
@@ -20,12 +18,12 @@ class CountryListActivity : BaseActivity<ActivityCountryListBinding>(), SearchVi
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
         this.mViewDataBinding = mViewDataBinding as ActivityCountryListBinding
-        this.mViewDataBinding.lifecycleOwner=this
+        this.mViewDataBinding.lifecycleOwner = this
         val countrylist = intent.getSerializableExtra("countrylistresponse") as CountryListResponse
         mViewDataBinding.countrylistadapter = CountryListAdapter(this, countrylist.responseData)
-        val countryViewModel=CountryViewModel()
-        countryViewModel.navigator=this
-        mViewDataBinding.countrylistmodel=countryViewModel
+        val countryViewModel = CountryViewModel()
+        countryViewModel.navigator = this
+        mViewDataBinding.countrylistmodel = countryViewModel
         mViewDataBinding.svCountry.setOnQueryTextListener(this)
 
     }

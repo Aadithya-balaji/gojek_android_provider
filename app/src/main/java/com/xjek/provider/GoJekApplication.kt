@@ -32,20 +32,20 @@ class GoJekApplication : BaseApplication() {
         SocketManager.setOnConnectionListener(object : SocketListener.CallBack {
             override fun onConnected() {
                 SocketManager.onEvent(Constants.ROOM_NAME.STATUS, Emitter.Listener {
-                    Log.e("SOCKET","SOCKET_SK status "+it[0])
+                    Log.e("SOCKET", "SOCKET_SK status " + it[0])
                 })
             }
 
             override fun onDisconnected() {
-                Log.e("SOCKET","SOCKET_SK disconnected")
+                Log.e("SOCKET", "SOCKET_SK disconnected")
             }
 
             override fun onConnectionError() {
-                Log.e("SOCKET","SOCKET_SK connection error")
+                Log.e("SOCKET", "SOCKET_SK connection error")
             }
 
             override fun onConnectionTimeOut() {
-                Log.e("SOCKET","SOCKET_SK connection timeout")
+                Log.e("SOCKET", "SOCKET_SK connection timeout")
             }
         })
         SocketManager.connect(BuildConfig.BASE_URL)

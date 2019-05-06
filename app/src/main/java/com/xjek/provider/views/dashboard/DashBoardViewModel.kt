@@ -30,7 +30,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
                 )
     }
 
-    fun getProfile(){
+    fun getProfile() {
         getCompositeDisposable().add(appRepository
                 .getProviderProfile(this, Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
     }

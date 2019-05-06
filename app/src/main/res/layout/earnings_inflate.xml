@@ -13,23 +13,23 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="@style/SmallText.colorWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_20sdp"
-            style="@style/SmallText.colorWhite"
-            android:text="Today's completed target"/>
+            android:text="Today's completed target" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_65sdp"
+            android:text="$250"
             android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_30sdp"
-            android:text="$250"/>
+            android:textSize="@dimen/_30sdp" />
 
     </RelativeLayout>
 </layout>

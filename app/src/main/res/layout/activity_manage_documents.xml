@@ -25,15 +25,14 @@
             android:id="@+id/cvCommonDocuments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_30sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            app:cardCornerRadius="@dimen/_3sdp"
-            android:foreground="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
             android:onClick="@{()-> manageDocumentsViewModel.showAllDocuments()}"
-            android:layout_marginStart="@dimen/_10sdp"
-            >
+            app:cardCornerRadius="@dimen/_3sdp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -41,12 +40,12 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/SmallText.Black"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_20sdp"
                     android:layout_weight="1"
-                    style="@style/SmallText.Black"
                     android:fontFamily="@font/avenir_lt_std_medium"
+                    android:padding="@dimen/_20sdp"
                     android:text="@string/common_documents" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -55,7 +54,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    app:srcCompat="@drawable/ic_right_arrow"/>
+                    app:srcCompat="@drawable/ic_right_arrow" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -64,14 +63,13 @@
             android:id="@+id/cvTransportDocuments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_1sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{()-> manageDocumentsViewModel.showTransportDocuments()}"
-            >
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{()-> manageDocumentsViewModel.showTransportDocuments()}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -79,12 +77,12 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/SmallText.Black"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_20sdp"
                     android:layout_weight="1"
-                    style="@style/SmallText.Black"
                     android:fontFamily="@font/avenir_lt_std_medium"
+                    android:padding="@dimen/_20sdp"
                     android:text="@string/transport_documents" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -93,7 +91,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    app:srcCompat="@drawable/ic_right_arrow"/>
+                    app:srcCompat="@drawable/ic_right_arrow" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -101,14 +99,13 @@
             android:id="@+id/cvDelieveryDocuments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_1sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{()-> manageDocumentsViewModel.showDelieveryDocuments()}"
-            >
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{()-> manageDocumentsViewModel.showDelieveryDocuments()}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,12 +113,12 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/SmallText.Black"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_20sdp"
                     android:layout_weight="1"
-                    style="@style/SmallText.Black"
                     android:fontFamily="@font/avenir_lt_std_medium"
+                    android:padding="@dimen/_20sdp"
                     android:text="@string/delievery_documents" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -130,7 +127,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    app:srcCompat="@drawable/ic_right_arrow"/>
+                    app:srcCompat="@drawable/ic_right_arrow" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -138,14 +135,13 @@
             android:id="@+id/cvServicesDocuments"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_1sdp"
             android:layout_marginStart="@dimen/_10sdp"
-            android:foreground="?android:attr/selectableItemBackground"
+            android:layout_marginTop="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:clickable="true"
             android:focusable="true"
-            android:onClick="@{()-> manageDocumentsViewModel.showServicesDocuments()}"
-            >
+            android:foreground="?android:attr/selectableItemBackground"
+            android:onClick="@{()-> manageDocumentsViewModel.showServicesDocuments()}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,12 +149,12 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/SmallText.Black"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_20sdp"
                     android:layout_weight="1"
-                    style="@style/SmallText.Black"
                     android:fontFamily="@font/avenir_lt_std_medium"
+                    android:padding="@dimen/_20sdp"
                     android:text="@string/services_documents" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -167,7 +163,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    app:srcCompat="@drawable/ic_right_arrow"/>
+                    app:srcCompat="@drawable/ic_right_arrow" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

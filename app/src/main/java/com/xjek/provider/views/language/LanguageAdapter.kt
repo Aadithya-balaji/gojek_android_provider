@@ -9,10 +9,10 @@ import com.xjek.provider.BR
 import com.xjek.provider.R
 import com.xjek.provider.databinding.LanguageInflateBinding
 
-class LanguageAdapter(private val languageViewModel: LanguageViewModel): RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
+class LanguageAdapter(private val languageViewModel: LanguageViewModel) : RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
 
-    companion object{
-        lateinit var currentLanguage:String
+    companion object {
+        lateinit var currentLanguage: String
     }
 
 
@@ -27,7 +27,7 @@ class LanguageAdapter(private val languageViewModel: LanguageViewModel): Recycle
         return ViewHolder(binding)
     }
 
-    fun setNewLocale(currentLanguage: String){
+    fun setNewLocale(currentLanguage: String) {
         LanguageAdapter.currentLanguage = currentLanguage
         notifyDataSetChanged()
     }
@@ -36,15 +36,15 @@ class LanguageAdapter(private val languageViewModel: LanguageViewModel): Recycle
     override fun getItemCount(): Int = languageViewModel.getLanguages().size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(languageViewModel,position)
+        holder.bind(languageViewModel, position)
     }
 
 
-    class ViewHolder(private val binding: ViewDataBinding):RecyclerView.ViewHolder(binding.root){
+    class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(languageViewModel: LanguageViewModel, position: Int) {
             binding.setVariable(BR.languageViewModel, languageViewModel)
             binding.setVariable(BR.position, position)
-            binding.setVariable(BR.currentLanguage,currentLanguage)
+            binding.setVariable(BR.currentLanguage, currentLanguage)
             binding.executePendingBindings()
         }
     }

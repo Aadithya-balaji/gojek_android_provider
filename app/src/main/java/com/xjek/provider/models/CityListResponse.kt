@@ -8,11 +8,11 @@ data class CityListResponse(
         val responseData: List<CityListResponseData>,
         val statusCode: String,
         val title: String
-):Serializable
+) : Serializable
 
 data class CityListResponseData(
-    val city_name: String,
-    val id: Int,
-    val state_id: Int,
-    val status: Any
-):Serializable
+        val city_name: String,
+        val id: Int,
+        val state_id: Int,
+        val status: Any
+) : Serializable

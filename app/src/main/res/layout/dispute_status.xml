@@ -37,13 +37,12 @@
 
             <TextView
                 android:id="@+id/dispute_comment"
-                android:textSize="@dimen/_12sdp"
-                android:textColor="@color/grey"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
                 android:padding="@dimen/_5sdp"
-                 />
+                android:textColor="@color/grey"
+                android:textSize="@dimen/_12sdp" />
 
             <TextView
                 android:id="@+id/dispute_status"

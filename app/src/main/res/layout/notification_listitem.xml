@@ -24,7 +24,6 @@
                 android:padding="@dimen/_5sdp">
 
 
-
                 <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/notification_img"
                     android:layout_width="@dimen/_50sdp"
@@ -38,31 +37,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:padding="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/dummy_min"
                     android:textSize="@dimen/_10sdp" />
 
                 <TextView
                     android:id="@+id/titlenotification_list_tv"
+                    style="@style/MediumText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_toEndOf="@+id/notification_img"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/dummy_title"
-                    android:textColor="@android:color/black"
-                    style="@style/MediumText" />
+                    android:textColor="@android:color/black" />
 
                 <TextView
                     android:id="@+id/description_notification_tv"
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/titlenotification_list_tv"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_toRightOf="@+id/notification_img"
                     android:padding="@dimen/_5sdp"
-                    style="@style/SmallText"
                     android:text="@string/dummy_text"
                     android:textColor="@color/grey" />
 

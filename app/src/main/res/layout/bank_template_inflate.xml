@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="android.text.InputType"/>
+        <import type="android.text.InputType" />
 
         <variable
             name="position"
@@ -20,50 +20,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="vertical"
         tools:ignore="UseCompoundDrawables">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLabelName"
+            style="@style/SmallText.Black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
             android:fontFamily="@font/avenir_lt_std_medium"
-            style="@style/SmallText.Black"
             android:text="@{bankViewModel.getBankLabelName(position)}"
-            tools:text="Bank Name"/>
+            android:textColor="@color/black"
+            tools:text="Bank Name" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:descendantFocusability="beforeDescendants"
             app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             app:cardElevation="@dimen/_20sdp"
             app:cardPreventCornerOverlap="true"
-            android:descendantFocusability="beforeDescendants"
             app:cardUseCompatPadding="false">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etLabelValue"
+                style="@style/SmallText.Grey"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:afterTextChanged="@{(edtitable)->bankViewModel.afterValueChanged(edtitable,position)}"
+                android:background="@null"
+                android:fontFamily="@font/avenir_lt_std_medium"
+                android:inputType="@{bankViewModel.getInputTypeIsNumber(position)?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT}"
                 android:paddingStart="@dimen/_15sdp"
                 android:paddingEnd="@dimen/_15sdp"
-                android:background="@null"
-                android:inputType="@{bankViewModel.getInputTypeIsNumber(position)?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT}"
-                android:fontFamily="@font/avenir_lt_std_medium"
-                tools:text="HDFC Bank Ltd"
-                android:afterTextChanged="@{(edtitable)->bankViewModel.afterValueChanged(edtitable,position)}"
                 android:text="@{bankViewModel.getBankLabelValue(position)}"
-                style="@style/SmallText.Grey"
-                />
+                tools:text="HDFC Bank Ltd" />
         </com.google.android.material.card.MaterialCardView>
-
 
 
     </LinearLayout>

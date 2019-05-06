@@ -6,7 +6,6 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.ServiceCategoriesResponse
 import com.xjek.provider.repository.AppRepository
-import com.xjek.provider.views.setup_vehicle.SetupVehicleAdapter
 
 class SetupServicesViewModel : BaseViewModel<SetupServicesNavigator>() {
 

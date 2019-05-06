@@ -466,10 +466,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 }
             }
 
-            R.id.tvCancel -> {
-                val reasonDialogFrag = ReasonFragment()
-                reasonDialogFrag.show(supportFragmentManager, "reasonDialog")
-            }
+            R.id.tvCancel -> ReasonFragment().show(supportFragmentManager, "reasonDialog")
         }
     }
 

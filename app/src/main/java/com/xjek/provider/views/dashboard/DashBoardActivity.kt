@@ -204,7 +204,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     private fun getApiResponse() {
         println("RRR :: HomeFragment.getApiResponse")
-
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
@@ -249,7 +248,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     }
                 }
             }
-
         })
 
         observeLiveData(mViewModel.mProfileResponse) {

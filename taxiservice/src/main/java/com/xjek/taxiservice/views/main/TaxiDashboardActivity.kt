@@ -129,7 +129,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_cancel.setOnClickListener {
-            Toast.makeText(this, "Cancel Ride", Toast.LENGTH_SHORT).show()
+
         }
 
         initializeMap()
@@ -243,7 +243,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                                 PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
                                 SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
                             }
-
 
                             when (checkStatusResponse.responseData.request.status) {
                                 SEARCHING -> {

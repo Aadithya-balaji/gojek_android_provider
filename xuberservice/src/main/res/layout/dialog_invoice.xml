@@ -156,6 +156,7 @@
                         android:paddingRight="@dimen/_8sdp"
                         android:paddingBottom="@dimen/_8sdp"
                         android:text="@string/xuper_label_additional_charge"
+                        android:onClick="@{() -> invoicemodel.showExtraCharegDialog()}"
                         android:textColor="@color/xuper_invoice_paid"
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>

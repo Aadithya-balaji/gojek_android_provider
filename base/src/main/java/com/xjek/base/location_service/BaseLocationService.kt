@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.FirebaseDatabase
 import com.xjek.base.R
 import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
@@ -41,7 +42,6 @@ class BaseLocationService : Service() {
     private var mLocationCallback: LocationCallback? = null
 
     private var mLocation: Location? = null
-    private var tempLocation: Location? = null
 
     private val notification: Notification
         get() {
@@ -155,8 +155,6 @@ class BaseLocationService : Service() {
     private fun onNewLocation(location: Location) {
         println("RRRR:: BaseLocationService.onNewLocation :: BROADCAST :: $BROADCAST")
 
-        mLocation = location
-
         val intent = Intent(BROADCAST)
         intent.putExtra(EXTRA_LOCATION, location)
 
@@ -176,6 +174,17 @@ class BaseLocationService : Service() {
         val notificationId = 12345678
         if (serviceIsRunningInForeground(this))
             mNotificationManager!!.notify(notificationId, notification)
+    }
+
+    private fun distBt(a: LatLng, b: LatLng): Double {
+        val startPoint = Location("start")
+        startPoint.latitude = a.latitude
+        startPoint.longitude = a.longitude
+
+        val endPoint = Location("end")
+        endPoint.latitude = b.latitude
+        endPoint.longitude = b.longitude
+        return startPoint.distanceTo(endPoint).toDouble()
     }
 
     private fun serviceIsRunningInForeground(context: Context): Boolean {

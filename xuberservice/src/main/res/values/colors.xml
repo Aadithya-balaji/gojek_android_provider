@@ -28,6 +28,7 @@
     <!-- Additional Charges -->
     <color name="xuper_extra_amt_bg">#FFDDDDDD</color>
     <color name="xuper_circle_blue">#FF02AFEF</color>
+    <color name="xuper_red">#FF0000</color>
 
 
 </resources>

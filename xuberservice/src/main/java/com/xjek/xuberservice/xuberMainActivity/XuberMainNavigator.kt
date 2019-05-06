@@ -11,4 +11,5 @@ interface XuberMainNavigator {
     fun showErrorMessage(error:String)
     fun showPicturePreview()
     fun updateService(view: View)
+    fun showInfoWindow(view:View)
 }

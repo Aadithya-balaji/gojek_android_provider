@@ -1,5 +1,6 @@
 package com.xjek.taxiservice.views.invoice
 
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -8,7 +9,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.persistence.LocationPointsEntity
 import com.xjek.base.utils.ViewUtils
@@ -25,10 +28,14 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     private var requestModel: ResponseData? = null
     private var strCheckRequestModel: String? = null
 
-    private var points: List<LocationPointsEntity>? = null
-    private var normalPoints: ArrayList<LatLng>? = null
-    private var iteratedPoints: ArrayList<LatLng>? = null
+    private var points = ArrayList<LocationPointsEntity>()
+    private var tempPoints = ArrayList<LatLng>()
+    private var iteratePointsForApi = ArrayList<LatLng>()
+    private var iteratePointsForDistanceCalc = ArrayList<LatLng>()
     private var tempPoint: LatLng? = null
+    private var tempPointForDistanceCal: LatLng? = null
+    private var iterationDistForApi = 50.0
+    private var iterationDistForDistanceCal = 500.0
 
     override fun getLayoutId(): Int = R.layout.activity_invoice_taxi
 
@@ -42,10 +49,21 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         rl_status_selected.visibility = View.VISIBLE
         mViewModel.tollCharge.value = "0"
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+
+        writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, 0)
+
         getIntentValues()
         getApiResponse()
-        points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints()
-        longLog(Gson().toJson(points))
+
+        points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints() as ArrayList<LocationPointsEntity>
+
+        if (points.size > 2) {
+            for (point in points) {
+                val latLng = LatLng(point.lat, point.lng)
+                if (latLng.latitude > 0 && latLng.longitude > 0) tempPoints.add(latLng)
+            }
+            locationProcessing(tempPoints)
+        }
     }
 
     private fun getApiResponse() {
@@ -105,4 +123,63 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     override fun closeInvoiceActivity() {
         finish()
     }
+
+    private fun locationProcessing(latLng: ArrayList<LatLng>) {
+        println("GGGG :: locationProcessing = " + latLng.size)
+        iteratePointsForApi.add(latLng[0])
+
+        for (i in latLng.indices)
+            if (i < latLng.size - 1)
+                iteratePointsForApi(latLng[i], latLng[i + 1])
+
+        iteratePointsForApi.add(latLng[latLng.size - 1])
+        longLog(Gson().toJson(iteratePointsForApi), "BBB")
+
+        iteratePointsForDistanceCalc.add(latLng[0])
+        for (i in iteratePointsForApi.indices)
+            if (i < iteratePointsForApi.size - 1)
+                iteratePointsForDistanceCal(iteratePointsForApi[i], iteratePointsForApi[i + 1])
+        iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
+        longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
+    }
+
+    private fun distBt(a: LatLng, b: LatLng): Double {
+        val startPoint = Location("start")
+        startPoint.latitude = a.latitude
+        startPoint.longitude = a.longitude
+
+        val endPoint = Location("end")
+        endPoint.latitude = b.latitude
+        endPoint.longitude = b.longitude
+        return startPoint.distanceTo(endPoint).toDouble()
+    }
+
+    private fun iteratePointsForApi(s: LatLng, e: LatLng) {
+        var dist = distBt(s, e)
+        if (dist >= iterationDistForApi) {
+            iteratePointsForApi.add(e)
+            tempPoint = null
+        } else if (tempPoint != null) {
+            dist = distBt(tempPoint!!, e)
+            if (dist >= iterationDistForApi) {
+                iteratePointsForApi.add(e)
+                tempPoint = null
+            }
+        } else tempPoint = s
+    }
+
+    private fun iteratePointsForDistanceCal(s: LatLng, e: LatLng) {
+        var dist = distBt(s, e)
+        if (dist >= iterationDistForDistanceCal) {
+            iteratePointsForDistanceCalc.add(e)
+            tempPointForDistanceCal = null
+        } else if (tempPointForDistanceCal != null) {
+            dist = distBt(tempPointForDistanceCal!!, e)
+            if (dist >= iterationDistForDistanceCal) {
+                iteratePointsForDistanceCalc.add(e)
+                tempPointForDistanceCal = null
+            }
+        } else tempPointForDistanceCal = s
+    }
+
 }

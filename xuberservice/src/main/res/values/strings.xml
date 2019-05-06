@@ -64,4 +64,8 @@
     <string name="xuper_service_location">Service Location</string>
     <string name="xuper_rating_user">%.2f</string>
 
+    <!-- Info window -->
+    <string name="xuper_image">Image</string>
+    <string name="xuper_instruction">Instruction</string>
+
 </resources>

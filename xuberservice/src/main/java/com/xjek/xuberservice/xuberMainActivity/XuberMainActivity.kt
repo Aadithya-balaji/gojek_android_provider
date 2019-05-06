@@ -5,14 +5,24 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Resources
+import android.graphics.Color
+import android.graphics.Rect
+import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import android.widget.AdapterView
 import android.widget.Chronometer
 import android.widget.FrameLayout
+import android.widget.PopupWindow
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -61,6 +71,7 @@ import kotlin.collections.HashMap
 
 class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNavigator, OnMapReadyCallback, GoogleMap.OnCameraMoveListener,
         GoogleMap.OnCameraIdleListener, Chronometer.OnChronometerTickListener, GetFilePathInterface, GetReasonsInterface {
+
     private lateinit var xuberMainViewModel: XuberMainViewModel
     private lateinit var fragmentMap: SupportMapFragment
     private var mGoogleMap: GoogleMap? = null
@@ -76,6 +87,8 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     private var currentLontidue: Double? = 0.0
     val invoicePage = DialogXuperInvoice()
     val ratingPage = DialogXuperRating()
+    var popupWindow: PopupWindow? = null
+
 
     override fun getLayoutId(): Int = R.layout.activity_xubermain
     override fun initView(mViewDataBinding: ViewDataBinding?) {
@@ -89,6 +102,10 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         initialiseMap()
         getApiResponse()
         getBundleValues()
+        val bundle=Bundle()
+        invoicePage.arguments=bundle
+        invoicePage.show(supportFragmentManager, "xuperinvoice")
+
     }
 
     fun getBundleValues() {
@@ -438,6 +455,60 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
             params.put(Constants.XuperProvider.CANCEL, reason)
             xuberMainViewModel.cancelRequest(params)
         }
+    }
+
+    fun showInfoWindow(context: Context, v: View) {
+        val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val popupView = layoutInflater.inflate(R.layout.dialog_info_window, null)
+        //val drop_down_list = popupView.findViewById(R.id.drop_down_list) as ListView
+        val displayFrame = Rect()
+        v.getWindowVisibleDisplayFrame(displayFrame)
+        val displayFrameWidth = displayFrame.right - displayFrame.left
+        val loc = IntArray(2)
+        v.getLocationInWindow(loc)
+        //X and Y co-ordinate position to show the dropdown
+        var xoff = 0
+        val yoff = 0
+
+        if (popupWindow == null) {
+            popupWindow = PopupWindow(
+                    popupView,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    WindowManager.LayoutParams.WRAP_CONTENT,
+                    true)
+            popupWindow!!.setOutsideTouchable(true)
+            popupWindow!!.setFocusable(true)
+            popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        if (!popupWindow!!.isShowing()) {
+            /*val xOffSet = (22 * Resources.getSystem().displayMetrics.density).toInt()
+            val yOffSet = (100 * Resources.getSystem().displayMetrics.density).toInt()*/
+            val x = v.x
+            val y = v.y
+
+            popupView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.popup_anim_in))
+              popupWindow!!.showAtLocation(v, Gravity.TOP  , x.toInt(), y.toInt());
+            // popupWindow.showAtLocation(v, Gravity.RIGHT | Gravity.BOTTOM, (int) x, (int) y);
+           /* val margin = displayFrameWidth - (loc[0] + v.width)
+            xoff = displayFrameWidth - margin - popupWindow!!.getWidth() - loc[0]
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                popupWindow!!.setElevation(20f)
+            }
+            popupWindow!!.showAsDropDown(v, xoff, yoff)
+            popupWindow!!.setAnimationStyle(R.anim.popup_anim_in)*/
+        }
+
+        popupWindow!!.setOnDismissListener(PopupWindow.OnDismissListener {
+            if (popupWindow != null) {
+                popupWindow = null
+            }
+        })
+
+    }
+
+    override fun showInfoWindow(view: View) {
+        showInfoWindow(this@XuberMainActivity,view)
     }
 
 }

@@ -20,7 +20,7 @@ import com.xjek.provider.views.on_board.OnBoardActivity
 import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
-
+import com.xjek.xuberservice.xuberMainActivity.XuberMainActivity
 
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
@@ -98,7 +98,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
             else {
-                launchNewActivity(DashBoardActivity::class.java, true)
+                launchNewActivity(XuberMainActivity::class.java, true)
             }
         }
     }

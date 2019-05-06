@@ -56,7 +56,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
     companion object {
         var loadingProgress: MutableLiveData<Boolean>? = null
-
     }
 
 

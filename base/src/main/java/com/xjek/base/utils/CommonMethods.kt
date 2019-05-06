@@ -2,13 +2,22 @@ package com.xjek.base.utils
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
+import android.content.res.Resources
+import android.graphics.*
+import android.graphics.drawable.ColorDrawable
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import android.widget.AdapterView
+import android.widget.ListView
+import android.widget.PopupWindow
+import com.xjek.base.R
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -34,6 +43,8 @@ class CommonMethods {
             if (!storageDir.exists()) storageDir.mkdirs()
             return File.createTempFile(imageFileName, ".jpg", storageDir)
         }
+
+
 
 
         fun getDateinNeededFormat(strDate: String, fromSimpleFormat: SimpleDateFormat): Date {

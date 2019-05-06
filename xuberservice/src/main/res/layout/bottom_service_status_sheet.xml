@@ -185,6 +185,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
+                            android:onClick="@{(v) -> bottomServiceModel.showInfoDialog(v)}"
                             android:background="@drawable/circle_light_blue"
                             android:padding="@dimen/_2sdp"
                             android:src="@drawable/ic_info" />

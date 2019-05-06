@@ -55,8 +55,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
     }
 
     private fun observeViewModel() {
-        observeLiveData(viewModel.getServicesObservable()) {
-            response ->
+        observeLiveData(viewModel.getServicesObservable()) { response ->
             run {
                 loadingObservable.value = false
                 viewModel.setServiceData(serviceData)
@@ -84,8 +83,8 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
             intent.putExtra(Constant.SERVICE_ID,
                     viewModel.getServicesObservable().value!!.responseData[position].id)
             launchNewActivity(intent, false)
-        }else{
-            ViewUtils.showToast(this,"Service not configured. Please contact admin",false)
+        } else {
+            ViewUtils.showToast(this, "Service not configured. Please contact admin", false)
         }
     }
 

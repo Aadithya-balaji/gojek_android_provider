@@ -3,6 +3,7 @@ package com.xjek.provider.views.home
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -20,6 +21,8 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.persistence.AppDatabase
+import com.xjek.base.utils.LocationCallBack
+import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
@@ -51,6 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
 
+    @SuppressLint("MissingPermission")
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
@@ -149,8 +153,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     override fun onMapReady(map: GoogleMap?) {
         mGoogleMap = map
         try {
-            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
-            mGoogleMap!!.uiSettings.isCompassEnabled = true
+
+            mGoogleMap!!.isMyLocationEnabled = true
 
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.xjek.taxiservice.R.raw.style_json))
 
@@ -162,6 +166,11 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
         if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun updateCurrentLocation() {
+
     }
 
     override fun onAttach(context: Context) {
@@ -184,7 +193,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             }
         }
     }
-
 
     override fun showErrorMessage(error: String) {
         ViewUtils.showToast(activity!!, error, false)

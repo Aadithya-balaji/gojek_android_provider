@@ -5,7 +5,7 @@ import com.xjek.base.base.BaseViewModel
 
 class OrderFragmentViewModel : BaseViewModel<OrderFragmentNavigator>() {
 
-     lateinit var selectedFilterService :String
+    lateinit var selectedFilterService: String
 
     fun moveToCurrentOrderList() {
         navigator.goToCurrentOrder()
@@ -20,13 +20,11 @@ class OrderFragmentViewModel : BaseViewModel<OrderFragmentNavigator>() {
         navigator.goToUpcomingOrder()
     }
 
-    fun showfilter()
-    {
+    fun showfilter() {
         navigator.opeFilterlayout()
     }
 
-    fun filterApplied()
-    {
+    fun filterApplied() {
 
     }
 }

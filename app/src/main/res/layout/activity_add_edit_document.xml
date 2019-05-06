@@ -5,7 +5,9 @@
     tools:context=".views.add_edit_document.AddEditDocumentActivity">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.xjek.provider.views.add_edit_document.AddEditDocumentViewModel" />
@@ -56,9 +58,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
+                            android:text="@string/view"
                             android:textColor="@color/colorPrimary"
-                            android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}"
-                            android:text="@string/view" />
+                            android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />
 
                     </RelativeLayout>
 
@@ -66,8 +68,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginTop="10dp"
-                        android:onClick="@{() -> viewModel.selectFrontImage()}"
-                        android:background="@drawable/drawable_dashed_rectangle">
+                        android:background="@drawable/drawable_dashed_rectangle"
+                        android:onClick="@{() -> viewModel.selectFrontImage()}">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ivFrontImage"
@@ -88,8 +90,8 @@
                             android:drawableTop="@drawable/ic_file_upload"
                             android:drawablePadding="5dp"
                             android:text="@string/upload_front_page"
-                            app:drawableTint="@color/colorLightBlue"
                             android:visibility="@{viewModel.showFrontView ? View.GONE:View.VISIBLE}"
+                            app:drawableTint="@color/colorLightBlue"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -102,8 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:orientation="vertical"
-                    android:visibility="@{viewModel.showBackSide ? View.VISIBLE:View.GONE}"
-                    >
+                    android:visibility="@{viewModel.showBackSide ? View.VISIBLE:View.GONE}">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -123,9 +124,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
+                            android:text="@string/view"
                             android:textColor="@color/colorPrimary"
-                            android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}"
-                            android:text="@string/view" />
+                            android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />
 
                     </RelativeLayout>
 
@@ -133,8 +134,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
                         android:layout_marginTop="10dp"
-                        android:onClick="@{() -> viewModel.selectBackImage()}"
-                        android:background="@drawable/drawable_dashed_rectangle">
+                        android:background="@drawable/drawable_dashed_rectangle"
+                        android:onClick="@{() -> viewModel.selectBackImage()}">
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ivBackImage"
@@ -168,8 +169,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:visibility="@{viewModel.showExpiry ? View.VISIBLE:View.GONE}"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.showExpiry ? View.VISIBLE:View.GONE}">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tv_expiry"
@@ -182,15 +183,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:selectableItemBackground"
+                        android:onClick="@{() -> viewModel.onExpiryDateClick()}"
                         app:cardBackgroundColor="@color/colorWhite"
                         app:cardCornerRadius="4dp"
                         app:cardPreventCornerOverlap="false"
                         app:cardUseCompatPadding="true"
-                        android:clickable="true"
-                        android:foreground="?android:selectableItemBackground"
-                        android:onClick="@{() -> viewModel.onExpiryDateClick()}"
-                        app:contentPadding="10dp"
-                        android:focusable="true">
+                        app:contentPadding="10dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -231,8 +232,8 @@
             android:layout_margin="@dimen/_17sdp"
             android:background="@drawable/bg_blue_rounded_corner_curved"
             android:backgroundTint="@color/colorPrimary"
-            android:padding="@dimen/_10sdp"
             android:onClick="@{()->viewModel.submitDocument()}"
+            android:padding="@dimen/_10sdp"
             android:text="@string/upload"
             android:textAllCaps="false"
             android:textColor="@android:color/white"

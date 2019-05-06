@@ -1,5 +1,5 @@
 package com.xjek.provider.views.countrylist
 
-interface  CountryNavigator{
+interface CountryNavigator {
     fun closeActivity()
 }

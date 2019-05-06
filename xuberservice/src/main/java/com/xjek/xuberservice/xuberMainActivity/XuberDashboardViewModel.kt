@@ -3,6 +3,7 @@ package com.xjek.xuberservice.xuberMainActivity
 import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.maps.model.LatLng
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.Constants.Common.ID
 import com.xjek.base.data.Constants.Common.METHOD
@@ -17,7 +18,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class XuberMainViewModel : BaseViewModel<XuberMainNavigator>() {
+class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
 
     val xuperRepository = XuperRepoitory.instance()
     var driverStatus: ObservableField<String> = ObservableField("Driver accepted your request")
@@ -31,12 +32,13 @@ class XuberMainViewModel : BaseViewModel<XuberMainNavigator>() {
     var userImage = MutableLiveData<String>()
     var serviceType = MutableLiveData<String>()
     var otp = MutableLiveData<String>()
-
+    var polyLineSrc = MutableLiveData<LatLng>()
+    var polyLineDest = MutableLiveData<LatLng>()
+    var currentStatus = MutableLiveData<String>()
 
     fun showInfoDialog(view:View) {
         navigator.showInfoWindow(view)
     }
-
 
     fun pickLocation() {
         navigator.goToLocationPick()
@@ -69,21 +71,22 @@ class XuberMainViewModel : BaseViewModel<XuberMainNavigator>() {
 
     fun callXuperCheckRequest() {
         // showLoading.value=true
-        getCompositeDisposable().add(xuperRepository.xuperCheckRequesst(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), latitude.value.toString(), longitude.value.toString()))
+        getCompositeDisposable().add(xuperRepository.xuperCheckRequesst
+        (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), latitude.value.toString(), longitude.value.toString()))
     }
 
     fun updateRequest(status: String, file: MultipartBody.Part?, isFrontImage: Boolean) {
         val params = HashMap<String, RequestBody>()
-        params.put(ID, RequestBody.create(MediaType.parse("text/plain"), xuperCheckRequest.value!!.responseData!!.requests!!.id.toString()))
-        params.put(STATUS, RequestBody.create(MediaType.parse("text/plain"), status))
-        params.put(METHOD, RequestBody.create(MediaType.parse("text/plain"), "PATCH"))
+        params[ID] = RequestBody.create(MediaType.parse("text/plain"), xuperCheckRequest.value!!.responseData!!.requests!!.id.toString())
+        params[STATUS] = RequestBody.create(MediaType.parse("text/plain"), status)
+        params[METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
         if (isFrontImage) {
-            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, file!!, null))
+            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest
+            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, file!!, null))
         } else {
-            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null, file!!))
+            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest
+            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null, file!!))
         }
-
-
     }
 
     fun cancelRequest(params: HashMap<String, String>) {

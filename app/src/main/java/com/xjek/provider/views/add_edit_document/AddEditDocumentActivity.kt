@@ -23,7 +23,6 @@ import com.xjek.provider.utils.Constant
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 

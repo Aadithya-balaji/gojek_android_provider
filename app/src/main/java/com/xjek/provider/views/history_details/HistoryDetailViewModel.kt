@@ -81,15 +81,15 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
 
     fun addLossItem(id: Int, lostitem: Editable?) {
 
-       /* val hashMap: HashMap<String, String> = HashMap()
-        hashMap.put("id", id.toString())
-        hashMap.put("lost_item_name", lostitem.toString())
+        /* val hashMap: HashMap<String, String> = HashMap()
+         hashMap.put("id", id.toString())
+         hashMap.put("lost_item_name", lostitem.toString())
 
-        loadingProgress.value = true
-        getCompositeDisposable().add(appRepository
-                .addLostItem(this
-                        , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), hashMap
-                ))*/
+         loadingProgress.value = true
+         getCompositeDisposable().add(appRepository
+                 .addLostItem(this
+                         , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), hashMap
+                 ))*/
     }
 
     fun setSelectedValue(Selecteddata: String) {

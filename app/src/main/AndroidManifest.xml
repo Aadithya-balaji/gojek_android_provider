@@ -198,6 +198,7 @@
         <activity
             android:name=".views.history_details.HistoryDetailActivity"
             android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_key" />

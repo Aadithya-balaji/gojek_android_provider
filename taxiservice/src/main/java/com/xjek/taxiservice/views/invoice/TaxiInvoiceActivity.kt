@@ -128,9 +128,8 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         println("GGGG :: locationProcessing = " + latLng.size)
         iteratePointsForApi.add(latLng[0])
 
-        for (i in latLng.indices)
-            if (i < latLng.size - 1)
-                iteratePointsForApi(latLng[i], latLng[i + 1])
+        for (i in latLng.indices) if (i < latLng.size - 1)
+            iteratePointsForApi(latLng[i], latLng[i + 1])
 
         iteratePointsForApi.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(iteratePointsForApi), "BBB")
@@ -141,6 +140,8 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 iteratePointsForDistanceCal(iteratePointsForApi[i], iteratePointsForApi[i + 1])
         iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
+
+        frameDistanceAPI(iteratePointsForDistanceCalc)
     }
 
     private fun distBt(a: LatLng, b: LatLng): Double {
@@ -182,4 +183,22 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         } else tempPointForDistanceCal = s
     }
 
+    private fun frameDistanceAPI(latLng: List<LatLng>): String {
+
+        val origins = StringBuilder()
+        val destinations = StringBuilder()
+        origins.append(latLng[0].latitude).append(",").append(latLng[0].longitude)
+
+        for (i in 2 until latLng.size) {
+            println("RRRR :: i = $i")
+            destinations.append("|").append(latLng[i].latitude).append(",").append(latLng[i].longitude)
+        }
+
+        destinations.append(latLng[latLng.size - 1].latitude).append(",").append(latLng[latLng.size - 1].longitude)
+        return "https://maps.googleapis.com/maps/api/distancematrix/json" +
+                "?units=imperial" +
+                "&origins=" + origins +
+                "&destinations=" + destinations +
+                "&key=AIzaSyAdXoVw-M-g4vgEOZZK7Dc9jMUlLR5xVXI"
+    }
 }

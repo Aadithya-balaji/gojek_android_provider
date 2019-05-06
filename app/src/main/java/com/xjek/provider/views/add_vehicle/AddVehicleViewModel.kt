@@ -2,7 +2,6 @@ package com.xjek.provider.views.add_vehicle
 
 import android.net.Uri
 import android.view.View
-import android.widget.ImageView
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
@@ -17,8 +16,6 @@ import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
 import okhttp3.RequestBody
 import java.io.File
-import androidx.databinding.BindingAdapter
-
 
 
 class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {

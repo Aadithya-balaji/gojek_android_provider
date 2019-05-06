@@ -4,19 +4,21 @@
 
 
     <data>
+
         <variable
             name="countrymodel"
             type="com.xjek.provider.views.countrypicker.CountryCodeViewModel"></variable>
     </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/bottom_sheet_behavior">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_country"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_150sdp">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="@dimen/_150sdp"></androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 
 </layout>

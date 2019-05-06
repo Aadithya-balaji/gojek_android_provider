@@ -28,7 +28,7 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
         fragmentTransactionBinding.transctionmodel = transcationViewModel
         linearLayoutManager = LinearLayoutManager(activity)
         fragmentTransactionBinding.transactionListRv.layoutManager = linearLayoutManager
-        fragmentTransactionBinding.lifecycleOwner=this
+        fragmentTransactionBinding.lifecycleOwner = this
 
         //callGetTrancation Api
         transcationViewModel.callTranscationApi()
@@ -46,10 +46,10 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
                 Log.e("wallet", "------non null")
 
             }
-            val transcationlist : List<TransactionDatum> = transcationViewModel.transcationLiveResponse.value!!.getResponseData()!!.getData()!!
+            val transcationlist: List<TransactionDatum> = transcationViewModel.transcationLiveResponse.value!!.getResponseData()!!.getData()!!
             transactionListAdapter = TransactionListAdapter(activity!!, transcationlist)
             fragmentTransactionBinding.transactionListRv.adapter = transactionListAdapter
         }
-        }
     }
+}
 

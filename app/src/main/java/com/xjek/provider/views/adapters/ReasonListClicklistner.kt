@@ -1,6 +1,6 @@
 package com.xjek.provider.views.adapters
 
-interface ReasonListClicklistner{
+interface ReasonListClicklistner {
 
-    fun reasonOnItemClick(disputeName : String)
+    fun reasonOnItemClick(disputeName: String)
 }

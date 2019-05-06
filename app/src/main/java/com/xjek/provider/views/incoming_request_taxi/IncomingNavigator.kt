@@ -1,7 +1,7 @@
 package com.xjek.provider.views.incoming_request_taxi
 
-interface  IncomingNavigator{
+interface IncomingNavigator {
     fun accept()
     fun cancel()
-    fun showErrormessage(error:String)
+    fun showErrormessage(error: String)
 }

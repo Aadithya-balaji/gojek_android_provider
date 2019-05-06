@@ -4,8 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-
-class  CardResponseModel{
+class CardResponseModel {
     @SerializedName("id")
     @Expose
     private var id: Int? = null
@@ -39,7 +38,7 @@ class  CardResponseModel{
     @SerializedName("funding")
     @Expose
     private var funding: String? = null
-      var isCardSelected:Boolean?=false
+    var isCardSelected: Boolean? = false
     fun getId(): Int? {
         return id
     }

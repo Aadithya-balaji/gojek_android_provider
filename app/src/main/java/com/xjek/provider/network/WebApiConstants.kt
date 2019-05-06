@@ -20,9 +20,9 @@ object WebApiConstants {
     const val COUNTRY_ID = "country_id"
     const val STATE_ID = "state_id"
     const val CITY_ID = "city_id"
-    const val PHONE_NUMBER="mobile"
-    const val LIMIT="limit"
-    const val OFFSET="offset"
+    const val PHONE_NUMBER = "mobile"
+    const val LIMIT = "limit"
+    const val OFFSET = "offset"
 
     object Login {
         const val COUNTRY_CODE = "country_code"
@@ -95,20 +95,20 @@ object WebApiConstants {
     }
 
 
-    object  AddWallet{
-        const val AMOUNT="amount"
-        const val CARD_ID="card_id"
-        const val USER_TYPE="user_type"
-        const val PAYMENT_MODE="payment_mode"
+    object AddWallet {
+        const val AMOUNT = "amount"
+        const val CARD_ID = "card_id"
+        const val USER_TYPE = "user_type"
+        const val PAYMENT_MODE = "payment_mode"
     }
 
-    object  addCard{
-        const val STRIP_TOKEN="stripe_token"
+    object addCard {
+        const val STRIP_TOKEN = "stripe_token"
     }
 
 
-    object  Availability{
-        const val STATUS="status"
+    object Availability {
+        const val STATUS = "status"
     }
 
 

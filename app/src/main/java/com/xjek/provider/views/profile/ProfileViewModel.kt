@@ -38,7 +38,7 @@ public class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     val appRepository = AppRepository.instance()
 
     fun getProfile() {
-        loadingProgress.value =true
+        loadingProgress.value = true
         getCompositeDisposable().add(appRepository
                 .getProviderProfile(this, Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
     }
@@ -104,8 +104,7 @@ public class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
         navigator.goToCityListActivity(mCountryId)
     }
 
-    fun changePassord()
-    {
+    fun changePassord() {
         navigator.goToChangePasswordActivity()
     }
 

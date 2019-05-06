@@ -10,7 +10,7 @@ import java.util.List;
 public class Country {
 
     private static final CountryModel[] COUNTRIES = {
-            new CountryModel("AD", "Andorra", "+376",R.drawable.flag_ad),
+            new CountryModel("AD", "Andorra", "+376", R.drawable.flag_ad),
             new CountryModel("AE", "United Arab Emirates", "+971", R.drawable.flag_ae),
             new CountryModel("AF", "Afghanistan", "+93", R.drawable.flag_af),
             new CountryModel("AG", "Antigua and Barbuda", "+1", R.drawable.flag_ag),
@@ -269,20 +269,13 @@ public class Country {
 
     private static CountryModel getCountryByISO(String countryIsoCode) {
         countryIsoCode = countryIsoCode.toUpperCase();
-        CountryModel c = new CountryModel(countryIsoCode,"","",-1);
+        CountryModel c = new CountryModel(countryIsoCode, "", "", -1);
         int i = Arrays.binarySearch(COUNTRIES, c, new ISOCodeComparator());
 
         if (i < 0) {
             return null;
         } else {
             return COUNTRIES[i];
-        }
-    }
-
-    public static class ISOCodeComparator implements Comparator<CountryModel> {
-        @Override
-        public int compare(CountryModel country, CountryModel t1) {
-            return country.getCode().compareTo(t1.getCode());
         }
     }
 
@@ -293,7 +286,12 @@ public class Country {
         return allCountriesList;
     }
 
-
+    public static class ISOCodeComparator implements Comparator<CountryModel> {
+        @Override
+        public int compare(CountryModel country, CountryModel t1) {
+            return country.getCode().compareTo(t1.getCode());
+        }
+    }
 
 
 }

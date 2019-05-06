@@ -5,9 +5,9 @@
 
     <!--<data>-->
 
-        <!--<variable-->
-            <!--name="documentUploadDataModel"-->
-            <!--type="com.xjek.provider.models.DocumentUploadDataModel" />-->
+    <!--<variable-->
+    <!--name="documentUploadDataModel"-->
+    <!--type="com.xjek.provider.models.DocumentUploadDataModel" />-->
     <!--</data>-->
 
     <androidx.appcompat.widget.LinearLayoutCompat

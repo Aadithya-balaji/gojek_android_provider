@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,8 +27,6 @@ import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
 import com.xjek.base.data.Constants.ModuleTypes.SERVICE
 import com.xjek.base.data.Constants.ModuleTypes.TRANSPORT
-import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
-import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
@@ -50,7 +47,7 @@ import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
 import com.xjek.provider.views.notification.NotificationFragment
 import com.xjek.provider.views.order.OrderFragment
 import com.xjek.taxiservice.views.main.TaxiDashboardActivity
-import com.xjek.xuberservice.xuberMainActivity.XuberMainActivity
+import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
@@ -114,7 +111,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         updateLocation(true)
                         updateCurrentLocation()
-                        Toast.makeText(this@DashBoardActivity, "Permission Granted", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
@@ -234,7 +230,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                             }
                             SERVICE -> if (!BROADCAST.equals(SERVICE)) {
                                 BROADCAST = SERVICE
-                                val intent = Intent(this, XuberMainActivity::class.java)
+                                val intent = Intent(this, XuberDashBoardActivity::class.java)
                                 intent.putExtra("lat", mViewModel.latitude.value)
                                 intent.putExtra("lon", mViewModel.longitude.value)
                                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP

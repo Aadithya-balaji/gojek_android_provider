@@ -3,16 +3,16 @@
     <!-- Larger blue circle in back -->
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/xuber_white"/>
+            <solid android:color="@color/xuber_white" />
 
         </shape>
     </item>
     <!-- Smaller red circle in front -->
     <item
-        android:top="30dp"
         android:bottom="30dp"
         android:left="30dp"
-        android:right="30dp">
+        android:right="30dp"
+        android:top="30dp">
 
         <bitmap
             android:gravity="center"

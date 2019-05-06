@@ -24,10 +24,10 @@
         <RadioButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
-            android:onCheckedChanged="@{(switch, checked) -> languageViewModel.checkedChangeListener(checked,position)}"
             android:checked="@{currentLanguage.equalsIgnoreCase(languageViewModel.getLanguage(position).key)}"
-            android:text="@{languageViewModel.getLanguage(position).name}"/>
+            android:onCheckedChanged="@{(switch, checked) -> languageViewModel.checkedChangeListener(checked,position)}"
+            android:padding="@dimen/_5sdp"
+            android:text="@{languageViewModel.getLanguage(position).name}" />
 
     </RelativeLayout>
 

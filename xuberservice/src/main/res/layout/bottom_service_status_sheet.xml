@@ -7,7 +7,7 @@
 
         <variable
             name="bottomServiceModel"
-            type="com.xjek.xuberservice.xuberMainActivity.XuberMainViewModel" />
+            type="com.xjek.xuberservice.xuberMainActivity.XuberDashboardViewModel" />
     </data>
 
     <LinearLayout

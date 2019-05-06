@@ -86,31 +86,30 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
         if (navigator.validateDetails()) {
             showLoading.value = true
             val data = bankResponse.value!!.responseData
-            val isEdit:Boolean =data[0].bankdetails!=null
+            val isEdit: Boolean = data[0].bankdetails != null
             val rootObject = JSONObject()
             val bankFormID = JSONArray()
             val keyValue = JSONArray()
             val id = JSONArray()
             for (i in 0 until data.size) {
-                bankFormID.put(i,data[i].id)
-                keyValue.put(i,data[i].lableValue)
-                if(isEdit)
-                    id.put(i,data[i].bankdetails!!.id)
+                bankFormID.put(i, data[i].id)
+                keyValue.put(i, data[i].lableValue)
+                if (isEdit)
+                    id.put(i, data[i].bankdetails!!.id)
             }
 
-            rootObject.put("bankform_id",bankFormID)
-            rootObject.put("keyvalue",keyValue)
+            rootObject.put("bankform_id", bankFormID)
+            rootObject.put("keyvalue", keyValue)
             if (isEdit)
-                rootObject.put("id",id)
+                rootObject.put("id", id)
 
-            if (isEdit){
+            if (isEdit) {
                 getCompositeDisposable()
-                        .add(appRepository.postEditBankDetails(this, token,rootObject.toString()))
-            }else{
+                        .add(appRepository.postEditBankDetails(this, token, rootObject.toString()))
+            } else {
                 getCompositeDisposable()
-                        .add(appRepository.postAddBankDetails(this, token,rootObject.toString()))
+                        .add(appRepository.postAddBankDetails(this, token, rootObject.toString()))
             }
-
 
 
         }

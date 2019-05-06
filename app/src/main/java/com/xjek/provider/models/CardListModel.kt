@@ -4,8 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-
-class  CardListModel{
+class CardListModel {
     @SerializedName("statusCode")
     @Expose
     private var statusCode: String? = null

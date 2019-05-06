@@ -1,5 +1,5 @@
 package com.xjek.provider.views.uploaddocumentlist
 
-interface VechileDetailNavigator{
+interface VechileDetailNavigator {
     fun gotoVerificationPage()
 }

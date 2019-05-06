@@ -6,10 +6,11 @@
 
         <variable
             name="taxiProviderViewModel"
-            type="com.xjek.provider.views.taxiproviderfragment.TaxiProviderViewModel"/>
+            type="com.xjek.provider.views.taxiproviderfragment.TaxiProviderViewModel" />
+
         <variable
             name="taxiProviderAdapter"
-            type="com.xjek.provider.views.adapters.TaxiProviderAdapter"/>
+            type="com.xjek.provider.views.adapters.TaxiProviderAdapter" />
 
     </data>
 
@@ -20,11 +21,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/taxi_provider_rv"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:adapter="@{taxiProviderAdapter}" />
+            android:adapter="@{taxiProviderAdapter}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
     </LinearLayout>

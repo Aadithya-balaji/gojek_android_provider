@@ -11,8 +11,8 @@ import com.xjek.provider.databinding.ActivityVechileDetailPageBinding
 import com.xjek.provider.views.adapters.ServiceListAdapter
 import com.xjek.provider.views.verifyfile.VerifyFileActivity
 
-class VechileDetailActivity:BaseActivity<ActivityVechileDetailPageBinding>(),VechileDetailNavigator{
-    private  var mVechileDetailPageBinding:ActivityVechileDetailPageBinding?=null
+class VechileDetailActivity : BaseActivity<ActivityVechileDetailPageBinding>(), VechileDetailNavigator {
+    private var mVechileDetailPageBinding: ActivityVechileDetailPageBinding? = null
     private lateinit var llTaxiVechileDetail: CoordinatorLayout
     private lateinit var llFoodieDetail: LinearLayout
     private lateinit var llService: LinearLayout
@@ -20,15 +20,14 @@ class VechileDetailActivity:BaseActivity<ActivityVechileDetailPageBinding>(),Vec
     private var serviceType: Int = -1
 
 
-
     override fun getLayoutId(): Int {
-        return  R.layout.activity_vechile_detail_page
+        return R.layout.activity_vechile_detail_page
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        mVechileDetailPageBinding=mViewDataBinding as ActivityVechileDetailPageBinding
-        val vechileDetailModel=VechileDetailModel()
-        mVechileDetailPageBinding!!.vechiledetailmodel=vechileDetailModel
+        mVechileDetailPageBinding = mViewDataBinding as ActivityVechileDetailPageBinding
+        val vechileDetailModel = VechileDetailModel()
+        mVechileDetailPageBinding!!.vechiledetailmodel = vechileDetailModel
 
         llTaxiVechileDetail = findViewById(R.id.cl_taxi)
         llFoodieDetail = findViewById(R.id.ll_foodie)
@@ -40,10 +39,10 @@ class VechileDetailActivity:BaseActivity<ActivityVechileDetailPageBinding>(),Vec
         //Change Page based on Service type
         changeLayout()
 
-        val services=resources.getStringArray(R.array.document_list)
-        val list=services.toList()
+        val services = resources.getStringArray(R.array.document_list)
+        val list = services.toList()
 
-        val serviceListAdapter=ServiceListAdapter(this,list)
+        val serviceListAdapter = ServiceListAdapter(this, list)
     }
 
     fun getIntentValues() {
@@ -69,7 +68,7 @@ class VechileDetailActivity:BaseActivity<ActivityVechileDetailPageBinding>(),Vec
     }
 
     override fun gotoVerificationPage() {
-        val intent= Intent(this@VechileDetailActivity,VerifyFileActivity::class.java)
+        val intent = Intent(this@VechileDetailActivity, VerifyFileActivity::class.java)
         startActivity(intent)
     }
 

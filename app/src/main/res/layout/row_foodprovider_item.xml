@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -57,10 +56,10 @@
                         android:textColor="@color/xuber_black" />
 
                     <TextView
+                        android:id="@+id/restaturant_location_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/restaturant_location_tv"
-                        android:text="@string/dummy_restaturant_location"/>
+                        android:text="@string/dummy_restaturant_location" />
 
                 </LinearLayout>
 
@@ -70,8 +69,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:fontFamily="@font/avenirltstd_medium"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
                     android:text="12 sec lef" />
 
             </RelativeLayout>

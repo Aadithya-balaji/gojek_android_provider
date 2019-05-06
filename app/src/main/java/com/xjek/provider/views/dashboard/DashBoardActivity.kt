@@ -1,5 +1,6 @@
 package com.xjek.provider.views.dashboard
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -10,11 +11,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
@@ -29,7 +37,6 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
-import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.CommonMethods
@@ -50,7 +57,8 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
 
-class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator {
+class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
+        DashBoardNavigator {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var mViewModel: DashBoardViewModel
@@ -58,6 +66,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     private var mIncomingRequestDialog = IncomingRequestDialog()
     private var locationServiceIntent: Intent? = null
     private var checkStatusApiCounter = 0
+    private var mHomeFragment = HomeFragment()
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -73,11 +82,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
         mViewModel.latitude.value = 0.0
         mViewModel.longitude.value = 0.0
-        supportFragmentManager.beginTransaction().add(R.id.frame_home_container, HomeFragment()).commit()
+        supportFragmentManager.beginTransaction().add(R.id.frame_home_container, mHomeFragment).commit()
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.action_home -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, HomeFragment()).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, mHomeFragment).commit()
                     true
                 }
 
@@ -100,13 +109,20 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
-        if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-            updateLocation(true)
-            updateCurrentLocation()
-        } else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION)) {
-            updateLocation(true)
-            updateCurrentLocation()
-        }
+
+        Dexter.withActivity(this)
+                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        updateLocation(true)
+                        updateCurrentLocation()
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                        token?.continuePermissionRequest()
+                    }
+                }).check()
+
         mViewModel.getProfile()
         getApiResponse()
     }
@@ -117,7 +133,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
 //        AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
-        updateCurrentLocation()
     }
 
     override fun setTitle(title: String) {
@@ -135,15 +150,19 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun showLogo(isNeedShow: Boolean) {
-        if (isNeedShow) {
-            tbr_iv_logo.visibility = View.VISIBLE
-            tbr_rl_right.visibility = View.GONE
-        } else {
-            tbr_rl_right.visibility = View.VISIBLE
-            tbr_iv_logo.visibility = View.GONE
-        }
+        try {
+            if (isNeedShow) {
+                tbr_iv_logo.visibility = View.VISIBLE
+                tbr_rl_right.visibility = View.GONE
+            } else {
+                tbr_rl_right.visibility = View.VISIBLE
+                tbr_iv_logo.visibility = View.GONE
+            }
 
-        tbr_home.visibility = View.VISIBLE
+            tbr_home.visibility = View.VISIBLE
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun setRightIcon(rightIcon: Int) {
@@ -171,12 +190,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 override fun onSuccess(location: Location?) {
                     mViewModel.latitude.value = location!!.latitude
                     mViewModel.longitude.value = location.longitude
+                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
                 }
 
                 override fun onFailure(messsage: String?) {
                     mViewModel.latitude.value = 0.0
                     mViewModel.longitude.value = 0.0
+                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
                 }
             })
@@ -237,7 +258,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
         observeLiveData(mViewModel.mProfileResponse) {
             val cityID = it.profileData?.cityName?.id?.toInt() ?: 0
-            PreferencesHelper.put(PreferencesKey.CITY_ID,cityID)
+            PreferencesHelper.put(PreferencesKey.CITY_ID, cityID)
             SocketManager.emit(Constants.ROOM_NAME.COMMON_ROOM_NAME, Constants.ROOM_ID.COMMON_ROOM)
         }
 

@@ -10,6 +10,7 @@ import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 
 class PermissionUtils {
 
@@ -27,7 +28,7 @@ class PermissionUtils {
         return true
     }
 
-    fun requestPermissions(activity: AppCompatActivity, permission: Array<String>, requestCode: Int): Boolean {
+    fun requestPermissions(activity: FragmentActivity, permission: Array<String>, requestCode: Int): Boolean {
         if (useRunTimePermissions()) activity.requestPermissions(permission, requestCode)
         return hasPermission(activity, permission)
     }

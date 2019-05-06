@@ -58,8 +58,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
         xuperInvoiceModel.navigator = this
         dialogInvoiceBinding.invoicemodel = xuperInvoiceModel
         xuperInvoiceModel.showProgress = loadingObservable as MutableLiveData<Boolean>
-       //
-        // updateUi()
+        updateUi()
         getApiResponse()
         invoiceDialog=dialog
     }
@@ -67,6 +66,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     fun getApiResponse() {
         xuperInvoiceModel.invoiceLiveData.observe(this, object : androidx.lifecycle.Observer<UpdateRequest> {
             override fun onChanged(updateRequest: UpdateRequest?) {
+                loadingObservable.value=false
                 xuperInvoiceModel.showProgress.value = false
                 if (updateRequest!!.statusCode.equals("200")) {
                     val ratingDialog = DialogXuperRating()

@@ -28,4 +28,9 @@ interface XuperApiService {
     @POST("provider/cancel/serve/request")
     fun cancelRequest(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<CancelRequestModel>
 
+    @Multipart
+    @POST("provider/update/serve/request")
+    fun confirmPayment(@Header("Authorization") token: String, @PartMap params: HashMap<String, RequestBody>): Observable<UpdateRequest>
+
+
 }

@@ -81,11 +81,10 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
         params[STATUS] = RequestBody.create(MediaType.parse("text/plain"), status)
         params[METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
         if (isFrontImage) {
-            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, file!!, null))
+            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, file, null))
         } else {
-            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null, file!!))
+            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null, file))
+
         }
     }
 

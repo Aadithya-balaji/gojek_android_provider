@@ -74,6 +74,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.util.*
 
 
 class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
@@ -90,6 +91,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mBinding: ActivityXuberMainBinding
     private lateinit var sheetBehavior: BottomSheetBehavior<FrameLayout>
+    private var localServiceTime: Long? = null
 
     private var mGoogleMap: GoogleMap? = null
     private var mLastKnownLocation: Location? = null
@@ -471,29 +473,35 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun onChronometerTick(chronometer: Chronometer?) {
-        val time = SystemClock.elapsedRealtime() - chronometer!!.base
+        val time = Date().time - chronometer!!.base!!
         val h = (time / 3600000).toInt()
         val m = (time - h * 3600000).toInt() / 60000
         val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-        val t = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
-        chronometer.text = t
+        val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+        Log.e("Chrono", "---" + "---" + h + "---" + m + "---" + s)
+        chronometer!!.setText(formatedTime)
     }
 
-    private fun startTheTimer() {
-        val startedTime = mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at
-        if (!startedTime.isNullOrEmpty()) {
-            val serviceDate = CommonMethods.getLocalTime(startedTime, UTCTIME)
-            val timeinMilliSec = serviceDate
-            //  cm_service_time.base = SystemClock.elapsedRealtime() - (timeinMilliSec)
-            val h = (timeinMilliSec / 3600000).toInt()
-            val m = (timeinMilliSec - h * 3600000).toInt() / 60000
-            val s = (timeinMilliSec - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
-            cm_service_time.text = formattedTime
-            //   cm_service_time.start()
+    fun startTheTimer() {
+        if (!(mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at.isNullOrEmpty())) {
+            val startedTime = mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at
+            if (!startedTime.isNullOrEmpty()) {
+                localServiceTime = CommonMethods.getLocalTime(startedTime!!, "yyyy-dd-MM HH:mm:ss")
+                val timeinMilliSec = localServiceTime
+                val timeinMilli = Date().time - (timeinMilliSec!!)
+                val h = (timeinMilli / 3600000).toInt()
+                val m = (timeinMilli - h * 3600000).toInt() / 60000
+                val s = (timeinMilli - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
+                val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+                cmXuberServiceTime.base = localServiceTime!!
+                cmXuberServiceTime.setText("00:00:00");
+                cmXuberServiceTime.start()
+                cmXuberServiceTime.onChronometerTickListener = this@XuberDashBoardActivity
+            }
         } else {
-            cm_service_time.base = SystemClock.elapsedRealtime()
-            cm_service_time.start()
+            cmXuberServiceTime.base = SystemClock.elapsedRealtime()
+            cmXuberServiceTime.setText("00:00:00");
+            cmXuberServiceTime.start()
         }
     }
 

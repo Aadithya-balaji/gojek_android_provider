@@ -36,6 +36,7 @@ import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
+import com.xjek.base.utils.CommonMethods
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
@@ -105,6 +106,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
+
         Dexter.withActivity(this)
                 .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .withListener(object : MultiplePermissionsListener {
@@ -119,7 +121,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 }).check()
 
         mViewModel.getProfile()
-
         getApiResponse()
     }
 

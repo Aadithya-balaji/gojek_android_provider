@@ -32,6 +32,7 @@ import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
+import com.xjek.base.utils.CommonMethods
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
@@ -106,9 +107,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
             updateLocation(true)
             updateCurrentLocation()
         }
-
         mViewModel.getProfile()
-
         getApiResponse()
     }
 

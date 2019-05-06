@@ -48,9 +48,9 @@ class XuperRepoitory : BaseRepository() {
 
     }
 
-    fun confirmPayment(viewModel: XuperInvoiceViewModel, token: String, params: HashMap<String, RequestBody>, @Part frontImag: MultipartBody.Part?,@Part backImage:MultipartBody.Part?): Disposable {
+    fun confirmPayment(viewModel: XuperInvoiceViewModel, token: String, params: HashMap<String, RequestBody>): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
-                .xuperUpdateServcie(token, params,frontImag,backImage)
+                .confirmPayment(token, params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

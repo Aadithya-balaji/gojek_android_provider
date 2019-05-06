@@ -38,6 +38,7 @@ class  DialogXuperExtraCharge:BaseDialogFragment<DialogXuperExtraChargeBinding>(
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         dialogXuperExtraChargeBinding=viewDataBinding as DialogXuperExtraChargeBinding
         xuperExtraChargeViewModel= XuperExtraChargeViwModel()
+        xuperExtraChargeViewModel.navigator=this
         dialogXuperExtraChargeBinding.extraChargeModel=xuperExtraChargeViewModel
         dialogXuperExtraChargeBinding.setLifecycleOwner(this)
         dialogXuperExtraChargeBinding.edtExtraAmount.addTextChangedListener(EditListener())

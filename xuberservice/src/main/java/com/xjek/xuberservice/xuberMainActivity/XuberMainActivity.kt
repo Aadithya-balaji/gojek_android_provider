@@ -10,7 +10,6 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -19,7 +18,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
-import android.widget.AdapterView
 import android.widget.Chronometer
 import android.widget.FrameLayout
 import android.widget.PopupWindow
@@ -45,8 +43,7 @@ import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.XuperProvider.CANCEL
 import com.xjek.base.data.Constants.XuperProvider.START
 import com.xjek.base.location_service.BaseLocationService
-import com.xjek.base.utils.CommonMethods
-import com.xjek.base.utils.Constants.Companion.UTCTIME
+import com.xjek.base.utils.CommonMethods.Companion.getLocalTime
 import com.xjek.base.utils.ViewUtils
 import com.xjek.xuberservice.R
 import com.xjek.xuberservice.databinding.ActivityXubermainBinding
@@ -59,6 +56,7 @@ import com.xjek.xuberservice.model.XuperCheckRequest
 import com.xjek.xuberservice.rating.DialogXuperRating
 import com.xjek.xuberservice.reasons.ReasonFragment
 import com.xjek.xuberservice.uploadImage.DialogUploadPicture
+import kotlinx.android.synthetic.main.activity_xubermain.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.view.*
 import okhttp3.MediaType
@@ -88,6 +86,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     val invoicePage = DialogXuperInvoice()
     val ratingPage = DialogXuperRating()
     var popupWindow: PopupWindow? = null
+    private var localServiceTime: Long? = null
 
 
     override fun getLayoutId(): Int = R.layout.activity_xubermain
@@ -102,10 +101,6 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         initialiseMap()
         getApiResponse()
         getBundleValues()
-        val bundle=Bundle()
-        invoicePage.arguments=bundle
-        invoicePage.show(supportFragmentManager, "xuperinvoice")
-
     }
 
     fun getBundleValues() {
@@ -134,8 +129,9 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
                         }
 
                         DROPPED -> {
-                            whenDropped(xuperCheckRequest.responseData!!)
+                            whenDropped(true)
                         }
+
 
                         COMPLETED -> {
                             whenPayment(xuperCheckRequest.responseData!!)
@@ -145,7 +141,6 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
                 }
             }
         })
-
 
         //Update Request
         xuberMainViewModel.xuperUdpateRequest.observe(this, object : androidx.lifecycle.Observer<UpdateRequest> {
@@ -162,6 +157,8 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
                         }
 
                         DROPPED -> {
+                            whenDropped(false)
+
                             // xuberMainViewModel.xuperUdpateRequest
 
                         }
@@ -314,11 +311,20 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     }
 
     //Completed Not Payment Successful
-    fun whenDropped(responseData: XuperCheckRequest.ResponseData) {
+    fun whenDropped(isCheckRequest:Boolean) {
         val bundle = Bundle()
-        val strCheckRequest = Gson().toJson(xuberMainViewModel.xuperCheckRequest.value!!)
-        bundle.putString("strCheckReq", strCheckRequest)
-        bundle.putBoolean("fromCheckReq", true)
+        if(isCheckRequest) {
+            val strCheckRequest = Gson().toJson(xuberMainViewModel.xuperCheckRequest.value!!)
+            bundle.putString("strCheckReq", strCheckRequest)
+            bundle.putBoolean("fromCheckReq", true)
+
+        }else{
+            val strUpdateRequest = Gson().toJson(xuberMainViewModel.xuperUdpateRequest.value!!)
+            bundle.putString("strUpdateReq", strUpdateRequest)
+            bundle.putBoolean("fromCheckReq", false)
+
+        }
+        llBottomService.visibility = View.GONE
         invoicePage.arguments = bundle
         if (invoicePage.isShown() == false)
             invoicePage.show(supportFragmentManager, "xuperinvoice")
@@ -330,6 +336,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
         val strCheckRequest = Gson().toJson(xuberMainViewModel.xuperCheckRequest.value)
         bundle.putString("strCheckReq", strCheckRequest)
         bundle.putBoolean("isFromCheckRequest", true)
+        llBottomService.visibility = View.GONE
         if (ratingPage.isShown() == false) {
             ratingPage.arguments = bundle
             ratingPage.show(supportFragmentManager, "ratingPage")
@@ -393,29 +400,35 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     }
 
     override fun onChronometerTick(chronometer: Chronometer?) {
-        val time = SystemClock.elapsedRealtime() - chronometer!!.getBase()
+        val time = Date().time - chronometer!!.base!!
         val h = (time / 3600000).toInt()
         val m = (time - h * 3600000).toInt() / 60000
         val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-        val t = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
-        chronometer!!.setText(t)
+        val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+        Log.e("Chrono", "---" + "---" + h + "---" + m + "---" + s)
+        chronometer!!.setText(formatedTime)
     }
 
     fun startTheTimer() {
-        val startedTime = xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at
-        if (!startedTime.isNullOrEmpty()) {
-            val serviceDate = CommonMethods.getLocalTime(startedTime!!, UTCTIME)
-            val timeinMilliSec = serviceDate
-            //  cm_service_time.base = SystemClock.elapsedRealtime() - (timeinMilliSec)
-            val h = (timeinMilliSec / 3600000).toInt()
-            val m = (timeinMilliSec - h * 3600000).toInt() / 60000
-            val s = (timeinMilliSec - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-            val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
-            cm_service_time.setText(formatedTime)
-            //   cm_service_time.start()
+        if (!(xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at.isNullOrEmpty())) {
+            val startedTime = xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at
+            if (!startedTime.isNullOrEmpty()) {
+                localServiceTime = getLocalTime(startedTime!!, "yyyy-dd-MM HH:mm:ss")
+                val timeinMilliSec = localServiceTime
+                val timeinMilli = Date().time - (timeinMilliSec!!)
+                val h = (timeinMilli / 3600000).toInt()
+                val m = (timeinMilli - h * 3600000).toInt() / 60000
+                val s = (timeinMilli - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
+                val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+                cmXuberServiceTime.base = localServiceTime!!
+                cmXuberServiceTime.setText("00:00:00");
+                cmXuberServiceTime.start()
+                cmXuberServiceTime.onChronometerTickListener = this@XuberMainActivity
+            }
         } else {
-            cm_service_time.base = SystemClock.elapsedRealtime()
-            cm_service_time.start()
+            cmXuberServiceTime.base = SystemClock.elapsedRealtime()
+            cmXuberServiceTime.setText("00:00:00");
+            cmXuberServiceTime.start()
         }
     }
 
@@ -440,7 +453,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     }
 
     override fun getFilePath(filePath: Uri) {
-        if (xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED))
+        if ((xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED) && !activityXuberMainBinding.llBottomService.llConfirm.tvAllow.text.equals(COMPLETED) || xuberMainViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
             getImageFile(true, filePath)
         else if (xuberMainViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP) || activityXuberMainBinding.llBottomService.llConfirm.tvAllow.text.equals(COMPLETED))
             getImageFile(false, filePath)
@@ -488,15 +501,15 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
             val y = v.y
 
             popupView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.popup_anim_in))
-              popupWindow!!.showAtLocation(v, Gravity.TOP  , x.toInt(), y.toInt());
+            popupWindow!!.showAtLocation(v, Gravity.TOP, x.toInt(), y.toInt());
             // popupWindow.showAtLocation(v, Gravity.RIGHT | Gravity.BOTTOM, (int) x, (int) y);
-           /* val margin = displayFrameWidth - (loc[0] + v.width)
-            xoff = displayFrameWidth - margin - popupWindow!!.getWidth() - loc[0]
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                popupWindow!!.setElevation(20f)
-            }
-            popupWindow!!.showAsDropDown(v, xoff, yoff)
-            popupWindow!!.setAnimationStyle(R.anim.popup_anim_in)*/
+            /* val margin = displayFrameWidth - (loc[0] + v.width)
+             xoff = displayFrameWidth - margin - popupWindow!!.getWidth() - loc[0]
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                 popupWindow!!.setElevation(20f)
+             }
+             popupWindow!!.showAsDropDown(v, xoff, yoff)
+             popupWindow!!.setAnimationStyle(R.anim.popup_anim_in)*/
         }
 
         popupWindow!!.setOnDismissListener(PopupWindow.OnDismissListener {
@@ -508,7 +521,7 @@ class XuberMainActivity : BaseActivity<ActivityXubermainBinding>(), XuberMainNav
     }
 
     override fun showInfoWindow(view: View) {
-        showInfoWindow(this@XuberMainActivity,view)
+        showInfoWindow(this@XuberMainActivity, view)
     }
 
 }

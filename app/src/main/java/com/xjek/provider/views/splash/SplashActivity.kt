@@ -89,16 +89,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             writePreferences(PreferencesKey.CONTACT_NUMBER, contactNumbers.toSet())
             writePreferences(PreferencesKey.CONTACT_EMAIL,
                     it.responseData.appSetting.supportDetails.contactEmail)
-
             setLanguage(it)
             setPayment(it)
-
             Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
 
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
             else {
-                launchNewActivity(XuberMainActivity::class.java, true)
+                launchNewActivity(DashBoardActivity::class.java, true)
             }
         }
     }

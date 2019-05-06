@@ -132,14 +132,14 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 
         iterationPointsForApi.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(iterationPointsForApi), "BBB")
-
+/*
         iterationPointsForDistanceCalc asdfa
                 asf
         adsf
         asdf
         asdf
         asdf
-        asdf
+        asdf*/
 
 
     }

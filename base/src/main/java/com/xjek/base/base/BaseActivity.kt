@@ -113,10 +113,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         snackBar.show()
     }
 
-    fun longLog(str: String) {
+    fun longLog(str: String, s: String) {
         if (str.length > 4000) {
-            Log.d("RRRR:: Points : ", str.substring(0, 4000))
-            longLog(str.substring(4000))
-        } else Log.d("RRRR:: Points : ", str)
+            Log.d("$s::Points : ", str.substring(0, 4000))
+            longLog(str.substring(4000), s)
+        } else Log.d("$s::Points : ", str)
     }
 }

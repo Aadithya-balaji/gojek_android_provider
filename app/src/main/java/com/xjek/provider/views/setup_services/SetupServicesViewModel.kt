@@ -4,13 +4,16 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
+import com.xjek.provider.models.ServiceCategoriesResponse
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.views.setup_vehicle.SetupVehicleAdapter
 
 class SetupServicesViewModel : BaseViewModel<SetupServicesNavigator>() {
 
     private val appRepository = AppRepository.instance()
-    private val servicesLiveData = MutableLiveData<Any>()
+    private val serviceCategoriesResponse = MutableLiveData<ServiceCategoriesResponse>()
+    private val loadingObservable = MutableLiveData<Boolean>()
+    var errorResponse = MutableLiveData<String>()
 
     private val adapter: SetupServicesAdapter = SetupServicesAdapter(this)
 
@@ -28,14 +31,14 @@ class SetupServicesViewModel : BaseViewModel<SetupServicesNavigator>() {
         return ""
     }
 
-//    fun getCategories() {
-//        val token = StringBuilder("Bearer ")
-//                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
-//                .toString()
-//        getCompositeDisposable().add(appRepository.getRides(this, token))
-//    }
+    fun getCategories() {
+        val token = StringBuilder("Bearer ")
+                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
+                .toString()
+        getCompositeDisposable().add(appRepository.getServiceCategories(this, token))
+    }
 
-    fun getServicesDataObservable() = servicesLiveData
+    fun getServicesDataObservable() = serviceCategoriesResponse
 
     fun onItemClick(position: Int) {
         navigator.onMenuItemClicked(position)

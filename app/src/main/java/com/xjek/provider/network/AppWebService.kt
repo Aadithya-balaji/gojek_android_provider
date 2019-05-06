@@ -149,6 +149,10 @@ interface AppWebService {
     @GET("provider/ridetype")
     fun getRides(@Header("Authorization") token: String): Observable<SetupRideResponseModel>
 
+    @GET("provider/providerservice/categories")
+    fun getServiceCategories(@Header("Authorization") token: String): Observable<ServiceCategoriesResponse>
+
+
     @GET("provider/shoptype")
     fun getShops(@Header("Authorization") token: String): Observable<SetupShopResponseModel>
 

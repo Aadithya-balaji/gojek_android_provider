@@ -30,10 +30,12 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 
     private var points = ArrayList<LocationPointsEntity>()
     private var tempPoints = ArrayList<LatLng>()
-    private var iterationPointsForApi = ArrayList<LatLng>()
-    private var iterationPointsForDistanceCalc = ArrayList<LatLng>()
+    private var iteratePointsForApi = ArrayList<LatLng>()
+    private var iteratePointsForDistanceCalc = ArrayList<LatLng>()
     private var tempPoint: LatLng? = null
+    private var tempPointForDistanceCal: LatLng? = null
     private var iterationDistForApi = 50.0
+    private var iterationDistForDistanceCal = 500.0
 
     override fun getLayoutId(): Int = R.layout.activity_invoice_taxi
 
@@ -124,24 +126,21 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 
     private fun locationProcessing(latLng: ArrayList<LatLng>) {
         println("GGGG :: locationProcessing = " + latLng.size)
-        iterationPointsForApi.add(latLng[0])
+        iteratePointsForApi.add(latLng[0])
 
         for (i in latLng.indices)
             if (i < latLng.size - 1)
                 iteratePointsForApi(latLng[i], latLng[i + 1])
 
-        iterationPointsForApi.add(latLng[latLng.size - 1])
-        longLog(Gson().toJson(iterationPointsForApi), "BBB")
+        iteratePointsForApi.add(latLng[latLng.size - 1])
+        longLog(Gson().toJson(iteratePointsForApi), "BBB")
 
-        iterationPointsForDistanceCalc asdfa
-                asf
-        adsf
-        asdf
-        asdf
-        asdf
-        asdf
-
-
+        iteratePointsForDistanceCalc.add(latLng[0])
+        for (i in iteratePointsForApi.indices)
+            if (i < iteratePointsForApi.size - 1)
+                iteratePointsForDistanceCal(iteratePointsForApi[i], iteratePointsForApi[i + 1])
+        iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
+        longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
     }
 
     private fun distBt(a: LatLng, b: LatLng): Double {
@@ -158,16 +157,29 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     private fun iteratePointsForApi(s: LatLng, e: LatLng) {
         var dist = distBt(s, e)
         if (dist >= iterationDistForApi) {
-            iterationPointsForApi.add(e)
+            iteratePointsForApi.add(e)
             tempPoint = null
         } else if (tempPoint != null) {
             dist = distBt(tempPoint!!, e)
             if (dist >= iterationDistForApi) {
-                iterationPointsForApi.add(e)
+                iteratePointsForApi.add(e)
                 tempPoint = null
             }
         } else tempPoint = s
     }
 
+    private fun iteratePointsForDistanceCal(s: LatLng, e: LatLng) {
+        var dist = distBt(s, e)
+        if (dist >= iterationDistForDistanceCal) {
+            iteratePointsForDistanceCalc.add(e)
+            tempPointForDistanceCal = null
+        } else if (tempPointForDistanceCal != null) {
+            dist = distBt(tempPointForDistanceCal!!, e)
+            if (dist >= iterationDistForDistanceCal) {
+                iteratePointsForDistanceCalc.add(e)
+                tempPointForDistanceCal = null
+            }
+        } else tempPointForDistanceCal = s
+    }
 
 }

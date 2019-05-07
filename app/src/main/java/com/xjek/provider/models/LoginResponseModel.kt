@@ -33,7 +33,7 @@ data class LoginResponseModel(
                 val latitude: Double,
                 val longitude: Double,
                 @SerializedName("stripe_acc_id") val stripeAccId: String,
-                @SerializedName("wallet_balance") val walletBalance: Int,
+                @SerializedName("wallet_balance") val walletBalance: Double,
                 val rating: Double,
                 val status: String,
                 @SerializedName("admin_id") val adminId: Any,

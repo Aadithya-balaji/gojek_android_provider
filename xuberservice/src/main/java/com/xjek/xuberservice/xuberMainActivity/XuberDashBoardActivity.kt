@@ -556,7 +556,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private fun showInfoWindow(context: Context, v: View) {
         val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView = layoutInflater.inflate(R.layout.dialog_info_window, null)
-        //val drop_down_list = popupView.findViewById(R.id.drop_down_list) as ListView
         val displayFrame = Rect()
         v.getWindowVisibleDisplayFrame(displayFrame)
         val displayFrameWidth = displayFrame.right - displayFrame.left

@@ -8,4 +8,3 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
         navigator.checkOrderDeliverStatus()
     }
 }
-

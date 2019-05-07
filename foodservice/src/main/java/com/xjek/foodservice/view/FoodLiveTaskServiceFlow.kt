@@ -25,13 +25,12 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         val foodLiveTaskviewModel = ViewModelProviders.of(this).get(FoodLiveTaskServiceViewModel::class.java)
         mViewDataBinding.foodLiveTaskviewModel = foodLiveTaskviewModel
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this)
-
+        foodLiveTaskviewModel.navigator = this
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun checkOrderDeliverStatus() {
-
         when (i) {
             0 -> {
                 mViewDataBinding.timeLeftRl.visibility = View.GONE

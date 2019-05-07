@@ -36,13 +36,14 @@ public final class LocationUtils {
         }).addOnFailureListener(e -> mCallBack.onFailure(e.getLocalizedMessage()));
     }
 
-    public static List<Address> getCurrentAddress(@NonNull Context context, LatLng currentLocation) throws IOException {
+    public static List<Address> getCurrentAddress(@NonNull Context context, LatLng currentLocation) {
         List<Address> addresses = new ArrayList<>();
         Geocoder geocoder;
         try {
             if (Geocoder.isPresent()) {
                 geocoder = new Geocoder(context, Locale.getDefault());
-                addresses = geocoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                addresses = geocoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1);
+                // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             }
         } catch (Exception e) {
             Log.d("EXception", "EXception" + e.getMessage());

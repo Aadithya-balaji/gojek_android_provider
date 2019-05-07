@@ -75,7 +75,7 @@ data class ProviderDetails(
         var state_id: Any = Any(),
         var status: String = "",
         var stripe_cust_id: Any = Any(),
-        var wallet_balance: Int = 0,
+        var wallet_balance: Double =0.0,
         var zone_id: Any = Any()
 ) : Serializable
 
@@ -117,7 +117,7 @@ data class User(
         var state_id: Int = 0,
         var status: Int = 0,
         var user_type: String = "",
-        var wallet_balance: Int = 0
+        var wallet_balance: Double =0.0
 ) : Serializable
 
 data class RequestX(

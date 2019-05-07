@@ -1,6 +1,7 @@
 package com.xjek.taxiservice.views.main
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.*
 import android.content.res.Resources
 import android.graphics.Bitmap
@@ -19,6 +20,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
@@ -44,6 +46,7 @@ import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.RideStatus.SCHEDULED
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.Constants.RideStatus.STARTED
+import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.CAN_SAVE_LOCATION
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
@@ -97,6 +100,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var polyLine: ArrayList<LatLng> = ArrayList()
     private var checkStatusApiCounter = 0
+
     private var roomConnected: Boolean = false
 
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
@@ -125,7 +129,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_cancel.setOnClickListener {
-            Toast.makeText(this, "Cancel Ride", Toast.LENGTH_SHORT).show()
+
         }
 
         initializeMap()
@@ -144,11 +148,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         fragmentMap.getMapAsync(this)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap?) {
         mGoogleMap = map
         try {
             this.mGoogleMap?.setOnCameraMoveListener(this)
             this.mGoogleMap?.setOnCameraIdleListener(this)
+
+            mGoogleMap!!.isMyLocationEnabled = false
 
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json))
             updateCurrentLocation()
@@ -215,90 +222,94 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun checkStatusAPIResponse() {
         mViewModel.showLoading.value = true
-        observeLiveData(mViewModel.checkStatusTaxiLiveData) { checkStatusResponse ->
-            if (checkStatusResponse?.statusCode.equals("200")) try {
-                mViewModel.showLoading.value = false
-                if (checkStatusResponse.responseData.request.status.isNotEmpty()) {
-                    println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-                    if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
-                        writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusResponse.responseData.provider_details.id)
-                        mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
-                        writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
 
-                        val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-                        Constants.REQ_ID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id
+        mViewModel.checkStatusTaxiLiveData.observe(this, Observer { checkStatusResponse ->
+            run {
+                if (checkStatusResponse?.statusCode.equals("200")) try {
+                    mViewModel.showLoading.value = false
+                    if (checkStatusResponse.responseData.request.status.isNotEmpty()) {
+                        println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
+                        //if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                        if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
+                            writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusResponse.responseData.provider_details.id)
+                            mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
+                            writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
 
-                        if (!roomConnected) {
-                            roomConnected = true
-                            SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
+                            val requestID = checkStatusResponse.responseData.request.id.toString()
+
+                            if (!roomConnected) {
+                                roomConnected = true
+                                val reqID = checkStatusResponse.responseData.request.id
+                                PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
+                                SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
+                            }
+
+                            when (checkStatusResponse.responseData.request.status) {
+                                SEARCHING -> {
+                                    val params = HashMap<String, String>()
+                                    params[com.xjek.base.data.Constants.Common.ID] = requestID
+                                    mViewModel.taxiWaitingTime(params)
+                                }
+
+                                SCHEDULED -> {
+                                    println("RRR :: inside SCHEDULED = ")
+                                }
+
+                                CANCELLED -> {
+                                    println("RRR :: inside CANCELLED = ")
+                                }
+
+                                ACCEPTED -> {
+                                    println("RRR :: inside ACCEPTED = ")
+                                }
+
+                                STARTED -> {
+                                    println("RRR :: inside STARTED = ")
+                                    whenStatusStarted(checkStatusResponse.responseData)
+                                    writePreferences(CAN_SAVE_LOCATION, true)
+                                }
+
+                                ARRIVED -> {
+                                    println("RRR :: inside ARRIVED = ")
+                                    whenStatusArrived(checkStatusResponse.responseData)
+                                    writePreferences(CAN_SAVE_LOCATION, true)
+                                }
+
+                                PICKED_UP -> {
+                                    println("RRR :: inside PICKED_UP = ")
+                                    whenStatusPickedUp(checkStatusResponse.responseData)
+                                    writePreferences(CAN_SAVE_LOCATION, true)
+                                }
+
+                                DROPPED -> {
+                                    writePreferences(CAN_SAVE_LOCATION, false)
+                                    println("RRR :: inside DROPPED = ")
+                                    val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
+                                    startActivityForResult(Intent(this, TaxiInvoiceActivity::class.java)
+                                            .putExtra("ResponseData", strCheckRequestModel), 100)
+                                    finish()
+                                }
+
+                                COMPLETED -> {
+                                    writePreferences(CAN_SAVE_LOCATION, false)
+                                    println("RRR :: inside COMPLETED = ")
+                                    val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
+                                    startActivityForResult(Intent(this, TaxiInvoiceActivity::class.java)
+                                            .putExtra("ResponseData", strCheckRequestModel), 100)
+                                    finish()
+                                }
+                            }
                         }
-
-                        when (checkStatusResponse.responseData.request.status) {
-                            SEARCHING -> {
-                                val params = HashMap<String, String>()
-                                params[com.xjek.base.data.Constants.Common.ID] = requestID
-                                mViewModel.taxiWaitingTime(params)
-                            }
-
-                            SCHEDULED -> {
-                                println("RRR :: inside SCHEDULED = ")
-                            }
-
-                            CANCELLED -> {
-                                println("RRR :: inside CANCELLED = ")
-                            }
-
-                            ACCEPTED -> {
-                                println("RRR :: inside ACCEPTED = ")
-                            }
-
-                            STARTED -> {
-                                println("RRR :: inside STARTED = ")
-                                whenStatusStarted(checkStatusResponse.responseData)
-                                writePreferences(CAN_SAVE_LOCATION, true)
-                            }
-
-                            ARRIVED -> {
-                                println("RRR :: inside ARRIVED = ")
-                                whenStatusArrived(checkStatusResponse.responseData)
-                                writePreferences(CAN_SAVE_LOCATION, true)
-                            }
-
-                            PICKED_UP -> {
-                                println("RRR :: inside PICKED_UP = ")
-                                whenStatusPickedUp(checkStatusResponse.responseData)
-                                writePreferences(CAN_SAVE_LOCATION, true)
-                            }
-
-                            DROPPED -> {
-                                writePreferences(CAN_SAVE_LOCATION, false)
-                                println("RRR :: inside DROPPED = ")
-                                val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
-                                startActivity(Intent(this, TaxiInvoiceActivity::class.java)
-                                        .putExtra("ResponseData", strCheckRequestModel))
-                                finish()
-                            }
-
-                            COMPLETED -> {
-                                writePreferences(CAN_SAVE_LOCATION, false)
-                                println("RRR :: inside COMPLETED = ")
-                                val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
-                                startActivity(Intent(this, TaxiInvoiceActivity::class.java)
-                                        .putExtra("ResponseData", strCheckRequestModel))
-                                finish()
-                            }
-                        }
+                    } else {
+                        BROADCAST = BASE_BROADCAST
+                        finish()
+                        println("RRR :: inside else = ${checkStatusResponse.responseData.request.status}")
                     }
-                } else {
-                    BROADCAST = BASE_BROADCAST
-                    finish()
-                    println("RRR :: inside else = ${checkStatusResponse.responseData.request.status}")
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
-        }
+        })
 
         observeLiveData(mViewModel.waitingTimeLiveData) {
             if (mViewModel.waitingTimeLiveData.value != null) {
@@ -434,7 +445,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 //            mViewModel.taxiStatusUpdate(params)
 
             ViewUtils.showAlert(this, "Do you have any Toll charge", object : ViewUtils.ViewCallBack {
-
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     val tollChargeDialog = TollChargeDialog()
                     val bundle = Bundle()
@@ -475,8 +485,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
 //                updateMapLocation(LatLng(location.latitude, location.longitude))
 //                PY 01 K 3875
-
-                longLog(Gson().toJson(AppDatabase.getAppDataBase(this@TaxiDashboardActivity)!!.locationPointsDao().getAllPoints()))
             }
         }
     }
@@ -602,7 +610,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     lastWaitingTime = SystemClock.elapsedRealtime()
                     val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                     val params = HashMap<String, String>()
-                    params[com.xjek.base.data.Constants.Common.ID] = requestID
+                    params[Constants.Common.ID] = requestID
                     params["status"] = "1"
                     mViewModel.taxiWaitingTime(params)
                     cmWaiting.stop()
@@ -616,7 +624,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     if (mViewModel.checkStatusTaxiLiveData.value != null) {
                         val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                         val params = HashMap<String, String>()
-                        params.put(com.xjek.base.data.Constants.Common.ID, requestID)
+                        params.put(Constants.Common.ID, requestID)
                         params.put("status", "1")
                         mViewModel.taxiWaitingTime(params)
                     }
@@ -658,5 +666,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     override fun onBackPressed() {
         if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) finish()
     }
 }

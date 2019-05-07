@@ -20,16 +20,17 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
+import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
-import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
 import com.xjek.provider.views.pendinglist.PendingListDialog
+import kotlinx.android.synthetic.main.fragment_home_page.*
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         HomeNavigator,
@@ -53,10 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
 
-   /* companion object {
-        var loadingProgress: MutableLiveData<Boolean>? = null
-    }*/
-
+    @SuppressLint("MissingPermission")
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
@@ -67,15 +65,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
         initializeMap()
 
-        val activity: DashBoardActivity = activity as DashBoardActivity
-       // loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
-//        mViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
-        /*loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
-        mHomeViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>*/
-
-        observeLiveData(mViewModel.showLoading){
-            loadingObservable.value = it
-        }
+        observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()
         incomingRequestDialogDialog = IncomingRequestDialog()
         incomingRequestDialogDialog.isCancelable = false
@@ -97,6 +87,10 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
 
         getApiResponse()
+
+        clearDatabase.setOnClickListener {
+            AppDatabase.getAppDataBase(context!!)!!.locationPointsDao().deleteAllPoint()
+        }
     }
 
     private fun getApiResponse() {
@@ -159,19 +153,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     override fun onMapReady(map: GoogleMap?) {
         mGoogleMap = map
         try {
-            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
-            mGoogleMap!!.uiSettings.isCompassEnabled = false
 
-            LocationUtils.getLastKnownLocation(activity!!, object : LocationCallBack.LastKnownLocation {
-                override fun onSuccess(location: Location) {
-                    updateMapLocation(LatLng(location.latitude, location.longitude))
-                }
-
-                override fun onFailure(messsage: String?) {
-                    val latLng = LatLng(mDashboardViewModel.latitude.value!!, mDashboardViewModel.longitude.value!!)
-                    updateMapLocation(latLng)
-                }
-            })
+            mGoogleMap!!.isMyLocationEnabled = true
 
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.xjek.taxiservice.R.raw.style_json))
 
@@ -180,10 +163,14 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         }
     }
 
-
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
         if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun updateCurrentLocation() {
+
     }
 
     override fun onAttach(context: Context) {
@@ -206,7 +193,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             }
         }
     }
-
 
     override fun showErrorMessage(error: String) {
         ViewUtils.showToast(activity!!, error, false)

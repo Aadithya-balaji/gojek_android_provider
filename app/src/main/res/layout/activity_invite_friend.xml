@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -95,9 +94,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="@dimen/_5sdp"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:text="@string/your_referral_code"
                             android:textColor="@android:color/black"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:textSize="@dimen/_11sdp" />
 
 
@@ -108,9 +107,9 @@
                             android:layout_margin="@dimen/_10sdp"
                             android:background="@drawable/custom_roundcorner_button"
                             android:backgroundTint="@color/colorScreenBackground"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:padding="@dimen/_10sdp"
-                            android:textSize="@dimen/_12sdp"
-                            android:fontFamily="@font/avenirltstd_medium"/>
+                            android:textSize="@dimen/_12sdp" />
 
                     </LinearLayout>
 
@@ -155,9 +154,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_weight="1"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:text="Referral Count:"
                         android:textColor="@android:color/black"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:textSize="@dimen/_11sdp" />
 
                     <TextView
@@ -167,8 +166,8 @@
                         android:layout_gravity="start"
                         android:layout_marginRight="@dimen/_5sdp"
                         android:layout_weight="1"
-                        android:gravity="right"
                         android:fontFamily="@font/avenirltstd_medium"
+                        android:gravity="right"
                         android:textSize="@dimen/_11sdp" />
 
 
@@ -185,9 +184,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="start"
                         android:layout_weight="1"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:text="Referral Amount:"
                         android:textColor="@android:color/black"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:textSize="@dimen/_11sdp" />
 
                     <TextView
@@ -197,8 +196,8 @@
                         android:layout_gravity="start"
                         android:layout_marginRight="@dimen/_5sdp"
                         android:layout_weight="1"
-                        android:gravity="right"
                         android:fontFamily="@font/avenirltstd_medium"
+                        android:gravity="right"
                         android:textSize="@dimen/_11sdp" />
 
 

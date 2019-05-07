@@ -103,12 +103,16 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
     }
 
     override fun isValidCharge(): Boolean {
-        if (mViewModel.tollChargeLiveData.value.isNullOrEmpty()) {
-            showErrorMessage(activity!!.getString(R.string.empty_toll_charge))
-            return false
-        } else if (mViewModel.tollChargeLiveData.value!!.toInt() <= 0) {
-            showErrorMessage(activity!!.getString(R.string.invalid_toll_charge))
-            return false
-        } else return true
+        return when {
+            mViewModel.tollChargeLiveData.value.isNullOrEmpty() -> {
+                showErrorMessage(activity!!.getString(R.string.empty_toll_charge))
+                false
+            }
+            mViewModel.tollChargeLiveData.value!!.toInt() <= 0 -> {
+                showErrorMessage(activity!!.getString(R.string.invalid_toll_charge))
+                false
+            }
+            else -> true
+        }
     }
 }

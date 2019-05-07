@@ -16,7 +16,6 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
     var checkRequestLiveData = MutableLiveData<CheckRequestModel>()
     var mProfileResponse = MutableLiveData<ProfileResponse>()
 
-
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
     var selectedFilterService = MutableLiveData<String>()
@@ -31,7 +30,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
                 )
     }
 
-    fun getProfile(){
+    fun getProfile() {
         getCompositeDisposable().add(appRepository
                 .getProviderProfile(this, Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
     }

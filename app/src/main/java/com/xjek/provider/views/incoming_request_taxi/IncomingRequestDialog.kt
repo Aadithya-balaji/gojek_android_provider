@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
@@ -21,7 +20,7 @@ import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
-import com.xjek.xuberservice.xuberMainActivity.XuberMainActivity
+import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
 import java.util.concurrent.TimeUnit
 
 class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
@@ -88,10 +87,10 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             loadingObservable.value = false
             if (incomingRequestViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
-                if(incomingRequestModel!!.responseData.requests[0].admin_service_id==3) {
-                    val intent = Intent(activity,XuberMainActivity::class.java)
+                if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3) {
+                    val intent = Intent(activity, XuberDashBoardActivity::class.java)
                     activity!!.startActivity(intent)
-                }else {
+                } else {
                     val intent = Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity"))
                     activity!!.startActivity(intent)
                 }

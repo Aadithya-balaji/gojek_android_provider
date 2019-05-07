@@ -2,13 +2,22 @@ package com.xjek.base.utils
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Matrix
+import android.content.res.Resources
+import android.graphics.*
+import android.graphics.drawable.ColorDrawable
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.WindowManager
+import android.view.animation.AnimationUtils
+import android.widget.AdapterView
+import android.widget.ListView
+import android.widget.PopupWindow
+import com.xjek.base.R
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -36,6 +45,8 @@ class CommonMethods {
         }
 
 
+
+
         fun getDateinNeededFormat(strDate: String, fromSimpleFormat: SimpleDateFormat): Date {
             val date: Date = fromSimpleFormat.parse(strDate)
             return date
@@ -59,15 +70,39 @@ class CommonMethods {
                 val hoursFormat = SimpleDateFormat("HH:mm:ss")
                 val formateDate = Date()
                 formateDate.time = calendar!!.timeInMillis
-                val strFormatedTimeinHours = hoursFormat.format(formateDate)
-                val sDateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                val sDate = sDateFormat.parse(strFormatedTimeinHours)
-                timeDiff = Date().time - sDate.time
+                timeDiff=formateDate.time
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
                 Log.e("error",":------"+e.message)
             }
             return timeDiff!!
+
+        }
+
+        fun getTimeDifference(strFromDate:String,strToDate:String,format:String):Long{
+            var diffTime:Long?=0
+            val fromSimpledateFormat=SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault())
+            fromSimpledateFormat.timeZone= TimeZone.getTimeZone("UTC")
+            var fromDate:Date?=null
+            var fromCalender :Calendar?=null
+            var toDate:Date?=null
+            var toCalendar:Calendar?=null
+            try{
+                fromDate=fromSimpledateFormat.parse(strFromDate)
+                fromCalender= Calendar.getInstance(TimeZone.getDefault())
+                fromCalender.time=fromDate
+
+                toDate=fromSimpledateFormat.parse(strFromDate)
+                toCalendar= Calendar.getInstance(TimeZone.getDefault())
+                toCalendar.time=toDate
+                diffTime=toCalendar.time.time -fromCalender
+                        .time.time
+                Log.e("fromTime","------"+fromCalender.time.time)
+            }catch (e:java.lang.Exception){
+                e.printStackTrace()
+            }
+            return  diffTime!!
+
         }
 
         fun decodeSampledBitmapFromFile(path: String, reqWidth: Int, reqHeight: Int): Bitmap? { // BEST QUALITY MATCH

@@ -17,7 +17,7 @@ class FilterServiceListAdapter(val orderFragmentViewModel: DashBoardViewModel, v
     : RecyclerView.Adapter<FilterServiceListAdapter.MyViewHolder>() {
 
     lateinit var context: Context
-    private var selectedPosition:Int = 0
+    private var selectedPosition: Int = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
@@ -32,11 +32,11 @@ class FilterServiceListAdapter(val orderFragmentViewModel: DashBoardViewModel, v
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        if(selectedPosition== position){
+        if (selectedPosition == position) {
             holder.filterserviceRowitemBinding.filterserviceNameTv.background =
                     ContextCompat.getDrawable(context
                             , R.drawable.custom_roundcorner_selectedorder)
-        }else{
+        } else {
             holder.filterserviceRowitemBinding.filterserviceNameTv.background =
                     ContextCompat.getDrawable(context
                             , R.drawable.custom_roundcorner_unselectedorder)
@@ -47,7 +47,7 @@ class FilterServiceListAdapter(val orderFragmentViewModel: DashBoardViewModel, v
         holder.filterserviceRowitemBinding.itemClickListener = object : CustomClickListner {
             override fun onListClickListner() {
                 selectedPosition = holder.adapterPosition
-                orderFragmentViewModel.selectedFilterService .value = filterServiceListName[holder.adapterPosition].adminServiceName
+                orderFragmentViewModel.selectedFilterService.value = filterServiceListName[holder.adapterPosition].adminServiceName
                 holder.filterserviceRowitemBinding.filterserviceNameTv.background =
                         ContextCompat.getDrawable(context
                                 , R.drawable.custom_roundcorner_selectedorder)

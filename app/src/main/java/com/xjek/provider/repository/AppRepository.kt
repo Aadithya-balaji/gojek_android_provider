@@ -6,10 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.xjek.base.data.Constants
 import com.xjek.base.repository.BaseRepository
 import com.xjek.provider.network.AppWebService
-import com.xjek.provider.utils.Constant
+import com.xjek.provider.views.add_edit_document.AddEditDocumentViewModel
 import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
-import com.xjek.provider.views.add_edit_document.AddEditDocumentViewModel
 import com.xjek.provider.views.currentorder_fragment.CurrentOrderViewModel
 import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
@@ -22,6 +21,7 @@ import com.xjek.provider.views.manage_services.ManageServicesViewModel
 import com.xjek.provider.views.notification.NotificationViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
+import com.xjek.provider.views.setup_services.SetupServicesViewModel
 import com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel
 import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
@@ -369,9 +369,9 @@ class AppRepository : BaseRepository() {
     }
 
 
-    fun changeOnlineStatus(viewModel: HomeViewModel,token:String, status: String): Disposable {
+    fun changeOnlineStatus(viewModel: HomeViewModel, token: String, status: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .changeOnlineStatus(token,status)
+                .changeOnlineStatus(token, status)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -393,6 +393,18 @@ class AppRepository : BaseRepository() {
                         viewModel.getServicesObservable().postValue(it)
                 }, {
                     viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun getServiceCategories(viewModel: SetupServicesViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getServiceCategories(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.getServicesDataObservable().postValue(it)
+                }, {
+                    viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }
 
@@ -465,8 +477,7 @@ class AppRepository : BaseRepository() {
 //    }
 
 
-
-    fun getBankTemplate(viewModel:ManageBankDetailsViewModel,token: String): Disposable{
+    fun getBankTemplate(viewModel: ManageBankDetailsViewModel, token: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getBankTemplate(token)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -481,9 +492,9 @@ class AppRepository : BaseRepository() {
     }
 
 
-    fun postAddBankDetails(viewModel:ManageBankDetailsViewModel, token: String, body:String): Disposable{
+    fun postAddBankDetails(viewModel: ManageBankDetailsViewModel, token: String, body: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postAddBankDetails(token,body)
+                .postAddBankDetails(token, body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -494,9 +505,9 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun postEditBankDetails(viewModel:ManageBankDetailsViewModel, token: String, body:String): Disposable{
+    fun postEditBankDetails(viewModel: ManageBankDetailsViewModel, token: String, body: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postEditBankDetails(token,body)
+                .postEditBankDetails(token, body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -507,7 +518,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun getDocumentList(viewModel:AddEditDocumentViewModel,documentType:String): Disposable{
+    fun getDocumentList(viewModel: AddEditDocumentViewModel, documentType: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getDocuments(documentType)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -522,9 +533,9 @@ class AppRepository : BaseRepository() {
     }
 
 
-    fun postDocument(viewModel:AddEditDocumentViewModel,@PartMap params: HashMap<String, RequestBody>, @Part frontImage: MultipartBody.Part?,@Part backImage:MultipartBody.Part?): Disposable{
+    fun postDocument(viewModel: AddEditDocumentViewModel, @PartMap params: HashMap<String, RequestBody>, @Part frontImage: MultipartBody.Part?, @Part backImage: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postDocument(params,frontImage,backImage)
+                .postDocument(params, frontImage, backImage)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -538,10 +549,10 @@ class AppRepository : BaseRepository() {
 
 
     fun getTransaportCurrentHistory(viewModel: CurrentOrderViewModel, token: String, hashMap: HashMap<String, String>
-                                    , selectedservice : String): Disposable {
+                                    , selectedservice: String): Disposable {
 
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getTransportHistory(token,selectedservice, hashMap)
+                .getTransportHistory(token, selectedservice, hashMap)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -556,7 +567,7 @@ class AppRepository : BaseRepository() {
     fun getTransaportHistory(viewModel: PastOrderViewModel, token: String, params: HashMap<String, String>
                              , selectedservice: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getTransportHistory(token, selectedservice ,params)
+                .getTransportHistory(token, selectedservice, params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
@@ -583,7 +594,6 @@ class AppRepository : BaseRepository() {
                     viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }
-
 
 
     fun getHistoryDetail(viewModel: HistoryDetailViewModel, token: String, selected_id: String): Disposable {

@@ -11,10 +11,14 @@ object Constants {
 
     const val DEFAULT_ZOOM = 15.0f
     val DEFAULT_LOCATION = LatLng(-33.8523341, 151.2106085)
-    var COMPANY_ID: String = String(Base64.decode(BuildConfig.SALT_KEY, Base64.DEFAULT), Charset.defaultCharset())
-    var CITY_ID: Int = 0
-    var isSocketFailed: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
-    var REQ_ID:Int = 0
+    var isSocketFailed:MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
+
+    object RoomConstants{
+        @JvmField
+        var COMPANY_ID:String = String(Base64.decode(BuildConfig.SALT_KEY,Base64.DEFAULT), Charset.defaultCharset())
+        var CITY_ID:Int? = PreferencesHelper.get(PreferencesKey.CITY_ID,0)
+        var REQ_ID:Int? = PreferencesHelper.get(PreferencesKey.REQ_ID,0)
+    }
 
     object RequestCode {
         const val PERMISSIONS_CODE_LOCATION = 1001
@@ -53,9 +57,12 @@ object Constants {
         var SERVICE_ROOM_NAME:String?=null
     }
 
+
+
     object ROOM_ID{
-        var COMMON_ROOM:String = "room_${COMPANY_ID}_$CITY_ID"
-        var TRANSPORT_ROOM:String = "room_${COMPANY_ID}_${REQ_ID}_TRANSPORT"
+        @JvmField
+        var COMMON_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.CITY_ID}"
+        var TRANSPORT_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_TRANSPORT"
         var SERVICE_ROOM:String = ""
     }
 

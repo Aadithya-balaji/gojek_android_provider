@@ -1,7 +1,5 @@
 package com.xjek.provider.utils
 
-import android.Manifest
-import com.xjek.provider.BuildConfig
 import com.xjek.provider.models.ConfigResponseModel.ResponseData.AppSetting.Language
 
 object Constant {

@@ -12,10 +12,9 @@ public class PaymentViewModel : BaseViewModel<PaymentNavigator>() {
         navigator.goToTransactionStatusActivty()
     }
 
-    fun addNewCard(){
+    fun addNewCard() {
         navigator.addCard()
     }
-
 
 
 }

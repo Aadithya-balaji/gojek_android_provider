@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="paymentmodel"
-            type="com.xjek.provider.interfaces.CustomClickListner">
-        </variable>
+            type="com.xjek.provider.interfaces.CustomClickListner"></variable>
     </data>
-<TextView
-    android:id="@+id/tv_payment_mode"
-    android:layout_width="@dimen/_80sdp"
-    android:background="@drawable/bg_white"
-    android:fontFamily="@font/avenirltstd_medium"
-    android:textSize="@dimen/_11sdp"
-    android:textColor="@color/black"
-    android:gravity="center"
-    android:layout_marginLeft="@dimen/_15sdp"
-    android:onClick="@{() -> paymentmodel.onListClickListner()}"
-    android:layout_height="@dimen/_30sdp">
-</TextView>
+
+    <TextView
+        android:id="@+id/tv_payment_mode"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:background="@drawable/bg_white"
+        android:fontFamily="@font/avenirltstd_medium"
+        android:gravity="center"
+        android:onClick="@{() -> paymentmodel.onListClickListner()}"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_11sdp"></TextView>
 
 </layout>

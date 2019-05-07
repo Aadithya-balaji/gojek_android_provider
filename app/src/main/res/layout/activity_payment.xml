@@ -236,9 +236,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:onClick="@{() -> paymentViewModel.addNewCard()}"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/add_amount"
-                        android:onClick="@{() -> paymentViewModel.addNewCard()}"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/_12sdp" />
 

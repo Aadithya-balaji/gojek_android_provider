@@ -12,7 +12,7 @@ class NotificationViewModel : BaseViewModel<NotificationNavigator>() {
 
     private val appRepository = AppRepository.instance()
 
-    var showEmptyView:MutableLiveData<Boolean> = MutableLiveData(false)
+    var showEmptyView: MutableLiveData<Boolean> = MutableLiveData(false)
 
 
     var notificationResponse = MutableLiveData<NotificationResponse>()

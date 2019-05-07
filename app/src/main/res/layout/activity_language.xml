@@ -22,35 +22,34 @@
 
         <TextView
             android:id="@+id/tvSelectLanguage"
-            android:layout_below="@+id/toolbar"
             style="@style/SmallText.Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_below="@+id/toolbar"
             android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:text="@string/select_language" />
 
 
         <LinearLayout
-            android:layout_below="@+id/tvSelectLanguage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSelectLanguage"
             android:layout_margin="@dimen/_10sdp"
-            android:orientation="vertical"
             android:background="@drawable/bg_white_rounded_corner_rect"
             android:backgroundTint="@color/white"
-            >
+            android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:adapter="@{languageViewModel.getAdapter()}"
                 android:clipToPadding="false"
                 android:padding="@dimen/_8sdp"
-                android:adapter="@{languageViewModel.getAdapter()}"
-                tools:listitem="@layout/language_inflate"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/language_inflate" />
 
 
         </LinearLayout>
@@ -59,14 +58,14 @@
             android:id="@+id/save_editprofile_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/_17sdp"
             android:background="@drawable/custom_full_round_corner"
             android:backgroundTint="@color/colorPrimary"
+            android:onClick="@{() ->languageViewModel.onSaveClicked()}"
             android:paddingTop="@dimen/_8sdp"
-            android:layout_alignParentBottom="true"
             android:paddingBottom="@dimen/_8sdp"
             android:text="@string/save"
-            android:onClick="@{() ->languageViewModel.onSaveClicked()}"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp"

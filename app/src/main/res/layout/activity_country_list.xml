@@ -6,7 +6,7 @@
 
         <variable
             name="countrylistmodel"
-            type="com.xjek.provider.views.countrylist.CountryViewModel"/>
+            type="com.xjek.provider.views.countrylist.CountryViewModel" />
 
         <variable
             name="countrylistadapter"
@@ -21,30 +21,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/_5sdp"
                 android:backgroundTint="@color/white"
-                android:tint="@color/white"
                 android:onClick="@{() -> countrylistmodel.closeActivity()}"
-                android:src="@drawable/back_arrow" />
+                android:paddingLeft="@dimen/_5sdp"
+                android:src="@drawable/back_arrow"
+                android:tint="@color/white" />
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/sv_country"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
                 android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:background="@color/white"
                 app:iconifiedByDefault="false"
-                app:queryHint="Search Country">
-            </androidx.appcompat.widget.SearchView>
+                app:queryHint="Search Country"></androidx.appcompat.widget.SearchView>
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

@@ -2,7 +2,7 @@ package com.xjek.xuberservice.xuberMainActivity
 
 import android.view.View
 
-interface XuberMainNavigator {
+interface XuberDasbBoardNavigator {
 
     fun goToLocationPick()
     fun goBack()
@@ -11,4 +11,5 @@ interface XuberMainNavigator {
     fun showErrorMessage(error:String)
     fun showPicturePreview()
     fun updateService(view: View)
+    fun showInfoWindow(view:View)
 }

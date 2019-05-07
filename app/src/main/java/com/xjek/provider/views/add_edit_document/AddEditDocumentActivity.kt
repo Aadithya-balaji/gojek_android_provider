@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.widget.DatePicker
 import androidx.databinding.ViewDataBinding
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -23,7 +24,6 @@ import com.xjek.provider.utils.Constant
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -89,9 +89,16 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
         observeLiveData(viewModelAddEdit.documentFrontImageURL) { url ->
             run {
+
+                val circularProgressDrawable = CircularProgressDrawable(this)
+                circularProgressDrawable.strokeWidth = 5f
+                circularProgressDrawable.centerRadius = 30f
+                circularProgressDrawable.start()
+
                 if (!url.isNullOrEmpty()) {
                     Glide.with(this@AddEditDocumentActivity)
                             .load(url)
+                            .placeholder(circularProgressDrawable)
                             .into(binding.ivFrontImage)
                     viewModelAddEdit.showFrontView.value = true
                 } else {
@@ -191,7 +198,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
             ViewUtils.showToast(this, "Please select front page of document", false)
         } else if (viewModelAddEdit.showBackSide.value!! && (viewModelAddEdit.documentBackImageFile.value == null || !viewModelAddEdit.documentBackImageFile.value!!.isFile)) {
             ViewUtils.showToast(this, "Please select back page of document", false)
-        } else if (viewModelAddEdit.showExpiry.value!! && !viewModelAddEdit.expiryDate.value.isNullOrEmpty()) {
+        } else if (viewModelAddEdit.showExpiry.value!! && viewModelAddEdit.expiryDate.value.isNullOrEmpty()) {
             ViewUtils.showToast(this, "Please select expiry date", false)
         } else {
             viewModelAddEdit.updateDocument()

@@ -8,12 +8,12 @@ data class StateListResponse(
         val responseData: List<StateListResponseData>,
         val statusCode: String,
         val title: String
-):Serializable
+) : Serializable
 
 data class StateListResponseData(
-    val country_id: Int,
-    val id: Int,
-    val state_name: String,
-    val status: Any,
-    val timezone: Any
-):Serializable
+        val country_id: Int,
+        val id: Int,
+        val state_name: String,
+        val status: Any,
+        val timezone: Any
+) : Serializable

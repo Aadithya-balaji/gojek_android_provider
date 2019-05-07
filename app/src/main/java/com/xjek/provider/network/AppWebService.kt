@@ -121,7 +121,7 @@ interface AppWebService {
     fun getNotification(@Header("Authorization") token: String): Observable<NotificationResponse>
 
     @GET("provider/onlinestatus/{status_id}")
-    fun changeOnlineStatus(@Header("Authorization") token: String,@Path("status_id") statusID: String): Observable<StatusResponseModel>
+    fun changeOnlineStatus(@Header("Authorization") token: String, @Path("status_id") statusID: String): Observable<StatusResponseModel>
 
     @FormUrlEncoded
     @POST("provider/accept/request")
@@ -148,6 +148,10 @@ interface AppWebService {
 
     @GET("provider/ridetype")
     fun getRides(@Header("Authorization") token: String): Observable<SetupRideResponseModel>
+
+    @GET("provider/providerservice/categories")
+    fun getServiceCategories(@Header("Authorization") token: String): Observable<ServiceCategoriesResponse>
+
 
     @GET("provider/shoptype")
     fun getShops(@Header("Authorization") token: String): Observable<SetupShopResponseModel>
@@ -209,6 +213,7 @@ interface AppWebService {
     @GET("provider/history/transport/{id}")
     fun getUpcomingHistoryDetail(@Header("Authorization") token: String,
                                  @Path("id") id: String): Observable<HistoryDetailModel>
+
     @GET("provider/ride/dispute")
     fun getDisputeList(@Header("Authorization") token: String): Observable<DisputeListModel>
 

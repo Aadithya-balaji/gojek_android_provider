@@ -13,6 +13,7 @@ import com.xjek.xuberservice.interfaces.GetReasonsInterface
 import com.xjek.xuberservice.model.ReasonModel
 
 class ReasonFragment : BaseDialogFragment<DialogReasonBinding>(), CustomClickListner {
+
     private lateinit var mReasonFragmentBinding: DialogReasonBinding
     private lateinit var mViewModel: ReasonViewModel
     private lateinit var reasonViewModel: ReasonViewModel
@@ -26,11 +27,9 @@ class ReasonFragment : BaseDialogFragment<DialogReasonBinding>(), CustomClickLis
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         mReasonFragmentBinding = viewDataBinding as DialogReasonBinding
         mViewModel = ReasonViewModel()
-        mReasonFragmentBinding.setLifecycleOwner(this)
+        mReasonFragmentBinding.lifecycleOwner = this
         getApiResponse()
         mViewModel.getReason(com.xjek.base.data.Constants.Reasons.SERVICE)
-
-        // mReasonFragmentBinding.
     }
 
     fun getApiResponse() {

@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="@dimen/_10sdp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/_10sdp">
+
     <LinearLayout
         android:id="@+id/ll_img_upload"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_80sdp"
-        android:orientation="vertical"
+        android:background="@drawable/bg_document_upload_option"
         android:gravity="center"
-        android:background="@drawable/bg_document_upload_option">
+        android:orientation="vertical">
+
         <ImageView
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
-            app:srcCompat="@drawable/provider_pdf_upload"/>
+            app:srcCompat="@drawable/provider_pdf_upload" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/ll_img_upload"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_toRightOf="@+id/ll_img_upload"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_upload_pdf"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenirltstd_medium"
             android:text="@string/label_upload_pdf"
             android:textColor="@color/doc_font_service_enabled"
-            android:fontFamily="@font/avenirltstd_medium"
-            android:textSize="@dimen/_11sdp"
-            android:layout_height="wrap_content" />
+            android:textSize="@dimen/_11sdp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:textSize="@dimen/_9sdp"
-            android:text="@string/label_upload_pdf_support"/>
+            android:text="@string/label_upload_pdf_support"
+            android:textSize="@dimen/_9sdp" />
     </LinearLayout>
 
 

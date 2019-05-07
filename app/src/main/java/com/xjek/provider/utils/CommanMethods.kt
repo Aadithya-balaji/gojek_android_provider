@@ -31,7 +31,7 @@ class CommanMethods {
 
         fun validatePhone(phone: String): Boolean {
             if (phone.length >= 10) {
-                Log.e("valid","---"+phone)
+                Log.e("valid", "---" + phone)
                 return true
             } else {
                 return false
@@ -54,7 +54,7 @@ class CommanMethods {
                 e.printStackTrace()
             }
 
-            val dayOfTheWeek =  SimpleDateFormat("EEEE").format(date) // Thursday
+            val dayOfTheWeek = SimpleDateFormat("EEEE").format(date) // Thursday
             val day = SimpleDateFormat("dd").format(date) // 20
             val monthString = SimpleDateFormat("MMM").format(date) // Jun
             val monthNumber = SimpleDateFormat("MM").format(date) // 06
@@ -65,10 +65,10 @@ class CommanMethods {
             val year = calendar!!.get(Calendar.YEAR)
 
             Log.d("Date", day + "-" + dayOfTheWeek + "-" + monthString + "-" + monthNumber +
-                    "-"+year+"/" + hours + ":" + mins + ":" + am_pm)
+                    "-" + year + "/" + hours + ":" + mins + ":" + am_pm)
 
-            if(request.equals("Req_Date_Month")) return day+" "+monthString
-            if (request.equals("Req_time")) return hours+":"+mins+" "+am_pm
+            if (request.equals("Req_Date_Month")) return day + " " + monthString
+            if (request.equals("Req_time")) return hours + ":" + mins + " " + am_pm
 
             val day_month = calendar!!.get(Calendar.DAY_OF_MONTH)
             val strMonth = SimpleDateFormat("MMM").format(calendar.time)

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <data>
+        <variable
+            name="extraChargeModel"
+            type="com.xjek.xuberservice.extracharge.XuperExtraChargeViwModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,10 +76,12 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginRight="@dimen/_20sdp"
             android:background="@drawable/bg_extra_charge"
-            android:maxWidth="@dimen/_100sdp"
-            android:minWidth="@dimen/_60sdp"
-            android:paddingTop="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_3sdp" />
+            android:maxWidth="@dimen/_120sdp"
+            android:textSize="@dimen/_9sdp"
+            android:minWidth="@dimen/_90sdp"
+            android:inputType="numberDecimal"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp" />
 
         <View
             android:layout_width="match_parent"
@@ -90,6 +98,7 @@
             android:layout_marginBottom="@dimen/_8sdp"
             android:fontFamily="@font/avenirltstd_medium"
             android:text="@string/submit"
+            android:onClick="@{() -> extraChargeModel.submitExtraCharge()}"
             android:textAllCaps="true"
             android:textColor="@color/xuper_blue"
             android:textSize="@dimen/_13sdp" />

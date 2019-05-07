@@ -3,6 +3,7 @@ package com.xjek.provider.models;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
 public class CredentialsModel {
     @SerializedName("stripe_secret_key")
     @Expose

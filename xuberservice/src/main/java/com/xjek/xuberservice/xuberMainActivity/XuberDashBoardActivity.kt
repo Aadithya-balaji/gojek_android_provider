@@ -162,7 +162,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     }
 
                     DROPPED -> {
-                        whenDropped(xuberCheckRequest.responseData!!)
+                        whenDropped(true)
                     }
 
                     COMPLETED -> {
@@ -425,16 +425,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.llBottomService.llConfirm.tvAllow.text = Constants.RideStatus.COMPLETED
     }
 
-    //Completed Not Payment Successful
-    private fun whenDropped(responseData: XuperCheckRequest.ResponseData) {
-        mBinding.llBottomService.fbCamera.visibility = View.GONE
-        val bundle = Bundle()
-        val strCheckRequest = Gson().toJson(mViewModel.xuperCheckRequest.value!!)
-        bundle.putString("strCheckReq", strCheckRequest)
-        bundle.putBoolean("fromCheckReq", true)
-        invoicePage.arguments = bundle
-        if (!invoicePage.isShown()) invoicePage.show(supportFragmentManager, "xuperinvoice")
-    }
 
     //After Payment Successfull
     private fun whenPayment(responseData: XuperCheckRequest.ResponseData) {

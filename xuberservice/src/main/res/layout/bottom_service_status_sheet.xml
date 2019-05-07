@@ -116,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="Manoj kumar"
+                        android:text="@={bottomServiceModel.userName}"
                         android:textColor="@color/xuber_black"
                         android:textSize="@dimen/_11sdp" />
 
@@ -158,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="Car wash - hatchback"
+                        android:text="@={bottomServiceModel.serviceType}"
                         android:textColor="@color/xuber_grey"
                         android:textSize="@dimen/_10sdp" />
 

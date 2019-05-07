@@ -100,6 +100,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var polyLine: ArrayList<LatLng> = ArrayList()
     private var checkStatusApiCounter = 0
+
     private var roomConnected: Boolean = false
 
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
@@ -128,7 +129,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_cancel.setOnClickListener {
-            Toast.makeText(this, "Cancel Ride", Toast.LENGTH_SHORT).show()
+
         }
 
         initializeMap()
@@ -147,11 +148,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         fragmentMap.getMapAsync(this)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap?) {
         mGoogleMap = map
         try {
             this.mGoogleMap?.setOnCameraMoveListener(this)
             this.mGoogleMap?.setOnCameraIdleListener(this)
+
+            mGoogleMap!!.isMyLocationEnabled = false
 
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json))
             updateCurrentLocation()
@@ -239,7 +243,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                                 PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
                                 SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
                             }
-
 
                             when (checkStatusResponse.responseData.request.status) {
                                 SEARCHING -> {
@@ -482,8 +485,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
 //                updateMapLocation(LatLng(location.latitude, location.longitude))
 //                PY 01 K 3875
-
-                longLog(Gson().toJson(AppDatabase.getAppDataBase(this@TaxiDashboardActivity)!!.locationPointsDao().getAllPoints()), "AAA")
             }
         }
     }

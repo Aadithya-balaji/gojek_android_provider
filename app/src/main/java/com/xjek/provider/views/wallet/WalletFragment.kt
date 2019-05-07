@@ -236,8 +236,8 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
                     loadingProgress!!.value = false
                     ViewUtils.showToast(activity!!, "Please Enter Valid Card", false)
                 }
-            }else{
-                loadingProgress!!.value=false
+            } else {
+                loadingProgress!!.value = false
             }
         }
     }
@@ -316,7 +316,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
     inner class EditListener : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-               setPrefix(fragmentWalletBinding.edtAmount, s, "$")
+            setPrefix(fragmentWalletBinding.edtAmount, s, "$")
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

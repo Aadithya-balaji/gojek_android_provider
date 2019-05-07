@@ -1,9 +1,7 @@
 package com.xjek.provider.views.splash
 
-import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.google.gson.Gson
-import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
 import com.xjek.base.data.PreferencesKey
@@ -17,27 +15,18 @@ import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
-import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
-import com.xjek.base.socket.SocketListener
-import com.xjek.base.socket.SocketManager
-import com.xjek.xuberservice.xuberMainActivity.XuberMainActivity
-
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
 
     private lateinit var binding: ActivitySplashBinding
     private lateinit var viewModel: SplashViewModel
 
-    public override fun getLayoutId(): Int {
-        return R.layout.activity_splash
-    }
+    public override fun getLayoutId(): Int = R.layout.activity_splash
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivitySplashBinding
         binding.lifecycleOwner = this
-        viewModel = provideViewModel {
-            SplashViewModel()
-        }
+        viewModel = provideViewModel { SplashViewModel() }
         viewModel.navigator = this
 
         observeViewModel()
@@ -68,7 +57,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                 }
             }
 
-
             writePreferences("0", it.responseData.baseUrl + "/")
             writePreferences(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id)
             writePreferences(it.responseData.services[0].id.toString(),
@@ -89,27 +77,20 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             writePreferences(PreferencesKey.CONTACT_NUMBER, contactNumbers.toSet())
             writePreferences(PreferencesKey.CONTACT_EMAIL,
                     it.responseData.appSetting.supportDetails.contactEmail)
-
             setLanguage(it)
             setPayment(it)
-
             Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
 
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
-            else {
-                launchNewActivity(DashBoardActivity::class.java, true)
-            }
+            else launchNewActivity(DashBoardActivity::class.java, true)
         }
     }
 
-    fun setPayment(it: ConfigResponseModel) {
-        val paymentlist = it.responseData.appSetting.payments
-        val gson = Gson()
-        val paymentString = gson.toJson(paymentlist)
-        writePreferences(PreferencesKey.PAYMENT_LIST, paymentString)
+    private fun setPayment(it: ConfigResponseModel) {
+        val paymentList = it.responseData.appSetting.payments
+        writePreferences(PreferencesKey.PAYMENT_LIST, Gson().toJson(paymentList))
     }
-
 
     private fun setLanguage(it: ConfigResponseModel) {
         val languages = it.responseData.appSetting.languages

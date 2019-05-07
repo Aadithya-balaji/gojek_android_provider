@@ -1,8 +1,10 @@
 package com.xjek.provider.views.home
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.location.Location
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -13,6 +15,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
 import com.xjek.base.data.PreferencesKey
@@ -20,6 +27,8 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.persistence.AppDatabase
+import com.xjek.base.utils.LocationCallBack
+import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
@@ -51,6 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun getLayoutId(): Int = R.layout.fragment_home_page
 
+    @SuppressLint("MissingPermission")
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
@@ -148,19 +158,60 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     override fun onMapReady(map: GoogleMap?) {
         mGoogleMap = map
         try {
-            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
-            mGoogleMap!!.uiSettings.isCompassEnabled = true
+
+            mGoogleMap!!.isMyLocationEnabled = true
 
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.xjek.taxiservice.R.raw.style_json))
 
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
+
+        Dexter.withActivity(activity!!)
+                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        updateCurrentLocation()
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                        token?.continuePermissionRequest()
+                    }
+                }).check()
     }
 
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
         if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        fragmentMap.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        fragmentMap.onPause()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        fragmentMap.onLowMemory()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun updateCurrentLocation() {
+        LocationUtils.getLastKnownLocation(activity!!, object : LocationCallBack.LastKnownLocation {
+            override fun onSuccess(location: Location?) {
+                updateMapLocation(LatLng(location!!.latitude,location!!.longitude))
+            }
+
+            override fun onFailure(messsage: String?) {
+
+            }
+        })
     }
 
     override fun onAttach(context: Context) {
@@ -183,7 +234,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             }
         }
     }
-
 
     override fun showErrorMessage(error: String) {
         ViewUtils.showToast(activity!!, error, false)

@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginRight="@dimen/_10sdp"
     android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:orientation="vertical"
     card_view:cardCornerRadius="@dimen/_5sdp"
-    card_view:cardUseCompatPadding="false"
     card_view:cardElevation="@dimen/_8sdp"
-    android:orientation="vertical">
+    card_view:cardUseCompatPadding="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="3">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -63,9 +63,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
-                    tools:text="SB123"
                     android:textColor="@color/xuber_black"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textSize="@dimen/_12sdp"
+                    tools:text="SB123" />
 
                 <TextView
                     android:id="@+id/tv_order_status"
@@ -79,8 +79,8 @@
                     android:paddingTop="@dimen/_3sdp"
                     android:paddingRight="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_3sdp"
-                    tools:text="on rider"
-                    android:textColor="@color/home_reject" />
+                    android:textColor="@color/home_reject"
+                    tools:text="on rider" />
 
                 <TextView
                     android:id="@+id/tv_order_item"
@@ -89,8 +89,8 @@
                     android:layout_below="@+id/tv_order_status"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:text="sdfdf dfdafdaf dfdfd "
-                    android:visibility="gone"
-                    android:textColor="@color/xuber_grey" />
+                    android:textColor="@color/xuber_grey"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <RelativeLayout

@@ -7,7 +7,7 @@
 
         <variable
             name="bottomServiceModel"
-            type="com.xjek.xuberservice.xuberMainActivity.XuberMainViewModel" />
+            type="com.xjek.xuberservice.xuberMainActivity.XuberDashboardViewModel" />
     </data>
 
     <LinearLayout
@@ -51,14 +51,13 @@
                     app:srcCompat="@drawable/ic_timer" />
 
                 <Chronometer
-                    android:id="@+id/cm_service_time"
+                    android:id="@+id/cmXuberServiceTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_8sdp"
                     android:fontFamily="@font/avenirltstd_medium"
                     android:textColor="@color/xuber_white"
-                    android:text="00:00:00"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_10sdp" />
             </LinearLayout>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

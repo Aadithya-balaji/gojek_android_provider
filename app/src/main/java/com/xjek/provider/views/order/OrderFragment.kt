@@ -107,21 +107,21 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
 
     override fun goToUpcomingOrder() {
 
-       /* mViewDataBinding.pastorderBtn.background = context?.let {
-            ContextCompat.getDrawable(it
-                    , R.drawable.custom_roundcorner_unselectedorder)
-        }
-        mViewDataBinding.currentOrderBtn.background = context?.let {
-            ContextCompat.getDrawable(it
-                    , R.drawable.custom_roundcorner_unselectedorder)
-        }
-        mViewDataBinding.upcomingOrderBtn.background = context?.let {
-            ContextCompat.getDrawable(it
-                    , R.drawable.custom_roundcorner_selectedorder)
-        }
+        /* mViewDataBinding.pastorderBtn.background = context?.let {
+             ContextCompat.getDrawable(it
+                     , R.drawable.custom_roundcorner_unselectedorder)
+         }
+         mViewDataBinding.currentOrderBtn.background = context?.let {
+             ContextCompat.getDrawable(it
+                     , R.drawable.custom_roundcorner_unselectedorder)
+         }
+         mViewDataBinding.upcomingOrderBtn.background = context?.let {
+             ContextCompat.getDrawable(it
+                     , R.drawable.custom_roundcorner_selectedorder)
+         }
 
 
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container_order, UpcomingFragment())?.commit()*/
+         activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container_order, UpcomingFragment())?.commit()*/
 
     }
 

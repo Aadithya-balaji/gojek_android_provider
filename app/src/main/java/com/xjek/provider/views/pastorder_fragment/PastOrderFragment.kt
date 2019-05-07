@@ -29,7 +29,7 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
         mViewDataBinding.pastfragmentviewmodel = pastOrderViewModel
 
         pastOrderViewModel.getTransportPastHistory(userDashboardViewModel.selectedFilterService.value!!.toLowerCase())
-        loadingObservable.value =true
+        loadingObservable.value = true
 
 
         pastOrderViewModel.transportHistoryResponse.observe(this@PastOrderFragment,

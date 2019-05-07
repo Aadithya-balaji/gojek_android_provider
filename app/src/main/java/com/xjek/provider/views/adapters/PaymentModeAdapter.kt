@@ -12,19 +12,19 @@ import com.xjek.provider.interfaces.CustomClickListner
 import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.views.wallet.WalletViewModel
 
-class PaymentModeAdapter(context: Context, paymentList: MutableList<String>, payTypes: List<ConfigResponseModel.ResponseData.AppSetting.Payments>,walletViewModel: WalletViewModel) : RecyclerView.Adapter<PaymentModeAdapter.PaymentViewHolder>() {
+class PaymentModeAdapter(context: Context, paymentList: MutableList<String>, payTypes: List<ConfigResponseModel.ResponseData.AppSetting.Payments>, walletViewModel: WalletViewModel) : RecyclerView.Adapter<PaymentModeAdapter.PaymentViewHolder>() {
 
     private var context: Context? = null
     private var paymentList: MutableList<String>? = null
     private var selectedPosition: Int? = -1
     private var payTypes: List<ConfigResponseModel.ResponseData.AppSetting.Payments>? = null
-    private  var walletViewModel:WalletViewModel?=null
+    private var walletViewModel: WalletViewModel? = null
 
     init {
         this.context = context
         this.paymentList = paymentList
         this.payTypes = payTypes
-        this.walletViewModel=walletViewModel
+        this.walletViewModel = walletViewModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaymentViewHolder {

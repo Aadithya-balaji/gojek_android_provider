@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.databinding.ViewDataBinding
@@ -80,7 +79,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                     .into(mViewDataBinding.profileImage)
         })
         mProfileViewmodel.updateProfileResponse().observe(this, Observer {
-            ViewUtils.showToast(this, it.message!!,true)
+            ViewUtils.showToast(this, it.message!!, true)
         })
 
         mProfileViewmodel.countryListResponse.observe(this@ProfileActivity, Observer<CountryListResponse> {
@@ -92,12 +91,12 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             startActivityForResult(intent, Constant.COUNTRYLIST_REQUEST_CODE)
         })
 
-        observeLiveData(mProfileViewmodel.loadingProgress){
+        observeLiveData(mProfileViewmodel.loadingProgress) {
             loadingObservable.value = it
         }
 
-        observeLiveData(mProfileViewmodel.errorResponse){
-            ViewUtils.showToast(ProfileActivity@this,it,false)
+        observeLiveData(mProfileViewmodel.errorResponse) {
+            ViewUtils.showToast(ProfileActivity@ this, it, false)
         }
 
 
@@ -178,7 +177,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
                     override fun onPermissionDenied(response: PermissionDeniedResponse?) {
                         //close activity
-                        ViewUtils.showToast(applicationContext, "Unable to perform this action",false)
+                        ViewUtils.showToast(applicationContext, "Unable to perform this action", false)
                         //finish()
                     }
 

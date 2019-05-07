@@ -3,7 +3,7 @@ package com.xjek.provider.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class  RequestResponseData{
+class RequestResponseData {
     @SerializedName("account_status")
     @Expose
     private var accountStatus: String? = null

@@ -98,7 +98,7 @@
             android:layout_marginBottom="@dimen/_8sdp"
             android:fontFamily="@font/avenirltstd_medium"
             android:text="@string/submit"
-            android:onClick="@{() -> extraChargeModel.submitExtraCharge()"
+            android:onClick="@{() -> extraChargeModel.submitExtraCharge()}"
             android:textAllCaps="true"
             android:textColor="@color/xuper_blue"
             android:textSize="@dimen/_13sdp" />

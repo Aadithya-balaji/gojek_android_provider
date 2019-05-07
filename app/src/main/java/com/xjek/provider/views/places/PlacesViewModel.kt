@@ -6,10 +6,10 @@ import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.models.CityListResponse
 import com.xjek.provider.models.StateListResponse
 
-class  PlacesViewModel:BaseViewModel<PlacesNavigator>(){
+class PlacesViewModel : BaseViewModel<PlacesNavigator>() {
     var stateListResponse = MutableLiveData<StateListResponse>()
     var cityListResponse = MutableLiveData<CityListResponse>()
-    var countryListResponse=MutableLiveData<CountryListResponse>()
+    var countryListResponse = MutableLiveData<CountryListResponse>()
     var errorResponse = MutableLiveData<Throwable>()
 
 }

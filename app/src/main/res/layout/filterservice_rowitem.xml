@@ -22,10 +22,10 @@
             style="@style/SmallText.Black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/custom_roundcorner_unselectedorder"
+            android:elevation="@dimen/_10sdp"
             android:padding="@dimen/_10sdp"
             android:text="@string/transport"
-            android:elevation="@dimen/_10sdp"
-            android:background="@drawable/custom_roundcorner_unselectedorder"
             android:textAllCaps="false"
             tools:ignore="UnusedAttribute" />
 

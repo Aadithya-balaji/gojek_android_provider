@@ -163,7 +163,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         loadingObservable.value = false
         observeLiveData(signupViewmodel.getSignupLiveData()) {
             if (signupViewmodel.getSignupObserverValue()!!.statusCode.equals("200")) {
-                 verifyPhoneNumber()
+                verifyPhoneNumber()
             }
         }
 

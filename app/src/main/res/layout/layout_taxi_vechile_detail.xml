@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,17 +12,17 @@
         android:background="@android:color/transparent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/ll_test"
             android:layout_width="match_parent"
-            android:background="@color/xuber_white"
-            android:layout_marginTop="@dimen/_50sdp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@color/xuber_white"
+            android:orientation="vertical"
             android:paddingLeft="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp">
+            android:paddingBottom="@dimen/_10sdp">
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -228,31 +227,32 @@
             android:layout_height="@dimen/_100sdp"
             app:layout_anchor="@+id/ll_test"
             app:layout_anchorGravity="top|center">
+
             <com.mikhaellopez.circularimageview.CircularImageView
                 android:id="@+id/iv_profile"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:src="@drawable/profile_placeholder"
-                app:civ_shadow="true"
-                app:civ_shadow_radius="15"
-                app:civ_shadow_color="#000"
-                app:civ_border_width="0dp"
-                app:civ_shadow_gravity="bottom"
+                app:civ_background_color="@color/colorPrimary"
                 app:civ_border="true"
                 app:civ_border_color="@color/colorPrimary"
-                app:civ_background_color="@color/colorPrimary"/>
+                app:civ_border_width="0dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="#000"
+                app:civ_shadow_gravity="bottom"
+                app:civ_shadow_radius="15" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="-26dp"
+                android:layout_toEndOf="@+id/iv_profile"
+                android:layout_toRightOf="@+id/iv_profile"
                 android:background="@drawable/drawable_circle"
                 android:contentDescription="@string/edit_image"
-                android:layout_toEndOf="@+id/iv_profile"
-                android:layout_marginLeft="-26dp"
                 android:padding="@dimen/_5sdp"
-                android:tint="@color/white"
-                android:layout_toRightOf="@+id/iv_profile" />
+                android:tint="@color/white" />
         </RelativeLayout>
 
 
@@ -264,17 +264,17 @@
         style="@style/Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save"
         android:layout_alignParentBottom="true"
-        app:cornerRadius="15dp"
-        android:textSize="@dimen/_13sdp"
-        android:fontFamily="@font/avenirltstd_medium"
-        android:textStyle="bold"
-        android:padding="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_15sdp"
         android:layout_marginRight="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_13sdp"
-        android:textColor="@android:color/white"/>
+        android:fontFamily="@font/avenirltstd_medium"
+        android:padding="@dimen/_10sdp"
+        android:text="@string/save"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/_13sdp"
+        android:textStyle="bold"
+        app:cornerRadius="15dp" />
 
 </RelativeLayout>
 

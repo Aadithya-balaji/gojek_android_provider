@@ -2,11 +2,9 @@ package com.xjek.provider.views.transaction_status
 
 import com.xjek.base.base.BaseViewModel
 
-open class TransactionStatusViewModel : BaseViewModel<TransactionStatusNavigator>()
-{
+open class TransactionStatusViewModel : BaseViewModel<TransactionStatusNavigator>() {
 
-    fun showStatus()
-    {
+    fun showStatus() {
         navigator.showStatus()
     }
 }

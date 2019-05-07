@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.RowFoodproviderItemBinding
-import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 
 class FoodProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<FoodProviderAdapter.MyViewHolder>() {
     val activity = activity

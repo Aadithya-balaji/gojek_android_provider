@@ -6,9 +6,10 @@ import java.io.IOException;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
+
 public class AuthTokenInterceptor implements Interceptor {
     private Request.Builder requestBuilder;
-   // private SessionManager sessionManager;
+    // private SessionManager sessionManager;
 
   /*  public AuthTokenInterceptor(SessionManager sessionManager) {
         this.sessionManager = sessionManager;

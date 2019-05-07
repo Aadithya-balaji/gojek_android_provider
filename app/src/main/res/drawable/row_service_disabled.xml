@@ -9,5 +9,5 @@
         android:bottomLeftRadius="@dimen/_100sdp"
         android:bottomRightRadius="@dimen/_100sdp"
         android:topLeftRadius="@dimen/_100sdp"
-        android:topRightRadius="@dimen/_100sdp"/>
+        android:topRightRadius="@dimen/_100sdp" />
 </shape>

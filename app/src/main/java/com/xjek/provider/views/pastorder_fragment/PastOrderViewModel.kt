@@ -23,7 +23,7 @@ public class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
 
     }
 
-    fun getTransportPastHistory(selectedService : String) {
+    fun getTransportPastHistory(selectedService: String) {
 
         val hashMap: HashMap<String, String> = HashMap()
         hashMap.put("limit", "100")
@@ -34,7 +34,7 @@ public class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
         getCompositeDisposable().add(appRepository
                 .getTransaportHistory(this
                         , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")
-                        , hashMap,selectedService))
+                        , hashMap, selectedService))
 
     }
 }

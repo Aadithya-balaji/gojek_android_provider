@@ -70,15 +70,39 @@ class CommonMethods {
                 val hoursFormat = SimpleDateFormat("HH:mm:ss")
                 val formateDate = Date()
                 formateDate.time = calendar!!.timeInMillis
-                val strFormatedTimeinHours = hoursFormat.format(formateDate)
-                val sDateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                val sDate = sDateFormat.parse(strFormatedTimeinHours)
-                timeDiff = Date().time - sDate.time
+                timeDiff=formateDate.time
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
                 Log.e("error",":------"+e.message)
             }
             return timeDiff!!
+
+        }
+
+        fun getTimeDifference(strFromDate:String,strToDate:String,format:String):Long{
+            var diffTime:Long?=0
+            val fromSimpledateFormat=SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault())
+            fromSimpledateFormat.timeZone= TimeZone.getTimeZone("UTC")
+            var fromDate:Date?=null
+            var fromCalender :Calendar?=null
+            var toDate:Date?=null
+            var toCalendar:Calendar?=null
+            try{
+                fromDate=fromSimpledateFormat.parse(strFromDate)
+                fromCalender= Calendar.getInstance(TimeZone.getDefault())
+                fromCalender.time=fromDate
+
+                toDate=fromSimpledateFormat.parse(strFromDate)
+                toCalendar= Calendar.getInstance(TimeZone.getDefault())
+                toCalendar.time=toDate
+                diffTime=toCalendar.time.time -fromCalender
+                        .time.time
+                Log.e("fromTime","------"+fromCalender.time.time)
+            }catch (e:java.lang.Exception){
+                e.printStackTrace()
+            }
+            return  diffTime!!
+
         }
 
         fun decodeSampledBitmapFromFile(path: String, reqWidth: Int, reqHeight: Int): Bitmap? { // BEST QUALITY MATCH

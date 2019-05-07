@@ -1,6 +1,7 @@
 package com.xjek.provider.models
 
 import com.google.gson.annotations.SerializedName
+
 class ProfileData {
     @SerializedName("id")
     var id: String? = null

@@ -90,8 +90,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:textSize="@dimen/_10sdp"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
 
             </RelativeLayout>

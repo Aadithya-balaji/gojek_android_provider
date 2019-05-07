@@ -44,8 +44,8 @@
                     android:layout_gravity="center"
                     android:layout_weight="0.7"
                     android:padding="@dimen/_8sdp"
-                    app:srcCompat="@drawable/ic_support"
-                    android:tint="@color/blue_transaction_bg" />
+                    android:tint="@color/blue_transaction_bg"
+                    app:srcCompat="@drawable/ic_support" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -95,8 +95,8 @@
                             android:background="@drawable/drawable_circle"
                             android:backgroundTint="@color/xuber_grey"
                             android:padding="@dimen/_15sdp"
-                            app:srcCompat="@drawable/ic_call_24"
-                            android:tint="@color/dark_grey" />
+                            android:tint="@color/dark_grey"
+                            app:srcCompat="@drawable/ic_call_24" />
 
                         <TextView
                             android:layout_width="wrap_content"

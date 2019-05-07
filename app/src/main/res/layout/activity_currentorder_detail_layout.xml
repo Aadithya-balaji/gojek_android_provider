@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -129,8 +129,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:padding="@dimen/_5sdp"
-                             />
+                            android:padding="@dimen/_5sdp" />
 
                         <RatingBar
                             android:id="@+id/rv_user"
@@ -376,8 +375,8 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="@dimen/_5sdp"
-                                app:srcCompat="@drawable/ic_cash"
-                                android:tint="@color/dark_grey" />
+                                android:tint="@color/dark_grey"
+                                app:srcCompat="@drawable/ic_cash" />
                         </RelativeLayout>
 
                     </androidx.cardview.widget.CardView>
@@ -389,8 +388,8 @@
                         android:layout_marginLeft="@dimen/_15sdp"
                         android:layout_marginTop="@dimen/_25sdp"
                         android:layout_marginRight="@dimen/_15sdp"
-                        android:visibility="gone"
-                        android:background="@drawable/bg_white">
+                        android:background="@drawable/bg_white"
+                        android:visibility="gone">
 
                         <RelativeLayout
                             android:layout_width="match_parent"

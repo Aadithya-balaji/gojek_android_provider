@@ -80,17 +80,16 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:drawableStart="@drawable/ic_facebook"
                         android:drawablePadding="@dimen/_10sdp"
+                        android:gravity="center"
                         android:onClick="@{() -> registermodel.fbLogin()}"
                         android:padding="@dimen/_8sdp"
-                        android:gravity="center"
                         android:text="@string/connect_via_facebook"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
 
 
-
-
                 </androidx.cardview.widget.CardView>
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/social_google_login_layout"
                     android:layout_width="match_parent"
@@ -111,9 +110,9 @@
                         android:layout_marginStart="@dimen/_5sdp"
                         android:drawableStart="@drawable/ic_google"
                         android:drawablePadding="@dimen/_8sdp"
+                        android:gravity="center"
                         android:onClick="@{() -> registermodel.googleSignin()}"
                         android:padding="@dimen/_8sdp"
-                        android:gravity="center"
                         android:text="@string/connect_via_google"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
@@ -141,8 +140,8 @@
                 android:layout_marginBottom="@dimen/_12sdp"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:text="OR"
-                android:visibility="gone"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="@color/colorPrimary"
+                android:visibility="gone" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -193,10 +192,10 @@
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:background="@drawable/drawable_circle"
+                                android:backgroundTint="@color/schedule_blue"
                                 android:contentDescription="@string/edit_image"
                                 android:padding="@dimen/_5sdp"
                                 android:tint="@color/xuber_white"
-                                android:backgroundTint="@color/schedule_blue"
                                 app:srcCompat="@drawable/ic_pencil_edit_button" />
 
                         </RelativeLayout>

@@ -1,5 +1,5 @@
 package com.xjek.provider.views.privacypolicy
 
-interface  PrivactyNavigator{
+interface PrivactyNavigator {
 
 }

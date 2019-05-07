@@ -19,9 +19,9 @@
             android:id="@+id/services_provider_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_marginTop="@dimen/_10sdp"
             android:adapter="@{xuberServicesProviderAdapter}"
-            android:layout_marginTop="@dimen/_10sdp" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
     </LinearLayout>

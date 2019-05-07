@@ -174,6 +174,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         //Update Request
         mViewModel.xuperUdpateRequest.observe(this, Observer<UpdateRequest> { updateRequest ->
             if (updateRequest!!.statusCode.equals("200")) {
+                loadingObservable.value=false
                 when (updateRequest.responseData!!.status) {
                     ARRIVED -> whenArrived()
 

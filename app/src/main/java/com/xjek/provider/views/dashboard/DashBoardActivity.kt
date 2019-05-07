@@ -28,8 +28,6 @@ import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
 import com.xjek.base.data.Constants.ModuleTypes.SERVICE
 import com.xjek.base.data.Constants.ModuleTypes.TRANSPORT
-import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
-import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey

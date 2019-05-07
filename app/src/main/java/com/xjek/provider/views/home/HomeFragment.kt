@@ -114,10 +114,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                     if (pendingListDialog != null && !pendingListDialog!!.isShown()) showPendingListDialog(1)
                 } else if (providerDetailsModel.status != "APPROVED") {
                     if (pendingListDialog != null && !pendingListDialog!!.isShown()) showPendingListDialog(2)
-                } else if (providerDetailsModel.wallet_balance < 1) {
-//                    Not implemented cos pending in backend
-//                    if (pendingListDialog != null && !pendingListDialog!!.isShown()) showPendingListDialog(3)
-                }
+                } /*else (providerDetailsModel.wallet_balance < 1) {
+                    if (pendingListDialog != null && !pendingListDialog!!.isShown()) showPendingListDialog(3)
+                }*/
             }
         }
 
@@ -191,15 +190,14 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     private fun showPendingListDialog(type: Int) {
-        val pendingListDialog = PendingListDialog()
         val bundle = Bundle()
         bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
         bundle.putInt("ISSERVICENEED", isServiceNeed!!)
         bundle.putInt("ISBANCKDETAILNEED", isBankDetailNeed!!)
         bundle.putInt("TYPE", type)
-        pendingListDialog.arguments = bundle
-        pendingListDialog.show(activity!!.supportFragmentManager, "pendinglist")
-        pendingListDialog.isCancelable = true
+        pendingListDialog?.arguments = bundle
+        pendingListDialog?.show(activity!!.supportFragmentManager, "pendinglist")
+        pendingListDialog?.isCancelable = true
     }
 
     private fun changeView(isOnline: Boolean) {

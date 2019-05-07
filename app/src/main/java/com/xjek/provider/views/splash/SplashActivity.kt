@@ -98,7 +98,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
             else {
-                launchNewActivity(XuberMainActivity::class.java, true)
+                launchNewActivity(DashBoardActivity::class.java, true)
             }
         }
     }

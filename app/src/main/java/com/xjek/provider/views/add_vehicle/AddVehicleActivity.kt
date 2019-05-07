@@ -1,8 +1,11 @@
 package com.xjek.provider.views.add_vehicle
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.view.View
+import android.widget.PopupWindow
 import androidx.databinding.ViewDataBinding
 import com.theartofdev.edmodo.cropper.CropImage
 import com.xjek.base.base.BaseActivity
@@ -15,7 +18,9 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityAddVehicleBinding
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Enums
+import kotlinx.android.synthetic.main.activity_add_vehicle.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
+
 
 class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicleNavigator {
 
@@ -24,6 +29,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
     private lateinit var permissions: Array<String>
     private var requestCode: Int = -1
+
 
     override fun getLayoutId(): Int {
         return R.layout.activity_add_vehicle
@@ -51,11 +57,18 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         observeViewModel()
 
         getVehicleCategories()
+
+        txt_category_selection.setOnClickListener {
+            val popupWindow = PopupWindow(this)
+            popupWindow.showAsDropDown(it,-5,0)
+        }
     }
+
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getVehicleCategoryObservable()) {
             loadingObservable.value = false
+
         }
         observeLiveData(viewModel.getVehicleResponseObservable()) {
             loadingObservable.value = false
@@ -77,6 +90,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
@@ -90,10 +104,12 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                         Enums.RC_RC_BOOK_IMAGE -> {
                             viewModel.setRcBookUri(result.uri)
                             binding.ivRcBook.setImageURI(result.uri)
+                            tvRcBook.visibility = View.GONE
                         }
                         Enums.RC_INSURANCE_IMAGE -> {
                             viewModel.setInsuranceUri(result.uri)
                             binding.ivInsurance.setImageURI(result.uri)
+                            tvInsurance.visibility = View.GONE
                         }
                     }
                 }

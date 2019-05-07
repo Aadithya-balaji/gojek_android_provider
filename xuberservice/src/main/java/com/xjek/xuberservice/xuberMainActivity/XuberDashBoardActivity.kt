@@ -67,6 +67,7 @@ import com.xjek.xuberservice.model.XuperCheckRequest
 import com.xjek.xuberservice.rating.DialogXuperRating
 import com.xjek.xuberservice.reasons.XUberCancelReasonFragment
 import com.xjek.xuberservice.uploadImage.DialogUploadPicture
+import kotlinx.android.synthetic.main.activity_xuber_main.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.view.*
 import okhttp3.MediaType
@@ -142,8 +143,15 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     mViewModel.currentStatus.value = xuberCheckRequest.let { it.responseData!!.requests!!.status }
                     mBinding.tvXuberPickupLocation.text = xuberCheckRequest.let { it.responseData!!.requests!!.s_address }
 
-                    mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData!!.requests!!.s_latitude!!,
-                            xuberCheckRequest.responseData.requests!!.s_longitude!!)
+                    mViewModel.userName.value = xuberCheckRequest.responseData!!.requests!!.user!!.first_name +
+                            " " + xuberCheckRequest.responseData.requests!!.user!!.last_name!!
+                    mViewModel.serviceType.value = xuberCheckRequest.responseData.requests.service!!.service_name
+                    if (xuberCheckRequest.responseData.requests.user!!.picture != null) {
+                        setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
+                    }
+
+                    mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude!!,
+                            xuberCheckRequest.responseData.requests.s_longitude!!)
 
                     when (status) {
                         ACCEPTED -> whenAccepted()
@@ -174,9 +182,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         startTheTimer()
                     }
 
-                    DROPPED -> {
-
-                    }
+                    DROPPED -> whenDropped(false)
 
                     COMPLETED -> {
 
@@ -210,6 +216,26 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
         if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, Constants.DEFAULT_ZOOM))
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, Constants.DEFAULT_ZOOM))
+    }
+
+    //Completed Not Payment Successful
+    fun whenDropped(isCheckRequest: Boolean) {
+        val bundle = Bundle()
+        if (isCheckRequest) {
+            val strCheckRequest = Gson().toJson(mViewModel.xuperCheckRequest.value!!)
+            bundle.putString("strCheckReq", strCheckRequest)
+            bundle.putBoolean("fromCheckReq", true)
+
+        } else {
+            val strUpdateRequest = Gson().toJson(mViewModel.xuperUdpateRequest.value!!)
+            bundle.putString("strUpdateReq", strUpdateRequest)
+            bundle.putBoolean("fromCheckReq", false)
+
+        }
+        llBottomService.visibility = View.GONE
+        invoicePage.arguments = bundle
+        if (invoicePage.isShown() == false)
+            invoicePage.show(supportFragmentManager, "xuperinvoice")
     }
 
     override fun goBack() {
@@ -510,7 +536,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
                 || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED) getImageFile(false, filePath)
     }
-
 
     private fun getImageMultiPart(file: File, isFrontImage: Boolean): MultipartBody.Part {
         val fileBody: MultipartBody.Part

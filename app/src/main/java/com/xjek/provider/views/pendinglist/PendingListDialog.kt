@@ -54,19 +54,19 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
         mViewModel.navigator = this
         pendingListDialogBinding.pendinglistModel = mViewModel
         when (dialogType) {
-            0 -> {
+            1 -> {
                 pendingListDialogBinding.llDocPending.visibility = View.VISIBLE
                 pendingListDialogBinding.llLowBalance.visibility = View.GONE
                 pendingListDialogBinding.llWaiting.visibility = View.GONE
             }
 
-            1 -> {
+            2 -> {
                 pendingListDialogBinding.llDocPending.visibility = View.GONE
-                pendingListDialogBinding.llLowBalance.visibility = View.VISIBLE
-                pendingListDialogBinding.llWaiting.visibility = View.GONE
+                pendingListDialogBinding.llWaiting.visibility = View.VISIBLE
+                pendingListDialogBinding.llLowBalance.visibility = View.GONE
             }
 
-            2 -> {
+            3 -> {
                 pendingListDialogBinding.llDocPending.visibility = View.GONE
                 pendingListDialogBinding.llLowBalance.visibility = View.GONE
                 pendingListDialogBinding.llWaiting.visibility = View.VISIBLE

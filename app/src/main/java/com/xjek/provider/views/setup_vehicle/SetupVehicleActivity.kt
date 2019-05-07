@@ -70,9 +70,9 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         intent.putExtra(Constant.SERVICE_ID, viewModel.getServiceId())
         val providerService = viewModel.getVehicleDataObservable().value
 
-        if (providerService is SetupRideResponseModel) {
-//            intent.putExtra(Constant.PROVIDER_VEHICLE,
-//                    providerService.responseData[position].providerService!!.providerVehicle)
+        if (providerService is SetupRideResponseModel && providerService.responseData[position].providerService!=null) {
+            intent.putExtra(Constant.PROVIDER_VEHICLE,
+                    providerService.responseData[position].providerService!!.providerVehicle)
         } else if (providerService is SetupShopResponseModel) {
 
         }

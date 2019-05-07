@@ -74,7 +74,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
                 intent = Intent(applicationContext, SetupVehicleActivity::class.java)
             }
             2 -> {
-                intent = Intent(applicationContext, SetupServicesActivity::class.java)
+              //  intent = Intent(applicationContext, SetupServicesActivity::class.java)
             }
         }
 

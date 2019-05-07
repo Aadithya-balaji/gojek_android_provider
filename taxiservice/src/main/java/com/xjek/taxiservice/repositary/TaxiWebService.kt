@@ -1,9 +1,6 @@
 package com.xjek.taxiservice.repositary
 
-import com.xjek.taxiservice.model.CheckRequestModel
-import com.xjek.taxiservice.model.PaymentModel
-import com.xjek.taxiservice.model.TaxiRatingResponse
-import com.xjek.taxiservice.model.WaitingTime
+import com.xjek.taxiservice.model.*
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -15,6 +12,10 @@ interface TaxiWebService {
 //            @Query("latitude") lat: Double,
 //            @Query("longitude") lon: Double
     ): Observable<CheckRequestModel>
+
+    @GET("provider/reasons?type=TRANSPORT")
+    fun taxiCancelReason(@Header("Authorization") token: String):
+            Observable<ReasonModel>
 
     @FormUrlEncoded
     @POST("provider/waiting")

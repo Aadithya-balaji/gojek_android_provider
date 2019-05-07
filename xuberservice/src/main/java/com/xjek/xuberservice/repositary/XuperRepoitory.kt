@@ -3,7 +3,7 @@ package com.xjek.xuberservice.repositary
 import android.util.Log
 import com.xjek.base.data.Constants
 import com.xjek.base.repository.BaseRepository
-import com.xjek.xuberservice.reasons.ReasonViewModel
+import com.xjek.xuberservice.reasons.XUberCancelReasonViewModel
 import com.xjek.xuberservice.invoice.XuperInvoiceViewModel
 import com.xjek.xuberservice.rating.XuperRatingViewModel
 import com.xjek.xuberservice.xuberMainActivity.XuberDashboardViewModel
@@ -60,15 +60,15 @@ class XuperRepoitory : BaseRepository() {
                 })
 
     }
-    fun xuperGetReason(viewModel: ReasonViewModel, token: String, type: String): Disposable {
+    fun xuperGetReason(viewModelXUberCancel: XUberCancelReasonViewModel, token: String, type: String): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
                 .getReasons(token, type)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.mReasonResponseData.postValue(it)
+                    viewModelXUberCancel.mReasonResponseData.postValue(it)
                 }, {
-                    // viewModel.navigator.
+                    // viewModelXUberCancel.navigator.
                 })
     }
 

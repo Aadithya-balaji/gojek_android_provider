@@ -38,8 +38,8 @@ class DisputeReasonListAdapter(val historyDetailViewModel: HistoryDetailViewMode
 
         holder.filterserviceRowitemBinding.filterserviceNameTv.text = (disputereasonList.get(position)
                 .dispute_name).toLowerCase().capitalize()
-        /* holder.filterserviceRowitemBinding.itemClickListener = object : CustomClickListner {
-             override fun onListClickListner() {
+        /* holder.filterserviceRowitemBinding.itemClickListener = object : CustomClickListener {
+             override fun onListClickListener() {
 
                  Log.d("_D_ADP", disputereasonList[position].dispute_name + "")
                  // historyDetailViewModel.selectedDisputeName.value =

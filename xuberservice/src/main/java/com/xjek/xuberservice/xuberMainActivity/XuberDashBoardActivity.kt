@@ -51,7 +51,6 @@ import com.xjek.base.data.Constants.XuperProvider.START
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.utils.CarMarkerAnimUtil
 import com.xjek.base.utils.CommonMethods
-import com.xjek.base.utils.Constants.Companion.UTCTIME
 import com.xjek.base.utils.PolyUtil
 import com.xjek.base.utils.ViewUtils
 import com.xjek.base.utils.polyline.DirectionUtils
@@ -66,7 +65,7 @@ import com.xjek.xuberservice.model.CancelRequestModel
 import com.xjek.xuberservice.model.UpdateRequest
 import com.xjek.xuberservice.model.XuperCheckRequest
 import com.xjek.xuberservice.rating.DialogXuperRating
-import com.xjek.xuberservice.reasons.ReasonFragment
+import com.xjek.xuberservice.reasons.XUberCancelReasonFragment
 import com.xjek.xuberservice.uploadImage.DialogUploadPicture
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.view.*
@@ -119,7 +118,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     override fun getLayoutId(): Int = R.layout.activity_xuber_main
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
         mBinding = mViewDataBinding as ActivityXuberMainBinding
         mViewModel = XuberDashboardViewModel()
         mViewModel.navigator = this
@@ -140,26 +138,26 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mViewModel.xuperCheckRequest.observe(this, Observer<XuperCheckRequest> { xuberCheckRequest ->
             if (xuberCheckRequest!!.responseData!!.requests != null) {
                 val status = xuberCheckRequest.let { it.responseData!!.requests!!.status }
-                mBinding.tvXuberPickupLocation.text = xuberCheckRequest.let { it.responseData!!.requests!!.s_address }
-                when (status) {
-                    ACCEPTED -> {
-                        whenAccepted()
-                    }
-                    ARRIVED -> {
-                        whenArrived()
-                    }
+                if (status != mViewModel.currentStatus.value) {
+                    mViewModel.currentStatus.value = xuberCheckRequest.let { it.responseData!!.requests!!.status }
+                    mBinding.tvXuberPickupLocation.text = xuberCheckRequest.let { it.responseData!!.requests!!.s_address }
 
-                    PICKED_UP -> {
-                        whenStarted()
-                        startTheTimer()
-                    }
+                    mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData!!.requests!!.s_latitude!!,
+                            xuberCheckRequest.responseData.requests!!.s_longitude!!)
 
-                    DROPPED -> {
-                        whenDropped(xuberCheckRequest.responseData!!)
-                    }
+                    when (status) {
+                        ACCEPTED -> whenAccepted()
 
-                    COMPLETED -> {
-                        whenPayment(xuberCheckRequest.responseData!!)
+                        ARRIVED -> whenArrived()
+
+                        PICKED_UP -> {
+                            whenStarted()
+                            startTheTimer()
+                        }
+
+                        DROPPED -> whenDropped(xuberCheckRequest.responseData)
+
+                        COMPLETED -> whenPayment(xuberCheckRequest.responseData)
                     }
                 }
             }
@@ -169,9 +167,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mViewModel.xuperUdpateRequest.observe(this, Observer<UpdateRequest> { updateRequest ->
             if (updateRequest!!.statusCode.equals("200")) {
                 when (updateRequest.responseData!!.status) {
-                    ARRIVED -> {
-                        whenArrived()
-                    }
+                    ARRIVED -> whenArrived()
 
                     PICKED_UP -> {
                         whenStarted()
@@ -186,7 +182,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
                     }
                 }
-
             }
         })
 
@@ -237,13 +232,16 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
+
         this.mGoogleMap = mGoogleMap
         this.mGoogleMap?.setOnCameraMoveListener(this)
         this.mGoogleMap?.setOnCameraIdleListener(this)
+
         mViewModel.latitude.value = currentLatitude
         mViewModel.longitude.value = currentLongitude
+
         updateMapLocation(LatLng(currentLatitude!!, currentLongitude!!))
-        Log.e("currentloc", "----$currentLatitude---$currentLongitude")
+        Log.e("currentloc", "---- $currentLatitude --- $currentLongitude")
         mViewModel.callXuperCheckRequest()
     }
 
@@ -260,6 +258,11 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
+    }
+
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
@@ -267,12 +270,12 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
-            println("RRRR:: TaxiDashboardActivity")
+            println("RRRR:: XuberDashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-                updateMapLocation(LatLng(location.latitude, location.longitude))
+//                updateMapLocation(LatLng(location.latitude, location.longitude))
 
                 if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuperCheckRequest()
 
@@ -292,7 +295,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private fun polyLineRerouting(point: LatLng, polyLine: ArrayList<LatLng>) {
         val index = polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 10.0)
         if (index >= 0) {
-            polyLine.subList(0, index + 2).clear()
+            polyLine.subList(0, index + 1).clear()
             polyLine.add(0, point)
             mPolyline!!.remove()
             val options = PolylineOptions()
@@ -302,8 +305,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             println("RRR mPolyline = " + polyLine.size)
         } else {
             canDrawPolyLine = true
-            drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                    mViewModel.polyLineDest.value!!)
+            drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), mViewModel.polyLineSrc.value!!)
         }
     }
 
@@ -313,10 +315,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             Handler().postDelayed({ canDrawPolyLine = true }, 10000)
             PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString()))
         }
-        mViewModel.polyLineSrc.value = src
-        mViewModel.polyLineDest.value = dest
     }
-
 
     override fun whenDone(output: PolylineOptions) {
         mGoogleMap!!.clear()
@@ -379,6 +378,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.VISIBLE
         mBinding.llBottomService.llConfirm.tvAllow.text = ARRIVED
         mBinding.llBottomService.llConfirm.tvCancel.text = CANCEL
+        drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), mViewModel.polyLineSrc.value!!)
     }
 
     //When ride arrived
@@ -445,74 +445,79 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         mViewModel.updateRequest(ARRIVED, null, false)
                     }
 
-                    START -> {
-                        when {
-                            frontImgFile == null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
-                            mViewModel.otp.value.isNullOrEmpty() ->
-                                ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
-                            else -> {
-                                frontImgMultiPart = getImageMutiPart(frontImgFile!!, true)
-                                mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
-                            }
+                    START -> when {
+                        frontImgFile == null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
+                        mViewModel.otp.value.isNullOrEmpty() ->
+                            ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
+                        else -> {
+                            frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
+                            mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
                         }
                     }
 
                     COMPLETED -> {
-                        if (backImgFile == null) {
-                            ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false)
-                        } else {
-                            backImgMultiPart = getImageMutiPart(backImgFile!!, false)
+                        if (backImgFile == null) ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false) else {
+                            backImgMultiPart = getImageMultiPart(backImgFile!!, false)
                             mViewModel.updateRequest(DROPPED, backImgMultiPart, false)
                         }
                     }
                 }
             }
 
-            R.id.tvCancel -> ReasonFragment().show(supportFragmentManager, "reasonDialog")
+            R.id.tvCancel -> XUberCancelReasonFragment().show(supportFragmentManager, "reasonDialog")
         }
     }
 
     override fun onChronometerTick(chronometer: Chronometer?) {
-        val time = Date().time - chronometer!!.base!!
+        val time = Date().time - chronometer!!.base
         val h = (time / 3600000).toInt()
         val m = (time - h * 3600000).toInt() / 60000
         val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
         val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
-        Log.e("Chrono", "---" + "---" + h + "---" + m + "---" + s)
-        chronometer!!.setText(formatedTime)
+        Log.e("Chrono", "------$h---$m---$s")
+        chronometer.text = formatedTime
     }
 
+    @SuppressLint("SetTextI18n")
     fun startTheTimer() {
         if (!(mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at.isNullOrEmpty())) {
             val startedTime = mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.started_at
             if (!startedTime.isNullOrEmpty()) {
-                localServiceTime = CommonMethods.getLocalTime(startedTime!!, "yyyy-dd-MM HH:mm:ss")
+                localServiceTime = CommonMethods.getLocalTime(startedTime, "yyyy-dd-MM HH:mm:ss")
                 val timeinMilliSec = localServiceTime
                 val timeinMilli = Date().time - (timeinMilliSec!!)
                 val h = (timeinMilli / 3600000).toInt()
                 val m = (timeinMilli - h * 3600000).toInt() / 60000
                 val s = (timeinMilli - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-                val formatedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+                val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
                 cmXuberServiceTime.base = localServiceTime!!
-                cmXuberServiceTime.setText("00:00:00");
+                cmXuberServiceTime.text = "00:00:00"
                 cmXuberServiceTime.start()
                 cmXuberServiceTime.onChronometerTickListener = this@XuberDashBoardActivity
             }
         } else {
             cmXuberServiceTime.base = SystemClock.elapsedRealtime()
-            cmXuberServiceTime.setText("00:00:00");
+            cmXuberServiceTime.text = "00:00:00"
             cmXuberServiceTime.start()
         }
     }
 
-    private fun getImageMutiPart(file: File, isFrontImage: Boolean): MultipartBody.Part {
+    override fun getFilePath(filePath: Uri) {
+        if ((mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED)
+                        && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
+                        || mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
+            getImageFile(true, filePath)
+        else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
+                || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED) getImageFile(false, filePath)
+    }
+
+
+    private fun getImageMultiPart(file: File, isFrontImage: Boolean): MultipartBody.Part {
         val fileBody: MultipartBody.Part
-        val pictureFile = file
-        val requestFile = RequestBody.create(MediaType.parse("*/*"), pictureFile)
+        val requestFile = RequestBody.create(MediaType.parse("*/*"), file)
         fileBody = if (isFrontImage)
-            MultipartBody.Part.createFormData("before_picture", pictureFile.name, requestFile)
-        else
-            MultipartBody.Part.createFormData("after_picture", pictureFile.name, requestFile)
+            MultipartBody.Part.createFormData("before_picture", file.name, requestFile)
+        else MultipartBody.Part.createFormData("after_picture", file.name, requestFile)
 
         return fileBody
     }
@@ -522,16 +527,8 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         else backImgFile = File(fileUri.path)
     }
 
-    override fun getFilePath(filePath: Uri) {
-        if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED))
-            getImageFile(true, filePath)
-        else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
-                || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED)
-            getImageFile(false, filePath)
-    }
-
     override fun reasonForCancel(reason: String) {
-        if (!reason.isNullOrEmpty()) {
+        if (!reason.isEmpty()) {
             val params = HashMap<String, String>()
             val id = mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.id.toString()
             params[Constants.Common.ID] = id

@@ -41,7 +41,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         notificationViewModel.getNotificationList()
 
         dashBoardNavigator.setTitle(resources.getString(R.string.title_notification))
-        dashBoardNavigator.hideRightIcon(false)
+        dashBoardNavigator.hideRightIcon(true)
         dashBoardNavigator.showLogo(false)
 
         observeLiveData(notificationViewModel.notificationResponse) {

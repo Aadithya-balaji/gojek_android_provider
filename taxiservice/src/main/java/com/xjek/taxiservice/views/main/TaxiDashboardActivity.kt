@@ -6,6 +6,8 @@ import android.content.*
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
@@ -54,7 +56,6 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
-import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.*
@@ -70,6 +71,9 @@ import com.xjek.taxiservice.views.verifyotp.VerifyOtpDialog
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import kotlinx.android.synthetic.main.layout_taxi_status_container.*
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         TaxiDashboardNavigator,
@@ -114,7 +118,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         activityTaxiMainBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
         sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bsContainer)
-        sheetBehavior.peekHeight = 250
+        sheetBehavior.peekHeight = 550
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -366,6 +370,17 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         tv_user_address_one.text = responseData.request.s_address
         rate.rating = responseData.request.user.rating.toFloat()
 
+        if (responseData.request.s_address.length > 2)
+            tv_user_address_one.text = responseData.request.s_address
+        else {
+            val lat = responseData.request.s_latitude
+            val lon = responseData.request.s_longitude
+            val latLng: com.google.maps.model.LatLng?
+            latLng = com.google.maps.model.LatLng(lat, lon)
+            val address = getCurrentAddress(this, latLng)
+            if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
+        }
+
         btn_arrived.setOnClickListener {
             val params: HashMap<String, String> = HashMap()
             params["id"] = responseData.request.id.toString()
@@ -396,6 +411,17 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         tv_user_name.text = responseData.request.user.first_name + " " + responseData.request.user.last_name
         tv_user_address_one.text = responseData.request.s_address
         rate.rating = responseData.request.user.rating.toFloat()
+
+        if (responseData.request.s_address.length > 2)
+            tv_user_address_one.text = responseData.request.s_address
+        else {
+            val lat = responseData.request.s_latitude
+            val lon = responseData.request.s_longitude
+            val latLng: com.google.maps.model.LatLng?
+            latLng = com.google.maps.model.LatLng(lat, lon)
+            val address = getCurrentAddress(this, latLng)
+            if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
+        }
 
         btn_picked_up.setOnClickListener {
             val otpDialogFragment = VerifyOtpDialog.newInstance(
@@ -434,8 +460,19 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 .into(civProfile)
 
         tv_user_name.text = responseData.request.user.first_name + " " + responseData.request.user.last_name
-        tv_user_address_one.text = responseData.request.s_address
+        tv_user_address_one.text = responseData.request.d_address
         rate.rating = responseData.request.user.rating.toFloat()
+
+        if (responseData.request.d_address.length > 2)
+            tv_user_address_one.text = responseData.request.d_address
+        else {
+            val lat = responseData.request.d_latitude
+            val lon = responseData.request.d_longitude
+            val latLng: com.google.maps.model.LatLng?
+            latLng = com.google.maps.model.LatLng(lat, lon)
+            val address = getCurrentAddress(this, latLng)
+            if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
+        }
 
         btn_drop.setOnClickListener {
             //            val params: HashMap<String, String> = HashMap()
@@ -461,6 +498,22 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         drawRoute(LatLng(responseData.request.s_latitude, responseData.request.s_longitude),
                 LatLng(responseData.request.d_latitude, responseData.request.d_longitude))
+    }
+
+    private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
+        var addresses: List<Address> = java.util.ArrayList()
+        val geocoder: Geocoder
+        try {
+            if (Geocoder.isPresent()) {
+                geocoder = Geocoder(context, Locale.getDefault())
+                addresses = geocoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
+                // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            }
+        } catch (e: Exception) {
+            Log.d("EXception", "EXception" + e.message)
+        }
+
+        return addresses
     }
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {

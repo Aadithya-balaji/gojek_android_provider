@@ -72,7 +72,9 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                 loadingObservable.value=false
                 xuperInvoiceModel.showProgress.value = false
                 if (updateRequest!!.statusCode.equals("200")) {
-                    dialog!!.dismiss()
+                    if(invoiceDialog!=null) {
+                        invoiceDialog!!.dismiss()
+                    }
                     val ratingDialog = DialogXuperRating()
                     val strupdateRequest = Gson().toJson(updateRequest)
                     val bundle = Bundle()

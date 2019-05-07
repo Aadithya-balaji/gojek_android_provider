@@ -35,7 +35,7 @@ class VerifyOtpDialog : BaseDialogFragment<FragmentVerifyOtpBinding>(), VerifyOT
         fragmentVerifyOtpBinding!!.otpviewmodel = verifyOTPModule
         mTaxiMainDashboardViewModel = ViewModelProviders.of(activity!!).get(TaxiDashboardViewModel::class.java)
 
-        if (BuildConfig.DEBUG) ed_otp.setText(otp)
+//        if (BuildConfig.DEBUG) ed_otp.setText(otp)
         bt_start_trip.setOnClickListener {
             if (ed_otp.text.toString() == otp) {
                 println("RRR :: otp = $otp")

@@ -1,7 +1,11 @@
 package com.xjek.taxiservice.views.invoice
 
+import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
@@ -20,6 +24,8 @@ import com.xjek.taxiservice.databinding.ActivityInvoiceTaxiBinding
 import com.xjek.taxiservice.model.ResponseData
 import com.xjek.taxiservice.views.rating.TaxiRatingFragment
 import kotlinx.android.synthetic.main.layout_status_indicators.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvoiceNavigator {
 
@@ -95,9 +101,48 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                     mViewModel.tollCharge.value = requestModel!!.request.payment.toll_charge.toString()
             }
 
+            if (mViewModel.pickuplocation.value != null && mViewModel.pickuplocation.value!!.length > 2)
+                mViewModel.pickuplocation.value = requestModel!!.request.s_address
+            else {
+                val lat = requestModel!!.request.s_latitude
+                val lon = requestModel!!.request.s_longitude
+                var latLng: com.google.maps.model.LatLng?
+                latLng = com.google.maps.model.LatLng(lat, lon)
+                val address = getCurrentAddress(this, latLng)
+                if (address.isNotEmpty()) mViewModel.pickuplocation.value = address[0].getAddressLine(0)
+            }
+
+            if (mViewModel.dropLocation.value != null && mViewModel.dropLocation.value!!.length > 2)
+                mViewModel.dropLocation.value = requestModel!!.request.s_address
+            else {
+                val lat = requestModel!!.request.d_latitude
+                val lon = requestModel!!.request.d_longitude
+                var latLng: com.google.maps.model.LatLng?
+                latLng = com.google.maps.model.LatLng(lat, lon)
+                val address = getCurrentAddress(this, latLng)
+                if (address.isNotEmpty()) mViewModel.dropLocation.value = address[0].getAddressLine(0)
+            }
+
             if (requestModel!!.request.paid == 1) openRatingDialog(requestModel)
         }
     }
+
+    private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
+        var addresses: List<Address> = java.util.ArrayList()
+        val geocoder: Geocoder
+        try {
+            if (Geocoder.isPresent()) {
+                geocoder = Geocoder(context, Locale.getDefault())
+                addresses = geocoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
+                // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            }
+        } catch (e: Exception) {
+            Log.d("EXception", "EXception" + e.message)
+        }
+
+        return addresses
+    }
+
 
     override fun openRatingDialog(data: ResponseData?) {
         mViewModel.showLoading.value = false

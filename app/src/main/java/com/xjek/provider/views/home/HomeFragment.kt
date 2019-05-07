@@ -159,7 +159,11 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mGoogleMap = map
         try {
 
-            mGoogleMap!!.isMyLocationEnabled = true
+            try {
+                mGoogleMap!!.isMyLocationEnabled = true
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.xjek.taxiservice.R.raw.style_json))
 

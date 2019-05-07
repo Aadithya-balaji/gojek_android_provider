@@ -4,17 +4,18 @@
 
 
     <data>
+
         <variable
-            name="reasonadapter"
-            type="com.xjek.xuberservice.adapters.XuberReasonAdapter"/>
+            name="taxiReasonAdapter"
+            type="com.xjek.taxiservice.views.adapter.TaxiReasonAdapter" />
     </data>
+
     <androidx.cardview.widget.CardView
-        android:id="@+id/cvreasontype"
+        android:id="@+id/cvReason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:elevation="@dimen/_2sdp"
-        app:cardBackgroundColor="@color/xuber_white">
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="@color/white">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -28,7 +29,7 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
                 android:text="Reason"
-                android:textColor="@color/xuber_black"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 
             <ImageView
@@ -54,9 +55,9 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/reason_label_tv"
                 android:layout_centerHorizontal="true"
-                android:adapter="@{reasonadapter}"
                 android:minHeight="150dp"
                 android:padding="@dimen/_5sdp"
+                android:adapter="@{taxiReasonAdapter}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -87,8 +88,9 @@
                 android:padding="@dimen/_5sdp"
                 android:text="@string/submit"
                 android:visibility="gone" />
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
 
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
 
 </layout>

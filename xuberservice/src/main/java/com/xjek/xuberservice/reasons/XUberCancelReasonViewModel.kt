@@ -5,12 +5,11 @@ import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.Constants
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
-import com.xjek.taximodule.ui.fragment.reason.ReasonNavigator
 import com.xjek.xuberservice.model.ReasonModel
 import com.xjek.xuberservice.repositary.XuperRepoitory
 import io.reactivex.disposables.Disposable
 
-class ReasonViewModel : BaseViewModel<ReasonNavigator>() {
+class XUberCancelReasonViewModel : BaseViewModel<XUberCancelReasonNavigator>() {
 
     private val xuperAppRepository = XuperRepoitory.instance()
     private lateinit var subscription: Disposable

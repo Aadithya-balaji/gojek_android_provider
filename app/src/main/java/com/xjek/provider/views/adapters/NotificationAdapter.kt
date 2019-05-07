@@ -50,7 +50,7 @@ class NotificationAdapter(val activity: FragmentActivity?, val notificationRespo
 
     override fun onListClickListner() {
 
-        Log.d("currentadapter", "onListClickListner")
+        Log.d("currentadapter", "onListClickListener")
     }
 
 }

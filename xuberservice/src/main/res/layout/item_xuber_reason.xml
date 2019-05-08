@@ -7,6 +7,8 @@
             type="com.xjek.xuberservice.reasons.XUberCancelReasonFragment" />
     </data>
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/grey_font" />
-
     </LinearLayout>
 
 </layout>

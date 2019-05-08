@@ -41,6 +41,7 @@
             android:inputType="numberDecimal"
             android:padding="@dimen/_9sdp"
             android:singleLine="true"
+            android:maxLines="1"
             android:text="@={tollmodel.tollChargeLiveData}"
             android:textSize="@dimen/_10sdp"/>
 

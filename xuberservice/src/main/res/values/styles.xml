@@ -7,6 +7,10 @@
         <item name="android:progressTint" tools:targetApi="lollipop">@color/duskYellow</item>
 
     </style>
+    <style name="xuberRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/xuber_grey</item>
+        <item name="colorControlActivated">@color/colorTaxiYellow</item>
+    </style>
 
 
     <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">

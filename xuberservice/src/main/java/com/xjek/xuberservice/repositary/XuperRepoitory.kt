@@ -69,7 +69,7 @@ class XuperRepoitory : BaseRepository() {
                 .subscribe({
                     viewModelXUberCancel.mReasonResponseData.postValue(it)
                 }, {
-                    // viewModelXUberCancel.navigator.
+                    viewModelXUberCancel.navigator.getErrorMessage(getErrorMessage(it))
                 })
     }
 

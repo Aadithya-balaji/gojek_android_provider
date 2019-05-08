@@ -35,6 +35,8 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
     var polyLineSrc = MutableLiveData<LatLng>()
     var currentStatus = MutableLiveData<String>()
     var userName=MutableLiveData<String>()
+    var descImage=MutableLiveData<String>()
+    var strDesc=MutableLiveData<String>()
 
 
     fun showInfoDialog(view:View) {
@@ -77,8 +79,9 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
     }
 
     fun updateRequest(status: String, file: MultipartBody.Part?, isFrontImage: Boolean) {
+        showLoading.value=true
         val params = HashMap<String, RequestBody>()
-        params[ID] = RequestBody.create(MediaType.parse("text/plain"), xuperCheckRequest.value!!.responseData!!.requests!!.id.toString())
+        params.put(ID, RequestBody.create(MediaType.parse("text/plain"), xuperCheckRequest.value!!.responseData!!.requests!!.id.toString()))
         params[STATUS] = RequestBody.create(MediaType.parse("text/plain"), status)
         params[METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
 

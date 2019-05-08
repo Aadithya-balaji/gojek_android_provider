@@ -9,6 +9,7 @@ import com.xjek.provider.repository.AppRepository
 
 class TransactionViewModel : BaseViewModel<TransactionNavigator>() {
     var transcationLiveResponse = MutableLiveData<WalletTransactionList>()
+    var errorResponse = MutableLiveData<String>()
     val appRepository = AppRepository.instance()
     fun callTranscationApi() {
         getCompositeDisposable().add(appRepository.getTransaction(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))

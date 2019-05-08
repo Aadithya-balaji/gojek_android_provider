@@ -76,7 +76,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         mViewModel.navigator = this
         binding.dashboardModel = mViewModel
         setSupportActionBar(binding.tbrHome.app_bar)
-
         mViewModel.latitude.value = 0.0
         mViewModel.longitude.value = 0.0
         supportFragmentManager.beginTransaction().add(R.id.frame_home_container, mHomeFragment).commit()

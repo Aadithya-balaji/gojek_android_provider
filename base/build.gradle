@@ -16,8 +16,8 @@ android {
         // back to Android 2.1 (API level 7+).
         vectorDrawables.useSupportLibrary = true
 
-        //        resValue("string", "google_map_key", "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ")
-        resValue("string", "google_map_key", "AIzaSyD1tvSgKFTeUwWWz88NgenCXI4qrLfIbk0")
+        resValue("string", "google_map_key", "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ")
+//        resValue("string", "google_map_key", "AIzaSyD1tvSgKFTeUwWWz88NgenCXI4qrLfIbk0")
     }
     buildTypes {
         debug {
@@ -145,7 +145,7 @@ dependencies {
     api 'com.github.jkwiecien:EasyImage:2.0.4'
 
     //Socket IO
-    api ('io.socket:socket.io-client:1.0.0') {
+    api('io.socket:socket.io-client:1.0.0') {
         exclude group: 'org.json', module: 'json'
     }
 

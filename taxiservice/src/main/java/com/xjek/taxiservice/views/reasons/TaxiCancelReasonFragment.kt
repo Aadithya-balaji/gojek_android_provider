@@ -41,7 +41,7 @@ class TaxiCancelReasonFragment : BaseDialogFragment<DialogTaxiReasonBinding>(),
         })
     }
 
-    internal var mListener: CustomClickListener = object : CustomClickListener {
+    private var mListener: CustomClickListener = object : CustomClickListener {
         override fun onListClickListener(position: Int) {
             getReasons.reasonForCancel(mViewModelTaxiCancel.mResponse.value!!.responseData!!.get(position)!!.reason!!)
             dialog!!.cancel()

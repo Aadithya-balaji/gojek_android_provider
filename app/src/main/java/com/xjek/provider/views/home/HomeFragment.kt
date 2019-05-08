@@ -209,7 +209,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private fun updateCurrentLocation() {
         LocationUtils.getLastKnownLocation(activity!!, object : LocationCallBack.LastKnownLocation {
             override fun onSuccess(location: Location?) {
-                updateMapLocation(LatLng(location!!.latitude,location!!.longitude))
+                updateMapLocation(LatLng(location!!.latitude, location!!.longitude))
             }
 
             override fun onFailure(messsage: String?) {

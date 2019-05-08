@@ -10,6 +10,7 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentTransactionBinding
 import com.xjek.provider.models.TransactionDatum
 import com.xjek.provider.views.adapters.TransactionListAdapter
+import kotlinx.android.synthetic.main.fragment_transaction.*
 
 class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), TransactionNavigator {
     private lateinit var fragmentTransactionBinding: FragmentTransactionBinding
@@ -46,9 +47,23 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
                 Log.e("wallet", "------non null")
 
             }
+
+            if (it.getResponseData()?.getData() != null && it.getResponseData()?.getData()!!.isNotEmpty()) {
+                contentMain.visibility = View.VISIBLE
+                llEmptyView.visibility = View.GONE
+            } else {
+                contentMain.visibility = View.GONE
+                llEmptyView.visibility = View.VISIBLE
+            }
+
             val transcationlist: List<TransactionDatum> = transcationViewModel.transcationLiveResponse.value!!.getResponseData()!!.getData()!!
             transactionListAdapter = TransactionListAdapter(activity!!, transcationlist)
             fragmentTransactionBinding.transactionListRv.adapter = transactionListAdapter
+        }
+
+        observeLiveData(transcationViewModel.errorResponse) {
+            contentMain.visibility = View.GONE
+            llEmptyView.visibility = View.VISIBLE
         }
     }
 }

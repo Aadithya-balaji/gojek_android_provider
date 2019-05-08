@@ -40,8 +40,12 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), LanguageNaviga
 
     override fun onLanguageChanged() {
         if (viewModel.getCurrentLanguage() != selectedLanguage) {
-            LocaleUtils.setNewLocale(this, viewModel.getCurrentLanguage())
-            recreate()
+            if (viewModel.getCurrentLanguage() != "en") {
+                ViewUtils.showToast(this@LanguageActivity, "For future purpose", false)
+                return
+            }
+//            LocaleUtils.setNewLocale(this, viewModel.getCurrentLanguage())
+//            recreate()
         }
 
         ViewUtils.showToast(this@LanguageActivity, getString(R.string.language_change_success), true)

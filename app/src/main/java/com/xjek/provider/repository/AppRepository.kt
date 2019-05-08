@@ -277,7 +277,7 @@ class AppRepository : BaseRepository() {
                 .subscribe({
                     viewModel.transcationLiveResponse.postValue(it)
                 }, {
-
+                    viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }
 

@@ -422,5 +422,6 @@
     <string name="tips">Tips</string>
     <string name="total_charge">Total charge</string>
     <string name="support_mail">Support Mail</string>
+    <string name="no_transction">No Transaction Found</string>
 
 </resources>

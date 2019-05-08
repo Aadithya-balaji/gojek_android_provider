@@ -70,9 +70,9 @@
                                 android:editable="false"
                                 android:imeOptions="actionNext"
                                 android:maxLines="1"
-                                android:text="Sedan"
                                 android:scrollHorizontally="true"
-                                android:singleLine="true" />
+                                android:singleLine="true"
+                                android:text="Sedan" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout

@@ -60,6 +60,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
         xuperInvoiceModel = XuperInvoiceViewModel()
         xuperInvoiceModel.navigator = this
         dialogInvoiceBinding.invoicemodel = xuperInvoiceModel
+        dialogInvoiceBinding.setLifecycleOwner(this)
         xuperInvoiceModel.showProgress = loadingObservable as MutableLiveData<Boolean>
         updateUi()
         getApiResponse()
@@ -82,6 +83,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                     bundle.putString("updateRequestModel", strupdateRequest)
                     ratingDialog.arguments = bundle
                     ratingDialog.show(childFragmentManager, "ratingDialog")
+                    ratingDialog.isCancelable=false
                 }
             }
 
@@ -175,8 +177,18 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
         this.shown = false
     }
 
-    override fun getExtraCharge(extraChareg: String) {
+    override fun getExtraCharge(extraChareg: String,extraAmtNotes:String) {
         xuperInvoiceModel.extraCharge.value = extraChareg.replace("$","")
+        if(!xuperInvoiceModel.extraCharge.value.isNullOrEmpty()){
+            val totalAmount=xuperInvoiceModel.totalAmount.value!!.toDouble()
+            val  extraAmount=xuperInvoiceModel.extraCharge.value!!.toDouble()
+            val total=totalAmount+extraAmount
+            xuperInvoiceModel.totalAmount.value=total.toString()
+        }
+
+        if(!extraAmtNotes.isNullOrEmpty()){
+            xuperInvoiceModel.extraChargeNotes.value=extraAmtNotes
+        }
     }
 
     override fun showExtraChargePage() {

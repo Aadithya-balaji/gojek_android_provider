@@ -5,6 +5,7 @@ import com.xjek.base.repository.BaseRepository
 import com.xjek.taxiservice.views.invoice.TaxiInvoiceViewModel
 import com.xjek.taxiservice.views.main.TaxiDashboardViewModel
 import com.xjek.taxiservice.views.rating.TaxiRatingViewModel
+import com.xjek.taxiservice.views.reasons.TaxiCancelReasonViewModel
 import com.xjek.taxiservice.views.tollcharge.TollChargeViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -96,6 +97,29 @@ class TaxiRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.ratingLiveData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                })
+    }
+
+    fun taxiGetReason(viewModel: TaxiCancelReasonViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
+                .taxiGetReason(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.mResponse.postValue(it)
+                }, {
+                    // viewModelXUberCancel.navigator.
+                })
+    }
+
+    fun taxiCancelReason(viewModel: TaxiDashboardViewModel, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
+                .cancelRequest(token, params)
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.taxiCancelRequest.postValue(it)
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })

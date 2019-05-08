@@ -1,7 +1,10 @@
 package com.xjek.provider.views.incoming_request_taxi
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -13,6 +16,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
+import com.google.maps.model.LatLng
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
@@ -22,7 +26,9 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
 import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
+import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.HashMap
 
 class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
 
@@ -75,11 +81,36 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
             timerToTakeOrder.start()
 
-            incomingRequestViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.s_address
+            if (incomingRequestViewModel.pickupLocation.value != null && incomingRequestViewModel.pickupLocation.value!!.length > 2)
+                incomingRequestViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.s_address
+            else {
+                val lat = incomingRequestModel!!.responseData.requests[0].request.s_latitude
+                val lon = incomingRequestModel!!.responseData.requests[0].request.s_longitude
+                var latLng: LatLng? = null
+                latLng = LatLng(lat, lon)
+                val address = getCurrentAddress(context!!, latLng)
+                if (address.isNotEmpty()) incomingRequestViewModel.pickupLocation.value = address[0].getAddressLine(0)
+            }
             incomingRequestViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
 
         getApiResponse()
+    }
+
+    private fun getCurrentAddress(context: Context, currentLocation: LatLng): List<Address> {
+        var addresses: List<Address> = ArrayList()
+        val geocoder: Geocoder
+        try {
+            if (Geocoder.isPresent()) {
+                geocoder = Geocoder(context, Locale.getDefault())
+                addresses = geocoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
+                // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            }
+        } catch (e: Exception) {
+            Log.d("EXception", "EXception" + e.message)
+        }
+
+        return addresses
     }
 
     private fun getApiResponse() {
@@ -87,6 +118,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             loadingObservable.value = false
             if (incomingRequestViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
+<<<<<<< HEAD
                 if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3) {
                     val intent = Intent(activity, XuberDashBoardActivity::class.java)
                     activity!!.startActivity(intent)
@@ -97,6 +129,11 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                     val intent = Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity"))
                     activity!!.startActivity(intent)
                 }
+=======
+                if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3)
+                    activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
+                else activity!!.startActivity(Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity")))
+>>>>>>> 797fad18b22d5d65757a46480d5aae8056c88795
                 dialog!!.dismiss()
             }
         }

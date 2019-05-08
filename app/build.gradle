@@ -22,7 +22,7 @@ android {
         // Setup your app project to use a multi-dex configuration if your minSdkVersion is set
         // to 21 or higher.
         multiDexEnabled true
-        resValue("string", "app_name", "Xjek Provider")
+        resValue("string", "app_name", "GoX Provider")
         resValue("string", "google_signin_server_client_id",
                 "602657530672-otdsmtkdip8bvf3miqhcfcdpn2mp6qr2.apps.googleusercontent.com")
         resValue("string", "facebook_app_id", "394261008038577")

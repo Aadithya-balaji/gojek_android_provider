@@ -11,6 +11,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_dash_square"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
@@ -220,6 +226,7 @@
             android:fontFamily="@font/avenirltstd_medium"
             android:layout_marginBottom="@dimen/_10sdp"/>
 
+    </LinearLayout>
     </LinearLayout>
 
 </layout>

@@ -12,10 +12,8 @@ import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.utils.PrefixCustomEditText
 import com.xjek.xuberservice.R
 import com.xjek.xuberservice.databinding.DialogXuperExtraChargeBinding
-import com.xjek.xuberservice.databinding.DialogXuperRatingBinding
 import com.xjek.xuberservice.interfaces.DialogCloseInterface
 import com.xjek.xuberservice.interfaces.GetExtraChargeInterface
-import com.xjek.xuberservice.reasons.ReasonFragment
 
 class  DialogXuperExtraCharge:BaseDialogFragment<DialogXuperExtraChargeBinding>(),XuperExtraChargeNavigator,DialogInterface {
     private  lateinit var  dialogXuperExtraChargeBinding: DialogXuperExtraChargeBinding

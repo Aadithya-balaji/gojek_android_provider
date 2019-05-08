@@ -79,8 +79,9 @@ class CommonMethods {
 
         }
 
-        fun getTimeDifference(strFromDate:String,strToDate:String,format:String):Long{
+        fun getTimeDifference(strFromDate:String,strToDate:String,format:String):String{
             var diffTime:Long?=0
+            var formatedDateString:String?=""
             val fromSimpledateFormat=SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault())
             fromSimpledateFormat.timeZone= TimeZone.getTimeZone("UTC")
             var fromDate:Date?=null
@@ -95,13 +96,17 @@ class CommonMethods {
                 toDate=fromSimpledateFormat.parse(strFromDate)
                 toCalendar= Calendar.getInstance(TimeZone.getDefault())
                 toCalendar.time=toDate
-                diffTime=toCalendar.time.time -fromCalender
-                        .time.time
+                diffTime=toCalendar.time.time -fromCalender.time.time
                 Log.e("fromTime","------"+fromCalender.time.time)
+
+                val formatedDate=Date()
+                formatedDate.time=diffTime
+                val formatedSimpleDateFormat=SimpleDateFormat("HH:mm",Locale.getDefault())
+                formatedDateString=formatedSimpleDateFormat.format(formatedDate)
             }catch (e:java.lang.Exception){
                 e.printStackTrace()
             }
-            return  diffTime!!
+            return  formatedDateString!!
 
         }
 

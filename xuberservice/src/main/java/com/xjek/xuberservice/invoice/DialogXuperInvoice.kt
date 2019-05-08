@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.xjek.base.base.BaseDialogFragment
+import com.xjek.base.utils.CommonMethods
 import com.xjek.xuberservice.R
 import com.xjek.xuberservice.databinding.DialogInvoiceBinding
 import com.xjek.xuberservice.extracharge.DialogXuperExtraCharge
@@ -21,6 +22,7 @@ import com.xjek.xuberservice.interfaces.GetExtraChargeInterface
 import com.xjek.xuberservice.model.UpdateRequest
 import com.xjek.xuberservice.model.XuperCheckRequest
 import com.xjek.xuberservice.rating.DialogXuperRating
+import kotlinx.android.synthetic.main.dialog_invoice.*
 
 class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvoiceNavigator, GetExtraChargeInterface,DialogCloseInterface{
 
@@ -34,6 +36,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     private var shown: Boolean? = false
     private  var extraChageDialog:DialogXuperExtraCharge?=null
     private  var invoiceDialog: Dialog?=null
+    private  var timetaken:String?=""
 
 
     override fun getLayout(): Int {
@@ -69,6 +72,9 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                 loadingObservable.value=false
                 xuperInvoiceModel.showProgress.value = false
                 if (updateRequest!!.statusCode.equals("200")) {
+                    if(invoiceDialog!=null) {
+                        invoiceDialog!!.dismiss()
+                    }
                     val ratingDialog = DialogXuperRating()
                     val strupdateRequest = Gson().toJson(updateRequest)
                     val bundle = Bundle()
@@ -91,7 +97,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
         } else {
             strUpdateRequest = if (arguments!!.containsKey("strUpdateReq")) arguments!!.getString("strUpdateReq") else ""
             if (!strUpdateRequest.isNullOrEmpty())
-                xuperCheckRequest = Gson().fromJson(strUpdateRequest, XuperCheckRequest::class.java)
+                updateRequestModel = Gson().fromJson(strUpdateRequest, UpdateRequest::class.java)
         }
     }
 
@@ -102,6 +108,8 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
             xuperInvoiceModel.userImage.value = updateRequestModel!!.responseData!!.user!!.picture.toString()
             xuperInvoiceModel.totalAmount.value = updateRequestModel!!.responseData!!.payment!!.payable.toString()
             xuperInvoiceModel.requestID.value = updateRequestModel!!.responseData!!.id.toString()
+            xuperInvoiceModel.userName.value=updateRequestModel!!.responseData!!.user!!.first_name+" "+updateRequestModel!!.responseData!!.user!!.last_name
+            timetaken=CommonMethods.getTimeDifference(updateRequestModel!!.responseData!!.started_at!!,updateRequestModel!!.responseData!!.finished_at!!,"")
         } else {
             xuperInvoiceModel.rating.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.rating.toString()
             xuperInvoiceModel.serviceName.value = xuperCheckRequest!!.responseData!!.requests!!.service!!.service_name
@@ -109,9 +117,10 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
             xuperInvoiceModel.totalAmount.value = xuperCheckRequest!!.responseData!!.requests!!.payment!!.payable.toString()
             xuperInvoiceModel.requestID.value = xuperCheckRequest!!.responseData!!.requests!!.id.toString()
             xuperInvoiceModel.userName.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.first_name + " " + xuperCheckRequest!!.responseData!!.requests!!.user!!.last_name
-
+            timetaken=CommonMethods.getTimeDifference(xuperCheckRequest!!.responseData!!.requests!!.started_at!!,xuperCheckRequest!!.responseData!!.requests!!.finished_at!!,"")
         }
 
+        tvXuperTime.setText(timetaken)
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
                         .placeholder(R.drawable.ic_profile_placeholder)
@@ -167,7 +176,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     }
 
     override fun getExtraCharge(extraChareg: String) {
-        xuperInvoiceModel.extraCharge.value = extraChareg
+        xuperInvoiceModel.extraCharge.value = extraChareg.replace("$","")
     }
 
     override fun showExtraChargePage() {

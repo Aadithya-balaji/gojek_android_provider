@@ -76,7 +76,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         mViewModel.navigator = this
         binding.dashboardModel = mViewModel
         setSupportActionBar(binding.tbrHome.app_bar)
-
         mViewModel.latitude.value = 0.0
         mViewModel.longitude.value = 0.0
         supportFragmentManager.beginTransaction().add(R.id.frame_home_container, mHomeFragment).commit()
@@ -167,7 +166,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     }
 
     override fun hideRightIcon(isNeedHide: Boolean) {
-        // if (isNeedHide) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
+         if (isNeedHide && iv_right!=null) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
     }
 
     override fun updateLocation(isTrue: Boolean) {

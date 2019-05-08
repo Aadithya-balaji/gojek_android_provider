@@ -35,11 +35,13 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_15sdp"
+            android:gravity="center|start"
             android:background="@drawable/bg_toll_square"
             android:fontFamily="@font/avenirltstd_medium"
             android:inputType="numberDecimal"
             android:padding="@dimen/_9sdp"
             android:singleLine="true"
+            android:maxLines="1"
             android:text="@={tollmodel.tollChargeLiveData}"
             android:textSize="@dimen/_10sdp"/>
 

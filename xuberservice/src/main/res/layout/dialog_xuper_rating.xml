@@ -39,11 +39,20 @@
             android:layout_marginTop="@dimen/_8sdp"
             android:textSize="@dimen/_11sdp"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-            <TextView
+
+
+             <androidx.appcompat.widget.AppCompatRatingBar
+                android:id="@+id/rbUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_10sdp"
+                android:numStars="5"
+                android:stepSize="1"
+                 android:scaleX="0.7"
+                 android:scaleY="0.8"
+                android:theme="@style/xuberRatingBar" />
+           <!-- <TextView
                 android:id="@+id/tvXuperRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -55,9 +64,7 @@
                 android:layout_width="@dimen/_10sdp"
                 android:layout_height="@dimen/_10sdp"
                 android:tint="@color/chip_yellow_inner_color"
-                android:src="@drawable/star"/>
-        </LinearLayout>
-
+                android:src="@drawable/star"/>-->
         <EditText
             android:id="@+id/edtCommands"
             android:layout_width="match_parent"
@@ -66,7 +73,7 @@
             android:background="@drawable/bg_write_commands"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:hint="@string/write_your_review"
             android:textSize="@dimen/_10sdp"
             android:gravity="start"

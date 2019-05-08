@@ -62,6 +62,6 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: L
     }
 
     override fun onListClickListner() {
-        Log.d("currentadapter", "onListClickListner")
+        Log.d("currentadapter", "onListClickListener")
     }
 }

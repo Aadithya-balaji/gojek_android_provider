@@ -59,7 +59,7 @@ data class UpdateRequest(
     ) {
         data class Payment(
                 val card: Int? = 0,
-                val cash: Int? = 0,
+                val cash: Double? = 0.0,
                 val commision: Double? = 0.0,
                 val commision_percent: Int? = 0,
                 val company_id: Int? = 0,

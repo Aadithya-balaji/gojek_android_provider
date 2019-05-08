@@ -58,7 +58,7 @@ data class XuperCheckRequest(
                 val state_id: Int? = 0,
                 val status: String? = "",
                 val stripe_cust_id: Any? = Any(),
-                val wallet_balance: Int? = 0,
+                val wallet_balance: Double? = 0.0,
                 val zone_id: Any? = Any()
         ) {
             data class Service(
@@ -202,7 +202,7 @@ data class XuperCheckRequest(
                     val state_id: Int? = 0,
                     val status: Int? = 0,
                     val user_type: String? = "",
-                    val wallet_balance: Int? = 0
+                    val wallet_balance: Double? = 0.0
             )
         }
 

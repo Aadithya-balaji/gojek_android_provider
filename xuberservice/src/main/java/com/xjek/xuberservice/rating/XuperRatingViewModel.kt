@@ -17,6 +17,7 @@ class  XuperRatingViewModel:BaseViewModel<XuperRatingNavigator>(){
     val firstName=MutableLiveData<String>()
     val lastName=MutableLiveData<String>()
     var showProgress=MutableLiveData<Boolean>()
+    var userRating=MutableLiveData<String>()
 
 
     fun  callRateApi(){

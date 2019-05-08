@@ -78,7 +78,6 @@ import okhttp3.RequestBody
 import java.io.File
 import java.util.*
 
-
 class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         XuberDasbBoardNavigator,
         OnMapReadyCallback,
@@ -147,8 +146,8 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     mViewModel.userName.value = xuberCheckRequest.responseData!!.requests!!.user!!.first_name +
                             " " + xuberCheckRequest.responseData.requests!!.user!!.last_name!!
                     mViewModel.serviceType.value = xuberCheckRequest.responseData.requests.service!!.service_name
-                    mViewModel.descImage.value=xuberCheckRequest.responseData!!.requests!!.allow_image.toString()
-                    mViewModel.strDesc.value=xuberCheckRequest.responseData!!.requests!!.allow_description.toString()
+                    mViewModel.descImage.value= xuberCheckRequest.responseData.requests!!.allow_image.toString()
+                    mViewModel.strDesc.value= xuberCheckRequest.responseData.requests!!.allow_description.toString()
 
                     if (xuberCheckRequest.responseData.requests.user!!.picture != null) {
                         setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())

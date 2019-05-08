@@ -51,8 +51,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
         setSupportActionBar(binding.toolbar.tbApp)
         binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text =
-                resources.getString(R.string.title_add_vehicle)
+        binding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_add_vehicle)
 
         observeViewModel()
 

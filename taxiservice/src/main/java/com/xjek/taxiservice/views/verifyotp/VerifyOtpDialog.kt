@@ -5,6 +5,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.data.Constants.RideStatus.PICKED_UP
+import com.xjek.base.utils.ViewUtils
 import com.xjek.taxiservice.BuildConfig
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.FragmentVerifyOtpBinding
@@ -46,7 +47,7 @@ class VerifyOtpDialog : BaseDialogFragment<FragmentVerifyOtpBinding>(), VerifyOT
                 params["_method"] = "PATCH"
                 mTaxiMainDashboardViewModel.taxiStatusUpdate(params)
                 dismiss()
-            }
+            } else ViewUtils.showToast(context!!, resources.getString(R.string.invalid_otp), true)
         }
     }
 }

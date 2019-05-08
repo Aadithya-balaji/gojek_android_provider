@@ -20,7 +20,7 @@ class TaxiCancelReasonViewModel : BaseViewModel<TaxiCancelReasonNavigator>() {
     }
 
     fun getReason() {
-        getCompositeDisposable().add(mRepository.taxiCancelReason(this,
+        getCompositeDisposable().add(mRepository.taxiGetReason(this,
                 "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
     }
 }

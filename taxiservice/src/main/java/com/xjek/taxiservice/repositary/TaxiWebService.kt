@@ -13,8 +13,15 @@ interface TaxiWebService {
 //            @Query("longitude") lon: Double
     ): Observable<CheckRequestModel>
 
+    @FormUrlEncoded
+    @POST("provider/cancel/ride/request")
+    fun cancelRequest(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<CancelRequestModel>
+
     @GET("provider/reasons?type=TRANSPORT")
-    fun taxiCancelReason(@Header("Authorization") token: String):
+    fun taxiGetReason(@Header("Authorization") token: String):
             Observable<ReasonModel>
 
     @FormUrlEncoded

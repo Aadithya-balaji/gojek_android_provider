@@ -79,7 +79,8 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
 
     inner class EditListener : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            setPrefix(dialogTollChargeBinding.edtAmount, s, "$")
+//            setPrefix(dialogTollChargeBinding.edtAmount, s, "$")
+            setPrefix(dialogTollChargeBinding.edtAmount, s, "")
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

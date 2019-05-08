@@ -33,15 +33,12 @@ class XUberCancelReasonFragment : BaseDialogFragment<DialogReasonBinding>(), Cus
     }
 
     fun getApiResponse() {
-        mViewModel.mReasonResponseData.observe(this, object : Observer<ReasonModel> {
-            override fun onChanged(reasonModel: ReasonModel?) {
-                if (reasonModel!!.responseData != null) {
-                    val reasonAdapter = XuberReasonAdapter(activity!!, this@XUberCancelReasonFragment,
-                            reasonModel.responseData as List<ReasonModel.ResponseData>)
-                    mReasonFragmentBinding.reasonadapter = reasonAdapter
-                }
+        mViewModel.mReasonResponseData.observe(this, Observer<ReasonModel> { reasonModel ->
+            if (reasonModel!!.responseData != null) {
+                val reasonAdapter = XuberReasonAdapter(activity!!, this@XUberCancelReasonFragment,
+                        reasonModel.responseData as List<ReasonModel.ResponseData>)
+                mReasonFragmentBinding.reasonadapter = reasonAdapter
             }
-
         })
     }
 

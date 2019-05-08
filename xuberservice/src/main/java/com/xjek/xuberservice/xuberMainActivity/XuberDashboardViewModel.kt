@@ -70,7 +70,7 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
         driverStatus.notifyChange()
     }
 
-    fun callXuperCheckRequest() {
+    fun callXuberCheckRequest() {
         // showLoading.value=true
         getCompositeDisposable().add(xuperRepository.xuperCheckRequesst
         (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), latitude.value.toString(), longitude.value.toString()))
@@ -81,16 +81,16 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
         params[ID] = RequestBody.create(MediaType.parse("text/plain"), xuperCheckRequest.value!!.responseData!!.requests!!.id.toString())
         params[STATUS] = RequestBody.create(MediaType.parse("text/plain"), status)
         params[METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
-        if (isFrontImage) {
-            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, file, null))
-        } else {
-            getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null, file))
 
-        }
+        if (isFrontImage) getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this,
+                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, file, null))
+        else getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this,
+                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null, file))
     }
 
     fun cancelRequest(params: HashMap<String, String>) {
         showLoading.value = true
-        getCompositeDisposable().add(xuperRepository.xuperCancelRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+        getCompositeDisposable().add(xuperRepository.xuperCancelRequest(this,
+                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
     }
 }

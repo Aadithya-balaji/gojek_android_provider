@@ -268,7 +268,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
         updateMapLocation(LatLng(currentLatitude!!, currentLongitude!!))
         Log.e("currentloc", "---- $currentLatitude --- $currentLongitude")
-        mViewModel.callXuperCheckRequest()
+        mViewModel.callXuberCheckRequest()
     }
 
     override fun onCameraMove() {
@@ -303,7 +303,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 mViewModel.longitude.value = location.longitude
 //                updateMapLocation(LatLng(location.latitude, location.longitude))
 
-                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuperCheckRequest()
+                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuberCheckRequest()
 
                 if (startLatLng.latitude > 0) endLatLng = startLatLng
                 startLatLng = LatLng(location.latitude, location.longitude)
@@ -358,10 +358,10 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 
         srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_taxi_car))))
+        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_bike))))
 
         mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_taxi_pin))))
+        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
 
     }
 
@@ -480,7 +480,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 }
             }
 
-            R.id.tvCancel -> XUberCancelReasonFragment().show(supportFragmentManager, "reasonDialog")
+            R.id.tvCancel -> XUberCancelReasonFragment().show(supportFragmentManager, "XUberCancelReasonFragment")
         }
     }
 
@@ -543,7 +543,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun reasonForCancel(reason: String) {
-        if (!reason.isEmpty()) {
+        if (reason.isNotEmpty()) {
             val params = HashMap<String, String>()
             val id = mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.id.toString()
             params[Constants.Common.ID] = id

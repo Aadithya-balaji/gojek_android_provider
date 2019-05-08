@@ -5,7 +5,6 @@ import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityCountryListBinding
 import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.views.adapters.CountryListAdapter
 

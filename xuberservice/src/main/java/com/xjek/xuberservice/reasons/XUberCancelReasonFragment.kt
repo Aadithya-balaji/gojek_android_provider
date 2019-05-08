@@ -6,7 +6,6 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.utils.ViewUtils
-import com.xjek.xuberservice.BR.reasonadapter
 import com.xjek.xuberservice.R
 import com.xjek.xuberservice.adapters.XuberReasonAdapter
 import com.xjek.xuberservice.databinding.DialogReasonBinding
@@ -14,8 +13,7 @@ import com.xjek.xuberservice.interfaces.CustomClickListner
 import com.xjek.xuberservice.interfaces.GetReasonsInterface
 import com.xjek.xuberservice.model.ReasonModel
 
-class XUberCancelReasonFragment : BaseDialogFragment<DialogReasonBinding>(), CustomClickListner,XUberCancelReasonNavigator {
-
+class XUberCancelReasonFragment : BaseDialogFragment<DialogReasonBinding>(), CustomClickListner, XUberCancelReasonNavigator {
 
     private lateinit var mReasonFragmentBinding: DialogReasonBinding
     private lateinit var mViewModel: XUberCancelReasonViewModel
@@ -29,7 +27,7 @@ class XUberCancelReasonFragment : BaseDialogFragment<DialogReasonBinding>(), Cus
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         mReasonFragmentBinding = viewDataBinding as DialogReasonBinding
         mViewModel = XUberCancelReasonViewModel()
-        mViewModel.navigator=this
+        mViewModel.navigator = this
         mReasonFragmentBinding.lifecycleOwner = this
         getApiResponse()
         mViewModel.getReason(com.xjek.base.data.Constants.Reasons.SERVICE)
@@ -63,7 +61,7 @@ class XUberCancelReasonFragment : BaseDialogFragment<DialogReasonBinding>(), Cus
     }
 
     override fun getErrorMessage(error: String) {
-        mReasonFragmentBinding.llProgress.visibility=View.GONE
-        ViewUtils.showToast(activity!!,error,false)
+        mReasonFragmentBinding.llProgress.visibility = View.GONE
+        ViewUtils.showToast(activity!!, error, false)
     }
 }

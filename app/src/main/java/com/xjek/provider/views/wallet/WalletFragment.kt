@@ -30,7 +30,6 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.base.utils.PrefixCustomEditText
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.FragmentWalletBinding
 import com.xjek.provider.models.CardResponseModel
 import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.views.adapters.CardsAdapter

@@ -5,7 +5,6 @@ import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityCityListBinding
 import com.xjek.provider.model.City
 import com.xjek.provider.views.adapters.CityListAdapter
 

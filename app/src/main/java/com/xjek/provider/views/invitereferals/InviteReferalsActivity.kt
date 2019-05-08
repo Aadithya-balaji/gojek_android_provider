@@ -6,8 +6,6 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityInviteFriendBinding
-import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 class InviteReferalsActivity : BaseActivity<ActivityInviteFriendBinding>(), InviteReferalsNavigator {
     private lateinit var mViewDataBinding: ActivityInviteFriendBinding

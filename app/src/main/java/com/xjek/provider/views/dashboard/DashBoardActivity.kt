@@ -41,7 +41,6 @@ import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityDashboardBinding
 import com.xjek.provider.views.account.AccountFragment
 import com.xjek.provider.views.home.HomeFragment
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
@@ -52,7 +51,6 @@ import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
-import kotlinx.android.synthetic.main.toolbar_header.view.*
 
 class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         DashBoardNavigator {
@@ -166,7 +164,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     }
 
     override fun hideRightIcon(isNeedHide: Boolean) {
-         if (isNeedHide && iv_right!=null) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
+        if (isNeedHide && iv_right != null) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
     }
 
     override fun updateLocation(isTrue: Boolean) {

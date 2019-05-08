@@ -6,8 +6,6 @@ import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityLanguageBinding
-import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), LanguageNavigator {
 
@@ -40,7 +38,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), LanguageNaviga
 
     override fun onLanguageChanged() {
         if (viewModel.getCurrentLanguage() != selectedLanguage) {
-            if(viewModel.getCurrentLanguage() != "en"){
+            if (viewModel.getCurrentLanguage() != "en") {
                 ViewUtils.showToast(this@LanguageActivity, "For future purpose", false)
                 return
             }

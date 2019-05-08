@@ -19,9 +19,7 @@ import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.DateTimeUtil
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityAddEditDocumentBinding
 import com.xjek.provider.utils.Constant
-import kotlinx.android.synthetic.main.layout_app_bar.view.*
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
 import java.util.*

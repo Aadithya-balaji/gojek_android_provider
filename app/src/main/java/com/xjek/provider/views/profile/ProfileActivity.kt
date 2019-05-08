@@ -30,7 +30,6 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ValidationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityEditProfileBinding
 import com.xjek.provider.model.City
 import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.model.CountryResponseData
@@ -41,7 +40,6 @@ import com.xjek.provider.views.change_password.ChangePasswordActivity
 import com.xjek.provider.views.citylist.CityListActivity
 import com.xjek.provider.views.countrylist.CountryListActivity
 import com.xjek.xjek.ui.profile.ProfileNavigator
-import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

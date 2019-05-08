@@ -10,7 +10,6 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityChangePasswordBinding
 
 class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
         ChangePasswordViewModel.ChangePasswordNavigator {

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.provider.R
-import com.xjek.provider.databinding.FragmentTransactionBinding
 import com.xjek.provider.models.TransactionDatum
 import com.xjek.provider.views.adapters.TransactionListAdapter
 import kotlinx.android.synthetic.main.fragment_transaction.*
@@ -48,10 +47,10 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
 
             }
 
-            if(it.getResponseData()?.getData()!=null && it.getResponseData()?.getData()!!.isNotEmpty()){
+            if (it.getResponseData()?.getData() != null && it.getResponseData()?.getData()!!.isNotEmpty()) {
                 contentMain.visibility = View.VISIBLE
                 llEmptyView.visibility = View.GONE
-            }else{
+            } else {
                 contentMain.visibility = View.GONE
                 llEmptyView.visibility = View.VISIBLE
             }
@@ -61,7 +60,7 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
             fragmentTransactionBinding.transactionListRv.adapter = transactionListAdapter
         }
 
-        observeLiveData(transcationViewModel.errorResponse){
+        observeLiveData(transcationViewModel.errorResponse) {
             contentMain.visibility = View.GONE
             llEmptyView.visibility = View.VISIBLE
         }

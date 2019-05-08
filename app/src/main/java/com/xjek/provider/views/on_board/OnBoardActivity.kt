@@ -14,8 +14,6 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityOnBoardBinding
-import com.xjek.provider.databinding.FragmentAnimationpageBinding
 import com.xjek.provider.views.sign_in.SignInActivity
 import com.xjek.provider.views.signup.SignupActivity
 import java.util.concurrent.TimeUnit

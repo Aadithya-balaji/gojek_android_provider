@@ -32,7 +32,6 @@ import com.xjek.base.utils.Logger
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.BuildConfig
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivitySignInBinding
 import com.xjek.provider.models.LoginResponseModel
 import com.xjek.provider.utils.Enums
 import com.xjek.provider.views.countrypicker.CountryCodeActivity

@@ -35,6 +35,8 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
     var polyLineSrc = MutableLiveData<LatLng>()
     var currentStatus = MutableLiveData<String>()
     var userName=MutableLiveData<String>()
+    var descImage=MutableLiveData<String>()
+    var strDesc=MutableLiveData<String>()
 
 
     fun showInfoDialog(view:View) {

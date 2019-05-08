@@ -13,6 +13,7 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.location.Location
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.SystemClock
@@ -22,10 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
-import android.widget.Chronometer
-import android.widget.FrameLayout
-import android.widget.PopupWindow
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
@@ -70,6 +68,7 @@ import com.xjek.xuberservice.uploadImage.DialogUploadPicture
 import kotlinx.android.synthetic.main.activity_xuber_main.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.view.*
+import kotlinx.android.synthetic.main.dialog_info_window.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -142,10 +141,12 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 if (status != mViewModel.currentStatus.value) {
                     mViewModel.currentStatus.value = xuberCheckRequest.let { it.responseData!!.requests!!.status }
                     mBinding.tvXuberPickupLocation.text = xuberCheckRequest.let { it.responseData!!.requests!!.s_address }
-
                     mViewModel.userName.value = xuberCheckRequest.responseData!!.requests!!.user!!.first_name +
                             " " + xuberCheckRequest.responseData.requests!!.user!!.last_name!!
                     mViewModel.serviceType.value = xuberCheckRequest.responseData.requests.service!!.service_name
+                    mViewModel.descImage.value=xuberCheckRequest.responseData!!.requests!!.allow_image.toString()
+                    mViewModel.strDesc.value=xuberCheckRequest.responseData!!.requests!!.allow_description.toString()
+
                     if (xuberCheckRequest.responseData.requests.user!!.picture != null) {
                         setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
                     }
@@ -554,9 +555,27 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         }
     }
 
-    private fun showInfoWindow(context: Context, v: View) {
+    private fun showInfoWindow(context: Context, v: View,allowDescription:String,allowImage:String) {
         val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView = layoutInflater.inflate(R.layout.dialog_info_window, null)
+
+        var ivClose= popupView.ivClose
+        var ivDesImage=popupView.ivXuperUSer
+        var tvDescription=popupView.tv_description
+        ivClose.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(v: View?) {
+                //Your code here
+                popupWindow!!.dismiss()
+            }
+            })
+        Glide.with(this)
+                .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                        .placeholder(R.drawable.ic_profile_placeholder)
+                        .error(R.drawable.ic_profile_placeholder))
+                .load(allowImage)
+                .into(ivDesImage)
+
+        tvDescription.setText(allowDescription)
         val displayFrame = Rect()
         v.getWindowVisibleDisplayFrame(displayFrame)
         val displayFrameWidth = displayFrame.right - displayFrame.left
@@ -572,27 +591,22 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     true)
-            popupWindow!!.isOutsideTouchable = true
-            popupWindow!!.isFocusable = true
+            popupWindow!!.isOutsideTouchable = false
+            popupWindow!!.isFocusable = false
             popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
         if (!popupWindow!!.isShowing) {
-            /*val xOffSet = (22 * Resources.getSystem().displayMetrics.density).toInt()
-            val yOffSet = (100 * Resources.getSystem().displayMetrics.density).toInt()*/
-            val x = v.x
             val y = v.y
-
             popupView.animation = AnimationUtils.loadAnimation(context, R.anim.popup_anim_in)
-            popupWindow!!.showAtLocation(v, Gravity.TOP, x.toInt(), y.toInt())
-            // popupWindow.showAtLocation(v, Gravity.RIGHT | Gravity.BOTTOM, (int) x, (int) y);
-            /* val margin = displayFrameWidth - (loc[0] + v.width)
+             val margin = displayFrameWidth - (loc[0] + v.width)
              xoff = displayFrameWidth - margin - popupWindow!!.getWidth() - loc[0]
              if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                  popupWindow!!.setElevation(20f)
              }
-             popupWindow!!.showAsDropDown(v, xoff, yoff)
-             popupWindow!!.setAnimationStyle(R.anim.popup_anim_in)*/
+            popupWindow!!.isOutsideTouchable=false
+            popupWindow!!.showAtLocation(v,Gravity.RIGHT,xoff,y.toInt()+200)
+             popupWindow!!.setAnimationStyle(R.anim.popup_anim_in)
         }
 
         popupWindow!!.setOnDismissListener {
@@ -601,6 +615,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun showInfoWindow(view: View) {
-        showInfoWindow(this, view)
+        showInfoWindow(this, mBinding.llBottomService.ibInstruction,mViewModel.strDesc.value!!,mViewModel.descImage.value!!)
     }
 }

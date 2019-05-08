@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseFragment
 import com.xjek.provider.R
+import com.xjek.provider.databinding.XuberserviceProviderFragmentBinding
 import com.xjek.provider.views.adapters.XuberServicesProviderAdapter
 
 class XuberServicesProviderFragment : BaseFragment<XuberserviceProviderFragmentBinding>() {

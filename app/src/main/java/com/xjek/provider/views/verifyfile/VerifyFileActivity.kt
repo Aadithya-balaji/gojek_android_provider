@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityVerifyProofBinding
 import com.xjek.provider.views.dashboard.DashBoardActivity
 
 class VerifyFileActivity : BaseActivity<ActivityVerifyProofBinding>(), VerifyFileNavigator {

@@ -6,6 +6,8 @@ import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityLanguageBinding
+import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), LanguageNavigator {
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.provider.R
+import com.xjek.provider.databinding.FragmentTransactionBinding
 import com.xjek.provider.models.TransactionDatum
 import com.xjek.provider.views.adapters.TransactionListAdapter
 import kotlinx.android.synthetic.main.fragment_transaction.*

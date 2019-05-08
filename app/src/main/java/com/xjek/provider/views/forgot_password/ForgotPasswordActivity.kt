@@ -17,6 +17,7 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityForgotPasswordBinding
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.utils.Enums
 import com.xjek.provider.views.countrypicker.CountryCodeActivity

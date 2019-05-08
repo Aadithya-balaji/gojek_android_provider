@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
+import com.xjek.provider.databinding.RowTaxiproviderItemBinding
 import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 
 class TaxiProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<TaxiProviderAdapter.MyViewHolder>() {

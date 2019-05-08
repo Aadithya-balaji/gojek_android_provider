@@ -16,6 +16,9 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.utils.Constants
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityCurrentorderDetailLayoutBinding
+import com.xjek.provider.databinding.DisputeResonDialogBinding
+import com.xjek.provider.databinding.DisputeStatusBinding
 import com.xjek.provider.model.*
 import com.xjek.provider.models.LoginResponseModel
 import com.xjek.provider.utils.CommanMethods

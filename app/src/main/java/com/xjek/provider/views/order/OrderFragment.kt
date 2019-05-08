@@ -16,6 +16,8 @@ import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.R
+import com.xjek.provider.databinding.FilterDialogBinding
+import com.xjek.provider.databinding.FragmentOrderBinding
 import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.views.adapters.FilterServiceListAdapter
 import com.xjek.provider.views.currentorder_fragment.CurrentOrderFragment

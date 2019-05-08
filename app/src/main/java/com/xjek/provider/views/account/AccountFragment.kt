@@ -9,6 +9,7 @@ import com.xjek.base.extensions.clearPreferences
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity

@@ -8,9 +8,11 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivitySupportBinding
 import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.xjek.ui.support.SupportNavigator
 import kotlinx.android.synthetic.main.activity_support.*
+import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 
 class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator {

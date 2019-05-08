@@ -11,6 +11,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityPrivacyPolicyBinding
 import com.xjek.provider.utils.Constant
 
 

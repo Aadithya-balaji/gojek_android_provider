@@ -7,10 +7,12 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivitySetupVehicleBinding
 import com.xjek.provider.models.SetupRideResponseModel
 import com.xjek.provider.models.SetupShopResponseModel
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.add_vehicle.AddVehicleActivity
+import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupVehicleNavigator {
 
@@ -33,8 +35,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
 
         setSupportActionBar(binding.toolbar.tbApp)
         binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text =
-                resources.getString(R.string.title_setup_vehicle)
+        binding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_setup_vehicle)
 
         observeViewModel()
 

@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseFragment
 import com.xjek.provider.R
+import com.xjek.provider.databinding.FoodProviderFragmentBinding
 import com.xjek.provider.views.adapters.FoodProviderAdapter
 
 class FoodProviderFragment : BaseFragment<FoodProviderFragmentBinding>() {

@@ -7,6 +7,7 @@ import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.FragmentNotificationBinding
 import com.xjek.provider.models.NotificationResponseData
 import com.xjek.provider.views.adapters.NotificationAdapter
 import com.xjek.provider.views.dashboard.DashBoardNavigator

@@ -31,7 +31,6 @@ import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
@@ -209,7 +208,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private fun updateCurrentLocation() {
         LocationUtils.getLastKnownLocation(activity!!, object : LocationCallBack.LastKnownLocation {
             override fun onSuccess(location: Location?) {
-                updateMapLocation(LatLng(location!!.latitude,location!!.longitude))
+                updateMapLocation(LatLng(location!!.latitude, location!!.longitude))
             }
 
             override fun onFailure(messsage: String?) {

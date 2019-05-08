@@ -15,11 +15,9 @@ import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ImageCropperUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityAddVehicleBinding
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Enums
 import kotlinx.android.synthetic.main.activity_add_vehicle.*
-import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 
 class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicleNavigator {
@@ -60,7 +58,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
         txt_category_selection.setOnClickListener {
             val popupWindow = PopupWindow(this)
-            popupWindow.showAsDropDown(it,-5,0)
+            popupWindow.showAsDropDown(it, -5, 0)
         }
     }
 

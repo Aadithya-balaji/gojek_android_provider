@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
-import com.xjek.provider.databinding.TransactionStatusListBinding
 
 class TransactionStatusListAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<TransactionStatusListAdapter.MyViewHolder>() {
 

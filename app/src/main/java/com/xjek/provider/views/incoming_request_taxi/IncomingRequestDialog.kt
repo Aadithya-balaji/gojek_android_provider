@@ -22,7 +22,6 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
 import com.xjek.provider.R
-import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
 import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
 import java.util.*

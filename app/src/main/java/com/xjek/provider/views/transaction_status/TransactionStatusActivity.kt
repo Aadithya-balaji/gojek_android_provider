@@ -3,9 +3,7 @@ package com.xjek.provider.views.transaction_status
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivtyTransactionStatusBinding
 import com.xjek.provider.views.adapters.TransactionStatusListAdapter
-import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 
 class TransactionStatusActivity : BaseActivity<ActivtyTransactionStatusBinding>(), TransactionStatusNavigator {

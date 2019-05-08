@@ -6,10 +6,8 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
-import com.xjek.provider.databinding.ActivityManageDocumentsBinding
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.add_edit_document.AddEditDocumentActivity
-import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(),
         ManageDocumentsNavigator {

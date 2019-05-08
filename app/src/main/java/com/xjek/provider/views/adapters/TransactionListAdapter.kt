@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
-import com.xjek.provider.databinding.TransactionListItemBinding
 import com.xjek.provider.models.TransactionDatum
 import com.xjek.provider.utils.CommanMethods
 

@@ -23,6 +23,7 @@ import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
 import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
+import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
 import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
 import java.util.*
@@ -117,7 +118,6 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             loadingObservable.value = false
             if (incomingRequestViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
-<<<<<<< HEAD
                 if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3) {
                     val intent = Intent(activity, XuberDashBoardActivity::class.java)
                     activity!!.startActivity(intent)
@@ -128,15 +128,9 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                     val intent = Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity"))
                     activity!!.startActivity(intent)
                 }
-=======
-                if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3)
-                    activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
-                else activity!!.startActivity(Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity")))
->>>>>>> 797fad18b22d5d65757a46480d5aae8056c88795
                 dialog!!.dismiss()
             }
         }
-
         observeLiveData(incomingRequestViewModel.rejectRequestLiveData) {
             loadingObservable.value = false
             if (incomingRequestViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")) {

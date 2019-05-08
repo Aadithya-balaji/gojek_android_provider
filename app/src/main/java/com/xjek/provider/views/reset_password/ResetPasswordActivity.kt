@@ -11,6 +11,7 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityResetPasswordBinding
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.views.sign_in.SignInActivity
 

@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.xjek.base.utils.ViewUtils.getTimeDifference
 import com.xjek.provider.R
+import com.xjek.provider.databinding.NotificationListitemBinding
 import com.xjek.provider.interfaces.CustomClickListner
 import com.xjek.provider.models.NotificationResponseData
 

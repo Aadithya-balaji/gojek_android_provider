@@ -5,7 +5,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.xjek.provider.BR
 import com.xjek.provider.R
+import com.xjek.provider.databinding.LayoutManageServicesItemBinding
 
 class ManageServicesAdapter(private val manageServicesViewModel: ManageServicesViewModel) :
         RecyclerView.Adapter<ManageServicesAdapter.ViewHolder>() {

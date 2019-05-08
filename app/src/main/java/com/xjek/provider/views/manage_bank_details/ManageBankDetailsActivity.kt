@@ -6,6 +6,8 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityManageBankDetailsBinding
+import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>(), ManageBankDetailsNavigator {
 

@@ -7,6 +7,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityVechileDetailPageBinding
 import com.xjek.provider.views.adapters.ServiceListAdapter
 import com.xjek.provider.views.verifyfile.VerifyFileActivity
 

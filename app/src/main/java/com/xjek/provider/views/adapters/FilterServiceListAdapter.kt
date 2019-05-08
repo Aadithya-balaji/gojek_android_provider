@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
+import com.xjek.provider.databinding.FilterserviceRowitemBinding
 import com.xjek.provider.interfaces.CustomClickListner
 import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.views.dashboard.DashBoardViewModel

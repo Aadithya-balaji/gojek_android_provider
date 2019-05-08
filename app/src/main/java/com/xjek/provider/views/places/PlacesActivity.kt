@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivitySearchPlaceBinding
 import com.xjek.provider.model.ciity.PlaceResponseModel
 import com.xjek.provider.views.adapters.PlacesAdapter
 

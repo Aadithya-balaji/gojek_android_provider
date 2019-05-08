@@ -12,8 +12,10 @@ import com.stripe.android.model.Card
 import com.stripe.android.model.Token
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
+import com.xjek.provider.databinding.ActivityPaymentBinding
 import com.xjek.provider.views.transaction_status.TransactionStatusActivity
 import com.xjek.xjek.ui.payment.PaymentNavigator
+import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 
 class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator {

@@ -31,6 +31,7 @@ import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
+import com.xjek.provider.databinding.FragmentHomePageBinding
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog

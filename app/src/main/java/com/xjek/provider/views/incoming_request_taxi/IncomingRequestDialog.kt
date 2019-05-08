@@ -17,6 +17,7 @@ import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
+import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
@@ -82,13 +83,15 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     }
 
     private fun getApiResponse() {
-
         observeLiveData(incomingRequestViewModel.acceptRequestLiveData) {
             loadingObservable.value = false
             if (incomingRequestViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
                 if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3) {
                     val intent = Intent(activity, XuberDashBoardActivity::class.java)
+                    activity!!.startActivity(intent)
+                } else if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 2) {
+                    val intent = Intent(activity, FoodLiveTaskServiceFlow::class.java)
                     activity!!.startActivity(intent)
                 } else {
                     val intent = Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity"))

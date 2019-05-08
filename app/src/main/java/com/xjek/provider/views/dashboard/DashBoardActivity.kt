@@ -36,10 +36,10 @@ import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
-import com.xjek.base.utils.CommonMethods
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
+import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityDashboardBinding
 import com.xjek.provider.views.account.AccountFragment
@@ -239,11 +239,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                             }
                             ORDER -> if (BROADCAST != ORDER) {
                                 BROADCAST = ORDER
-                                val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                val intent = Intent(this, FoodLiveTaskServiceFlow::class.java)
                                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                 startActivity(intent)
                             }
-
                             else -> BROADCAST = "BASE_BROADCAST"
                         }
                     }

@@ -1,31 +1,48 @@
 package com.xjek.foodservice.view
 
 import android.annotation.TargetApi
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.location.Location
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.location_service.BaseLocationService
+import com.xjek.base.utils.ViewUtils
 import com.xjek.foodservice.R
 import com.xjek.foodservice.databinding.ActivtyLivetaskLaoyutBinding
 
-
 class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), FoodLiveTaskServiceNavigator {
-
 
     lateinit var mViewDataBinding: ActivtyLivetaskLaoyutBinding
     var i = 0
     override fun getLayoutId(): Int = R.layout.activty_livetask_laoyut
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-
         this.mViewDataBinding = mViewDataBinding as ActivtyLivetaskLaoyutBinding
         val foodLiveTaskviewModel = ViewModelProviders.of(this).get(FoodLiveTaskServiceViewModel::class.java)
         mViewDataBinding.foodLiveTaskviewModel = foodLiveTaskviewModel
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this)
         foodLiveTaskviewModel.navigator = this
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
+    }
+
+    private val mBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(contxt: Context?, intent: Intent?) {
+            println("RRRR:: FoodieDashboardActivity")
+            val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
+            if (location != null) {
+                mViewDataBinding.foodLiveTaskviewModel!!.latitude.value = location.latitude
+                mViewDataBinding.foodLiveTaskviewModel!!.longitude.value = location.longitude
+            }
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -69,19 +86,15 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 showFeedBackAlert()
 
             }
-
-
         }
         ++i
     }
 
+    override fun showErrorMessage(error: String) {
+        ViewUtils.showToast(this, error, false)
+    }
+
     private fun showFeedBackAlert() {
 
-      /*  val dialogView = LayoutInflater.from(this).inflate(R.layout.food_feedback_dialog, null)
-        val feedbackdialogbinding = DataBindingUtil.bind<FoodFeedbackDialogBinding>(dialogView)
-        val mBuilder = AlertDialog.Builder(this)
-        mBuilder.setView(dialogView)
-        mBuilder.show()
-*/
     }
 }

@@ -2,10 +2,8 @@
     package="com.xjek.foodservice" >
 
     <application>
-
         <activity android:name="com.xjek.foodservice.view.FoodLiveTaskServiceFlow"
             android:screenOrientation="portrait"/>
-
     </application>
 
 </manifest>

@@ -49,7 +49,7 @@ class  DialogXuperExtraCharge:BaseDialogFragment<DialogXuperExtraChargeBinding>(
     }
 
     override fun submit() {
-        extraAmountInterface!!.getExtraCharge(xuperExtraChargeViewModel.extraAmount.value.toString())
+        extraAmountInterface!!.getExtraCharge(xuperExtraChargeViewModel.extraAmount.value.toString(),xuperExtraChargeViewModel.extraAmountNotes.value.toString())
         dialog!!.dismiss()
     }
 

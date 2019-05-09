@@ -30,9 +30,8 @@ public final class LocationUtils {
         FusedLocationProviderClient mFusedLocation = getFusedLocationProviderClient(context);
         Task<Location> locationResult = mFusedLocation.getLastLocation();
         locationResult.addOnCompleteListener(task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
+            if (task.isSuccessful() && task.getResult() != null)
                 mCallBack.onSuccess(task.getResult());
-            }
         }).addOnFailureListener(e -> mCallBack.onFailure(e.getLocalizedMessage()));
     }
 

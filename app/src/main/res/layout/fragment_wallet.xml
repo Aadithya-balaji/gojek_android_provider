@@ -13,8 +13,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/grey"
-        >
+        android:background="@color/grey">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -27,8 +26,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_15sdp"/>
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_10sdp" />
 
 
             <RelativeLayout
@@ -36,9 +35,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_200sdp"
                 android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:background="@color/white"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/_15sdp"
@@ -109,15 +108,15 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginBottom="@dimen/_15sdp"
-                    android:fontFamily="@font/avenirltstd_medium"
-                    android:onClick="@{() -> walletmodel.saveCard()}"
-                    android:text="@string/add_card"
-                    android:gravity="center"
-                    android:paddingStart="@dimen/_50sdp"
-                    android:paddingEnd="@dimen/_50sdp"
-                    android:textColor="@color/colorWhite"
                     android:background="@drawable/bg_white_payment"
                     android:backgroundTint="@color/colorPrimary"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:gravity="center"
+                    android:onClick="@{() -> walletmodel.saveCard()}"
+                    android:paddingStart="@dimen/_50sdp"
+                    android:paddingEnd="@dimen/_50sdp"
+                    android:text="@string/add_card"
+                    android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_12sdp"
                     android:textStyle="bold" />
             </RelativeLayout>
@@ -128,8 +127,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_white"
                 app:cardCornerRadius="@dimen/_5sdp">
 
@@ -205,6 +204,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:layout_weight="0.8"
+                            android:background="@drawable/custom_roundcorner_button"
                             android:ellipsize="end"
                             android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="center"
@@ -212,7 +212,6 @@
                             android:padding="@dimen/_5sdp"
                             android:singleLine="true"
                             android:text="@string/_50"
-                            android:background="@drawable/custom_roundcorner_button"
                             android:textColor="@color/xuber_white"
                             android:textSize="@dimen/_10sdp"
                             app:backgroundTint="@color/dark_grey" />
@@ -223,6 +222,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_weight="0.8"
+                            android:background="@drawable/custom_roundcorner_button"
                             android:ellipsize="end"
                             android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="center"
@@ -232,7 +232,6 @@
                             android:text="@string/_100"
                             android:textColor="@color/xuber_white"
                             android:textSize="@dimen/_10sdp"
-                            android:background="@drawable/custom_roundcorner_button"
                             app:backgroundTint="@color/dark_grey" />
 
                         <com.google.android.material.button.MaterialButton
@@ -241,6 +240,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
                             android:layout_weight="0.8"
+                            android:background="@drawable/custom_roundcorner_button"
                             android:ellipsize="end"
                             android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="center"
@@ -248,7 +248,6 @@
                             android:padding="@dimen/_5sdp"
                             android:singleLine="true"
                             android:text="@string/_1000"
-                            android:background="@drawable/custom_roundcorner_button"
                             android:textColor="@color/xuber_white"
                             android:textSize="@dimen/_10sdp"
                             app:backgroundTint="@color/dark_grey" />
@@ -261,17 +260,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_15sdp"
+                        android:background="@drawable/bg_white_payment"
+                        android:backgroundTint="@color/colorPrimary"
                         android:fontFamily="@font/avenirltstd_medium"
+                        android:gravity="center"
                         android:onClick="@{() -> walletmodel.addWalletAmount()}"
                         android:paddingStart="@dimen/_50sdp"
                         android:paddingEnd="@dimen/_50sdp"
-                        android:layout_marginBottom="@dimen/_15sdp"
-                        android:textColor="@color/colorWhite"
-                        android:background="@drawable/bg_white_payment"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:text="@string/add_amount"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

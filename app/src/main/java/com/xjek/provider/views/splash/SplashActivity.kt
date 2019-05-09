@@ -15,7 +15,6 @@ import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
-import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
 

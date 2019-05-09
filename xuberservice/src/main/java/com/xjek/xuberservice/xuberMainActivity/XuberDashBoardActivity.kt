@@ -23,7 +23,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
-import android.widget.*
+import android.widget.Chronometer
+import android.widget.FrameLayout
+import android.widget.PopupWindow
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
@@ -46,9 +49,11 @@ import com.xjek.base.data.Constants.RideStatus.DROPPED
 import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.XuperProvider.CANCEL
 import com.xjek.base.data.Constants.XuperProvider.START
-import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.writePreferences
+import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.location_service.BaseLocationService
+import com.xjek.base.utils.*
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.CarMarkerAnimUtil
@@ -81,7 +86,6 @@ import org.json.JSONObject
 import java.io.File
 import java.util.*
 
-
 class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         XuberDasbBoardNavigator,
         OnMapReadyCallback,
@@ -99,13 +103,10 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var localServiceTime: Long? = null
 
     private var mGoogleMap: GoogleMap? = null
-    private var mLastKnownLocation: Location? = null
     private var frontImgFile: File? = null
     private var backImgFile: File? = null
     private var frontImgMultiPart: MultipartBody.Part? = null
     private var backImgMultiPart: MultipartBody.Part? = null
-    private var currentLatitude: Double? = 0.0
-    private var currentLongitude: Double? = 0.0
     private val invoicePage = DialogXuperInvoice()
     private val ratingPage = DialogXuperRating()
     private var canDrawPolyLine: Boolean = true
@@ -135,30 +136,31 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         initialiseMap()
         getApiResponse()
-        getBundleValues()
-    }
-
-    private fun getBundleValues() {
-        currentLatitude = if (intent.hasExtra("lat")) intent.getDoubleExtra("lat", 0.0) else 0.0
-        currentLongitude = if (intent.hasExtra("lon")) intent.getDoubleExtra("lon", 0.0) else 0.0
     }
 
     fun getApiResponse() {
         mViewModel.xuperCheckRequest.observe(this, Observer<XuperCheckRequest> { xuberCheckRequest ->
-            if (xuberCheckRequest!!.responseData!!.requests != null) {
-                val status = xuberCheckRequest.let { it.responseData!!.requests!!.status }
-                if (status != mViewModel.currentStatus.value) {
-                    mViewModel.currentStatus.value = xuberCheckRequest.let { it.responseData!!.requests!!.status }
-                    mBinding.tvXuberPickupLocation.text = xuberCheckRequest.let { it.responseData!!.requests!!.s_address }
-                    mViewModel.userName.value = xuberCheckRequest.responseData!!.requests!!.user!!.first_name +
-                            " " + xuberCheckRequest.responseData.requests!!.user!!.last_name!!
-                    mViewModel.serviceType.value = xuberCheckRequest.responseData.requests.service!!.service_name
-                    mViewModel.descImage.value=xuberCheckRequest.responseData!!.requests!!.allow_image.toString()
-                    mViewModel.strDesc.value=xuberCheckRequest.responseData!!.requests!!.allow_description.toString()
+            try {
+                if (xuberCheckRequest!!.responseData!!.requests != null) {
+                    val status = xuberCheckRequest.let { it.responseData!!.requests!!.status }
+                    if (status != mViewModel.currentStatus.value) {
+                        mViewModel.currentStatus.value = xuberCheckRequest.let { it.responseData!!.requests!!.status }
+                        mBinding.tvXuberPickupLocation.text = xuberCheckRequest.let { it.responseData!!.requests!!.s_address }
+                        mViewModel.userName.value = xuberCheckRequest.responseData!!.requests!!.user!!.first_name +
+                                " " + xuberCheckRequest.responseData.requests!!.user!!.last_name!!
+                        mViewModel.serviceType.value = xuberCheckRequest.responseData.requests.service!!.service_name
+                        mViewModel.descImage.value = xuberCheckRequest.responseData!!.requests!!.allow_image.toString()
+                        mViewModel.strDesc.value = xuberCheckRequest.responseData!!.requests!!.allow_description.toString()
 
-                    if (xuberCheckRequest.responseData.requests.user!!.picture != null) {
-                        setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
-                    }
+
+                        if (xuberCheckRequest.responseData.requests.user!!.picture != null) {
+                            setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
+                        } else {
+                            setUserImage("")
+                        }
+
+                        mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude!!,
+                                xuberCheckRequest.responseData.requests.s_longitude!!)
 
                     if (!roomConnected) {
                         roomConnected = true
@@ -170,28 +172,36 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude!!,
                             xuberCheckRequest.responseData.requests.s_longitude!!)
 
-                    when (status) {
-                        ACCEPTED -> whenAccepted()
+                        when (status) {
+                            ACCEPTED -> whenAccepted()
 
-                        ARRIVED -> whenArrived()
+                            ARRIVED -> whenArrived()
 
-                        PICKED_UP -> {
-                            whenStarted()
-                            startTheTimer()
+                            PICKED_UP -> {
+                                whenStarted()
+                                startTheTimer()
+                            }
+
+                            DROPPED -> whenDropped(true)
+
+                            COMPLETED -> whenPayment(xuberCheckRequest.responseData)
                         }
-
-                        DROPPED -> whenDropped(true)
-
-                        COMPLETED -> whenPayment(xuberCheckRequest.responseData)
                     }
+                } else {
+                    BaseLocationService.BROADCAST = Constants.BroadCastTypes.BASE_BROADCAST
+                    finish()
                 }
+            }catch (e:Exception){
+                e.printStackTrace()
+                BaseLocationService.BROADCAST = Constants.BroadCastTypes.BASE_BROADCAST
+                finish()
             }
         })
 
         //Update Request
         mViewModel.xuperUdpateRequest.observe(this, Observer<UpdateRequest> { updateRequest ->
             if (updateRequest!!.statusCode.equals("200")) {
-                loadingObservable.value=false
+                loadingObservable.value = false
                 when (updateRequest.responseData!!.status) {
                     ARRIVED -> whenArrived()
 
@@ -218,7 +228,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
         SocketManager.onEvent(Constants.ROOM_NAME.SERVICE_REQ, Emitter.Listener {
             Log.e("SOCKET", "SOCKET_SK service request " + it[0])
-            mViewModel.callXuperCheckRequest()
+            mViewModel.callXuberCheckRequest()
         })
 
         SocketManager.setOnSocketRefreshListener(object : SocketListener.connectionRefreshCallBack {
@@ -256,29 +266,29 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     fun whenDropped(isCheckRequest: Boolean) {
         val bundle = Bundle()
         if (isCheckRequest) {
+            mBinding.llBottomService.llServiceTime.visibility=View.GONE
             val strCheckRequest = Gson().toJson(mViewModel.xuperCheckRequest.value!!)
             bundle.putString("strCheckReq", strCheckRequest)
             bundle.putBoolean("fromCheckReq", true)
+            cmXuberServiceTime.stop()
 
         } else {
+            mBinding.llBottomService.llServiceTime.visibility=View.GONE
             val strUpdateRequest = Gson().toJson(mViewModel.xuperUdpateRequest.value!!)
             bundle.putString("strUpdateReq", strUpdateRequest)
             bundle.putBoolean("fromCheckReq", false)
-
+            cmXuberServiceTime.stop()
         }
         llBottomService.visibility = View.GONE
         invoicePage.arguments = bundle
         if (invoicePage.isShown() == false)
             invoicePage.show(supportFragmentManager, "xuperinvoice")
+        invoicePage.isCancelable = false
+
     }
 
     override fun goBack() {
         onBackPressed()
-    }
-
-    override fun showCurrentLocation() {
-        if (mLastKnownLocation != null) updateMapLocation(LatLng(mLastKnownLocation!!.latitude,
-                mLastKnownLocation!!.longitude), true)
     }
 
     override fun moveStatusFlow() {
@@ -297,12 +307,44 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         this.mGoogleMap?.setOnCameraMoveListener(this)
         this.mGoogleMap?.setOnCameraIdleListener(this)
 
-        mViewModel.latitude.value = currentLatitude
-        mViewModel.longitude.value = currentLongitude
+        updateCurrentLocation()
+    }
 
-        updateMapLocation(LatLng(currentLatitude!!, currentLongitude!!))
-        Log.e("currentloc", "---- $currentLatitude --- $currentLongitude")
-        mViewModel.callXuperCheckRequest()
+    @SuppressLint("MissingPermission")
+    private fun updateCurrentLocation() {
+        runOnUiThread {
+            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
+            mGoogleMap!!.uiSettings.isCompassEnabled = true
+        }
+
+        if (getPermissionUtil().hasPermission(this, Constants.RequestPermission.PERMISSIONS_LOCATION))
+            LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
+                override fun onSuccess(location: Location?) {
+                    if (location != null) {
+                        mViewModel.latitude.value = location.latitude
+                        mViewModel.longitude.value = location.longitude
+                        updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
+                        mViewModel.callXuberCheckRequest()
+                    }
+                }
+
+                override fun onFailure(messsage: String?) {
+                }
+            })
+        else if (getPermissionUtil().requestPermissions(this, Constants.RequestPermission.PERMISSIONS_LOCATION, Constants.RequestCode.PERMISSIONS_CODE_LOCATION))
+            LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
+                override fun onSuccess(location: Location?) {
+                    if (location != null) {
+                        mViewModel.latitude.value = location.latitude
+                        mViewModel.longitude.value = location.longitude
+                        updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
+                        mViewModel.callXuberCheckRequest()
+                    }
+                }
+
+                override fun onFailure(messsage: String?) {
+                }
+            })
     }
 
     override fun onCameraMove() {
@@ -337,6 +379,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 mViewModel.longitude.value = location.longitude
 //                updateMapLocation(LatLng(location.latitude, location.longitude))
 
+                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuberCheckRequest()
 
                 if(roomConnected) {
                     var locationObj = JSONObject()
@@ -347,7 +390,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     Log.e("SOCKET", "SOCKET_SK Location update service called")
                 }
 
-                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuperCheckRequest()
 
                 if (startLatLng.latitude > 0) endLatLng = startLatLng
                 startLatLng = LatLng(location.latitude, location.longitude)
@@ -402,10 +444,10 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 
         srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_taxi_car))))
+        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_bike))))
 
         mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_taxi_pin))))
+        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
 
     }
 
@@ -458,17 +500,19 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvAllow.text = START
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
     }
 
     private fun whenStarted() {
         mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
         edtXuperOtp.visibility = View.GONE
+        mBinding.llBottomService.llServiceTime.visibility=View.VISIBLE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
-        mBinding.llBottomService.llConfirm.tvAllow.text = Constants.RideStatus.COMPLETED
+        mBinding.llBottomService.llConfirm.tvAllow.text = COMPLETED
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
     }
 
-
-    //After Payment Successfull
+    //After Payment Successful
     private fun whenPayment(responseData: XuperCheckRequest.ResponseData) {
         mBinding.llBottomService.fbCamera.visibility = View.GONE
         val bundle = Bundle()
@@ -524,7 +568,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 }
             }
 
-            R.id.tvCancel -> XUberCancelReasonFragment().show(supportFragmentManager, "reasonDialog")
+            R.id.tvCancel -> XUberCancelReasonFragment().show(supportFragmentManager, "XUberCancelReasonFragment")
         }
     }
 
@@ -587,7 +631,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun reasonForCancel(reason: String) {
-        if (!reason.isEmpty()) {
+        if (reason.isNotEmpty()) {
             val params = HashMap<String, String>()
             val id = mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.id.toString()
             params[Constants.Common.ID] = id
@@ -597,25 +641,30 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         }
     }
 
-    private fun showInfoWindow(context: Context, v: View,allowDescription:String,allowImage:String) {
+    private fun showInfoWindow(context: Context, v: View, allowDescription: String?, allowImage: String?) {
         val layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView = layoutInflater.inflate(R.layout.dialog_info_window, null)
-
-        var ivClose= popupView.ivClose
-        var ivDesImage=popupView.ivXuperUSer
-        var tvDescription=popupView.tv_description
-        ivClose.setOnClickListener(object : View.OnClickListener{
+        var ivClose = popupView.ivClose
+        var ivDesImage = popupView.ivInfo
+        var tvDescription = popupView.tv_description
+        ivClose.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 //Your code here
                 popupWindow!!.dismiss()
             }
-            })
-        Glide.with(this)
-                .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
-                .load(allowImage)
-                .into(ivDesImage)
+        })
+
+
+        if (!allowImage.isNullOrEmpty()) {
+            Glide.with(this)
+                    .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                            .placeholder(R.drawable.ic_profile_placeholder)
+                            .error(R.drawable.ic_profile_placeholder))
+                    .load(allowImage)
+                    .into(ivDesImage)
+        }
+
+
 
         tvDescription.setText(allowDescription)
         val displayFrame = Rect()
@@ -641,14 +690,14 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         if (!popupWindow!!.isShowing) {
             val y = v.y
             popupView.animation = AnimationUtils.loadAnimation(context, R.anim.popup_anim_in)
-             val margin = displayFrameWidth - (loc[0] + v.width)
-             xoff = displayFrameWidth - margin - popupWindow!!.getWidth() - loc[0]
-             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                 popupWindow!!.setElevation(20f)
-             }
-            popupWindow!!.isOutsideTouchable=false
-            popupWindow!!.showAtLocation(v,Gravity.RIGHT,xoff,y.toInt()+200)
-             popupWindow!!.setAnimationStyle(R.anim.popup_anim_in)
+            val margin = displayFrameWidth - (loc[0] + v.width)
+            xoff = displayFrameWidth - margin - popupWindow!!.getWidth() - loc[0]
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                popupWindow!!.setElevation(20f)
+            }
+            popupWindow!!.isOutsideTouchable = false
+            popupWindow!!.showAtLocation(v, Gravity.RIGHT, xoff, y.toInt() + 200)
+            popupWindow!!.setAnimationStyle(R.anim.popup_anim_in)
         }
 
         popupWindow!!.setOnDismissListener {
@@ -657,6 +706,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun showInfoWindow(view: View) {
-        showInfoWindow(this, mBinding.llBottomService.ibInstruction,mViewModel.strDesc.value!!,mViewModel.descImage.value!!)
+        showInfoWindow(this, mBinding.llBottomService.ibInstruction, mViewModel.strDesc.value.toString(), mViewModel.descImage.value.toString())
     }
 }

@@ -92,13 +92,13 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 mViewModel.bookingId.value = requestModel!!.request.booking_id
                 mViewModel.distance.value = requestModel!!.request.payment.distance.toString()
                 mViewModel.timeTaken.value = requestModel!!.request.travel_time
-                mViewModel.baseFare.value = requestModel!!.request.payment.fixed.toString()
-                mViewModel.distanceFare.value = requestModel!!.request.distance.toString()
-                mViewModel.tax.value = requestModel!!.request.payment.tax.toString()
-                mViewModel.tips.value = requestModel!!.request.payment.tips.toString()
-                mViewModel.total.value = requestModel!!.request.payment.total.toString()
+                mViewModel.baseFare.value = requestModel!!.request.currency + requestModel!!.request.payment.fixed.toString()
+                mViewModel.distanceFare.value = requestModel!!.request.currency + requestModel!!.request.distance.toString()
+                mViewModel.tax.value = requestModel!!.request.currency + requestModel!!.request.payment.tax.toString()
+                mViewModel.tips.value = requestModel!!.request.currency + requestModel!!.request.payment.tips.toString()
+                mViewModel.total.value = requestModel!!.request.currency + requestModel!!.request.payment.total.toString()
                 if (requestModel!!.request.payment.toll_charge > 0)
-                    mViewModel.tollCharge.value = requestModel!!.request.payment.toll_charge.toString()
+                    mViewModel.tollCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.toll_charge.toString()
             }
 
             if (mViewModel.pickuplocation.value != null && mViewModel.pickuplocation.value!!.length > 2)

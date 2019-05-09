@@ -35,8 +35,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
 
         setSupportActionBar(binding.toolbar.tbApp)
         binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text =
-                resources.getString(R.string.title_setup_vehicle)
+        binding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_setup_vehicle)
 
         observeViewModel()
 
@@ -70,7 +69,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         intent.putExtra(Constant.SERVICE_ID, viewModel.getServiceId())
         val providerService = viewModel.getVehicleDataObservable().value
 
-        if (providerService is SetupRideResponseModel && providerService.responseData[position].providerService!=null) {
+        if (providerService is SetupRideResponseModel && providerService.responseData[position].providerService != null) {
             intent.putExtra(Constant.PROVIDER_VEHICLE,
                     providerService.responseData[position].providerService!!.providerVehicle)
         } else if (providerService is SetupShopResponseModel) {

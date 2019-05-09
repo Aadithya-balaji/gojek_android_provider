@@ -40,7 +40,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), LanguageNaviga
 
     override fun onLanguageChanged() {
         if (viewModel.getCurrentLanguage() != selectedLanguage) {
-            if(viewModel.getCurrentLanguage() != "en"){
+            if (viewModel.getCurrentLanguage() != "en") {
                 ViewUtils.showToast(this@LanguageActivity, "For future purpose", false)
                 return
             }

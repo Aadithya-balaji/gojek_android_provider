@@ -34,7 +34,7 @@ class ProfileData {
     @SerializedName("stripe_acc_id")
     var stripeAccountId: String? = null
     @SerializedName("wallet_balance")
-    var walletBalance: Int? = null
+    var walletBalance: Double? = 0.0
     @SerializedName("rating")
     var rating: Float? = null
     @SerializedName("status")

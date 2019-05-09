@@ -31,7 +31,7 @@ data class ProviderDetails(
         var city_id: Int = 0,
         var country_code: String = "",
         var country_id: Int = 0,
-        var currency: Any = Any(),
+        var currency: String = "",
         var currency_symbol: String = "",
         var device_id: Any = Any(),
         var device_token: Any = Any(),
@@ -64,7 +64,7 @@ data class ProviderDetails(
         var state_id: Any = Any(),
         var status: String = "",
         var stripe_cust_id: Any = Any(),
-        var wallet_balance: Int = 0,
+        var wallet_balance: Double = 0.0,
         var zone_id: Any = Any()
 ) : Serializable
 
@@ -110,7 +110,7 @@ data class Request(
         var company_id: Int = 0,
         var country_id: Any = Any(),
         var created_at: String = "",
-        var currency: Any = Any(),
+        var currency: String = "",
         var d_address: String = "",
         var d_latitude: Double = 0.0,
         var d_longitude: Double = 0.0,
@@ -179,7 +179,7 @@ data class User(
         var state_id: Int = 0,
         var status: Int = 0,
         var user_type: String = "",
-        var wallet_balance: Int = 0
+        var wallet_balance: Double = 0.0
 ) : Serializable
 
 data class Payment(

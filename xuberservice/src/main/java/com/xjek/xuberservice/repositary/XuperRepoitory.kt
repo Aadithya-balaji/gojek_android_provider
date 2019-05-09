@@ -60,6 +60,7 @@ class XuperRepoitory : BaseRepository() {
                 })
 
     }
+
     fun xuperGetReason(viewModelXUberCancel: XUberCancelReasonViewModel, token: String, type: String): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
                 .getReasons(token, type)

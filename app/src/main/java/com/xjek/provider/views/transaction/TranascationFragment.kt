@@ -48,10 +48,10 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
 
             }
 
-            if(it.getResponseData()?.getData()!=null && it.getResponseData()?.getData()!!.isNotEmpty()){
+            if (it.getResponseData()?.getData() != null && it.getResponseData()?.getData()!!.isNotEmpty()) {
                 contentMain.visibility = View.VISIBLE
                 llEmptyView.visibility = View.GONE
-            }else{
+            } else {
                 contentMain.visibility = View.GONE
                 llEmptyView.visibility = View.VISIBLE
             }
@@ -61,7 +61,7 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
             fragmentTransactionBinding.transactionListRv.adapter = transactionListAdapter
         }
 
-        observeLiveData(transcationViewModel.errorResponse){
+        observeLiveData(transcationViewModel.errorResponse) {
             contentMain.visibility = View.GONE
             llEmptyView.visibility = View.VISIBLE
         }

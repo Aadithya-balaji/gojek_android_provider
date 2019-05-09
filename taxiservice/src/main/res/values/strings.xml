@@ -65,5 +65,7 @@
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
     <string name="taxi_pickup">Pick Up</string>
     <string name="any_toll" translatable="false" tools:ignore="ExtraTranslation">Do you have andy Toll charge</string>
+    <string name="request_canceled">Request Canceled Successfully</string>
+    <string name="invalid_otp">Invalid OTP</string>
 
 </resources>

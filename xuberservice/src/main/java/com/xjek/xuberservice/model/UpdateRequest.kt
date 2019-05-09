@@ -128,7 +128,7 @@ data class UpdateRequest(
                 val state_id: Int? = 0,
                 val status: Int? = 0,
                 val user_type: String? = "",
-                val wallet_balance: Int? = 0
+                var wallet_balance: Double = 0.0
         )
     }
 }

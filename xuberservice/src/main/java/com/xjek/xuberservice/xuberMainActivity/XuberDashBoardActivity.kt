@@ -50,11 +50,10 @@ import com.xjek.base.data.Constants.RideStatus.DROPPED
 import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.XuperProvider.CANCEL
 import com.xjek.base.data.Constants.XuperProvider.START
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
-import com.xjek.base.utils.CarMarkerAnimUtil
-import com.xjek.base.utils.CommonMethods
-import com.xjek.base.utils.PolyUtil
-import com.xjek.base.utils.ViewUtils
+import com.xjek.base.utils.*
 import com.xjek.base.utils.polyline.DirectionUtils
 import com.xjek.base.utils.polyline.PolyLineListener
 import com.xjek.base.utils.polyline.PolylineUtil
@@ -96,13 +95,10 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var localServiceTime: Long? = null
 
     private var mGoogleMap: GoogleMap? = null
-    private var mLastKnownLocation: Location? = null
     private var frontImgFile: File? = null
     private var backImgFile: File? = null
     private var frontImgMultiPart: MultipartBody.Part? = null
     private var backImgMultiPart: MultipartBody.Part? = null
-    private var currentLatitude: Double? = 0.0
-    private var currentLongitude: Double? = 0.0
     private val invoicePage = DialogXuperInvoice()
     private val ratingPage = DialogXuperRating()
     private var canDrawPolyLine: Boolean = true
@@ -129,12 +125,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         initialiseMap()
         getApiResponse()
-        getBundleValues()
-    }
-
-    private fun getBundleValues() {
-        currentLatitude = if (intent.hasExtra("lat")) intent.getDoubleExtra("lat", 0.0) else 0.0
-        currentLongitude = if (intent.hasExtra("lon")) intent.getDoubleExtra("lon", 0.0) else 0.0
     }
 
     fun getApiResponse() {
@@ -264,11 +254,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         onBackPressed()
     }
 
-    override fun showCurrentLocation() {
-        if (mLastKnownLocation != null) updateMapLocation(LatLng(mLastKnownLocation!!.latitude,
-                mLastKnownLocation!!.longitude), true)
-    }
-
     override fun moveStatusFlow() {
     }
 
@@ -285,12 +270,44 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         this.mGoogleMap?.setOnCameraMoveListener(this)
         this.mGoogleMap?.setOnCameraIdleListener(this)
 
-        mViewModel.latitude.value = currentLatitude
-        mViewModel.longitude.value = currentLongitude
+        updateCurrentLocation()
+    }
 
-        updateMapLocation(LatLng(currentLatitude!!, currentLongitude!!))
-        Log.e("currentloc", "---- $currentLatitude --- $currentLongitude")
-        mViewModel.callXuberCheckRequest()
+    @SuppressLint("MissingPermission")
+    private fun updateCurrentLocation() {
+        runOnUiThread {
+            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
+            mGoogleMap!!.uiSettings.isCompassEnabled = true
+        }
+
+        if (getPermissionUtil().hasPermission(this, Constants.RequestPermission.PERMISSIONS_LOCATION))
+            LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
+                override fun onSuccess(location: Location?) {
+                    if (location != null) {
+                        mViewModel.latitude.value = location.latitude
+                        mViewModel.longitude.value = location.longitude
+                        updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
+                        mViewModel.callXuberCheckRequest()
+                    }
+                }
+
+                override fun onFailure(messsage: String?) {
+                }
+            })
+        else if (getPermissionUtil().requestPermissions(this, Constants.RequestPermission.PERMISSIONS_LOCATION, Constants.RequestCode.PERMISSIONS_CODE_LOCATION))
+            LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
+                override fun onSuccess(location: Location?) {
+                    if (location != null) {
+                        mViewModel.latitude.value = location.latitude
+                        mViewModel.longitude.value = location.longitude
+                        updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
+                        mViewModel.callXuberCheckRequest()
+                    }
+                }
+
+                override fun onFailure(messsage: String?) {
+                }
+            })
     }
 
     override fun onCameraMove() {
@@ -436,6 +453,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvAllow.text = START
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
     }
 
     private fun whenStarted() {
@@ -443,11 +461,11 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         edtXuperOtp.visibility = View.GONE
         mBinding.llBottomService.llServiceTime.visibility=View.VISIBLE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
-        mBinding.llBottomService.llConfirm.tvAllow.text = Constants.RideStatus.COMPLETED
+        mBinding.llBottomService.llConfirm.tvAllow.text = COMPLETED
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
     }
 
-
-    //After Payment Successfull
+    //After Payment Successful
     private fun whenPayment(responseData: XuperCheckRequest.ResponseData) {
         mBinding.llBottomService.fbCamera.visibility = View.GONE
         val bundle = Bundle()

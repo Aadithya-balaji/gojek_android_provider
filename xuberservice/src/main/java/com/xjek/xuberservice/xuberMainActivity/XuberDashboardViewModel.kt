@@ -59,10 +59,6 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
         navigator.showPicturePreview()
     }
 
-    fun showCurrentLocation() {
-        navigator.showCurrentLocation()
-    }
-
     fun moveStatusFlow() {
         navigator.moveStatusFlow()
     }

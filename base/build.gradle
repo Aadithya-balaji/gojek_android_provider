@@ -17,8 +17,9 @@ android {
         vectorDrawables.useSupportLibrary = true
 
 //        resValue("string", "google_map_key", "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ")
+//        resValue("string", "google_map_key", "AIzaSyArFGZVGMsdJvHRezGfYMv-pkvvl0XKZLE")
 //        resValue("string", "google_map_key", "AIzaSyD1tvSgKFTeUwWWz88NgenCXI4qrLfIbk0")
-        resValue("string", "google_map_key", "AIzaSyArFGZVGMsdJvHRezGfYMv-pkvvl0XKZLE")
+        resValue("string", "google_map_key", "AIzaSyCB-ZdmL3zhDhXeERH4QWSPhKrfX7FLX24")
     }
     buildTypes {
         debug {

@@ -87,7 +87,8 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         Chronometer.OnChronometerTickListener,
         GetFilePathInterface,
         GetReasonsInterface,
-        PolyLineListener {
+        PolyLineListener ,View.OnClickListener{
+
 
     private lateinit var mViewModel: XuberDashboardViewModel
     private lateinit var fragmentMap: SupportMapFragment
@@ -106,6 +107,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private val invoicePage = DialogXuperInvoice()
     private val ratingPage = DialogXuperRating()
     private var canDrawPolyLine: Boolean = true
+    private  var isFront:Boolean=true
 
     private var startLatLng = LatLng(0.0, 0.0)
     private var endLatLng = LatLng(0.0, 0.0)
@@ -127,6 +129,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.xuberViewModel = mViewModel
         mBinding.lifecycleOwner = this
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        mBinding.llBottomService.fbCamera.setOnClickListener(this)
         initialiseMap()
         getApiResponse()
         getBundleValues()
@@ -460,8 +463,11 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         }
     }
 
-    override fun showPicturePreview() {
+    override fun showPicturePreview(isFront: Boolean) {
         val dialogUploadPicture = DialogUploadPicture()
+        val bundle=Bundle()
+        bundle.putBoolean("isFront",isFront)
+        dialogUploadPicture.arguments=bundle
         dialogUploadPicture.show(supportFragmentManager, "takepicture")
     }
 
@@ -642,5 +648,20 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     override fun showInfoWindow(view: View) {
         showInfoWindow(this, mBinding.llBottomService.ibInstruction, mViewModel.strDesc.value.toString(), mViewModel.descImage.value.toString())
+    }
+
+
+    override fun onClick(v: View?) {
+        if ((mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED)
+                        && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
+                        || mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
+         isFront=true
+        else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
+                || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED)  isFront=false
+        val dialogUploadPicture = DialogUploadPicture()
+        val bundle=Bundle()
+        bundle.putBoolean("isFront",isFront)
+        dialogUploadPicture.arguments=bundle
+        dialogUploadPicture.show(supportFragmentManager, "takepicture")
     }
 }

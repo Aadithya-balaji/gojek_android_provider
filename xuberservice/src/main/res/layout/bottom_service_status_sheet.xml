@@ -67,7 +67,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:onClick="@{() -> bottomServiceModel.showCamPage()}"
                 app:backgroundTint="@color/colorBasePrimary"
                 app:elevation="@dimen/_8sdp"
                 app:fabSize="normal"

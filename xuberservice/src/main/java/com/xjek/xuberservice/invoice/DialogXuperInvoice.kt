@@ -24,7 +24,7 @@ import com.xjek.xuberservice.model.XuperCheckRequest
 import com.xjek.xuberservice.rating.DialogXuperRating
 import kotlinx.android.synthetic.main.dialog_invoice.*
 
-class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvoiceNavigator, GetExtraChargeInterface,DialogCloseInterface{
+class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvoiceNavigator, GetExtraChargeInterface, DialogCloseInterface {
 
     private lateinit var dialogInvoiceBinding: DialogInvoiceBinding
     private lateinit var xuperInvoiceModel: XuperInvoiceViewModel
@@ -34,9 +34,9 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     private var strXuperCheckRequestModel: String? = null
     private var xuperCheckRequest: XuperCheckRequest? = null
     private var shown: Boolean? = false
-    private  var extraChageDialog:DialogXuperExtraCharge?=null
-    private  var invoiceDialog: Dialog?=null
-    private  var timetaken:String?=""
+    private var extraChageDialog: DialogXuperExtraCharge? = null
+    private var invoiceDialog: Dialog? = null
+    private var timetaken: String? = ""
 
 
     override fun getLayout(): Int {
@@ -64,18 +64,15 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
         xuperInvoiceModel.showProgress = loadingObservable as MutableLiveData<Boolean>
         updateUi()
         getApiResponse()
-        invoiceDialog=dialog
+        invoiceDialog = dialog
     }
 
     fun getApiResponse() {
         xuperInvoiceModel.invoiceLiveData.observe(this, object : androidx.lifecycle.Observer<UpdateRequest> {
             override fun onChanged(updateRequest: UpdateRequest?) {
-                loadingObservable.value=false
+                loadingObservable.value = false
                 xuperInvoiceModel.showProgress.value = false
                 if (updateRequest!!.statusCode.equals("200")) {
-                    if(invoiceDialog!=null) {
-                        invoiceDialog!!.dismiss()
-                    }
                     val ratingDialog = DialogXuperRating()
                     val strupdateRequest = Gson().toJson(updateRequest)
                     val bundle = Bundle()
@@ -83,7 +80,10 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                     bundle.putString("updateRequestModel", strupdateRequest)
                     ratingDialog.arguments = bundle
                     ratingDialog.show(childFragmentManager, "ratingDialog")
-                    ratingDialog.isCancelable=false
+                    ratingDialog.isCancelable = false
+                    if (invoiceDialog != null) {
+                        invoiceDialog!!.dismiss()
+                    }
                 }
             }
 
@@ -110,8 +110,8 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
             xuperInvoiceModel.userImage.value = updateRequestModel!!.responseData!!.user!!.picture.toString()
             xuperInvoiceModel.totalAmount.value = updateRequestModel!!.responseData!!.payment!!.payable.toString()
             xuperInvoiceModel.requestID.value = updateRequestModel!!.responseData!!.id.toString()
-            xuperInvoiceModel.userName.value=updateRequestModel!!.responseData!!.user!!.first_name+" "+updateRequestModel!!.responseData!!.user!!.last_name
-            timetaken=CommonMethods.getTimeDifference(updateRequestModel!!.responseData!!.started_at!!,updateRequestModel!!.responseData!!.finished_at!!,"")
+            xuperInvoiceModel.userName.value = updateRequestModel!!.responseData!!.user!!.first_name + " " + updateRequestModel!!.responseData!!.user!!.last_name
+            timetaken = CommonMethods.getTimeDifference(updateRequestModel!!.responseData!!.started_at!!, updateRequestModel!!.responseData!!.finished_at!!, "")
         } else {
             xuperInvoiceModel.rating.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.rating.toString()
             xuperInvoiceModel.serviceName.value = xuperCheckRequest!!.responseData!!.requests!!.service!!.service_name
@@ -119,7 +119,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
             xuperInvoiceModel.totalAmount.value = xuperCheckRequest!!.responseData!!.requests!!.payment!!.payable.toString()
             xuperInvoiceModel.requestID.value = xuperCheckRequest!!.responseData!!.requests!!.id.toString()
             xuperInvoiceModel.userName.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.first_name + " " + xuperCheckRequest!!.responseData!!.requests!!.user!!.last_name
-            timetaken=CommonMethods.getTimeDifference(xuperCheckRequest!!.responseData!!.requests!!.started_at!!,xuperCheckRequest!!.responseData!!.requests!!.finished_at!!,"")
+            timetaken = CommonMethods.getTimeDifference(xuperCheckRequest!!.responseData!!.requests!!.started_at!!, xuperCheckRequest!!.responseData!!.requests!!.finished_at!!, "")
         }
 
         tvXuperTime.setText(timetaken)
@@ -177,30 +177,30 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
         this.shown = false
     }
 
-    override fun getExtraCharge(extraChareg: String,extraAmtNotes:String) {
-        xuperInvoiceModel.extraCharge.value = extraChareg.replace("$","")
-        if(!xuperInvoiceModel.extraCharge.value.isNullOrEmpty()){
-            val totalAmount=xuperInvoiceModel.totalAmount.value!!.toDouble()
-            val  extraAmount=xuperInvoiceModel.extraCharge.value!!.toDouble()
-            val total=totalAmount+extraAmount
-            xuperInvoiceModel.totalAmount.value=total.toString()
+    override fun getExtraCharge(extraChareg: String, extraAmtNotes: String) {
+        xuperInvoiceModel.extraCharge.value = extraChareg.replace("$", "")
+        if (!xuperInvoiceModel.extraCharge.value.isNullOrEmpty()) {
+            val totalAmount = xuperInvoiceModel.totalAmount.value!!.toDouble()
+            val extraAmount = xuperInvoiceModel.extraCharge.value!!.toDouble()
+            val total = totalAmount + extraAmount
+            xuperInvoiceModel.totalAmount.value = total.toString()
         }
 
-        if(!extraAmtNotes.isNullOrEmpty()){
-            xuperInvoiceModel.extraChargeNotes.value=extraAmtNotes
+        if (!extraAmtNotes.isNullOrEmpty()) {
+            xuperInvoiceModel.extraChargeNotes.value = extraAmtNotes
         }
     }
 
     override fun showExtraChargePage() {
         invoiceDialog!!.hide()
-        extraChageDialog=DialogXuperExtraCharge.newInstance(this,this)
-        extraChageDialog!!.show(childFragmentManager,"extraRate")
+        extraChageDialog = DialogXuperExtraCharge.newInstance(this, this)
+        extraChageDialog!!.show(childFragmentManager, "extraRate")
 
 
     }
 
     override fun hideDialog(isNeedtoHide: Boolean) {
-        if(isNeedtoHide==false){
+        if (isNeedtoHide == false) {
             invoiceDialog!!.show()
         }
     }

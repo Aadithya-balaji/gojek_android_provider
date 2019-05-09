@@ -9,7 +9,7 @@ interface XuberDasbBoardNavigator {
     fun showCurrentLocation()
     fun moveStatusFlow()
     fun showErrorMessage(error:String)
-    fun showPicturePreview()
+    fun showPicturePreview(isFrontImage:Boolean)
     fun updateService(view: View)
     fun showInfoWindow(view:View)
 }

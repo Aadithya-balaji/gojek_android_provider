@@ -53,8 +53,13 @@ object Constants {
         var STATUS:String = "socketStatus"
         var NEW_REQ:String = "newRequest"
         var RIDE_REQ:String = "rideRequest"
+        var SERVICE_REQ:String = "serveRequest"
+        var ORDER_REQ:String = "orderRequest"
         var TRANSPORT_ROOM_NAME:String = "joinPrivateRoom"
-        var SERVICE_ROOM_NAME:String?=null
+        var SERVICE_ROOM_NAME:String = "joinPrivateRoom"
+        var ORDER_ROOM_NAME:String="joinPrivateRoom"
+        var UPDATELOCATION:String="updateLocation"
+
     }
 
 
@@ -63,7 +68,8 @@ object Constants {
         @JvmField
         var COMMON_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.CITY_ID}"
         var TRANSPORT_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_TRANSPORT"
-        var SERVICE_ROOM:String = ""
+        var SERVICE_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_SERVICE"
+        var ORDER_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_ORDER"
     }
 
     object ModuleTypes {

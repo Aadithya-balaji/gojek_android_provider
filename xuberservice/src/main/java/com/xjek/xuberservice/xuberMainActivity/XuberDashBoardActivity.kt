@@ -46,7 +46,11 @@ import com.xjek.base.data.Constants.RideStatus.DROPPED
 import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.XuperProvider.CANCEL
 import com.xjek.base.data.Constants.XuperProvider.START
+import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.location_service.BaseLocationService
+import com.xjek.base.socket.SocketListener
+import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.CarMarkerAnimUtil
 import com.xjek.base.utils.CommonMethods
 import com.xjek.base.utils.PolyUtil
@@ -65,6 +69,7 @@ import com.xjek.xuberservice.model.XuperCheckRequest
 import com.xjek.xuberservice.rating.DialogXuperRating
 import com.xjek.xuberservice.reasons.XUberCancelReasonFragment
 import com.xjek.xuberservice.uploadImage.DialogUploadPicture
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_xuber_main.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.view.*
@@ -72,6 +77,7 @@ import kotlinx.android.synthetic.main.dialog_info_window.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.json.JSONObject
 import java.io.File
 import java.util.*
 
@@ -117,6 +123,9 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     override fun getLayoutId(): Int = R.layout.activity_xuber_main
 
+    private var roomConnected: Boolean = false
+
+
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as ActivityXuberMainBinding
         mViewModel = XuberDashboardViewModel()
@@ -149,6 +158,13 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
                     if (xuberCheckRequest.responseData.requests.user!!.picture != null) {
                         setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
+                    }
+
+                    if (!roomConnected) {
+                        roomConnected = true
+                        val reqID = xuberCheckRequest.responseData.requests.id
+                        PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
+                        SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
                     }
 
                     mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude!!,
@@ -198,6 +214,22 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             ViewUtils.showToast(this@XuberDashBoardActivity, resources.getString(R.string.request_canceled), true)
             finish()
         })
+
+
+        SocketManager.onEvent(Constants.ROOM_NAME.SERVICE_REQ, Emitter.Listener {
+            Log.e("SOCKET", "SOCKET_SK service request " + it[0])
+            mViewModel.callXuperCheckRequest()
+        })
+
+        SocketManager.setOnSocketRefreshListener(object : SocketListener.connectionRefreshCallBack {
+            override fun onRefresh() {
+                if (roomConnected) {
+                    roomConnected = false
+                    SocketManager.emit(Constants.ROOM_NAME.SERVICE_ROOM_NAME, Constants.ROOM_ID.SERVICE_ROOM)
+                }
+            }
+        })
+
     }
 
     private fun initialiseMap() {
@@ -304,6 +336,16 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
 //                updateMapLocation(LatLng(location.latitude, location.longitude))
+
+
+                if(roomConnected) {
+                    var locationObj = JSONObject()
+                    locationObj.put("latitude",location.latitude)
+                    locationObj.put("longitude",location.longitude)
+                    locationObj.put("room",Constants.ROOM_ID.SERVICE_ROOM)
+                    SocketManager.emit("send_location", locationObj)
+                    Log.e("SOCKET", "SOCKET_SK Location update service called")
+                }
 
                 if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuperCheckRequest()
 

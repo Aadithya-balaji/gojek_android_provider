@@ -14,11 +14,10 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Part
 
-
 class XuperRepoitory : BaseRepository() {
-     private val serviceId: String
-        get() = Constants.BaseUrl.SERVICE_BASE_URL
 
+     private val serviceId: String
+        get() = Constants.BaseUrl.APP_BASE_URL
 
     fun xuperCheckRequesst(viewModel: XuberDashboardViewModel, token: String, lat: String, lon: String): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
@@ -34,7 +33,6 @@ class XuperRepoitory : BaseRepository() {
 
     }
 
-
     fun xuperUpdateRequest(viewModel: XuberDashboardViewModel, token: String, params: HashMap<String, RequestBody>, @Part frontImage:MultipartBody.Part?, @Part backImage:MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, XuperApiService::class.java)
                 .xuperUpdateServcie(token, params,frontImage,backImage)
@@ -45,7 +43,6 @@ class XuperRepoitory : BaseRepository() {
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })
-
     }
 
     fun confirmPayment(viewModel: XuperInvoiceViewModel, token: String, params: HashMap<String, RequestBody>): Disposable {
@@ -58,7 +55,6 @@ class XuperRepoitory : BaseRepository() {
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })
-
     }
 
     fun xuperGetReason(viewModelXUberCancel: XUberCancelReasonViewModel, token: String, type: String): Disposable {
@@ -85,7 +81,6 @@ class XuperRepoitory : BaseRepository() {
                 })
     }
 
-
     fun  xuperRatingUser(viewModel:XuperRatingViewModel,token:String,params: HashMap<String, String>):Disposable{
         return  BaseRepository().createApiClient(serviceId,XuperApiService::class.java)
                 .xuperRating(token,params)
@@ -103,13 +98,10 @@ class XuperRepoitory : BaseRepository() {
         private var xuperRepoitory: XuperRepoitory? = null
 
         fun instance(): XuperRepoitory {
-            if (xuperRepoitory == null) {
-                synchronized(XuperRepoitory) {
-                    xuperRepoitory = XuperRepoitory()
-                }
+            if (xuperRepoitory == null) synchronized(XuperRepoitory) {
+                xuperRepoitory = XuperRepoitory()
             }
             return xuperRepoitory!!
         }
     }
-
 }

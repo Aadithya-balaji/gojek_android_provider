@@ -496,12 +496,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_drop.setOnClickListener {
-            //            val params: HashMap<String, String> = HashMap()
-//            params["id"] = responseData.request.id.toString()
-//            params["status"] = DROPPED
-//            params["_method"] = "PATCH"
-//            mViewModel.taxiStatusUpdate(params)
-
             ViewUtils.showAlert(this, "Do you have any Toll charge",
                     "Yes", "No",
                     object : ViewUtils.ViewCallBack {

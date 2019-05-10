@@ -209,33 +209,28 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
             card.name = mCardHolderName
             if (card.validateNumber() && card.validateCVC()) {
                 loadingProgress?.value = true
-                val stripe = Stripe(activity!!, "pk_test_DbfzA8Pv1MDErUiHakK9XfLe")
-                if (stripe != null) {
-                    stripe.createToken(
-                            card,
-                            object : TokenCallback {
-                                override fun onSuccess(token: Token) {
-                                    Log.e("card", "-----" + token.id)
-                                    loadingProgress!!.value = false
-                                    // Send token to your server
-                                    if (!TextUtils.isEmpty(token.id))
-                                        walletViewModel.callAddCardApi(token.id)
+                val stripe = Stripe(activity!!, readPreferences(PreferencesKey.STRIPE_KEY,""))
+                stripe.createToken(
+                        card,
+                        object : TokenCallback {
+                            override fun onSuccess(token: Token) {
+                                Log.e("card", "-----" + token.id)
+                                loadingProgress!!.value = false
+                                // Send token to your server
+                                if (!TextUtils.isEmpty(token.id))
+                                    walletViewModel.callAddCardApi(token.id)
 
-                                }
-
-                                override fun onError(error: Exception) {
-                                    // Show localized error message
-                                    loadingProgress?.value = false
-                                    Log.e("card", "-----" + error.message.toString())
-
-
-                                }
                             }
-                    )
-                } else {
-                    loadingProgress!!.value = false
-                    ViewUtils.showToast(activity!!, "Please Enter Valid Card", false)
-                }
+
+                            override fun onError(error: Exception) {
+                                // Show localized error message
+                                loadingProgress?.value = false
+                                Log.e("card", "-----" + error.message.toString())
+
+
+                            }
+                        }
+                )
             } else {
                 loadingProgress!!.value = false
             }

@@ -19,4 +19,10 @@ object PreferencesKey {
     const val CITY_ID = "city_id"
     const val REQ_ID = "req_id"
     const val CAN_SAVE_LOCATION = "CAN_SAVE_LOCATION"
+    const val STRIPE_KEY = "stripe_key"
+
+    const val BASE_URL = "base_url"
+    const val TRANSPORT_URL = "taxi_url"
+    const val SERVICE_URL = "service_url"
+    const val ORDER_URL = "order_url"
 }

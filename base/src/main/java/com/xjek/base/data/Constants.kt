@@ -1,10 +1,14 @@
+@file:Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+
 package com.xjek.base.data
 
 import android.Manifest
+import android.content.Context
 import android.util.Base64
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.xjek.base.BuildConfig
+import com.xjek.base.base.BaseApplication
 import java.nio.charset.Charset
 
 object Constants {
@@ -42,10 +46,10 @@ object Constants {
 
     object BaseUrl {
         @JvmField
-        var APP_BASE_URL: String = BuildConfig.BASE_URL
-        var TAXI_BASE_URL: String? = null
-        var ORDER_BASE_URL: String? = null
-        var SERVICE_BASE_URL: String? = null
+        var APP_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE).getString(PreferencesKey.BASE_URL,BuildConfig.BASE_URL) }
+        var TAXI_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE).getString(PreferencesKey.TRANSPORT_URL,BuildConfig.BASE_URL) }
+        var ORDER_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE).getString(PreferencesKey.ORDER_URL,BuildConfig.BASE_URL) }
+        var SERVICE_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE).getString(PreferencesKey.SERVICE_URL,BuildConfig.BASE_URL) }
     }
 
     object ROOM_NAME{

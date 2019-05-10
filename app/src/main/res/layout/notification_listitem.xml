@@ -30,7 +30,7 @@
                     android:layout_height="@dimen/_50sdp"
                     android:layout_centerVertical="true"
                     android:padding="@dimen/_5sdp"
-                    android:src="@drawable/profile_placeholder" />
+                    android:src="@drawable/dummy_profile_pic" />
 
                 <TextView
                     android:id="@+id/notification_time_tv"

@@ -8,8 +8,8 @@ interface XuberDasbBoardNavigator {
     fun goBack()
     fun showCurrentLocation()
     fun moveStatusFlow()
-    fun showErrorMessage(error:String)
-    fun showPicturePreview(isFrontImage:Boolean)
+    fun showErrorMessage(error: String)
+    fun showPicturePreview(isFrontImage: Boolean)
     fun updateService(view: View)
-    fun showInfoWindow(view:View)
+    fun showInfoWindow(view: View)
 }

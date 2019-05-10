@@ -104,7 +104,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
-
         Dexter.withActivity(this)
                 .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
                 .withListener(object : MultiplePermissionsListener {
@@ -120,6 +119,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
         mViewModel.getProfile()
         getApiResponse()
+
     }
 
     override fun onResume() {
@@ -187,6 +187,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     mViewModel.longitude.value = location.longitude
                     mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
+
                 }
 
                 override fun onFailure(messsage: String?) {
@@ -228,12 +229,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                             }
                             SERVICE -> if (!BROADCAST.equals(SERVICE)) {
                                 BROADCAST = SERVICE
-                                val intent = Intent(this, XuberDashBoardActivity::class.java)
-                                intent.putExtra("lat", mViewModel.latitude.value)
-                                intent.putExtra("lon", mViewModel.longitude.value)
-                                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                startActivity(intent)
-
+                                  val intent = Intent(this, XuberDashBoardActivity::class.java)
+                                  intent.putExtra("lat", mViewModel.latitude.value)
+                                  intent.putExtra("lon", mViewModel.longitude.value)
+                                  intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                  startActivity(intent)
                             }
                             ORDER -> if (BROADCAST != ORDER) {
                                 BROADCAST = ORDER
@@ -275,6 +275,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
                 if (checkStatusApiCounter++ % 10 == 0) mViewModel.callCheckStatusAPI()
+
             }
         }
     }

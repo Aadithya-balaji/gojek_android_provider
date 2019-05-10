@@ -3,6 +3,7 @@ package com.xjek.xuberservice.invoice
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
@@ -70,17 +71,17 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     fun getApiResponse() {
         xuperInvoiceModel.invoiceLiveData.observe(this, object : androidx.lifecycle.Observer<UpdateRequest> {
             override fun onChanged(updateRequest: UpdateRequest?) {
-                loadingObservable.value = false
                 xuperInvoiceModel.showProgress.value = false
                 if (updateRequest!!.statusCode.equals("200")) {
+                    Log.e("Dialog","------------")
                     val ratingDialog = DialogXuperRating()
                     val strupdateRequest = Gson().toJson(updateRequest)
                     val bundle = Bundle()
                     bundle.putBoolean("isFromCheckRequest", false)
                     bundle.putString("updateRequestModel", strupdateRequest)
                     ratingDialog.arguments = bundle
-                    ratingDialog.show(childFragmentManager, "ratingDialog")
-                    ratingDialog.isCancelable = false
+                    ratingDialog.show(activity!!.supportFragmentManager, "ratingDialog")
+                    ratingDialog.isCancelable = true
                     if (invoiceDialog != null) {
                         invoiceDialog!!.dismiss()
                     }
@@ -105,15 +106,16 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
 
     fun updateUi() {
         if (isFromCheckRequest == false) {
-            xuperInvoiceModel.rating.value = updateRequestModel!!.responseData!!.user_rated.toString()
+            xuperInvoiceModel.rating.value =String.format(resources.getString(R.string.xuper_rating_user),updateRequestModel!!.responseData!!.user!!.rating!!.toDouble())
             xuperInvoiceModel.serviceName.value = updateRequestModel!!.responseData!!.service!!.service_name
             xuperInvoiceModel.userImage.value = updateRequestModel!!.responseData!!.user!!.picture.toString()
             xuperInvoiceModel.totalAmount.value = updateRequestModel!!.responseData!!.payment!!.payable.toString()
             xuperInvoiceModel.requestID.value = updateRequestModel!!.responseData!!.id.toString()
             xuperInvoiceModel.userName.value = updateRequestModel!!.responseData!!.user!!.first_name + " " + updateRequestModel!!.responseData!!.user!!.last_name
             timetaken = CommonMethods.getTimeDifference(updateRequestModel!!.responseData!!.started_at!!, updateRequestModel!!.responseData!!.finished_at!!, "")
+
         } else {
-            xuperInvoiceModel.rating.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.rating.toString()
+            xuperInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user),xuperCheckRequest!!.responseData!!.requests!!.user!!.rating!!.toDouble())
             xuperInvoiceModel.serviceName.value = xuperCheckRequest!!.responseData!!.requests!!.service!!.service_name
             xuperInvoiceModel.userImage.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.picture.toString()
             xuperInvoiceModel.totalAmount.value = xuperCheckRequest!!.responseData!!.requests!!.payment!!.payable.toString()
@@ -130,7 +132,6 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                 .load(xuperInvoiceModel.userImage.value)
                 .into(dialogInvoiceBinding.ivUserImg)
         dialogInvoiceBinding.tvAmountToBePaid.setText(xuperInvoiceModel.totalAmount.value)
-        dialogInvoiceBinding.rbUserRating.ratingNum = xuperInvoiceModel.rating.value!!.toFloat()
         dialogInvoiceBinding.tvXuperService.setText(xuperInvoiceModel.serviceName.value)
 
     }
@@ -185,7 +186,6 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
             val total = totalAmount + extraAmount
             xuperInvoiceModel.totalAmount.value = total.toString()
         }
-
         if (!extraAmtNotes.isNullOrEmpty()) {
             xuperInvoiceModel.extraChargeNotes.value = extraAmtNotes
         }

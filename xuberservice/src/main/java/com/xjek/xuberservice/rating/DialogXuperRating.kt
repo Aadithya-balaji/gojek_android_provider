@@ -3,6 +3,7 @@ package com.xjek.xuberservice.rating
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
@@ -46,6 +47,7 @@ class DialogXuperRating : BaseDialogFragment<DialogXuperRatingBinding>(), XuperR
         super.onCreate(savedInstanceState)
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.CustomDialog)
     }
+
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         dialogXuperRatingBinding = viewDataBinding as DialogXuperRatingBinding

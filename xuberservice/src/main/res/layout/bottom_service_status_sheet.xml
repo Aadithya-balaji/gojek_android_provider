@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -15,254 +15,268 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent">
-
         <RelativeLayout
-            android:id="@+id/rl_camera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp">
-
-            <LinearLayout
-                android:id="@+id/ll_service_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/bg_timer"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/_10sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingRight="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:text="00:00:00">
-
-                <ImageView
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
-                    android:tint="@color/xuber_white"
-                    android:visibility="visible"
-                    app:srcCompat="@drawable/ic_timer" />
-
-                <Chronometer
-                    android:id="@+id/cmXuberServiceTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_8sdp"
-                    android:fontFamily="@font/avenirltstd_medium"
-                    android:textColor="@color/xuber_white"
-                    android:textSize="@dimen/_10sdp" />
-            </LinearLayout>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fb_camera"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                app:backgroundTint="@color/colorBasePrimary"
-                app:elevation="@dimen/_8sdp"
-                app:fabSize="normal"
-                app:srcCompat="@drawable/camera"
-                app:tint="@android:color/white" />
-
-        </RelativeLayout>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_service"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_camera"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            app:cardBackgroundColor="@color/xuber_white"
-            app:cardCornerRadius="@dimen/_5sdp"
-            app:cardElevation="@dimen/_2sdp"
-            app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true">
+            android:background="@android:color/transparent">
 
             <RelativeLayout
+                android:id="@+id/rl_camera"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/ivXuperUSer"
-                    android:layout_width="@dimen/_34sdp"
-                    android:layout_height="@dimen/_34sdp"
-                    android:layout_marginLeft="@dimen/_11sdp"
-                    android:src="@drawable/kittty" />
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp">
 
                 <LinearLayout
+                    android:id="@+id/ll_service_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_14sdp"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_toRightOf="@+id/ivXuperUSer"
-                    android:orientation="vertical">
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/bg_timer"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:text="00:00:00">
 
-                    <TextView
-                        android:id="@+id/tv_xuper_user_name"
+                    <ImageView
+                        android:layout_width="@dimen/_15sdp"
+                        android:layout_height="@dimen/_15sdp"
+                        android:tint="@color/xuber_white"
+                        android:visibility="visible"
+                        app:srcCompat="@drawable/ic_timer" />
+
+                    <Chronometer
+                        android:id="@+id/cmXuberServiceTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="@={bottomServiceModel.userName}"
-                        android:textColor="@color/xuber_black"
-                        android:textSize="@dimen/_11sdp" />
-
-                    <com.xjek.base.views.customviews.SmartRatingBar
-                        android:id="@+id/smart_rating_bar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="13dp"
-                        android:layout_marginTop="3dp"
-                        app:gap="@dimen/_5sdp"
-                        app:indicator="false"
-                        app:maxRating="5"
-                        app:orientation="horizontal"
-                        app:rating="3.5" />
+                        android:textColor="@color/xuber_white"
+                        android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/ll_servie_type"
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fb_camera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:layout_marginRight="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    app:backgroundTint="@color/colorBasePrimary"
+                    app:elevation="@dimen/_8sdp"
+                    app:fabSize="normal"
+                    app:srcCompat="@drawable/camera"
+                    app:tint="@android:color/white" />
 
-                    <TextView
-                        android:id="@+id/tv_label_servcie"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:gravity="start"
-                        android:text="@string/label_service"
-                        android:textColor="@color/xuber_black"
-                        android:textSize="@dimen/_12sdp" />
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tv_service_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:text="@={bottomServiceModel.serviceType}"
-                        android:textColor="@color/xuber_grey"
-                        android:textSize="@dimen/_10sdp" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rl_camera"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                app:cardBackgroundColor="@color/xuber_white"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_2sdp"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/ivXuperUSer"
+                        android:layout_width="@dimen/_34sdp"
+                        android:layout_height="@dimen/_34sdp"
+                        android:layout_marginLeft="@dimen/_11sdp"
+                        android:src="@drawable/kittty" />
 
                     <LinearLayout
-                        android:id="@+id/ll_instruction"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal">
+                        android:layout_marginLeft="@dimen/_14sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_toRightOf="@+id/ivXuperUSer"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_instruction"
+                            android:id="@+id/tv_xuper_user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenirltstd_medium"
-                            android:text="@string/label_instruction"
+                            android:text="@={bottomServiceModel.userName}"
+                            android:textColor="@color/xuber_black"
+                            android:textSize="@dimen/_11sdp" />
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvXuperRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/avenirltstd_medium"
+                                android:text="@={bottomServiceModel.userRating}"
+                                android:textColor="@color/xuber_grey"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <ImageView
+                                android:id="@+id/ivXuperRate"
+                                android:layout_width="@dimen/_10sdp"
+                                android:layout_height="@dimen/_10sdp"
+                                android:src="@drawable/star"
+                                android:layout_marginLeft="@dimen/_3sdp"
+                                android:tint="@color/chip_yellow_inner_color" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_servie_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_label_servcie"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:gravity="start"
+                            android:text="@string/label_service"
+                            android:textColor="@color/xuber_black"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tv_service_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:text="@={bottomServiceModel.serviceType}"
                             android:textColor="@color/xuber_grey"
                             android:textSize="@dimen/_10sdp" />
 
-                        <ImageButton
-                            android:id="@+id/ib_instruction"
+                        <LinearLayout
+                            android:id="@+id/ll_instruction"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:onClick="@{(v) -> bottomServiceModel.showInfoDialog(v)}"
-                            android:background="@drawable/circle_light_blue"
-                            android:padding="@dimen/_2sdp"
-                            android:src="@drawable/ic_info" />
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tv_instruction"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/avenirltstd_medium"
+                                android:text="@string/label_instruction"
+                                android:textColor="@color/xuber_grey"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <ImageButton
+                                android:id="@+id/ib_instruction"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_8sdp"
+                                android:background="@drawable/circle_light_blue"
+                                android:onClick="@{(v) -> bottomServiceModel.showInfoDialog(v)}"
+                                android:padding="@dimen/_2sdp"
+                                android:src="@drawable/ic_info" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ll_servie_type"
-                    android:orientation="vertical">
-
-                <EditText
-                    android:id="@+id/edtXuperOtp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_otp_edittext"
-                    android:hint="@string/enter_otp_here"
-                    android:textSize="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingLeft="@dimen/_5sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:textColor="@color/xuber_black"
-                    android:layout_marginRight="@dimen/_20sdp"
-                    android:layout_marginLeft="@dimen/_20sdp"
-                    android:visibility="gone"
-                    android:gravity="center"
-                    android:inputType="phone"
-                    android:text="@={bottomServiceModel.otp}"
-                    android:layout_marginBottom="@dimen/_20sdp"/>
-
-                <LinearLayout
-                    android:id="@+id/llConfirm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_service_confirm"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/tvAllow"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="@string/label_arrived"
-                        android:textAllCaps="false"
-                        android:textColor="@color/xuper_blue"
-                        android:onClick="@{(v)->bottomServiceModel.onClickStatus(v)}"
-                        android:textSize="@dimen/_12sdp" />
+                        android:layout_below="@+id/ll_servie_type"
+                        android:orientation="vertical">
 
-                    <View
-                        android:layout_width="0.8dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/xuber_grey"
-                        android:visibility="visible" />
+                        <EditText
+                            android:id="@+id/edtXuperOtp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_20sdp"
+                            android:layout_marginRight="@dimen/_20sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:background="@drawable/bg_otp_edittext"
+                            android:gravity="center"
+                            android:hint="@string/enter_otp_here"
+                            android:inputType="phone"
+                            android:paddingLeft="@dimen/_5sdp"
+                            android:paddingTop="@dimen/_4sdp"
+                            android:paddingBottom="@dimen/_4sdp"
+                            android:text="@={bottomServiceModel.otp}"
+                            android:textColor="@color/xuber_black"
+                            android:textSize="@dimen/_10sdp"
+                            android:visibility="gone" />
 
-                    <TextView
-                        android:id="@+id/tvCancel"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:padding="5dp"
-                        android:text="@string/label_cancel"
-                        android:textAllCaps="false"
-                        android:textColor="@color/xuper_blue"
-                        android:onClick="@{(v)->bottomServiceModel.onClickStatus(v)}"
-                        android:textSize="@dimen/_12sdp"
-                        android:visibility="visible" />
-                </LinearLayout>
-                </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/llConfirm"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_service_confirm"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvAllow"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:onClick="@{(v)->bottomServiceModel.onClickStatus(v)}"
+                                android:padding="5dp"
+                                android:text="@string/label_arrived"
+                                android:textAllCaps="false"
+                                android:textColor="@color/xuper_blue"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <View
+                                android:layout_width="0.8dp"
+                                android:layout_height="match_parent"
+                                android:background="@color/xuber_grey"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/tvCancel"
+                                style="@style/Widget.AppCompat.Button.Borderless"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:onClick="@{(v)->bottomServiceModel.onClickStatus(v)}"
+                                android:padding="5dp"
+                                android:text="@string/label_cancel"
+                                android:textAllCaps="false"
+                                android:textColor="@color/xuper_blue"
+                                android:textSize="@dimen/_12sdp"
+                                android:visibility="visible" />
+                        </LinearLayout>
+                    </LinearLayout>
 
 
-            </RelativeLayout>
-        </androidx.cardview.widget.CardView>
-    </RelativeLayout>
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
     </LinearLayout>
 </layout>
 

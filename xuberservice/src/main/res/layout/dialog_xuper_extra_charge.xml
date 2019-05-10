@@ -10,12 +10,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_25sdp"
-        android:layout_marginRight="@dimen/_25sdp"
+        android:background="@android:color/transparent"
         android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_25sdp"
+        android:layout_marginRight="@dimen/_25sdp"
         android:background="@drawable/bg_dash_square"
         android:orientation="vertical">
 
@@ -44,10 +45,10 @@
             android:textSize="@dimen/_11sdp" />
 
 
-        <TextView
+        <EditText
             android:id="@+id/XuperDescription"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_70sdp"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginRight="@dimen/_20sdp"
@@ -55,10 +56,11 @@
             android:fontFamily="@font/avenirltstd_medium"
             android:lineSpacingExtra="3dp"
             android:paddingLeft="@dimen/_10sdp"
-            android:paddingTop="@dimen/_15sdp"
+            android:paddingTop="@dimen/_10sdp"
             android:paddingRight="@dimen/_10sdp"
             android:paddingBottom="@dimen/_15sdp"
-            android:text="A drunk Russian communist warrior. An angry Rogue cursing in Cantonese. An Italian who would sooner shoot people dead with words then with his arrows. An African Ameri..."
+            android:gravity="start"
+            android:text="@={extraChargeModel.extraAmountNotes}"
             android:textColor="@color/xuber_grey"
             android:textSize="@dimen/_10sdp" />
 
@@ -85,8 +87,10 @@
             android:maxWidth="@dimen/_120sdp"
             android:textSize="@dimen/_9sdp"
             android:minWidth="@dimen/_90sdp"
+            android:text="@={extraChargeModel.extraAmount}"
             android:inputType="numberDecimal"
             android:paddingTop="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_3sdp"
             android:paddingBottom="@dimen/_5sdp" />
 
         <View

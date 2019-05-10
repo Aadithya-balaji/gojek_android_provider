@@ -50,7 +50,7 @@
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etLabelValue"
-                style="@style/SmallText.Grey"
+                style="@style/VerySmallText.Black"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:afterTextChanged="@{(edtitable)->bankViewModel.afterValueChanged(edtitable,position)}"

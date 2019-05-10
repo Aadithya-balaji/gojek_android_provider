@@ -42,12 +42,16 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
         mail_support_tv.text = supportDetails.contactEmail
         //website_support_tv.text = supportDetails
 
-        phonenumber_support_tv.setOnClickListener {
+        call_support_ll.setOnClickListener {
             goToPhoneCall()
         }
 
-        mail_support_tv.setOnClickListener {
+        mail_support_ll.setOnClickListener {
             goToMail()
+        }
+
+        web_support_ll.setOnClickListener{
+            goToWebsite()
         }
 
     }
@@ -69,9 +73,9 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
     }
 
     override fun goToWebsite() {
-        /*      val i = Intent(Intent.ACTION_VIEW)
-              i.data = Uri.parse("")
-              startActivity(i)*/
+              val i = Intent(Intent.ACTION_VIEW)
+              i.data = Uri.parse("www.google.com")
+              startActivity(i)
     }
 
 

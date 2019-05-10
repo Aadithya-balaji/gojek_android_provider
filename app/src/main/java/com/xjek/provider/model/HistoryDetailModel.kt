@@ -234,6 +234,6 @@ data class HistoryDetailProvider(
         val state_id: Any,
         val status: String,
         val stripe_cust_id: String,
-        val wallet_balance: Int,
+        var wallet_balance: Double = 0.0,
         val zone_id: Any
 )

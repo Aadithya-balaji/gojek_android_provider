@@ -44,6 +44,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
         orderFragmentViewModel = OrderFragmentViewModel()
         dashboardViewModel = ViewModelProviders.of(activity!!).get(DashBoardViewModel::class.java)
         this.mViewDataBinding = mViewDataBinding as FragmentOrderBinding
+        this.mViewDataBinding.setLifecycleOwner(this)
         orderFragmentViewModel.navigator = this
         this.mViewDataBinding.orderfragmentviewmodel = orderFragmentViewModel
 

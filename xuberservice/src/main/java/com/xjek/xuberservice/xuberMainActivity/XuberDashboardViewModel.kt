@@ -55,12 +55,8 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
         navigator.updateService(view)
     }
 
-    fun showCamPage() {
-        navigator.showPicturePreview()
-    }
-
-    fun showCurrentLocation() {
-        navigator.showCurrentLocation()
+    fun showCamPage(isFrontImage: Boolean) {
+        navigator.showPicturePreview(isFrontImage)
     }
 
     fun moveStatusFlow() {

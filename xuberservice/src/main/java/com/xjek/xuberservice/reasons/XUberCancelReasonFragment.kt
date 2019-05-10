@@ -39,6 +39,8 @@ class XUberCancelReasonFragment : BaseDialogFragment<DialogReasonBinding>(), Cus
                 val reasonAdapter = XuberReasonAdapter(activity!!, this@XUberCancelReasonFragment,
                         reasonModel.responseData as List<ReasonModel.ResponseData>)
                 mReasonFragmentBinding.reasonadapter = reasonAdapter
+                mReasonFragmentBinding.llProgress.visibility = View.GONE
+                mReasonFragmentBinding.reasonTypes.visibility = View.VISIBLE
             }
         })
     }
@@ -51,13 +53,14 @@ class XUberCancelReasonFragment : BaseDialogFragment<DialogReasonBinding>(), Cus
 
     override fun getLayout(): Int = R.layout.dialog_reason
 
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         getReasons = context as GetReasonsInterface
     }
 
     override fun closePopup() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        dialog!!.dismiss()
     }
 
     override fun getErrorMessage(error: String) {

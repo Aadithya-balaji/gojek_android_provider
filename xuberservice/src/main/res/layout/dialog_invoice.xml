@@ -18,8 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_dash_square"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
         android:orientation="vertical">
 
         <TextView
@@ -70,16 +70,29 @@
                         android:textColor="@color/xuper_light_black"
                         android:textSize="@dimen/_12sdp" />
 
-                    <com.xjek.base.views.customviews.SmartRatingBar
-                        android:id="@+id/rbUserRating"
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="13dp"
-                        android:layout_marginTop="3dp"
-                        app:gap="@dimen/_5sdp"
-                        app:indicator="false"
-                        app:maxRating="5"
-                        app:orientation="horizontal"
-                        app:rating="3.5" />
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvXuperRating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:text="@={invoicemodel.rating}"
+                            android:textColor="@color/xuber_grey"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <ImageView
+                            android:id="@+id/ivXuperRate"
+                            android:layout_width="@dimen/_10sdp"
+                            android:layout_height="@dimen/_10sdp"
+                            android:src="@drawable/star"
+                            android:layout_marginLeft="@dimen/_3sdp"
+                            android:tint="@color/chip_yellow_inner_color" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -200,7 +213,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:text="$2"
+                android:text="@={invoicemodel.totalAmount}"
                 android:textColor="@color/xuper_blue"
                 android:textSize="@dimen/_12sdp" />
         </RelativeLayout>

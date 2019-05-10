@@ -22,6 +22,7 @@ class XuperInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
     var requestID = MutableLiveData<String>()
     var showProgress = MutableLiveData<Boolean>()
     var extraCharge=MutableLiveData<String>()
+    var extraChargeNotes=MutableLiveData<String>()
 
     fun confirmPayment() {
         navigator.submit()
@@ -37,6 +38,7 @@ class XuperInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
         params.put(Constants.Common.ID, RequestBody.create(MediaType.parse("text/plain"), requestID.value.toString()))
         params.put(Constants.XuperProvider.STATUS, RequestBody.create(MediaType.parse("text/plain"), "PAYMENT"))
         params.put(Constants.Common.METHOD, RequestBody.create(MediaType.parse("text/plain"), "PATCH"))
+        params.put("extra_charge_notes", RequestBody.create(MediaType.parse("text/plain"),extraChargeNotes.value.toString()))
         getCompositeDisposable().add(xuperRepository.confirmPayment(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
     }
 }

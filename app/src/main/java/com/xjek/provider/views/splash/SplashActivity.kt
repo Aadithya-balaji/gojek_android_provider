@@ -1,8 +1,13 @@
 package com.xjek.provider.views.splash
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.databinding.ViewDataBinding
 import com.google.gson.Gson
+import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.data.Constants
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
@@ -23,6 +28,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     public override fun getLayoutId(): Int = R.layout.activity_splash
 
+    private lateinit var mUrlPersistence: SharedPreferences
+
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivitySplashBinding
         binding.lifecycleOwner = this
@@ -32,8 +39,11 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         observeViewModel()
 
         viewModel.getConfig()
+
+        mUrlPersistence = BaseApplication.run { getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE) }
     }
 
+    @SuppressLint("CommitPrefEdits")
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
             writePreferences(PreferencesKey.BASE_ID, "0")
@@ -43,16 +53,43 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 //            writePreferences(PreferencesKey.BASE_ID, "0")
 //            writePreferences(PreferencesKey.BASE_ID, "0")
 
-            Constants.BaseUrl.APP_BASE_URL = it.responseData.baseUrl
+
+            mUrlPersistence.run {
+                edit().putString(PreferencesKey.BASE_URL, it.responseData.baseUrl).apply()
+            }
 
             writePreferences(PreferencesKey.BASE_CONFIG_RESPONSE, Gson().toJson(it.responseData))
 
             it.responseData.services.forEach { service ->
                 run {
                     when (service.adminServiceName) {
-                        "TRANSPORT" -> Constants.BaseUrl.TAXI_BASE_URL = service.baseUrl
-                        "ORDER" -> Constants.BaseUrl.ORDER_BASE_URL = service.baseUrl
-                        "SERVICE" -> Constants.BaseUrl.SERVICE_BASE_URL = service.baseUrl
+                        "TRANSPORT" -> run {
+                            mUrlPersistence.edit().putString(PreferencesKey.TRANSPORT_URL, service.baseUrl)
+                        }
+                        "ORDER" -> {
+                            mUrlPersistence.edit().putString(PreferencesKey.ORDER_URL, service.baseUrl)
+                        }
+                        "SERVICE" -> {
+                            mUrlPersistence.edit().putString(PreferencesKey.SERVICE_URL, service.baseUrl)
+                        }
+                        else -> {
+
+                        }
+                    }
+                }
+            }
+
+            for (i in 0 until it.responseData.appSetting.payments.size) {
+                val paymentData = it.responseData.appSetting.payments[i]
+                when (paymentData.name.toLowerCase()) {
+                    "card" -> {
+                        for (j in 0 until it.responseData.appSetting.payments[i].credentials.size) {
+                            val credential = it.responseData.appSetting.payments[i].credentials[j]
+                            if (credential.name.toLowerCase() == "stripe_publishable_key") {
+                                writePreferences(PreferencesKey.STRIPE_KEY, credential.value)
+                            }
+                        }
+
                     }
                 }
             }

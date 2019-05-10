@@ -232,7 +232,7 @@
                 android:id="@+id/iv_profile"
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
-                android:src="@drawable/profile_placeholder"
+                android:src="@drawable/dummy_profile_pic"
                 app:civ_background_color="@color/colorPrimary"
                 app:civ_border="true"
                 app:civ_border_color="@color/colorPrimary"

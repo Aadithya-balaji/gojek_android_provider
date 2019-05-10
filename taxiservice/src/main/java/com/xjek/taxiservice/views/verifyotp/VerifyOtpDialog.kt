@@ -47,7 +47,7 @@ class VerifyOtpDialog : BaseDialogFragment<FragmentVerifyOtpBinding>(), VerifyOT
                 params["_method"] = "PATCH"
                 mTaxiMainDashboardViewModel.taxiStatusUpdate(params)
                 dismiss()
-            } else ViewUtils.showToast(context!!, resources.getString(R.string.invalid_otp), true)
+            } else ViewUtils.showToast(context!!, resources.getString(R.string.invalid_otp), false)
         }
     }
 }

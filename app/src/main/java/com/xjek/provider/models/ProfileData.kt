@@ -36,7 +36,7 @@ class ProfileData {
     @SerializedName("wallet_balance")
     var walletBalance: Double? = 0.0
     @SerializedName("rating")
-    var rating: Float? = null
+    var rating: Double? = 0.0
     @SerializedName("status")
     var status: String? = null
     @SerializedName("admin_id")
@@ -49,6 +49,4 @@ class ProfileData {
     val countryName: CountryDataModel? = null
     @SerializedName("city")
     val cityName: CityDataModel? = null
-
-
 }

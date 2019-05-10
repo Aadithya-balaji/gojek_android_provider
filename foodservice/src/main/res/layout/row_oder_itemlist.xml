@@ -3,7 +3,6 @@
 
     <data>
 
-
     </data>
 
     <RelativeLayout
@@ -13,25 +12,47 @@
         android:layout_marginRight="@dimen/_5sdp">
 
         <TextView
+            android:id="@+id/order_item_name"
+            style="@style/SmallText.Plain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/order_item_name"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/order_item_cost_tv"
             android:padding="@dimen/_2sdp"
             android:text="@string/dummy_item_name"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_10sdp" />
+            android:textColor="@color/black" />
 
         <TextView
-            android:id="@+id/order_tem_cost_tv"
+            android:id="@+id/addon_item_name"
+            style="@style/SmallText.Plain"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_below="@+id/order_item_name"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="@dimen/_8sdp"
+            android:layout_toStartOf="@+id/order_item_cost_tv"
+            android:padding="@dimen/_2sdp"
+            android:text="@string/dummy_item_name" />
+
+        <TextView
+            android:id="@+id/order_item_cost_tv"
+            style="@style/SmallText.Plain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:padding="@dimen/_2sdp"
             android:text="@string/dummy_item_total"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_10sdp"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/addon_item_cost_tv"
+            style="@style/SmallText.Plain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_item_cost_tv"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="@dimen/_10sdp" />
+            android:padding="@dimen/_2sdp"
+            android:text="@string/dummy_item_total" />
+
     </RelativeLayout>
 </layout>

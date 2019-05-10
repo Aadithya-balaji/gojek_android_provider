@@ -9,7 +9,6 @@ import retrofit2.http.*
 
 interface XuperApiService {
 
-
     @GET("provider/check/serve/request")
     fun xuperCheckRequest(@Header("Authorization") token: String, @Query("latitude") latitude: String, @Query("longitude") longitude: String): Observable<XuperCheckRequest>
 
@@ -31,6 +30,4 @@ interface XuperApiService {
     @Multipart
     @POST("provider/update/serve/request")
     fun confirmPayment(@Header("Authorization") token: String, @PartMap params: HashMap<String, RequestBody>): Observable<UpdateRequest>
-
-
 }

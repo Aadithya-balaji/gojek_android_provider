@@ -33,7 +33,8 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
     private lateinit var mediaFile: File
     private lateinit var appCompatActivity: AppCompatActivity
     private var localPath: Uri? = null
-    private  lateinit var  getFilePath: GetFilePathInterface
+    private lateinit var getFilePath: GetFilePathInterface
+    private var isFront: Boolean = false
 
 
     override fun getLayout(): Int {
@@ -43,7 +44,7 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
     override fun onAttach(context: Context) {
         super.onAttach(context)
         appCompatActivity = context as AppCompatActivity
-        getFilePath=context as GetFilePathInterface
+        getFilePath = context as GetFilePathInterface
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +64,16 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
         dialogUploadPictureViewModel.navigator = this
         dialogUploadImageBinding.setLifecycleOwner(this)
         dialogUploadImageBinding.uploadImageModel = dialogUploadPictureViewModel
+        getBundleValues()
+        if (isFront)
+            dialogUploadImageBinding.tvServiceState.setText(resources.getString(R.string.before_service))
+        else
+            dialogUploadImageBinding.tvServiceState.setText(resources.getString(R.string.after_service))
+
+    }
+
+    fun getBundleValues() {
+        isFront = if (arguments != null && arguments!!.containsKey("isFront")) arguments!!.getBoolean("isFront", true) else true
     }
 
 
@@ -75,11 +86,11 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
     }
 
     override fun submit() {
-        if(localPath!=null){
+        if (localPath != null) {
             getFilePath.getFilePath(localPath!!)
             dialog!!.dismiss()
-        }else{
-            ViewUtils.showToast(appCompatActivity,resources.getString(R.string.empty_image),false)
+        } else {
+            ViewUtils.showToast(appCompatActivity, resources.getString(R.string.empty_image), false)
         }
     }
 
@@ -119,7 +130,6 @@ class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), Dial
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri)
         startActivityForResult(intent, requestCode)
     }
-
 
 
 }

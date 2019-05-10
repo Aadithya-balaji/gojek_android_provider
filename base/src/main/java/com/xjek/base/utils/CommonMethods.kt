@@ -92,13 +92,10 @@ class CommonMethods {
                 fromDate=fromSimpledateFormat.parse(strFromDate)
                 fromCalender= Calendar.getInstance(TimeZone.getDefault())
                 fromCalender.time=fromDate
-
                 toDate=fromSimpledateFormat.parse(strFromDate)
                 toCalendar= Calendar.getInstance(TimeZone.getDefault())
                 toCalendar.time=toDate
                 diffTime=toCalendar.time.time -fromCalender.time.time
-                Log.e("fromTime","------"+fromCalender.time.time)
-
                 val formatedDate=Date()
                 formatedDate.time=diffTime
                 val formatedSimpleDateFormat=SimpleDateFormat("HH:mm",Locale.getDefault())

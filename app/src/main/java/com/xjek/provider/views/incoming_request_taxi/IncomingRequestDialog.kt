@@ -21,7 +21,7 @@ import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
-import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
+import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
@@ -70,7 +70,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         dialogTaxiIncomingReqBinding.requestmodel = incomingRequestViewModel
         dialogTaxiIncomingReqBinding.lifecycleOwner = this
         incomingRequestViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()) {
+        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty() && incomingRequestModel!!.responseData.requests[0].time_left_to_respond>0) {
             totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond)
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
@@ -134,6 +134,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         observeLiveData(incomingRequestViewModel.rejectRequestLiveData) {
             loadingObservable.value = false
             if (incomingRequestViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")) {
+                if(timerToTakeOrder!=null)
                 timerToTakeOrder.cancel()
                 com.xjek.base.utils.ViewUtils.showToast(activity!!, incomingRequestViewModel.rejectRequestLiveData.value!!.message.toString(), false)
                 dialog!!.dismiss()
@@ -147,7 +148,6 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         params["id"] = incomingRequestModel!!.responseData.requests[0].request.id.toString()
         params["service_id"] = incomingRequestModel!!.responseData.requests[0].service.id.toString()
         incomingRequestViewModel.acceptRequest(params)
-
     }
 
     override fun cancel() {

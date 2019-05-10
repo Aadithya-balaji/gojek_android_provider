@@ -136,6 +136,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         currentLongitude = if (intent.hasExtra("lon")) intent.getDoubleExtra("lon", 0.0) else 0.0
     }
 
+
     fun getApiResponse() {
         mViewModel.xuperCheckRequest.observe(this, Observer<XuperCheckRequest> { xuberCheckRequest ->
             if (xuberCheckRequest!!.responseData!!.requests != null) {

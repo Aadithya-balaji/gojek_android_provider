@@ -1,4 +1,4 @@
-package com.xjek.foodservice.view
+package com.xjek.foodservice.ui.dashboard
 
 interface FoodLiveTaskServiceNavigator {
     fun checkOrderDeliverStatus()

@@ -1,4 +1,4 @@
-package com.xjek.foodservice.view.model
+package com.xjek.foodservice.model
 
 import java.io.Serializable
 
@@ -18,7 +18,7 @@ data class ResponseData(
         var referral_count: String = "",
         var referral_total_amount: Int = 0,
         var referral_total_count: String = "",
-        var requests: List<Request> = listOf(),
+        var requests: Request = Request(),
         var ride_otp: String = "",
         var serve_otp: String = "",
         var service_status: String = ""
@@ -155,8 +155,19 @@ class Item(
         var note: String = "",
         var product_data: String = "",
         var product: Product = Product(),
-        var store: Store = Store()
-//TODO Need to Add CART ADDON
+        var store: Store = Store(),
+        var cartaddon: List<CartAddon> = listOf()
+) : Serializable
+
+class CartAddon(
+        var id: String = "",
+        var store_cart_id: String = "",
+        var store_cart_item_id: String = "",
+        var store_item_addons_id: String = "",
+        var store_addon_id: String = "",
+        var company_id: String = "",
+        var addon_price: String = "",
+        var addon_name: String = ""
 ) : Serializable
 
 class Store(

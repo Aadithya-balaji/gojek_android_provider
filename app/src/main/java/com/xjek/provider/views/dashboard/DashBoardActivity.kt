@@ -39,7 +39,7 @@ import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
-import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
+import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityDashboardBinding
 import com.xjek.provider.views.account.AccountFragment
@@ -209,6 +209,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
                     Log.e("CheckStatus", "-----" + checkStatusData.responseData.requests[0].status)
                     writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
+                    writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
                     when (checkStatusData.responseData.requests[0].request.status) {
                         SEARCHING -> {
                             if (!mIncomingRequestDialog.isShown()) {

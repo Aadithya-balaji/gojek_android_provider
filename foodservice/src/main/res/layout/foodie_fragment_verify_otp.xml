@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="otpviewmodel"
+            type="com.xjek.foodservice.ui.verifyotp.FoodieVerifyOTPViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/otp_img"
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/foodie_otp" />
+
+        <TextView
+            android:id="@+id/enter_opt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/otp_img"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/enter_the_otp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_14sdp" />
+
+        <!--
+                <me.philio.pinentry.PinEntryView
+                    android:id="@+id/ed_otp"
+                    android:layout_width="wrap_content"
+                    app:digitBackground="@drawable/foodie_otp_grey"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/enter_opt"
+                    app:accentType="character"
+                    app:digitTextColor="@color/food_red"
+                    app:mask=""
+                    app:pinInputType="number"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="10dp" />
+        -->
+
+        <!--
+                <com.alimuzaffar.lib.pin.PinEntryEditText
+                    android:id="@+id/ed_otp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/enter_opt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:background="@null"
+                    android:cursorVisible="false"
+                    android:digits="1234567890"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:textIsSelectable="false"
+                    android:textSize="20sp"
+                    android:visibility="visible"
+                    app:pinLineColors="@color/food_red" />
+        -->
+
+        <com.alimuzaffar.lib.pin.PinEntryEditText
+            android:id="@+id/ed_otp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/enter_opt"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/_50sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_50sdp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:background="@null"
+            android:cursorVisible="false"
+            android:digits="1234567890"
+            android:inputType="number"
+            android:maxLength="4"
+            android:textIsSelectable="false"
+            android:textSize="20sp"
+            android:visibility="visible"
+            app:pinLineColors="@color/pin_line_colors" />
+
+        <TextView
+            android:id="@+id/payment_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ed_otp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/_8sdp"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:text="@string/foodie_make_sure_your_payment"
+            android:gravity="center"
+            android:textColor="@color/food_red"
+            android:textSize="@dimen/_15sdp"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/bt_start_trip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/payment_txt"
+            android:background="@color/food_red"
+            android:backgroundTint="@color/food_red"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:text="@string/submit"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13sdp" />
+    </RelativeLayout>
+</layout>

@@ -45,4 +45,9 @@
         <item name="android:textSize">@dimen/_10sdp</item>
     </style>
 
+    <style name="FoodieRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/light_grey</item>
+        <item name="colorControlActivated">@color/colorTaxiYellow</item>
+    </style>
+
 </resources>

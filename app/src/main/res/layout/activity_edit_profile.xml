@@ -256,7 +256,7 @@
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/profile_placeholder" />
+                android:src="@drawable/dummy_profile_pic" />
 
             <ImageView
                 android:layout_width="@dimen/_20sdp"

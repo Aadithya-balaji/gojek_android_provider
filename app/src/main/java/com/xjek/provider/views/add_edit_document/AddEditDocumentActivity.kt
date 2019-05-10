@@ -34,9 +34,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     private lateinit var viewModelAddEdit: AddEditDocumentViewModel
 
     private lateinit var calendar: Calendar
-    override fun getLayoutId(): Int {
-        return R.layout.activity_add_edit_document
-    }
+
+    override fun getLayoutId(): Int = R.layout.activity_add_edit_document
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityAddEditDocumentBinding
@@ -76,7 +75,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         }
 
         observeLiveData(viewModelAddEdit.addDocumentResponse) {
-            ViewUtils.showToast(this, "Document added successfully", false)
+            ViewUtils.showToast(this, "Document added successfully", true)
             viewModelAddEdit.incrementPosition()
         }
 

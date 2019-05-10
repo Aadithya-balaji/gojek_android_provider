@@ -1,6 +1,5 @@
 package com.xjek.provider.views.dashboard
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -20,13 +19,14 @@ import com.google.gson.Gson
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
 import com.xjek.base.data.Constants.ModuleTypes.SERVICE
 import com.xjek.base.data.Constants.ModuleTypes.TRANSPORT
+import com.xjek.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
+import com.xjek.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.xjek.base.data.Constants.RideStatus.SEARCHING
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
@@ -104,19 +104,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
-        Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-                .withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        updateLocation(true)
-                        updateCurrentLocation()
-                    }
 
-                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                        token?.continuePermissionRequest()
-                    }
-                }).check()
-
+        if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+            updateLocation(true)
+            updateCurrentLocation()
+        } else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION)) {
+            updateLocation(true)
+            updateCurrentLocation()
+        }
         mViewModel.getProfile()
         getApiResponse()
 
@@ -153,7 +148,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 tbr_rl_right.visibility = View.VISIBLE
                 tbr_iv_logo.visibility = View.GONE
             }
-
             tbr_home.visibility = View.VISIBLE
         } catch (e: Exception) {
             e.printStackTrace()
@@ -187,13 +181,25 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     mViewModel.longitude.value = location.longitude
                     mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
-
+                    if (mViewModel.currentStatus.value == TRANSPORT) {
+                        val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
+                    } else if (mViewModel.currentStatus.value == SERVICE) {
+                        val intent = Intent(this@DashBoardActivity, XuberDashBoardActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
+                    } else if (mViewModel.currentStatus.value == ORDER) {
+                        val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                        startActivity(intent)
+                    }
                 }
 
                 override fun onFailure(messsage: String?) {
-                    mViewModel.latitude.value = 0.0
-                    mViewModel.longitude.value = 0.0
-                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
+//                    mViewModel.latitude.value = 0.0
+//                    mViewModel.longitude.value = 0.0
+//                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
                 }
             })
@@ -202,12 +208,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun getApiResponse() {
         println("RRR :: HomeFragment.getApiResponse")
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
-                    Log.e("CheckStatus", "-----" + checkStatusData.responseData.requests[0].status)
+                    mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
+                    Log.e("CheckStatus", "-----" + mViewModel.currentStatus.value)
                     writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
                     when (checkStatusData.responseData.requests[0].request.status) {
                         SEARCHING -> {
@@ -223,23 +231,28 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                         else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
                             TRANSPORT -> {
                                 BROADCAST = TRANSPORT
-                                val intent = Intent(this, TaxiDashboardActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                startActivity(intent)
+                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                    val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    startActivity(intent)
+                                }
                             }
-                            SERVICE -> if (!BROADCAST.equals(SERVICE)) {
+                            SERVICE -> {
                                 BROADCAST = SERVICE
-                                  val intent = Intent(this, XuberDashBoardActivity::class.java)
-                                  intent.putExtra("lat", mViewModel.latitude.value)
-                                  intent.putExtra("lon", mViewModel.longitude.value)
-                                  intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                  startActivity(intent)
+                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                    val intent = Intent(this, XuberDashBoardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    startActivity(intent)
+                                }
+
                             }
-                            ORDER -> if (BROADCAST != ORDER) {
+                            ORDER -> {
                                 BROADCAST = ORDER
-                                val intent = Intent(this, TaxiDashboardActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                startActivity(intent)
+                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                    val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    startActivity(intent)
+                                }
                             }
 
                             else -> BROADCAST = "BASE_BROADCAST"

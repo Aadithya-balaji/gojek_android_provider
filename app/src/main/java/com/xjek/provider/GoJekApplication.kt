@@ -34,6 +34,10 @@ class GoJekApplication : BaseApplication() {
                 SocketManager.onEvent(Constants.ROOM_NAME.STATUS, Emitter.Listener {
                     Log.e("SOCKET", "SOCKET_SK status " + it[0])
                 })
+
+                SocketManager.onEvent(Constants.ROOM_NAME.UPDATELOCATION, Emitter.Listener {
+                    Log.e("SOCKET", "SOCKET_SK location update status " + it[0])
+                })
             }
 
             override fun onDisconnected() {

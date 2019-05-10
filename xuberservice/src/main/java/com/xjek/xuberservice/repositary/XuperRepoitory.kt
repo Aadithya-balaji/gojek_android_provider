@@ -17,7 +17,7 @@ import retrofit2.http.Part
 
 class XuperRepoitory : BaseRepository() {
      private val serviceId: String
-        get() = Constants.BaseUrl.APP_BASE_URL
+        get() = Constants.BaseUrl.SERVICE_BASE_URL
 
 
     fun xuperCheckRequesst(viewModel: XuberDashboardViewModel, token: String, lat: String, lon: String): Disposable {

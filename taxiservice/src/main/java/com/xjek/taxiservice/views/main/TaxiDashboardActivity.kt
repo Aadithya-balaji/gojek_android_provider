@@ -74,6 +74,7 @@ import com.xjek.taxiservice.views.verifyotp.VerifyOtpDialog
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import kotlinx.android.synthetic.main.layout_taxi_status_container.*
+import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -111,6 +112,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var roomConnected: Boolean = false
 
+    private var doubleBackToExit:Boolean = false
+
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
@@ -122,7 +125,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         activityTaxiMainBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
         sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bsContainer)
-        sheetBehavior.peekHeight = 550
+        sheetBehavior.peekHeight = resources.getDimension(R.dimen._280sdp).toInt()
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -550,6 +553,15 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
 
+                if(roomConnected) {
+                    var locationObj = JSONObject()
+                    locationObj.put("latitude",location.latitude)
+                    locationObj.put("longitude",location.longitude)
+                    locationObj.put("room",Constants.ROOM_ID.TRANSPORT_ROOM)
+                    SocketManager.emit("send_location", locationObj)
+                    Log.e("SOCKET", "SOCKET_SK Location update called")
+                }
+
                 if (checkStatusApiCounter++ % 2 == 0) mViewModel.callTaxiCheckStatusAPI()
 
                 if (startLatLng.latitude > 0) endLatLng = startLatLng
@@ -744,7 +756,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun onBackPressed() {
-        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED) sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        if(doubleBackToExit){
+            finishAffinity()
+            return
+        }
+
+        doubleBackToExit = true
+        ViewUtils.showToast(this@TaxiDashboardActivity,"Please click back again to exit",true)
+        Handler().postDelayed({
+            doubleBackToExit = false
+        },2000)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

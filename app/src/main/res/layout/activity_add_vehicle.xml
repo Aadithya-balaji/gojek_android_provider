@@ -180,7 +180,7 @@
                     android:layout_marginTop="8dp"
                     android:elevation="4dp"
                     android:onClick="@{addVehicleViewModel::onVehicleImageClick}"
-                    android:src="@drawable/profile_placeholder"
+                    android:src="@drawable/dummy_profile_pic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

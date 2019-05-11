@@ -678,8 +678,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         v.getLocationInWindow(loc)
         //X and Y co-ordinate position to show the dropdown
         var xoff = 0
-        val yoff = 0
-
         if (popupWindow == null) {
             popupWindow = PopupWindow(
                     popupView,

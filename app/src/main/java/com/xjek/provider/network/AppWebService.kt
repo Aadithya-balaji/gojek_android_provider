@@ -201,6 +201,11 @@ interface AppWebService {
                             @Path("selcetedservice") selectedservice: String,
                             @QueryMap params: HashMap<String, String>): Observable<TransportHistory>
 
+    @GET("provider/history/{selcetedservice}")
+    fun getPastHistory(@Header("Authorization") token: String,
+                       @Path("selcetedservice") selectedservice: String,
+                       @QueryMap params: HashMap<String, String>): Observable<HistoryModel>
+
     @GET("provider/upcoming/trips/transport")
     fun getServiceHistory(@Header("Authorization") token: String,
                           @QueryMap params: HashMap<String, String>): Observable<TransportHistory>

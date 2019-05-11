@@ -74,7 +74,7 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
 
     override fun goToWebsite() {
               val i = Intent(Intent.ACTION_VIEW)
-              i.data = Uri.parse("www.google.com")
+              i.data = Uri.parse("https://www.google.com")
               startActivity(i)
     }
 

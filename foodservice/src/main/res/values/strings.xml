@@ -27,4 +27,16 @@
     <string name="superb">Superb</string>
     <string name="give_some_feedback_in_words">Give some feedback in words</string>
     <string name="submit">Submit</string>
+    <string name="package_amount">Package Amount</string>
+    <string name="wallet_amount">Wallet Amount</string>
+    <string name="promocode_deduction">Promocode Deduction</string>
+    <string name="discount_amount">Discount Amount</string>
+    <string name="rating">Rating</string>
+    <string name="rate_your_customer">Rate your customer</string>
+    <string name="leave_comments">Leave your comments</string>
+    <string name="enter_the_otp">Enter the OTP</string>
+    <string name="foodie_invalid_otp">Enter the valid OTP</string>
+    <string name="foodie_make_sure_your_payment">* Make sure your payment from customer</string>
+    <string name="no_valid_mobile">There is no valid phone number</string>
+    <string name="no_valid_loction">There is no valid location</string>
 </resources>

@@ -22,13 +22,11 @@
     </style>
 
 
-
     <style name="MediumText" parent="@android:style/TextAppearance.Medium">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/_14sdp</item>
     </style>
-
 
     <style name="MediumText.Black" parent="MediumText">
         <item name="android:textColor">@color/xuber_black</item>

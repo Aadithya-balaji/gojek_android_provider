@@ -138,6 +138,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         getApiResponse()
     }
 
+
     fun getApiResponse() {
         mViewModel.xuperCheckRequest.observe(this, Observer<XuperCheckRequest> { xuberCheckRequest ->
             try {
@@ -292,6 +293,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun moveStatusFlow() {
+
     }
 
     @SuppressLint("MissingPermission")

@@ -15,13 +15,13 @@ object Constants {
 
     const val DEFAULT_ZOOM = 15.0f
     val DEFAULT_LOCATION = LatLng(-33.8523341, 151.2106085)
-    var isSocketFailed:MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
+    var isSocketFailed: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
 
-    object RoomConstants{
+    object RoomConstants {
         @JvmField
-        var COMPANY_ID:String = String(Base64.decode(BuildConfig.SALT_KEY,Base64.DEFAULT), Charset.defaultCharset())
-        var CITY_ID:Int? = PreferencesHelper.get(PreferencesKey.CITY_ID,0)
-        var REQ_ID:Int? = PreferencesHelper.get(PreferencesKey.REQ_ID,0)
+        var COMPANY_ID: String = String(Base64.decode(BuildConfig.SALT_KEY, Base64.DEFAULT), Charset.defaultCharset())
+        var CITY_ID: Int? = PreferencesHelper.get(PreferencesKey.CITY_ID, 0)
+        var REQ_ID: Int? = PreferencesHelper.get(PreferencesKey.REQ_ID, 0)
     }
 
     object RequestCode {
@@ -46,34 +46,33 @@ object Constants {
 
     object BaseUrl {
         @JvmField
-        var APP_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE).getString(PreferencesKey.BASE_URL,BuildConfig.BASE_URL) }
-        var TAXI_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE).getString(PreferencesKey.TRANSPORT_URL,BuildConfig.BASE_URL) }
-        var ORDER_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE).getString(PreferencesKey.ORDER_URL,BuildConfig.BASE_URL) }
-        var SERVICE_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,Context.MODE_PRIVATE).getString(PreferencesKey.SERVICE_URL,BuildConfig.BASE_URL) }
+        var APP_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE).getString(PreferencesKey.BASE_URL, BuildConfig.BASE_URL) }
+        var TAXI_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE).getString(PreferencesKey.TRANSPORT_URL, BuildConfig.BASE_URL) }
+        var ORDER_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE).getString(PreferencesKey.ORDER_URL, BuildConfig.BASE_URL) }
+        var SERVICE_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE).getString(PreferencesKey.SERVICE_URL, BuildConfig.BASE_URL) }
     }
 
-    object ROOM_NAME{
-        var COMMON_ROOM_NAME:String = "joinCommonRoom"
-        var STATUS:String = "socketStatus"
-        var NEW_REQ:String = "newRequest"
-        var RIDE_REQ:String = "rideRequest"
-        var SERVICE_REQ:String = "serveRequest"
-        var ORDER_REQ:String = "orderRequest"
-        var TRANSPORT_ROOM_NAME:String = "joinPrivateRoom"
-        var SERVICE_ROOM_NAME:String = "joinPrivateRoom"
-        var ORDER_ROOM_NAME:String="joinPrivateRoom"
-        var UPDATELOCATION:String="updateLocation"
+    object ROOM_NAME {
+        var COMMON_ROOM_NAME: String = "joinCommonRoom"
+        var STATUS: String = "socketStatus"
+        var NEW_REQ: String = "newRequest"
+        var RIDE_REQ: String = "rideRequest"
+        var SERVICE_REQ: String = "serveRequest"
+        var ORDER_REQ: String = "orderRequest"
+        var TRANSPORT_ROOM_NAME: String = "joinPrivateRoom"
+        var SERVICE_ROOM_NAME: String = "joinPrivateRoom"
+        var ORDER_ROOM_NAME: String = "joinPrivateRoom"
+        var UPDATELOCATION: String = "updateLocation"
 
     }
 
 
-
-    object ROOM_ID{
+    object ROOM_ID {
         @JvmField
-        var COMMON_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.CITY_ID}"
-        var TRANSPORT_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_TRANSPORT"
-        var SERVICE_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_SERVICE"
-        var ORDER_ROOM:String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_ORDER"
+        var COMMON_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.CITY_ID}"
+        var TRANSPORT_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_TRANSPORT"
+        var SERVICE_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_SERVICE"
+        var ORDER_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_ORDER"
     }
 
     object ModuleTypes {

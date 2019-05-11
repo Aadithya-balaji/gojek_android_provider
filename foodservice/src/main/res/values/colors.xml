@@ -3,4 +3,6 @@
     <color name="white">#ffffff</color>
     <color name="food_red">#fc3a14</color>
     <color name="black">#000000</color>
+    <color name="grey">#4f4f4f</color>
+    <color name="light_grey">#9f9f9f</color>
 </resources>

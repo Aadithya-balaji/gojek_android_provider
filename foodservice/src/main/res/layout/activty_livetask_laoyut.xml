@@ -6,24 +6,38 @@
 
         <variable
             name="orderItemListAdpter"
-            type="com.xjek.foodservice.view.OrderItemListAdapter" />
+            type="com.xjek.foodservice.adapter.OrderItemListAdapter" />
 
         <variable
             name="foodLiveTaskviewModel"
-            type="com.xjek.foodservice.view.FoodLiveTaskServiceViewModel" />
-
+            type="com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceViewModel" />
     </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
+        <RelativeLayout
             android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/food_bg_white"
-            app:title="@string/live_task" />
+            android:layout_height="?actionBarSize"
+            android:elevation="@dimen/_3sdp">
+
+            <TextView
+                style="@style/MediumText.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:text="@string/live_task" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:layout_alignParentBottom="true"
+                android:background="#dadada" />
+
+        </RelativeLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -42,30 +56,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_15sdp"
-                    android:background="@color/food_red">
+                    android:background="@color/food_red"
+                    android:visibility="gone">
 
                     <TextView
+                        android:id="@+id/top_trnx_id"
+                        style="@style/MediumText.Bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="0dp"
                         android:padding="@dimen/_8sdp"
                         android:text="@string/time_left"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/white" />
 
-                    <TextView
-                        android:id="@+id/time_left_value_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:padding="@dimen/_8sdp"
-                        android:text="@string/dummy_time_left"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_12sdp"
-                        android:textStyle="bold" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -74,11 +76,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:gravity="center"
-                    android:visibility="gone"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <ImageView
                         android:id="@+id/icon_started_towards_restaurant"
@@ -86,8 +88,9 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_margin="8dp"
                         android:background="@drawable/round_accent"
+                        android:contentDescription="@string/app_name"
                         android:padding="@dimen/_5sdp"
-                        android:src="@drawable/ic_scooter_white" />
+                        app:srcCompat="@drawable/ic_scooter_white" />
 
                     <ImageView
                         android:id="@+id/icon_reached_restaurant"
@@ -134,13 +137,15 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp">
 
                     <ImageView
                         android:id="@+id/resturant_image"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_width="@dimen/_50sdp"
+                        android:layout_height="@dimen/_50sdp"
+                        android:contentDescription="@string/app_name"
                         android:scaleType="centerCrop"
                         android:src="@drawable/dummy_foodi_banner" />
 
@@ -148,94 +153,95 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_toEndOf="@+id/resturant_image"
-                        android:layout_toRightOf="@+id/resturant_image"
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/restaturant_name"
+                            android:id="@+id/loc_name_tv"
+                            style="@style/MediumText.Bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:padding="@dimen/_3sdp"
+                            android:paddingStart="@dimen/_3sdp"
+                            android:paddingEnd="@dimen/_3sdp"
                             android:text="@string/dummy_resturant_name"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textColor="@color/food_red" />
 
                         <TextView
-                            android:id="@+id/restaturant_address_tv"
+                            android:id="@+id/loc_address_tv"
+                            style="@style/SmallText.Plain"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_3sdp"
-                            android:text="@string/dummy_address"
-                            android:textSize="@dimen/_11sdp" />
-
+                            android:text="@string/dummy_address" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="@dimen/_5sdp">
+                            android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:id="@+id/call_img"
+                                android:layout_width="@dimen/_34sdp"
+                                android:layout_height="@dimen/_34sdp"
                                 android:layout_gravity="center"
-                                android:layout_margin="@dimen/_5sdp"
-                                android:src="@drawable/ic_call" />
+                                android:contentDescription="@string/app_name"
+                                android:padding="@dimen/_8sdp"
+                                app:srcCompat="@drawable/ic_call" />
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:id="@+id/loc_txt"
+                                android:layout_width="@dimen/_34sdp"
+                                android:layout_height="@dimen/_34sdp"
                                 android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/_10sdp"
-                                android:src="@drawable/ic_navigation" />
-
+                                android:contentDescription="@string/app_name"
+                                android:padding="@dimen/_8sdp"
+                                app:srcCompat="@drawable/ic_navigation" />
 
                         </LinearLayout>
-
-
                     </LinearLayout>
+                </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.1dp"
+                    android:background="#dadada" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/order_id_tv"
+                        style="@style/MediumText.Bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/delivered_time_tv"
+                        android:paddingStart="@dimen/_2sdp"
+                        android:paddingEnd="@dimen/_2sdp"
+                        android:text="@string/dummy_order_id"
+                        android:textColor="@color/food_red" />
+
+                    <TextView
+                        android:id="@+id/delivered_time_tv"
+                        style="@style/MediumText.Bold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:text="@string/dummy_time"
+                        android:textColor="@color/black" />
 
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.1dp"
-                    android:background="@color/black" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_8sdp">
-
-                    <TextView
-                        android:id="@+id/order_id_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/dummy_order_id"
-                        android:textColor="@color/food_red"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <TextView
-                        android:id="@+id/delivered_time_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_margin="5dp"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/dummy_time"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
-                </RelativeLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="@dimen/_5sdp" />
+                    android:background="#dadada" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/order_item_list_rv"
@@ -254,118 +260,241 @@
                     android:background="@drawable/bg_dotted_grey_line" />
 
                 <RelativeLayout
+                    android:id="@+id/item_total_lt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp">
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
+                        style="@style/SmallText.Plain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/item_total_tv"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/item_total"
-                        android:textSize="@dimen/_10sdp" />
+                        android:text="@string/item_total"/>
 
                     <TextView
                         android:id="@+id/item_total_tv"
+                        style="@style/SmallText.Plain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/dummy_item_total"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
+                        android:text="@string/dummy_item_total" />
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/service_tax_lt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp">
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
+                        style="@style/SmallText.Plain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/servicetax_tv"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/service_tax"
-                        android:textSize="@dimen/_10sdp" />
+                        android:text="@string/service_tax" />
 
                     <TextView
                         android:id="@+id/servicetax_tv"
+                        style="@style/SmallText.Plain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/dummy_item_total"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
+                        android:text="@string/dummy_item_total" />
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/delivery_charge_lt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp">
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
+                        style="@style/SmallText.Plain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/delivery_charge_tv"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/delivery_charge_tv"
-                        android:textSize="@dimen/_10sdp" />
+                        android:text="@string/delivery_charge_tv"/>
 
                     <TextView
                         android:id="@+id/delivery_charge_tv"
+                        style="@style/SmallText.Plain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/dummy_item_total"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_10sdp" />
+                        android:text="@string/dummy_item_total" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/package_amount_lt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
+
+                    <TextView
+                        style="@style/SmallText.Plain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/package_amount_tv"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/package_amount"/>
+
+                    <TextView
+                        android:id="@+id/package_amount_tv"
+                        style="@style/SmallText.Plain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/dummy_item_total"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/wallet_amount_lt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
+
+                    <TextView
+                        style="@style/SmallText.Plain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/wallet_amount_tv"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/wallet_amount"/>
+
+                    <TextView
+                        android:id="@+id/wallet_amount_tv"
+                        style="@style/SmallText.Plain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/dummy_item_total" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/promocode_deduction_lt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
+
+                    <TextView
+                        style="@style/SmallText.Plain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/promocode_deduction_tv"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/promocode_deduction" />
+
+                    <TextView
+                        android:id="@+id/promocode_deduction_tv"
+                        style="@style/SmallText.Plain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/dummy_item_total"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/discount_lt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
+
+                    <TextView
+                        style="@style/SmallText.Plain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@+id/discount_amount_tv"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/discount_amount"/>
+
+                    <TextView
+                        android:id="@+id/discount_amount_tv"
+                        style="@style/SmallText.Plain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/dummy_item_total" />
                 </RelativeLayout>
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
-                    android:layout_marginTop="@dimen/_5sdp" />
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="#dadada" />
 
                 <RelativeLayout
+                    android:id="@+id/total_value_lt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp">
+                    android:layout_marginTop="@dimen/_8sdp">
 
                     <TextView
+                        style="@style/SmallText.Plain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
                         android:layout_toStartOf="@+id/total_value_tv"
-                        android:layout_toLeftOf="@+id/total_value_tv"
                         android:padding="@dimen/_3sdp"
                         android:text="@string/total"
                         android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/total_value_tv"
+                        style="@style/SmallText.Plain"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:layout_marginEnd="@dimen/_15sdp"
-                        android:layout_marginRight="@dimen/_15sdp"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total"
                         android:textColor="@color/black" />
 
                 </RelativeLayout>
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:background="#dadada" />
 
             </LinearLayout>
-
         </ScrollView>
 
         <Button
@@ -373,13 +502,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            style="@style/SmallText.Bold"
             android:layout_margin="@dimen/_10sdp"
-            android:background="@drawable/foodie_round_corner"
-            android:text="@string/started_towards_restaturant"
+            android:backgroundTint="@color/food_red"
             android:onClick="@{() -> foodLiveTaskviewModel.updateFoodDeliverStatus()}"
+            android:padding="@dimen/_11sdp"
+            android:text="@string/started_towards_restaturant"
             android:textColor="@color/white" />
 
-
     </RelativeLayout>
-
 </layout>

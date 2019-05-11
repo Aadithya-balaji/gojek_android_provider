@@ -145,7 +145,6 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         return addresses
     }
 
-
     override fun openRatingDialog(data: ResponseData?) {
         mViewModel.showLoading.value = false
         val bundle = Bundle()

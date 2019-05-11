@@ -67,13 +67,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                 run {
                     when (service.adminServiceName) {
                         "TRANSPORT" -> run {
-                            mUrlPersistence.edit().putString(PreferencesKey.TRANSPORT_URL, service.baseUrl)
+                            mUrlPersistence.edit().putString(PreferencesKey.TRANSPORT_URL, service.baseUrl).apply()
                         }
                         "ORDER" -> {
-                            mUrlPersistence.edit().putString(PreferencesKey.ORDER_URL, service.baseUrl)
+                            mUrlPersistence.edit().putString(PreferencesKey.ORDER_URL, service.baseUrl).apply()
                         }
                         "SERVICE" -> {
-                            mUrlPersistence.edit().putString(PreferencesKey.SERVICE_URL, service.baseUrl)
+                            mUrlPersistence.edit().putString(PreferencesKey.SERVICE_URL, service.baseUrl).apply()
                         }
                         else -> {
 

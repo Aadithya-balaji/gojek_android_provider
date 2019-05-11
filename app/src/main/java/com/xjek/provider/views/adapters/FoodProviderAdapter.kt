@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.xjek.foodservice.view.FoodLiveTaskServiceFlow
+import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.RowFoodproviderItemBinding
 

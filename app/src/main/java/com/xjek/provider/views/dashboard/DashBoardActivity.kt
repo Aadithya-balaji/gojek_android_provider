@@ -39,6 +39,7 @@ import com.xjek.base.socket.SocketManager
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
+import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityDashboardBinding
 import com.xjek.provider.views.account.AccountFragment
@@ -114,7 +115,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
         mViewModel.getProfile()
         getApiResponse()
-
     }
 
     override fun onResume() {
@@ -217,6 +217,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
                     Log.e("CheckStatus", "-----" + mViewModel.currentStatus.value)
                     writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
+                    writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
                     when (checkStatusData.responseData.requests[0].request.status) {
                         SEARCHING -> {
                             if (!mIncomingRequestDialog.isShown()) {
@@ -249,12 +250,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                             ORDER -> {
                                 BROADCAST = ORDER
                                 if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                    val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                    val intent = Intent(this, FoodLiveTaskServiceFlow::class.java)
                                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                     startActivity(intent)
                                 }
                             }
-
                             else -> BROADCAST = "BASE_BROADCAST"
                         }
                     }

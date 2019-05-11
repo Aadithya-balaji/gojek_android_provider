@@ -21,6 +21,7 @@ import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
+import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
@@ -69,7 +70,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         dialogTaxiIncomingReqBinding.requestmodel = incomingRequestViewModel
         dialogTaxiIncomingReqBinding.lifecycleOwner = this
         incomingRequestViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()) {
+        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty() && incomingRequestModel!!.responseData.requests[0].time_left_to_respond>0) {
             totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond)
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
@@ -113,21 +114,27 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     }
 
     private fun getApiResponse() {
-
         observeLiveData(incomingRequestViewModel.acceptRequestLiveData) {
             loadingObservable.value = false
             if (incomingRequestViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
-                if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3)
-                    activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
-                else activity!!.startActivity(Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity")))
+                if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3) {
+                    val intent = Intent(activity, XuberDashBoardActivity::class.java)
+                    activity!!.startActivity(intent)
+                } else if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 2) {
+                    val intent = Intent(activity, FoodLiveTaskServiceFlow::class.java)
+                    activity!!.startActivity(intent)
+                } else {
+                    val intent = Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity"))
+                    activity!!.startActivity(intent)
+                }
                 dialog!!.dismiss()
             }
         }
-
         observeLiveData(incomingRequestViewModel.rejectRequestLiveData) {
             loadingObservable.value = false
             if (incomingRequestViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")) {
+                if(timerToTakeOrder!=null)
                 timerToTakeOrder.cancel()
                 com.xjek.base.utils.ViewUtils.showToast(activity!!, incomingRequestViewModel.rejectRequestLiveData.value!!.message.toString(), false)
                 dialog!!.dismiss()
@@ -141,7 +148,6 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         params["id"] = incomingRequestModel!!.responseData.requests[0].request.id.toString()
         params["service_id"] = incomingRequestModel!!.responseData.requests[0].service.id.toString()
         incomingRequestViewModel.acceptRequest(params)
-
     }
 
     override fun cancel() {

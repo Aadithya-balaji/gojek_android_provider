@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 class TaxiRepository : BaseRepository() {
 
     private val serviceId: String
-        get() = Constants.BaseUrl.TAXI_BASE_URL
+        get() = Constants.BaseUrl.APP_BASE_URL
 
     fun checkRequest(viewModel: TaxiDashboardViewModel, token: String, lat: Double, lon: Double): Disposable {
         return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)

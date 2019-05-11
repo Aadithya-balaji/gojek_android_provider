@@ -564,10 +564,10 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun getTransaportHistory(viewModel: PastOrderViewModel, token: String, params: HashMap<String, String>
-                             , selectedservice: String): Disposable {
+    fun getPastORderHistory(viewModel: PastOrderViewModel, token: String, params: HashMap<String, String>
+                            , selectedservice: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getTransportHistory(token, selectedservice, params)
+                .getPastHistory(token, selectedservice, params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({

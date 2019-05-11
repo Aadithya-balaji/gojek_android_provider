@@ -77,7 +77,7 @@
                         android:id="@+id/civProfile"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
-                        android:src="@drawable/flower"
+                        android:src="@drawable/ic_profile_placeholder"
                         app:civ_border_color="@color/white"
                         app:civ_border_width="8dp" />
 

@@ -2,12 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <data>
 
         <variable
             name="taxiReasonAdapter"
             type="com.xjek.taxiservice.views.adapter.TaxiReasonAdapter" />
+
+        <variable
+            name="viewModel"
+            type="com.xjek.taxiservice.views.reasons.TaxiCancelReasonViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -34,12 +37,13 @@
 
             <ImageView
                 android:id="@+id/ivClear"
-                android:layout_width="@dimen/_22sdp"
-                android:layout_height="@dimen/_22sdp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/_7sdp"
+                android:layout_margin="10dp"
                 android:contentDescription="@string/done"
-                android:padding="@dimen/_5sdp"
+                android:onClick="@{() -> viewModel.dismissPopup()}"
+                android:padding="12dp"
                 app:srcCompat="@drawable/ic_taxi_close" />
 
             <View
@@ -55,9 +59,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/reason_label_tv"
                 android:layout_centerHorizontal="true"
-                android:minHeight="150dp"
-                android:padding="@dimen/_5sdp"
                 android:adapter="@{taxiReasonAdapter}"
+                android:minHeight="150dp"
+                android:overScrollMode="never"
+                android:padding="@dimen/_5sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
             <androidx.appcompat.widget.AppCompatEditText

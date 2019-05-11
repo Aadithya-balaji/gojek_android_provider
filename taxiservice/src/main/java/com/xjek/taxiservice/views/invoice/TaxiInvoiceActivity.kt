@@ -93,12 +93,14 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 mViewModel.distance.value = requestModel!!.request.payment.distance.toString()
                 mViewModel.timeTaken.value = requestModel!!.request.travel_time
                 mViewModel.baseFare.value = requestModel!!.request.currency + requestModel!!.request.payment.fixed.toString()
+                mViewModel.waitingCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.waiting_amount.toString()
                 mViewModel.distanceFare.value = requestModel!!.request.currency + requestModel!!.request.distance.toString()
                 mViewModel.tax.value = requestModel!!.request.currency + requestModel!!.request.payment.tax.toString()
                 mViewModel.tips.value = requestModel!!.request.currency + requestModel!!.request.payment.tips.toString()
                 mViewModel.total.value = requestModel!!.request.currency + requestModel!!.request.payment.total.toString()
                 if (requestModel!!.request.payment.toll_charge > 0)
                     mViewModel.tollCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.toll_charge.toString()
+                else mViewModel.tollCharge.value = requestModel!!.request.currency + "0"
             }
 
             if (mViewModel.pickuplocation.value != null && mViewModel.pickuplocation.value!!.length > 2)
@@ -106,7 +108,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
             else {
                 val lat = requestModel!!.request.s_latitude
                 val lon = requestModel!!.request.s_longitude
-                var latLng: com.google.maps.model.LatLng?
+                val latLng: com.google.maps.model.LatLng?
                 latLng = com.google.maps.model.LatLng(lat, lon)
                 val address = getCurrentAddress(this, latLng)
                 if (address.isNotEmpty()) mViewModel.pickuplocation.value = address[0].getAddressLine(0)
@@ -117,7 +119,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
             else {
                 val lat = requestModel!!.request.d_latitude
                 val lon = requestModel!!.request.d_longitude
-                var latLng: com.google.maps.model.LatLng?
+                val latLng: com.google.maps.model.LatLng?
                 latLng = com.google.maps.model.LatLng(lat, lon)
                 val address = getCurrentAddress(this, latLng)
                 if (address.isNotEmpty()) mViewModel.dropLocation.value = address[0].getAddressLine(0)

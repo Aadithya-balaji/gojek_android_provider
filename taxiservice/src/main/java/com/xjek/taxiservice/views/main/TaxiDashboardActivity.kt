@@ -53,6 +53,7 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.CAN_SAVE_LOCATION
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
@@ -109,10 +110,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var polyLine: ArrayList<LatLng> = ArrayList()
     private var checkStatusApiCounter = 0
-
     private var roomConnected: Boolean = false
-
-    private var doubleBackToExit:Boolean = false
+    private var doubleBackToExit: Boolean = false
 
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
 
@@ -377,7 +376,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btn_cancel.visibility = View.VISIBLE
         btn_arrived.visibility = View.VISIBLE
         btn_picked_up.visibility = View.GONE
-        llWaitingTimeContainer.visibility = View.VISIBLE
+        llWaitingTimeContainer.visibility = View.GONE
 
         Glide
                 .with(this)
@@ -403,11 +402,13 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_arrived.setOnClickListener {
-            val params: HashMap<String, String> = HashMap()
-            params["id"] = responseData.request.id.toString()
-            params["status"] = ARRIVED
-            params["_method"] = "PATCH"
-            mViewModel.taxiStatusUpdate(params)
+            if (!isWaitingTime!!) {
+                val params: HashMap<String, String> = HashMap()
+                params["id"] = responseData.request.id.toString()
+                params["status"] = ARRIVED
+                params["_method"] = "PATCH"
+                mViewModel.taxiStatusUpdate(params)
+            } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
         }
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
@@ -445,11 +446,21 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_picked_up.setOnClickListener {
-            val otpDialogFragment = VerifyOtpDialog.newInstance(
-                    responseData.request.otp,
-                    responseData.request.id
-            )
-            otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
+            if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) {
+                if (!isWaitingTime!!) {
+                    val otpDialogFragment = VerifyOtpDialog.newInstance(
+                            responseData.request.otp,
+                            responseData.request.id
+                    )
+                    otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
+                } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
+            } else {
+                val params: HashMap<String, String> = HashMap()
+                params["id"] = responseData.request.id.toString()
+                params["status"] = PICKED_UP
+                params["_method"] = "PATCH"
+                mViewModel.taxiStatusUpdate(params)
+            }
         }
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
@@ -496,27 +507,26 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_drop.setOnClickListener {
-            ViewUtils.showAlert(this, "Do you have any Toll charge",
-                    "Yes", "No",
-                    object : ViewUtils.ViewCallBack {
-                        override fun onPositiveButtonClick(dialog: DialogInterface) {
-                            val tollChargeDialog = TollChargeDialog()
-                            val bundle = Bundle()
-                            bundle.putString("requestID", responseData.request.id.toString())
-                            tollChargeDialog.arguments = bundle
-                            tollChargeDialog.show(supportFragmentManager, "tollCharge")
-                        }
+            if (!isWaitingTime!!) ViewUtils.showAlert(this, "Do you have any Toll charge",
+                    "Yes", "No", object : ViewUtils.ViewCallBack {
+                override fun onPositiveButtonClick(dialog: DialogInterface) {
+                    val tollChargeDialog = TollChargeDialog()
+                    val bundle = Bundle()
+                    bundle.putString("requestID", responseData.request.id.toString())
+                    tollChargeDialog.arguments = bundle
+                    tollChargeDialog.show(supportFragmentManager, "tollCharge")
+                }
 
-                        override fun onNegativeButtonClick(dialog: DialogInterface) {
-                            val params: HashMap<String, String> = HashMap()
-                            params["id"] = responseData.request.id.toString()
-                            params["status"] = DROPPED
-                            params["_method"] = "PATCH"
-                            params["toll_price"] = "0"
-                            mViewModel.taxiStatusUpdate(params)
-                            dialog.dismiss()
-                        }
-                    })
+                override fun onNegativeButtonClick(dialog: DialogInterface) {
+                    val params: HashMap<String, String> = HashMap()
+                    params["id"] = responseData.request.id.toString()
+                    params["status"] = DROPPED
+                    params["_method"] = "PATCH"
+                    params["toll_price"] = "0"
+                    mViewModel.taxiStatusUpdate(params)
+                    dialog.dismiss()
+                }
+            }) else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
         }
 
         drawRoute(LatLng(responseData.request.s_latitude, responseData.request.s_longitude),
@@ -525,15 +535,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
         var addresses: List<Address> = java.util.ArrayList()
-        val geocoder: Geocoder
+        val geoCoder: Geocoder
         try {
             if (Geocoder.isPresent()) {
-                geocoder = Geocoder(context, Locale.getDefault())
-                addresses = geocoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
-                // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                geoCoder = Geocoder(context, Locale.getDefault())
+                addresses = geoCoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
             }
         } catch (e: Exception) {
-            Log.d("EXception", "EXception" + e.message)
+            e.printStackTrace()
         }
 
         return addresses
@@ -547,11 +556,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
 
-                if(roomConnected) {
-                    var locationObj = JSONObject()
-                    locationObj.put("latitude",location.latitude)
-                    locationObj.put("longitude",location.longitude)
-                    locationObj.put("room",Constants.ROOM_ID.TRANSPORT_ROOM)
+                if (roomConnected) {
+                    val locationObj = JSONObject()
+                    locationObj.put("latitude", location.latitude)
+                    locationObj.put("longitude", location.longitude)
+                    locationObj.put("room", Constants.ROOM_ID.TRANSPORT_ROOM)
                     SocketManager.emit("send_location", locationObj)
                     Log.e("SOCKET", "SOCKET_SK Location update called")
                 }
@@ -750,16 +759,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun onBackPressed() {
-        if(doubleBackToExit){
+        if (doubleBackToExit) {
             finishAffinity()
             return
         }
 
         doubleBackToExit = true
-        ViewUtils.showToast(this@TaxiDashboardActivity,"Please click back again to exit",true)
+        ViewUtils.showToast(this@TaxiDashboardActivity, "Please click back again to exit", true)
         Handler().postDelayed({
             doubleBackToExit = false
-        },2000)
+        }, 2000)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

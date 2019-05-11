@@ -14,10 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // Configured the app to use vector support libraries with all Android platform versions
-        // back to Android 2.1 (API level 7+).
         vectorDrawables.useSupportLibrary = true
-//        resValue "string", "google_map_key", "AIzaSyD1tvSgKFTeUwWWz88NgenCXI4qrLfIbk0"
     }
     buildTypes {
         debug {

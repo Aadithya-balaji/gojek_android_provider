@@ -49,17 +49,14 @@ import com.xjek.base.data.Constants.RideStatus.DROPPED
 import com.xjek.base.data.Constants.RideStatus.PICKED_UP
 import com.xjek.base.data.Constants.XuperProvider.CANCEL
 import com.xjek.base.data.Constants.XuperProvider.START
-import com.xjek.base.data.PreferencesKey
-import com.xjek.base.extensions.writePreferences
 import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.readPreferences
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
-import com.xjek.base.utils.*
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
-import com.xjek.base.utils.CarMarkerAnimUtil
-import com.xjek.base.utils.CommonMethods
-import com.xjek.base.utils.PolyUtil
-import com.xjek.base.utils.ViewUtils
+import com.xjek.base.utils.*
 import com.xjek.base.utils.polyline.DirectionUtils
 import com.xjek.base.utils.polyline.PolyLineListener
 import com.xjek.base.utils.polyline.PolylineUtil
@@ -151,7 +148,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         mViewModel.serviceType.value = xuberCheckRequest.responseData.requests.service!!.service_name
                         mViewModel.descImage.value = xuberCheckRequest.responseData!!.requests!!.allow_image.toString()
                         mViewModel.strDesc.value = xuberCheckRequest.responseData!!.requests!!.allow_description.toString()
-                        mViewModel.userRating.value=String.format(resources.getString(R.string.xuper_rating_user),xuberCheckRequest.responseData!!.requests!!.user!!.rating!!.toDouble())
+                        mViewModel.userRating.value = String.format(resources.getString(R.string.xuper_rating_user), xuberCheckRequest.responseData!!.requests!!.user!!.rating!!.toDouble())
 
                         if (xuberCheckRequest.responseData.requests.user!!.picture != null) {
                             setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
@@ -162,15 +159,15 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude!!,
                                 xuberCheckRequest.responseData.requests.s_longitude!!)
 
-                    if (!roomConnected) {
-                        roomConnected = true
-                        val reqID = xuberCheckRequest.responseData.requests.id
-                        PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
-                        SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
-                    }
+                        if (!roomConnected) {
+                            roomConnected = true
+                            val reqID = xuberCheckRequest.responseData.requests.id
+                            PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
+                            SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
+                        }
 
-                    mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude!!,
-                            xuberCheckRequest.responseData.requests.s_longitude!!)
+                        mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude!!,
+                                xuberCheckRequest.responseData.requests.s_longitude!!)
 
                         when (status) {
                             ACCEPTED -> whenAccepted()
@@ -377,19 +374,17 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-//                updateMapLocation(LatLng(location.latitude, location.longitude))
 
                 if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuberCheckRequest()
 
-                if(roomConnected) {
-                    var locationObj = JSONObject()
-                    locationObj.put("latitude",location.latitude)
-                    locationObj.put("longitude",location.longitude)
-                    locationObj.put("room",Constants.ROOM_ID.SERVICE_ROOM)
+                if (roomConnected) {
+                    val locationObj = JSONObject()
+                    locationObj.put("latitude", location.latitude)
+                    locationObj.put("longitude", location.longitude)
+                    locationObj.put("room", Constants.ROOM_ID.SERVICE_ROOM)
                     SocketManager.emit("send_location", locationObj)
                     Log.e("SOCKET", "SOCKET_SK Location update service called")
                 }
-
 
                 if (startLatLng.latitude > 0) endLatLng = startLatLng
                 startLatLng = LatLng(location.latitude, location.longitude)
@@ -474,7 +469,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
-
         return bitmap
     }
 
@@ -496,7 +490,8 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     //When ride arrived
     private fun whenArrived() {
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
-        edtXuperOtp.visibility = View.VISIBLE
+        if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) edtXuperOtp.visibility = View.VISIBLE
+        else if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) edtXuperOtp.visibility = View.GONE
         mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvAllow.text = START
@@ -519,17 +514,13 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         val strCheckRequest = Gson().toJson(mViewModel.xuperCheckRequest.value)
         bundle.putString("strCheckReq", strCheckRequest)
         bundle.putBoolean("isFromCheckRequest", true)
-        val ratingDialog = supportFragmentManager!!.findFragmentByTag("ratingDialog");
+        val ratingDialog = supportFragmentManager.findFragmentByTag("ratingDialog");
         if (ratingDialog != null && ratingDialog.isVisible()) {
             //DO STUFF
-        } else {
-            //Whatever
-            if (!ratingPage.isShown()) {
-                ratingPage.arguments = bundle
-                ratingPage.show(supportFragmentManager, "ratingDialog")
-            }
+        } else if (!ratingPage.isShown()) {
+            ratingPage.arguments = bundle
+            ratingPage.show(supportFragmentManager, "ratingDialog")
         }
-
     }
 
     override fun showPicturePreview(isFront: Boolean) {
@@ -540,7 +531,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         dialogUploadPicture.show(supportFragmentManager, "takepicture")
     }
 
-    fun setUserImage(strUrl: String) {
+    private fun setUserImage(strUrl: String) {
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
                         .placeholder(R.drawable.ic_profile_placeholder)
@@ -553,9 +544,9 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         when (view.id) {
             R.id.tvAllow -> {
                 when (mBinding.llBottomService.llConfirm.tvAllow.text) {
-
                     ARRIVED -> {
-                        edtXuperOtp.visibility = View.VISIBLE
+                        if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) edtXuperOtp.visibility = View.VISIBLE
+                        else if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) edtXuperOtp.visibility = View.GONE
                         mViewModel.updateRequest(ARRIVED, null, false)
                     }
 
@@ -564,16 +555,16 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         mViewModel.otp.value.isNullOrEmpty() ->
                             ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
                         else -> {
-                            frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
-                            mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
+                            if (mViewModel.otp.value == mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.otp) {
+                                frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
+                                mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
+                            } else ViewUtils.showToast(this, resources.getString(R.string.invalid_otp), false)
                         }
                     }
 
-                    COMPLETED -> {
-                        if (backImgFile == null) ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false) else {
-                            backImgMultiPart = getImageMultiPart(backImgFile!!, false)
-                            mViewModel.updateRequest(DROPPED, backImgMultiPart, false)
-                        }
+                    COMPLETED -> if (backImgFile == null) ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false) else {
+                        backImgMultiPart = getImageMultiPart(backImgFile!!, false)
+                        mViewModel.updateRequest(DROPPED, backImgMultiPart, false)
                     }
                 }
             }

@@ -389,6 +389,35 @@
                     android:weightSum="1">
 
                     <TextView
+                        android:id="@+id/tv_invoice_label_waiting_charge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.60"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:text="@string/taxi_invoice_waiting_charge"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_invoice_waiting_charge"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.40"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:gravity="end"
+                        android:text="@={invoicemodel.waitingCharge}"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
                         android:id="@+id/tv_toll"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

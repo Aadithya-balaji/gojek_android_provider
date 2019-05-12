@@ -15,7 +15,7 @@ data class SetupShopResponseModel(
             @SerializedName("company_id") val companyId: Int,
             val name: String,
             val status: Int,
-            @SerializedName("providerservice") val providerService: List<ProviderService>?
+            @SerializedName("providerservice") val providerService: ProviderService?
     ) {
         data class ProviderService(
                 val id: Int,

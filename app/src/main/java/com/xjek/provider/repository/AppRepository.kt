@@ -447,19 +447,36 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun postVehicle(viewModel: AddVehicleViewModel, token: String,
-                    params: HashMap<String, RequestBody>,
-                    rcBookMultipart: MultipartBody.Part, insuranceMultipart: MultipartBody.Part
+    fun postVehicle(viewModel: AddVehicleViewModel, params: HashMap<String, RequestBody>, vehicleMultitpart: MultipartBody.Part?, rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
     ): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postVehicle(token, params, rcBookMultipart, insuranceMultipart)
+                .postVehicle(params, vehicleMultitpart, rcBookMultipart, insuranceMultipart)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingObservable.value = false
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleResponseObservable().postValue(it)
+                }, {
+                    viewModel.loadingObservable.value = false
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+
+    fun editVehicle(viewModel: AddVehicleViewModel, params: HashMap<String, RequestBody>, vehicleMultitpart: MultipartBody.Part?, rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
+    ): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .editVehicle(params, vehicleMultitpart, rcBookMultipart, insuranceMultipart)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     if (it.statusCode == "200")
                         viewModel.getVehicleResponseObservable().postValue(it)
+                    viewModel.loadingObservable.value = false
                 }, {
                     viewModel.navigator.showError(getErrorMessage(it))
+                    viewModel.loadingObservable.value = false
                 })
     }
 

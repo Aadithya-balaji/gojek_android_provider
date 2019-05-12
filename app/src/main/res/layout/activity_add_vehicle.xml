@@ -53,34 +53,61 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Theme.TextInputLayout"
+                        <FrameLayout
+                            android:id="@+id/frmCarCategory"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/hint_car_category"
-                            app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
+                            android:layout_height="wrap_content">
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/txt_category_selection"
-                                style="@style/Theme.TextInputEditText"
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:drawableEnd="@drawable/ic_drop_down_arrow"
-                                android:drawablePadding="@dimen/_5sdp"
-                                android:editable="false"
-                                android:imeOptions="actionNext"
-                                android:maxLines="1"
-                                android:scrollHorizontally="true"
-                                android:singleLine="true"
-                                android:text="Sedan" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                                app:cardCornerRadius="25dp"
+                                android:layout_margin="@dimen/_5sdp"
+                                android:visibility="invisible">
+
+                            <com.jaredrummler.materialspinner.MaterialSpinner
+                                android:id="@+id/spinnerCarCategory"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:ms_background_color="@color/colorScreenBackground"
+                                app:ms_text_color="@color/colorBlack"
+                                 />
+
+                            </androidx.cardview.widget.CardView>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Theme.TextInputLayout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/hint_car_category"
+                                app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/txt_category_selection"
+                                    style="@style/Theme.TextInputEditText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:drawableEnd="@drawable/ic_drop_down_arrow"
+                                    android:drawablePadding="@dimen/_5sdp"
+                                    android:editable="false"
+                                    android:imeOptions="actionNext"
+                                    android:maxLines="1"
+                                    android:scrollHorizontally="true"
+                                    android:singleLine="true"
+                                    android:text="Sedan" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                        </FrameLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Theme.TextInputLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_15sdp"
-                            android:hint="@string/hint_vehicle_model">
+                            android:hint="@string/hint_vehicle_model"
+                            app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 style="@style/Theme.TextInputEditText"
@@ -91,6 +118,26 @@
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
                                 android:text="@={addVehicleViewModel.vehicleData.vehicleModel}" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Theme.TextInputLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:hint="@string/hint_vehicle_model"
+                            app:setVisibility="@{!addVehicleViewModel.fieldMandatory}">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                style="@style/Theme.TextInputEditText"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:imeOptions="actionNext"
+                                android:maxLines="1"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true"
+                                android:text="@={addVehicleViewModel.vehicleData.vehicleMake}" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -180,7 +227,7 @@
                     android:layout_marginTop="8dp"
                     android:elevation="4dp"
                     android:onClick="@{addVehicleViewModel::onVehicleImageClick}"
-                    android:src="@drawable/dummy_profile_pic"
+                    android:src="@drawable/vehicle_place_holder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

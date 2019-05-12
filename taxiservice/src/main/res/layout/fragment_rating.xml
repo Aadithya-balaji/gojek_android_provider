@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -37,31 +37,25 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginRight="@dimen/_20sdp"
             android:background="@drawable/bg_half_circle_rectangle"
+            android:elevation="@dimen/_20sdp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:elevation="@dimen/_20sdp"
-            android:paddingTop="@dimen/_15sdp"
-            android:paddingBottom="@dimen/_15sdp"
             tools:targetApi="lollipop">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/civProfileImg"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:src="@drawable/flower" />
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_margin="10dp"
+                android:src="@drawable/ic_profile_placeholder" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/bg_grey_square"
                 android:orientation="vertical"
-                android:paddingStart="@dimen/_15sdp"
-                android:paddingTop="@dimen/_15sdp"
-                android:paddingEnd="@dimen/_1sdp"
-                android:paddingBottom="@dimen/_15sdp">
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/tvUserName"
@@ -101,12 +95,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_rating_label"
             android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:numStars="5"
-            android:layout_margin="@dimen/_5sdp"
             android:rating="1"
             android:stepSize="1"
-            android:theme="@style/TaxiRatingBar"/>
+            android:theme="@style/TaxiRatingBar" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cv_rating_comments"
@@ -128,9 +122,9 @@
                 android:background="@null"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:gravity="start"
-                android:padding="@dimen/_5sdp"
                 android:hint="@string/rate_comments"
                 android:minHeight="@dimen/_80sdp"
+                android:padding="@dimen/_5sdp"
                 android:textSize="@dimen/_13sdp" />
 
         </com.google.android.material.card.MaterialCardView>
@@ -152,5 +146,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_15sdp"
             android:textStyle="bold" />
+
     </RelativeLayout>
+
 </layout>

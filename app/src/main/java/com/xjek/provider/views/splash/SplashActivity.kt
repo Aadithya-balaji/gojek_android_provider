@@ -46,13 +46,16 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     @SuppressLint("CommitPrefEdits")
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
-            writePreferences(PreferencesKey.BASE_ID, "0")
-            writePreferences(PreferencesKey.BASE_ID, "0")
-            writePreferences(PreferencesKey.BASE_ID, "0")
             writePreferences("0", it.responseData.baseUrl + "/")
-//            writePreferences(PreferencesKey.BASE_ID, "0")
-//            writePreferences(PreferencesKey.BASE_ID, "0")
+            writePreferences(PreferencesKey.BASE_ID, "0")
 
+            try {
+                writePreferences(PreferencesKey.SOS_NUMBER, it.responseData.appSetting.supportDetails.contactNumber[0].number)
+                if (it.responseData.appSetting.otpVerify == 0) writePreferences(PreferencesKey.SHOW_OTP, false)
+                else if (it.responseData.appSetting.otpVerify == 1) writePreferences(PreferencesKey.SHOW_OTP, true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
             mUrlPersistence.run {
                 edit().putString(PreferencesKey.BASE_URL, it.responseData.baseUrl).apply()

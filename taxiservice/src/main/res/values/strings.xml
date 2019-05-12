@@ -67,5 +67,7 @@
     <string name="any_toll" translatable="false" tools:ignore="ExtraTranslation">Do you have andy Toll charge</string>
     <string name="request_canceled">Request Canceled Successfully</string>
     <string name="invalid_otp">Invalid OTP</string>
+    <string name="waiting_timer_running">Waiting timer is on, switch off to proceed</string>
+    <string name="taxi_invoice_waiting_charge">Waiting charge</string>
 
 </resources>

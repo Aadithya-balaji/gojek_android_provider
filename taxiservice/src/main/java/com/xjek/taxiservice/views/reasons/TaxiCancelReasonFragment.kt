@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.utils.ViewUtils
 import com.xjek.taxiservice.R
@@ -12,30 +13,27 @@ import com.xjek.taxiservice.interfaces.CustomClickListener
 import com.xjek.taxiservice.interfaces.GetReasonsInterface
 import com.xjek.taxiservice.model.ReasonModel
 import com.xjek.taxiservice.views.adapter.TaxiReasonAdapter
+import com.xjek.taxiservice.views.main.TaxiDashboardViewModel
 
 class TaxiCancelReasonFragment : BaseDialogFragment<DialogTaxiReasonBinding>(),
         TaxiCancelReasonNavigator {
 
     private lateinit var mReasonFragmentBinding: DialogTaxiReasonBinding
-    private lateinit var mViewModelTaxiCancel: TaxiCancelReasonViewModel
     private lateinit var mViewModel: TaxiCancelReasonViewModel
-    private var mReasonList: ArrayList<ReasonModel>? = null
-    private var mReasonType: ArrayList<String>? = null
-    private var mRequestId: Int? = null
-    private var mReason: String? = null
-    private var mTaxiReasonAdapter: TaxiReasonAdapter? = null
     private lateinit var getReasons: GetReasonsInterface
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         mReasonFragmentBinding = viewDataBinding as DialogTaxiReasonBinding
-        mViewModelTaxiCancel = TaxiCancelReasonViewModel()
+        mViewModel = ViewModelProviders.of(this).get(TaxiCancelReasonViewModel::class.java)
+        mViewModel.navigator = this
         mReasonFragmentBinding.lifecycleOwner = this
+        mReasonFragmentBinding.viewModel = mViewModel
         getApiResponse()
-        mViewModelTaxiCancel.getReason()
+        mViewModel.getReason()
     }
 
     private fun getApiResponse() {
-        mViewModelTaxiCancel.mResponse.observe(this, Observer<ReasonModel> { reasonModel ->
+        mViewModel.mResponse.observe(this, Observer<ReasonModel> { reasonModel ->
             if (reasonModel!!.responseData != null) mReasonFragmentBinding.taxiReasonAdapter =
                     TaxiReasonAdapter(activity!!, mListener, reasonModel.responseData as List<ReasonModel.ResponseData>)
         })
@@ -43,7 +41,7 @@ class TaxiCancelReasonFragment : BaseDialogFragment<DialogTaxiReasonBinding>(),
 
     private var mListener: CustomClickListener = object : CustomClickListener {
         override fun onListClickListener(position: Int) {
-            getReasons.reasonForCancel(mViewModelTaxiCancel.mResponse.value!!.responseData!!.get(position)!!.reason!!)
+            getReasons.reasonForCancel(mViewModel.mResponse.value!!.responseData!!.get(position)!!.reason!!)
             dialog!!.cancel()
         }
     }
@@ -64,6 +62,6 @@ class TaxiCancelReasonFragment : BaseDialogFragment<DialogTaxiReasonBinding>(),
     }
 
     override fun closePopup() {
-
+        dialog!!.cancel()
     }
 }

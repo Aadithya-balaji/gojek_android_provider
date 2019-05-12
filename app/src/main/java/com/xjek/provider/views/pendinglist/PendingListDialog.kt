@@ -26,6 +26,7 @@ class PendingListDialog() : BaseDialogFragment<PendingListDialogBinding>(), Pend
 
     private lateinit var pendingListDialogBinding: PendingListDialogBinding
     private lateinit var mViewModel: PendingListViewModel
+
     private var dashBoardActivity: DashBoardActivity? = null
     private var isDocumentNeed: Int? = 0
     private var isServiceNeed: Int? = 0

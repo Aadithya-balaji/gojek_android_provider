@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
@@ -31,7 +32,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun showErrorMessage(errorMessage: String) {
@@ -51,6 +52,8 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         fragmentRatingBinding!!.ratingmodel = mViewModel
         mViewModel.navigator = this
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+
+        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
 
         tvUserName.text = b.getString("name")!!
         tvBookingId.text = b.getString("bookingID")!!

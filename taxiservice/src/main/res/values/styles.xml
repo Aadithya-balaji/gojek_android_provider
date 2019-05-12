@@ -31,7 +31,7 @@
     </style>
 
     <style name="TaxiRatingBar" parent="Theme.AppCompat">
-        <item name="colorControlNormal">@color/grey</item>
+        <item name="colorControlNormal">@color/colorTaxiYellow</item>
         <item name="colorControlActivated">@color/colorTaxiYellow</item>
     </style>
 

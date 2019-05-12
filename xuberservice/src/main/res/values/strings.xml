@@ -68,5 +68,6 @@
     <string name="xuper_image">Image</string>
     <string name="xuper_instruction">Instruction</string>
     <string name="prg_loading">Loading …</string>
+    <string name="invalid_otp">Invalid OTP</string>
 
 </resources>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/service_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_7sdp"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="4dp"
+        app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="15dp">
+
+        <com.google.android.material.circularreveal.CircularRevealRelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/select_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:contentDescription="@string/app_name"
+                app:srcCompat="@drawable/ic_check_box" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/price_edit_img"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/select_img"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/service_name_tv"
+                    style="@style/Theme.TextView.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textStyle="bold"
+                    tools:text="@string/app_name" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/price_tv"
+                    style="@style/Theme.TextView.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="fcfgvhbjnkm"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/price_edit_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="15dp"
+                android:contentDescription="@null"
+                android:padding="@dimen/_5sdp"
+                app:srcCompat="@drawable/ic_edit" />
+
+        </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

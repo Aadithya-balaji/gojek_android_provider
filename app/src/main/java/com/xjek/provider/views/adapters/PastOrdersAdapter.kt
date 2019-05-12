@@ -16,9 +16,10 @@ import com.xjek.provider.model.TransportHistory
 import com.xjek.provider.utils.CommanMethods
 import com.xjek.provider.views.history_details.HistoryDetailActivity
 
-class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: List<TransportHistory.TransportResponseData.Transport>) :
-        RecyclerView.Adapter<PastOrdersAdapter.MyViewHolder>(),
+class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: List<TransportHistory.TransportResponseData.Transport>) : RecyclerView.Adapter<PastOrdersAdapter.MyViewHolder>(),
         CustomClickListner {
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflate = DataBindingUtil.inflate<PastOrderItemlistBinding>(LayoutInflater.from(parent.context),
                 R.layout.past_order_itemlist, parent, false)
@@ -28,7 +29,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: L
     override fun getItemCount(): Int = transportHistory.size
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
-        holder.pastOderItemlistBinding.titlePastListTv.text = (transportHistory[position].booking_id)
+        /*holder.pastOderItemlistBinding.titlePastListTv.text = (transportHistory[position].booking_id)
         holder.pastOderItemlistBinding.orderedItemTv.text = transportHistory[position].ride.vehicle_name
         holder.pastOderItemlistBinding.ratingPastTv.text = ("" + transportHistory[position].user.rating)
         holder.pastOderItemlistBinding.datePastListTv.text = (CommanMethods.getLocalTimeStamp(transportHistory[position]
@@ -51,7 +52,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: L
                 intent.putExtra("history_type", "past")
                 activity!!.startActivity(intent)
             }
-        }
+        }*/
     }
 
     inner class MyViewHolder(itemView: PastOrderItemlistBinding) :

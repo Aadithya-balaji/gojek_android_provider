@@ -5,6 +5,7 @@ import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.provider.model.TransportHistory
+import com.xjek.provider.models.HistoryModel
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Constant
 
@@ -13,7 +14,7 @@ public class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
     private val appRepository = AppRepository.instance()
     val preferenceHelper = PreferencesHelper
 
-    var transportHistoryResponse = MutableLiveData<TransportHistory>()
+    var transportHistoryResponse = MutableLiveData<HistoryModel>()
     var loadingProgress = MutableLiveData<Boolean>()
     var errorResponse = MutableLiveData<String>()
 
@@ -32,7 +33,7 @@ public class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
 
         loadingProgress.value = true
         getCompositeDisposable().add(appRepository
-                .getTransaportHistory(this
+                .getPastORderHistory(this
                         , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")
                         , hashMap, selectedService))
 

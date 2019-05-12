@@ -38,6 +38,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     private var extraChageDialog: DialogXuperExtraCharge? = null
     private var invoiceDialog: Dialog? = null
     private var timetaken: String? = ""
+    private  var extraAmount:Double?=0.0
 
 
     override fun getLayout(): Int {
@@ -123,7 +124,6 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
             xuperInvoiceModel.userName.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.first_name + " " + xuperCheckRequest!!.responseData!!.requests!!.user!!.last_name
             timetaken = CommonMethods.getTimeDifference(xuperCheckRequest!!.responseData!!.requests!!.started_at!!, xuperCheckRequest!!.responseData!!.requests!!.finished_at!!, "")
         }
-
         tvXuperTime.setText(timetaken)
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
@@ -133,7 +133,6 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                 .into(dialogInvoiceBinding.ivUserImg)
         dialogInvoiceBinding.tvAmountToBePaid.setText(xuperInvoiceModel.totalAmount.value)
         dialogInvoiceBinding.tvXuperService.setText(xuperInvoiceModel.serviceName.value)
-
     }
 
     override fun showErrorMessage(error: String) {
@@ -181,9 +180,11 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     override fun getExtraCharge(extraChareg: String, extraAmtNotes: String) {
         xuperInvoiceModel.extraCharge.value = extraChareg.replace("$", "")
         if (!xuperInvoiceModel.extraCharge.value.isNullOrEmpty()) {
-            val totalAmount = xuperInvoiceModel.totalAmount.value!!.toDouble()
-            val extraAmount = xuperInvoiceModel.extraCharge.value!!.toDouble()
-            val total = totalAmount + extraAmount
+            var totalAmount = xuperInvoiceModel.totalAmount.value!!.toDouble()
+            val extAmount = xuperInvoiceModel.extraCharge.value!!.toDouble()
+            totalAmount=totalAmount-extraAmount!!
+            extraAmount=extAmount
+            val total = totalAmount + extAmount
             xuperInvoiceModel.totalAmount.value = total.toString()
         }
         if (!extraAmtNotes.isNullOrEmpty()) {

@@ -22,6 +22,7 @@ import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class CommonMethods {
     companion object {
@@ -81,7 +82,7 @@ class CommonMethods {
 
         fun getTimeDifference(strFromDate:String,strToDate:String,format:String):String{
             var diffTime:Long?=0
-            var formatedDateString:String?=""
+            var hms:String?=""
             val fromSimpledateFormat=SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault())
             fromSimpledateFormat.timeZone= TimeZone.getTimeZone("UTC")
             var fromDate:Date?=null
@@ -92,18 +93,18 @@ class CommonMethods {
                 fromDate=fromSimpledateFormat.parse(strFromDate)
                 fromCalender= Calendar.getInstance(TimeZone.getDefault())
                 fromCalender.time=fromDate
-                toDate=fromSimpledateFormat.parse(strFromDate)
+                toDate=fromSimpledateFormat.parse(strToDate)
                 toCalendar= Calendar.getInstance(TimeZone.getDefault())
                 toCalendar.time=toDate
                 diffTime=toCalendar.time.time -fromCalender.time.time
-                val formatedDate=Date()
-                formatedDate.time=diffTime
-                val formatedSimpleDateFormat=SimpleDateFormat("HH:mm",Locale.getDefault())
-                formatedDateString=formatedSimpleDateFormat.format(formatedDate)
+                 hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(diffTime),
+            TimeUnit.MILLISECONDS.toMinutes(diffTime) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(diffTime)),
+            TimeUnit.MILLISECONDS.toSeconds(diffTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffTime)));
+
             }catch (e:java.lang.Exception){
                 e.printStackTrace()
             }
-            return  formatedDateString!!
+            return  hms!!
 
         }
 

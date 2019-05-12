@@ -26,4 +26,8 @@ object PreferencesKey {
     const val TRANSPORT_URL = "taxi_url"
     const val SERVICE_URL = "service_url"
     const val ORDER_URL = "order_url"
+
+
+    const val SOS_NUMBER = "SOS_NUMBER"
+    const val SHOW_OTP = "SHOW_OTP"
 }

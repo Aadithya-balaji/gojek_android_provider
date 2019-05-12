@@ -27,8 +27,6 @@ android {
                 "602657530672-otdsmtkdip8bvf3miqhcfcdpn2mp6qr2.apps.googleusercontent.com")
         resValue("string", "facebook_app_id", "394261008038577")
         resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
-//        resValue("string", "google_map_key", "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ")
-//        resValue("string", "google_map_key", "AIzaSyD1tvSgKFTeUwWWz88NgenCXI4qrLfIbk0")
         resValue("string", "stripe_key", "pk_test_DbfzA8Pv1MDErUiHakK9XfLe")
     }
     buildTypes {

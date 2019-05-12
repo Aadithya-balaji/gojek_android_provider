@@ -434,5 +434,8 @@
     <string name="please_enter_vehicle_color">Please enter vehicle color</string>
     <string name="please_enter_vehicle_plate_number">Please enter vehicle license plate number</string>
     <string name="please_enter_vehicle_make">Please enter vehicle make</string>
+    <string name="setup_your_service">Setup Your Service</string>
+    <string name="rate">Rate:</string>
+    <string name="select_service">Select service</string>
 
 </resources>

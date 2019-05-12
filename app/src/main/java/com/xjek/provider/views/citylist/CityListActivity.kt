@@ -26,7 +26,9 @@ class CityListActivity : BaseActivity<ActivityCityListBinding>(), CityListNaviga
         mViewDataBinding.cityListAdapter = CityListAdapter(this, cityList)
         val cityListViewModel = CityListViewModel()
         cityListViewModel.navigator = this
+
         mViewDataBinding.citylistmodel = cityListViewModel
+
         mViewDataBinding.svCity.setOnQueryTextListener(this)
     }
 

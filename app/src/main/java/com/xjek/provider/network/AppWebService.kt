@@ -1,6 +1,7 @@
 package com.xjek.provider.network
 
 import com.xjek.provider.model.*
+import com.xjek.provider.model.ResponseData
 import com.xjek.provider.models.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -231,5 +232,22 @@ interface AppWebService {
     fun getDisputeStatus(@Header("Authorization") token: String,
                          @Path("id") id: String): Observable<DisputeStatusModel>
 
+    @GET("provider/earnings/{id}?type=month")
+    fun getMonthlyEarnings(
+            @Header("Authorization") token: String,
+            @Path("id") id: Int
+    ): Observable<EarningsResponse>
+
+    @GET("provider/earnings/{id}?type=week")
+    fun getWeeklyEarnings(
+            @Header("Authorization") token: String,
+            @Path("id") id: Int
+    ): Observable<EarningsResponse>
+
+    @GET("provider/earnings/{id}?type=day")
+    fun getDailyEarnings(
+            @Header("Authorization") token: String,
+            @Path("id") id: Int
+    ): Observable<EarningsResponse>
 
 }

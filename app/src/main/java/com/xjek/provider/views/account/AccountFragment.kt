@@ -12,6 +12,7 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
 import com.xjek.provider.views.dashboard.DashBoardNavigator
+import com.xjek.provider.views.earnings.EarningsActivity
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
 import com.xjek.provider.views.language.LanguageActivity
 import com.xjek.provider.views.manage_bank_details.ManageBankDetailsActivity
@@ -76,54 +77,30 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         viewModel.setAdapter()
     }
 
-    override fun onMenuItemClicked(position: Int) {
-        when (position) {
+    override fun onMenuItemClicked(position: Int) = when (position) {
 
-            0 -> {
-                launchNewActivity(ProfileActivity::class.java, false)
-            }
+        0 -> launchNewActivity(ProfileActivity::class.java, false)
 
-            1 -> {
-                launchNewActivity(ManageServicesActivity::class.java, false)
-            }
+        1 -> launchNewActivity(ManageServicesActivity::class.java, false)
 
-            2 -> {
-                launchNewActivity(ManageDocumentsActivity::class.java, false)
-            }
+        2 -> launchNewActivity(ManageDocumentsActivity::class.java, false)
 
+        3 -> launchNewActivity(ManageBankDetailsActivity::class.java, false)
 
-            3 -> {
-                //Bank Details
-                launchNewActivity(ManageBankDetailsActivity::class.java, false)
-            }
+        4 -> launchNewActivity(ManagePaymentActivity::class.java, false)
 
-            4 -> {
-                launchNewActivity(ManagePaymentActivity::class.java, false)
-            }
+        5 -> launchNewActivity(EarningsActivity::class.java, false)
 
-            5 -> {
-                // launchNewActivity(EarningsActivity::class.java,false)
-            }
+        6 -> launchNewActivity(InviteReferalsActivity::class.java, false)
 
-            6 -> {
-                launchNewActivity(InviteReferalsActivity::class.java, false)
-            }
+        7 -> launchNewActivity(PrivacyActivity::class.java, false)
 
-            7 -> {
-                launchNewActivity(PrivacyActivity::class.java, false)
-            }
+        8 -> launchNewActivity(SupportActivity::class.java, false)
 
-            8 -> {
-                launchNewActivity(SupportActivity::class.java, false)
-            }
+        9 -> launchNewActivity(LanguageActivity::class.java, false)
 
-            9 -> {
-                launchNewActivity(LanguageActivity::class.java, false)
-            }
+        else -> {
 
-            else -> {
-                ViewUtils.showToast(activity!!, getString(R.string.something_went_wrong), false)
-            }
         }
     }
 }

@@ -401,6 +401,9 @@
     <string name="total_charge">Total charge</string>
     <string name="support_mail">Support Mail</string>
     <string name="no_transction">No Transaction Found</string>
+    <string name="today">Today</string>
+    <string name="this_month">This Month</string>
+    <string name="this_week">This week</string>
 
 
 </resources>

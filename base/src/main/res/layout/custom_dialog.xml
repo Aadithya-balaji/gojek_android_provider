@@ -14,8 +14,8 @@
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottieIndicator"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:visibility="visible"
             app:lottie_autoPlay="true"
             app:lottie_fileName="loading.json"
@@ -32,4 +32,5 @@
             app:indicatorName="BallSpinFadeLoaderIndicator" />
 
     </LinearLayout>
+
 </layout>

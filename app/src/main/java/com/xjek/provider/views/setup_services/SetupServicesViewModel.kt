@@ -2,8 +2,6 @@ package com.xjek.provider.views.setup_services
 
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
-import com.xjek.base.data.PreferencesKey
-import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.ServiceCategoriesResponse
 import com.xjek.provider.repository.AppRepository
 
@@ -31,10 +29,10 @@ class SetupServicesViewModel : BaseViewModel<SetupServicesNavigator>() {
     }
 
     fun getCategories() {
-        val token = StringBuilder("Bearer ")
-                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
-                .toString()
-        getCompositeDisposable().add(appRepository.getServiceCategories(this, token))
+//        val token = StringBuilder("Bearer ")
+//                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
+//                .toString()
+//        getCompositeDisposable().add(appRepository.getServiceCategories(this, token))
     }
 
     fun getServicesDataObservable() = serviceCategoriesResponse

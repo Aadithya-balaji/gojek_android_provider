@@ -152,6 +152,13 @@ interface AppWebService {
     @GET("provider/providerservice/categories")
     fun getServiceCategories(@Header("Authorization") token: String): Observable<ServiceCategoriesResponse>
 
+    @FormUrlEncoded
+    @POST("provider/providerservice/subcategories")
+    fun getSubServiceCategories(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<SubServiceCategoriesResponse>
+
+    @FormUrlEncoded
+    @POST("provider/providerservice/service")
+    fun getSubServicePriceCategories(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<SubServicePriceCategoriesResponse>
 
     @GET("provider/shoptype")
     fun getShops(@Header("Authorization") token: String): Observable<SetupShopResponseModel>

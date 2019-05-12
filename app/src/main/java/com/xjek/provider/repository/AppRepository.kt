@@ -571,11 +571,11 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.transportHistoryResponse.value = it
+                    //viewModel.loadingProgress.value = false
+                   // viewModel.transportHistoryResponse.value = it
                 }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
+                   // viewModel.loadingProgress.value = false
+                   // viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }
 

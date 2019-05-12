@@ -7,6 +7,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -47,14 +48,17 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
         this.mViewDataBinding.setLifecycleOwner(this)
         orderFragmentViewModel.navigator = this
         this.mViewDataBinding.orderfragmentviewmodel = orderFragmentViewModel
-
-
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.container_order, PastOrderFragment())?.commit()
         val baseApiResponseString: String = readPreferences(PreferencesKey.BASE_CONFIG_RESPONSE, "")!! as String
         val baseApiResponsedata: ConfigResponseModel.ResponseData = Gson().fromJson<ConfigResponseModel.ResponseData>(baseApiResponseString
                 , ConfigResponseModel.ResponseData::class.java)
         filterServiceListName = baseApiResponsedata.services
-        dashboardViewModel.selectedFilterService.value = filterServiceListName[0].adminServiceName
+      //  dashboardViewModel.selectedFilterService.value = filterServiceListName[0].adminServiceName
+        orderFragmentViewModel.selectedFilterService.value=filterServiceListName[0].adminServiceName
+
+        orderFragmentViewModel.selectedFilterService.observe(this, Observer<String>{
+
+        })
 
     }
 
@@ -68,8 +72,6 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
     }
 
     override fun goToCurrentOrder() {
-
-
         mViewDataBinding.pastorderBtn.background = context?.let {
             ContextCompat.getDrawable(it
                     , R.drawable.custom_roundcorner_unselectedorder)
@@ -132,15 +134,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
     }
 
     override fun opeFilterlayout() {
-
-        val inflate = DataBindingUtil.inflate<FilterDialogBinding>(LayoutInflater.from(context)
-                , R.layout.filter_dialog, null, false)
+        val inflate = DataBindingUtil.inflate<FilterDialogBinding>(LayoutInflater.from(context), R.layout.filter_dialog, null, false)
         inflate.filterServiceListAdapter = FilterServiceListAdapter(dashboardViewModel, filterServiceListName)
-
         val dialog = BottomSheetDialog(activity!!)
         dialog.setContentView(inflate.root)
         dialog.show()
-
         inflate.applyFilter.setOnClickListener(View.OnClickListener {
             mViewDataBinding.serviceNameToolbarTv.setText(dashboardViewModel.selectedFilterService.value)
             activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container_order, PastOrderFragment())?.commit()

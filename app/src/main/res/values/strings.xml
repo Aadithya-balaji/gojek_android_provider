@@ -81,6 +81,7 @@
     <string name="order_cancel">Cancel</string>
     <string name="order_past">Past</string>
     <string name="order_current">Current</string>
+    <string name="history_vechile_name">%s (%s)</string>
 
     <!-- Register -->
     <string name="user_name_hint">User Name</string>

@@ -26,11 +26,11 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
         mViewDataBinding.pastfragmentviewmodel = pastOrderViewModel
 
 
-        pastOrderViewModel.transportHistoryResponse.observe(this@PastOrderFragment,
+       /* pastOrderViewModel.transportHistoryResponse.observe(this@PastOrderFragment,
                 Observer<HistoryModel> {
                     pastOrderViewModel.loadingProgress.value = false
                     hideLoading()
-                   /* if (it.responseData.type.equals("transport", true) && !it.responseData.transport.isEmpty()) {
+                    if (it.responseData.type.equals("transport", true) && !it.responseData.transport.isEmpty()) {
                         setTransportHistoryAdapter(it.responseData, "transport")
                     } else if (it.responseData.type.equals("service", true) && !it.responseData.service.isEmpty()) {
                         setTransportHistoryAdapter(it.responseData, "service")
@@ -39,19 +39,20 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
                     } else {
                         this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
 
-                        this.mViewDataBinding.pastOrdersfrgRv.visibility = View.GONE
+                        this.mViewDataBinding.pastOrdersfrgRv.visibilit
+                        y = View.GONE
                     }
-*/
-                })
 
-        pastOrderViewModel.errorResponse.observe(this@PastOrderFragment, Observer<String> { error ->
+                })*/
+
+       /* pastOrderViewModel.errorResponse.observe(this@PastOrderFragment, Observer<String> { error ->
             hideLoading()
             this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
             Log.d("_D", error + "")
 //            ViewUtils.showToast(activity as Context, error, false)
 
         })
-
+*/
 
     }
 

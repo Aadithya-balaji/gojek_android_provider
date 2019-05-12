@@ -10,16 +10,16 @@
     <color name="colorScreenBackground" tools:ignore="MissingDefaultResource">#F2F2F2</color>
 
     <!--TextInputLayout Colors-->
-    <color name="colorBoxBackground" tools:ignore="MissingDefaultResource">#FFFFFF</color>
-    <color name="colorBoxStroke">#888888</color>
-    <color name="colorOverflowText">#6D6D6D</color>
+    <color name="colorBoxBackground" tools:ignore="MissingDefaultResource">#D14007</color>
+    <color name="colorBoxStroke">#FFE4DA</color>
+    <color name="colorOverflowText">#DAFFF3</color>
     <color name="colorHintText">#888888</color>
     <color name="colorCounterText">#000000</color>
 
     <!--Common Colors-->
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#9D9D9D</color>
-    <color name="colorGreen">#38BEA6</color>
+    <color name="colorGreen">#FFE4DA</color>
     <color name="colorFullTransparent">#00000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorLightBlue">#B6C0E3</color>
@@ -53,8 +53,7 @@
     <!-- Orders -->
     <color name="bg_on_ride">#ffe4da</color>
     <color name="text_on_ride">#d13b00</color>
-    <color name="bg_order_completed"></color>
-    <color name="txt_order_completed"></color>
+    <color name="past_item_cancelled">#0F9A6C</color>
 
     <!-- Notification -->
     <color name="bg_notification_read"></color>

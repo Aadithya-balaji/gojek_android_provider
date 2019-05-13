@@ -1,9 +1,9 @@
 package com.xjek.provider.views.add_edit_document
 
 import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.widget.DatePicker
 import androidx.databinding.ViewDataBinding
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -13,16 +13,19 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.theartofdev.edmodo.cropper.CropImage
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.DateTimeUtil
+import com.xjek.base.utils.ImageCropperUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityAddEditDocumentBinding
 import com.xjek.provider.utils.Constant
+import com.xjek.provider.utils.Enums
+import kotlinx.android.synthetic.main.activity_add_edit_document.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
-import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
 import java.util.*
 
@@ -34,6 +37,9 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     private lateinit var viewModelAddEdit: AddEditDocumentViewModel
 
     private lateinit var calendar: Calendar
+
+    private var requestCode: Int = -1
+
 
     override fun getLayoutId(): Int = R.layout.activity_add_edit_document
 
@@ -89,40 +95,56 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         observeLiveData(viewModelAddEdit.documentFrontImageURL) { url ->
             run {
 
-                val circularProgressDrawable = CircularProgressDrawable(this)
-                circularProgressDrawable.strokeWidth = 5f
-                circularProgressDrawable.centerRadius = 30f
-                circularProgressDrawable.start()
+                if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
+                    val circularProgressDrawable = getCircularProgressDrawable()
+                    if (!url.isNullOrEmpty()) {
+                        Glide.with(this@AddEditDocumentActivity)
+                                .load(url)
+                                .placeholder(circularProgressDrawable)
+                                .into(ivFrontImage)
+                        viewModelAddEdit.showFrontView.value = true
+                    } else {
+                        ivFrontImage.setImageDrawable(null)
+                    }
 
-                if (!url.isNullOrEmpty()) {
-                    Glide.with(this@AddEditDocumentActivity)
-                            .load(url)
-                            .placeholder(circularProgressDrawable)
-                            .into(binding.ivFrontImage)
-                    viewModelAddEdit.showFrontView.value = true
                 } else {
-                    binding.ivFrontImage.setImageDrawable(null)
-                    viewModelAddEdit.showFrontView.value = false
-
+                    viewModelAddEdit.isPDF.value = true
+                    ivFrontImage.setImageResource(R.drawable.ic_pdf)
                 }
             }
         }
 
         observeLiveData(viewModelAddEdit.documentBackImageURL) { url ->
             run {
-                if (!url.isNullOrEmpty()) {
-                    Glide.with(this@AddEditDocumentActivity)
-                            .load(url)
-                            .into(binding.ivBackImage)
-                    viewModelAddEdit.showBackView.value = true
-                } else {
-                    binding.ivBackImage.setImageDrawable(null)
-                    viewModelAddEdit.showBackView.value = false
 
+                if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
+                    val circularProgressDrawable = getCircularProgressDrawable()
+                    if (!url.isNullOrEmpty()) {
+                        Glide.with(this@AddEditDocumentActivity)
+                                .load(url)
+                                .placeholder(circularProgressDrawable)
+                                .into(ivBackImage)
+                        viewModelAddEdit.showBackView.value = true
+                    } else {
+                        ivBackImage.setImageDrawable(null)
+                        viewModelAddEdit.showBackView.value = false
+
+                    }
+                }else{
+                    ivBackImage.setImageResource(R.drawable.ic_pdf)
                 }
+
             }
 
         }
+    }
+
+    private fun getCircularProgressDrawable(): CircularProgressDrawable {
+        val circularProgressDrawable = CircularProgressDrawable(this)
+        circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.centerRadius = 30f
+        circularProgressDrawable.start()
+        return circularProgressDrawable
     }
 
 
@@ -143,7 +165,12 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                 .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        EasyImage.openGallery(this@AddEditDocumentActivity, Constant.PICK_FRONT_IMAGE)
+                        if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
+                            requestCode = Enums.DOCUMENT_UPLOAD_FRONT
+                            ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
+                        } else {
+
+                        }
                     }
 
                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
@@ -158,7 +185,12 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                 .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        EasyImage.openGallery(this@AddEditDocumentActivity, Constant.PICK_BACK_IMAGE)
+                        if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
+                            requestCode = Enums.DOCUMENT_UPLOAD_BACK
+                            ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
+                        } else {
+
+                        }
                     }
 
                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
@@ -170,26 +202,34 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        EasyImage.handleActivityResult(requestCode, resultCode, data, this@AddEditDocumentActivity, object : EasyImage.Callbacks {
-            override fun onImagesPicked(imageFiles: MutableList<File>, source: EasyImage.ImageSource?, type: Int) {
-                val myBitmap = BitmapFactory.decodeFile(imageFiles[0].absolutePath)
-                if (type == Constant.PICK_FRONT_IMAGE) {
-                    binding.ivFrontImage.setImageBitmap(myBitmap)
-                    viewModelAddEdit.documentFrontImageFile.value = imageFiles[0]
-                    viewModelAddEdit.showFrontView.value = true
-                } else {
-                    binding.ivBackImage.setImageBitmap(myBitmap)
-                    viewModelAddEdit.documentBackImageFile.value = imageFiles[0]
-                    viewModelAddEdit.showBackView.value = true
+        when (requestCode) {
+            CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
+                val result = CropImage.getActivityResult(data)
+                if (resultCode == Activity.RESULT_OK) {
+                    when (this.requestCode) {
+
+                        Enums.DOCUMENT_UPLOAD_FRONT -> {
+                            val frontImageFile = File(result.uri.path)
+                            Glide.with(this@AddEditDocumentActivity)
+                                    .load(frontImageFile)
+                                    .into(ivFrontImage)
+                            viewModelAddEdit.documentFrontImageFile.value = frontImageFile
+                            viewModelAddEdit.showFrontView.value = true
+                        }
+
+                        else -> {
+                            val backImageFile = File(result.uri.path)
+                            Glide.with(this@AddEditDocumentActivity)
+                                    .load(backImageFile)
+                                    .into(ivBackImage)
+                            viewModelAddEdit.documentBackImageFile.value = backImageFile
+                            viewModelAddEdit.showBackView.value = true
+                        }
+                    }
+
                 }
             }
-
-            override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {
-            }
-
-            override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
-            }
-        })
+        }
     }
 
     override fun submitDocument() {

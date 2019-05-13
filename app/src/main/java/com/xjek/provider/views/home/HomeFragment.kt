@@ -104,7 +104,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 val providerDetailsModel = checkStatusData.responseData.provider_details
 
                 writePreferences(PROVIDER_ID, providerDetailsModel.id)
-                
+
                 val verificationModel = VerificationModel()
                 verificationModel.isBankDetail = providerDetailsModel.is_bankdetail
                 verificationModel.isDocument = providerDetailsModel.is_document

@@ -739,6 +739,7 @@ class AppRepository : BaseRepository() {
                     viewModel.earningsWeek.value = it
                 }, {
                     viewModel.loadingProgress.value = false
+
                 })
     }
 

@@ -14,15 +14,12 @@ import java.util.*
 
 class ManagePaymentActivity : BaseActivity<ActivityManagePaymentBinding>(), ManagePaymentNavigator, ViewPager.OnPageChangeListener {
 
-
     private lateinit var activityManagePaymentBinding: ActivityManagePaymentBinding
     private lateinit var managePaymentViewModel: ManagePaymentViewModel
     private lateinit var paymentAdapter: PaymentAdapter
     private lateinit var tbManagePayment: TabLayout
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_manage_payment
-    }
+    override fun getLayoutId() = R.layout.activity_manage_payment
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         activityManagePaymentBinding = mViewDataBinding as ActivityManagePaymentBinding
@@ -33,6 +30,7 @@ class ManagePaymentActivity : BaseActivity<ActivityManagePaymentBinding>(), Mana
         activityManagePaymentBinding.toolbarLayout.ivToolbarBack.setOnClickListener {
             finish()
         }
+
         val paymentFragmentList = Vector<Fragment>()
 
         val walletFragment = WalletFragment()

@@ -153,6 +153,13 @@ interface AppWebService {
     @GET("provider/providerservice/categories")
     fun getServiceCategories(@Header("Authorization") token: String): Observable<ServiceCategoriesResponse>
 
+    @FormUrlEncoded
+    @POST("provider/providerservice/subcategories")
+    fun getSubServiceCategories(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<SubServiceCategoriesResponse>
+
+    @FormUrlEncoded
+    @POST("provider/providerservice/service")
+    fun getSubServicePriceCategories(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<SubServicePriceCategoriesResponse>
 
     @GET("provider/shoptype")
     fun getShops(@Header("Authorization") token: String): Observable<SetupShopResponseModel>
@@ -164,11 +171,20 @@ interface AppWebService {
     @Multipart
     @POST("provider/vechile/add")
     fun postVehicle(
-            @Header("Authorization") token: String,
             @PartMap params: HashMap<String, RequestBody>,
-//            @Part vehicleImage: MultipartBody.Part,
-            @Part rcBookMultipart: MultipartBody.Part,
-            @Part insuranceMultipart: MultipartBody.Part
+            @Part vehicleImage: MultipartBody.Part?,
+            @Part rcBookMultipart: MultipartBody.Part?,
+            @Part insuranceMultipart: MultipartBody.Part?
+    ): Observable<AddVehicleResponseModel>
+
+
+    @Multipart
+    @POST("provider/vehicle/edit")
+    fun editVehicle(
+            @PartMap params: HashMap<String, RequestBody>,
+            @Part vehicleImage: MultipartBody.Part?,
+            @Part rcBookMultipart: MultipartBody.Part?,
+            @Part insuranceMultipart: MultipartBody.Part?
     ): Observable<AddVehicleResponseModel>
 
     @FormUrlEncoded

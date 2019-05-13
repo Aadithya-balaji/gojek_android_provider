@@ -2,7 +2,7 @@ package com.xjek.provider.models
 
 import java.io.Serializable
 
-data class ServiceCategoriesResponse(
+data class SubServiceCategoriesResponse(
         val error: List<Any> = listOf(),
         val message: String = "",
         val responseData: List<ResponseData> = listOf(),
@@ -10,15 +10,16 @@ data class ServiceCategoriesResponse(
         val title: String = ""
 ) : Serializable {
     data class ResponseData(
-            val company_id: Int = 0,
-            val id: Int = 0,
+            val id: String = "",
+            val service_subcategory_id: String = "",
+            val company_id: String = "",
+            val service_subcategory_name: String = "",
             val picture: String = "",
-            val price_choose: String = "",
             val providerservicecategory: List<ProviderServiceCategory> = listOf(),
-            val service_category_name: String = "",
-            val service_category_order: Int = 0,
-            val service_category_status: Int = 0
+            val service_subcategory_order: String = "",
+            val service_subcategory_status: String = ""
     ) : Serializable
+
     data class ProviderServiceCategory(
             val id: String = "",
             val provider_id: String = "",

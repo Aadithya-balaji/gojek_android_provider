@@ -36,7 +36,13 @@
             android:configChanges="keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.setup_services.SetupServicesActivity"
+            android:name=".views.set_service.SetServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.set_subservice.SetSubServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.set_service_category_price.SetServicePriceActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.language.LanguageActivity"

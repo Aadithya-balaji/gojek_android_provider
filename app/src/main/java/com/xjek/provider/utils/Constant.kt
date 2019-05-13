@@ -1,12 +1,15 @@
 package com.xjek.provider.utils
 
+import androidx.lifecycle.MutableLiveData
 import com.xjek.provider.models.ConfigResponseModel.ResponseData.AppSetting.Language
+import com.xjek.provider.views.home.VerificationModel
 
 object Constant {
 
     const val SERVICE_ID = "service_id"
-    const val PROVIDER_VEHICLE = "provider_vehicle"
-    const val PROVIDER_SERVICE = "provider_service"
+    const val CATEGORY_ID = "category_id"
+    const val PROVIDER_TRANSPORT_VEHICLE = "provider_transport_vehicle"
+    const val PROVIDER_ORDER_VEHICLE = "provider_order_vehicle"
     const val DOCUMENT_NAME = "document_name"
     const val DOCUMENT_TYPE = "document_type"
     const val DOCUMENT_ID = "document_id"
@@ -33,5 +36,7 @@ object Constant {
     lateinit var privacyPolicyUrl: String
     const val TYPE_PROVIDER = "provider"
     lateinit var languages: List<Language>
+
+    var verificationObservable = MutableLiveData<VerificationModel>()
 
 }

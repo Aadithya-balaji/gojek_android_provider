@@ -39,7 +39,6 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
 
         observeViewModel()
 
-        setupVehicle()
     }
 
     private fun observeViewModel() {
@@ -47,6 +46,12 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             loadingObservable.value = false
             viewModel.setAdapter()
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        setupVehicle()
     }
 
     private fun setupVehicle() {
@@ -65,15 +70,22 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
     }
 
     override fun onMenuItemClicked(position: Int) {
-        val intent = Intent(applicationContext, AddVehicleActivity::class.java)
-        intent.putExtra(Constant.SERVICE_ID, viewModel.getServiceId())
         val providerService = viewModel.getVehicleDataObservable().value
 
-        if (providerService is SetupRideResponseModel && providerService.responseData[position].providerService != null) {
-            intent.putExtra(Constant.PROVIDER_VEHICLE,
-                    providerService.responseData[position].providerService!!.providerVehicle)
-        } else if (providerService is SetupShopResponseModel) {
+        val intent = Intent(applicationContext, AddVehicleActivity::class.java)
+        intent.putExtra(Constant.SERVICE_ID, viewModel.getServiceId())
 
+        if (providerService is SetupRideResponseModel)
+            intent.putExtra(Constant.CATEGORY_ID, providerService.responseData[position].id)
+        else if (providerService is SetupShopResponseModel)
+            intent.putExtra(Constant.CATEGORY_ID, providerService.responseData[position].id)
+
+        if (providerService is SetupRideResponseModel && providerService.responseData[position].providerService != null) {
+            intent.putExtra(Constant.PROVIDER_TRANSPORT_VEHICLE,
+                    providerService.responseData[position].providerService!!.providerVehicle)
+        } else if (providerService is SetupShopResponseModel && providerService.responseData[position].providerService != null) {
+            intent.putExtra(Constant.PROVIDER_ORDER_VEHICLE,
+                    providerService.responseData[position].providerService!!.providerVehicle)
         }
         launchNewActivity(intent, false)
     }

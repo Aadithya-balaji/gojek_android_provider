@@ -36,8 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/price_edit_img"
                 android:layout_marginStart="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/price_edit_img"
                 android:layout_toEndOf="@+id/select_img"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -56,6 +56,16 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/price_tv"
+                    style="@style/Theme.TextView.Medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="fcfgvhbjnkm"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/per_mile_price_tv"
                     style="@style/Theme.TextView.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -25,20 +25,70 @@
             android:text="@string/enter_amount"
             android:textSize="@dimen/_15sdp" />
 
-        <EditText
-            android:id="@+id/price_edt"
-            android:layout_width="@dimen/_100sdp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/price_edt"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@drawable/bg_grey_corner"
+                android:fontFamily="@font/avenir_lt_std_medium"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/_7sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18sdp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:id="@+id/label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/price_edt"
+                android:fontFamily="@font/avenir_lt_std_medium"
+                android:text="@string/per_hour"
+                android:textSize="@dimen/_15sdp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/miles_txt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/_5sdp"
-            android:background="@drawable/bg_grey_corner"
-            android:fontFamily="@font/avenir_lt_std_medium"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:padding="@dimen/_7sdp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_18sdp"
-            tools:ignore="Autofill,LabelFor" />
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/price_miles_edt"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@drawable/bg_grey_corner"
+                android:fontFamily="@font/avenir_lt_std_medium"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/_7sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18sdp"
+                tools:ignore="Autofill,LabelFor" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/price_miles_edt"
+                android:fontFamily="@font/avenir_lt_std_medium"
+                android:text="@string/per_miles"
+                android:textSize="@dimen/_15sdp" />
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

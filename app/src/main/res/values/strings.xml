@@ -426,5 +426,9 @@
     <string name="setup_your_service">Setup Your Service</string>
     <string name="rate">Rate:</string>
     <string name="select_service">Select service</string>
+    <string name="per_hour">Per Hour</string>
+    <string name="per_miles">Per Miles</string>
+    <string name="fixed">Fixed</string>
+    <string name="per_min">Per Mins</string>
 
 </resources>

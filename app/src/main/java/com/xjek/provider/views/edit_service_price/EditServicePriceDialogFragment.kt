@@ -32,7 +32,7 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
         cancel_txt.setOnClickListener { dismiss() }
         submit_txt.setOnClickListener {
             if (price_edt.text.isNotEmpty() && price_edt.text.toString().toDouble() > 0) {
-                setServicePriceViewModel.price.value = price_edt.text.toString()
+                setServicePriceViewModel.base_fare.value = price_edt.text.toString()
                 dismiss()
             } else {
                 ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)

@@ -48,6 +48,7 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                 } else {
 
                 }
+                ViewUtils.showToast(this, getString(R.string.select_service), false)
             }
         }
 
@@ -57,7 +58,7 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
     }
 
     private fun checkPrice() {
-        viewModel.price.observe(this, Observer {
+        viewModel.base_fare.observe(this, Observer {
             if (selectedService.servicescityprice != null) {
                 selectedService.servicescityprice.base_fare = it
             } else {
@@ -113,12 +114,6 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                     true -> {
                         service.selected = "0"
                         service.providerservices = listOf()
-                        if (selectedService.servicescityprice != null) {
-                            selectedService.servicescityprice.base_fare = "0.0"
-                        } else {
-                            selectedService.servicescityprice = SubServicePriceCategoriesResponse.Servicescityprice()
-                            selectedService.servicescityprice.base_fare = "0.0"
-                        }
                     }
                     else -> service.selected = "1"
                 }
@@ -126,4 +121,13 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
             }
         }
     }
+
+    class SelectedService(
+            var id: String = "",
+            var fareType: String = "",
+            var baseFare: String = "",
+            var perMins: String = "",
+            var selected: String = "",
+            var perMiles: String = ""
+    )
 }

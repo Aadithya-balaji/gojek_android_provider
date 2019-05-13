@@ -16,10 +16,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
@@ -213,6 +209,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         println("RRR :: HomeFragment.getApiResponse")
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
+                writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
                     mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
                     Log.e("CheckStatus", "-----" + mViewModel.currentStatus.value)

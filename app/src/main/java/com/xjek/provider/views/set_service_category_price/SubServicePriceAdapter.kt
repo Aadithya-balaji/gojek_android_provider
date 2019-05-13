@@ -12,6 +12,7 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.LayoutSetServicesWithPriceItemBinding
 import com.xjek.provider.models.SubServicePriceCategoriesResponse
 import com.xjek.provider.models.SubServicePriceCategoriesResponse.ResponseData
+import com.xjek.provider.utils.CommanMethods
 
 class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subserviceData: SubServicePriceCategoriesResponse, val priceEdit: Boolean)
     : RecyclerView.Adapter<SubServicePriceAdapter.MyViewHolder>() {
@@ -40,34 +41,39 @@ class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subservi
         holder.subserviceRowlistItemBinding.serviceCard.setOnClickListener {
             serviceItemClick?.onItemClick(subserviceData.responseData[position], false)
         }
+
         when (subserviceData.responseData[position].selected == "1" || subserviceData.responseData[position].providerservices.isNotEmpty()) {
             true -> holder.subserviceRowlistItemBinding.selectImg.setImageResource(R.drawable.ic_check_box_selected)
-            false -> {
-                holder.subserviceRowlistItemBinding.selectImg.setImageResource(R.drawable.ic_check_box)
-                var price = activity.getString(R.string.rate) + " " + currency
-                if (subserviceData.responseData[position].servicescityprice != null &&
-                        subserviceData.responseData[position].servicescityprice.base_fare != null)
-                    price += subserviceData.responseData[position].servicescityprice.base_fare
-                else
-                    price += "0.0"
-                holder.subserviceRowlistItemBinding.priceTv.text = price
-            }
+            false -> holder.subserviceRowlistItemBinding.selectImg.setImageResource(R.drawable.ic_check_box)
         }
+
         when {
             priceEdit -> {
                 holder.subserviceRowlistItemBinding.priceEditImg.visibility = VISIBLE
                 holder.subserviceRowlistItemBinding.priceTv.visibility = VISIBLE
                 var price = activity.getString(R.string.rate) + " " + currency
                 if (subserviceData.responseData[position].servicescityprice != null &&
-                        subserviceData.responseData[position].servicescityprice.base_fare != null)
-                    price += subserviceData.responseData[position].servicescityprice.base_fare
-                else
+                        subserviceData.responseData[position].servicescityprice.base_fare != null) {
+                    when (subserviceData.responseData[position].servicescityprice.fare_type) {
+                        "DISTANCETIME" -> {
+                            holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = VISIBLE
+                            holder.subserviceRowlistItemBinding.perMilePriceTv.text = price +
+                                    subserviceData.responseData[position].servicescityprice.per_miles + " " +
+                                    activity.getString(R.string.per_miles)
+                        }
+                        else -> holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = GONE
+                    }
+                    price += CommanMethods.getFare(activity, subserviceData.responseData[position].servicescityprice)
+                } else {
                     price += "0.0"
+                    holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = GONE
+                }
                 holder.subserviceRowlistItemBinding.priceTv.text = price
             }
             else -> {
                 holder.subserviceRowlistItemBinding.priceTv.visibility = GONE
                 holder.subserviceRowlistItemBinding.priceEditImg.visibility = GONE
+                holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = GONE
             }
         }
     }

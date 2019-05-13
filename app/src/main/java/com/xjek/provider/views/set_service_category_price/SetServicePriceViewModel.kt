@@ -12,7 +12,9 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
     private val appRepository = AppRepository.instance()
     val subServiceCategoriesPriceResponse = MutableLiveData<SubServicePriceCategoriesResponse>()
     val errorResponse = MutableLiveData<String>()
-    val price = MutableLiveData<String>()
+    val base_fare = MutableLiveData<String>()
+    val per_mins = MutableLiveData<String>()
+    val per_miles = MutableLiveData<String>()
     val dialogPrice = MutableLiveData<String>()
 
     fun getSubCategory(serviceId: String, SubServiceId: String) {

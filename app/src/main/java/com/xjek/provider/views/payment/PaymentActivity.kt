@@ -17,9 +17,7 @@ import com.xjek.provider.views.transaction_status.TransactionStatusActivity
 import com.xjek.xjek.ui.payment.PaymentNavigator
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
-
 class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator {
-
 
     lateinit var mViewDataBinding: ActivityPaymentBinding
     private var mCardNumber: String? = ""
@@ -27,7 +25,7 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
     private var mCardExpiryDate: String? = ""
     private var mCardHolderName: String? = ""
 
-    override fun getLayoutId(): Int = com.xjek.provider.R.layout.activity_payment
+    override fun getLayoutId(): Int = R.layout.activity_payment
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
@@ -59,10 +57,10 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        mCardNumber = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER) }
-        mCardExpiryDate = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY) }
-        mCardCVV = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV) }
-        mCardHolderName = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME) }
+        mCardNumber = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER)
+        mCardExpiryDate = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY)
+        mCardCVV = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV)
+        mCardHolderName = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME)
 
         // Your processing goes here.
         val temp = mCardExpiryDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -70,12 +68,7 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
         val month = Integer.parseInt(temp[0])
         val year = Integer.parseInt(temp[1])
 
-        val card = Card(
-                mCardNumber,
-                month,
-                year,
-                mCardCVV
-        )
+        val card = Card(mCardNumber, month, year, mCardCVV)
 
         card.name = mCardHolderName
 
@@ -97,8 +90,6 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
                         }
                     }
             )
-        } else {
-
         }
     }
 }

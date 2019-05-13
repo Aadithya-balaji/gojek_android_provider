@@ -16,10 +16,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ModuleTypes.ORDER

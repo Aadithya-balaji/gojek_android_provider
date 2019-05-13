@@ -29,5 +29,4 @@ class VerificationModel {
         }
         return 0
     }
-
 }

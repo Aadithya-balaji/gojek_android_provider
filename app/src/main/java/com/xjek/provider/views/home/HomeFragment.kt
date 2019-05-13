@@ -22,6 +22,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
 import com.xjek.base.data.PreferencesKey
+import com.xjek.base.data.PreferencesKey.PROVIDER_ID
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
@@ -101,6 +102,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         observeLiveData(mDashboardViewModel.checkRequestLiveData) { checkStatusData ->
             if (checkStatusData.statusCode == "200") {
                 val providerDetailsModel = checkStatusData.responseData.provider_details
+
+                writePreferences(PROVIDER_ID, providerDetailsModel.id)
 
                 val verificationModel = VerificationModel()
                 verificationModel.isBankDetail = providerDetailsModel.is_bankdetail

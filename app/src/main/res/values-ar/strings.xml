@@ -401,6 +401,9 @@
     <string name="total_charge">Total charge</string>
     <string name="support_mail">Support Mail</string>
     <string name="no_transction">No Transaction Found</string>
+    <string name="today">Today</string>
+    <string name="this_month">This Month</string>
+    <string name="this_week">This week</string>
     <string name="vehicle_added_success">Vehicle Added Successfully</string>
     <string name="vehicle_update_success">Vehicle Updated Successfully</string>
     <string name="please_enter_vehicle_name">Please enter vehicle name</string>
@@ -410,6 +413,5 @@
     <string name="please_enter_vehicle_color">Please enter vehicle color</string>
     <string name="please_enter_vehicle_plate_number">Please enter vehicle license plate number</string>
     <string name="please_enter_vehicle_make">Please enter vehicle make</string>
-
 
 </resources>

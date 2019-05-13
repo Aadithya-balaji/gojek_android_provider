@@ -552,15 +552,23 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         mViewModel.updateRequest(ARRIVED, null, false)
                     }
 
-                    START -> when {
-                        frontImgFile == null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
-                        mViewModel.otp.value.isNullOrEmpty() ->
-                            ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
-                        else -> {
-                            if (mViewModel.otp.value == mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.otp) {
+                    START -> if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) {
+                        when {
+                            mViewModel.otp.value.isNullOrEmpty() ->
+                                ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
+                            frontImgFile == null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
+                            mViewModel.otp.value.isNullOrEmpty() ->
+                                ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
+                            else -> if (mViewModel.otp.value == mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.otp) {
                                 frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
                                 mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
                             } else ViewUtils.showToast(this, resources.getString(R.string.invalid_otp), false)
+                        }
+                    } else when (frontImgFile) {
+                        null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
+                        else -> {
+                            frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
+                            mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
                         }
                     }
 

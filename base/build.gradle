@@ -16,7 +16,11 @@ android {
         // back to Android 2.1 (API level 7+).
         vectorDrawables.useSupportLibrary = true
 
-        resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
+        //      Go-X official KEY
+//        resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
+        //      Temp Key
+        resValue("string", "google_map_key", "AIzaSyArFGZVGMsdJvHRezGfYMv-pkvvl0XKZLE")
+
     }
     buildTypes {
         debug {

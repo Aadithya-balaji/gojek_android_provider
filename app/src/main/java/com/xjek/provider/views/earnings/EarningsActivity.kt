@@ -104,7 +104,7 @@ class EarningsActivity : BaseActivity<ActivityEarningsBinding>(), EarningsNaviga
                 vpEarnings.setPageTransformer(false, mBinding.viewPagerAdapter)
                 vpEarnings.currentItem = EarningsPagerAdapter.FIRST_PAGE
                 vpEarnings.offscreenPageLimit = 3
-                vpEarnings.pageMargin = -350
+                vpEarnings.pageMargin = -250
             }
         })
 

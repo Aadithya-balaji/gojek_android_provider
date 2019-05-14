@@ -39,7 +39,6 @@ import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityDashboardBinding
 import com.xjek.provider.views.account.AccountFragment
-import com.xjek.provider.views.earnings.EarningsActivity
 import com.xjek.provider.views.home.HomeFragment
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
 import com.xjek.provider.views.notification.NotificationFragment
@@ -112,8 +111,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
         mViewModel.getProfile()
         getApiResponse()
-
-        launchNewActivity(EarningsActivity::class.java, false)
 
     }
 

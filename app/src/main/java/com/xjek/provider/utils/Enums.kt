@@ -33,6 +33,12 @@ class Enums {
         const val RC_RC_BOOK_IMAGE = 103
         const val RC_INSURANCE_IMAGE = 104
 
+        const val DOCUMENT_UPLOAD_FRONT = 106
+        const val DOCUMENT_UPLOAD_BACK = 107
+
+        const val IMAGE_TYPE ="image"
+        const val PDF_TYPE ="pdf"
+
         //PaymentType
         const val PAYMENT_CASH = 1
         const val PAYMENT_CARD = 2

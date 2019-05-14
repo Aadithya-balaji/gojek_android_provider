@@ -5,6 +5,7 @@ import com.xjek.base.base.BaseViewModel
 import com.xjek.provider.models.AddDocumentResponse
 import com.xjek.provider.models.ListDocumentResponse
 import com.xjek.provider.repository.AppRepository
+import com.xjek.provider.utils.Enums
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -36,6 +37,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     var showExpiry = MutableLiveData<Boolean>()
     var showFrontView = MutableLiveData<Boolean>()
     var showBackView = MutableLiveData<Boolean>()
+    var isPDF = MutableLiveData<Boolean>()
 
     fun getDocumentList(documentType: String) {
         showLoading.value = true
@@ -47,7 +49,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         this.data = data
         if (data.isNotEmpty()) {
             updateDetails()
-            showEmpty.value = true
+            showEmpty.value = false
         } else
             showEmpty.value = true
     }
@@ -56,8 +58,8 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         documentFrontName.value = data[currentPosition].name + " (Front)"
         documentBackName.value = data[currentPosition].name + " (Back)"
         showBackSide.value = data[currentPosition].is_backside != null && data[currentPosition].is_backside!! == "1"
-        //showExpiry.value = data[currentPosition].is_expire == "1"
-        showExpiry.value = true
+        showExpiry.value = data[currentPosition].is_expire == "1"
+       // showExpiry.value = true
         if (data[currentPosition].provider_document != null) {
             showFrontView.value = true
             expiryDate.value = data[currentPosition].provider_document?.expires_at
@@ -77,6 +79,14 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
     fun selectFrontImage() {
         navigator.selectFrontImage()
+    }
+
+    fun getFileType(): String {
+        var fileType = Enums.IMAGE_TYPE
+        if (data.isNotEmpty() && data[currentPosition].file_type.equals("pdf", true)) {
+            fileType = Enums.PDF_TYPE
+        }
+        return fileType
     }
 
     fun selectBackImage() {

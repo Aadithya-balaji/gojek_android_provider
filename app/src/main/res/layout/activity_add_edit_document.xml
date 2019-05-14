@@ -23,11 +23,19 @@
             android:id="@+id/toolbar"
             layout="@layout/layout_app_bar" />
 
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/colorScreenBackground"
+            android:visibility="@{viewModel.showEmpty ? View.GONE:View.VISIBLE}">
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorScreenBackground">
+            >
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
@@ -76,6 +84,18 @@
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:visibility="@{viewModel.isPDF ? View.GONE:View.VISIBLE}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivFrontPDF"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            app:srcCompat="@drawable/ic_pdf"
+                            android:visibility="@{viewModel.isPDF ? View.VISIBLE:View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -239,5 +259,32 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp"
             tools:ignore="UnusedAttribute" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/llEmptyView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:background="@color/colorScreenBackground"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.showEmpty ? View.VISIBLE:View.GONE}">
+
+            <ImageView
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_gravity="center"
+                android:src="@drawable/no_documents" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/no_documents_found"
+                android:textSize="@dimen/_12sdp" />
+
+        </LinearLayout>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

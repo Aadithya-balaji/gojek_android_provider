@@ -12,18 +12,10 @@ class EarningsViewModel : BaseViewModel<EarningsNavigator>() {
     val appRepository = AppRepository.instance()
     var loadingProgress = MutableLiveData<Boolean>()
 
-    val earningsMonth = MutableLiveData<EarningsResponse>()
-    val earningsDay = MutableLiveData<EarningsResponse>()
-    val earningsWeek = MutableLiveData<EarningsResponse>()
+    val earnings = MutableLiveData<EarningsResponse>()
 
     fun earnings(userId: Int) {
-        getCompositeDisposable().add(appRepository.getMonthlyEarnings(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), userId)
-        )
-        getCompositeDisposable().add(appRepository.getWeeklyEarnings(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), userId)
-        )
-        getCompositeDisposable().add(appRepository.getDailyEarnings(this,
+        getCompositeDisposable().add(appRepository.getEarnings(this,
                 "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), userId)
         )
     }

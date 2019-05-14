@@ -36,9 +36,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         dashBoardNavigator = context as DashBoardNavigator
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_account
-    }
+    override fun getLayoutId() = R.layout.fragment_account
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         viewModel = provideViewModel { AccountViewModel() }

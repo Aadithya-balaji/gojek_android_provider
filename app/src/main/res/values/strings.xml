@@ -440,4 +440,7 @@
     <string name="setup_your_service">Setup Your Service</string>
     <string name="rate">Rate:</string>
     <string name="select_service">Select service</string>
+    <string name="today_target">Today\'s Completed Target</string>
+    <string name="weekly_target">This Week Target</string>
+    <string name="monthly_target">This Month Target</string>
 </resources>

@@ -8,21 +8,18 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.os.*
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.FirebaseDatabase
 import com.xjek.base.R
-import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.persistence.LocationPointsEntity
-import com.xjek.base.utils.PermissionUtils
 import java.io.Serializable
 import java.text.DateFormat
 import java.util.*
@@ -87,7 +84,7 @@ class BaseLocationService : Service() {
             }
         }
 
-        val displacement: Long = 20
+        val displacement: Long = 10
         val updateInterval: Long = 3000
         val fastestUpdateInterval = updateInterval / 2
 
@@ -145,6 +142,7 @@ class BaseLocationService : Service() {
             mFusedLocationClient!!.lastLocation.addOnCompleteListener { task ->
                 if (task.isSuccessful && task.result != null) {
                     mLocation = task.result
+                    println("RRRR:: TaxiDashBoardActivity received $mLocation")
                     onNewLocation(mLocation!!)
                 } else println("RRRR:: Failed to get location.")
                 println("RRRR:: streamLocation::task = $task")

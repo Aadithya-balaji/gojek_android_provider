@@ -19,6 +19,7 @@ import com.google.gson.Gson
 import com.google.maps.model.LatLng
 import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.utils.ViewUtils
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
 import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
@@ -33,7 +34,7 @@ import kotlin.collections.HashMap
 class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
 
     private lateinit var dialogTaxiIncomingReqBinding: DialogTaxiIncomingRequestBinding
-    private lateinit var incomingRequestViewModel: IncomingRequestViewModel
+    private lateinit var mViewModel: IncomingRequestViewModel
     private lateinit var circularProgressBar: FullCircularProgressBar
     private lateinit var timerToTakeOrder: MyCountDownTimer
 
@@ -60,17 +61,21 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
 
     override fun onPause() {
         super.onPause()
-        timerToTakeOrder.cancel()
+        try {
+            timerToTakeOrder.cancel()
+        } catch (e: Exception) {
+        }
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         dialogTaxiIncomingReqBinding = viewDataBinding as DialogTaxiIncomingRequestBinding
-        incomingRequestViewModel = IncomingRequestViewModel()
-        incomingRequestViewModel.navigator = this
-        dialogTaxiIncomingReqBinding.requestmodel = incomingRequestViewModel
+        mViewModel = IncomingRequestViewModel()
+        mViewModel.navigator = this
+        dialogTaxiIncomingReqBinding.requestmodel = mViewModel
         dialogTaxiIncomingReqBinding.lifecycleOwner = this
-        incomingRequestViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty() && incomingRequestModel!!.responseData.requests[0].time_left_to_respond>0) {
+        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()
+                && incomingRequestModel!!.responseData.requests[0].time_left_to_respond > 0) {
             totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond)
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
@@ -81,17 +86,17 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
             timerToTakeOrder.start()
 
-            if (incomingRequestViewModel.pickupLocation.value != null && incomingRequestViewModel.pickupLocation.value!!.length > 2)
-                incomingRequestViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.s_address
+            if (mViewModel.pickupLocation.value != null && mViewModel.pickupLocation.value!!.length > 2)
+                mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.s_address
             else {
                 val lat = incomingRequestModel!!.responseData.requests[0].request.s_latitude
                 val lon = incomingRequestModel!!.responseData.requests[0].request.s_longitude
                 var latLng: LatLng? = null
                 latLng = LatLng(lat, lon)
                 val address = getCurrentAddress(context!!, latLng)
-                if (address.isNotEmpty()) incomingRequestViewModel.pickupLocation.value = address[0].getAddressLine(0)
+                if (address.isNotEmpty()) mViewModel.pickupLocation.value = address[0].getAddressLine(0)
             }
-            incomingRequestViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
+            mViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
 
         getApiResponse()
@@ -104,39 +109,35 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             if (Geocoder.isPresent()) {
                 geocoder = Geocoder(context, Locale.getDefault())
                 addresses = geocoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
-                // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             }
         } catch (e: Exception) {
-            Log.d("EXception", "EXception" + e.message)
+            e.printStackTrace()
         }
 
         return addresses
     }
 
     private fun getApiResponse() {
-        observeLiveData(incomingRequestViewModel.acceptRequestLiveData) {
+        observeLiveData(mViewModel.acceptRequestLiveData) {
             loadingObservable.value = false
-            if (incomingRequestViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
+            if (mViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
-                if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 3) {
-                    val intent = Intent(activity, XuberDashBoardActivity::class.java)
-                    activity!!.startActivity(intent)
-                } else if (incomingRequestModel!!.responseData.requests[0].admin_service_id == 2) {
-                    val intent = Intent(activity, FoodLiveTaskServiceFlow::class.java)
-                    activity!!.startActivity(intent)
-                } else {
-                    val intent = Intent(activity, Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity"))
-                    activity!!.startActivity(intent)
+                when {
+                    incomingRequestModel!!.responseData.requests[0].admin_service_id == 3 ->
+                        activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
+                    incomingRequestModel!!.responseData.requests[0].admin_service_id == 2 ->
+                        activity!!.startActivity(Intent(activity, FoodLiveTaskServiceFlow::class.java))
+                    else -> activity!!.startActivity(Intent(activity,
+                            Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity")))
                 }
                 dialog!!.dismiss()
             }
         }
-        observeLiveData(incomingRequestViewModel.rejectRequestLiveData) {
+        observeLiveData(mViewModel.rejectRequestLiveData) {
             loadingObservable.value = false
-            if (incomingRequestViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")) {
-                if(timerToTakeOrder!=null)
+            if (mViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
-                com.xjek.base.utils.ViewUtils.showToast(activity!!, incomingRequestViewModel.rejectRequestLiveData.value!!.message.toString(), false)
+                ViewUtils.showToast(activity!!, mViewModel.rejectRequestLiveData.value!!.message.toString(), false)
                 dialog!!.dismiss()
             }
         }
@@ -147,7 +148,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         val params: HashMap<String, String> = HashMap()
         params["id"] = incomingRequestModel!!.responseData.requests[0].request.id.toString()
         params["service_id"] = incomingRequestModel!!.responseData.requests[0].service.id.toString()
-        incomingRequestViewModel.acceptRequest(params)
+        mViewModel.acceptRequest(params)
     }
 
     override fun cancel() {
@@ -155,23 +156,23 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         val params: HashMap<String, String> = HashMap()
         params["id"] = incomingRequestModel!!.responseData.requests[0].request.id.toString()
         params["service_id"] = incomingRequestModel!!.responseData.requests[0].service.id.toString()
-        incomingRequestViewModel.rejectRequest(params)
+        mViewModel.rejectRequest(params)
     }
 
     fun initCircularSeekBar(percentage: Float, time: String) {
         circularProgressBar = dialogTaxiIncomingReqBinding.ivRequestTime
-        val circularProgressBarModel = CircularProgressBarModel()
-        circularProgressBarModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
-        circularProgressBarModel.color = ContextCompat.getColor(context!!, R.color.grey)
-        circularProgressBarModel.strokeWidth = 15.0f
-        circularProgressBarModel.backgroundStrokeWidth = 15.0f
-        circularProgressBarModel.blur = 1
-        circularProgressBarModel.titleText = time
-        circularProgressBarModel.titleSize = 38
-        circularProgressBarModel.subTitleText = ""
-        circularProgressBarModel.targetSize = 100
-        circularProgressBarModel.targetColor = ContextCompat.getColor(context!!, R.color.colorAccent)
-        circularProgressBar.init(circularProgressBarModel)
+        val cpbModel = CircularProgressBarModel()
+        cpbModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
+        cpbModel.color = ContextCompat.getColor(context!!, R.color.grey)
+        cpbModel.strokeWidth = 15.0f
+        cpbModel.backgroundStrokeWidth = 15.0f
+        cpbModel.blur = 1
+        cpbModel.titleText = time
+        cpbModel.titleSize = 38
+        cpbModel.subTitleText = ""
+        cpbModel.targetSize = 100
+        cpbModel.targetColor = ContextCompat.getColor(context!!, R.color.colorAccent)
+        circularProgressBar.init(cpbModel)
         circularProgressBar.setProgress(percentage)
     }
 
@@ -231,6 +232,6 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
 
     override fun showErrormessage(error: String) {
         loadingObservable.value = false
-        com.xjek.base.utils.ViewUtils.showToast(activity!!, error, false)
+        ViewUtils.showToast(activity!!, error, false)
     }
 }

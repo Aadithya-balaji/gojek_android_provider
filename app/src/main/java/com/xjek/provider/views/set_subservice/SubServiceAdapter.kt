@@ -1,6 +1,8 @@
 package com.xjek.provider.views.set_subservice
 
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +34,10 @@ class SubServiceAdapter(val activity: SetSubServiceActivity, var subserviceData:
         holder.subserviceRowlistItemBinding.serviceCard.setOnClickListener {
             serviceItemClick?.onItemClick(subserviceData.responseData[position])
         }
+        if (position == subserviceData.responseData.size - 1)
+            holder.subserviceRowlistItemBinding.view.visibility = View.GONE
+        else
+            holder.subserviceRowlistItemBinding.view.visibility = VISIBLE
     }
 
     inner class MyViewHolder(itemView: LayoutSetServicesItemBinding)

@@ -12,13 +12,12 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityEarningsBinding
 import kotlinx.android.synthetic.main.activity_earnings.*
+import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 class EarningsActivity : BaseActivity<ActivityEarningsBinding>(), EarningsNavigator {
 
     private lateinit var mBinding: ActivityEarningsBinding
     private lateinit var mViewModel: EarningsViewModel
-
-    private var earningsList: MutableList<String>? = null
 
     override fun getLayoutId(): Int = R.layout.activity_earnings
 
@@ -29,12 +28,9 @@ class EarningsActivity : BaseActivity<ActivityEarningsBinding>(), EarningsNaviga
         mViewModel.loadingProgress = loadingObservable as MutableLiveData<Boolean>
 
         mBinding.viewModel = mViewModel
-        mBinding.viewPagerAdapter = EarningsPagerAdapter(this.supportFragmentManager)
 
-        vpEarnings.setPageTransformer(false, mBinding.viewPagerAdapter)
-        vpEarnings.currentItem = EarningsPagerAdapter.FIRST_PAGE
-        vpEarnings.offscreenPageLimit = 3
-        vpEarnings.pageMargin = -400
+        mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.title_earnings)
+        mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { finish() }
 
         vpEarnings.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
@@ -102,13 +98,15 @@ class EarningsActivity : BaseActivity<ActivityEarningsBinding>(), EarningsNaviga
             vpEarnings.currentItem = 2
         }
 
-        vpEarnings.currentItem
-
-//        mViewModel.earningsMonth.observe(this, Observer { if (it != null) earningsList.add(0, it.responseData.earning) })
-
-//        mViewModel.earningsWeek.observe(this, Observer { if (it != null) earningsList.add(1, it.responseData.earning) })
-
-//        mViewModel.earningsDay.observe(this, Observer { if (it != null) earningsList.add(2, it.responseData.earning) })
+        mViewModel.earnings.observe(this, Observer {
+            if (it != null){
+                mBinding.viewPagerAdapter = EarningsPagerAdapter(this.supportFragmentManager, it.responseData, this)
+                vpEarnings.setPageTransformer(false, mBinding.viewPagerAdapter)
+                vpEarnings.currentItem = EarningsPagerAdapter.FIRST_PAGE
+                vpEarnings.offscreenPageLimit = 3
+                vpEarnings.pageMargin = -250
+            }
+        })
 
         mViewModel.earnings(readPreferences(PreferencesKey.PROVIDER_ID))
     }

@@ -22,7 +22,7 @@ data class SubServicePriceCategoriesResponse(
             val is_professional: String = "",
             val service_status: String = "",
             var selected: String = "",
-            var providerservices: List<ProviderServices> = listOf(),
+            var providerservices: MutableList<ProviderServices> = mutableListOf(),
             var servicescityprice: Servicescityprice = Servicescityprice()
     ) : Serializable
 
@@ -36,9 +36,9 @@ data class SubServicePriceCategoriesResponse(
             val category_id: String = "",
             val sub_category_id: String = "",
             val company_id: String = "",
-            val base_fare: String = "",
-            val per_miles: String = "",
-            val per_mins: String = "",
+            var base_fare: String = "",
+            var per_miles: String = "",
+            var per_mins: String = "",
             val status: String = ""
     ) : Serializable
 
@@ -48,11 +48,11 @@ data class SubServicePriceCategoriesResponse(
             val country_id: String = "",
             val city_id: String = "",
             val company_id: String = "",
-            val fare_type: String = "",
+            var fare_type: String = "",
             var base_fare: String = "",
             val base_distance: String = "",
-            val per_miles: String = "",
-            val per_mins: String = "",
+            var per_miles: String = "",
+            var per_mins: String = "",
             val minimum_fare: String = "",
             val commission: String = "",
             val fleet_commission: String = "",

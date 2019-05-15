@@ -20,9 +20,7 @@ class EarningsItemLayout : LinearLayout {
     }
 
     override fun onDraw(canvas: Canvas) {
-        val w = this.width
-        val h = this.height
-        canvas.scale(mScale, mScale, (w / 2).toFloat(), (h / 2).toFloat())
+        canvas.scale(mScale, mScale, (this.width / 2).toFloat(), (this.height / 2).toFloat())
         super.onDraw(canvas)
     }
 }

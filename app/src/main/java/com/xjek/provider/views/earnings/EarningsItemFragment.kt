@@ -10,23 +10,25 @@ import com.xjek.provider.R
 
 class EarningsItemFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        if (container == null) return null
+    override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?): View? {
+        if (c == null) return null
 
-        val binding: com.xjek.provider.databinding.ItemEarningsBinding = DataBindingUtil.inflate(inflater, R.layout.item_earnings, container, false)
+        val binding: com.xjek.provider.databinding.ItemEarningsBinding =
+                DataBindingUtil.inflate(i, R.layout.item_earnings, c, false)
         val myView: View = binding.root
 
-        binding.earningsAmt = this.arguments!!.getString("data")
+        binding.earningsAmt = this.arguments!!.getString("earnings")
+        binding.itemText.text = this.arguments!!.getString("earningsTitle")
         binding.itemRoot.setScaleBoth(this.arguments!!.getFloat("scale"))
 
         return myView
     }
 
     companion object {
-
-        fun newInstance(position: String, scale: Float): Fragment {
+        fun newInstance(earnings: String, earningsTitle: String, scale: Float): Fragment {
             val bundle = Bundle()
-            bundle.putString("data", position)
+            bundle.putString("earnings", earnings)
+            bundle.putString("earningsTitle", earningsTitle)
             bundle.putFloat("scale", scale)
             val f = EarningsItemFragment()
             f.arguments = bundle

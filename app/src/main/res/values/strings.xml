@@ -440,5 +440,14 @@
     <string name="setup_your_service">Setup Your Service</string>
     <string name="rate">Rate:</string>
     <string name="select_service">Select service</string>
+    <string name="today_target">Today\'s Completed Target</string>
+    <string name="weekly_target">This Week Target</string>
+    <string name="monthly_target">This Month Target</string>
+    <string name="per_hour">Per Hour</string>
+    <string name="per_miles">Per Miles</string>
+    <string name="fixed">Fixed</string>
+    <string name="per_min">Per Mins</string>
+    <string name="enter_amount_selected_service">Enter the amount for selected service</string>
+
     <string name="docuemnt_added_success">Document added successfully</string>
 </resources>

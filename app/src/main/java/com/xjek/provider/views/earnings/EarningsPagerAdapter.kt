@@ -5,21 +5,36 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.xjek.base.data.PreferencesHelper
+import com.xjek.base.data.PreferencesKey
 import com.xjek.provider.R
+import com.xjek.provider.model.EarningsResponseData
 
-class EarningsPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager), ViewPager.PageTransformer {
+class EarningsPagerAdapter(fragmentManager: FragmentManager, private val response: EarningsResponseData, private val activity: EarningsActivity)
+    : FragmentPagerAdapter(fragmentManager), ViewPager.PageTransformer {
 
     override fun getItem(position: Int): Fragment {
         val mScale: Float = if (position == FIRST_PAGE) BIG_SCALE
         else SMALL_SCALE
-//        val data = mList[position]
-//        val earnings = when (position) {
-//            0 -> "&$data"
-//            1 -> "&$data"
-//            2 -> "&$data"
-//            else -> "&0"
-//        }
-        return EarningsItemFragment.newInstance("@0", mScale)
+
+        var earnings = ""
+        var earningsTitle = activity.getString(R.string.today_target)
+        val symbol = PreferencesHelper.get(PreferencesKey.CURRENCY_SYMBOL, "₹")
+        when (position) {
+            0 -> {
+                earnings = "$symbol ${response.today}"
+                earningsTitle = activity.getString(R.string.today_target)
+            }
+            1 -> {
+                earnings = "$symbol ${response.week}"
+                earningsTitle = activity.getString(R.string.weekly_target)
+            }
+            2 -> {
+                earnings = "$symbol ${response.month}"
+                earningsTitle = activity.getString(R.string.monthly_target)
+            }
+        }
+        return EarningsItemFragment.newInstance(earnings, earningsTitle, mScale)
     }
 
     override fun getCount() = PAGES

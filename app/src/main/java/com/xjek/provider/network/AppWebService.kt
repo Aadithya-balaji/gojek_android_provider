@@ -1,7 +1,6 @@
 package com.xjek.provider.network
 
 import com.xjek.provider.model.*
-import com.xjek.provider.model.ResponseData
 import com.xjek.provider.models.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -188,6 +187,13 @@ interface AppWebService {
     ): Observable<AddVehicleResponseModel>
 
     @FormUrlEncoded
+    @POST("provider/vehicle/edit")
+    fun postVehicle(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<AddVehicleResponseModel>
+
+    @FormUrlEncoded
     @POST("provider/listdocuments")
     fun getDocuments(@Field("type") documentType: String
     ): Observable<ListDocumentResponse>
@@ -248,22 +254,9 @@ interface AppWebService {
     fun getDisputeStatus(@Header("Authorization") token: String,
                          @Path("id") id: String): Observable<DisputeStatusModel>
 
-    @GET("provider/earnings/{id}?type=month")
-    fun getMonthlyEarnings(
+    @GET("provider/earnings/{id}")
+    fun getEarnings(
             @Header("Authorization") token: String,
             @Path("id") id: Int
     ): Observable<EarningsResponse>
-
-    @GET("provider/earnings/{id}?type=week")
-    fun getWeeklyEarnings(
-            @Header("Authorization") token: String,
-            @Path("id") id: Int
-    ): Observable<EarningsResponse>
-
-    @GET("provider/earnings/{id}?type=day")
-    fun getDailyEarnings(
-            @Header("Authorization") token: String,
-            @Path("id") id: Int
-    ): Observable<EarningsResponse>
-
 }

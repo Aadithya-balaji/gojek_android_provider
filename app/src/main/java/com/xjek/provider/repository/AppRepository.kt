@@ -507,6 +507,22 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+    fun postVehicle(viewModel: ViewModel, token: String,
+                    params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postVehicle(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        if (viewModel is SetServicePriceViewModel)
+                            viewModel.addServiceResponseModel.postValue(it)
+                }, {
+                    if (viewModel is SetServicePriceViewModel)
+                        viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
 //    fun getServices(viewModel: SetupVehicleViewModel, token: String): Disposable {
 //        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
 //                .getRides(token)
@@ -714,44 +730,15 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun getMonthlyEarnings(viewModel: EarningsViewModel, token: String, userId: Int): Disposable {
+    fun getEarnings(viewModel: EarningsViewModel, token: String, userId: Int): Disposable {
         viewModel.loadingProgress.value = true
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getMonthlyEarnings(token, userId)
+                .getEarnings(token, userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.loadingProgress.value = false
-                    viewModel.earningsMonth.value = it
-                }, {
-                    viewModel.loadingProgress.value = false
-                })
-    }
-
-    fun getWeeklyEarnings(viewModel: EarningsViewModel, token: String, userId: Int): Disposable {
-        viewModel.loadingProgress.value = true
-        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getWeeklyEarnings(token, userId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.earningsWeek.value = it
-                }, {
-                    viewModel.loadingProgress.value = false
-
-                })
-    }
-
-    fun getDailyEarnings(viewModel: EarningsViewModel, token: String, userId: Int): Disposable {
-        viewModel.loadingProgress.value = true
-        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getDailyEarnings(token, userId)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.earningsDay.value = it
+                    viewModel.earnings.value = it
                 }, {
                     viewModel.loadingProgress.value = false
                 })

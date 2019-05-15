@@ -415,4 +415,8 @@
     <string name="please_enter_vehicle_make">Please enter vehicle make</string>
     <string name="docuemnt_added_success">Document added successfully</string>
 
+    <string name="today_target">Today\'s Completed Target</string>
+    <string name="weekly_target">This Week Target</string>
+    <string name="monthly_target">This Month Target</string>
+
 </resources>

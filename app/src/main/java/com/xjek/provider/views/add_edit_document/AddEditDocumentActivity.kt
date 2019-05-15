@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.widget.DatePicker
 import androidx.databinding.ViewDataBinding
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
@@ -24,6 +25,8 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityAddEditDocumentBinding
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Enums
+import droidninja.filepicker.FilePickerBuilder
+import droidninja.filepicker.FilePickerConst
 import kotlinx.android.synthetic.main.activity_add_edit_document.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 import java.io.File
@@ -39,7 +42,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     private lateinit var calendar: Calendar
 
     private var requestCode: Int = -1
-
+    
 
     override fun getLayoutId(): Int = R.layout.activity_add_edit_document
 
@@ -81,7 +84,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         }
 
         observeLiveData(viewModelAddEdit.addDocumentResponse) {
-            ViewUtils.showToast(this, "Document added successfully", true)
+            ViewUtils.showToast(this, getString(R.string.docuemnt_added_success), true)
             viewModelAddEdit.incrementPosition()
         }
 
@@ -131,6 +134,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
                     }
                 }else{
+                    viewModelAddEdit.isPDF.value = true
                     ivBackImage.setImageResource(R.drawable.ic_pdf)
                 }
 
@@ -150,7 +154,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         viewModelAddEdit.expiryDate.value = DateTimeUtil().constructDateString(year, month, dayOfMonth,
-                "/")
+                "-")
     }
 
     override fun onDateChanged() {
@@ -165,11 +169,23 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                 .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        requestCode = Enums.DOCUMENT_UPLOAD_FRONT
+
                         if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
-                            requestCode = Enums.DOCUMENT_UPLOAD_FRONT
                             ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
                         } else {
-
+                          /*  val intent = Intent(Intent.ACTION_GET_CONTENT)
+                            intent.type = "application/pdf"
+                            intent.addCategory(Intent.CATEGORY_OPENABLE)
+                            startActivityForResult(intent,Enums.DOCUMENT_UPLOAD_PDF)*/
+                            FilePickerBuilder.instance
+                                    .setMaxCount(1)
+                                    .addFileSupport("Select Front Page", arrayOf(".pdf"), R.drawable.ic_pdf)
+                                    .setActivityTheme(R.style.LibAppTheme)
+                                    .enableDocSupport(false)
+                                    .enableSelectAll(false)
+                                    .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                                    .pickFile(this@AddEditDocumentActivity)
                         }
                     }
 
@@ -189,7 +205,14 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                             requestCode = Enums.DOCUMENT_UPLOAD_BACK
                             ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
                         } else {
-
+                            FilePickerBuilder.instance
+                                    .setMaxCount(1)
+                                    .addFileSupport("Select Back Page", arrayOf(".pdf"), R.drawable.ic_pdf)
+                                    .setActivityTheme(R.style.LibAppTheme)
+                                    .enableDocSupport(false)
+                                    .enableSelectAll(false)
+                                    .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                                    .pickFile(this@AddEditDocumentActivity)
                         }
                     }
 
@@ -227,6 +250,26 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                         }
                     }
 
+                }
+            }
+
+
+            FilePickerConst.REQUEST_CODE_DOC -> {
+                if (resultCode == Activity.RESULT_OK && data !=null) {
+                    when (this.requestCode) {
+                        Enums.DOCUMENT_UPLOAD_FRONT ->{
+                            val selectedDoc = data?.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                            viewModelAddEdit.documentFrontImageFile.value = File(selectedDoc!![0])
+                            viewModelAddEdit.showFrontView.value = true
+                        }
+
+                       else ->{
+                           val selectedDoc = data?.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                           viewModelAddEdit.documentBackImageFile.value = File(selectedDoc!![0])
+                           viewModelAddEdit.showFrontView.value = true
+                        }
+
+                    }
                 }
             }
         }

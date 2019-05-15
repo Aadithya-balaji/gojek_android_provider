@@ -2,6 +2,7 @@ package com.xjek.provider.views.add_edit_document
 
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.base.utils.Utils
 import com.xjek.provider.models.AddDocumentResponse
 import com.xjek.provider.models.ListDocumentResponse
 import com.xjek.provider.repository.AppRepository
@@ -62,7 +63,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
        // showExpiry.value = true
         if (data[currentPosition].provider_document != null) {
             showFrontView.value = true
-            expiryDate.value = data[currentPosition].provider_document?.expires_at
+            expiryDate.value = Utils.parseDateToYYYYMMdd(data[currentPosition].provider_document?.expires_at)
             documentFrontImageURL.value = data[currentPosition].provider_document!!.url[0].url
             if (data[currentPosition].provider_document!!.url.size > 1) {
                 documentBackImageURL.value = data[currentPosition].provider_document!!.url[1].url

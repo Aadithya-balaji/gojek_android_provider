@@ -95,7 +95,7 @@
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             app:srcCompat="@drawable/ic_pdf"
-                            android:visibility="@{viewModel.isPDF ? View.VISIBLE:View.GONE}"
+                            android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showFrontView) ? View.VISIBLE:View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

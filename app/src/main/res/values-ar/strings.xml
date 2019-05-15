@@ -413,5 +413,6 @@
     <string name="please_enter_vehicle_color">Please enter vehicle color</string>
     <string name="please_enter_vehicle_plate_number">Please enter vehicle license plate number</string>
     <string name="please_enter_vehicle_make">Please enter vehicle make</string>
+    <string name="docuemnt_added_success">Document added successfully</string>
 
 </resources>

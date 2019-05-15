@@ -84,11 +84,27 @@ class CommanMethods {
 
         }
 
-        fun getFare(activity: Activity, servicePrices: SubServicePriceCategoriesResponse.Servicescityprice): String =
+        fun getFare(activity: Activity, servicePrices: SubServicePriceCategoriesResponse.Servicescityprice,
+                    providerService: List<SubServicePriceCategoriesResponse.ProviderServices>): String =
                 when (servicePrices.fare_type) {
-                    "HOURLY" -> servicePrices.per_mins + " " + activity.getString(R.string.per_hour)
-                    "FIXED" -> servicePrices.base_fare +  " " + activity.getString(R.string.fixed)
-                    "DISTANCETIME" -> servicePrices.per_mins + " " +  activity.getString(R.string.per_min)
+                    "HOURLY" -> {
+                        if (providerService.isNotEmpty())
+                            providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
+                        else
+                            servicePrices.per_mins + " " + activity.getString(R.string.per_hour)
+                    }
+                    "FIXED" -> {
+                        if (providerService.isNotEmpty())
+                            providerService[0].base_fare + " " + activity.getString(R.string.per_hour)
+                        else
+                            servicePrices.base_fare + " " + activity.getString(R.string.fixed)
+                    }
+                    "DISTANCETIME" -> {
+                        if (providerService.isNotEmpty())
+                            providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
+                        else
+                            servicePrices.per_mins + " " + activity.getString(R.string.per_min)
+                    }
                     else -> ""
                 }
 

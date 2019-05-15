@@ -173,8 +173,15 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @PartMap params: HashMap<String, RequestBody>,
 //            @Part vehicleImage: MultipartBody.Part,
-            @Part rcBookMultipart: MultipartBody.Part,
-            @Part insuranceMultipart: MultipartBody.Part
+            @Part rcBookMultipart: MultipartBody.Part?,
+            @Part insuranceMultipart: MultipartBody.Part?
+    ): Observable<AddVehicleResponseModel>
+
+    @FormUrlEncoded
+    @POST("provider/vehicle/edit")
+    fun postVehicle(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
     ): Observable<AddVehicleResponseModel>
 
     @FormUrlEncoded

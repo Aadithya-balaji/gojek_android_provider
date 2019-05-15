@@ -57,15 +57,24 @@ class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subservi
                     when (subserviceData.responseData[position].servicescityprice.fare_type) {
                         "DISTANCETIME" -> {
                             holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = VISIBLE
-                            holder.subserviceRowlistItemBinding.perMilePriceTv.text = price +
-                                    subserviceData.responseData[position].servicescityprice.per_miles + " " +
-                                    activity.getString(R.string.per_miles)
+                            if (subserviceData.responseData[position].providerservices.isNotEmpty())
+                                holder.subserviceRowlistItemBinding.perMilePriceTv.text = price +
+                                        subserviceData.responseData[position].providerservices[0].per_miles + " " +
+                                        activity.getString(R.string.per_miles)
+                            else
+                                holder.subserviceRowlistItemBinding.perMilePriceTv.text = price +
+                                        subserviceData.responseData[position].servicescityprice.per_miles + " " +
+                                        activity.getString(R.string.per_miles)
                         }
                         else -> holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = GONE
                     }
-                    price += CommanMethods.getFare(activity, subserviceData.responseData[position].servicescityprice)
+
+                    price += CommanMethods.getFare(activity, subserviceData.responseData[position].servicescityprice, subserviceData.responseData[position].providerservices)
                 } else {
-                    price += "0.0"
+                    if (subserviceData.responseData[position].providerservices.isNotEmpty())
+                        price += subserviceData.responseData[position].providerservices[0].base_fare
+                    else
+                        price += "0.0"
                     holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = GONE
                 }
                 holder.subserviceRowlistItemBinding.priceTv.text = price

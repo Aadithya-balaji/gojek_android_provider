@@ -70,7 +70,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         dialogTaxiIncomingReqBinding.requestmodel = incomingRequestViewModel
         dialogTaxiIncomingReqBinding.lifecycleOwner = this
         incomingRequestViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty() && incomingRequestModel!!.responseData.requests[0].time_left_to_respond>0) {
+        if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty() && incomingRequestModel!!.responseData.requests[0].time_left_to_respond > 0) {
             totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond)
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
@@ -134,8 +134,8 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         observeLiveData(incomingRequestViewModel.rejectRequestLiveData) {
             loadingObservable.value = false
             if (incomingRequestViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")) {
-                if(timerToTakeOrder!=null)
-                timerToTakeOrder.cancel()
+                if (timerToTakeOrder != null)
+                    timerToTakeOrder.cancel()
                 com.xjek.base.utils.ViewUtils.showToast(activity!!, incomingRequestViewModel.rejectRequestLiveData.value!!.message.toString(), false)
                 dialog!!.dismiss()
             }

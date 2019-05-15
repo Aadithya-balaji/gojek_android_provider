@@ -53,12 +53,12 @@
                 android:layout_toEndOf="@+id/price_edt"
                 android:fontFamily="@font/avenir_lt_std_medium"
                 android:text="@string/per_hour"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_11sdp" />
 
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/miles_txt"
+            android:id="@+id/miles_lt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone">
@@ -86,7 +86,7 @@
                 android:layout_toEndOf="@+id/price_miles_edt"
                 android:fontFamily="@font/avenir_lt_std_medium"
                 android:text="@string/per_miles"
-                android:textSize="@dimen/_15sdp" />
+                android:textSize="@dimen/_11sdp" />
 
         </RelativeLayout>
 

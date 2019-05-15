@@ -473,9 +473,9 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun postVehicle(viewModel: AddVehicleViewModel, token: String,
+    fun postVehicle(viewModel: ViewModel, token: String,
                     params: HashMap<String, RequestBody>,
-                    rcBookMultipart: MultipartBody.Part, insuranceMultipart: MultipartBody.Part
+                    rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
     ): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postVehicle(token, params, rcBookMultipart, insuranceMultipart)
@@ -483,9 +483,27 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     if (it.statusCode == "200")
-                        viewModel.getVehicleResponseObservable().postValue(it)
+                        if (viewModel is AddVehicleViewModel)
+                            viewModel.getVehicleResponseObservable().postValue(it)
                 }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
+                    if (viewModel is AddVehicleViewModel)
+                        viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+    fun postVehicle(viewModel: ViewModel, token: String,
+                    params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postVehicle(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        if (viewModel is SetServicePriceViewModel)
+                            viewModel.addServiceResponseModel.postValue(it)
+                }, {
+                    if (viewModel is SetServicePriceViewModel)
+                        viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 

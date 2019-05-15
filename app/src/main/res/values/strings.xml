@@ -430,5 +430,6 @@
     <string name="per_miles">Per Miles</string>
     <string name="fixed">Fixed</string>
     <string name="per_min">Per Mins</string>
+    <string name="enter_amount_selected_service">Enter the amount for selected service</string>
 
 </resources>

@@ -16,6 +16,8 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
     var onlineStatusLiveData = MutableLiveData<StatusResponseModel>()
 
+
+
     fun changeStatus(view: View) {
         navigator.changeStatus(view)
     }

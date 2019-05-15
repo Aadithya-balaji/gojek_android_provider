@@ -4,12 +4,12 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.View
-import android.widget.PopupWindow
 import androidx.databinding.ViewDataBinding
+import com.bumptech.glide.Glide
 import com.theartofdev.edmodo.cropper.CropImage
 import com.xjek.base.base.BaseActivity
-import com.xjek.base.data.PreferencesHelper.message
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.ImageCropperUtils
@@ -20,6 +20,7 @@ import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Enums
 import kotlinx.android.synthetic.main.activity_add_vehicle.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
+import java.io.File
 
 
 class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicleNavigator {
@@ -40,13 +41,28 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
         binding = mViewDataBinding as ActivityAddVehicleBinding
         binding.lifecycleOwner = this
+
         viewModel = provideViewModel {
             AddVehicleViewModel()
         }
         viewModel.navigator = this
+
         viewModel.setServiceId(intent.getIntExtra(Constant.SERVICE_ID, -1))
-        if (intent.hasExtra(Constant.PROVIDER_VEHICLE))
-            viewModel.setVehicleLiveData(intent.getParcelableExtra(Constant.PROVIDER_VEHICLE))
+        viewModel.setCategoryId(intent.getIntExtra(Constant.CATEGORY_ID, -1))
+
+
+        if (intent.hasExtra(Constant.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constant.PROVIDER_ORDER_VEHICLE)) {
+            viewModel.setIsEdit(true)
+        } else {
+            viewModel.setIsEdit(false)
+        }
+
+        if (intent.hasExtra(Constant.PROVIDER_TRANSPORT_VEHICLE)) {
+            viewModel.setVehicleLiveData(intent.getParcelableExtra(Constant.PROVIDER_TRANSPORT_VEHICLE))
+        } else if (intent.hasExtra(Constant.PROVIDER_ORDER_VEHICLE)) {
+            viewModel.setVehicleLiveData(intent.getParcelableExtra(Constant.PROVIDER_ORDER_VEHICLE))
+        }
+
         binding.addVehicleViewModel = viewModel
 
         setSupportActionBar(binding.toolbar.tbApp)
@@ -55,22 +71,66 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
         observeViewModel()
 
-        getVehicleCategories()
+        if (viewModel.getServiceId() == viewModel.getTransportId())
+            getVehicleCategories()
 
         txt_category_selection.setOnClickListener {
-            val popupWindow = PopupWindow(this)
-            popupWindow.showAsDropDown(it, -5, 0)
+            spinnerCarCategory.expand()
         }
+
+        observeLiveData(viewModel.loadingObservable) {
+            loadingObservable.value = it
+        }
+
+        spinnerCarCategory.setOnItemSelectedListener { view, position, id, item ->
+            run {
+                txt_category_selection.setText(item.toString())
+                viewModel.getVehicleData()!!.vehicleId = viewModel.getVehicleCategoryObservable().value!!.responseData.transport[position].id
+            }
+        }
+
+
     }
 
 
     private fun observeViewModel() {
         observeLiveData(viewModel.getVehicleCategoryObservable()) {
             loadingObservable.value = false
-
+            val vehicleData = it.responseData.transport
+            spinnerCarCategory.setItems(vehicleData)
+            if (viewModel.getVehicleData()!!.vehicleId > 0) {
+                val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == viewModel.getVehicleData()!!.vehicleId }
+                spinnerCarCategory.selectedIndex = vehiclePosition
+            }
         }
         observeLiveData(viewModel.getVehicleResponseObservable()) {
             loadingObservable.value = false
+            if (!viewModel.getIsEdit()) {
+                ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.vehicle_added_success), true)
+            } else {
+                ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.vehicle_update_success), true)
+            }
+        }
+
+        observeLiveData(viewModel.getVehicleDataObservable()) { vehicleData ->
+            run {
+
+                Glide.with(this@AddVehicleActivity)
+                        .load(vehicleData.vehicleImage)
+                        .placeholder(R.drawable.vehicle_place_holder)
+                        .into(iv_vehicle)
+
+                Glide.with(this@AddVehicleActivity)
+                        .load(vehicleData.vehicleRcBook)
+                        .into(iv_rc_book)
+
+                Glide.with(this@AddVehicleActivity)
+                        .load(vehicleData.vehicleInsurance)
+                        .into(iv_insurance)
+
+                Log.v("SK_TEST", "SK_TEST VEHICLE ${vehicleData.vehicleMake}")
+
+            }
         }
     }
 
@@ -81,12 +141,60 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
     private fun performValidation() {
         ViewUtils.hideSoftInputWindow(this)
-        if (viewModel.isVehicleDataValid()) {
-            loadingObservable.value = true
-            viewModel.postVehicle()
+
+        val isTransport = viewModel.getServiceId() == viewModel.getTransportId()
+        val data = viewModel.getVehicleData()
+        if (!isTransport) {
+            when {
+                data?.vehicleMake.isNullOrEmpty() -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_name), false)
+                }
+                data?.vehicleNumber.isNullOrEmpty() -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_number), false)
+                }
+                (!viewModel.getIsEdit() && viewModel.getRcBookUri() == null) -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_select_rc_book_document), false)
+                }
+                (!viewModel.getIsEdit() && viewModel.getInsuranceUri() == null) -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_select_insurance_document), false)
+                }
+                else -> {
+                    viewModel.postVehicle()
+                }
+            }
         } else {
-            ViewUtils.showToast(applicationContext, message, false)
+            when {
+                (data?.vehicleId==0) -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_name), false)
+                }
+                data?.vehicleModel.isNullOrEmpty() -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_model), false)
+                }
+                data?.vehicleYear.isNullOrEmpty() -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_year), false)
+                }
+                data?.vehicleColor.isNullOrEmpty() -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_color), false)
+                }
+                data?.vehicleNumber.isNullOrEmpty() -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_plate_number), false)
+                }
+                data?.vehicleMake.isNullOrEmpty() -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_make), false)
+                }
+                (!viewModel.getIsEdit() && viewModel.getRcBookUri() == null) -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_select_rc_book_document), false)
+                }
+                (!viewModel.getIsEdit() && viewModel.getInsuranceUri() == null) -> {
+                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_select_insurance_document), false)
+                }
+                else -> {
+                    viewModel.postVehicle()
+                }
+            }
         }
+
+
     }
 
     @SuppressLint("MissingSuperCall")
@@ -97,17 +205,32 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 if (resultCode == Activity.RESULT_OK) {
                     when (this.requestCode) {
                         Enums.RC_VEHICLE_IMAGE -> {
+
                             viewModel.setVehicleUri(result.uri)
-                            binding.ivVehicle.setImageURI(result.uri)
+
+                            Glide.with(this@AddVehicleActivity)
+                                    .load(File(result.uri.path))
+                                    .placeholder(R.drawable.vehicle_place_holder)
+                                    .into(iv_vehicle)
+                            // binding.ivVehicle.setImageBitmap(result.bitmap)
+
                         }
                         Enums.RC_RC_BOOK_IMAGE -> {
                             viewModel.setRcBookUri(result.uri)
-                            binding.ivRcBook.setImageURI(result.uri)
+                            //binding.ivRcBook.setImageURI(result.uri)
+                            //  binding.ivRcBook.setImageBitmap(result.bitmap)
+                            Glide.with(this@AddVehicleActivity)
+                                    .load(File(result.uri.path))
+                                    .into(iv_rc_book)
                             tvRcBook.visibility = View.GONE
                         }
                         Enums.RC_INSURANCE_IMAGE -> {
                             viewModel.setInsuranceUri(result.uri)
-                            binding.ivInsurance.setImageURI(result.uri)
+//                            binding.ivInsurance.setImageURI(result.uri)
+                            //binding.ivInsurance.setImageBitmap(result.bitmap)
+                            Glide.with(this@AddVehicleActivity)
+                                    .load(File(result.uri.path))
+                                    .into(iv_insurance)
                             tvInsurance.visibility = View.GONE
                         }
                     }

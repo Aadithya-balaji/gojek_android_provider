@@ -26,6 +26,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">
+
         <activity
             android:name=".views.earnings.EarningsActivity"
             android:configChanges="keyboardHidden"
@@ -222,7 +223,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
 
     </application>
 

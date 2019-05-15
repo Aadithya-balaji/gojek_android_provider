@@ -170,9 +170,18 @@ interface AppWebService {
     @Multipart
     @POST("provider/vechile/add")
     fun postVehicle(
-            @Header("Authorization") token: String,
             @PartMap params: HashMap<String, RequestBody>,
-//            @Part vehicleImage: MultipartBody.Part,
+            @Part vehicleImage: MultipartBody.Part?,
+            @Part rcBookMultipart: MultipartBody.Part?,
+            @Part insuranceMultipart: MultipartBody.Part?
+    ): Observable<AddVehicleResponseModel>
+
+
+    @Multipart
+    @POST("provider/vehicle/edit")
+    fun editVehicle(
+            @PartMap params: HashMap<String, RequestBody>,
+            @Part vehicleImage: MultipartBody.Part?,
             @Part rcBookMultipart: MultipartBody.Part?,
             @Part insuranceMultipart: MultipartBody.Part?
     ): Observable<AddVehicleResponseModel>
@@ -245,5 +254,9 @@ interface AppWebService {
     fun getDisputeStatus(@Header("Authorization") token: String,
                          @Path("id") id: String): Observable<DisputeStatusModel>
 
-
+    @GET("provider/earnings/{id}")
+    fun getEarnings(
+            @Header("Authorization") token: String,
+            @Path("id") id: Int
+    ): Observable<EarningsResponse>
 }

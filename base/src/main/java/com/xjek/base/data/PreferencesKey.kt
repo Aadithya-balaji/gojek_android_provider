@@ -30,4 +30,5 @@ object PreferencesKey {
 
     const val SOS_NUMBER = "SOS_NUMBER"
     const val SHOW_OTP = "SHOW_OTP"
+    const val PROVIDER_ID = "PROVIDER_ID"
 }

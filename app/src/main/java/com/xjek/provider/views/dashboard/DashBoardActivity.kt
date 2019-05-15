@@ -111,6 +111,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
         mViewModel.getProfile()
         getApiResponse()
+
     }
 
     override fun onResume() {
@@ -159,6 +160,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     }
 
     override fun updateLocation(isTrue: Boolean) {
+        println("RRRR :: DashBoardActivity.updateLocation")
         if (isTrue) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
             startService(locationServiceIntent)
@@ -193,9 +195,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 }
 
                 override fun onFailure(messsage: String?) {
-//                    mViewModel.latitude.value = 0.0
-//                    mViewModel.longitude.value = 0.0
-//                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
                 }
             })
@@ -284,8 +283,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-                if (checkStatusApiCounter++ % 10 == 0) mViewModel.callCheckStatusAPI()
-
+                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
             }
         }
     }

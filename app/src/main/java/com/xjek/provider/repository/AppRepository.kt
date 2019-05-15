@@ -11,6 +11,7 @@ import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.currentorder_fragment.CurrentOrderViewModel
 import com.xjek.provider.views.dashboard.DashBoardViewModel
+import com.xjek.provider.views.earnings.EarningsViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.history_details.HistoryDetailViewModel
 import com.xjek.provider.views.home.HomeViewModel
@@ -473,21 +474,36 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun postVehicle(viewModel: ViewModel, token: String,
-                    params: HashMap<String, RequestBody>,
-                    rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
+    fun postVehicle(viewModel: AddVehicleViewModel, params: HashMap<String, RequestBody>, vehicleMultitpart: MultipartBody.Part?, rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
     ): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postVehicle(token, params, rcBookMultipart, insuranceMultipart)
+                .postVehicle(params, vehicleMultitpart, rcBookMultipart, insuranceMultipart)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingObservable.value = false
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleResponseObservable().postValue(it)
+                }, {
+                    viewModel.loadingObservable.value = false
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+
+    fun editVehicle(viewModel: AddVehicleViewModel, params: HashMap<String, RequestBody>, vehicleMultitpart: MultipartBody.Part?, rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
+    ): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .editVehicle(params, vehicleMultitpart, rcBookMultipart, insuranceMultipart)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     if (it.statusCode == "200")
-                        if (viewModel is AddVehicleViewModel)
-                            viewModel.getVehicleResponseObservable().postValue(it)
+                        viewModel.getVehicleResponseObservable().postValue(it)
+                    viewModel.loadingObservable.value = false
                 }, {
-                    if (viewModel is AddVehicleViewModel)
-                        viewModel.navigator.showError(getErrorMessage(it))
+                    viewModel.navigator.showError(getErrorMessage(it))
+                    viewModel.loadingObservable.value = false
                 })
     }
 
@@ -714,6 +730,19 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+    fun getEarnings(viewModel: EarningsViewModel, token: String, userId: Int): Disposable {
+        viewModel.loadingProgress.value = true
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getEarnings(token, userId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.earnings.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                })
+    }
 
     companion object {
         private val TAG = AppRepository::class.java.simpleName

@@ -113,6 +113,7 @@ object WebApiConstants {
 
 
     object AddService {
+        const val ID = "id"
         const val VEHICLE_ID = "vehicle_id"
         const val VEHICLE_YEAR = "vehicle_year"
         const val VEHICLE_MAKE = "vehicle_make"

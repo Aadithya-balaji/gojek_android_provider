@@ -10,6 +10,7 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityManageServicesBinding
 import com.xjek.provider.models.ManageServicesDataModel
 import com.xjek.provider.utils.Constant
+import com.xjek.provider.views.setup_services.SetupServicesActivity
 import com.xjek.provider.views.set_service.SetServiceActivity
 import com.xjek.provider.views.setup_vehicle.SetupVehicleActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*

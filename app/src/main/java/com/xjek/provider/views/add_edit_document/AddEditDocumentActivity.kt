@@ -5,10 +5,17 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.net.Uri
+import android.util.Log
+import android.webkit.MimeTypeMap
 import android.widget.DatePicker
+import androidx.core.content.FileProvider
 import androidx.databinding.ViewDataBinding
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.downloader.Error
+import com.downloader.OnDownloadListener
+import com.downloader.PRDownloader
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -20,6 +27,7 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
 import com.xjek.base.utils.DateTimeUtil
 import com.xjek.base.utils.ImageCropperUtils
+import com.xjek.base.utils.Utils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityAddEditDocumentBinding
@@ -42,7 +50,9 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     private lateinit var calendar: Calendar
 
     private var requestCode: Int = -1
-    
+    private var frontFileDownloadID: Int = 0
+    private var backFileDownloadID:Int? = null
+
 
     override fun getLayoutId(): Int = R.layout.activity_add_edit_document
 
@@ -72,7 +82,6 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         viewModelAddEdit.getDocumentList(intent.getStringExtra(Constant.DOCUMENT_TYPE))
 
         observeResponses()
-
     }
 
     private fun observeResponses() {
@@ -114,6 +123,10 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     viewModelAddEdit.isPDF.value = true
                     ivFrontImage.setImageResource(R.drawable.ic_pdf)
                 }
+
+                if(!url.isNullOrEmpty())
+                downloadFrontSideFile(url)
+
             }
         }
 
@@ -138,9 +151,41 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     ivBackImage.setImageResource(R.drawable.ic_pdf)
                 }
 
+                if(!url.isNullOrEmpty())
+                downloadBackSideFile(url)
+
             }
 
         }
+    }
+
+    private fun downloadBackSideFile(url: String?) {
+        backFileDownloadID = PRDownloader.download(url, cacheDir.path, "back_image")
+                .build().start(object : OnDownloadListener {
+                    override fun onDownloadComplete() {
+                        viewModelAddEdit.documentBackImageFile.value = File(cacheDir.path + File.separator + "back_image")
+                        Log.e("SK", "SKDOCUMENT Back image downloaded")
+
+                    }
+
+                    override fun onError(error: Error?) {
+                        Log.e("SK", "SKDOCUMENT Back Image Download Failed")
+                    }
+                })
+    }
+
+    private fun downloadFrontSideFile(url: String?) {
+        frontFileDownloadID = PRDownloader.download(url, cacheDir.path, "front_image")
+                .build().start(object : OnDownloadListener {
+                    override fun onDownloadComplete() {
+                        viewModelAddEdit.documentFrontImageFile.value = File(cacheDir.path + File.separator + "front_image")
+                        Log.e("SK", "SKDOCUMENT Front image downloaded")
+                    }
+
+                    override fun onError(error: Error?) {
+                        Log.e("SK", "SKDOCUMENT Front Image Download Failed")
+                    }
+                })
     }
 
     private fun getCircularProgressDrawable(): CircularProgressDrawable {
@@ -275,17 +320,37 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         }
     }
 
-    override fun submitDocument() {
-        if (viewModelAddEdit.documentFrontImageFile.value == null || !viewModelAddEdit.documentFrontImageFile.value!!.isFile) {
-            ViewUtils.showToast(this, "Please select front page of document", false)
-        } else if (viewModelAddEdit.showBackSide.value!! && (viewModelAddEdit.documentBackImageFile.value == null || !viewModelAddEdit.documentBackImageFile.value!!.isFile)) {
-            ViewUtils.showToast(this, "Please select back page of document", false)
-        } else if (viewModelAddEdit.showExpiry.value!! && viewModelAddEdit.expiryDate.value.isNullOrEmpty()) {
-            ViewUtils.showToast(this, "Please select expiry date", false)
-        } else {
-            viewModelAddEdit.updateDocument()
-        }
+    override fun submitDocument() =
+            if (viewModelAddEdit.documentFrontImageFile.value == null || !viewModelAddEdit.documentFrontImageFile.value!!.isFile) {
+                ViewUtils.showToast(this, getString(R.string.please_select_front_page), false)
+            } else if (viewModelAddEdit.showBackSide.value!! && (viewModelAddEdit.documentBackImageFile.value == null || !viewModelAddEdit.documentBackImageFile.value!!.isFile)) {
+                ViewUtils.showToast(this, getString(R.string.please_select_back_page_of_document), false)
+            } else if (viewModelAddEdit.showExpiry.value!! && viewModelAddEdit.expiryDate.value.isNullOrEmpty()) {
+                ViewUtils.showToast(this, getString(R.string.please_select_expiry_date), false)
+            } else {
+                viewModelAddEdit.updateDocument()
+            }
 
+
+    override fun showFrontImage() {
+        val file = viewModelAddEdit.documentFrontImageFile.value
+        showFile(file!!)
+    }
+
+    private fun showFile(file: File) {
+        var intent = Intent(Intent.ACTION_VIEW)
+        intent.data = FileProvider.getUriForFile(this@AddEditDocumentActivity,applicationContext.packageName+".provider",file)
+        startActivity(Intent.createChooser(intent, getString(R.string.choose_application_to_open_with)))
+    }
+
+    override fun showBackImage() {
+        val file = viewModelAddEdit.documentBackImageFile.value
+        showFile(file!!)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        PRDownloader.cancelAll()
     }
 
 }

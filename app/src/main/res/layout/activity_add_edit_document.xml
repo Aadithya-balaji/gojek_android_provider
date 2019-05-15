@@ -67,6 +67,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="@string/view"
+                            android:onClick="@{() -> viewModel.showFrontImage()}"
                             android:textColor="@color/colorPrimary"
                             android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />
 
@@ -145,6 +146,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="@string/view"
+                            android:onClick="@{() -> viewModel.showBackImage()}"
                             android:textColor="@color/colorPrimary"
                             android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />
 
@@ -162,6 +164,17 @@
                             android:layout_width="0dp"
                             android:layout_height="0dp"
                             android:scaleType="centerCrop"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivBackPDF"
+                            android:layout_width="@dimen/_50sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            app:srcCompat="@drawable/ic_pdf"
+                            android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showBackView) ? View.VISIBLE:View.GONE}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

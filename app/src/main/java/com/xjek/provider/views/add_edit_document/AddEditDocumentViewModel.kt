@@ -82,6 +82,14 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         navigator.selectFrontImage()
     }
 
+    fun showFrontImage() {
+        navigator.showFrontImage()
+    }
+
+    fun showBackImage() {
+        navigator.showBackImage()
+    }
+
     fun getFileType(): String {
         var fileType = Enums.IMAGE_TYPE
         if (data.isNotEmpty() && data[currentPosition].file_type.equals("pdf", true)) {

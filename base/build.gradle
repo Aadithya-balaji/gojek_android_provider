@@ -156,7 +156,7 @@ dependencies {
 
     api 'com.droidninja:filepicker:2.2.1'
 
-    api "com.tonyodev.fetch2:fetch2:3.0.6"
+    api "com.mindorks.android:prdownloader:0.5.0"
 
 
 

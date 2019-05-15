@@ -418,5 +418,9 @@
     <string name="today_target">Today\'s Completed Target</string>
     <string name="weekly_target">This Week Target</string>
     <string name="monthly_target">This Month Target</string>
+    <string name="please_select_front_page">Please select front page of document</string>
+    <string name="please_select_back_page_of_document">Please select back page of document</string>
+    <string name="please_select_expiry_date">Please select expiry date</string>
+    <string name="choose_application_to_open_with">Choose an application to open with:</string>
 
 </resources>

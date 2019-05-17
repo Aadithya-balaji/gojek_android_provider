@@ -34,6 +34,11 @@
                 android:text="@string/dispute" />
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dispute_reason_frghome_rv"
             android:layout_width="match_parent"
@@ -41,21 +46,53 @@
             android:layout_gravity="center"
             android:adapter="@{disputeReasonListAdapter}"
             android:padding="@dimen/_8sdp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:spanCount="3" />
+            app:spanCount="3"/>
 
-        <Button
+
+            <LinearLayout
+                android:id="@+id/ll_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_25sdp"
+                android:layout_marginLeft="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_30sdp"
+                android:gravity="center">
+                <ProgressBar
+                    android:id="@+id/progressBarLoadingRecite"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:minHeight="10dip"
+                    android:layout_marginTop="20dip"
+                    android:indeterminate="true"
+                    android:maxHeight="10dip"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/prg_loading"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/apply_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_17sdp"
-            android:background="@drawable/custom_full_round_corner"
-            android:backgroundTint="@color/colorPrimary"
-            android:padding="@dimen/_5sdp"
             android:text="@string/submit"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/_12sdp" />
+            android:textSize="@dimen/_12sdp"
+            app:backgroundTint="@color/colorPrimary"
+            app:cornerRadius="@dimen/_10sdp" />
 
     </LinearLayout>
 

@@ -1,13 +1,15 @@
 package com.xjek.provider.views.history_details
 
-import android.text.Editable
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.database.MutableData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.provider.model.DisputeListModel
 import com.xjek.provider.model.DisputeStatusModel
-import com.xjek.provider.model.HistoryDetailModel
+import com.xjek.provider.models.DisputeStatus
+import com.xjek.provider.models.HistoryDetailModel
 import com.xjek.provider.models.LoginResponseModel
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Constant
@@ -16,7 +18,6 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
 
     private val appRepository = AppRepository.instance()
     val preferenceHelper = PreferencesHelper
-
     var historyDetailResponse = MutableLiveData<HistoryDetailModel>()
     var historyUpcomingDetailResponse = MutableLiveData<HistoryDetailModel>()
     var disputeListData = MutableLiveData<DisputeListModel>()
@@ -26,70 +27,65 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     var selectedDisputeName = MutableLiveData<String>()
     var loadingProgress = MutableLiveData<Boolean>()
     var errorResponse = MutableLiveData<String>()
+    var historyModelLiveData = MutableLiveData<HistoryDetailModel>()
+    var serviceType = MutableLiveData<String>()
+    var postDisputeLiveData = MutableLiveData<DisputeStatus>()
+    var disputeType=MutableLiveData<String>()
+    var disputeName=MutableLiveData<String>()
+    var userID=MutableLiveData<String>()
+    var providerID=MutableLiveData<String>()
+    var storeID=MutableLiveData<String>()
+    var comments=MutableLiveData<String>()
 
     fun moveToMainActivity() {
         navigator.goBack()
     }
 
-    fun getHistoryDeatail(selectedID: String) {
+    fun getTransportHistoryDetail(selectedID: String) {
         getCompositeDisposable().add(appRepository
-                .getHistoryDetail(this
+                .getTransPortDetail(this
                         , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""),
                         selectedID))
     }
 
-    fun getUpcomingHistoryDeatail(selectedID: String) {
-        loadingProgress.value = true
-        getCompositeDisposable().add(appRepository
-                .getUpcomingHistoryDetail(this
-                        , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""),
-                        selectedID))
+    fun getServiceHistoryDetail(selectedID: String) {
+        getCompositeDisposable().addAll(appRepository.getServiceDetail(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
+    }
+
+    fun getOrderHistoryDetail(selectedID: String) {
+        getCompositeDisposable().addAll(appRepository.getOrderDetail(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
+    }
+
+
+    fun showDisputeList() {
+        navigator.showDisputeList()
     }
 
     fun getDisputeList() {
-
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository
-                .getDisputeList(this
-                        , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")
-                ))
+        Log.e("servicetype", "----------" + serviceType.value)
+        if (serviceType.value.equals("transport")) {
+            getCompositeDisposable().add(appRepository.getDisputeList(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")))
+        } else {
+            getCompositeDisposable().add(appRepository.getDisputeList(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), serviceType.value!!))
+        }
     }
 
-    fun addDispute(id: String, providerid: String, selectedDispute: String?) {
 
-        val hashMap: HashMap<String, String> = HashMap()
-        hashMap.put("id", id)
-        hashMap.put("dispute_type", "user")
-        hashMap.put("provider_id", providerid)
-        hashMap.put("dispute_name", selectedDispute!!)
-
+    fun postTaxiDispute(params: HashMap<String, String>) {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository
-                .addDispute(this
-                        , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), hashMap
-                ))
+        getCompositeDisposable().add(appRepository.addTaxiDispute(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
     }
 
-    fun getDisputeStatus(id: Int) {
+
+    fun postServiceDispute(params: HashMap<String, String>, requestID: String) {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository
-                .getDisputeStatus(this
-                        , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")
-                        , id.toString()
-                ))
+        getCompositeDisposable().add(appRepository.addServiceDispute(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID, params))
     }
 
-    fun addLossItem(id: Int, lostitem: Editable?) {
-
-        /* val hashMap: HashMap<String, String> = HashMap()
-         hashMap.put("id", id.toString())
-         hashMap.put("lost_item_name", lostitem.toString())
-
-         loadingProgress.value = true
-         getCompositeDisposable().add(appRepository
-                 .addLostItem(this
-                         , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), hashMap
-                 ))*/
+    fun postOrderDispute(params: HashMap<String, String>) {
+        loadingProgress.value = true
+        getCompositeDisposable().add(appRepository.addOrderDispute(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
     }
 
     fun setSelectedValue(Selecteddata: String) {

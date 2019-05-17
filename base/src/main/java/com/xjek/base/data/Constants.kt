@@ -135,4 +135,15 @@ object Constants {
         const val SERVICE = "SERVICE"
         const val ORDER = "ORDER"
     }
+
+
+    object Dispute {
+        const val DIPUSTE_TYPE = "dispute_type"
+        const val DISPUTE_NAME = "dispute_name"
+        const val COMMENTS = "comments"
+        const val DISPUTE_ID = "dispute_id"
+        const val USER_ID = "user_id"
+        const val PROVIDER_ID = "provider_id"
+        const val REQUEST_ID = "id"
+    }
 }

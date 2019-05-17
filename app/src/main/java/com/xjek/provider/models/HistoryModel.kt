@@ -9,9 +9,9 @@ data class HistoryModel(
 ) {
     data class ResponseData(
             val total_records: Int? = 0,
-            val transport: List<Transport?>? = listOf(),
-            val service: List<Service>? = listOf(),
-            val order: List<Order>? = listOf(),
+            val transport: ArrayList<Transport>? = ArrayList(),
+            val service: ArrayList<Service>? = ArrayList(),
+            val order: ArrayList<Order>? = ArrayList(),
             val type: String? = ""
     ) {
         data class Transport(
@@ -47,7 +47,7 @@ data class HistoryModel(
 
             data class Payment(
                     val ride_request_id: Int? = 0,
-                    val total: Int? = 0
+                    val total: Double? = 0.0
             )
 
             data class ProviderVehicle(
@@ -106,7 +106,7 @@ data class HistoryModel(
             data class Payment(
                     val id: Int? = 0,
                     val service_request_id: Int? = 0,
-                    val total: Int? = 0
+                    val total: Double? =0.0
             )
         }
 
@@ -163,9 +163,9 @@ data class HistoryModel(
                     val id: Int? = 0,
                     val provider_comment: String? = "",
                     val provider_rating: Int? = 0,
-                    val store_rating: Int? = 0,
+                    val store_rating: Double? = 0.0,
                     val user_comment: String? = "",
-                    val user_rating: Int? = 0
+                    val user_rating: Double? = 0.0
             )
         }
 

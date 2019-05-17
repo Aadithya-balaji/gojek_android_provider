@@ -425,4 +425,21 @@
     <string name="support_mail">Support Mail</string>
     <string name="no_transction">No Transaction Found</string>
 
+    <!-- History -->
+    <string name="no_comments">No comments</string>
+    <string name="dispute_created_succefully">Dispute Created Successfully</string>
+
+
+    <!-- InVoice -->
+    <string name="waiting_amount">Waiting Amount</string>
+    <string name="toll_charge">Toll Charge</string>
+    <string name="taken_time">Takentime</string>
+    <string name="extra_charge">ExtraCharge</string>
+    <string name="delivery_charge">Delivery Charge</string>
+    <string name="packaging_charge">Packaging Service</string>
+    <string name="promo_code">PromoCode</string>
+
+    <!-- Loader -->
+    <string name="prg_loading">Loading …</string>
+
 </resources>

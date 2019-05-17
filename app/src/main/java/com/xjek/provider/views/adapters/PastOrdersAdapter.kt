@@ -22,7 +22,7 @@ class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List
     private var orderList: List<HistoryModel.ResponseData.Order>? = null
     private var serviceList: List<HistoryModel.ResponseData.Service>? = null
     private var serviceType: String? = null
-    private  lateinit var  activity: FragmentActivity
+    private   var  activity: FragmentActivity?=null
     private  var selectedId:String?=""
 
     init {
@@ -30,11 +30,11 @@ class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List
         this.orderList = orderList
         this.serviceList = serviceList
         this.activity=fragmentActivity!!
+        this.serviceType=serviceType
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val inflate = DataBindingUtil.inflate<PastOrderItemlistBinding>(LayoutInflater.from(parent.context),
-                R.layout.past_order_itemlist, parent, false)
+        val inflate = DataBindingUtil.inflate<PastOrderItemlistBinding>(LayoutInflater.from(parent.context), R.layout.past_order_itemlist, parent, false)
         return MyViewHolder(inflate)
     }
 
@@ -54,17 +54,17 @@ class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List
             holder.pastOderItemlistBinding.tvTitlePastItem.text=transPortModel.booking_id.toString()
             holder.pastOderItemlistBinding.tvDatePastItem.text=CommanMethods.getLocalTimeStamp(transPortModel.assigned_at.toString(),"Req_Date_Month")
             holder.pastOderItemlistBinding.tvTimePastItem.text=CommanMethods.getLocalTimeStamp(transPortModel.assigned_at.toString(),"Req_time")
-            holder.pastOderItemlistBinding.tvPastItem.text=String.format(activity.getString(R.string.history_vechile_name),transPortModel.ride!!.vehicle_name!!.toString(),transPortModel.provider_vehicle!!.vehicle_no.toString())
-            holder.pastOderItemlistBinding.tvRatingPastItem.text=String.format(activity.getString(R.string.transaction_amount),transPortModel.user!!.rating!!.toDouble())
+            holder.pastOderItemlistBinding.tvPastItem.text=String.format(activity!!.getString(R.string.history_vechile_name),transPortModel.ride!!.vehicle_name!!.toString(),transPortModel.provider_vehicle!!.vehicle_no.toString())
+            holder.pastOderItemlistBinding.tvRatingPastItem.text=String.format(activity!!.getString(R.string.transaction_amount),transPortModel.user!!.rating!!.toDouble())
             if(transPortModel.status.equals("COMPLETED")){
-                  holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity,R.drawable.bg_past_item_completed)
-                  holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity,R.color.text_on_ride))
+                  holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity!!,R.drawable.bg_past_item_completed)
+                  holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity!!,R.color.text_on_ride))
             }else{
-                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity,R.drawable.bg_past_item_cancelled)
-                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity,R.color.past_item_cancelled))
+                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity!!,R.drawable.bg_past_item_cancelled)
+                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity!!,R.color.past_item_cancelled))
             }
 
-        }else if(serviceType!!.equals("service")){
+        }else if(serviceType!!.equals("order")){
             val orderedItem=orderList!!.get(position)
             holder.pastOderItemlistBinding.tvTitlePastItem.text=orderedItem.store_order_invoice_id.toString()
            holder.pastOderItemlistBinding.tvDatePastItem.text=CommanMethods.getLocalTimeStamp(orderedItem.created_at.toString(),"Req_Date_Month")
@@ -72,23 +72,25 @@ class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List
           //  holder.pastOderItemlistBinding.tvPastItem.text=String.format(activity.getString(R.string.history_vechile_name),orderedItem.ride!!.vehicle_name!!.toString(),transPortModel.provider_vehicle!!.vehicle_no.toString())
            // holder.pastOderItemlistBinding.tvRatingPastItem.text=String.format(activity.getString(R.string.transaction_amount),orderedItem.user!!.rating!!.toDouble())
             if(orderedItem.status.equals("COMPLETED")){
-                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity,R.drawable.bg_past_item_completed)
-                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity,R.color.text_on_ride))
+                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity!!,R.drawable.bg_past_item_completed)
+                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity!!,R.color.text_on_ride))
             }else{
-                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity,R.drawable.bg_past_item_cancelled)
-                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity,R.color.past_item_cancelled))
+                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity!!,R.drawable.bg_past_item_cancelled)
+                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity!!,R.color.past_item_cancelled))
             }
         }else {
             val serviceItem=serviceList!!.get(position)
             holder.pastOderItemlistBinding.tvTitlePastItem.text=serviceItem.booking_id.toString()
             holder.pastOderItemlistBinding.tvDatePastItem.text=CommanMethods.getLocalTimeStamp(serviceItem.assigned_at.toString(),"Req_Date_Month")
             holder.pastOderItemlistBinding.tvTimePastItem.text=CommanMethods.getLocalTimeStamp(serviceItem.assigned_at.toString(),"Req_time")
+             holder.pastOderItemlistBinding.tvPastItem.text=serviceItem.service!!.service_name.toString()
+             holder.pastOderItemlistBinding.tvRatingPastItem.text=serviceItem.user!!.rating
             if(serviceItem.status.equals("COMPLETED")){
-                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity,R.drawable.bg_past_item_completed)
-                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity,R.color.text_on_ride))
+                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity!!,R.drawable.bg_past_item_completed)
+                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity!!,R.color.text_on_ride))
             }else{
-                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity,R.drawable.bg_past_item_cancelled)
-                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity,R.color.past_item_cancelled))
+                holder.pastOderItemlistBinding.tvStatusPastItem.background=ContextCompat.getDrawable(activity!!,R.drawable.bg_past_item_cancelled)
+                holder.pastOderItemlistBinding.tvStatusPastItem.setTextColor(ContextCompat.getColor(activity!!,R.color.past_item_cancelled))
             }
 
             }
@@ -105,6 +107,7 @@ class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List
                 val intent = Intent(activity, HistoryDetailActivity::class.java)
                 intent.putExtra("selected_trip_id",selectedId)
                 intent.putExtra("history_type", "past")
+                intent.putExtra("serviceType",serviceType)
                 activity!!.startActivity(intent)
             }
         }

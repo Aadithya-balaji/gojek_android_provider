@@ -192,8 +192,7 @@
                                     android:layout_below="@+id/currentorderetail_source_tv"
                                     android:layout_marginStart="@dimen/_15sdp"
                                     android:layout_toEndOf="@+id/dot_view"
-                                    android:padding="@dimen/_1sdp"
-                                    android:text="@string/dummy_text" />
+                                    android:padding="@dimen/_1sdp" />
 
                             </RelativeLayout>
 
@@ -235,8 +234,7 @@
                                     android:layout_below="@+id/currentorderetail_destination_tv"
                                     android:layout_marginStart="@dimen/_15sdp"
                                     android:layout_toEndOf="@+id/destination_dot_view"
-                                    android:padding="@dimen/_1sdp"
-                                    android:text="@string/dummy_text" />
+                                    android:padding="@dimen/_1sdp"/>
 
                             </RelativeLayout>
 
@@ -287,8 +285,7 @@
                                 android:layout_below="@+id/currentorderetail_status_tv"
                                 android:layout_marginStart="@dimen/_15sdp"
                                 android:layout_toRightOf="@+id/status_dot_view"
-                                android:padding="@dimen/_1sdp"
-                                android:text="@string/dummy_text" />
+                                android:padding="@dimen/_1sdp" />
 
                         </RelativeLayout>
 
@@ -323,7 +320,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/_5sdp"
-                                android:text="@string/dummy_text"
+                                android:text="@string/no_comments"
                                 android:textSize="@dimen/_10sdp" />
 
                         </LinearLayout>
@@ -469,7 +466,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/custom_full_round_corner"
                 android:backgroundTint="@color/colorPrimary"
-                android:onClick="@{() -> currentOrderDetailModel.dispute()}"
+                android:onClick="@{() -> currentOrderDetailModel.showDisputeList()}"
                 android:text="@string/dispute"
                 android:textAllCaps="false" />
 

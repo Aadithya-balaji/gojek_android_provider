@@ -35,19 +35,53 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <TextView
-                android:id="@+id/dispute_comment"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.5"
-                android:padding="@dimen/_5sdp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/_12sdp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/ivDisPuteUser"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:src="@drawable/kittty" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvYou"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:text="You"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:id="@+id/disputeComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:text="dfdfadfdafdafadsfdafdfdafdfdaffadfadsfadfadfadfdfafdfdfadsffdafadfadsfadfadfadfadfafdfadfdfdfdfadfafadfadfadsfadfdfdasfdfadsfadsfdfdfadsfadsfadsfadsfadfadfadfadsfafafadsfadfadsfadsfadfadf"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/dispute_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_weight="0.5"
                 android:background="@drawable/custom_roundcorner_selectedorder"
                 android:gravity="center"
@@ -55,17 +89,45 @@
                 android:textColor="@color/colorAccent" />
         </LinearLayout>
 
-        <!--
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/dispute_reason_frghome_rv"
-                    android:layout_width="match_parent"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:layout_toLeftOf="@+id/ivlogo"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:adapter="@{disputeReasonListAdapter}"
-                    android:padding="@dimen/_8sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:spanCount="3" />
-        -->
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:text="Admin"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8sdp" />
+
+                <TextView
+                    android:id="@+id/tvAdminComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="dfdafadfadsfdafaddf" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivlogo"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:src="@mipmap/ic_launcher" />
+        </RelativeLayout>
 
 
     </LinearLayout>

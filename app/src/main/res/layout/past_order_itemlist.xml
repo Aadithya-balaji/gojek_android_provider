@@ -10,8 +10,6 @@
 
     </data>
 
-
-
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,67 +19,105 @@
             app:cardCornerRadius="@dimen/_8sdp">
 
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
                 <LinearLayout
                     android:id="@+id/llPastTimeLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:background="@drawable/xuber_bg_round_corner"
                     android:orientation="vertical"
+                    android:layout_weight="0.3"
+                    android:gravity="center"
                     android:padding="@dimen/_8sdp">
 
                     <TextView
                         android:id="@+id/tvDatePastItem"
-                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/dummy_date"
+                        android:text="dfdf"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tvTimePastItem"
-                        style="@style/SmallText"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/dummy_time"
+                        android:text="dfdf"
                         android:textColor="@color/colorWhite" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvTitlePastItem"
-                    style="@style/SmallText"
-                    android:layout_width="wrap_content"
+
+                <RelativeLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_toEndOf="@+id/llPastTimeLayout"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_title"
-                    android:textColor="@android:color/black" />
+                    android:layout_weight="0.7">
+                <LinearLayout
+                    android:id="@+id/ll_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:weightSum="1">
+                    <TextView
+                        android:id="@+id/tvTitlePastItem"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.55"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_gravity="center_vertical"
+                        android:padding="@dimen/_5sdp"
+                        android:text="@string/dummy_title"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:id="@+id/tvStatusPastItem"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.45"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_toLeftOf="@+id/tvTitlePastItem"
+                        android:background="@drawable/bg_past_item_completed"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:paddingTop="@dimen/_6sdp"
+                        android:paddingLeft="@dimen/_3sdp"
+                        android:gravity="center"
+                        android:paddingRight="@dimen/_3sdp"
+                        android:paddingBottom="@dimen/_6sdp"
+                        android:layout_marginRight="@dimen/_3sdp"
+                        android:text="Completed"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/_9sdp" />
+
+                </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/tvPastItem"
-                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvTitlePastItem"
+                    android:layout_below="@id/ll_title"
+                    android:fontFamily="@font/avenirltstd_medium"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_toEndOf="@+id/llPastTimeLayout"
                     android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_type"
                     android:textColor="@color/grey" />
 
                 <LinearLayout
+                    android:id="@+id/llPatRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvPastItem"
-                    android:layout_toEndOf="@+id/llPastTimeLayout"
                     android:layout_marginStart="@dimen/_5sdp"
+                    android:padding="@dimen/_5sdp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -101,25 +137,8 @@
                         android:tint="@color/chip_yellow_inner_color" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvStatusPastItem"
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/custom_full_round_corner"
-                    android:fontFamily="@font/avenirltstd_medium"
-                    android:paddingTop="@dimen/_4sdp"
-                    android:paddingLeft="@dimen/_3sdp"
-                    android:gravity="center"
-                    android:paddingRight="@dimen/_3sdp"
-                    android:paddingBottom="@dimen/_4sdp"
-                    android:layout_marginRight="@dimen/_3sdp"
-                    android:text="Completed"
-                    android:textColor="@color/red"
-                    android:textSize="@dimen/_10sdp" />
-
-            </RelativeLayout>
+                </RelativeLayout>
+            </LinearLayout>
 
 
         </androidx.cardview.widget.CardView>

@@ -19,82 +19,96 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityCurrentorderDetailLayoutBinding
 import com.xjek.provider.databinding.DisputeResonDialogBinding
 import com.xjek.provider.databinding.DisputeStatusBinding
-import com.xjek.provider.model.*
-import com.xjek.provider.models.LoginResponseModel
+import com.xjek.provider.model.DisputeListData
+import com.xjek.provider.model.DisputeListModel
+import com.xjek.provider.model.DisputeStatusData
+import com.xjek.provider.model.DisputeStatusModel
+import com.xjek.provider.models.DisputeStatus
+import com.xjek.provider.models.HistoryDetailModel
 import com.xjek.provider.utils.CommanMethods
 import com.xjek.provider.views.adapters.DisputeReasonListAdapter
 import com.xjek.provider.views.adapters.ReasonListClicklistner
 import com.xjek.provider.views.dashboard.DashBoardViewModel
+import kotlinx.android.synthetic.main.view_recepit.*
 
 
 class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBinding>(),
         CurrentOrderDetailsNavigator {
-
-
     lateinit var mViewDataBinding: ActivityCurrentorderDetailLayoutBinding
-    lateinit var transpotResponseData: HistoryDetailTransport
     lateinit var dashboardViewModel: DashBoardViewModel
     private var mselectedDisputeName: String? = null
-
-    override fun getLayoutId(): Int = R.layout.activity_currentorder_detail_layout
     lateinit var historyDetailViewModel: HistoryDetailViewModel
+    private var historyType: String? = ""
+    private var selectedId: String? = ""
+    private var serviceType: String? = ""
+    private var disputeListBinding: DisputeResonDialogBinding? = null
+    private var disputeStatusBinding: DisputeStatusBinding? = null
+
+
+    // Get Layout
+    override fun getLayoutId(): Int = R.layout.activity_currentorder_detail_layout
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-
-        Log.d("_D_EXT", "LOG" + intent.extras.get("selected_trip_id")!!)
-
-        val selectedId = intent.extras.get("selected_trip_id")!!
-        val history_type = intent.extras.get("history_type")!!
-
         this.mViewDataBinding = mViewDataBinding as ActivityCurrentorderDetailLayoutBinding
         historyDetailViewModel = HistoryDetailViewModel()
         dashboardViewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
-
         this.mViewDataBinding.currentOrderDetailModel = historyDetailViewModel
         historyDetailViewModel.navigator = this
         loadingObservable.value = true
-        if (history_type.equals("upcoming")) {
-            historyDetailViewModel.getUpcomingHistoryDeatail(selectedId.toString())
-        } else if (history_type.equals("past")) {
-            historyDetailViewModel.getHistoryDeatail(selectedId.toString())
+        mViewDataBinding.upcmngCancelBtn.visibility = View.GONE
+        //Get Intent Values
+        getIntentValues()
+        historyDetailViewModel.serviceType.value = serviceType
+        if (historyType.equals("past")) {
+            println("BBBB" + "   " + serviceType.toString())
+            if (serviceType.equals("transport"))
+                historyDetailViewModel.getTransportHistoryDetail(selectedId.toString())
+            else if (serviceType.equals("service"))
+                historyDetailViewModel.getServiceHistoryDetail(selectedId.toString())
+            else if (serviceType.equals("order"))
+                historyDetailViewModel.getOrderHistoryDetail(selectedId.toString())
         }
 
+        // Get Api Response
+        apiResponse()
+
+    }
+
+    fun getIntentValues() {
+        historyType = if (intent != null && intent.hasExtra("history_type")) intent.getStringExtra("history_type") else ""
+        selectedId = if (intent != null && intent.hasExtra("selected_trip_id")) intent.getStringExtra("selected_trip_id") else ""
+        serviceType = if (intent != null && intent.hasExtra("serviceType")) intent.getStringExtra("serviceType") else ""
+    }
 
 
-        historyDetailViewModel.historyDetailResponse.observe(this@HistoryDetailActivity,
+    fun apiResponse() {
+        historyDetailViewModel.historyModelLiveData.observe(this@HistoryDetailActivity,
                 Observer<HistoryDetailModel> {
                     loadingObservable.value = false
-                    Log.d("_D_Detailview", it.responseData.transport.booking_id)
-                    transpotResponseData = it.responseData.transport
-                    setHistoryDetail()
-                })
-
-        historyDetailViewModel.historyUpcomingDetailResponse.observe(this@HistoryDetailActivity,
-                Observer<HistoryDetailModel> {
-                    loadingObservable.value = false
-                    Log.d("_D_Detailview", it.responseData.transport.booking_id)
-                    transpotResponseData = it.responseData.transport
-                    setUpcomingHistoryDetail()
+                    if (serviceType.equals("transport"))
+                        setupTransportDetail(it.responseData.transport)
+                    else if (serviceType.equals("order"))
+                        setupOrderHistoryDetail(it.responseData.order)
+                    else
+                        setupServiceDetail(it.responseData.service)
                 })
 
         historyDetailViewModel.disputeListData.observe(this@HistoryDetailActivity,
                 Observer<DisputeListModel> {
                     loadingObservable.value = false
+                    disputeListBinding!!.llProgress.visibility = View.GONE
+                    disputeListBinding!!.disputeReasonFrghomeRv.visibility = View.VISIBLE
                     Log.d("_D_Detailview", it.responseData[0].dispute_name)
                     setDisputeListData(it.responseData)
                 })
-        historyDetailViewModel.addDisputeResponse.observe(this@HistoryDetailActivity,
-                Observer<LoginResponseModel.ResponseData> {
-                    loadingObservable.value = false
-                    mViewDataBinding.disputeBtn.text = getString(R.string.dispute_status)
-                    ViewUtils.showToast(this@HistoryDetailActivity, "Dispute Created Sucessfully", true)
-                })
-        historyDetailViewModel.addLostItemResponse.observe(this@HistoryDetailActivity,
-                Observer<LoginResponseModel.ResponseData> {
-                    loadingObservable.value = false
-                    ViewUtils.showToast(this@HistoryDetailActivity, "LossItem Created Sucessfully", true)
 
-                })
+
+        historyDetailViewModel.postDisputeLiveData.observe(this@HistoryDetailActivity, Observer<DisputeStatus> {
+            loadingObservable.value = false
+            if (it.statusCode.equals("200")) {
+                ViewUtils.showToast(this@HistoryDetailActivity, resources.getString(R.string.dispute_created_succefully), true)
+            }
+        })
 
 
         historyDetailViewModel.disputeStatusResponse.observe(this@HistoryDetailActivity,
@@ -110,94 +124,25 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                     ViewUtils.showToast(this@HistoryDetailActivity, message, false)
                 })
 
-
     }
 
-
-    private fun setHistoryDetail() {
-        mViewDataBinding.upcmngCancelBtn.visibility = View.GONE
-        mViewDataBinding.currentorderdetailTitleTv.text = transpotResponseData.booking_id
-        mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(transpotResponseData.assigned_at,
-                "Req_Date_Month") + "")
-        mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(transpotResponseData
-                .assigned_at, "Req_time") + "")
-        mViewDataBinding.historydetailSrcValueTv.text = transpotResponseData.s_address
-        mViewDataBinding.historydetailDestValueTv.text = transpotResponseData.d_address
-        mViewDataBinding.historydetailStatusValueTv.text = transpotResponseData.status
-        mViewDataBinding.historydetailPaymentmodeValTv.text = transpotResponseData.payment_mode
-        mViewDataBinding.vechileTypeTv.text = (transpotResponseData.provider_vehicle.vehicle_model + "("
-                + transpotResponseData.provider_vehicle.vehicle_no + ")")
-        Glide.with(this@HistoryDetailActivity).load(transpotResponseData.provider.picture)
-                .into(mViewDataBinding.providerCimgv)
-        mViewDataBinding.providerNameTv.text = (transpotResponseData.provider.first_name + " " +
-                transpotResponseData.provider.last_name)
-
-        mViewDataBinding.rvUser.rating = transpotResponseData.provider_rated.toFloat()
-
-        if (transpotResponseData.dispute != null) {
-            mViewDataBinding.disputeBtn.text = getString(R.string.dispute_status)
-        }
-
-        if (transpotResponseData.lost_item != null) {
-            mViewDataBinding.historydetailLossItemImgv.visibility = View.GONE
-            mViewDataBinding.lostItemTitle.text = "Lost Item Created"
-            mViewDataBinding.lostItemList.text = transpotResponseData.lost_item.lost_item_name
-            mViewDataBinding.lostItemStatusTv.text = transpotResponseData.lost_item.status
-
-        } else {
-            mViewDataBinding.lostItemStatusTv.visibility = View.GONE
-        }
-    }
-
-    private fun setUpcomingHistoryDetail() {
-        mViewDataBinding.bottomLayout.visibility = View.GONE
-        mViewDataBinding.statusLayout.visibility = View.GONE
-        mViewDataBinding.itemLayout.visibility = View.GONE
-        mViewDataBinding.llUserName.visibility = View.GONE
-        mViewDataBinding.idHistrydetailCommentValTv.visibility = View.GONE
-
-        mViewDataBinding.currentorderdetailTitleTv.text = transpotResponseData.booking_id
-        mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(transpotResponseData.assigned_at,
-                "Req_Date_Month") + "")
-        mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(transpotResponseData
-                .assigned_at, "Req_time") + "")
-        mViewDataBinding.historydetailSrcValueTv.text = transpotResponseData.s_address
-        mViewDataBinding.historydetailDestValueTv.text = transpotResponseData.d_address
-        mViewDataBinding.historydetailStatusValueTv.text = transpotResponseData.status
-        mViewDataBinding.historydetailPaymentmodeValTv.text = transpotResponseData.payment_mode
-        mViewDataBinding.vechileTypeTv.text = (transpotResponseData.provider_vehicle.vehicle_model + "("
-                + transpotResponseData.provider_vehicle.vehicle_no + ")")
-
-
-    }
 
     override fun goBack() {
-
         finish()
     }
 
     override fun onClickDispute() {
-
-        if (mViewDataBinding.disputeBtn.text.equals(getString(R.string.dispute_status))) {
-
-            historyDetailViewModel.getDisputeStatus(transpotResponseData.id)
-
-        } else {
-            getDisputeList()
-        }
-
-
+        getDisputeList()
     }
 
     private fun showDisputeStatus(disputeStatusResponseData: DisputeStatusData) {
-        val inflate = DataBindingUtil.inflate<DisputeStatusBinding>(LayoutInflater.from(baseContext)
+        disputeStatusBinding = DataBindingUtil.inflate<DisputeStatusBinding>(LayoutInflater.from(baseContext)
                 , R.layout.dispute_status, null, false)
-        inflate.disputeTitle.text = (disputeStatusResponseData.dispute_title)
-        inflate.disputeComment.text = (disputeStatusResponseData.comments)
-        inflate.disputeStatus.text = (disputeStatusResponseData.status)
-
+        disputeStatusBinding!!.disputeTitle.text = (disputeStatusResponseData.dispute_title)
+        disputeStatusBinding!!.disputeComment.text = (disputeStatusResponseData.comments)
+        disputeStatusBinding!!.disputeStatus.text = (disputeStatusResponseData.status)
         val dialog = BottomSheetDialog(this)
-        dialog.setContentView(inflate.root)
+        dialog.setContentView(disputeStatusBinding!!.root)
         dialog.show()
     }
 
@@ -207,37 +152,33 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
     private fun showInvoiceAlertDialog() {
-        val invoiceDialogView = LayoutInflater.from(this).inflate(R.layout.view_recepit,
-                null, false);
-
+        val invoiceDialogView = LayoutInflater.from(this).inflate(R.layout.view_recepit, null, false);
         val builder = AlertDialog.Builder(this)
         builder.setView(invoiceDialogView)
-
-        //finally creating the alert dialog and displaying it
         val alertDialog = builder.create()
         alertDialog.show()
-        alertDialog.findViewById<ImageView>(R.id.cancel_dialog_img)!!
-                .setOnClickListener { alertDialog.dismiss() }
+        alertDialog.findViewById<ImageView>(R.id.cancel_dialog_img)!!.setOnClickListener { alertDialog.dismiss() }
+        if (serviceType.equals("transport")) {
+            alertDialog.llServiceInvoice.visibility = View.GONE
+            alertDialog.llOrderInvoice.visibility = View.GONE
+            alertDialog.llTaxiInvoice.visibility = View.VISIBLE
+            setUpTransportInvoice(alertDialog)
 
-        alertDialog.findViewById<TextView>(R.id.basefare_tv)!!.text = (Constants.currency +
-                transpotResponseData.service_type.base_fare)
-        alertDialog.findViewById<TextView>(R.id.wallet_tv)!!.text = (Constants.currency +
-                transpotResponseData.payment.wallet)
-        alertDialog.findViewById<TextView>(R.id.hourlyfare_tv)!!.text = (Constants.currency
-                + transpotResponseData.payment.hour)
-        alertDialog.findViewById<TextView>(R.id.taxfare_tv)!!.text = (Constants.currency
-                + transpotResponseData.payment.tax)
-        alertDialog.findViewById<TextView>(R.id.disscount_applied_tv)!!.text = (Constants.currency
-                + transpotResponseData.payment.discount)
-        alertDialog.findViewById<TextView>(R.id.tips_tv)!!.text = (Constants.currency
-                + transpotResponseData.payment.tips)
-        alertDialog.findViewById<TextView>(R.id.total_charge_value_tv)!!.text = (Constants.currency
-                + transpotResponseData.payment.total)
+        } else if (serviceType.equals("order")) {
+            alertDialog.llServiceInvoice.visibility = View.GONE
+            alertDialog.llOrderInvoice.visibility = View.VISIBLE
+            alertDialog.llTaxiInvoice.visibility = View.GONE
+            setUpOrderInvoice(alertDialog)
 
-
-
+        } else if (serviceType.equals("service")) {
+            alertDialog.llServiceInvoice.visibility = View.VISIBLE
+            alertDialog.llOrderInvoice.visibility = View.GONE
+            alertDialog.llTaxiInvoice.visibility = View.GONE
+            setUpServiceInvoice(alertDialog)
+        }
         alertDialog.show()
     }
+
 
     override fun onClickLossItem() {
 //        val inflate = DataBindingUtil.inflate<LossitemCommentDialogBinding>(LayoutInflater.from(baseContext)
@@ -259,7 +200,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
 
     override fun onClickCancelBtn() {
-
         val builder = AlertDialog.Builder(this@HistoryDetailActivity)
         builder.setTitle("Upcoming Ride")
         builder.setMessage("Are you want to cancel the request?")
@@ -283,40 +223,135 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
     private fun setDisputeListData(disputeListData: List<DisputeListData>) {
-        val inflate = DataBindingUtil.inflate<DisputeResonDialogBinding>(LayoutInflater.from(baseContext)
-                , R.layout.dispute_reson_dialog, null, false)
-        inflate.disputeReasonListAdapter = DisputeReasonListAdapter(historyDetailViewModel, disputeListData)
-        inflate.disputeReasonListAdapter!!.setOnClickListener(mOnAdapterClickListener)
-        //disputeReasonListAdapter.setOnClickListener(mOnAdapterClickListener)
-
-
+        disputeListBinding!!.applyFilter.isEnabled = true
+        disputeListBinding!!.disputeReasonListAdapter = DisputeReasonListAdapter(historyDetailViewModel, disputeListData)
+        disputeListBinding!!.disputeReasonListAdapter!!.setOnClickListener(mOnAdapterClickListener)
         historyDetailViewModel.getSelectedValue().observe(this, Observer {
             mselectedDisputeName = it
         })
-        inflate.applyFilter.setOnClickListener {
+        disputeListBinding!!.applyFilter.setOnClickListener {
             loadingObservable.value = true
-
             createDisputeRequest()
         }
 
-        val dialog = BottomSheetDialog(this)
-        dialog.setContentView(inflate.root)
+    }
+
+    override fun showDisputeList() {
+        disputeListBinding = DataBindingUtil.inflate(LayoutInflater.from(this@HistoryDetailActivity), R.layout.dispute_reson_dialog, null, false)
+        disputeListBinding!!.applyFilter.isEnabled = false
+        val dialog = BottomSheetDialog(this@HistoryDetailActivity)
+        dialog.setContentView(disputeListBinding!!.root)
         dialog.show()
+        historyDetailViewModel.getDisputeList()
     }
 
     private fun createDisputeRequest() {
+        if (serviceType.equals("transport")) {
 
-        historyDetailViewModel.addDispute(transpotResponseData.id.toString()
-                , transpotResponseData.provider_id.toString(), mselectedDisputeName)
+
+        } else if (serviceType.equals("service")) {
+
+        } else {
+
+        }
+
     }
 
     private val mOnAdapterClickListener = object : ReasonListClicklistner {
         override fun reasonOnItemClick(disputeName: String) {
             historyDetailViewModel.setSelectedValue(disputeName)
         }
+    }
 
+
+    private fun setupTransportDetail(transPastDetail: HistoryDetailModel.ResponseData.Transport) {
+        mViewDataBinding.currentorderdetailTitleTv.text = transPastDetail.booking_id
+        mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_Date_Month") + "")
+        mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_time") + "")
+        mViewDataBinding.historydetailSrcValueTv.text = transPastDetail.s_address
+        mViewDataBinding.historydetailDestValueTv.text = transPastDetail.d_address
+        mViewDataBinding.historydetailStatusValueTv.text = transPastDetail.status
+        mViewDataBinding.historydetailPaymentmodeValTv.text = transPastDetail.payment_mode
+        mViewDataBinding.vechileTypeTv.text = (transPastDetail.ride!!.vehicle_name)
+        Glide.with(this@HistoryDetailActivity).load(transPastDetail.user!!.picture)
+                .into(mViewDataBinding.providerCimgv)
+        mViewDataBinding.providerNameTv.text = (transPastDetail.user.first_name + " " +
+                transPastDetail.user.last_name)
+        mViewDataBinding.rvUser.rating = transPastDetail.provider_rated!!.toFloat()
+
+        if (transPastDetail.dispute != null) {
+            mViewDataBinding.disputeBtn.text = getString(R.string.dispute_status)
+        }
+    }
+
+    private fun setupServiceDetail(serviceDetail: HistoryDetailModel.ResponseData.Service) {
+        mViewDataBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
+        mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(serviceDetail.started_at!!,
+                "Req_Date_Month") + "")
+        mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(serviceDetail.started_at, "Req_time") + "")
+        mViewDataBinding.historydetailSrcValueTv.text = serviceDetail.s_address
+        mViewDataBinding.historydetailStatusValueTv.text = serviceDetail.status
+        mViewDataBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
+        Glide.with(this@HistoryDetailActivity).load(serviceDetail.user!!.picture)
+                .into(mViewDataBinding.providerCimgv)
+        mViewDataBinding.providerNameTv.text = (serviceDetail.user.first_name + " " +
+                serviceDetail.user.last_name)
+        mViewDataBinding.rvUser.rating = serviceDetail.user!!.rating!!.toFloat()
+    }
+
+    private fun setupOrderHistoryDetail(orderDetail: HistoryDetailModel.ResponseData.Order) {
+        mViewDataBinding.currentorderdetailTitleTv.text = orderDetail.store_order_invoice_id
+        mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(orderDetail.created_at!!,
+                "Req_Date_Month") + "")
+        mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(orderDetail.created_at!!, "Req_time") + "")
+        mViewDataBinding.historydetailSrcValueTv.text = orderDetail.pickup!!.store_location
+        mViewDataBinding.historydetailDestValueTv.text = orderDetail.delivery!!.flat_no + " " + orderDetail.delivery.street
+        mViewDataBinding.historydetailStatusValueTv.text = orderDetail.status
+        mViewDataBinding.historydetailPaymentmodeValTv.text = orderDetail.order_invoice!!.payment_mode
+        Glide.with(this@HistoryDetailActivity).load(orderDetail.user!!.picture)
+                .into(mViewDataBinding.providerCimgv)
+        mViewDataBinding.providerNameTv.text = (orderDetail.user.first_name + " " +
+                orderDetail.user.last_name)
+        mViewDataBinding.rvUser.rating = orderDetail.user!!.rating!!.toFloat()
 
     }
+
+
+    fun setUpTransportInvoice(alertDialog: AlertDialog) {
+        alertDialog.findViewById<TextView>(R.id.tvTaxiFare)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.fixed)
+        alertDialog.findViewById<TextView>(R.id.tvTaxiHourlyFare)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.hour)
+        alertDialog.findViewById<TextView>(R.id.tvTaxiDiscount)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.discount)
+        alertDialog.findViewById<TextView>(R.id.tvTaxiTips)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.tips)
+        alertDialog.findViewById<TextView>(R.id.tvTaxiWaitingTime)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.waiting_amount)
+        alertDialog.findViewById<TextView>(R.id.tvTaxiTollCharge)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.toll_charge)
+        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.payable)
+    }
+
+
+    fun setUpServiceInvoice(alertDialog: AlertDialog) {
+        alertDialog.findViewById<TextView>(R.id.tvServiceFare)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.service.payment!!.fixed)
+        alertDialog.findViewById<TextView>(R.id.tvServiceTax)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.service.payment!!.tax)
+        alertDialog.findViewById<TextView>(R.id.tvServiceTime)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.service.payment!!.minute)
+        alertDialog.findViewById<TextView>(R.id.tvServiceExtraCharge)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.service.payment!!.extra_charges)
+        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.service.payment!!.payable
+                )
+    }
+
+    fun setUpOrderInvoice(alertDialog: AlertDialog) {
+        alertDialog.findViewById<TextView>(R.id.tvOrderBaseFare)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.gross)
+        alertDialog.findViewById<TextView>(R.id.tvOrderTaxFare)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.tax_amount)
+        alertDialog.findViewById<TextView>(R.id.tvOrderDeliveryCharge)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.delivery_amount)
+        alertDialog.findViewById<TextView>(R.id.tvOrderPackCharge)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.store_package_amount)
+        alertDialog.findViewById<TextView>(R.id.tvOrderPrmocode)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.promocode_amount)
+        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (Constants.currency + historyDetailViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.payable)
+
+    }
+
+    override fun showErrorMessage(error: String) {
+        ViewUtils.showToast(this@HistoryDetailActivity, error, false)
+    }
+
+
 }
 
 

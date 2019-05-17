@@ -12,12 +12,13 @@ public class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
 
     private val appRepository = AppRepository.instance()
     private val preferenceHelper = PreferencesHelper
-    private var transportHistoryResponse = MutableLiveData<HistoryModel>()
-    private var serviceList = MutableLiveData<List<HistoryModel.ResponseData.Service>>()
-    private var orderList = MutableLiveData<List<HistoryModel.ResponseData.Order>>()
-    private var taxiList = MutableLiveData<List<HistoryModel.ResponseData.Transport>>()
-    private var loadingProgress = MutableLiveData<Boolean>()
-    private var errorResponse = MutableLiveData<String>()
+    var historyResponseLiveData = MutableLiveData<HistoryModel>()
+    var serviceList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Service>>(ArrayList<HistoryModel.ResponseData.Service>())
+    var orderList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Order>>(ArrayList<HistoryModel.ResponseData.Order>())
+    var taxiList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Transport>>(ArrayList<HistoryModel.ResponseData.Transport>())
+    var loadingProgress = MutableLiveData<Boolean>()
+    var selectedServiceType = MutableLiveData<String>()
+     var errorResponse = MutableLiveData<String>()
 
     fun openDetailPage() {
         navigator.gotoDetailPage()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/_280sdp"
@@ -13,6 +13,7 @@
         android:background="@android:color/transparent">
 
         <LinearLayout
+            android:id="@+id/llinnvoice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/invoice_bg_dotted_rectangle"
@@ -41,170 +42,61 @@
                     app:srcCompat="@drawable/ic_cross" />
             </RelativeLayout>
 
-            <RelativeLayout
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:padding="@dimen/_1sdp">
+                android:layout_marginBottom="@dimen/_10sdp">
+            <include
+                android:id="@+id/llTaxiInvoice"
+                layout="@layout/layout_taxi_invoice"
+                android:visibility="visible" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/taxi_invoice_base_fare" />
+            <include
+                android:id="@+id/llOrderInvoice"
+                layout="@layout/layout_order_invoice"
+                android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/basefare_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_price" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_1sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/tax_fare" />
-
-                <TextView
-                    android:id="@+id/taxfare_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_price" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_1sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/hourly_fare" />
-
-                <TextView
-                    android:id="@+id/hourlyfare_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_price" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_1sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/wallet" />
-
-                <TextView
-                    android:id="@+id/wallet_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_price" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_1sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/discount_applied" />
-
-                <TextView
-                    android:id="@+id/disscount_applied_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_price" />
-
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_1sdp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/tips" />
-
-                <TextView
-                    android:id="@+id/tips_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_price"
-                    android:textSize="@dimen/_10sdp" />
-
-            </RelativeLayout>
+            <include
+                android:id="@+id/llServiceInvoice"
+                layout="@layout/layout_service_invoice"
+                android:visibility="gone" />
+            </LinearLayout>
 
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_200sdp"
-            android:background="@drawable/foodie_round_corner"
-            android:backgroundTint="@color/colorAccent"
-            android:padding="@dimen/_5sdp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_3sdp"
-                android:text="@string/total_charge"
-                android:textColor="#ffffff" />
-
-            <TextView
-                android:id="@+id/total_charge_value_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/_5sdp"
-                android:padding="@dimen/_3sdp"
-                android:text="@string/dummy_price"
-                android:textColor="#ffffff" />
-
-        </RelativeLayout>
     </RelativeLayout>
-</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginTop="-5dp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:background="@drawable/foodie_round_corner"
+        android:backgroundTint="@color/colorAccent"
+        android:padding="@dimen/_5sdp"
+        app:layout_anchor="@+id/llinnvoice"
+        app:layout_anchorGravity="bottom">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_3sdp"
+            android:text="@string/total_charge"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/tvInvoiceTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:padding="@dimen/_3sdp"
+            android:textColor="#ffffff" />
+
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 

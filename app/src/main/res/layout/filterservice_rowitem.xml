@@ -10,25 +10,22 @@
 
     </data>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_5sdp"
-        android:onClick="@{()->itemClickListener.onListClickListner()}"
-        android:padding="@dimen/_5sdp">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/filterservice_name_tv"
-            style="@style/SmallText.Black"
+            android:fontFamily="@font/avenirltstd_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/custom_roundcorner_unselectedorder"
-            android:elevation="@dimen/_10sdp"
-            android:padding="@dimen/_10sdp"
-            android:text="@string/transport"
+            android:elevation="@dimen/_3sdp"
+            android:paddingLeft="@dimen/_8sdp"
+            android:paddingRight="@dimen/_8sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:onClick="@{()->itemClickListener.onListClickListner()}"
+            android:gravity="center"
             android:textAllCaps="false"
-            tools:ignore="UnusedAttribute" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/_11sdp"/>
 
-    </RelativeLayout>
 
 </layout>

@@ -67,7 +67,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="@string/view"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@color/colorBasePrimary"
                             android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />
 
                     </RelativeLayout>
@@ -145,7 +145,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="@string/view"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="@color/colorBasePrimary"
                             android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />
 
                     </RelativeLayout>
@@ -251,7 +251,7 @@
             android:layout_gravity="bottom"
             android:layout_margin="@dimen/_17sdp"
             android:background="@drawable/bg_blue_rounded_corner_curved"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorBasePrimary"
             android:onClick="@{()->viewModel.submitDocument()}"
             android:padding="@dimen/_10sdp"
             android:text="@string/upload"

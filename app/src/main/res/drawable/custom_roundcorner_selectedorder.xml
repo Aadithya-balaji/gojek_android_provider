@@ -8,5 +8,5 @@
     <solid android:color="#456375FA" />
     <stroke
         android:width="@dimen/_1sdp"
-        android:color="@color/colorPrimary" />
+        android:color="@color/colorBasePrimary" />
 </shape>

@@ -79,7 +79,7 @@
                         android:onClick="@{() -> orderfragmentviewmodel.moveToCurrentOrderList()}"
                         android:text="@string/current"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/colorBasePrimary"
                         android:visibility="gone" />
 
 
@@ -124,7 +124,7 @@
                         app:elevation="@dimen/_2sdp"
                         app:pressedTranslationZ="1dp"
                         app:srcCompat="@drawable/ic_filter"
-                        app:tint="@color/colorPrimary"
+                        app:tint="@color/colorBasePrimary"
                         tools:targetApi="lollipop" />
 
                 </RelativeLayout>

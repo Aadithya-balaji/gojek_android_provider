@@ -20,11 +20,9 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
 
     private lateinit var binding: ActivityResetPasswordBinding
     private lateinit var viewModel: ResetPasswordViewModel
-    private lateinit var message: String
+    private var message = ""
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_reset_password
-    }
+    override fun getLayoutId() = R.layout.activity_reset_password
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityResetPasswordBinding

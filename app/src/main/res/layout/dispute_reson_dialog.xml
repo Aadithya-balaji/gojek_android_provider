@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_17sdp"
             android:background="@drawable/custom_full_round_corner"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorBasePrimary"
             android:padding="@dimen/_5sdp"
             android:text="@string/submit"
             android:textAllCaps="false"

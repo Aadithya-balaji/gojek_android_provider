@@ -179,18 +179,22 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     mViewModel.longitude.value = location.longitude
                     mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
-                    if (mViewModel.currentStatus.value == TRANSPORT) {
-                        val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        startActivity(intent)
-                    } else if (mViewModel.currentStatus.value == SERVICE) {
-                        val intent = Intent(this@DashBoardActivity, XuberDashBoardActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        startActivity(intent)
-                    } else if (mViewModel.currentStatus.value == ORDER) {
-                        val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        startActivity(intent)
+                    when {
+                        mViewModel.currentStatus.value == TRANSPORT -> {
+                            val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(intent)
+                        }
+                        mViewModel.currentStatus.value == SERVICE -> {
+                            val intent = Intent(this@DashBoardActivity, XuberDashBoardActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(intent)
+                        }
+                        mViewModel.currentStatus.value == ORDER -> {
+                            val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(intent)
+                        }
                     }
                 }
 
@@ -258,7 +262,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         })
 
         observeLiveData(mViewModel.mProfileResponse) {
-            val cityID = it.profileData?.cityName?.id?.toInt() ?: 0
+            val cityID = it.profileData.city.id
             PreferencesHelper.put(PreferencesKey.CITY_ID, cityID)
             SocketManager.emit(Constants.ROOM_NAME.COMMON_ROOM_NAME, Constants.ROOM_ID.COMMON_ROOM)
         }

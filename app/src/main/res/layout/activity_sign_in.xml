@@ -9,6 +9,7 @@
         <variable
             name="signInViewModel"
             type="com.xjek.provider.views.sign_in.SignInViewModel" />
+
     </data>
 
     <LinearLayout
@@ -17,7 +18,6 @@
         android:layout_height="match_parent"
         android:background="@color/colorScreenBackground"
         android:orientation="vertical">
-        <!--app logo imageview-->
 
         <RelativeLayout
             android:id="@+id/top_applogo_layout"
@@ -27,16 +27,15 @@
 
             <ImageView
                 android:id="@+id/toplayout_applogo"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_30sdp"
+                android:layout_width="70dp"
+                android:layout_height="50dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_15sdp"
-                app:srcCompat="@drawable/app_logo" />
+                android:scaleType="fitXY"
+                app:srcCompat="@drawable/app_logo"
+                android:contentDescription="@string/app_name" />
 
         </RelativeLayout>
-
-        <!-- signin  layout-->
-
 
         <ScrollView
             android:layout_width="match_parent"
@@ -61,6 +60,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="@dimen/_10sdp">
+
                         <!--Login option layout-->
                         <RelativeLayout
                             android:id="@+id/loginvia_signin_layout"
@@ -80,7 +80,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:checkedButton="@+id/rb_phone"
                                 android:onCheckedChanged="@{signInViewModel::onSignInOptionsClick}"
                                 android:orientation="horizontal">
@@ -98,21 +97,21 @@
                                     android:id="@+id/rb_email"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="@dimen/_20sdp"
+                                    android:layout_marginStart="@dimen/_20sdp"
                                     android:button="@null"
                                     android:drawableTop="@drawable/selector_signin_email_radio"
                                     android:gravity="center"
                                     android:padding="@dimen/_5sdp" />
-                            </RadioGroup>
-                        </RelativeLayout>
 
-                        <!--Layout countrycode & phonenumber-->
+                            </RadioGroup>
+
+                        </RelativeLayout>
 
                         <LinearLayout
                             android:id="@+id/ll_phone_number"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginTop="10dp"
                             android:baselineAligned="false"
                             android:orientation="horizontal"
                             android:visibility="visible"
@@ -124,10 +123,10 @@
                                 style="@style/Edittext_OutlinedTheme"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/_8sdp"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:layout_marginRight="@dimen/_8sdp"
-                                android:layout_weight="0.7"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="0.8"
                                 android:hint="@string/hint_code"
                                 app:boxCornerRadiusBottomEnd="0dp"
                                 app:boxCornerRadiusTopEnd="0dp">
@@ -137,10 +136,12 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:drawableStart="@drawable/ic_us"
-                                    android:drawablePadding="@dimen/_3sdp"
+                                    android:drawablePadding="1dp"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
                                     android:inputType="text"
+                                    android:paddingStart="30dp"
+                                    android:paddingEnd="8dp"
                                     android:maxLines="1"
                                     android:onClick="@{signInViewModel::onCountryCodeClick}"
                                     android:singleLine="true"
@@ -156,12 +157,9 @@
                                 style="@style/Edittext_OutlinedTheme"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="@dimen/_2sdp"
-                                android:layout_marginLeft="@dimen/_2sdp"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:layout_marginEnd="@dimen/_8sdp"
-                                android:layout_marginRight="@dimen/_8sdp"
-                                android:layout_weight="1.3"
+                                android:layout_marginTop="8dp"
+                                android:layout_marginEnd="8dp"
+                                android:layout_weight="1.2"
                                 android:hint="@string/hint_phone_number"
                                 app:boxCornerRadiusBottomStart="0dp"
                                 app:boxCornerRadiusTopStart="0dp">
@@ -172,6 +170,8 @@
                                     android:layout_height="match_parent"
                                     android:inputType="number"
                                     android:maxLines="1"
+                                    android:paddingStart="20dp"
+                                    android:paddingEnd="30dp"
                                     android:singleLine="true"
                                     android:text="@={signInViewModel.phoneNumber}"
                                     android:textColor="@color/et_text_color"
@@ -179,6 +179,7 @@
                                     tools:text="9876543210" />
 
                             </com.google.android.material.textfield.TextInputLayout>
+
                         </LinearLayout>
 
                         <!--TextInputLayout EmailID-->
@@ -187,9 +188,9 @@
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
                             android:hint="@string/hint_email_id"
                             android:visibility="gone"
                             tools:visibility="visible">
@@ -199,6 +200,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
                                 android:singleLine="true"
                                 android:text="@={signInViewModel.email}"
                                 android:textColor="@color/et_text_color"
@@ -212,9 +215,9 @@
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_8sdp"
-                            android:layout_marginTop="@dimen/_8sdp"
-                            android:layout_marginRight="@dimen/_8sdp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="8dp"
                             android:hint="@string/hint_password"
                             app:endIconMode="password_toggle">
 
@@ -223,9 +226,10 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableEnd="@drawable/ic_iconfinder_icons_view"
-                                android:drawableRight="@drawable/ic_iconfinder_icons_view"
                                 android:drawablePadding="@dimen/_3sdp"
                                 android:imeOptions="actionGo"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
                                 android:inputType="textPassword"
                                 android:text="@={signInViewModel.password}"
                                 android:textColor="@color/et_text_color"
@@ -237,13 +241,15 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:onClick="@{signInViewModel::onForgotPasswordClick}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/forgot_password"
                             android:textSize="@dimen/_12sdp" />
+
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
 
                 <!--Go to Registration activity Layout-->
@@ -251,10 +257,8 @@
                     android:id="@+id/goto_reg_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/signin_login_layout"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
                     android:padding="@dimen/_5sdp">
 
                     <TextView
@@ -275,7 +279,7 @@
                         android:onClick="@{signInViewModel::onSignUpClick}"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/sign_up"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/colorBasePrimary"
                         android:textSize="@dimen/_12sdp" />
 
                     <!--Move to Registration activity Imageview-->
@@ -284,17 +288,17 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:layout_margin="@dimen/_5sdp"
                         android:onClick="@{signInViewModel::onSignInClick}"
                         android:padding="@dimen/_5sdp"
-                        app:srcCompat="@drawable/ic_right_arrow_in_black_circular_button" />
+                        app:srcCompat="@drawable/ic_right_arrow_in_black_circular_button"
+                        android:contentDescription="@string/app_name" />
+
                 </RelativeLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/goto_reg_layout"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="@string/or"
@@ -305,7 +309,6 @@
                     android:id="@+id/social_login_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/top_applogo_layout"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_15sdp"
@@ -331,17 +334,15 @@
                                 android:textColor="@android:color/black"
                                 android:textSize="@dimen/_12sdp" />
 
-
                         </RelativeLayout>
                         <!--Google Login Textview-->
                         <TextView
                             android:id="@+id/goolelogin_signin_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
                             android:drawableStart="@drawable/ic_google"
-                            android:drawableLeft="@drawable/ic_google"
-                            android:drawablePadding="@dimen/_8sdp"
+                            android:drawablePadding="8dp"
                             android:onClick="@{signInViewModel::onGoogleSignInClick}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/connect_via_google"
@@ -351,19 +352,24 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:drawableStart="@drawable/ic_facebook"
-                            android:drawableLeft="@drawable/ic_facebook"
-                            android:drawablePadding="@dimen/_8sdp"
+                            android:drawablePadding="8dp"
                             android:onClick="@{signInViewModel::onFacebookLoginClick}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/connect_via_facebook"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/_12sdp" />
+
                     </LinearLayout>
+
                 </androidx.cardview.widget.CardView>
+
             </LinearLayout>
+
         </ScrollView>
+
     </LinearLayout>
+
 </layout>

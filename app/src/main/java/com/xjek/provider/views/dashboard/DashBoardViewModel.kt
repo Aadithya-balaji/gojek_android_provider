@@ -23,8 +23,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
 
     fun callCheckStatusAPI() {
         if (readPreferences<String>(PreferencesKey.ACCESS_TOKEN).length > 2)
-            getCompositeDisposable().add(appRepository.checkRequest(
-                    this,
+            getCompositeDisposable().add(appRepository.checkRequest(this,
                     "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
                     latitude.value.toString(),
                     longitude.value.toString())
@@ -32,7 +31,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
     }
 
     fun getProfile() {
-        getCompositeDisposable().add(appRepository
-                .getProviderProfile(this, Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
+        getCompositeDisposable().add(appRepository.getProviderProfile(this,
+                Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
     }
 }

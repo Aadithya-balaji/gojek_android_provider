@@ -129,7 +129,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 64, 64, true))
+            val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 50, 50, true))
             countrycode_register_et.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }
     }
@@ -162,13 +162,12 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     private fun verifyMobileNumber() {
         val intent = Intent(this, AccountKitActivity::class.java)
         val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
-                LoginType.PHONE,
-                AccountKitActivity.ResponseType.CODE) // or .ResponseType.TOKEN
+                LoginType.PHONE, AccountKitActivity.ResponseType.CODE)
+        // or .ResponseType.TOKEN
         // ... perform additional configuration ...
-        intent.putExtra(
-                AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
+        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build())
-        startActivityForResult(intent, Constant.APP_REQUEST_CODE)
+        startActivityForResult(intent, APP_REQUEST_CODE)
     }
 
     private fun checkPermission() {

@@ -19,9 +19,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
     private lateinit var viewModel: ChangePasswordViewModel
     private lateinit var message: String
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_change_password
-    }
+    override fun getLayoutId() = R.layout.activity_change_password
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityChangePasswordBinding
@@ -40,7 +38,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
     private fun observeViewModel() {
         observeLiveData(viewModel.getChangePasswordObservable()) {
             loadingObservable.value = false
-            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            message = if (!it.message.isBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)
             onBackClicked(binding.toolbar.ivToolbarBack)
         }
@@ -63,9 +61,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
         if (isPasswordDataValid()) {
             loadingObservable.value = true
             viewModel.postChangePassword()
-        } else {
-            ViewUtils.showToast(applicationContext, message, false)
-        }
+        } else ViewUtils.showToast(applicationContext, message, false)
     }
 
     private fun isPasswordDataValid(): Boolean {

@@ -12,5 +12,4 @@ class ManageDocumentsViewModel : BaseViewModel<ManageDocumentsNavigator>() {
     fun showDelieveryDocuments() = navigator.showDelieveryDocuments()
     fun showServicesDocuments() = navigator.showServicesDocuments()
 
-
 }

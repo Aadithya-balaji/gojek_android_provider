@@ -103,6 +103,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:drawableStart="@drawable/ic_us"
+                                    android:drawablePadding="5dp"
                                     android:enabled="false"
                                     android:paddingStart="30dp"
                                     android:paddingEnd="8dp"
@@ -116,7 +117,7 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_marginStart="@dimen/_2sdp"
                                 android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginEnd="@dimen/_8sdp"
@@ -128,8 +129,9 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/phonenumber_register_et"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:maxLength="10"
+                                    android:layout_height="match_parent"
+                                    android:paddingStart="10dp"
+                                    android:paddingEnd="30dp"
                                     android:text="@={profileviewmodel.MMobileNumber}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/et_textsize" />

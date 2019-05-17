@@ -36,6 +36,9 @@ class Enums {
         const val DOCUMENT_UPLOAD_FRONT = 106
         const val DOCUMENT_UPLOAD_BACK = 107
 
+        const val DOCUMENT_UPLOAD_PDF = 108
+
+
         const val IMAGE_TYPE ="image"
         const val PDF_TYPE ="pdf"
 

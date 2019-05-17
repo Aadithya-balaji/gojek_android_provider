@@ -507,6 +507,22 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+    fun postVehicle(viewModel: ViewModel, token: String,
+                    params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postVehicle(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        if (viewModel is SetServicePriceViewModel)
+                            viewModel.addServiceResponseModel.postValue(it)
+                }, {
+                    if (viewModel is SetServicePriceViewModel)
+                        viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
 //    fun getServices(viewModel: SetupVehicleViewModel, token: String): Disposable {
 //        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
 //                .getRides(token)

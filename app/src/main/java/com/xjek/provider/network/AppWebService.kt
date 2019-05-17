@@ -187,6 +187,13 @@ interface AppWebService {
     ): Observable<AddVehicleResponseModel>
 
     @FormUrlEncoded
+    @POST("provider/vehicle/edit")
+    fun postVehicle(
+            @Header("Authorization") token: String,
+            @FieldMap params: HashMap<String, String>
+    ): Observable<AddVehicleResponseModel>
+
+    @FormUrlEncoded
     @POST("provider/listdocuments")
     fun getDocuments(@Field("type") documentType: String
     ): Observable<ListDocumentResponse>

@@ -14,11 +14,11 @@ class DateTimeUtil {
     }
 
     fun constructDateString(year: Int, month: Int, dayOfMonth: Int, separator: String): String {
-        return StringBuilder().append(dayOfMonth)
+        return StringBuilder().append(year)
                 .append(separator)
                 .append(DecimalFormat("00").format(month + 1))
                 .append(separator)
-                .append(year).toString()
+                .append(dayOfMonth).toString()
     }
 
 

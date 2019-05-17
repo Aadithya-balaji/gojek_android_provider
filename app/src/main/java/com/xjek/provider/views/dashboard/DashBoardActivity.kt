@@ -212,6 +212,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         println("RRR :: HomeFragment.getApiResponse")
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
+                writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
                     mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
                     Log.e("CheckStatus", "-----" + mViewModel.currentStatus.value)

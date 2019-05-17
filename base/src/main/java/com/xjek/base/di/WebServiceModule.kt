@@ -1,6 +1,7 @@
 package com.xjek.base.di
 
 import android.preference.PreferenceManager
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseApplication
@@ -42,6 +43,7 @@ class WebServiceModule {
         return OkHttpClient.Builder()
                 .addNetworkInterceptor(getRequestHeader())
                 .addInterceptor(getLoggingInterceptor())
+                .addNetworkInterceptor(StethoInterceptor())
                 .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)

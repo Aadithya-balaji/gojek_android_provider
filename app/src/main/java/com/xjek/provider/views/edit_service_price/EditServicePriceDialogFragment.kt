@@ -2,6 +2,7 @@ package com.xjek.provider.views.edit_service_price
 
 import android.text.Editable
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -10,6 +11,7 @@ import com.xjek.base.base.BaseDialogFragment
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.EditServicePriceDialogBinding
+import com.xjek.provider.views.set_service_category_price.SetServicePriceActivity
 import com.xjek.provider.views.set_service_category_price.SetServicePriceViewModel
 import kotlinx.android.synthetic.main.edit_service_price_dialog.*
 
@@ -19,6 +21,7 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
     private lateinit var viewModel: EditServicePriceViewModel
 
     override fun getLayout() = R.layout.edit_service_price_dialog
+    var fareType = ""
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         binding = viewDataBinding as EditServicePriceDialogBinding
@@ -27,12 +30,40 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
         binding.editServicePriceViewModel = viewModel
         val setServicePriceViewModel = ViewModelProviders.of(activity!!).get(SetServicePriceViewModel::class.java)
         setServicePriceViewModel.dialogPrice.observe(this, Observer {
-            price_edt.text = Editable.Factory.getInstance().newEditable(it)
+            fareType = it.fareType
+            when (it.fareType) {
+                "DISTANCETIME" -> {
+                    miles_lt.visibility = VISIBLE
+                    price_miles_edt.text = Editable.Factory.getInstance().newEditable(it.perMiles)
+                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMins)
+                }
+                "FIXED" -> {
+                    price_edt.text = Editable.Factory.getInstance().newEditable(it.baseFare)
+                    label.text = getString(R.string.fixed)
+                }
+                "HOURLY" -> {
+                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMins)
+                }
+            }
         })
         cancel_txt.setOnClickListener { dismiss() }
         submit_txt.setOnClickListener {
+            val service = SetServicePriceActivity.SelectedService()
             if (price_edt.text.isNotEmpty() && price_edt.text.toString().toDouble() > 0) {
-                setServicePriceViewModel.price.value = price_edt.text.toString()
+                if (miles_lt.visibility == VISIBLE) {
+                    if (price_miles_edt.text.isNotEmpty() && price_miles_edt.text.toString().toDouble() > 0) {
+                        service.perMiles = price_miles_edt.text.toString()
+                    } else {
+                        ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)
+                        return@setOnClickListener
+                    }
+                }
+                if (fareType == "FIXED")
+                    service.baseFare = price_edt.text.toString()
+                else
+                    service.perMins = price_edt.text.toString()
+                service.fareType = fareType
+                setServicePriceViewModel.listPrice.value = service
                 dismiss()
             } else {
                 ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)

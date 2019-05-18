@@ -181,33 +181,33 @@ data class RequestX(
 ) : Serializable
 
 data class Invoice(
-        var commision: Int = 0,
+        var commision: Double = 0.0,
         var commision_percent: Int = 0,
         var company_id: Int = 0,
         var discount: Int = 0,
         var discount_percent: Int = 0,
         var distance: Double = 0.0,
-        var fixed: Int = 0,
+        var fixed: Double = 0.0,
         var fleet_id: Any = Any(),
         var hour: Int = 0,
         var id: Int = 0,
         var minute: Int = 0,
         var payable: Double = 0.0,
         var payment_mode: String = "",
-        var peak_amount: Int = 0,
-        var peak_comm_amount: Int = 0,
+        var peak_amount: Double = 0.0,
+        var peak_comm_amount: Double = 0.0,
         var provider_id: Int = 0,
         var provider_pay: Double = 0.0,
         var ride_request_id: Int = 0,
         var round_of: Double = 0.0,
-        var tax: Int = 0,
+        var tax: Double = 0.0,
         var tax_percent: Int = 0,
         var toll_charge: Double = 0.0,
         var total: Double = 0.0,
         var total_waiting_time: Int = 0,
         var user_id: Int = 0,
-        var waiting_amount: Int = 0,
-        var waiting_comm_amount: Int = 0
+        var waiting_amount: Double = 0.0,
+        var waiting_comm_amount: Double = 0.0
 ) : Serializable
 
 data class Payment(

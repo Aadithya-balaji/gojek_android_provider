@@ -45,7 +45,6 @@
                     android:layout_toStartOf="@+id/date_time_laoyut"
                     android:layout_toEndOf="@+id/currentorderdetail_back_img"
                     android:padding="@dimen/_2sdp"
-                    android:text="@string/dummy_title_text"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
@@ -59,7 +58,6 @@
                     android:layout_toStartOf="@+id/date_time_laoyut"
                     android:layout_toEndOf="@+id/currentorderdetail_back_img"
                     android:padding="@dimen/_2sdp"
-                    android:text="@string/dummy_src_type"
                     android:textSize="@dimen/_10sdp" />
 
                 <LinearLayout
@@ -77,8 +75,7 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:padding="@dimen/_3sdp"
-                        android:text="@string/dummy_date"
-                        android:textColor="@color/colorPrimary" />
+                        android:textColor="@color/colorBasePrimary" />
 
                     <TextView
                         android:id="@+id/time_currentorderdetail_tv"
@@ -86,8 +83,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/_3sdp"
-                        android:text="@string/dummy_time"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/colorBasePrimary"
                         android:textSize="@dimen/_10sdp" />
 
 
@@ -120,7 +116,7 @@
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:layout_gravity="center"
-                            android:src="@drawable/demo_driver" />
+                            android:src="@drawable/ic_profile_placeholder" />
 
                         <TextView
                             android:id="@+id/provider_name_tv"
@@ -192,8 +188,7 @@
                                     android:layout_below="@+id/currentorderetail_source_tv"
                                     android:layout_marginStart="@dimen/_15sdp"
                                     android:layout_toEndOf="@+id/dot_view"
-                                    android:padding="@dimen/_1sdp"
-                                    android:text="@string/dummy_text" />
+                                    android:padding="@dimen/_1sdp" />
 
                             </RelativeLayout>
 
@@ -235,8 +230,7 @@
                                     android:layout_below="@+id/currentorderetail_destination_tv"
                                     android:layout_marginStart="@dimen/_15sdp"
                                     android:layout_toEndOf="@+id/destination_dot_view"
-                                    android:padding="@dimen/_1sdp"
-                                    android:text="@string/dummy_text" />
+                                    android:padding="@dimen/_1sdp"/>
 
                             </RelativeLayout>
 
@@ -287,8 +281,7 @@
                                 android:layout_below="@+id/currentorderetail_status_tv"
                                 android:layout_marginStart="@dimen/_15sdp"
                                 android:layout_toRightOf="@+id/status_dot_view"
-                                android:padding="@dimen/_1sdp"
-                                android:text="@string/dummy_text" />
+                                android:padding="@dimen/_1sdp" />
 
                         </RelativeLayout>
 
@@ -323,7 +316,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/_5sdp"
-                                android:text="@string/dummy_text"
+                                android:text="@string/no_comments"
                                 android:textSize="@dimen/_10sdp" />
 
                         </LinearLayout>
@@ -469,7 +462,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/custom_full_round_corner"
                 android:backgroundTint="@color/colorPrimary"
-                android:onClick="@{() -> currentOrderDetailModel.dispute()}"
+                android:onClick="@{() -> currentOrderDetailModel.showDisputeList()}"
                 android:text="@string/dispute"
                 android:textAllCaps="false" />
 
@@ -481,7 +474,7 @@
                 android:layout_margin="@dimen/_5sdp"
                 android:layout_weight="1"
                 android:background="@drawable/custom_full_round_corner"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@color/colorBasePrimary"
                 android:onClick="@{() -> currentOrderDetailModel.viewRecepit()}"
                 android:text="@string/view_receipt"
                 android:textAllCaps="false" />
@@ -504,9 +497,8 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/_5sdp"
             android:background="@drawable/custom_full_round_corner"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorBasePrimary"
             android:onClick="@{() -> currentOrderDetailModel.cancel()}"
             android:text="@string/cancel" />
-
     </RelativeLayout>
 </layout>

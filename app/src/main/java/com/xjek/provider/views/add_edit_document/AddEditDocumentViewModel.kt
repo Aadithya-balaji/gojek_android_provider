@@ -22,10 +22,11 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     var documentResponse = MutableLiveData<ListDocumentResponse>()
     var addDocumentResponse = MutableLiveData<AddDocumentResponse>()
     var errorResponse = MutableLiveData<String>()
-    var addEditDocumentErrorResponse = MutableLiveData<String>()
     var showEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
     var currentPosition: Int = 0
 
+    var documentFrontFileName = MutableLiveData<String>()
+    var documentBackFileName = MutableLiveData<String>()
     var documentFrontName = MutableLiveData<String>()
     var documentBackName = MutableLiveData<String>()
     var documentFrontImageURL = MutableLiveData<String>()
@@ -36,8 +37,9 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
     var showBackSide = MutableLiveData<Boolean>()
     var showExpiry = MutableLiveData<Boolean>()
-    var showFrontView = MutableLiveData<Boolean>()
-    var showBackView = MutableLiveData<Boolean>()
+    var showFrontView = MutableLiveData(false)
+    var showBackView = MutableLiveData(false)
+
     var isPDF = MutableLiveData<Boolean>()
 
     fun getDocumentList(documentType: String) {
@@ -62,12 +64,12 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         showExpiry.value = data[currentPosition].is_expire == "1"
        // showExpiry.value = true
         if (data[currentPosition].provider_document != null) {
-            showFrontView.value = true
+            showFrontView.value = false
             expiryDate.value = Utils.parseDateToYYYYMMdd(data[currentPosition].provider_document?.expires_at)
             documentFrontImageURL.value = data[currentPosition].provider_document!!.url[0].url
             if (data[currentPosition].provider_document!!.url.size > 1) {
                 documentBackImageURL.value = data[currentPosition].provider_document!!.url[1].url
-                showBackView.value = true
+                showBackView.value = false
             }
         } else {
             showFrontView.value = false
@@ -75,6 +77,9 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
             documentFrontImageURL.value = ""
             documentBackImageURL.value = ""
         }
+
+        documentFrontFileName.value = ""
+        documentBackFileName.value = ""
     }
 
 

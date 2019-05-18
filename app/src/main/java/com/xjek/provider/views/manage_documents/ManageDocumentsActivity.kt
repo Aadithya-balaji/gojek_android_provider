@@ -24,9 +24,7 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(),
         const val SERVICES = "Service"
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_manage_documents
-    }
+    override fun getLayoutId() = R.layout.activity_manage_documents
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityManageDocumentsBinding
@@ -39,8 +37,7 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(),
 
         setSupportActionBar(binding.toolbar.tbApp)
         binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text =
-                resources.getString(R.string.title_manage_documents)
+        binding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_manage_documents)
 
         observeViewModel()
 
@@ -50,34 +47,33 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(),
 
     }
 
-
     override fun showError(error: String) {
         ViewUtils.showToast(applicationContext, error, false)
     }
 
     override fun showAllDocuments() {
-        val intent = Intent(this@ManageDocumentsActivity, AddEditDocumentActivity::class.java)
+        val intent = Intent(this, AddEditDocumentActivity::class.java)
         intent.putExtra(Constant.DOCUMENT_NAME, getString(R.string.common_documents))
         intent.putExtra(Constant.DOCUMENT_TYPE, DocumentType.ALL)
         launchNewActivity(intent, false)
     }
 
     override fun showTransportDocuments() {
-        val intent = Intent(this@ManageDocumentsActivity, AddEditDocumentActivity::class.java)
+        val intent = Intent(this, AddEditDocumentActivity::class.java)
         intent.putExtra(Constant.DOCUMENT_NAME, getString(R.string.transport_documents))
         intent.putExtra(Constant.DOCUMENT_TYPE, DocumentType.TRANSPORT)
         launchNewActivity(intent, false)
     }
 
     override fun showDelieveryDocuments() {
-        val intent = Intent(this@ManageDocumentsActivity, AddEditDocumentActivity::class.java)
+        val intent = Intent(this, AddEditDocumentActivity::class.java)
         intent.putExtra(Constant.DOCUMENT_NAME, getString(R.string.delievery_documents))
         intent.putExtra(Constant.DOCUMENT_TYPE, DocumentType.DELIVERY)
         launchNewActivity(intent, false)
     }
 
     override fun showServicesDocuments() {
-        val intent = Intent(this@ManageDocumentsActivity, AddEditDocumentActivity::class.java)
+        val intent = Intent(this, AddEditDocumentActivity::class.java)
         intent.putExtra(Constant.DOCUMENT_NAME, getString(R.string.services_documents))
         intent.putExtra(Constant.DOCUMENT_TYPE, DocumentType.SERVICES)
         launchNewActivity(intent, false)

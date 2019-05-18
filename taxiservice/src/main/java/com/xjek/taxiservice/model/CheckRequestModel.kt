@@ -153,7 +153,7 @@ data class Request(
         var use_wallet: Int = 0,
         var user: User = User(),
         var user_id: Int = 0,
-        var user_rated: Int = 0,
+        var user_rated: Double = 0.0,
         var vehicle_type: String = ""
 ) : Serializable
 
@@ -191,7 +191,7 @@ data class Payment(
         var discount: Double = 0.0,
         var discount_percent: Double = 0.0,
         var distance: Double = 0.0,
-        var fixed: Int = 0,
+        var fixed: Double = 0.0,
         var fleet: Int = 0,
         var fleet_id: Any = Any(),
         var fleet_percent: Double = 0.0,
@@ -220,3 +220,4 @@ data class Payment(
         var waiting_comm_amount: Double = 0.0,
         var wallet: Double = 0.0
 ) : Serializable
+

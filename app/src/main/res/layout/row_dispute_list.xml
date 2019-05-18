@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="itemClickListener"
+            type="com.xjek.provider.interfaces.CustomClickListner" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/llDisputeReaons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbDisbute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/tvDisbuteReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:gravity="center_vertical"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />
+    </LinearLayout>
+</layout>

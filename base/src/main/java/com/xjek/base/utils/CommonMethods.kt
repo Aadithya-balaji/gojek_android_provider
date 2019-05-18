@@ -46,6 +46,16 @@ class CommonMethods {
         }
 
 
+        fun thousandSeparator(cost: Double): String {
+            var value = ""
+            try {
+                value = String.format(Locale.getDefault(), "%,.2f", cost)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            return value
+        }
 
 
         fun getDateinNeededFormat(strDate: String, fromSimpleFormat: SimpleDateFormat): Date {

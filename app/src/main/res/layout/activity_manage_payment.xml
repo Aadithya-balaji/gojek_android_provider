@@ -25,9 +25,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:tabBackground="@color/grey"
-                app:tabIndicatorColor="@color/colorPrimary"
+                app:tabIndicatorColor="@color/colorBasePrimary"
                 app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabSelectedTextColor="@color/colorBasePrimary"
                 app:tabTextAppearance="@style/TabLayoutStyle"
                 app:tabTextColor="@color/black" />
         </androidx.appcompat.widget.Toolbar>

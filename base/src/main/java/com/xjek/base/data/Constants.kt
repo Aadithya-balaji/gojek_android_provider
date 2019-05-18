@@ -46,10 +46,14 @@ object Constants {
 
     object BaseUrl {
         @JvmField
-        var APP_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE).getString(PreferencesKey.BASE_URL, BuildConfig.BASE_URL) }
-        var TAXI_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE).getString(PreferencesKey.TRANSPORT_URL, BuildConfig.BASE_URL) }
-        var ORDER_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE).getString(PreferencesKey.ORDER_URL, BuildConfig.BASE_URL) }
-        var SERVICE_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE).getString(PreferencesKey.SERVICE_URL, BuildConfig.BASE_URL) }
+        var APP_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,
+                Context.MODE_PRIVATE).getString(PreferencesKey.BASE_URL, BuildConfig.BASE_URL) }
+        var TAXI_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,
+                Context.MODE_PRIVATE).getString(PreferencesKey.TRANSPORT_URL, BuildConfig.BASE_URL) }
+        var ORDER_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,
+                Context.MODE_PRIVATE).getString(PreferencesKey.ORDER_URL, BuildConfig.BASE_URL) }
+        var SERVICE_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,
+                Context.MODE_PRIVATE).getString(PreferencesKey.SERVICE_URL, BuildConfig.BASE_URL) }
     }
 
     object ROOM_NAME {
@@ -63,9 +67,7 @@ object Constants {
         var SERVICE_ROOM_NAME: String = "joinPrivateRoom"
         var ORDER_ROOM_NAME: String = "joinPrivateRoom"
         var UPDATELOCATION: String = "updateLocation"
-
     }
-
 
     object ROOM_ID {
         @JvmField
@@ -134,5 +136,16 @@ object Constants {
         const val TRANSPORT = "TRANSPORT"
         const val SERVICE = "SERVICE"
         const val ORDER = "ORDER"
+    }
+
+
+    object Dispute {
+        const val DIPUSTE_TYPE = "dispute_type"
+        const val DISPUTE_NAME = "dispute_name"
+        const val COMMENTS = "comments"
+        const val DISPUTE_ID = "dispute_id"
+        const val USER_ID = "user_id"
+        const val PROVIDER_ID = "provider_id"
+        const val REQUEST_ID = "id"
     }
 }

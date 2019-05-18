@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="boxCornerRadius">25dp</dimen>
-    <dimen name="et_textsize">@dimen/_10sdp</dimen>
-    <dimen name="rv_space">@dimen/_20sdp</dimen>
+    <dimen name="et_textsize">12sp</dimen>
+    <dimen name="rv_space">25dp</dimen>
 </resources>

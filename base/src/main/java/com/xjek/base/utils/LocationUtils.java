@@ -5,6 +5,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -61,6 +62,19 @@ public final class LocationUtils {
         dist = rad2deg(dist);
         dist = dist * 60 * 1.1515;
         return (dist);
+    }
+
+    public static String getCountryCode(@NonNull Context context, LatLng currentLocation) throws IOException {
+        List<Address> addresses;
+        Geocoder geocoder;
+        String countryCode = "";
+        if (Geocoder.isPresent()) {
+            geocoder = new Geocoder(context, Locale.getDefault());
+            addresses = geocoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1);
+            if (addresses.size() > 0) countryCode = addresses.get(0).getCountryCode();
+        }
+        countryCode = TextUtils.isEmpty(countryCode) ? "US" : countryCode;
+        return countryCode;
     }
 
     public static double deg2rad(double deg) {

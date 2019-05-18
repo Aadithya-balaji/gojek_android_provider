@@ -95,7 +95,7 @@ class CommanMethods {
                     }
                     "FIXED" -> {
                         if (providerService.isNotEmpty())
-                            providerService[0].base_fare + " " + activity.getString(R.string.per_hour)
+                            providerService[0].base_fare + " " + activity.getString(R.string.fixed)
                         else
                             servicePrices.base_fare + " " + activity.getString(R.string.fixed)
                     }

@@ -112,7 +112,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     private fun checkRequestResponse() {
         foodLiveTaskviewModel.foodieCheckRequestModel.observe(this, Observer {
             foodLiveTaskviewModel.showLoading.value = false
-            if (it?.responseData != null) {
+            if (it?.responseData != null && it.responseData.requests!=null) {
                 if (currentStatus != it.responseData.requests.status) {
                     currentStatus = it.responseData.requests.status
                     when (it.responseData.requests.status) {

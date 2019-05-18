@@ -16,14 +16,13 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-
-public class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
+class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
 
     var mProfileResponse = MutableLiveData<ProfileResponse>()
     var mProfileUpdateResponse = MutableLiveData<ResProfileUpdate>()
     var errorResponse = MutableLiveData<String>()
+
     var mUserName: ObservableField<String> = ObservableField("")
-    var mMobileNumber: ObservableField<String> = ObservableField("")
     var mEmail: ObservableField<String> = ObservableField("")
     var mCity: ObservableField<String> = ObservableField("")
     var mCityId: ObservableField<String> = ObservableField("")
@@ -31,6 +30,7 @@ public class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     var mCountryId: ObservableField<String> = ObservableField("")
     var mCountryCode: ObservableField<String> = ObservableField("")
     var mProfileImage: ObservableField<String> = ObservableField("")
+    var mMobileNumber: ObservableField<String> = ObservableField("")
 
     var loadingProgress = MutableLiveData<Boolean>()
     var countryListResponse = MutableLiveData<CountryListResponse>()
@@ -39,10 +39,9 @@ public class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
 
     fun getProfile() {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository
-                .getProviderProfile(this, Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
+        getCompositeDisposable().add(appRepository.getProviderProfile(this,
+                Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
     }
-
 
     fun getProfileResponse(): MutableLiveData<ProfileResponse> {
         return mProfileResponse
@@ -58,7 +57,6 @@ public class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
         // hashMap.put("country_id", RequestBody.create(MediaType.parse("text/plain"), mCountryId.get().toString()))
         getCompositeDisposable().add(appRepository
                 .profileUpdate(this, Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString(), hashMap, file))
-
     }
 
     fun getProfileCountryList(view: View) {
@@ -67,9 +65,7 @@ public class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
         val hashMap: HashMap<String, Any?> = HashMap()
         hashMap["salt_key"] = "MQ=="
 
-        getCompositeDisposable().add(appRepository
-                .getCountryList(this, hashMap))
-
+        getCompositeDisposable().add(appRepository.getCountryList(this, hashMap))
     }
 
     fun updateProfileResponse(): MutableLiveData<ResProfileUpdate> {

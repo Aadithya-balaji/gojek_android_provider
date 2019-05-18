@@ -7,6 +7,7 @@
         <variable
             name="dashboardViewModel"
             type="com.xjek.provider.views.on_board.OnBoardViewModel" />
+
     </data>
 
     <RelativeLayout
@@ -20,10 +21,10 @@
             android:layout_above="@+id/ll_button">
 
             <androidx.viewpager.widget.ViewPager
+                android:overScrollMode="never"
                 android:id="@+id/viewpager_onboard"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view"
@@ -31,6 +32,7 @@
                 android:layout_height="match_parent"
                 app:lottie_autoPlay="false"
                 app:lottie_fileName="onboard_lottie.json" />
+
         </FrameLayout>
 
         <LinearLayout
@@ -48,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
-                android:backgroundTint="@color/colorPrimary"
+                android:backgroundTint="@color/colorBasePrimary"
                 android:gravity="center"
                 android:onClick="@{dashboardViewModel::onSignUpClick}"
                 android:paddingTop="@dimen/_10sdp"
@@ -85,6 +87,9 @@
                 android:layout_marginTop="@dimen/_4sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:background="#E4E4E4" />
+
         </LinearLayout>
+
     </RelativeLayout>
+
 </layout>

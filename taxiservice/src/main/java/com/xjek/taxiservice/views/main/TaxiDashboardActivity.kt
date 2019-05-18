@@ -604,26 +604,31 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun whenDone(output: PolylineOptions) {
-        mGoogleMap!!.clear()
 
-        mPolyline = mGoogleMap!!.addPolyline(output.width(5f).color
-        (ContextCompat.getColor(baseContext, R.color.colorBlack)))
+        try {
+            mGoogleMap!!.clear()
 
-        polyLine = output.points as ArrayList<LatLng>
+            mPolyline = mGoogleMap!!.addPolyline(output.width(5f).color
+            (ContextCompat.getColor(baseContext, R.color.colorBlack)))
 
-        val builder = LatLngBounds.Builder()
+            polyLine = output.points as ArrayList<LatLng>
 
-        for (latLng in polyLine) builder.include(latLng)
+            val builder = LatLngBounds.Builder()
 
-        mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
+            for (latLng in polyLine) builder.include(latLng)
 
-        srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
+            mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 
-        CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
+            srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
+            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
 
-        mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+            CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
+
+            mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
+            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+        }catch (e:java.lang.Exception){
+            e.printStackTrace()
+        }
 
     }
 

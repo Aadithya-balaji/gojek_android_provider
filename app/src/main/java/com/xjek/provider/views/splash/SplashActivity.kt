@@ -3,12 +3,17 @@ package com.xjek.provider.views.splash
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.util.Base64
+import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.google.gson.Gson
 import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.base.BaseApplication
-import com.xjek.base.data.Constants
+import com.xjek.base.data.Constants.ModuleTypes.ORDER
+import com.xjek.base.data.Constants.ModuleTypes.SERVICE
+import com.xjek.base.data.Constants.ModuleTypes.TRANSPORT
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.provideViewModel
@@ -20,13 +25,14 @@ import com.xjek.provider.models.ConfigResponseModel
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.dashboard.DashBoardActivity
 import com.xjek.provider.views.on_board.OnBoardActivity
+import java.security.MessageDigest
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
 
     private lateinit var binding: ActivitySplashBinding
     private lateinit var viewModel: SplashViewModel
 
-    public override fun getLayoutId(): Int = R.layout.activity_splash
+    public override fun getLayoutId() = R.layout.activity_splash
 
     private lateinit var mUrlPersistence: SharedPreferences
 
@@ -37,6 +43,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         viewModel.navigator = this
 
         observeViewModel()
+        generateHash()
 
         viewModel.getConfig()
 
@@ -64,21 +71,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             writePreferences(PreferencesKey.BASE_CONFIG_RESPONSE, Gson().toJson(it.responseData))
 
             it.responseData.services.forEach { service ->
-                run {
-                    when (service.adminServiceName) {
-                        "TRANSPORT" -> run {
-                            mUrlPersistence.edit().putString(PreferencesKey.TRANSPORT_URL, service.baseUrl).apply()
-                        }
-                        "ORDER" -> {
-                            mUrlPersistence.edit().putString(PreferencesKey.ORDER_URL, service.baseUrl).apply()
-                        }
-                        "SERVICE" -> {
-                            mUrlPersistence.edit().putString(PreferencesKey.SERVICE_URL, service.baseUrl).apply()
-                        }
-                        else -> {
-
-                        }
-                    }
+                when (service.adminServiceName) {
+                    TRANSPORT -> mUrlPersistence.edit().putString(PreferencesKey.TRANSPORT_URL, service.baseUrl).apply()
+                    ORDER -> mUrlPersistence.edit().putString(PreferencesKey.ORDER_URL, service.baseUrl).apply()
+                    SERVICE -> mUrlPersistence.edit().putString(PreferencesKey.SERVICE_URL, service.baseUrl).apply()
                 }
             }
 
@@ -88,35 +84,27 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                     "card" -> {
                         for (j in 0 until it.responseData.appSetting.payments[i].credentials.size) {
                             val credential = it.responseData.appSetting.payments[i].credentials[j]
-                            if (credential.name.toLowerCase() == "stripe_publishable_key") {
-                                writePreferences(PreferencesKey.STRIPE_KEY, credential.value)
-                            }
+                            if (credential.name.toLowerCase() == "stripe_publishable_key") writePreferences(PreferencesKey.STRIPE_KEY, credential.value)
                         }
-
                     }
                 }
             }
 
             writePreferences("0", it.responseData.baseUrl + "/")
             writePreferences(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id)
-            writePreferences(it.responseData.services[0].id.toString(),
-                    it.responseData.services[0].baseUrl + "/")
+            writePreferences(it.responseData.services[0].id.toString(), it.responseData.services[0].baseUrl + "/")
             writePreferences(PreferencesKey.ORDER_ID, it.responseData.services[1].id)
-            writePreferences(it.responseData.services[1].id.toString(),
-                    it.responseData.services[1].baseUrl + "/")
+            writePreferences(it.responseData.services[1].id.toString(), it.responseData.services[1].baseUrl + "/")
             writePreferences(PreferencesKey.SERVICE_ID, it.responseData.services[2].id)
-            writePreferences(it.responseData.services[2].id.toString(),
-                    it.responseData.services[2].baseUrl + "/")
-            writePreferences(PreferencesKey.PRIVACY_POLICY,
-                    it.responseData.appSetting.cmsPage.privacyPolicy)
+            writePreferences(it.responseData.services[2].id.toString(), it.responseData.services[2].baseUrl + "/")
+            writePreferences(PreferencesKey.PRIVACY_POLICY, it.responseData.appSetting.cmsPage.privacyPolicy)
             writePreferences(PreferencesKey.HELP, it.responseData.appSetting.cmsPage.help)
             writePreferences(PreferencesKey.TERMS, it.responseData.appSetting.cmsPage.terms)
             val contactNumbers = hashSetOf<String>()
             for (contact in it.responseData.appSetting.supportDetails.contactNumber)
                 contactNumbers.add(contact.number)
             writePreferences(PreferencesKey.CONTACT_NUMBER, contactNumbers.toSet())
-            writePreferences(PreferencesKey.CONTACT_EMAIL,
-                    it.responseData.appSetting.supportDetails.contactEmail)
+            writePreferences(PreferencesKey.CONTACT_EMAIL, it.responseData.appSetting.supportDetails.contactEmail)
             setLanguage(it)
             setPayment(it)
             Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
@@ -128,21 +116,31 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     }
 
     private fun setPayment(it: ConfigResponseModel) {
-        val paymentList = it.responseData.appSetting.payments
-        writePreferences(PreferencesKey.PAYMENT_LIST, Gson().toJson(paymentList))
+        writePreferences(PreferencesKey.PAYMENT_LIST, Gson().toJson(it.responseData.appSetting.payments))
     }
 
     private fun setLanguage(it: ConfigResponseModel) {
         val languages = it.responseData.appSetting.languages
-        if (languages.isNotEmpty())
-            Constant.languages = languages
-        else {
-            val defaultLanguage = ConfigResponseModel.ResponseData.AppSetting.Language("English", "en")
-            Constant.languages = listOf(defaultLanguage)
-        }
+        if (languages.isNotEmpty()) Constant.languages = languages
+        else Constant.languages = listOf(ConfigResponseModel.ResponseData.AppSetting.Language("English", "en"))
     }
 
     override fun showError(error: String) {
         finish()
+    }
+
+    private fun generateHash() {
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+            }
+        } catch (e: Exception) {
+            Log.d("_genratehash", e.message)
+            e.printStackTrace()
+        }
+
     }
 }

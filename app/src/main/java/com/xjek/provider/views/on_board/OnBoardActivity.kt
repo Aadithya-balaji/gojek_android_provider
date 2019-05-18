@@ -31,9 +31,7 @@ class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>(), OnBoardNavigator
     private lateinit var ivLogo: ImageView
     private lateinit var ivRight: ImageView
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_on_board
-    }
+    override fun getLayoutId() = R.layout.activity_on_board
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityOnBoardBinding
@@ -98,7 +96,6 @@ class AnimationFragment : BaseFragment<FragmentAnimationpageBinding>() {
     override fun getLayoutId(): Int = R.layout.fragment_animationpage
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
-//        TODO()
     }
 
 }

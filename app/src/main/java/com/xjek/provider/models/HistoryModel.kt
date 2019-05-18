@@ -9,9 +9,9 @@ data class HistoryModel(
 ) {
     data class ResponseData(
             val total_records: Int? = 0,
-            val transport: List<Transport?>? = listOf(),
-            val service: List<Service>? = listOf(),
-            val order: List<Order>? = listOf(),
+            val transport: ArrayList<Transport>? = ArrayList(),
+            val service: ArrayList<Service>? = ArrayList(),
+            val order: ArrayList<Order>? = ArrayList(),
             val type: String? = ""
     ) {
         data class Transport(
@@ -47,7 +47,7 @@ data class HistoryModel(
 
             data class Payment(
                     val ride_request_id: Int? = 0,
-                    val total: Int? = 0
+                    val total: Double? = 0.0
             )
 
             data class ProviderVehicle(
@@ -106,7 +106,7 @@ data class HistoryModel(
             data class Payment(
                     val id: Int? = 0,
                     val service_request_id: Int? = 0,
-                    val total: Int? = 0
+                    val total: Double? =0.0
             )
         }
 
@@ -115,12 +115,14 @@ data class HistoryModel(
                 val admin_service_id: Int? = 0,
                 val company_id: Int? = 0,
                 val created_at: String? = "",
+                val cuisines: String? = "",
                 val delivery: Delivery? = Delivery(),
                 val delivery_address: String? = "",
                 val id: Int? = 0,
                 val pickup: Pickup? = Pickup(),
                 val pickup_address: String? = "",
                 val provider_id: Int? = 0,
+                val rating: Rating? = Rating(),
                 val static_map: String? = "",
                 val status: String? = "",
                 val store_id: Int? = 0,
@@ -156,6 +158,15 @@ data class HistoryModel(
                         val status: Int? = 0
                 )
             }
+
+            data class Rating(
+                    val id: Int? = 0,
+                    val provider_comment: String? = "",
+                    val provider_rating: Int? = 0,
+                    val store_rating: Double? = 0.0,
+                    val user_comment: String? = "",
+                    val user_rating: Double? = 0.0
+            )
         }
 
     }

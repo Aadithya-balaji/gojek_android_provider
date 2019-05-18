@@ -2,20 +2,21 @@ package com.xjek.provider.views.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
-import com.xjek.provider.databinding.FilterserviceRowitemBinding
+import com.xjek.provider.databinding.RowDisputeListBinding
 import com.xjek.provider.model.DisputeListData
 import com.xjek.provider.views.history_details.HistoryDetailViewModel
 
 
-class DisputeReasonListAdapter(val historyDetailViewModel: HistoryDetailViewModel
-                               , val disputereasonList: List<DisputeListData>)
-    : RecyclerView.Adapter<DisputeReasonListAdapter.MyViewHolder>() {
+class DisputeReasonListAdapter(val historyDetailViewModel: HistoryDetailViewModel, val disputereasonList: List<DisputeListData>) : RecyclerView.Adapter<DisputeReasonListAdapter.MyViewHolder>() {
 
     private var mOnAdapterClickListener: ReasonListClicklistner? = null
+    private var selectedPosition = -1
+
     fun setOnClickListener(onClickListener: ReasonListClicklistner) {
         this.mOnAdapterClickListener = onClickListener
     }
@@ -25,52 +26,41 @@ class DisputeReasonListAdapter(val historyDetailViewModel: HistoryDetailViewMode
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
         this.context = parent.context
-        val inflate = DataBindingUtil
-                .inflate<FilterserviceRowitemBinding>(LayoutInflater.from(parent.context),
-                        R.layout.filterservice_rowitem, parent, false)
+        val inflate = DataBindingUtil.inflate<RowDisputeListBinding>(LayoutInflater.from(parent.context),
+                R.layout.row_dispute_list, parent, false)
         return MyViewHolder(inflate)
     }
 
     override fun getItemCount(): Int = disputereasonList.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.rowDisputeListBinding.llDisputeReaons.tag = position
+        holder.rowDisputeListBinding.tvDisbuteReason.setText(disputereasonList.get(position).dispute_name)
+
+        if(selectedPosition==position){
+            holder.rowDisputeListBinding.rbDisbute.isChecked=true
+        }else{
+            holder.rowDisputeListBinding.rbDisbute.isChecked=false
 
 
-        holder.filterserviceRowitemBinding.filterserviceNameTv.text = (disputereasonList.get(position)
-                .dispute_name).toLowerCase().capitalize()
-        /* holder.filterserviceRowitemBinding.itemClickListener = object : CustomClickListener {
-             override fun onListClickListener() {
-
-                 Log.d("_D_ADP", disputereasonList[position].dispute_name + "")
-                 // historyDetailViewModel.selectedDisputeName.value =
-                 historyDetailViewModel.setSelectedValue(disputereasonList[position].dispute_name)
-
-             }
-
-         }*/
-
-        holder.filterserviceRowitemBinding.filterserviceNameTv.setOnClickListener {
+        }
+        /*holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener {
             if (mOnAdapterClickListener != null) {
                 mOnAdapterClickListener!!.reasonOnItemClick((disputereasonList.get(position)
                         .dispute_name).toLowerCase().capitalize())
             }
-        }
-
-
-//
-//        holder.bind()
+        }*/
+        holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener { v -> itemCheckChanged(v) }
     }
 
 
-    inner class MyViewHolder(itemView: FilterserviceRowitemBinding) : RecyclerView.ViewHolder(itemView.root) {
+    private fun itemCheckChanged(v: View) {
+        selectedPosition = v.tag as Int
+        notifyDataSetChanged()
+    }
 
-        val filterserviceRowitemBinding = itemView
-
-        fun bind() {
-
-        }
-
-
+    inner class MyViewHolder(itemView: RowDisputeListBinding) : RecyclerView.ViewHolder(itemView.root) {
+        val rowDisputeListBinding = itemView
     }
 
 

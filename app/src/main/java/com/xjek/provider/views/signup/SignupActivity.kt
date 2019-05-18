@@ -39,7 +39,9 @@ import com.google.android.material.textfield.TextInputLayout
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityRegisterBinding
@@ -112,14 +114,14 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     private var mGoogleApiClient: GoogleApiClient? = null
     private var imageUrl: String? = null
 
-    override fun getLayoutId(): Int = R.layout.activity_register
+    override fun getLayoutId() = R.layout.activity_register
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
         this.mViewDataBinding = mViewDataBinding as ActivityRegisterBinding
         signupViewmodel = SignupViewModel(this)
         this.mViewDataBinding.registermodel = signupViewmodel
-        this.mViewDataBinding.lifecycleOwner = this@SignupActivity
+        this.mViewDataBinding.lifecycleOwner = this
         //initListener
         tlCountryCode = findViewById(R.id.tl_country_code)
         edtCountryCode = findViewById(R.id.edt_signup_code)
@@ -132,24 +134,30 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         edtPassword = findViewById(R.id.edt_signup_password)
         ivProfile = findViewById(R.id.profile_image)
         tlPassword = findViewById(R.id.til_signup_pwd)
-        rbMale = findViewById(R.id.rbMale) as MaterialRadioButton
-        rbFemale = findViewById(R.id.rbFemale) as MaterialRadioButton
+        rbMale = findViewById(R.id.rbMale)
+        rbFemale = findViewById(R.id.rbFemale)
         callbackManager = CallbackManager.Factory.create()
         edtCountry.isFocusableInTouchMode = false
         edtCity.isFocusableInTouchMode = false
 
         initListener()
-        initFacebooik()
+        initFacebook()
         initGoogle()
+
+        val resultIntent = Intent()
+        resultIntent.putExtra("countryName", "India")
+        resultIntent.putExtra("countryCode", "+91")
+        resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+        handleCountryCodePickerResult(resultIntent)
 
         getApiResponse()
         observeLiveData(signupViewmodel.phoneNumber) {
             if (!TextUtils.isEmpty(signupViewmodel.countryCode.value.toString()))
-                if (CommanMethods.validatePhone(signupViewmodel.phoneNumber.value.toString()) == true) {
+                if (CommanMethods.validatePhone(signupViewmodel.phoneNumber.value.toString())) {
                     val params = HashMap<String, String>()
-                    params.put(WebApiConstants.SALT_KEY, "MQ==")
-                    params.put(WebApiConstants.ValidateUser.PHONE, signupViewmodel.phoneNumber.value.toString())
-                    params.put(WebApiConstants.ValidateUser.COUNTRYCODE, signupViewmodel.countryCode.toString())
+                    params[WebApiConstants.SALT_KEY] = "MQ=="
+                    params[WebApiConstants.ValidateUser.PHONE] = signupViewmodel.phoneNumber.value.toString()
+                    params[WebApiConstants.ValidateUser.COUNTRYCODE] = signupViewmodel.countryCode.toString()
                     Log.e("phone ", "-------observe" + signupViewmodel.countryCode.value
                             + "--" + signupViewmodel.phoneNumber.value)
                     println("phone ${signupViewmodel.phoneNumber.value}")
@@ -159,22 +167,18 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
 
     }
 
-    fun getApiResponse() {
+    private fun getApiResponse() {
         loadingObservable.value = false
         observeLiveData(signupViewmodel.getSignupLiveData()) {
-            if (signupViewmodel.getSignupObserverValue()!!.statusCode.equals("200")) {
-                verifyPhoneNumber()
-            }
+            if (signupViewmodel.getSignupObserverValue()!!.statusCode.equals("200")) verifyPhoneNumber()
         }
 
-
         observeLiveData(signupViewmodel.getCountryLiveData()) {
-            val intent = Intent(this@SignupActivity, CountryListActivity::class.java)
+            val intent = Intent(this, CountryListActivity::class.java)
             intent.putExtra("selectedfrom", "country")
             intent.putExtra("countrylistresponse", it as Serializable)
             startActivityForResult(intent, COUNTRYLIST_REQUEST_CODE)
         }
-
 
     }
 
@@ -186,10 +190,10 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                 COUNTRYLIST_REQUEST_CODE -> {
                     val selectedCountry = data?.extras?.get("selected_list") as? CountryResponseData
                     Log.d("countrylist", selectedCountry?.country_name + "")
-                    cityList = (selectedCountry?.city as? List<City>)!!
-                    mViewDataBinding.edtSignupCountry.setText(selectedCountry?.country_name)
-                    signupViewmodel.countryName.value = selectedCountry?.country_name
-                    signupViewmodel.countryID.value = selectedCountry?.id.toString()
+                    cityList = selectedCountry?.city!!
+                    mViewDataBinding.edtSignupCountry.setText(selectedCountry.country_name)
+                    signupViewmodel.countryName.value = selectedCountry.country_name
+                    signupViewmodel.countryID.value = selectedCountry.id.toString()
                 }
 
                 CITYLIST_REQUEST_CODE -> {
@@ -200,7 +204,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                     signupViewmodel.cityID.value = selectedCity?.id.toString()
                 }
                 FB_ACCOUNT_KIT_CODE -> {
-                    val dashBoardIntent = Intent(this@SignupActivity, DashBoardActivity::class.java)
+                    writePreferences(PreferencesKey.ACCESS_TOKEN, signupViewmodel.getSignupLiveData().value!!.responseData!!.accessToken)
+                    val dashBoardIntent = Intent(this, DashBoardActivity::class.java)
                     dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     launchNewActivity(dashBoardIntent, true)
                 }
@@ -211,9 +216,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                     if (result.isSuccess) {
                         // Signed in successfully, show authenticated UI.
                         val acct = result.signInAccount
-                        if (acct != null) {
-                            handleGplusSignInResult(acct)
-                        }
+                        if (acct != null) handleGplusSignInResult(acct)
                     } else {
                         // Signed out, show unauthenticated UI.
                         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback { status -> Log.e("status", "logout $status") }
@@ -226,9 +229,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                 }
 
                 Enums.RC_COUNTRY_CODE_PICKER -> {
-                    if (data != null && data.extras != null) {
-                        handleCountryCodePickerResult(data)
-                    }
+                    if (data != null && data.extras != null) handleCountryCodePickerResult(data)
                 }
 
 
@@ -236,8 +237,9 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                     val result = CropImage.getActivityResult(data)
                     ivProfile.setImageURI(result.uri)
                     val profileFile = File(result.uri.toString())
-                    if (profileFile != null && profileFile.exists()) {
-                        filePart = MultipartBody.Part.createFormData("picture", profileFile.getName(), RequestBody.create(MediaType.parse("image*//*"), profileFile));
+                    if (profileFile.exists()) {
+                        filePart = MultipartBody.Part.createFormData("picture", profileFile.name,
+                                RequestBody.create(MediaType.parse("image*//*"), profileFile))
                         signupViewmodel.fileName.value = filePart
                     }
                 }
@@ -248,7 +250,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
 
     }
 
-    fun initListener() {
+    private fun initListener() {
         // edtCountryCode.setOnClickListener(this)
         edtCountryCode.isFocusableInTouchMode = false
         edtCity.setOnClickListener(this)
@@ -257,8 +259,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         edtCountryCode.isFocusableInTouchMode = false
         edtCountry.isFocusableInTouchMode = false
         edtCity.isFocusableInTouchMode = false
-        edtEmail.setOnFocusChangeListener(this)
-        edtPhoneNumber.setOnFocusChangeListener(this)
+        edtEmail.onFocusChangeListener = this
+        edtPhoneNumber.onFocusChangeListener = this
         edtEmail.addTextChangedListener(this)
         edtPhoneNumber.addTextChangedListener(this)
     }
@@ -274,7 +276,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun gotoDocumentPage() {
-//        val intent = Intent(this@SignupActivity, DocumentActivity::class.java)
+//        val intent = Intent(this, DocumentActivity::class.java)
 //        startActivity(intent)
     }
 
@@ -282,7 +284,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.countrycode_register_et -> {
-                val intent = Intent(this@SignupActivity, CountryCodeActivity::class.java)
+                val intent = Intent(this, CountryCodeActivity::class.java)
                 startActivityForResult(intent, Enums.RC_COUNTRY_CODE_PICKER)
             }
         }
@@ -318,7 +320,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         } else if (TextUtils.isEmpty(signupViewmodel.email.value)) {
             message = resources.getString(R.string.email_empty)
             return false
-        } else if (TextUtils.isEmpty(signupViewmodel.password.value) && signupViewmodel.socialID.value.isNullOrEmpty()) {
+        } else if (TextUtils.isEmpty(signupViewmodel.password.value) &&signupViewmodel.socialID.value.isNullOrEmpty()) {
             message = resources.getString(R.string.password_empty)
             return false
         } else if (TextUtils.isEmpty(signupViewmodel.countryName.value)) {
@@ -339,13 +341,13 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun showError(error: String) {
-        signupViewmodel.loadingProgress.value = false
-        ViewUtils.showToast(this@SignupActivity, error, false)
+        loadingObservable.value = false
+        ViewUtils.showToast(this, error, false)
     }
 
 
     override fun verifyPhoneNumber() {
-        val intent = Intent(this@SignupActivity, AccountKitActivity::class.java)
+        val intent = Intent(this, AccountKitActivity::class.java)
         val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
                 LoginType.PHONE,
                 AccountKitActivity.ResponseType.CODE)
@@ -356,7 +358,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
 
-    fun initFacebooik() {
+    private fun initFacebook() {
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 if (AccessToken.getCurrentAccessToken() != null) {
@@ -381,9 +383,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
 
 
     private fun getFacebookUserProfile(accessToken: AccessToken) {
-        val request = GraphRequest.newMeRequest(accessToken) { `object`, response ->
-            var jsonObject = JSONObject()
-            jsonObject = response.jsonObject
+        val request = GraphRequest.newMeRequest(accessToken) { _, response ->
+            val jsonObject: JSONObject = response.jsonObject
             try {
                 val socialFirstName = jsonObject.getString("first_name")
                 val socialLastName = jsonObject.getString("last_name")
@@ -391,20 +392,20 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                 val token = accessToken.token
                 val socialEmail = jsonObject.getString("email")
                 val img_value = "http://graph.facebook.com/" + jsonObject.getString("id") + "/picture?type=large"
-                Glide.with(this@SignupActivity).load(img_value).into(mViewDataBinding.profileImage)
+                Glide.with(this).load(img_value).into(mViewDataBinding.profileImage)
                 Log.e("FB_ID", "-----$socialId")
                 signupViewmodel.firstName.value = socialFirstName
                 signupViewmodel.lastName.value = socialLastName
                 signupViewmodel.email.value = socialEmail
-
+                signupViewmodel.socialID.value=socialId
                 signupViewmodel.loginby.value = "FACEBOOK"
                 tlPassword.visibility = View.GONE
 
                 //DownloadImage
-                DownloadImage(this@SignupActivity).execute(img_value)
+                DownloadImage(this).execute(img_value)
 
                 if (jsonObject.has("picture")) {
-                    val profileImg = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url");
+                    jsonObject.getJSONObject("picture").getJSONObject("data").getString("url")
                 }
 
             } catch (e: Exception) {
@@ -418,13 +419,12 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         request.executeAsync()
     }
 
-
-    fun handleGplusSignInResult(result: GoogleSignInAccount) {
-        var socialFirstName = result.getGivenName()
-        var socialLastName = result.getFamilyName()
-        var socialId = result.getId()
-        var email = result.getEmail()
-        var token = result.getIdToken()
+    private fun handleGplusSignInResult(result: GoogleSignInAccount) {
+        val socialFirstName = result.givenName
+        val socialLastName = result.familyName
+        val socialId = result.id
+        val email = result.email
+        var token = result.idToken
         val profileImage = result.photoUrl
 
         signupViewmodel.firstName.value = socialFirstName.toString()
@@ -443,8 +443,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         signupViewmodel.loginby.value = "GOOGLE"
         tlPassword.visibility = View.GONE
 
-        val url: URL = URL(profileImage.toString())
-        DownloadImage(this@SignupActivity).execute(url.toString())
+        val url = URL(profileImage.toString())
+        DownloadImage(this).execute(url.toString())
 
 
         Log.e("firstName", "==" + socialFirstName)
@@ -455,15 +455,14 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
 
     override fun getCityList() {
         if (TextUtils.isEmpty(signupViewmodel.countryName.value)) {
-            ViewUtils.showToast(this@SignupActivity, resources.getString(R.string.empty_country), false)
+            ViewUtils.showToast(this, resources.getString(R.string.empty_country), false)
         } else {
-            val intent = Intent(this@SignupActivity, CityListActivity::class.java)
+            val intent = Intent(this, CityListActivity::class.java)
             intent.putExtra("selectedfrom", "city")
             intent.putExtra("citylistresponse", cityList as Serializable)
             startActivityForResult(intent, CITYLIST_REQUEST_CODE)
         }
     }
-
 
     private fun handleCountryCodePickerResult(data: Intent) {
         val countryCode = data.getStringExtra("countryCode")
@@ -481,7 +480,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun getCountryCode() {
-        val intent = Intent(this@SignupActivity, CountryCodeActivity::class.java)
+        val intent = Intent(this, CountryCodeActivity::class.java)
         startActivityForResult(intent, Enums.RC_COUNTRY_CODE_PICKER)
     }
 
@@ -501,12 +500,12 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
             val profileFile = File(imageUrl.toString())
             if (profileFile != null && profileFile.exists()) {
                 Log.e("signup", "---------" + profileFile.path)
-                filePart = MultipartBody.Part.createFormData("picture", profileFile.getName(), RequestBody.create(MediaType.parse("image*//*"), profileFile));
+                filePart = MultipartBody.Part.createFormData("picture", profileFile.name, RequestBody.create(MediaType.parse("image*//*"), profileFile))
                 signupViewmodel.fileName.value = filePart
             }
             signupViewmodel.postSignup()
         } else {
-            ViewUtils.showToast(this@SignupActivity, message, false)
+            ViewUtils.showToast(this, message, false)
         }
     }
 
@@ -546,12 +545,12 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
 
     @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onLocationPermissionDenied() {
-        ViewUtils.showToast(this@SignupActivity, getString(R.string.file_pemission_denied), false)
+        ViewUtils.showToast(this, getString(R.string.file_pemission_denied), false)
     }
 
     @OnShowRationale(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun onShowRationale(request: PermissionRequest) {
-        ViewUtils.showToast(this@SignupActivity, getString(R.string.rationale_storage_permission_denied), false)
+        ViewUtils.showToast(this, getString(R.string.rationale_storage_permission_denied), false)
     }
 
     inner class DownloadImage(context: Context) : AsyncTask<String, Void, String>() {
@@ -576,7 +575,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
             var file = CommanMethods.getDefaultFileName(mContext)
-            mContext?.let {
+            mContext.let {
                 val bitmap = Glide.with(it)
                         .asBitmap()
                         .load(imgUrl)
@@ -674,11 +673,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
             }
 
             R.id.cb_terms_condition -> {
-                if (isChecked) {
-                    isConditionChecked = true
-                } else {
-                    isConditionChecked = false
-                }
+                isConditionChecked = isChecked
             }
         }
     }

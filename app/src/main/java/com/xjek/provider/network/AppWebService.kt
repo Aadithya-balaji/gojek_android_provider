@@ -238,6 +238,13 @@ interface AppWebService {
     fun getHistoryDetail(@Header("Authorization") token: String,
                          @Path("id") id: String): Observable<HistoryDetailModel>
 
+    @GET("provider/history/service/{id}")
+    fun getServiceDetail(@Header("Authorization") token:String,@Path("id") id:String):Observable<HistoryDetailModel>
+
+    @GET("provider/history/order/{id}")
+    fun getOrderDetail(@Header("Authorization") token:String,@Path("id") id:String):Observable<HistoryDetailModel>
+
+
     @GET("provider/history/transport/{id}")
     fun getUpcomingHistoryDetail(@Header("Authorization") token: String,
                                  @Path("id") id: String): Observable<HistoryDetailModel>
@@ -254,9 +261,21 @@ interface AppWebService {
     fun getDisputeStatus(@Header("Authorization") token: String,
                          @Path("id") id: String): Observable<DisputeStatusModel>
 
+    @GET("provider/dispute/{service}")
+    fun getDisputeReasons(@Header("Authorization") token:String,@Path("service")  servicetype:String):Observable<DisputeListModel>
+
+    @FormUrlEncoded
+    @POST("provider/history-dispute/transport")
+    fun postTaxiDispute(@Header("Authorization") token:String,@FieldMap params: HashMap<String, String>):Observable<DisputeStatus>
+
+    @FormUrlEncoded
+    @POST("provider/history-dispute/service/{requestID}")
+    fun  postServiceDispute(@Header("Authorization") token:String,@FieldMap params: HashMap<String, String>, @Path("requestID") requestID:String):Observable<DisputeStatus>
+
+    @FormUrlEncoded
+    @POST("provider/history-dispute/order")
+    fun postOrderDispute(@Header("Authorization") token: String,@FieldMap params: HashMap<String, String>):Observable<DisputeStatus>
+
     @GET("provider/earnings/{id}")
-    fun getEarnings(
-            @Header("Authorization") token: String,
-            @Path("id") id: Int
-    ): Observable<EarningsResponse>
+    fun getEarnings(@Header("Authorization") token: String, @Path("id") id: Int): Observable<EarningsResponse>
 }

@@ -1,11 +1,12 @@
 package com.xjek.provider.views.order
 
+import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 
 
 class OrderFragmentViewModel : BaseViewModel<OrderFragmentNavigator>() {
 
-    lateinit var selectedFilterService: String
+     var selectedFilterService=MutableLiveData<String>()
 
     fun moveToCurrentOrderList() {
         navigator.goToCurrentOrder()

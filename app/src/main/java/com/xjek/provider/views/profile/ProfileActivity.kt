@@ -3,16 +3,18 @@ package com.xjek.provider.views.profile
 import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableField
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.facebook.accountkit.AccountKitLoginResult
 import com.facebook.accountkit.ui.AccountKitActivity
 import com.facebook.accountkit.ui.AccountKitConfiguration
@@ -34,13 +36,14 @@ import com.xjek.provider.databinding.ActivityEditProfileBinding
 import com.xjek.provider.model.City
 import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.model.CountryResponseData
-import com.xjek.provider.models.ProfileResponse
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Constant.APP_REQUEST_CODE
+import com.xjek.provider.utils.Country
 import com.xjek.provider.views.change_password.ChangePasswordActivity
 import com.xjek.provider.views.citylist.CityListActivity
 import com.xjek.provider.views.countrylist.CountryListActivity
 import com.xjek.xjek.ui.profile.ProfileNavigator
+import kotlinx.android.synthetic.main.activity_edit_profile.*
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -48,18 +51,17 @@ import okhttp3.RequestBody
 import java.io.File
 import java.io.Serializable
 
-
 class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavigator {
 
+    private lateinit var mViewDataBinding: ActivityEditProfileBinding
+    private lateinit var mViewModel: ProfileViewModel
+    private lateinit var city: List<City>
 
-    lateinit var mViewDataBinding: ActivityEditProfileBinding
-    private lateinit var mProfileViewmodel: ProfileViewModel
     private var mCropImageUri: Uri? = null
     private var localPath: Uri? = null
-    private var mProfileData: ProfileResponse? = null
     private var mMobileNumberFlag = 0
-    override fun getLayoutId(): Int = R.layout.activity_edit_profile
-    private lateinit var city: List<City>
+
+    override fun getLayoutId() = R.layout.activity_edit_profile
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
@@ -68,54 +70,68 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener {
             finish()
         }
-        mProfileViewmodel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
-        mViewDataBinding.profileviewmodel = mProfileViewmodel
-        mProfileViewmodel.navigator = this
-        mProfileViewmodel.getProfile()
-        mProfileViewmodel.getProfileResponse().observe(this, Observer {
-            mProfileData = it
-            Glide.with(this@ProfileActivity)
-                    .load(it.profileData?.picture)
-                    .into(mViewDataBinding.profileImage)
-        })
-        mProfileViewmodel.updateProfileResponse().observe(this, Observer {
+        mViewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
+        mViewDataBinding.profileviewmodel = mViewModel
+        mViewModel.navigator = this
+        mViewModel.getProfile()
+
+        mViewModel.updateProfileResponse().observe(this, Observer {
             ViewUtils.showToast(this, it.message!!, true)
         })
 
-        mProfileViewmodel.countryListResponse.observe(this@ProfileActivity, Observer<CountryListResponse> {
+        mViewModel.countryListResponse.observe(this, Observer<CountryListResponse> {
             Log.d("_D", "country_code :" + it.responseData[0].country_code)
 
-            val intent = Intent(this@ProfileActivity, CountryListActivity::class.java)
+            val intent = Intent(this, CountryListActivity::class.java)
             intent.putExtra("selectedfrom", "country")
             intent.putExtra("countrylistresponse", it as Serializable)
             startActivityForResult(intent, Constant.COUNTRYLIST_REQUEST_CODE)
         })
 
-        observeLiveData(mProfileViewmodel.loadingProgress) {
+        observeLiveData(mViewModel.loadingProgress) {
             loadingObservable.value = it
         }
 
-        observeLiveData(mProfileViewmodel.errorResponse) {
-            ViewUtils.showToast(ProfileActivity@ this, it, false)
+        observeLiveData(mViewModel.errorResponse) {
+            ViewUtils.showToast(this, it, false)
         }
 
+        mViewModel.mProfileResponse.observe(this, Observer { response ->
 
-        mProfileViewmodel.mProfileResponse.observe(this@ProfileActivity, Observer { response ->
+            mViewModel.mUserName.set(response.profileData.first_name)
+            mViewModel.mMobileNumber.set(response.profileData.mobile)
+            mViewModel.mEmail.set(response.profileData.email)
+            mViewModel.mCity.set(response.profileData.city.city_name)
+            mViewModel.mCountry.set(response.profileData.country.country_name)
+            mViewModel.mCountryId.set(response.profileData.country.id.toString())
+            mViewModel.mCityId.set(response.profileData.city.id.toString())
+            mViewModel.mProfileImage.set(response.profileData.picture)
 
-            mProfileViewmodel.mUserName.set(response.profileData!!.firstName)
-            mProfileViewmodel.mMobileNumber.set(response.profileData!!.mobile)
-            mProfileViewmodel.mEmail.set(response.profileData!!.email)
-            mProfileViewmodel.mCity.set(response.profileData!!.cityName?.cityName!!)
-            mProfileViewmodel.mCountry.set(response.profileData!!.countryName!!.CountryName)
-            mProfileViewmodel.mCountryCode.set(response.profileData!!.countryCode)
-            mProfileViewmodel.mCountryId.set(response.profileData!!.countryName!!.id)
-            mProfileViewmodel.mCityId.set(response.profileData!!.cityName?.id)
-            mProfileViewmodel.mProfileImage.set(response.profileData!!.picture)
+            if (response.profileData.picture != null)
+                glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture, R.drawable.dummy_profile_pic)
+
+            handleCountryCodePickerResult(response.profileData.country.country_name)
 
         })
 
-
         setOnclickListteners()
+    }
+
+    private fun handleCountryCodePickerResult(country: String?) {
+        var countryFlag = 0
+
+        for (countryList in Country.getAllCountries())
+            if (country!!.contains(countryList.name)) {
+                countryFlag = countryList.flag
+                mViewModel.mCountryCode.set(countryList.dialCode)
+            }
+
+        val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
+        if (leftDrawable != null) {
+            val bitmap = (leftDrawable as BitmapDrawable).bitmap
+            val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 50, 50, true))
+            countrycode_register_et.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
+        }
     }
 
     override fun goToChangePasswordActivity() {
@@ -126,44 +142,36 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         mViewDataBinding.profileLayout.setOnClickListener {
             checkPermission()
         }
-        mViewDataBinding.saveEditprofileBtn.setOnClickListener {
+        save_editprofile_btn.setOnClickListener {
 
-            if (mProfileData?.profileData?.mobile!!.toString().equals(mViewDataBinding.phonenumberRegisterEt.text.toString())) {
-                mMobileNumberFlag = 1//same
+            if (mViewModel.mProfileResponse.value!!.profileData.mobile == phonenumber_register_et.text.toString()) {
+                mMobileNumberFlag = 1   //  same
                 if (localPath?.path != null) {
                     val pictureFile = File(localPath?.path)
-                    val requestFile = RequestBody.create(
-                            MediaType.parse("*/*"),
-                            pictureFile)
-
+                    val requestFile = RequestBody.create(MediaType.parse("*/*"), pictureFile)
                     val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
-                    mProfileViewmodel?.updateProfile(fileBody)
-                } else {
-                    mProfileViewmodel?.updateProfile(null)
-                }
+                    mViewModel.updateProfile(fileBody)
+                } else mViewModel.updateProfile(null)
             } else {
-                mMobileNumberFlag = 2 // different mobile number
+                mMobileNumberFlag = 2   // different mobile number
                 verifyMobileNumber()
             }
-
-
         }
     }
 
     private fun verifyMobileNumber() {
-        val intent = Intent(this@ProfileActivity, AccountKitActivity::class.java)
+        val intent = Intent(this, AccountKitActivity::class.java)
         val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
-                LoginType.PHONE,
-                AccountKitActivity.ResponseType.CODE) // or .ResponseType.TOKEN
+                LoginType.PHONE, AccountKitActivity.ResponseType.CODE)
+        // or .ResponseType.TOKEN
         // ... perform additional configuration ...
-        intent.putExtra(
-                AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
+        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build())
-        startActivityForResult(intent, Constant.APP_REQUEST_CODE)
+        startActivityForResult(intent, APP_REQUEST_CODE)
     }
 
     private fun checkPermission() {
-        Dexter.withActivity(this@ProfileActivity)
+        Dexter.withActivity(this)
                 .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .withListener(object : PermissionListener {
                     override fun onPermissionGranted(response: PermissionGrantedResponse?) {
@@ -185,7 +193,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+        super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE) {
                 val imageUri = CropImage.getPickImageResultUri(this, data)
@@ -194,14 +202,12 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
                     // request permissions and handle the result in onRequestPermissionsResult()
                     mCropImageUri = imageUri
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
                         requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 0)
-                    }
                 } else {
                     // no permissions required or already grunted, can start crop image activity
                     startCropImageActivity(imageUri)
                 }
-
             }
         }
 
@@ -217,7 +223,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
         if (requestCode == Constant.COUNTRYLIST_REQUEST_CODE) {
             setCountry(data)
-            mViewDataBinding?.cityRegisterEt.isEnabled = true
+            mViewDataBinding.cityRegisterEt.isEnabled = true
         }
         if (requestCode == Constant.CITYLIST_REQUEST_CODE) {
             setCity(data)
@@ -225,16 +231,14 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         if (resultCode == APP_REQUEST_CODE) {
             accountKitOtpVerified(data)
         }
-
     }
-
 
     private fun setCountry(data: Intent?) {
         val selectedCountry = data?.extras?.get("selected_list") as? CountryResponseData
         Log.d("countrylist", selectedCountry?.country_name + "")
-        city = (selectedCountry?.city as? List<City>)!!
+        city = selectedCountry?.city!!
         mViewDataBinding.countryRegisterEt.setText(selectedCountry.country_name)
-        mProfileViewmodel?.mCountryId!!.set(selectedCountry.id.toString())
+        mViewModel.mCountryId.set(selectedCountry.id.toString())
     }
 
     private fun accountKitOtpVerified(data: Intent?) {
@@ -252,10 +256,8 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                         pictureFile)
 
                 val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
-                mProfileViewmodel?.updateProfile(fileBody)
-            } else {
-                mProfileViewmodel?.updateProfile(null)
-            }
+                mViewModel.updateProfile(fileBody)
+            } else mViewModel.updateProfile(null)
 
         }
     }
@@ -264,7 +266,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         val selectedCity = data?.extras?.get("selected_list") as? City
         Log.d("statelist", selectedCity?.city_name + "")
         mViewDataBinding.cityRegisterEt.setText(selectedCity?.city_name)
-        mProfileViewmodel?.mCityId!!.set(selectedCity?.id.toString())
+        mViewModel.mCityId.set(selectedCity?.id.toString())
     }
 
     private fun startCropImageActivity(imageUri: Uri) {
@@ -279,26 +281,25 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     override fun profileUpdateValidation(email: String, phonenumber: String, firstname: String
                                          , country: String, city: String): Boolean {
 
-
         if (TextUtils.isEmpty(firstname)) {
-            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_firstname), false)
-            mProfileViewmodel?.loadingProgress!!.value = false
+            ViewUtils.showToast(this, getString(R.string.error_firstname), false)
+            mViewModel.loadingProgress.value = false
             return false
         } else if (TextUtils.isEmpty(phonenumber) && ValidationUtils.isMinLength(phonenumber, 6)) {
-            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_invalid_phonenumber), false)
-            mProfileViewmodel?.loadingProgress!!.value = false
+            ViewUtils.showToast(this, getString(R.string.error_invalid_phonenumber), false)
+            mViewModel.loadingProgress.value = false
             return false
         } else if (TextUtils.isEmpty(email) && !ValidationUtils.isValidEmail(email)) {
-            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_invalid_email_address), false)
-            mProfileViewmodel?.loadingProgress!!.value = false
+            ViewUtils.showToast(this, getString(R.string.error_invalid_email_address), false)
+            mViewModel.loadingProgress.value = false
             return false
         } else if (TextUtils.isEmpty(country)) {
-            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_country), false)
-            mProfileViewmodel?.loadingProgress!!.value = false
+            ViewUtils.showToast(this, getString(R.string.error_select_country), false)
+            mViewModel.loadingProgress.value = false
             return false
         } else if (TextUtils.isEmpty(city)) {
-            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_city), false)
-            mProfileViewmodel?.loadingProgress!!.value = false
+            ViewUtils.showToast(this, getString(R.string.error_select_city), false)
+            mViewModel.loadingProgress.value = false
             return false
         }
         return true
@@ -306,17 +307,12 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
     override fun goToCityListActivity(countryId: ObservableField<String>) {
         if (TextUtils.isEmpty(countryId.toString())) {
-            ViewUtils.showToast(this@ProfileActivity, getString(R.string.error_select_country), false)
+            ViewUtils.showToast(this, getString(R.string.error_select_country), false)
         } else {
-
-            val intent = Intent(this@ProfileActivity, CityListActivity::class.java)
+            val intent = Intent(this, CityListActivity::class.java)
             intent.putExtra("selectedfrom", "city")
             intent.putExtra("citylistresponse", city as Serializable)
             startActivityForResult(intent, Constant.CITYLIST_REQUEST_CODE)
         }
     }
-
-
 }
-
-

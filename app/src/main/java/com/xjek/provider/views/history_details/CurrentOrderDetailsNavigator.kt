@@ -6,4 +6,6 @@ interface CurrentOrderDetailsNavigator {
     fun onClickViewRecepit()
     fun onClickLossItem()
     fun onClickCancelBtn()
+    fun showDisputeList()
+    fun showErrorMessage(error:String)
 }

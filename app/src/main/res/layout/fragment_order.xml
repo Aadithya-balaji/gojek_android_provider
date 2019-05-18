@@ -45,8 +45,7 @@
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:text="@string/transport" />
+                        android:layout_marginTop="@dimen/_2sdp"/>
 
                 </LinearLayout>
 
@@ -58,14 +57,19 @@
                     android:orientation="horizontal">
 
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <TextView
                         android:id="@+id/pastorder_btn"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_35sdp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:background="@drawable/custom_roundcorner_selectedorder"
-                        android:onClick="@{() -> orderfragmentviewmodel.moveToPastOrderList()}"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:textColor="@color/white"
+                        android:paddingLeft="@dimen/_25sdp"
+                        android:paddingRight="@dimen/_25sdp"
+                        android:paddingTop="@dimen/_2sdp"
+                        android:paddingBottom="@dimen/_2sdp"
                         android:text="@string/past"
                         android:textAllCaps="false" />
 
@@ -79,7 +83,7 @@
                         android:onClick="@{() -> orderfragmentviewmodel.moveToCurrentOrderList()}"
                         android:text="@string/current"
                         android:textAllCaps="false"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/colorBasePrimary"
                         android:visibility="gone" />
 
 
@@ -94,6 +98,7 @@
                         android:text="Upcoming"
                         android:textAllCaps="false"
                         android:visibility="gone" />
+>>>>>>> 25718fa921104016b0cccc21f7b2600e3fcf04d1
 
                 </LinearLayout>
 
@@ -121,10 +126,10 @@
                         android:backgroundTint="@color/colorWhite"
                         android:onClick="@{() -> orderfragmentviewmodel.showfilter()}"
                         app:borderWidth="0dp"
-                        app:elevation="@dimen/_2sdp"
+                        app:elevation="@dimen/_5sdp"
                         app:pressedTranslationZ="1dp"
                         app:srcCompat="@drawable/ic_filter"
-                        app:tint="@color/colorPrimary"
+                        app:tint="@color/colorBasePrimary"
                         tools:targetApi="lollipop" />
 
                 </RelativeLayout>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,8 +11,8 @@
         <variable
             name="viewModel"
             type="com.xjek.provider.views.add_edit_document.AddEditDocumentViewModel" />
-    </data>
 
+    </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -23,298 +23,271 @@
             android:id="@+id/toolbar"
             layout="@layout/layout_app_bar" />
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:background="@color/colorScreenBackground"
+            android:orientation="vertical"
             android:visibility="@{viewModel.showEmpty ? View.GONE:View.VISIBLE}">
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            >
-
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:orientation="vertical">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
                     android:orientation="vertical">
 
-                    <RelativeLayout
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/Theme.TextView.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:text="@{viewModel.documentFrontName}"
-                            tools:text="Voter ID (Front)" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/Theme.TextView.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="@string/view"
-                            android:visibility="gone"
-                            android:onClick="@{() -> viewModel.showFrontImage()}"
-                            android:textColor="@color/colorPrimary"/>
-                            <!--android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />-->
-
-                    </RelativeLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/drawable_dashed_rectangle"
-                        android:onClick="@{() -> viewModel.selectFrontImage()}">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/ivFrontImage"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            android:visibility="@{viewModel.isPDF ? View.GONE:View.VISIBLE}"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/ivFrontPDF"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:srcCompat="@drawable/ic_pdf"
-                            android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showFrontView) ? View.VISIBLE:View.GONE}"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvFrontImage"
-                            style="@style/Theme.TextView.Small.Gray"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:drawableTop="@drawable/ic_file_upload"
-                            android:drawablePadding="5dp"
-                            android:text="@string/upload_front_page"
-                            android:visibility="@{viewModel.showFrontView ? View.GONE:View.VISIBLE}"
-                            app:drawableTint="@color/colorLightBlue"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvFrontFileName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Theme.TextView.Medium"
-                        android:layout_gravity="center"
-                        android:maxLines="1"
-                        android:text="@{viewModel.documentFrontFileName}"
-                        android:singleLine="true"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showFrontView) ? View.VISIBLE:View.GONE}"
-                        />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.showBackSide ? View.VISIBLE:View.GONE}">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/Theme.TextView.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:text="@{viewModel.documentBackName}"
-                            tools:text="Voter ID (Back)" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/Theme.TextView.Medium"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:text="@string/view"
-                            android:visibility="gone"
-                            android:onClick="@{() -> viewModel.showBackImage()}"
-                            android:textColor="@color/colorPrimary"/>
-                            <!--android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />-->
-
-                    </RelativeLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/drawable_dashed_rectangle"
-                        android:onClick="@{() -> viewModel.selectBackImage()}">
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/ivBackImage"
-                            android:layout_width="0dp"
-                            android:layout_height="0dp"
-                            android:scaleType="centerCrop"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/ivBackPDF"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            app:srcCompat="@drawable/ic_pdf"
-                            android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showBackView) ? View.VISIBLE:View.GONE}"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvBackImage"
-                            style="@style/Theme.TextView.Small.Gray"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:drawableTop="@drawable/ic_file_upload"
-                            android:drawablePadding="5dp"
-                            android:text="@string/upload_back_page"
-                            android:visibility="@{viewModel.showBackView ? View.GONE:View.VISIBLE}"
-                            app:drawableTint="@color/colorLightBlue"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvBackFileName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/Theme.TextView.Medium"
-                        android:layout_gravity="center"
-                        android:maxLines="1"
-                        android:singleLine="true"
-                        android:text="@{viewModel.documentBackFileName}"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showFrontView) ? View.VISIBLE:View.GONE}"
-                        />
-                </androidx.appcompat.widget.LinearLayoutCompat>
-
-                <androidx.appcompat.widget.LinearLayoutCompat
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical"
-                    android:visibility="@{viewModel.showExpiry ? View.VISIBLE:View.GONE}">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_expiry"
-                        style="@style/Theme.TextView.Medium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/expiry" />
-
-                    <com.google.android.material.card.MaterialCardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="?android:selectableItemBackground"
-                        android:onClick="@{() -> viewModel.onExpiryDateClick()}"
-                        app:cardBackgroundColor="@color/colorWhite"
-                        app:cardCornerRadius="4dp"
-                        app:cardPreventCornerOverlap="false"
-                        app:cardUseCompatPadding="true"
-                        app:contentPadding="10dp">
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
 
                             <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Theme.TextView.Medium.Gray"
+                                style="@style/Theme.TextView.Medium"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentStart="true"
-                                android:layout_centerVertical="true"
-                                android:layout_toStartOf="@+id/iv_expiry"
-                                android:text="@{viewModel.expiryDate}"
-                                tools:text="12/09/2030" />
+                                android:text="@{viewModel.documentFrontName}"
+                                tools:text="Voter ID (Front)" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/Theme.TextView.Medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:onClick="@{() -> viewModel.showFrontImage()}"
+                                android:text="@string/view"
+                                android:textColor="@color/colorBasePrimary"
+                                android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />
+
+                        </RelativeLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/drawable_dashed_rectangle"
+                            android:onClick="@{() -> viewModel.selectFrontImage()}">
 
                             <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/iv_expiry"
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:id="@+id/ivFrontImage"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:scaleType="centerCrop"
+                                android:visibility="@{viewModel.isPDF ? View.GONE:View.VISIBLE}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivFrontPDF"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showFrontView) ? View.VISIBLE:View.GONE}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_pdf" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvFrontImage"
+                                style="@style/Theme.TextView.Small.Gray"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:drawableTop="@drawable/ic_file_upload"
+                                android:drawablePadding="5dp"
+                                android:text="@string/upload_front_page"
+                                android:visibility="@{viewModel.showFrontView ? View.GONE:View.VISIBLE}"
+                                app:drawableTint="@color/colorLightBlue"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.showBackSide ? View.VISIBLE:View.GONE}">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/Theme.TextView.Medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:text="@{viewModel.documentBackName}"
+                                tools:text="Voter ID (Back)" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                style="@style/Theme.TextView.Medium"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="10dp"
-                                app:srcCompat="@drawable/ic_calendar" />
+                                android:onClick="@{() -> viewModel.showBackImage()}"
+                                android:text="@string/view"
+                                android:textColor="@color/colorBasePrimary"
+                                android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />
+
                         </RelativeLayout>
-                    </com.google.android.material.card.MaterialCardView>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/drawable_dashed_rectangle"
+                            android:onClick="@{() -> viewModel.selectBackImage()}">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivBackImage"
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:scaleType="centerCrop"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/ivBackPDF"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showBackView) ? View.VISIBLE:View.GONE}"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_pdf" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tvBackImage"
+                                style="@style/Theme.TextView.Small.Gray"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:drawableTop="@drawable/ic_file_upload"
+                                android:drawablePadding="5dp"
+                                android:text="@string/upload_back_page"
+                                android:visibility="@{viewModel.showBackView ? View.GONE:View.VISIBLE}"
+                                app:drawableTint="@color/colorLightBlue"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        android:visibility="@{viewModel.showExpiry ? View.VISIBLE:View.GONE}">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv_expiry"
+                            style="@style/Theme.TextView.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/expiry" />
+
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:selectableItemBackground"
+                            android:onClick="@{() -> viewModel.onExpiryDateClick()}"
+                            app:cardBackgroundColor="@color/colorWhite"
+                            app:cardCornerRadius="4dp"
+                            app:cardPreventCornerOverlap="false"
+                            app:cardUseCompatPadding="true"
+                            app:contentPadding="10dp">
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <androidx.appcompat.widget.AppCompatTextView
+                                    style="@style/Theme.TextView.Medium.Gray"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentStart="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toStartOf="@+id/iv_expiry"
+                                    android:text="@{viewModel.expiryDate}"
+                                    tools:text="12/09/2030" />
+
+                                <androidx.appcompat.widget.AppCompatImageView
+                                    android:id="@+id/iv_expiry"
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="10dp"
+                                    app:srcCompat="@drawable/ic_calendar" />
+
+                            </RelativeLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
+            </ScrollView>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
-        </ScrollView>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/_17sdp"
+                android:background="@drawable/bg_blue_rounded_corner_curved"
+                android:backgroundTint="@color/colorBasePrimary"
+                android:onClick="@{()->viewModel.submitDocument()}"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/upload"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_12sdp"
+                tools:ignore="UnusedAttribute" />
 
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_margin="@dimen/_17sdp"
-            android:background="@drawable/bg_blue_rounded_corner_curved"
-            android:backgroundTint="@color/colorPrimary"
-            android:onClick="@{()->viewModel.submitDocument()}"
-            android:padding="@dimen/_10sdp"
-            android:text="@string/upload"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_12sdp"
-            tools:ignore="UnusedAttribute" />
         </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/llEmptyView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:background="@color/colorScreenBackground"
+            android:gravity="center"
             android:orientation="vertical"
             android:visibility="@{viewModel.showEmpty ? View.VISIBLE:View.GONE}">
 
@@ -334,4 +307,5 @@
         </LinearLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 </layout>

@@ -423,26 +423,31 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun whenDone(output: PolylineOptions) {
-        mGoogleMap!!.clear()
+        try {
+            mGoogleMap!!.clear()
 
-        mPolyline = mGoogleMap!!.addPolyline(output.width(5f).color
-        (ContextCompat.getColor(baseContext, R.color.colorBlack)))
+            mPolyline = mGoogleMap!!.addPolyline(output.width(5f).color
+            (ContextCompat.getColor(baseContext, R.color.colorBlack)))
 
-        polyLine = output.points as ArrayList<LatLng>
+            polyLine = output.points as ArrayList<LatLng>
 
-        val builder = LatLngBounds.Builder()
+            val builder = LatLngBounds.Builder()
 
-        for (latLng in polyLine) builder.include(latLng)
+            for (latLng in polyLine) builder.include(latLng)
 
-        mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
+            mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 
-        srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_bike))))
+            srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
+            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_bike))))
 
-        CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
+            CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
 
-        mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+            mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
+            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+        }catch (e:Exception){
+            e.printStackTrace()
+            Log.e("Map","------------"+e.message.toString())
+        }
 
     }
 
@@ -621,7 +626,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     override fun getFilePath(filePath: Uri) {
         if ((mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED)
                         && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
-                        || mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
+                        ||(mViewModel.xuperUdpateRequest.value!=null) && mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
             getImageFile(true, filePath)
         else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
                 || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED) getImageFile(false, filePath)
@@ -633,7 +638,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         fileBody = if (isFrontImage)
             MultipartBody.Part.createFormData("before_picture", file.name, requestFile)
         else MultipartBody.Part.createFormData("after_picture", file.name, requestFile)
-
         return fileBody
     }
 
@@ -710,16 +714,19 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun onClick(v: View?) {
-        if ((mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED)
-                        && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
-                        || mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
-            isFront = true
-        else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
-                || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED) isFront = false
-        val dialogUploadPicture = DialogUploadPicture()
-        val bundle = Bundle()
-        bundle.putBoolean("isFront", isFront)
-        dialogUploadPicture.arguments = bundle
-        dialogUploadPicture.show(supportFragmentManager, "takepicture")
+        if(mViewModel.xuperCheckRequest.value!=null){
+            if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED)
+                            && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
+                            || (mViewModel.xuperUdpateRequest.value!=null) &&(mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
+                isFront = true
+            else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
+                    || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED) isFront = false
+            val dialogUploadPicture = DialogUploadPicture()
+            val bundle = Bundle()
+            bundle.putBoolean("isFront", isFront)
+            dialogUploadPicture.arguments = bundle
+            dialogUploadPicture.show(supportFragmentManager, "takepicture")
+        }
+
     }
 }

@@ -34,7 +34,6 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
     private var countryListResponse = MutableLiveData<CountryListResponse>()
     private var signupResponse = MutableLiveData<SignupResponseModel>()
     private var errorResponse = MutableLiveData<Throwable>()
-    var loadingProgress = MutableLiveData<Boolean>()
 
     init {
         this.navigator = signupNavigator

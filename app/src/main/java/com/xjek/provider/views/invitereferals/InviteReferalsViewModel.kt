@@ -6,6 +6,7 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.models.ProfileResponse
 import com.xjek.provider.models.ReferalDataModel
+import com.xjek.provider.models.Referral
 import com.xjek.provider.repository.AppRepository
 
 public class InviteReferalsViewModel : BaseViewModel<InviteReferalsNavigator>() {
@@ -15,7 +16,7 @@ public class InviteReferalsViewModel : BaseViewModel<InviteReferalsNavigator>() 
     var mReferalCount = MutableLiveData<String>()
     var mUserReferalAmount = MutableLiveData<String>()
     var mUserReferalCount = MutableLiveData<String>()
-    var mReferalObj = MutableLiveData<ReferalDataModel>()
+    var mReferalObj = MutableLiveData<Referral>()
     var profileResponse = MutableLiveData<ProfileResponse>()
     var loadingProgress = MutableLiveData<Boolean>()
 

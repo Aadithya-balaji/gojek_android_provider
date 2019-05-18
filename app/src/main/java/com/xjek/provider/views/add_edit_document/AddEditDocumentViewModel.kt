@@ -22,10 +22,11 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     var documentResponse = MutableLiveData<ListDocumentResponse>()
     var addDocumentResponse = MutableLiveData<AddDocumentResponse>()
     var errorResponse = MutableLiveData<String>()
-    var addEditDocumentErrorResponse = MutableLiveData<String>()
     var showEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
     var currentPosition: Int = 0
 
+    var documentFrontFileName = MutableLiveData<String>()
+    var documentBackFileName = MutableLiveData<String>()
     var documentFrontName = MutableLiveData<String>()
     var documentBackName = MutableLiveData<String>()
     var documentFrontImageURL = MutableLiveData<String>()
@@ -75,6 +76,9 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
             documentFrontImageURL.value = ""
             documentBackImageURL.value = ""
         }
+
+        documentFrontFileName.value = ""
+        documentBackFileName.value = ""
     }
 
 

@@ -303,14 +303,18 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                 if (resultCode == Activity.RESULT_OK && data !=null) {
                     when (this.requestCode) {
                         Enums.DOCUMENT_UPLOAD_FRONT ->{
-                            val selectedDoc = data?.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
-                            viewModelAddEdit.documentFrontImageFile.value = File(selectedDoc!![0])
+                            val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                            val frontPageFile = File(selectedDoc!![0])
+                            viewModelAddEdit.documentFrontImageFile.value = frontPageFile
+                            viewModelAddEdit.documentFrontFileName.value = frontPageFile.name
                             viewModelAddEdit.showFrontView.value = true
                         }
 
                        else ->{
-                           val selectedDoc = data?.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
-                           viewModelAddEdit.documentBackImageFile.value = File(selectedDoc!![0])
+                           val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                           val backPageFile = File(selectedDoc!![0])
+                           viewModelAddEdit.documentBackImageFile.value = backPageFile
+                           viewModelAddEdit.documentBackFileName.value = backPageFile.name
                            viewModelAddEdit.showFrontView.value = true
                         }
 

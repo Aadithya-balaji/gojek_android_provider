@@ -67,9 +67,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="@string/view"
+                            android:visibility="gone"
                             android:onClick="@{() -> viewModel.showFrontImage()}"
-                            android:textColor="@color/colorPrimary"
-                            android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />
+                            android:textColor="@color/colorPrimary"/>
+                            <!--android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />-->
 
                     </RelativeLayout>
 
@@ -118,6 +119,22 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvFrontFileName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Theme.TextView.Medium"
+                        android:layout_gravity="center"
+                        android:maxLines="1"
+                        android:text="@{viewModel.documentFrontFileName}"
+                        android:singleLine="true"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showFrontView) ? View.VISIBLE:View.GONE}"
+                        />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
@@ -146,9 +163,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:text="@string/view"
+                            android:visibility="gone"
                             android:onClick="@{() -> viewModel.showBackImage()}"
-                            android:textColor="@color/colorPrimary"
-                            android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />
+                            android:textColor="@color/colorPrimary"/>
+                            <!--android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />-->
 
                     </RelativeLayout>
 
@@ -180,6 +198,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
+
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvBackImage"
                             style="@style/Theme.TextView.Small.Gray"
@@ -196,6 +215,21 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvBackFileName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/Theme.TextView.Medium"
+                        android:layout_gravity="center"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@{viewModel.documentBackFileName}"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:visibility="@{(viewModel.isPDF &amp;&amp; viewModel.showFrontView) ? View.VISIBLE:View.GONE}"
+                        />
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat

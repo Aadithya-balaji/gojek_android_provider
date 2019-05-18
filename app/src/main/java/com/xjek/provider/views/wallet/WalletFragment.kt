@@ -59,9 +59,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     }
 
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_wallet
-    }
+    override fun getLayoutId() = R.layout.fragment_wallet
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         fragmentWalletBinding = mViewDataBinding as FragmentWalletBinding
@@ -69,7 +67,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         walletViewModel.navigator = this
         fragmentWalletBinding.walletmodel = walletViewModel
         fragmentWalletBinding.lifecycleOwner = this
-        var paymentTypes = resources.getStringArray(R.array.payment_mode).toMutableList()
+        val paymentTypes = resources.getStringArray(R.array.payment_mode).toMutableList()
         val flexboxLayoutManager = FlexboxLayoutManager(activity)
         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW)
         flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START)

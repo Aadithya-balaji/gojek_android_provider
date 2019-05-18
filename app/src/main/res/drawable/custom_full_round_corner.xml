@@ -5,5 +5,5 @@
     <padding
         android:left="@dimen/_20sdp"
         android:right="@dimen/_20sdp" />
-    <solid android:color="@color/colorPrimary" />
+    <solid android:color="@color/colorBasePrimary" />
 </shape>

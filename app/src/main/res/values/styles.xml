@@ -5,7 +5,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorBasePrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="toolbarStyle">@style/CustomToolBarStyle</item>
@@ -24,7 +24,7 @@
     </style>
 
     <style name="selectedTabButton" parent="@style/Widget.AppCompat.Button">
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorBasePrimary</item>
         <item name="android:background">@drawable/custom_roundcorner_selectedorder</item>
     </style>
 
@@ -35,18 +35,18 @@
 
 
     <style name="Theme.ImageCropper" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorBasePrimary</item>
     </style>
 
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/xuber_white</item>
-        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorBasePrimary</item>
     </style>
 
 
     <style name="Button" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">?android:attr/textColorPrimary</item>
-        <item name="backgroundTint">@color/colorPrimary</item>
+        <item name="backgroundTint">@color/colorBasePrimary</item>
     </style>
 
     <style name="TabLayoutStyle" parent="@android:style/TextAppearance.Widget.TabWidget">
@@ -141,7 +141,7 @@
         <item name="hintTextColor">@color/grey</item>
         <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow
         </item>
-        <item name="android:strokeColor">@color/xuber_grey</item>
+        <item name="android:strokeColor">@color/grey</item>
     </style>
 
     <style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">
@@ -161,6 +161,29 @@
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="LibAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@android:color/background_light</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <style name="PickerTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@color/colorPrimary</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMaxWidth">0dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="SmoothCheckBoxStyle">
+        <item name="color_checked">@color/checkbox_color</item>
+        <item name="color_unchecked">@android:color/white</item>
+        <item name="color_unchecked_stroke">@color/checkbox_unchecked_color</item>
+        <item name="color_tick">@android:color/white</item>
     </style>
 
 </resources>

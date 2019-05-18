@@ -26,6 +26,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">
+
         <activity
             android:name=".views.earnings.EarningsActivity"
             android:configChanges="keyboardHidden"
@@ -35,7 +36,13 @@
             android:configChanges="keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.setup_services.SetupServicesActivity"
+            android:name=".views.set_service.SetServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.set_subservice.SetSubServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".views.set_service_category_price.SetServicePriceActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.language.LanguageActivity"
@@ -216,7 +223,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
 
     </application>
 

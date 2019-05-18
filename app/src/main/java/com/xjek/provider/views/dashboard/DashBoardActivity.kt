@@ -16,10 +16,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
@@ -115,6 +111,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
         mViewModel.getProfile()
         getApiResponse()
+
     }
 
     override fun onResume() {
@@ -163,6 +160,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     }
 
     override fun updateLocation(isTrue: Boolean) {
+        println("RRRR :: DashBoardActivity.updateLocation")
         if (isTrue) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
             startService(locationServiceIntent)
@@ -181,25 +179,26 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     mViewModel.longitude.value = location.longitude
                     mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
-                    if (mViewModel.currentStatus.value == TRANSPORT) {
-                        val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        startActivity(intent)
-                    } else if (mViewModel.currentStatus.value == SERVICE) {
-                        val intent = Intent(this@DashBoardActivity, XuberDashBoardActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        startActivity(intent)
-                    } else if (mViewModel.currentStatus.value == ORDER) {
-                        val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                        startActivity(intent)
+                    when {
+                        mViewModel.currentStatus.value == TRANSPORT -> {
+                            val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(intent)
+                        }
+                        mViewModel.currentStatus.value == SERVICE -> {
+                            val intent = Intent(this@DashBoardActivity, XuberDashBoardActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(intent)
+                        }
+                        mViewModel.currentStatus.value == ORDER -> {
+                            val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                            startActivity(intent)
+                        }
                     }
                 }
 
                 override fun onFailure(messsage: String?) {
-//                    mViewModel.latitude.value = 0.0
-//                    mViewModel.longitude.value = 0.0
-//                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
                 }
             })
@@ -213,6 +212,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         println("RRR :: HomeFragment.getApiResponse")
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
+                writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
                     mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
                     Log.e("CheckStatus", "-----" + mViewModel.currentStatus.value)
@@ -263,7 +263,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         })
 
         observeLiveData(mViewModel.mProfileResponse) {
-            val cityID = it.profileData?.cityName?.id?.toInt() ?: 0
+            val cityID = it.profileData.city.id
             PreferencesHelper.put(PreferencesKey.CITY_ID, cityID)
             SocketManager.emit(Constants.ROOM_NAME.COMMON_ROOM_NAME, Constants.ROOM_ID.COMMON_ROOM)
         }
@@ -287,8 +287,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-                if (checkStatusApiCounter++ % 10 == 0) mViewModel.callCheckStatusAPI()
-
+                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
             }
         }
     }

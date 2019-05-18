@@ -2,6 +2,7 @@ package com.xjek.provider
 
 import android.content.Intent
 import android.util.Log
+import com.downloader.PRDownloader
 import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseApplication
 import com.xjek.base.data.Constants
@@ -18,6 +19,9 @@ class GoJekApplication : BaseApplication() {
 
     override fun onCreate() {
         super.onCreate()
+
+        PRDownloader.initialize(applicationContext)
+
 
         SessionManager.instance(object : SessionListener {
             override fun invalidate() {

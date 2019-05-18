@@ -239,7 +239,7 @@
                         android:onClick="@{() -> paymentViewModel.addNewCard()}"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/add_amount"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/colorBasePrimary"
                         android:textSize="@dimen/_12sdp" />
 
                 </LinearLayout>

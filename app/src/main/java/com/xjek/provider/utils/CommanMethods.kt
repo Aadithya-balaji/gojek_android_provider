@@ -1,8 +1,11 @@
 package com.xjek.provider.utils
 
+import android.app.Activity
 import android.content.Context
 import android.os.Environment
 import android.util.Log
+import com.xjek.provider.R
+import com.xjek.provider.models.SubServicePriceCategoriesResponse
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -10,6 +13,7 @@ import java.util.*
 import java.util.regex.Pattern
 
 class CommanMethods {
+
     companion object {
         fun getDefaultFileName(context: Context): File {
             var imageFile: File? = null
@@ -37,7 +41,6 @@ class CommanMethods {
                 return false
             }
         }
-
 
         fun getLocalTimeStamp(dateStr: String, request: String): String {
             val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
@@ -81,6 +84,29 @@ class CommanMethods {
 
         }
 
+        fun getFare(activity: Activity, servicePrices: SubServicePriceCategoriesResponse.Servicescityprice,
+                    providerService: List<SubServicePriceCategoriesResponse.ProviderServices>): String =
+                when (servicePrices.fare_type) {
+                    "HOURLY" -> {
+                        if (providerService.isNotEmpty())
+                            providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
+                        else
+                            servicePrices.per_mins + " " + activity.getString(R.string.per_hour)
+                    }
+                    "FIXED" -> {
+                        if (providerService.isNotEmpty())
+                            providerService[0].base_fare + " " + activity.getString(R.string.per_hour)
+                        else
+                            servicePrices.base_fare + " " + activity.getString(R.string.fixed)
+                    }
+                    "DISTANCETIME" -> {
+                        if (providerService.isNotEmpty())
+                            providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
+                        else
+                            servicePrices.per_mins + " " + activity.getString(R.string.per_min)
+                    }
+                    else -> ""
+                }
 
         fun getLocalTimeStamp(dateStr: String): String {
             val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())

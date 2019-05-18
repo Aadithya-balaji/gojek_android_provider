@@ -11,6 +11,7 @@ import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
 import com.xjek.provider.views.currentorder_fragment.CurrentOrderViewModel
 import com.xjek.provider.views.dashboard.DashBoardViewModel
+import com.xjek.provider.views.earnings.EarningsViewModel
 import com.xjek.provider.views.forgot_password.ForgotPasswordViewModel
 import com.xjek.provider.views.history_details.HistoryDetailViewModel
 import com.xjek.provider.views.home.HomeViewModel
@@ -21,7 +22,9 @@ import com.xjek.provider.views.manage_services.ManageServicesViewModel
 import com.xjek.provider.views.notification.NotificationViewModel
 import com.xjek.provider.views.profile.ProfileViewModel
 import com.xjek.provider.views.reset_password.ResetPasswordViewModel
-import com.xjek.provider.views.setup_services.SetupServicesViewModel
+import com.xjek.provider.views.set_service.SetServiceViewModel
+import com.xjek.provider.views.set_service_category_price.SetServicePriceViewModel
+import com.xjek.provider.views.set_subservice.SetSubServiceViewModel
 import com.xjek.provider.views.setup_vehicle.SetupVehicleViewModel
 import com.xjek.provider.views.sign_in.SignInViewModel
 import com.xjek.provider.views.signup.SignupViewModel
@@ -396,13 +399,37 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun getServiceCategories(viewModel: SetupServicesViewModel, token: String): Disposable {
+    fun getServiceCategories(viewModel: SetServiceViewModel, token: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getServiceCategories(token)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.getServicesDataObservable().postValue(it)
+                    viewModel.serviceCategoriesResponse.postValue(it)
+                }, {
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun getSubServiceCategories(viewModel: SetSubServiceViewModel, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getSubServiceCategories(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.subServiceCategoriesResponse.postValue(it)
+                }, {
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
+    }
+
+    fun getSubServicePriceCategories(viewModel: SetServicePriceViewModel, token: String, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getSubServicePriceCategories(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.subServiceCategoriesPriceResponse.postValue(it)
                 }, {
                     viewModel.errorResponse.value = getErrorMessage(it)
                 })
@@ -447,19 +474,52 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun postVehicle(viewModel: AddVehicleViewModel, token: String,
-                    params: HashMap<String, RequestBody>,
-                    rcBookMultipart: MultipartBody.Part, insuranceMultipart: MultipartBody.Part
+    fun postVehicle(viewModel: AddVehicleViewModel, params: HashMap<String, RequestBody>, vehicleMultitpart: MultipartBody.Part?, rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
     ): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postVehicle(token, params, rcBookMultipart, insuranceMultipart)
+                .postVehicle(params, vehicleMultitpart, rcBookMultipart, insuranceMultipart)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingObservable.value = false
+                    if (it.statusCode == "200")
+                        viewModel.getVehicleResponseObservable().postValue(it)
+                }, {
+                    viewModel.loadingObservable.value = false
+                    viewModel.navigator.showError(getErrorMessage(it))
+                })
+    }
+
+
+    fun editVehicle(viewModel: AddVehicleViewModel, params: HashMap<String, RequestBody>, vehicleMultitpart: MultipartBody.Part?, rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
+    ): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .editVehicle(params, vehicleMultitpart, rcBookMultipart, insuranceMultipart)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     if (it.statusCode == "200")
                         viewModel.getVehicleResponseObservable().postValue(it)
+                    viewModel.loadingObservable.value = false
                 }, {
                     viewModel.navigator.showError(getErrorMessage(it))
+                    viewModel.loadingObservable.value = false
+                })
+    }
+
+    fun postVehicle(viewModel: ViewModel, token: String,
+                    params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postVehicle(token, params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    if (it.statusCode == "200")
+                        if (viewModel is SetServicePriceViewModel)
+                            viewModel.addServiceResponseModel.postValue(it)
+                }, {
+                    if (viewModel is SetServicePriceViewModel)
+                        viewModel.navigator.showError(getErrorMessage(it))
                 })
     }
 
@@ -708,6 +768,19 @@ class AppRepository : BaseRepository() {
                 })
     }
 
+    fun getEarnings(viewModel: EarningsViewModel, token: String, userId: Int): Disposable {
+        viewModel.loadingProgress.value = true
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getEarnings(token, userId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.loadingProgress.value = false
+                    viewModel.earnings.value = it
+                }, {
+                    viewModel.loadingProgress.value = false
+                })
+    }
 
     fun addTaxiDispute(viewModel: HistoryDetailViewModel, token: String, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)

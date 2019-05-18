@@ -1,8 +1,9 @@
 package com.xjek.provider.models
 
-class AddVehicleDataModel {
+class AddVehicleDataModel{
     var vehicleImage: String? = null
-    var categoryId: String? = null
+    var id: Int = 0
+    var vehicleId: Int = 0
     var vehicleModel: String? = null
     var vehicleYear: String? = null
     var vehicleColor: String? = null

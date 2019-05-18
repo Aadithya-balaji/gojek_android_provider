@@ -10,6 +10,7 @@ import com.xjek.provider.databinding.ActivityInviteFriendBinding
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 class InviteReferalsActivity : BaseActivity<ActivityInviteFriendBinding>(), InviteReferalsNavigator {
+
     private lateinit var mViewDataBinding: ActivityInviteFriendBinding
     private lateinit var inviteReferalsViewModel: InviteReferalsViewModel
     override fun getLayoutId(): Int = R.layout.activity_invite_friend
@@ -25,22 +26,20 @@ class InviteReferalsActivity : BaseActivity<ActivityInviteFriendBinding>(), Invi
         }
 
         inviteReferalsViewModel = InviteReferalsViewModel()
-        inviteReferalsViewModel!!.navigator = this
+        inviteReferalsViewModel.navigator = this
         mViewDataBinding.invitemodel = inviteReferalsViewModel
         getApiResponse()
         inviteReferalsViewModel.getProfileDetail()
     }
 
-    fun getApiResponse() {
+    private fun getApiResponse() {
         observeLiveData(inviteReferalsViewModel.profileResponse) {
-            if (inviteReferalsViewModel.profileResponse.value != null) {
-                if (inviteReferalsViewModel.profileResponse.value!!.profileData!!.referalData != null) {
-                    inviteReferalsViewModel.mReferalObj.value = inviteReferalsViewModel.profileResponse.value!!.profileData!!.referalData
-                    mViewDataBinding.tvInviteHeader.setText(String.format(resources.getString(R.string.invite_referal_hint), inviteReferalsViewModel.mReferalObj.value!!.referalAmount, inviteReferalsViewModel.mReferalObj.value!!.referralCount))
-                    mShareLink = inviteReferalsViewModel.mReferalObj.value!!.referralCode
-                    mViewDataBinding.tvReferalCode.text = inviteReferalsViewModel.mReferalObj.value!!.referralCode
-                }
-            }
+            if (inviteReferalsViewModel.profileResponse.value != null)
+                inviteReferalsViewModel.mReferalObj.value = inviteReferalsViewModel.profileResponse.value!!.profileData.referral
+                mViewDataBinding.tvInviteHeader.text = String.format(resources.getString(R.string.invite_referal_hint),
+                        inviteReferalsViewModel.mReferalObj.value!!.referral_amount, inviteReferalsViewModel.mReferalObj.value!!.referral_count)
+                mShareLink = inviteReferalsViewModel.mReferalObj.value!!.referral_code
+                mViewDataBinding.tvReferalCode.text = inviteReferalsViewModel.mReferalObj.value!!.referral_code
         }
     }
 
@@ -56,7 +55,7 @@ class InviteReferalsActivity : BaseActivity<ActivityInviteFriendBinding>(), Invi
 
     override fun getProfileDetail() {
         loadingObservable.value = true
-        inviteReferalsViewModel!!.getProfileDetail()
+        inviteReferalsViewModel.getProfileDetail()
     }
 
     override fun showError(error: String) {

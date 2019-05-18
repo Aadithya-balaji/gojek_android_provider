@@ -33,7 +33,6 @@ import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.BuildConfig
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySignInBinding
-import com.xjek.provider.models.LoginResponseModel
 import com.xjek.provider.utils.Enums
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
 import com.xjek.provider.views.dashboard.DashBoardActivity
@@ -45,24 +44,27 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var viewModel: SignInViewModel
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private var mGoogleSignInClient: GoogleSignInClient? = null
     private lateinit var callbackManager: CallbackManager
     private lateinit var message: String
     private var isFacebookLoginClicked = false
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_sign_in
-    }
+    override fun getLayoutId() = R.layout.activity_sign_in
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivitySignInBinding
         binding.lifecycleOwner = this
-        viewModel = provideViewModel {
-            SignInViewModel()
-        }
+        viewModel = provideViewModel { SignInViewModel() }
         viewModel.navigator = this
         binding.signInViewModel = viewModel
+
         observeViewModel()
+
+        val resultIntent = Intent()
+        resultIntent.putExtra("countryName", "India")
+        resultIntent.putExtra("countryCode", "+91")
+        resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+        handleCountryCodePickerResult(resultIntent)
 
         if (BuildConfig.DEBUG) {
             viewModel.email.value = "toni@yopmail.com"
@@ -73,10 +75,9 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private fun observeViewModel() {
         observeLiveData(viewModel.getLoginObservable()) {
             loadingObservable.value = false
-            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            message = if (!it.message.isBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)
             writePreferences(PreferencesKey.ACCESS_TOKEN, it.responseData.accessToken)
-            val user: LoginResponseModel.ResponseData.User = it.responseData.user
             writePreferences(PreferencesKey.IS_ONLINE, it.responseData.user.isOnline)
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -89,9 +90,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         if (isSignInDataValid()) {
             loadingObservable.value = true
             viewModel.postLogin((binding.rgSignin.checkedRadioButtonId == R.id.rb_email))
-        } else {
-            ViewUtils.showToast(applicationContext, message, false)
-        }
+        } else ViewUtils.showToast(applicationContext, message, false)
     }
 
     private fun isSignInDataValid(): Boolean {
@@ -129,8 +128,6 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
                 viewModel.postSocialLogin(true, account.id!!)
             }
         } catch (e: ApiException) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.e(TAG, "GoogleSignInResult:Error_Code=" + e.statusCode)
         }
     }
@@ -142,11 +139,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val drawable = BitmapDrawable(resources,
-                    Bitmap.createScaledBitmap(bitmap, 64, 64, true))
-            binding.countrycodeRegisterEt
-                    .setCompoundDrawablesWithIntrinsicBounds(drawable, null,
-                            null, null)
+            val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 50, 50, true))
+            binding.countrycodeRegisterEt.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }
     }
 
@@ -156,17 +150,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                Enums.RC_GOOGLE_SIGN_IN -> {
-                    // The Task returned from this call is always completed, no need to attach
-                    // a listener.
-                    val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-                    handleGoogleSignInResult(task)
-                }
-                Enums.RC_COUNTRY_CODE_PICKER -> {
-                    if (data != null && data.extras != null) {
-                        handleCountryCodePickerResult(data)
-                    }
-                }
+                Enums.RC_GOOGLE_SIGN_IN -> handleGoogleSignInResult(GoogleSignIn.getSignedInAccountFromIntent(data))
+                Enums.RC_COUNTRY_CODE_PICKER -> if (data != null && data.extras != null) handleCountryCodePickerResult(data)
             }
         }
     }
@@ -186,8 +171,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun onCountryCodeClicked() {
-        val intent = Intent(applicationContext, CountryCodeActivity::class.java)
-        startActivityForResult(intent, Enums.RC_COUNTRY_CODE_PICKER)
+        startActivityForResult(Intent(applicationContext, CountryCodeActivity::class.java), Enums.RC_COUNTRY_CODE_PICKER)
     }
 
     override fun onForgotPasswordClicked() {
@@ -203,11 +187,9 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun onGoogleSignInClicked() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        val googleSignInIntent = mGoogleSignInClient.signInIntent
+        val googleSignInIntent = mGoogleSignInClient!!.signInIntent
         startActivityForResult(googleSignInIntent, Enums.RC_GOOGLE_SIGN_IN)
     }
 
@@ -251,16 +233,14 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     }
 
     override fun onPositiveButtonClick(dialog: DialogInterface) {
-        if (mGoogleSignInClient != null) {
-            mGoogleSignInClient.revokeAccess()
-        }
+        if (mGoogleSignInClient != null)
+            mGoogleSignInClient!!.revokeAccess()
         onSignUpClicked()
     }
 
     override fun onNegativeButtonClick(dialog: DialogInterface) {
-        if (mGoogleSignInClient != null) {
-            mGoogleSignInClient.revokeAccess()
-        }
+        if (mGoogleSignInClient != null)
+            mGoogleSignInClient!!.revokeAccess()
     }
 
     companion object {

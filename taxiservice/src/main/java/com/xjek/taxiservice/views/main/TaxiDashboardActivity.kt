@@ -52,7 +52,6 @@ import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.CAN_SAVE_LOCATION
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
-import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
@@ -318,17 +317,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 //                }
         })
 
-        observeLiveData(mViewModel.waitingTimeLiveData) {
-            if (mViewModel.waitingTimeLiveData.value != null) {
-                val waitingTime = mViewModel.waitingTimeLiveData.value!!.waitingStatus
-                if (waitingTime == 1) {
-
-                } else {
-
-                }
-            }
-        }
-
         mViewModel.taxiCancelRequest.observe(this, Observer<CancelRequestModel> {
             finish()
             mViewModel.showLoading.value = false
@@ -550,12 +538,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
-            println("RRRR:: TaxiDashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-
+                println("RRRR :: TaxiDashboardActivity " + mViewModel.latitude.value + " :: " + mViewModel.longitude.value)
                 if (roomConnected) {
                     val locationObj = JSONObject()
                     locationObj.put("latitude", location.latitude)
@@ -565,10 +552,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     Log.e("SOCKET", "SOCKET_SK Location update called")
                 }
 
-                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callTaxiCheckStatusAPI()
+                if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
 
                 if (startLatLng.latitude > 0) endLatLng = startLatLng
                 startLatLng = LatLng(location.latitude, location.longitude)
+
+                println("RRRR :: TaxiDashboardActivity LatLng(location = ${LatLng(location.latitude, location.longitude)}")
 
                 if (endLatLng.latitude > 0 && polyLine.size > 0) try {
                     CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
@@ -576,29 +565,26 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-
-//                updateMapLocation(LatLng(location.latitude, location.longitude))
-//                PY 01 K 3875
             }
         }
     }
 
     private fun polyLineRerouting(point: LatLng, polyLine: ArrayList<LatLng>) {
-        println("----->     RRR TaxiDashBoardActivity.polyLineRerouting     <-----")
+        println("----->     RRR ~.polyLineRerouting     <-----")
         println("RRR containsLocation = " + polyUtil.containsLocation(point, polyLine, true))
-        println("RRR isLocationOnEdge = " + polyUtil.isLocationOnEdge(point, polyLine, true, 10.0))
-        println("RRR locationIndexOnPath = " + polyUtil.locationIndexOnPath(point, polyLine, true, 10.0))
-        println("RRR locationIndexOnEdgeOrPath = " + polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 10.0))
+        println("RRR isLocationOnEdge = " + polyUtil.isLocationOnEdge(point, polyLine, true, 50.0))
+        println("RRR locationIndexOnPath = " + polyUtil.locationIndexOnPath(point, polyLine, true, 50.0))
+        println("RRR locationIndexOnEdgeOrPath = " + polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 50.0))
 
-        val index = polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 10.0)
+        val index = polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 50.0)
         if (index >= 0) {
-            polyLine.subList(0, index + 2).clear()
-            polyLine.add(0, point)
+            polyLine.subList(0, index + 1).clear()
+//            polyLine.add(0, point)
             mPolyline!!.remove()
             val options = PolylineOptions()
             options.addAll(polyLine)
             mPolyline = mGoogleMap!!.addPolyline(options.width(5f).color
-            (ContextCompat.getColor(baseContext, R.color.taxi_bg_yellow)))
+            (ContextCompat.getColor(baseContext, R.color.colorBlack)))
             println("RRR mPolyline = " + polyLine.size)
         } else {
             canDrawPolyLine = true
@@ -618,24 +604,31 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun whenDone(output: PolylineOptions) {
-        mGoogleMap!!.clear()
 
-        mPolyline = mGoogleMap!!.addPolyline(output.width(5f).color
-        (ContextCompat.getColor(baseContext, R.color.taxi_bg_yellow)))
+        try {
+            mGoogleMap!!.clear()
 
-        polyLine = output.points as ArrayList<LatLng>
+            mPolyline = mGoogleMap!!.addPolyline(output.width(5f).color
+            (ContextCompat.getColor(baseContext, R.color.colorBlack)))
 
-        val builder = LatLngBounds.Builder()
+            polyLine = output.points as ArrayList<LatLng>
 
-        for (latLng in polyLine) builder.include(latLng)
+            val builder = LatLngBounds.Builder()
 
-        mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
+            for (latLng in polyLine) builder.include(latLng)
 
-        srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
+            mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 
-        mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
-        (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+            srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
+            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
+
+            CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
+
+            mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
+            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+        }catch (e:java.lang.Exception){
+            e.printStackTrace()
+        }
 
     }
 

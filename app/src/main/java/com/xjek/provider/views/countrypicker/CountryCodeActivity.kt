@@ -16,8 +16,8 @@ import com.xjek.provider.model.CountryModel
 import com.xjek.provider.views.adapters.CountryAdapter
 import com.xjek.provider.views.adapters.PlacesAdapter
 
-class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(), SearchView.OnQueryTextListener, AdapterView.OnItemClickListener, CountrtCodeNavigator {
-
+class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(),
+        SearchView.OnQueryTextListener, AdapterView.OnItemClickListener, CountrtCodeNavigator {
 
     private lateinit var ivBack: ImageView
     private lateinit var llPlaces: ListView
@@ -31,22 +31,19 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(), SearchVi
     private var countryFlag: Int? = -1
     private lateinit var activityCountryListBinding: ActivityCountryCodeBinding
 
-
     override fun getLayoutId(): Int {
         return R.layout.activity_country_code
     }
 
-
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
-
-        this.activityCountryListBinding = mViewDataBinding as com.xjek.provider.databinding.ActivityCountryCodeBinding
+        this.activityCountryListBinding = mViewDataBinding as ActivityCountryCodeBinding
         val countryCodeViewModel = CountryCodeViewModel()
         countryCodeViewModel.navigator = this
         activityCountryListBinding.placesModel = countryCodeViewModel
-        ivBack = findViewById(R.id.iv_back) as ImageView
+        ivBack = findViewById(R.id.iv_back)
         svCountry = findViewById(R.id.sv_country)
-        llPlaces = findViewById(R.id.ll_country) as ListView
+        llPlaces = findViewById(R.id.ll_country)
 
 
         listCountry = com.xjek.provider.utils.Country.getAllCountries()
@@ -54,10 +51,9 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(), SearchVi
         llPlaces.adapter = countryAdapter
         svCountry.setOnQueryTextListener(this)
 
-        llPlaces.setOnItemClickListener(this)
+        llPlaces.onItemClickListener = this
 
     }
-
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         countryAdapter!!.filter.filter(query.toString())
@@ -69,27 +65,21 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(), SearchVi
         return true
     }
 
-
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val countryModel = parent!!.adapter.getItem(position) as CountryModel
-        if (countryModel != null) {
-            countryName = countryModel.name
-            countryCode = countryModel.dialCode
-            countryFlag = countryModel.flag
+        countryName = countryModel.name
+        countryCode = countryModel.dialCode
+        countryFlag = countryModel.flag
 
-            val resultIntent = Intent()
-            resultIntent.putExtra("countryName", countryName)
-            resultIntent.putExtra("countryCode", countryCode)
-            resultIntent.putExtra("countryFlag", countryFlag!!)
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
-
-
-        }
+        val resultIntent = Intent()
+        resultIntent.putExtra("countryName", countryName)
+        resultIntent.putExtra("countryCode", countryCode)
+        resultIntent.putExtra("countryFlag", countryFlag!!)
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 
     override fun closeActivity() {
         finish()
     }
-
 }

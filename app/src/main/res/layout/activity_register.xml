@@ -17,10 +17,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorScreenBackground"
             android:orientation="vertical">
-
 
             <RelativeLayout
                 android:id="@+id/top_applogo_layout"
@@ -34,9 +33,10 @@
                     android:layout_height="@dimen/_30sdp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_15sdp"
+                    android:contentDescription="@string/app_name"
                     app:srcCompat="@drawable/app_logo" />
-            </RelativeLayout>
 
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/social_signup_layout"
@@ -48,7 +48,7 @@
                     android:id="@+id/loginvia_sociallogin_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_15sdp">
+                    android:layout_marginStart="@dimen/_15sdp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -58,9 +58,7 @@
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/_12sdp" />
 
-
                 </RelativeLayout>
-
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/social_login_layout"
@@ -87,7 +85,6 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
 
-
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -96,13 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
                     android:background="@drawable/bg_white">
 
-
-                    <!--Login option layout-->
-                    <!--Google Login Textview-->
                     <TextView
                         android:id="@+id/goolelogin_signin_tv"
                         android:layout_width="match_parent"
@@ -117,14 +109,13 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
 
-
                 </androidx.cardview.widget.CardView>
-
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_margin="@dimen/_15sdp"
                     android:text="@string/or"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_10sdp" />
@@ -140,14 +131,12 @@
                 android:layout_marginBottom="@dimen/_12sdp"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:text="OR"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorBasePrimary"
                 android:visibility="gone" />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/bottomlayout"
-                android:layout_below="@+id/top_applogo_layout"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:background="@drawable/bg_white">
@@ -155,7 +144,6 @@
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -173,7 +161,6 @@
                         <RelativeLayout
                             android:layout_width="@dimen/_80sdp"
                             android:layout_height="@dimen/_80sdp"
-                            android:layout_centerHorizontal="true"
                             android:layout_gravity="center_horizontal"
                             android:onClick="@{() -> registermodel.getImage()}"
                             android:padding="@dimen/_5sdp">
@@ -189,7 +176,6 @@
                                 android:layout_width="@dimen/_15sdp"
                                 android:layout_height="@dimen/_15sdp"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
                                 android:background="@drawable/drawable_circle"
                                 android:backgroundTint="@color/schedule_blue"
@@ -199,9 +185,6 @@
                                 app:srcCompat="@drawable/ic_pencil_edit_button" />
 
                         </RelativeLayout>
-
-
-                        <!--TextInputLayout username-->
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Edittext_OutlinedTheme"
@@ -218,6 +201,8 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/avenirltstd_medium"
                                 android:singleLine="true"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
                                 android:text="@{registermodel.firstName}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
@@ -240,6 +225,8 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/avenirltstd_medium"
                                 android:singleLine="true"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
                                 android:text="@={registermodel.lastName}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
@@ -253,6 +240,7 @@
                             android:layout_height="wrap_content"
                             android:baselineAligned="false"
                             android:orientation="horizontal"
+                            android:paddingTop="@dimen/_8sdp"
                             android:weightSum="2">
 
                             <!--TextInputLayout country code -->
@@ -262,7 +250,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_8sdp"
-                                android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginRight="@dimen/_8sdp"
                                 android:layout_weight="0.8"
                                 android:hint="@string/hint_code"
@@ -274,10 +261,10 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:drawableStart="@drawable/ic_us"
-                                    android:drawableLeft="@drawable/flag_io"
                                     android:drawableEnd="@drawable/down_arrow"
-                                    android:drawableRight="@drawable/down_arrow"
                                     android:drawablePadding="@dimen/_3sdp"
+                                    android:paddingStart="25dp"
+                                    android:paddingEnd="8dp"
                                     android:fontFamily="@font/avenirltstd_medium"
                                     android:onClick="@{() -> registermodel.gotToCountryPage()}"
                                     android:singleLine="true"
@@ -287,16 +274,12 @@
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-                            <!--TextInputLayout Phonenume-->
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Edittext_OutlinedTheme"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="@dimen/_2sdp"
-                                android:layout_marginLeft="@dimen/_2sdp"
-                                android:layout_marginTop="@dimen/_8sdp"
                                 android:layout_marginEnd="@dimen/_8sdp"
-                                android:layout_marginRight="@dimen/_8sdp"
                                 android:layout_weight="1.2"
                                 android:hint="@string/hint_phone_number"
                                 app:boxCornerRadiusBottomStart="0dp"
@@ -309,11 +292,14 @@
                                     android:fontFamily="@font/avenirltstd_medium"
                                     android:inputType="number"
                                     android:singleLine="true"
+                                    android:paddingStart="20dp"
+                                    android:paddingEnd="25dp"
                                     android:text="@={registermodel.phoneNumber}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp" />
 
                             </com.google.android.material.textfield.TextInputLayout>
+
                         </LinearLayout>
 
                         <TextView
@@ -345,7 +331,6 @@
                                 android:textColor="@color/grey"
                                 android:textSize="@dimen/_10sdp" />
 
-
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:id="@+id/rbFemale"
                                 android:layout_width="match_parent"
@@ -355,8 +340,9 @@
                                 android:text="@string/gender_female"
                                 android:textColor="@color/grey"
                                 android:textSize="@dimen/_10sdp" />
+
                         </RadioGroup>
-                        <!--TextInputLayout EmailID-->
+
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
@@ -372,13 +358,14 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/avenirltstd_medium"
                                 android:singleLine="true"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
                                 android:text="@={registermodel.email}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!--TextInputLayout Password-->
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/til_signup_pwd"
                             style="@style/Edittext_OutlinedTheme"
@@ -395,18 +382,18 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableEnd="@drawable/ic_iconfinder_icons_view"
-                                android:drawableRight="@drawable/ic_iconfinder_icons_view"
                                 android:drawablePadding="@dimen/_3sdp"
                                 android:fontFamily="@font/avenirltstd_medium"
                                 android:inputType="textPassword"
                                 android:singleLine="true"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
                                 android:text="@={registermodel.password}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
 
-                        <!--TextInputLayout Country-->
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
@@ -424,12 +411,13 @@
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:onClick="@{() ->registermodel.getCountryList()}"
                                 android:singleLine="true"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                        <!--TextInputLayout City-->
 
-                        <!--TextInputLayout City-->
+                        </com.google.android.material.textfield.TextInputLayout>
+
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
@@ -447,6 +435,8 @@
                                 android:fontFamily="@font/avenirltstd_medium"
                                 android:onClick="@{() -> registermodel.getCityList()}"
                                 android:singleLine="true"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -459,19 +449,18 @@
                             android:layout_marginTop="@dimen/_30sdp"
                             android:fontFamily="@font/avenirltstd_medium"
                             android:text="@string/terms_condition" />
+
                     </LinearLayout>
+
                 </ScrollView>
 
-
             </androidx.cardview.widget.CardView>
-            <!--Bottom Layout-->
+
             <RelativeLayout
                 android:id="@+id/bottomlayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
                 android:padding="@dimen/_8sdp">
 
                 <TextView
@@ -494,7 +483,7 @@
                     android:onClick="@{() -> registermodel.gotoSignin()}"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/sign_in"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/colorBasePrimary"
                     android:textSize="@dimen/_12sdp" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -502,7 +491,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_margin="@dimen/_5sdp"
                     android:elevation="@dimen/_8sdp"
                     android:onClick="@{()-> registermodel.doRegistration()}"
@@ -511,9 +499,11 @@
                     app:fabSize="mini"
                     app:srcCompat="@drawable/ic_forward_arrow"
                     app:tint="@android:color/white" />
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
 
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </layout>

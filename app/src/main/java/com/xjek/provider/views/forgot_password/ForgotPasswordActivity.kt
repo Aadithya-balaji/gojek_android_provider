@@ -31,9 +31,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
     private var isEmailLogin: Boolean = false
     private lateinit var message: String
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_forgot_password
-    }
+    override fun getLayoutId() = R.layout.activity_forgot_password
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityForgotPasswordBinding
@@ -55,7 +53,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
     private fun observeViewModel() {
         observeLiveData(viewModel.getForgotPasswordObservable()) {
             loadingObservable.value = false
-            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            message = if (!it.message.isBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)
             val resetPasswordIntent = Intent(applicationContext, ResetPasswordActivity::class.java)
             resetPasswordIntent.putExtra(WebApiConstants.ResetPassword.ACCOUNT_TYPE, it
@@ -79,9 +77,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
         if (isResetDataValid()) {
             loadingObservable.value = true
             viewModel.postForgotPassword(isEmailLogin)
-        } else {
-            ViewUtils.showToast(applicationContext, message, false)
-        }
+        } else ViewUtils.showToast(applicationContext, message, false)
     }
 
     private fun isResetDataValid(): Boolean {
@@ -104,8 +100,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
             } else if (!Patterns.EMAIL_ADDRESS.matcher(viewModel.email.value!!.trim()).matches()) {
                 message = resources.getString(R.string.email_invalid)
                 false
-            } else
-                true
+            } else true
         }
     }
 
@@ -134,14 +129,8 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                Enums.RC_COUNTRY_CODE_PICKER -> {
-                    if (data != null && data.extras != null) {
-                        handleCountryCodePickerResult(data)
-                    }
-                }
-            }
+        if (resultCode == Activity.RESULT_OK) when (requestCode) {
+            Enums.RC_COUNTRY_CODE_PICKER -> if (data != null && data.extras != null) handleCountryCodePickerResult(data)
         }
     }
 

@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.location.Location
-import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
@@ -23,6 +22,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
 import com.xjek.base.data.PreferencesKey
+import com.xjek.base.data.PreferencesKey.PROVIDER_ID
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
@@ -32,6 +32,7 @@ import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentHomePageBinding
+import com.xjek.provider.utils.Constant
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.provider.views.incoming_request_taxi.IncomingRequestDialog
@@ -52,9 +53,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     private var mGoogleMap: GoogleMap? = null
 
-    private var isServiceNeed: Int? = -1
-    private var isDocumentNeed: Int? = -1
-    private var isBankDetailNeed: Int? = -1
     private var isOnline: Boolean? = true
     private var pendingListDialog: PendingListDialog? = null
 
@@ -105,9 +103,15 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             if (checkStatusData.statusCode == "200") {
                 val providerDetailsModel = checkStatusData.responseData.provider_details
 
-                isDocumentNeed = providerDetailsModel.is_document
-                isServiceNeed = providerDetailsModel.is_service
-                isBankDetailNeed = providerDetailsModel.is_bankdetail
+                writePreferences(PROVIDER_ID, providerDetailsModel.id)
+
+                val verificationModel = VerificationModel()
+                verificationModel.isBankDetail = providerDetailsModel.is_bankdetail
+                verificationModel.isDocument = providerDetailsModel.is_document
+                verificationModel.isService = providerDetailsModel.is_service
+                verificationModel.providerStatus = checkStatusData.responseData.provider_details.status
+                verificationModel.providerWalletBalance = checkStatusData.responseData.provider_details.wallet_balance
+                Constant.verificationObservable.value = verificationModel
 
                 if (providerDetailsModel.is_online == 1) {
                     isOnline = true
@@ -120,13 +124,10 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                     changeView(false)
                 }
 
-                if (isDocumentNeed == 0 || isServiceNeed == 0 || isBankDetailNeed == 0) {
-                    if (pendingListDialog != null && !pendingListDialog!!.isShown()) showPendingListDialog(1)
-                } else if (providerDetailsModel.status != "APPROVED") {
-                    if (pendingListDialog != null && !pendingListDialog!!.isShown()) showPendingListDialog(2)
-                } /*else (providerDetailsModel.wallet_balance < 1) {
-                    if (pendingListDialog != null && !pendingListDialog!!.isShown()) showPendingListDialog(3)
-                }*/
+                val verificationData = Constant.verificationObservable.value!!
+                if (verificationData.isNeedToShowPendingDialog() && pendingListDialog != null && !pendingListDialog!!.isShown()) {
+                    showPendingListDialog()
+                }
             }
         }
 
@@ -243,13 +244,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         ViewUtils.showToast(activity!!, error, false)
     }
 
-    private fun showPendingListDialog(type: Int) {
-        val bundle = Bundle()
-        bundle.putInt("ISDOCUMENTNEED", isDocumentNeed!!)
-        bundle.putInt("ISSERVICENEED", isServiceNeed!!)
-        bundle.putInt("ISBANCKDETAILNEED", isBankDetailNeed!!)
-        bundle.putInt("TYPE", type)
-        pendingListDialog?.arguments = bundle
+    private fun showPendingListDialog() {
         pendingListDialog?.show(activity!!.supportFragmentManager, "pendinglist")
         pendingListDialog?.isCancelable = true
     }

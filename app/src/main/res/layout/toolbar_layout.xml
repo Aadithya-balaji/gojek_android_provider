@@ -14,10 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/_5sdp"
-        android:layout_marginLeft="@dimen/_5sdp"
+        android:contentDescription="@string/app_name"
         android:padding="@dimen/_5sdp"
         app:srcCompat="@drawable/ic_left_arrow" />
-
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/title_toolbar"
@@ -25,6 +24,5 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/bg_white"
         tools:targetApi="honeycomb" />
-
 
 </LinearLayout>

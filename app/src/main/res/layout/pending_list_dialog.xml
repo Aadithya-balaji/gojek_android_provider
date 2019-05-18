@@ -22,7 +22,7 @@
             android:background="@drawable/bg_white_round_corner_rectangle"
             android:orientation="vertical"
             android:padding="@dimen/_20sdp"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/MediumText.Black"
@@ -144,6 +144,7 @@
             android:paddingLeft="@dimen/_15sdp"
             android:paddingTop="@dimen/_15sdp"
             android:paddingRight="@dimen/_15sdp"
+            android:visibility="gone"
             android:paddingBottom="@dimen/_35sdp">
 
             <TextView

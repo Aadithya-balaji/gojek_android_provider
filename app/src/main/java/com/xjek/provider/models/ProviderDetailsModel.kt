@@ -98,13 +98,13 @@ class ProviderDetailsModel {
     @SerializedName("activation_status")
     @Expose
     private var activationStatus: Int? = null
-    @SerializedName("is_service")
+    @SerializedName("isService")
     @Expose
     private var isService: Int? = null
-    @SerializedName("is_document")
+    @SerializedName("isDocument")
     @Expose
     private var isDocument: Int? = null
-    @SerializedName("is_bankdetail")
+    @SerializedName("isBankDetail")
     @Expose
     private var isBankdetail: Int? = null
     @SerializedName("is_online")

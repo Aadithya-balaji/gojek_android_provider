@@ -5,5 +5,7 @@ interface DocumentUploadNavigator {
     fun onDateChanged()
     fun selectFrontImage()
     fun selectBackImage()
+    fun showFrontImage()
+    fun showBackImage()
     fun submitDocument()
 }

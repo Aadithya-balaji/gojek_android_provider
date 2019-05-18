@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <color name="colorPrimary">#364BEA</color>
     <color name="colorPrimaryDark">#1F298B</color>
     <color name="colorAccent">#364BEA</color>
     <color name="app_background_color">#f2f2f2</color>
-
 
     <!--Background Colors-->
     <color name="colorScreenBackground" tools:ignore="MissingDefaultResource">#F2F2F2</color>

@@ -55,7 +55,7 @@ data class ProfileResponseData(
         var state_id: Any = Any(),
         var status: String = "",
         var stripe_cust_id: Any = Any(),
-        var wallet_balance: Int? = 0,
+        var wallet_balance: Double? = 0.0,
         var zone_id: Any = Any()
 )
 

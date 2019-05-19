@@ -438,7 +438,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 
             srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
-            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_bike))))
+            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.xubermarkertest))))
 
             CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
 

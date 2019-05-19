@@ -2,6 +2,8 @@ package com.xjek.provider.views.signup
 
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.model.CountryListResponse
 import com.xjek.provider.models.SignupResponseModel
 import com.xjek.provider.network.WebApiConstants
@@ -60,7 +62,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         val signupParams = HashMap<String, RequestBody>()
         signupParams.put(WebApiConstants.SALT_KEY, RequestBody.create(MediaType.parse("text/plain"), "MQ=="))
         signupParams.put(WebApiConstants.Signup.DEVICE_TYPE, RequestBody.create(MediaType.parse("text/plain"), Enums.DEVICE_TYPE))
-        signupParams.put(WebApiConstants.Signup.DEVICE_TOKEN, RequestBody.create(MediaType.parse("text/plain"), "123"))
+        signupParams.put(WebApiConstants.Signup.DEVICE_TOKEN, RequestBody.create(MediaType.parse("text/plain"), readPreferences(PreferencesKey.DEVICE_TOKEN, "123")!!))
         signupParams.put(WebApiConstants.Signup.LOGIN_BY, RequestBody.create(MediaType.parse("text/plain"), loginby.value.toString()))
         signupParams.put(WebApiConstants.Signup.FIRST_NAME, RequestBody.create(MediaType.parse("text/plain"), firstName.value.toString()))
         signupParams.put(WebApiConstants.Signup.LAST_NAME, RequestBody.create(MediaType.parse("text/plain"), lastName.value.toString()))

@@ -69,14 +69,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     private var checkStatusApiCounter = 0
     private var mHomeFragment = HomeFragment()
     private var locationRequest: LocationRequest? = null
-    private  var isGPSEnabled:Boolean=false
-    private  var isLocationDialogShown:Boolean =false
-    private  lateinit var context:Context
+    private var isGPSEnabled: Boolean = false
+    private var isLocationDialogShown: Boolean = false
+    private lateinit var context: Context
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-          context=this
+        context = this
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         binding = mViewDataBinding as ActivityDashboardBinding
@@ -182,7 +182,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     @SuppressLint("MissingPermission")
-    private fun updateCurrentLocation() {
+    override fun updateCurrentLocation() {
         try {
             LocationUtils.getLastKnownLocation(this, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {
@@ -210,7 +210,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 }
 
                 override fun onFailure(messsage: String?) {
-                    mViewModel.callCheckStatusAPI()
+//                    mViewModel.callCheckStatusAPI()
                 }
             })
         } catch (e: Exception) {
@@ -295,16 +295,16 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         override fun onReceive(contxt: Context?, intent: Intent?) {
             println("RRRR:: DashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
-            val isGpsEnabled=intent!!.getBooleanExtra("ISGPS_EXITS",false)
-            if(isGpsEnabled==true) {
+            val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
+            if (isGpsEnabled) {
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
                     if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
                 }
-            }else{
-                if(isLocationDialogShown==false)
-                 checkGps()
+            } else {
+                if (!isLocationDialogShown)
+                    checkGps()
             }
         }
     }
@@ -319,8 +319,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
             REQUEST_CHECK_SETTINGS_GPS ->
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-                        isGPSEnabled=true
-                        isLocationDialogShown=false
+                        isGPSEnabled = true
+                        isLocationDialogShown = false
                         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
                             updateLocation(true)
                             updateCurrentLocation()
@@ -357,10 +357,9 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     */
     override fun getInstance(): DashBoardActivity = this@DashBoardActivity
 
-
     private fun checkGps() {
-        Log.e("checkgps","----------")
-        isLocationDialogShown=true
+        Log.e("checkgps", "----------")
+        isLocationDialogShown = true
         locationRequest = LocationRequest.create()
         locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         locationRequest?.interval = 1000
@@ -385,10 +384,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                     }
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
                         val resolvableApiException = ex as ResolvableApiException
-                        isLocationDialogShown=true
-                        resolvableApiException.startResolutionForResult(context as AppCompatActivity,REQUEST_CHECK_SETTINGS_GPS)
+                        isLocationDialogShown = true
+                        resolvableApiException.startResolutionForResult(context as AppCompatActivity, REQUEST_CHECK_SETTINGS_GPS)
                     } catch (e: IntentSender.SendIntentException) {
-
+                        e.printStackTrace()
                     }
 
                     LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {

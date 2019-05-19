@@ -362,6 +362,7 @@
     <string name="add_services">Add Services</string>
     <string name="add_document">Add Document</string>
     <string name="add_bank_detail">Add Bank Detail</string>
+    <string name="add_bank_details_added">Add Bank Details Added</string>
     <string name="select_language">Select Language</string>
     <string name="language_change_success">Language changed</string>
 

@@ -50,8 +50,7 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
 
-class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
-        DashBoardNavigator {
+class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var mViewModel: DashBoardViewModel

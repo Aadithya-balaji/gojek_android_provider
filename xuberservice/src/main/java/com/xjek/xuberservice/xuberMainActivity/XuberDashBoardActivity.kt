@@ -378,7 +378,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     locationObj.put("latitude", location.latitude)
                     locationObj.put("longitude", location.longitude)
                     locationObj.put("room", Constants.ROOM_ID.SERVICE_ROOM)
-                    SocketManager.emit("send_location", locationObj)
+//                    SocketManager.emit("send_location", locationObj)
                     Log.e("SOCKET", "SOCKET_SK Location update service called")
                 }
 

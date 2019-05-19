@@ -110,6 +110,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             } else {
                 ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.vehicle_update_success), true)
             }
+            finish()
         }
 
         observeLiveData(viewModel.getVehicleDataObservable()) { vehicleData ->

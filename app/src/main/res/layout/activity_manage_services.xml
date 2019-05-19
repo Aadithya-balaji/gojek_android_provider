@@ -30,5 +30,7 @@
             app:setAdapter="@{manageServicesViewModel.getAdapter()}"
             tools:itemCount="3"
             tools:listitem="@layout/layout_manage_services_item" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 </layout>

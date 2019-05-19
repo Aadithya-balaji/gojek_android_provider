@@ -548,7 +548,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     locationObj.put("latitude", location.latitude)
                     locationObj.put("longitude", location.longitude)
                     locationObj.put("room", Constants.ROOM_ID.TRANSPORT_ROOM)
-                    SocketManager.emit("send_location", locationObj)
+//                    SocketManager.emit("send_location", locationObj)
                     Log.e("SOCKET", "SOCKET_SK Location update called")
                 }
 
@@ -578,7 +578,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         val index = polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 50.0)
         if (index >= 0) {
-            polyLine.subList(0, index + 1).clear()
+            polyLine.subList(0, index + 2).clear()
 //            polyLine.add(0, point)
             mPolyline!!.remove()
             val options = PolylineOptions()

@@ -30,5 +30,7 @@
             app:setAdapter="@{setupVehicleViewModel.adapter}"
             tools:itemCount="3"
             tools:listitem="@layout/layout_setup_vehicle_item" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 </layout>

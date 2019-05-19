@@ -125,7 +125,6 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     fun updateDocument() {
         showLoading.value = true
 
-
         val hashMap: HashMap<String, RequestBody> = HashMap()
         if (!expiryDate.value.isNullOrEmpty()) {
             hashMap["expires_at"] = RequestBody.create(MediaType.parse("text/plain"), expiryDate.value!!)
@@ -159,5 +158,4 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
         getCompositeDisposable().add(appRepository.postDocument(this, hashMap, fileFrontImageBody, fileBackImageBody))
     }
-
 }

@@ -24,11 +24,12 @@
             android:elevation="@dimen/_3sdp">
 
             <TextView
-                style="@style/MediumText.Bold"
+                style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/_10sdp"
+                android:fontFamily="@font/avenirltstd_medium"
                 android:text="@string/live_task" />
 
             <View
@@ -61,9 +62,10 @@
 
                     <TextView
                         android:id="@+id/top_trnx_id"
-                        style="@style/MediumText.Bold"
+                        style="@style/MediumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_8sdp"
                         android:text="@string/time_left"
                         android:textColor="@color/white" />
@@ -158,7 +160,8 @@
 
                         <TextView
                             android:id="@+id/loc_name_tv"
-                            style="@style/MediumText.Bold"
+                            style="@style/MediumText"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingStart="@dimen/_3sdp"
@@ -168,7 +171,8 @@
 
                         <TextView
                             android:id="@+id/loc_address_tv"
-                            style="@style/SmallText.Plain"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_3sdp"
@@ -215,9 +219,10 @@
 
                     <TextView
                         android:id="@+id/order_id_tv"
-                        style="@style/MediumText.Bold"
+                        style="@style/MediumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/delivered_time_tv"
@@ -228,11 +233,13 @@
 
                     <TextView
                         android:id="@+id/delivered_time_tv"
-                        style="@style/MediumText.Bold"
+                        style="@style/MediumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
+                        android:visibility="invisible"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/dummy_time"
                         android:textColor="@color/black" />
 
@@ -268,8 +275,9 @@
                     android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/item_total_tv"
@@ -278,8 +286,9 @@
 
                     <TextView
                         android:id="@+id/item_total_tv"
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -295,7 +304,8 @@
                     android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -305,8 +315,9 @@
 
                     <TextView
                         android:id="@+id/servicetax_tv"
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -322,7 +333,8 @@
                     android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -332,8 +344,9 @@
 
                     <TextView
                         android:id="@+id/delivery_charge_tv"
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -349,9 +362,10 @@
                     android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/package_amount_tv"
                         android:padding="@dimen/_2sdp"
@@ -359,7 +373,8 @@
 
                     <TextView
                         android:id="@+id/package_amount_tv"
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
@@ -376,19 +391,21 @@
                     android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_toStartOf="@+id/wallet_amount_tv"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/wallet_amount"/>
 
                     <TextView
                         android:id="@+id/wallet_amount_tv"
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:padding="@dimen/_2sdp"
@@ -403,18 +420,20 @@
                     android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_toStartOf="@+id/promocode_deduction_tv"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/promocode_deduction" />
 
                     <TextView
                         android:id="@+id/promocode_deduction_tv"
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -430,9 +449,10 @@
                     android:layout_marginEnd="@dimen/_5sdp">
 
                     <TextView
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/discount_amount_tv"
                         android:padding="@dimen/_2sdp"
@@ -440,8 +460,9 @@
 
                     <TextView
                         android:id="@+id/discount_amount_tv"
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
@@ -464,21 +485,23 @@
                     android:layout_marginTop="@dimen/_8sdp">
 
                     <TextView
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_toStartOf="@+id/total_value_tv"
                         android:padding="@dimen/_3sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/total"
                         android:textColor="@color/black" />
 
                     <TextView
                         android:id="@+id/total_value_tv"
-                        style="@style/SmallText.Plain"
+                        style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total"
@@ -502,7 +525,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            style="@style/SmallText.Bold"
+            style="@style/SmallText"
+            android:fontFamily="@font/avenirltstd_medium"
             android:layout_margin="@dimen/_10sdp"
             android:backgroundTint="@color/food_red"
             android:onClick="@{() -> foodLiveTaskviewModel.updateFoodDeliverStatus()}"

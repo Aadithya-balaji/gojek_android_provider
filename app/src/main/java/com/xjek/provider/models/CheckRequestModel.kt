@@ -92,7 +92,7 @@ data class Request(
         var status: String = "",
         var time_left_to_respond: Int? = 0,
         var user: User = User(),
-        var user_id: Int? = 0
+        var user_id: Int = 0
 ) : Serializable
 
 data class User(
@@ -149,6 +149,7 @@ data class RequestX(
         var payment: Payment = Payment(),
         var payment_mode: String = "",
         var peak_hour_id: Any = Any(),
+        var pickup: Pickup = Pickup(),
         var promocode_id: Double? = 0.0,
         var provider_id: Int? = 0,
         var provider_rated: Int? = 0,
@@ -166,7 +167,7 @@ data class RequestX(
         var started_at: String = "",
         var started_time: String = "",
         var status: String = "",
-        var surge: Double? =0.0,
+        var surge: Double? = 0.0,
         var timezone: String = "",
         var track_distance: Double? = 0.0,
         var track_latitude: Double? = 0.0,
@@ -247,6 +248,17 @@ data class Payment(
         var waiting_amount: Int? = 0,
         var waiting_comm_amount: Double? = 0.0,
         var wallet: Int? = 0
+) : Serializable
+
+class Pickup(
+        var id: String = "",
+        var picture: String = "",
+        var contact_number: String = "",
+        var store_type_idd: String = "",
+        var latitude: String = "",
+        var longitude: String = "",
+        var store_location: String = "",
+        var store_name: String = ""
 ) : Serializable
 
 data class Service(

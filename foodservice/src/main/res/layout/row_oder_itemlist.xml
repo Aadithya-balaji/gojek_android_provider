@@ -13,10 +13,11 @@
 
         <TextView
             android:id="@+id/order_item_name"
-            style="@style/SmallText.Plain"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
+            android:fontFamily="@font/avenirltstd_medium"
             android:layout_toStartOf="@+id/order_item_cost_tv"
             android:padding="@dimen/_2sdp"
             android:text="@string/dummy_item_name"
@@ -24,9 +25,10 @@
 
         <TextView
             android:id="@+id/addon_item_name"
-            style="@style/SmallText.Plain"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/avenirltstd_medium"
             android:layout_below="@+id/order_item_name"
             android:layout_alignParentStart="true"
             android:layout_marginStart="@dimen/_8sdp"
@@ -36,17 +38,19 @@
 
         <TextView
             android:id="@+id/order_item_cost_tv"
-            style="@style/SmallText.Plain"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:fontFamily="@font/avenirltstd_medium"
             android:padding="@dimen/_2sdp"
             android:text="@string/dummy_item_total"
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/addon_item_cost_tv"
-            style="@style/SmallText.Plain"
+            style="@style/SmallText"
+            android:fontFamily="@font/avenirltstd_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/order_item_cost_tv"

@@ -97,9 +97,12 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                 val address = getCurrentAddress(context!!, latLng)
                 if (address.isNotEmpty()) mViewModel.pickupLocation.value = address[0].getAddressLine(0)
             }
+            if (incomingRequestModel!!.responseData.requests[0].request.pickup != null) {
+                mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.pickup.store_name + "\n" +
+                        incomingRequestModel!!.responseData.requests[0].request.pickup.store_location
+            }
             mViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
-
         getApiResponse()
     }
 
@@ -114,7 +117,6 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         return addresses
     }
 

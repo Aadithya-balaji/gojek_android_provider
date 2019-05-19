@@ -29,8 +29,7 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
 
     fun getBankTemplate() {
         showLoading.value = true
-        getCompositeDisposable()
-                .add(appRepository.getBankTemplate(this, token))
+        getCompositeDisposable().add(appRepository.getBankTemplate(this, token))
     }
 
     fun setAdapter() {
@@ -63,7 +62,6 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
         else
             ""
     }
-
 
     fun getBankLabelValue(position: Int): String {
         val response = bankResponse.value!!.responseData[position].bankdetails
@@ -103,16 +101,8 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
             if (isEdit)
                 rootObject.put("id", id)
 
-            if (isEdit) {
-                getCompositeDisposable()
-                        .add(appRepository.postEditBankDetails(this, token, rootObject.toString()))
-            } else {
-                getCompositeDisposable()
-                        .add(appRepository.postAddBankDetails(this, token, rootObject.toString()))
-            }
-
-
+            if (isEdit) getCompositeDisposable().add(appRepository.postEditBankDetails(this, token, rootObject.toString()))
+            else getCompositeDisposable().add(appRepository.postAddBankDetails(this, token, rootObject.toString()))
         }
     }
-
 }

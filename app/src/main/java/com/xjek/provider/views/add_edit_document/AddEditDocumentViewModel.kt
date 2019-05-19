@@ -22,10 +22,11 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     var documentResponse = MutableLiveData<ListDocumentResponse>()
     var addDocumentResponse = MutableLiveData<AddDocumentResponse>()
     var errorResponse = MutableLiveData<String>()
-    var addEditDocumentErrorResponse = MutableLiveData<String>()
     var showEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
     var currentPosition: Int = 0
 
+    var documentFrontFileName = MutableLiveData<String>()
+    var documentBackFileName = MutableLiveData<String>()
     var documentFrontName = MutableLiveData<String>()
     var documentBackName = MutableLiveData<String>()
     var documentFrontImageURL = MutableLiveData<String>()
@@ -76,6 +77,9 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
             documentFrontImageURL.value = ""
             documentBackImageURL.value = ""
         }
+
+        documentFrontFileName.value = ""
+        documentBackFileName.value = ""
     }
 
 
@@ -121,7 +125,6 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     fun updateDocument() {
         showLoading.value = true
 
-
         val hashMap: HashMap<String, RequestBody> = HashMap()
         if (!expiryDate.value.isNullOrEmpty()) {
             hashMap["expires_at"] = RequestBody.create(MediaType.parse("text/plain"), expiryDate.value!!)
@@ -155,5 +158,4 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
         getCompositeDisposable().add(appRepository.postDocument(this, hashMap, fileFrontImageBody, fileBackImageBody))
     }
-
 }

@@ -320,7 +320,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         } else if (TextUtils.isEmpty(signupViewmodel.email.value)) {
             message = resources.getString(R.string.email_empty)
             return false
-        } else if (TextUtils.isEmpty(signupViewmodel.password.value) &&signupViewmodel.socialID.value.isNullOrEmpty()) {
+        } else if (TextUtils.isEmpty(signupViewmodel.password.value) && signupViewmodel.socialID.value.isNullOrEmpty()) {
             message = resources.getString(R.string.password_empty)
             return false
         } else if (TextUtils.isEmpty(signupViewmodel.countryName.value)) {
@@ -397,7 +397,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                 signupViewmodel.firstName.value = socialFirstName
                 signupViewmodel.lastName.value = socialLastName
                 signupViewmodel.email.value = socialEmail
-                signupViewmodel.socialID.value=socialId
+                signupViewmodel.socialID.value = socialId
                 signupViewmodel.loginby.value = "FACEBOOK"
                 tlPassword.visibility = View.GONE
 
@@ -427,6 +427,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         var token = result.idToken
         val profileImage = result.photoUrl
 
+        glideSetImageView(ivProfile, profileImage.toString(), R.drawable.dummy_profile_pic)
+
         signupViewmodel.firstName.value = socialFirstName.toString()
         signupViewmodel.lastName.value = socialLastName.toString()
         signupViewmodel.email.value = email.toString()
@@ -447,9 +449,9 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         DownloadImage(this).execute(url.toString())
 
 
-        Log.e("firstName", "==" + socialFirstName)
-        Log.e("email", "===" + email)
-        Log.e("photo", "----" + profileImage)
+        Log.e("firstName", "==$socialFirstName")
+        Log.e("email", "===$email")
+        Log.e("photo", "----$profileImage")
     }
 
 
@@ -564,7 +566,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
             super.onPostExecute(result)
             loadingObservable.value = false
             imageUrl = result
-
         }
 
         override fun doInBackground(vararg params: String?): String {
@@ -574,7 +575,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                     .downsample(DownsampleStrategy.CENTER_INSIDE)
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-            var file = CommanMethods.getDefaultFileName(mContext)
+            val file = CommanMethods.getDefaultFileName(mContext)
             mContext.let {
                 val bitmap = Glide.with(it)
                         .asBitmap()

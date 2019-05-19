@@ -15,11 +15,9 @@ class SetupVehicleAdapter(private val setupVehicleViewModel: SetupVehicleViewMod
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<LayoutSetupVehicleItemBinding>(
-                layoutInflater,
-                R.layout.layout_setup_vehicle_item,
-                parent,
-                false)
-        return SetupVehicleAdapter.ViewHolder(binding)
+                layoutInflater, R.layout.layout_setup_vehicle_item,
+                parent, false)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {

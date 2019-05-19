@@ -12,21 +12,20 @@ import com.xjek.provider.databinding.LayoutManageServicesItemBinding
 class ManageServicesAdapter(private val manageServicesViewModel: ManageServicesViewModel) :
         RecyclerView.Adapter<ManageServicesAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ManageServicesAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<LayoutManageServicesItemBinding>(
                 layoutInflater,
                 R.layout.layout_manage_services_item,
-                parent,
-                false)
-        return ManageServicesAdapter.ViewHolder(binding)
+                parent, false)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
         return manageServicesViewModel.getServiceData().size
     }
 
-    override fun onBindViewHolder(holder: ManageServicesAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(manageServicesViewModel, position)
     }
 

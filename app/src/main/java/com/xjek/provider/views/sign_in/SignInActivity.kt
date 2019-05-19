@@ -128,7 +128,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
                 viewModel.postSocialLogin(true, account.id!!)
             }
         } catch (e: ApiException) {
-            Log.e(TAG, "GoogleSignInResult:Error_Code=" + e.statusCode)
+            e.printStackTrace()
         }
     }
 
@@ -189,8 +189,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     override fun onGoogleSignInClicked() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-        val googleSignInIntent = mGoogleSignInClient!!.signInIntent
-        startActivityForResult(googleSignInIntent, Enums.RC_GOOGLE_SIGN_IN)
+        startActivityForResult(mGoogleSignInClient!!.signInIntent, Enums.RC_GOOGLE_SIGN_IN)
     }
 
     override fun onFacebookLoginClicked() {

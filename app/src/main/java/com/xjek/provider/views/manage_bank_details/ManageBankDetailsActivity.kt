@@ -50,7 +50,9 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
         }
 
         observeLiveData(viewModel.addEditBankResponse) {
-            viewModel.getBankTemplate()
+//            viewModel.getBankTemplate()
+            ViewUtils.showToast(this, getString(R.string.add_bank_details_added), true)
+            finish()
         }
 
         observeLiveData(viewModel.errorResponse) { errorMessage ->
@@ -69,7 +71,6 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
         }
     }
 
-
     override fun validateDetails(): Boolean {
         val data = viewModel.bankResponse.value!!.responseData
         for (i in 0 until data.size) {
@@ -83,5 +84,4 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
         }
         return true
     }
-
 }

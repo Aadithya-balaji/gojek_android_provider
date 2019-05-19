@@ -21,9 +21,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
     private lateinit var viewModel: ManageServicesViewModel
     private lateinit var serviceData: List<ManageServicesDataModel>
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_manage_services
-    }
+    override fun getLayoutId() = R.layout.activity_manage_services
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivityManageServicesBinding
@@ -68,15 +66,9 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
     override fun onMenuItemClicked(position: Int) {
         lazy { var intent: Intent }
         when (position) {
-            0 -> {
-                intent = Intent(applicationContext, SetupVehicleActivity::class.java)
-            }
-            1 -> {
-                intent = Intent(applicationContext, SetupVehicleActivity::class.java)
-            }
-            2 -> {
-                intent = Intent(applicationContext, SetServiceActivity::class.java)
-            }
+            0 -> intent = Intent(applicationContext, SetupVehicleActivity::class.java)
+            1 -> intent = Intent(applicationContext, SetupVehicleActivity::class.java)
+            2 -> intent = Intent(applicationContext, SetServiceActivity::class.java)
         }
 
         val response = viewModel.getServicesObservable().value!!.responseData
@@ -84,9 +76,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
             intent.putExtra(Constant.SERVICE_ID,
                     viewModel.getServicesObservable().value!!.responseData[position].id)
             launchNewActivity(intent, false)
-        } else {
-            ViewUtils.showToast(this, "Service not configured. Please contact admin", false)
-        }
+        } else ViewUtils.showToast(this, "Service not configured. Please contact admin", false)
     }
 
     override fun showError(error: String) {

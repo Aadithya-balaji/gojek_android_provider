@@ -209,7 +209,7 @@ data class Payment(
         var provider_pay: Double = 0.0,
         var ride_request_id: Int = 0,
         var round_of: Double = 0.0,
-        var tax: Int = 0,
+        var tax: Double = 0.0,
         var tax_percent: Double = 0.0,
         var tips: Double = 0.0,
         var toll_charge: Double = 0.0,

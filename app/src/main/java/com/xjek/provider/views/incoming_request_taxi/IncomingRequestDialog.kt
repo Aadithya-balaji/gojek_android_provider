@@ -64,6 +64,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         try {
             timerToTakeOrder.cancel()
         } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

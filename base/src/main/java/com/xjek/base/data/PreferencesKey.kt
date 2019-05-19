@@ -21,6 +21,7 @@ object PreferencesKey {
     const val CAN_SAVE_LOCATION = "CAN_SAVE_LOCATION"
     const val CURRENCY_SYMBOL = "CURRENCY_SYMBOL"
     const val STRIPE_KEY = "stripe_key"
+    const val DEVICE_TOKEN = "device_token"
 
     const val BASE_URL = "base_url"
     const val TRANSPORT_URL = "taxi_url"

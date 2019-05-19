@@ -7,6 +7,8 @@ import android.content.pm.PackageManager
 import android.util.Base64
 import android.util.Log
 import androidx.databinding.ViewDataBinding
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseActivity
@@ -48,6 +50,17 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         viewModel.getConfig()
 
         mUrlPersistence = BaseApplication.run { getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE) }
+
+        FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w("Tag", "getInstanceId failed", task.exception)
+                        return@OnCompleteListener
+                    }
+
+                    println("RRR :: token = ${task.result?.token}")
+                    writePreferences(PreferencesKey.DEVICE_TOKEN, task.result?.token)
+                })
     }
 
     @SuppressLint("CommitPrefEdits")

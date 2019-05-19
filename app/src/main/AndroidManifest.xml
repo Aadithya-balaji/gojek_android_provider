@@ -226,7 +226,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service android:name=".fcm.FcmService">
+        <service android:name="com.xjek.provider.fcm.FcmService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

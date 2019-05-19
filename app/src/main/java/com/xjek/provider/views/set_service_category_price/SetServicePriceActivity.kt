@@ -50,44 +50,55 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                     newService.id = it.id
                     if (service.price_choose == "provider_price") {
                         if (it.servicescityprice != null || it.providerservices.isNotEmpty()) {
-                            newService.fareType = it.servicescityprice.fare_type
-                            when (it.servicescityprice.fare_type) {
-                                "FIXED" -> {
-                                    if (it.providerservices.isNotEmpty()) {
-                                        newService.baseFare = it.providerservices[0].base_fare
-                                    } else if (it.servicescityprice.base_fare.isNotEmpty()) {
-                                        newService.baseFare = it.servicescityprice.base_fare
-                                    } else {
-                                        ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
-                                        return@setOnClickListener
+                            newService.fareType = "FIXED"
+                            if (it.servicescityprice != null)
+                                newService.fareType = it.servicescityprice.fare_type
+                            if (it.servicescityprice != null)
+                                when (it.servicescityprice.fare_type) {
+                                    "FIXED" -> {
+                                        if (it.providerservices.isNotEmpty()) {
+                                            newService.baseFare = it.providerservices[0].base_fare
+                                        } else if (it.servicescityprice != null && it.servicescityprice.base_fare.isNotEmpty()) {
+                                            newService.baseFare = it.servicescityprice.base_fare
+                                        } else {
+                                            ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
+                                            return@setOnClickListener
+                                        }
                                     }
-                                }
-                                "HOURLY" -> {
-                                    if (it.providerservices.isNotEmpty()) {
-                                        newService.perMins = it.providerservices[0].per_mins
-                                    } else if (it.servicescityprice.per_mins.isNotEmpty()) {
-                                        newService.perMins = it.servicescityprice.per_mins
-                                    } else {
-                                        ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
-                                        return@setOnClickListener
-                                    }
-                                }
-                                "DISTANCETIME" -> {
-                                    if (it.providerservices.isNotEmpty()) {
-                                        newService.perMins = it.providerservices[0].per_mins
-                                        newService.perMiles = it.providerservices[0].per_miles
-                                    } else if (it.servicescityprice.per_miles.isNotEmpty()) {
-                                        if (it.servicescityprice.per_mins.isNotEmpty()) {
+                                    "HOURLY" -> {
+                                        if (it.providerservices.isNotEmpty()) {
+                                            newService.perMins = it.providerservices[0].per_mins
+                                        } else if (it.servicescityprice != null && it.servicescityprice.per_mins.isNotEmpty()) {
                                             newService.perMins = it.servicescityprice.per_mins
                                         } else {
                                             ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
                                             return@setOnClickListener
                                         }
-                                        newService.perMiles = it.servicescityprice.per_miles
-                                    } else {
-                                        ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
-                                        return@setOnClickListener
                                     }
+                                    "DISTANCETIME" -> {
+                                        if (it.providerservices.isNotEmpty()) {
+                                            newService.perMins = it.providerservices[0].per_mins
+                                            newService.perMiles = it.providerservices[0].per_miles
+                                        } else if (it.servicescityprice.per_miles.isNotEmpty()) {
+                                            if (it.servicescityprice != null && it.servicescityprice.per_mins.isNotEmpty()) {
+                                                newService.perMins = it.servicescityprice.per_mins
+                                            } else {
+                                                ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
+                                                return@setOnClickListener
+                                            }
+                                            newService.perMiles = it.servicescityprice.per_miles
+                                        } else {
+                                            ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
+                                            return@setOnClickListener
+                                        }
+                                    }
+                                }
+                            else {
+                                if (it.providerservices[0].base_fare != null)
+                                    newService.baseFare = it.providerservices[0].base_fare
+                                else {
+                                    ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
+                                    return@setOnClickListener
                                 }
                             }
                         } else {

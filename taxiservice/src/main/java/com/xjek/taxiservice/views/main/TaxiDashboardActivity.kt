@@ -178,7 +178,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     @SuppressLint("MissingPermission")
-    private fun updateCurrentLocation() {
+    override fun updateCurrentLocation() {
         runOnUiThread {
             mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
             mGoogleMap!!.uiSettings.isCompassEnabled = true
@@ -552,7 +552,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     Log.e("SOCKET", "SOCKET_SK Location update called")
                 }
 
-                if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
+                if (checkStatusApiCounter++ % 3 == 0)
+                    if (location.latitude > 0 && location.longitude > 0) {
+                        mViewModel.callTaxiCheckStatusAPI()
+                    } else updateCurrentLocation()
 
                 if (startLatLng.latitude > 0) endLatLng = startLatLng
                 startLatLng = LatLng(location.latitude, location.longitude)
@@ -561,18 +564,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                 if (endLatLng.latitude > 0 && polyLine.size > 0) {
                     try {
-                        CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
+                        CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, endLatLng, startLatLng)
                         polyLineRerouting(endLatLng, polyLine)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                } else if (polyLine.size == 0) {
-                    try {
-                        drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                                mViewModel.polyLineDest.value!!)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
+                } else if (mViewModel.latitude.value!! > 0 && polyLine.size == 0) try {
+                    drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
+                            mViewModel.polyLineDest.value!!)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }
@@ -631,7 +632,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
 
-            CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
+            CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, polyLine[0], polyLine[1])
 
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))

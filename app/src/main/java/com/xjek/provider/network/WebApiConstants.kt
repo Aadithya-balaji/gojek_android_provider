@@ -29,6 +29,8 @@ object WebApiConstants {
         const val MOBILE = "mobile"
         const val EMAIL = "email"
         const val PASSWORD = "password"
+        const val DEVICE_TOKEN = "device_token"
+        const val DEVICE_TYPE = "device_type"
     }
 
     object SocialLogin {

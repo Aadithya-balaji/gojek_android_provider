@@ -22,13 +22,15 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
     var currentStatus = MutableLiveData<String>()
 
     fun callCheckStatusAPI() {
-        if (latitude.value!!.toInt() > 0 && longitude.value!!.toInt() > 0)
+//        if (latitude.value!! > 0 && longitude.value!! > 0) {
+        if (latitude.value!!.toInt() > 0 && longitude.value!!.toInt() > 0) {
             if (readPreferences<String>(PreferencesKey.ACCESS_TOKEN).length > 2)
                 getCompositeDisposable().add(appRepository.checkRequest(this,
                         "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
                         latitude.value.toString(),
                         longitude.value.toString())
                 )
+        } else navigator.updateCurrentLocation()
     }
 
     fun getProfile() {

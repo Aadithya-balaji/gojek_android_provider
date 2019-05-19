@@ -8,12 +8,12 @@ data class AddDocumentResponse(
         val title: String = ""
 ) {
     data class ResponseData(
-            val company_id: Int = 0,
+            val company_id: Int? = 0,
             val document_id: String = "",
             val expires_at: String = "",
-            val id: Int = 0,
-            val is_document: Int = 0,
-            val provider_id: Int = 0,
+            val id: Int? = 0,
+            val is_document: Int? = 0,
+            val provider_id: Int? = 0,
             val status: String = "",
             val url: List<Url> = listOf()
     ) {

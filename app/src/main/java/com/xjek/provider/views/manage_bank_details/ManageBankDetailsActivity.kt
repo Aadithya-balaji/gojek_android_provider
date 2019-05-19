@@ -77,7 +77,7 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
             if (data[i].lableValue.isEmpty()) {
                 ViewUtils.showToast(this, "Please enter ${data[i].label.toLowerCase()}", false)
                 return false
-            } else if (data[i].lableValue.length < data[i].min || data[i].lableValue.length > data[i].max) {
+            } else if (data[i].lableValue.length < data[i].min!! || data[i].lableValue.length > data[i].max!!) {
                 ViewUtils.showToast(this, "Please enter valid ${data[i].label.toLowerCase()}", false)
                 return false
             }

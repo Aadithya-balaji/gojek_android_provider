@@ -384,7 +384,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val lat = responseData.request.s_latitude
             val lon = responseData.request.s_longitude
             val latLng: com.google.maps.model.LatLng?
-            latLng = com.google.maps.model.LatLng(lat, lon)
+            latLng = com.google.maps.model.LatLng(lat!!, lon!!)
             val address = getCurrentAddress(this, latLng)
             if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
         }
@@ -400,7 +400,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                LatLng(responseData.request.s_latitude, responseData.request.s_longitude))
+                LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!))
     }
 
     private fun whenStatusArrived(responseData: ResponseData) {
@@ -428,7 +428,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val lat = responseData.request.s_latitude
             val lon = responseData.request.s_longitude
             val latLng: com.google.maps.model.LatLng?
-            latLng = com.google.maps.model.LatLng(lat, lon)
+            latLng = com.google.maps.model.LatLng(lat!!, lon!!)
             val address = getCurrentAddress(this, latLng)
             if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
         }
@@ -438,7 +438,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 if (!isWaitingTime!!) {
                     val otpDialogFragment = VerifyOtpDialog.newInstance(
                             responseData.request.otp,
-                            responseData.request.id
+                            responseData.request.id!!
                     )
                     otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
                 } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
@@ -452,7 +452,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                LatLng(responseData.request.s_latitude, responseData.request.s_longitude))
+                LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!))
     }
 
     private fun whenStatusPickedUp(responseData: ResponseData) {
@@ -489,7 +489,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val lat = responseData.request.d_latitude
             val lon = responseData.request.d_longitude
             val latLng: com.google.maps.model.LatLng?
-            latLng = com.google.maps.model.LatLng(lat, lon)
+            latLng = com.google.maps.model.LatLng(lat!!, lon!!)
             val address = getCurrentAddress(this, latLng)
             if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
         }
@@ -517,8 +517,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             }) else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
         }
 
-        drawRoute(LatLng(responseData.request.s_latitude, responseData.request.s_longitude),
-                LatLng(responseData.request.d_latitude, responseData.request.d_longitude))
+        drawRoute(LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!),
+                LatLng(responseData.request.d_latitude!!, responseData.request.d_longitude!!))
     }
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
@@ -559,11 +559,20 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                 println("RRRR :: TaxiDashboardActivity LatLng(location = ${LatLng(location.latitude, location.longitude)}")
 
-                if (endLatLng.latitude > 0 && polyLine.size > 0) try {
-                    CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
-                    polyLineRerouting(endLatLng, polyLine)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+                if (endLatLng.latitude > 0 && polyLine.size > 0) {
+                    try {
+                        CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
+                        polyLineRerouting(endLatLng, polyLine)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else if (polyLine.size == 0) {
+                    try {
+                        drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
+                                mViewModel.polyLineDest.value!!)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
         }
@@ -626,7 +635,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
-        }catch (e:java.lang.Exception){
+        } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
 

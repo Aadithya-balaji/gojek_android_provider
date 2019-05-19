@@ -232,10 +232,10 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
 
     private fun setPaymentDetails(order_invoice: OrderInvoice) {
         val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
-        if (order_invoice.gross.toDouble() > 0)
+        if (order_invoice.gross!!.toDouble() > 0)
             item_total_tv.text = currency + order_invoice.gross
         when {
-            order_invoice.gross.toDouble() > 0 -> {
+            order_invoice.gross!!.toDouble() > 0 -> {
                 item_total_tv.text = currency + order_invoice.gross
                 item_total_lt.visibility = VISIBLE
             }
@@ -244,7 +244,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             }
         }
         when {
-            order_invoice.tax_amount.toDouble() > 0 -> {
+            order_invoice.tax_amount!!.toDouble() > 0 -> {
                 servicetax_tv.text = currency + order_invoice.tax_amount
                 service_tax_lt.visibility = VISIBLE
             }
@@ -253,7 +253,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             }
         }
         when {
-            order_invoice.delivery_amount.toDouble() > 0 -> {
+            order_invoice.delivery_amount!!.toDouble() > 0 -> {
                 delivery_charge_tv.text = currency + order_invoice.delivery_amount
                 delivery_charge_lt.visibility = VISIBLE
             }
@@ -262,7 +262,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             }
         }
         when {
-            order_invoice.promocode_amount.toDouble() > 0 -> {
+            order_invoice.promocode_amount!!.toDouble() > 0 -> {
                 promocode_deduction_tv.text = currency + order_invoice.promocode_amount
                 promocode_deduction_lt.visibility = VISIBLE
             }
@@ -271,7 +271,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             }
         }
         when {
-            order_invoice.discount.toDouble() > 0 -> {
+            order_invoice.discount!!.toDouble() > 0 -> {
                 discount_amount_tv.text = currency + order_invoice.discount
                 discount_lt.visibility = VISIBLE
             }
@@ -280,7 +280,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             }
         }
         when {
-            order_invoice.wallet_amount.toDouble() > 0 -> {
+            order_invoice.wallet_amount!!.toDouble() > 0 -> {
                 wallet_amount_tv.text = currency + order_invoice.wallet_amount
                 wallet_amount_lt.visibility = VISIBLE
             }
@@ -289,7 +289,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             }
         }
         when {
-            order_invoice.store_package_amount.toDouble() > 0 -> {
+            order_invoice.store_package_amount!!.toDouble() > 0 -> {
                 package_amount_tv.text = currency + order_invoice.store_package_amount
                 package_amount_lt.visibility = VISIBLE
             }
@@ -298,7 +298,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             }
         }
         when {
-            order_invoice.total_amount.toDouble() > 0 -> {
+            order_invoice.total_amount!!.toDouble() > 0 -> {
                 total_value_tv.text = currency + order_invoice.total_amount
                 total_value_lt.visibility = VISIBLE
             }
@@ -324,8 +324,8 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             getString(R.string.order_delivered) -> {
                 val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
                         foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
-                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.id,
-                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable
+                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.id!!,
+                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable.toString()
                 )
                 otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
                 otpDialogFragment.isCancelable = false

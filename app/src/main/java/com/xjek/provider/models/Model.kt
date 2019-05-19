@@ -25,7 +25,7 @@ data class Model(
                     val card: String,
                     val stripeSecretKey: String,
                     val stripePublishableKey: String,
-                    val cash: String,
+                    val cash: Double? = 0.0,
                     val stripeCurrency: String
             )
 

@@ -224,7 +224,7 @@ class BaseLocationService : Service() {
 }
 
 data class LocationModel(
-        var lat: Double = 0.0,
-        var lng: Double = 0.0,
+        var lat: Double? = 0.0,
+        var lng: Double? = 0.0,
         var time: String = ""
 ) : Serializable

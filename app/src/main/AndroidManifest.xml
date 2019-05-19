@@ -216,6 +216,7 @@
             android:name="com.xjek.base.location_service.BaseLocationService"
             android:enabled="true"
             android:exported="true" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -226,7 +227,9 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service android:name="com.xjek.provider.fcm.FcmService">
+        <service
+            android:name=".fcm.FcmService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

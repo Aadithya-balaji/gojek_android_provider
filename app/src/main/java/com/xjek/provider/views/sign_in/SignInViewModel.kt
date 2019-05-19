@@ -68,7 +68,7 @@ class SignInViewModel : BaseViewModel<SignInViewModel.SignInNavigator>() {
     internal fun postSocialLogin(isGoogleSignIn: Boolean, id: String) {
         val params = HashMap<String, String>()
         params[WebApiConstants.SocialLogin.DEVICE_TYPE] = ANDROID
-        params[WebApiConstants.SocialLogin.DEVICE_TOKEN] = ""
+        params[WebApiConstants.SocialLogin.DEVICE_TOKEN] = readPreferences(PreferencesKey.DEVICE_TOKEN, "123")!!
         params[WebApiConstants.SocialLogin.LOGIN_BY] = if (isGoogleSignIn) {
             LoginType.GOOGLE.value()
         } else {

@@ -13,16 +13,20 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import com.xjek.base.R
+import com.xjek.base.data.PreferencesKey
+import com.xjek.base.extensions.writePreferences
 import com.xjek.provider.views.splash.SplashActivity
 
 class FcmService : FirebaseMessagingService() {
+
     private val tagName = "FCMService"
 
     override fun onNewToken(token: String?) {
         super.onNewToken(token)
         Log.d(tagName, "onNewToken()")
         Log.d(tagName, "FireBaseRegToken: " + token!!)
-        Log.e("FCMToken", "----" + token)
+        Log.e("FCMToken", "----$token")
+        writePreferences(PreferencesKey.DEVICE_TOKEN, token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {

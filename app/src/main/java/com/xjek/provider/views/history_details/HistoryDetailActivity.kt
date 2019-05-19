@@ -37,6 +37,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     lateinit var mViewDataBinding: ActivityCurrentorderDetailLayoutBinding
     lateinit var dashboardViewModel: DashBoardViewModel
     private var mselectedDisputeName: String? = null
+    private var selectedDiputeData: DisputeListData? = null
     lateinit var historyDetailViewModel: HistoryDetailViewModel
     private var historyType: String? = ""
     private var selectedId: String? = ""
@@ -226,14 +227,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         disputeListBinding!!.applyFilter.isEnabled = true
         disputeListBinding!!.disputeReasonListAdapter = DisputeReasonListAdapter(historyDetailViewModel, disputeListData)
         disputeListBinding!!.disputeReasonListAdapter!!.setOnClickListener(mOnAdapterClickListener)
-        historyDetailViewModel.getSelectedValue().observe(this, Observer {
-            mselectedDisputeName = it
+        historyDetailViewModel.selectedDisputeModel.observe(this, Observer {
+            selectedDiputeData = it
         })
-        disputeListBinding!!.applyFilter.setOnClickListener {
-            loadingObservable.value = true
-            createDisputeRequest()
-        }
-
     }
 
     override fun showDisputeList() {
@@ -246,16 +242,50 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
     private fun createDisputeRequest() {
-        if (serviceType.equals("transport")) {
+        if (selectedDiputeData != null) {
+            historyDetailViewModel.disputeType.value = "provider"
+            historyDetailViewModel.disputeName.value = selectedDiputeData?.let { it.dispute_name }
+            historyDetailViewModel.disputeID.value = selectedDiputeData?.let { it.id }
+        }
 
+        val params = HashMap<String, String>()
+        params.put(com.xjek.base.data.Constants.Dispute.USER_ID, historyDetailViewModel.userID.value!!)
+        params.put(com.xjek.base.data.Constants.Dispute.DIPUSTE_TYPE, historyDetailViewModel.disputeType.value!!)
+        params.put(com.xjek.base.data.Constants.Dispute.DISPUTE_NAME, historyDetailViewModel.disputeName.value!!)
+
+        if (serviceType.equals("transport")) {
+            historyDetailViewModel.userID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.transport.user!!.id.toString()
+            historyDetailViewModel.providerID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.transport.provider_id.toString()
+            historyDetailViewModel.requestID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.transport.id.toString()
+
+            params.put(com.xjek.base.data.Constants.Dispute.REQUEST_ID,historyDetailViewModel.requestID.value.toString())
+            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID,historyDetailViewModel.providerID.value.toString())
+
+            historyDetailViewModel.postTaxiDispute(params)
 
         } else if (serviceType.equals("service")) {
+            historyDetailViewModel.userID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.service.user!!.id.toString()
+            historyDetailViewModel.providerID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.service.provider_id.toString()
+            historyDetailViewModel.requestID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.service.id.toString()
+
+            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID,historyDetailViewModel.providerID.value.toString())
+            historyDetailViewModel.postServiceDispute(params,historyDetailViewModel.requestID.value!!)
 
         } else {
+            historyDetailViewModel.userID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.order.user!!.id.toString()
+            historyDetailViewModel.providerID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.order.provider_id.toString()
+            historyDetailViewModel.requestID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.order.id.toString()
+            historyDetailViewModel.storeID.value=historyDetailViewModel.historyDetailResponse.value!!.responseData.order.order_invoice!!.items!!.get(0)!!.store_id.toString()
+
+            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID,historyDetailViewModel.providerID.value.toString())
+            params.put(com.xjek.base.data.Constants.Dispute.STORE_ID,historyDetailViewModel.storeID.value.toString())
+            historyDetailViewModel.postOrderDispute(params)
 
         }
 
+
     }
+
 
     private val mOnAdapterClickListener = object : ReasonListClicklistner {
         override fun reasonOnItemClick(disputeName: String) {

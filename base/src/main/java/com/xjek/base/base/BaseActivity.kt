@@ -1,8 +1,13 @@
 package com.xjek.base.base
 
+import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.LocationManager
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -11,15 +16,24 @@ import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
+import com.xjek.base.data.Constants
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
 import com.xjek.base.utils.LocaleUtils
 import com.xjek.base.utils.NetworkUtils
 import com.xjek.base.utils.PermissionUtils
@@ -33,6 +47,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private lateinit var customDialog: CustomDialog
     private lateinit var mParentView: View
     private lateinit var context: Context
+    private var locationManager: LocationManager? = null
+    private var locationRequest: LocationRequest? = null
+    private var mFusedLocationClient: FusedLocationProviderClient? = null
+
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
@@ -133,4 +151,48 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                 .skipMemoryCache(true)
                 .into(imageView)
     }
+
+
+    private fun checkGps() {
+        locationRequest = LocationRequest.create()
+        locationRequest!!.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        locationRequest!!.setInterval(1000)
+        locationRequest!!.setNumUpdates(1)
+        locationRequest!!.setFastestInterval((5 * 1000).toLong())
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        val settingsBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
+        settingsBuilder.setAlwaysShow(true)
+        val result = LocationServices.getSettingsClient(this).checkLocationSettings(settingsBuilder.build())
+        result.addOnCompleteListener { task ->
+            try {
+                val response = task.getResult(ApiException::class.java)
+            } catch (ex: ApiException) {
+                when (ex.statusCode) {
+                    LocationSettingsStatusCodes.SUCCESS -> {
+                        val permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+                           // mFusedLocationClient.requestLocationUpdates(locationRequest, getPendingIntent())
+                        }
+                    }
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
+                        val resolvableApiException = ex as ResolvableApiException
+                        resolvableApiException.startResolutionForResult(context as Activity,
+                                        REQUEST_CHECK_SETTINGS_GPS)
+                    } catch (e: IntentSender.SendIntentException) {
+
+                    }
+
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                    }
+                }
+            }
+        }
+    }
+
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val strTesting="boopathi"
+    }*/
 }

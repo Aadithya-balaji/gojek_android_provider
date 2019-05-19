@@ -1,19 +1,28 @@
 package com.xjek.provider.views.dashboard
 
+import android.Manifest
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.app.Activity
+import android.content.*
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
@@ -32,6 +41,7 @@ import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
+import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
@@ -55,16 +65,19 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var mViewModel: DashBoardViewModel
-
     private var mIncomingRequestDialog = IncomingRequestDialog()
     private var locationServiceIntent: Intent? = null
     private var checkStatusApiCounter = 0
     private var mHomeFragment = HomeFragment()
+    private var locationRequest: LocationRequest? = null
+    private  var isGPSEnabled:Boolean=false
+    private  var isLocationDialogShown:Boolean =false
+    private  lateinit var context:Context
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-
+          context=this
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         binding = mViewDataBinding as ActivityDashboardBinding
@@ -101,7 +114,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
-
         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
             updateLocation(true)
             updateCurrentLocation()
@@ -284,10 +296,16 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         override fun onReceive(contxt: Context?, intent: Intent?) {
             println("RRRR:: DashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
-            if (location != null) {
-                mViewModel.latitude.value = location.latitude
-                mViewModel.longitude.value = location.longitude
-                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
+            val isGpsEnabled=intent!!.getBooleanExtra("ISGPS_EXITS",false)
+            if(isGpsEnabled==true) {
+                if (location != null) {
+                    mViewModel.latitude.value = location.latitude
+                    mViewModel.longitude.value = location.longitude
+                    if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
+                }
+            }else{
+                if(isLocationDialogShown==false)
+                 checkGps()
             }
         }
     }
@@ -296,5 +314,89 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         ViewUtils.showNormalToast(this, s)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQUEST_CHECK_SETTINGS_GPS ->
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        isGPSEnabled=true
+                        isLocationDialogShown=false
+                        if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                            updateLocation(true)
+                            updateCurrentLocation()
+                        } else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION)) {
+                            updateLocation(true)
+                            updateCurrentLocation()
+                        }
+                    }
+                    //  Activity.RESULT_CANCELED -> checkGps()
+                }
+        }
+    }
+
+    /*  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+            when (requestCode) {
+                REQUEST_CHECK_SETTINGS_GPS ->
+                    when (resultCode) {
+                        Activity.RESULT_OK -> {
+                           isGPSEnabled=true
+                            isLocationDialogShown=false
+                            if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                updateLocation(true)
+                                updateCurrentLocation()
+                            } else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION)) {
+                                updateLocation(true)
+                                updateCurrentLocation()
+                            }
+                        }
+                      //  Activity.RESULT_CANCELED -> checkGps()
+                    }
+            }
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    */
     override fun getInstance(): DashBoardActivity = this@DashBoardActivity
+
+
+    private fun checkGps() {
+        Log.e("checkgps","----------")
+        isLocationDialogShown=true
+        locationRequest = LocationRequest.create()
+        locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest?.interval = 1000
+        locationRequest?.numUpdates = 1
+        locationRequest?.fastestInterval = (5 * 1000).toLong()
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return
+        }
+        val settingsBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
+        settingsBuilder.setAlwaysShow(true)
+        val result = LocationServices.getSettingsClient(this).checkLocationSettings(settingsBuilder.build())
+        result.addOnCompleteListener { task ->
+            try {
+                val response = task.getResult(ApiException::class.java)
+            } catch (ex: ApiException) {
+                when (ex.statusCode) {
+                    LocationSettingsStatusCodes.SUCCESS -> {
+                        val permissionLocation = ContextCompat.checkSelfPermission(this@DashBoardActivity, Manifest.permission.ACCESS_FINE_LOCATION)
+                        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+                            //mFusedLocationClient?.requestLocationUpdates(locationRequest, getPendingIntent())
+                        }
+                    }
+                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
+                        val resolvableApiException = ex as ResolvableApiException
+                        isLocationDialogShown=true
+                        resolvableApiException.startResolutionForResult(context as AppCompatActivity,REQUEST_CHECK_SETTINGS_GPS)
+                    } catch (e: IntentSender.SendIntentException) {
+
+                    }
+
+                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                    }
+                }
+            }
+        }
+    }
+
 }

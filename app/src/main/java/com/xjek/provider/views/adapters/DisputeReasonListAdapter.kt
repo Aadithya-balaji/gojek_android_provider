@@ -44,10 +44,9 @@ class DisputeReasonListAdapter(val historyDetailViewModel: HistoryDetailViewMode
 
 
         }
-        /*holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener {
+      /*  holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener {
             if (mOnAdapterClickListener != null) {
-                mOnAdapterClickListener!!.reasonOnItemClick((disputereasonList.get(position)
-                        .dispute_name).toLowerCase().capitalize())
+                mOnAdapterClickListener!!.reasonOnItemClick((disputereasonList.get(position).dispute_name).toLowerCase().capitalize())
             }
         }*/
         holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener { v -> itemCheckChanged(v) }
@@ -56,6 +55,7 @@ class DisputeReasonListAdapter(val historyDetailViewModel: HistoryDetailViewMode
 
     private fun itemCheckChanged(v: View) {
         selectedPosition = v.tag as Int
+        historyDetailViewModel.selectedDisputeModel.value=disputereasonList.get(selectedPosition)
         notifyDataSetChanged()
     }
 

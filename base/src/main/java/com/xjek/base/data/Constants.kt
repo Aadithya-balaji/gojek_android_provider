@@ -147,5 +147,6 @@ object Constants {
         const val USER_ID = "user_id"
         const val PROVIDER_ID = "provider_id"
         const val REQUEST_ID = "id"
+        const val STORE_ID="store_id"
     }
 }

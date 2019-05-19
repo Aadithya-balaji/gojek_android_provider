@@ -8,23 +8,23 @@ data class ListDocumentResponse(
         val title: String = ""
 ) {
     data class ResponseData(
-            val company_id: Int = 0,
+            val company_id: Int? = 0,
             val file_type: String = "",
-            val id: Int = 0,
+            val id: Int? = 0,
             val is_backside: Any? = Any(),
             val is_expire: String = "",
             val name: String = "",
             val provider_document: ProviderDocument? = ProviderDocument(),
             val service: Any? = Any(),
-            val status: Int = 0,
+            val status: Int? = 0,
             val type: String = ""
     ) {
         data class ProviderDocument(
-                val company_id: Int = 0,
-                val document_id: Int = 0,
+                val company_id: Int? = 0,
+                val document_id: Int? = 0,
                 val expires_at: String = "",
-                val id: Int = 0,
-                val provider_id: Int = 0,
+                val id: Int? = 0,
+                val provider_id: Int? = 0,
                 val status: String = "",
                 val unique_id: Any? = Any(),
                 val url: List<Url> = listOf()

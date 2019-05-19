@@ -6,14 +6,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
+import android.net.Uri
 import android.os.*
+import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.FirebaseDatabase
-import com.xjek.base.R
 import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY
@@ -23,6 +26,8 @@ import com.xjek.base.persistence.LocationPointsEntity
 import java.io.Serializable
 import java.text.DateFormat
 import java.util.*
+import com.xjek.base.R
+
 
 class BaseLocationService : Service() {
 
@@ -146,6 +151,10 @@ class BaseLocationService : Service() {
                     onNewLocation(mLocation!!)
                 } else println("RRRR:: Failed to get location.")
                 println("RRRR:: streamLocation::task = $task")
+                val loc = Location("dummyprovider")
+                loc.setLatitude(0.0)
+                loc.setLongitude(0.0)
+                onNewLocation(loc)
             }
         } catch (unlikely: SecurityException) {
             println("RRRR:: Lost location permission.$unlikely")
@@ -155,18 +164,21 @@ class BaseLocationService : Service() {
 
     private fun onNewLocation(location: Location) {
         println("RRRR:: BaseLocationService.onNewLocation :: BROADCAST :: $BROADCAST")
-
         val intent = Intent(BROADCAST)
         intent.putExtra(EXTRA_LOCATION, location)
-
         println("RRRR:: intent :: $intent")
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+        val provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+        if(!provider.contains("gps")){
+            intent.putExtra("ISGPS_EXITS", false)
+        }else{
+            intent.putExtra("ISGPS_EXITS", true)
 
+        }
+
+    LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
         val providerId = readPreferences(FIRE_BASE_PROVIDER_IDENTITY, 0)
-
         val point = LocationPointsEntity(null, location.latitude, location.longitude,
                 DateFormat.getDateTimeInstance().format(Date()))
-
         if (providerId!! > 0 && readPreferences(PreferencesKey.CAN_SAVE_LOCATION, false)!!) {
             FirebaseDatabase.getInstance().getReference("providerId$providerId").setValue(point)
             AppDatabase.getAppDataBase(this)!!.locationPointsDao().insertPoint(point)
@@ -224,7 +236,7 @@ class BaseLocationService : Service() {
 }
 
 data class LocationModel(
-        var lat: Double = 0.0,
-        var lng: Double = 0.0,
+        var lat: Double? = 0.0,
+        var lng: Double? = 0.0,
         var time: String = ""
 ) : Serializable

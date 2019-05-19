@@ -22,7 +22,7 @@ import com.xjek.provider.views.manage_bank_details.ManageBankDetailsActivity
 import com.xjek.provider.views.manage_documents.ManageDocumentsActivity
 import com.xjek.provider.views.manage_services.ManageServicesActivity
 
-class PendingListDialog() : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
+class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
 
     private lateinit var pendingListDialogBinding: PendingListDialogBinding
     private lateinit var mViewModel: PendingListViewModel
@@ -40,12 +40,7 @@ class PendingListDialog() : BaseDialogFragment<PendingListDialogBinding>(), Pend
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //getBundleArugment()
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onAttach(context: Context) {

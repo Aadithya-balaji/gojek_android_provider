@@ -30,9 +30,9 @@ data class SubServiceCategoriesResponse(
             val category_id: String = "",
             val sub_category_id: String = "",
             val company_id: String = "",
-            val base_fare: String = "",
-            val per_miles: String = "",
-            val per_mins: String = "",
+            val base_fare: Double? = 0.0,
+            val per_miles: Double? = 0.0,
+            val per_mins: Double? = 0.0,
             val status: String = ""
     ) : Serializable
 }

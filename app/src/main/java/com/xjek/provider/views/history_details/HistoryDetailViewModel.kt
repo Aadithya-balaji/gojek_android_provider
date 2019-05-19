@@ -6,6 +6,7 @@ import com.google.firebase.database.MutableData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
+import com.xjek.provider.model.DisputeListData
 import com.xjek.provider.model.DisputeListModel
 import com.xjek.provider.model.DisputeStatusModel
 import com.xjek.provider.models.DisputeStatus
@@ -35,7 +36,10 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     var userID=MutableLiveData<String>()
     var providerID=MutableLiveData<String>()
     var storeID=MutableLiveData<String>()
+    var requestID=MutableLiveData<String>()
     var comments=MutableLiveData<String>()
+    var selectedDisputeModel=MutableLiveData<DisputeListData>()
+    var  disputeID=MutableLiveData<String>()
 
     fun moveToMainActivity() {
         navigator.goBack()
@@ -43,9 +47,7 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
 
     fun getTransportHistoryDetail(selectedID: String) {
         getCompositeDisposable().add(appRepository
-                .getTransPortDetail(this
-                        , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""),
-                        selectedID))
+                .getTransPortDetail(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
     }
 
     fun getServiceHistoryDetail(selectedID: String) {
@@ -105,7 +107,6 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     }
 
     fun lossItem() {
-
         navigator.onClickLossItem()
     }
 

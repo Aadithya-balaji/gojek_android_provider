@@ -10,14 +10,14 @@ data class ServiceCategoriesResponse(
         val title: String = ""
 ) : Serializable {
     data class ResponseData(
-            val company_id: Int = 0,
-            val id: Int = 0,
+            val company_id: Int? = 0,
+            val id: Int? = 0,
             val picture: String = "",
             val price_choose: String = "",
             val providerservicecategory: List<ProviderServiceCategory> = listOf(),
             val service_category_name: String = "",
-            val service_category_order: Int = 0,
-            val service_category_status: Int = 0
+            val service_category_order: Int? = 0,
+            val service_category_status: Int? = 0
     ) : Serializable
     data class ProviderServiceCategory(
             val id: String = "",
@@ -29,9 +29,9 @@ data class ServiceCategoriesResponse(
             val category_id: String = "",
             val sub_category_id: String = "",
             val company_id: String = "",
-            val base_fare: String = "",
-            val per_miles: String = "",
-            val per_mins: String = "",
+            val base_fare: Double? = 0.0,
+            val per_miles: Double? = 0.0,
+            val per_mins: Double? = 0.0,
             val status: String = ""
     ) : Serializable
 }

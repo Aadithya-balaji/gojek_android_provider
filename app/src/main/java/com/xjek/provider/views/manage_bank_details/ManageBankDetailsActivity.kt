@@ -50,7 +50,9 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
         }
 
         observeLiveData(viewModel.addEditBankResponse) {
-            viewModel.getBankTemplate()
+//            viewModel.getBankTemplate()
+            ViewUtils.showToast(this, getString(R.string.add_bank_details_added), true)
+            finish()
         }
 
         observeLiveData(viewModel.errorResponse) { errorMessage ->
@@ -69,19 +71,17 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
         }
     }
 
-
     override fun validateDetails(): Boolean {
         val data = viewModel.bankResponse.value!!.responseData
         for (i in 0 until data.size) {
             if (data[i].lableValue.isEmpty()) {
                 ViewUtils.showToast(this, "Please enter ${data[i].label.toLowerCase()}", false)
                 return false
-            } else if (data[i].lableValue.length < data[i].min || data[i].lableValue.length > data[i].max) {
+            } else if (data[i].lableValue.length < data[i].min!! || data[i].lableValue.length > data[i].max!!) {
                 ViewUtils.showToast(this, "Please enter valid ${data[i].label.toLowerCase()}", false)
                 return false
             }
         }
         return true
     }
-
 }

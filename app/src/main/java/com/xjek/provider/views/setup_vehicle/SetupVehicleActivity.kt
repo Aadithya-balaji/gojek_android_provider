@@ -19,9 +19,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
     private lateinit var binding: ActivitySetupVehicleBinding
     private lateinit var viewModel: SetupVehicleViewModel
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_setup_vehicle
-    }
+    override fun getLayoutId() = R.layout.activity_setup_vehicle
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivitySetupVehicleBinding
@@ -48,7 +46,6 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         }
     }
 
-
     override fun onResume() {
         super.onResume()
         setupVehicle()
@@ -57,15 +54,9 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
     private fun setupVehicle() {
         loadingObservable.value = true
         when (viewModel.getServiceId()) {
-            viewModel.getTransportId() -> {
-                viewModel.getRides()
-            }
-            viewModel.getOrderId() -> {
-                viewModel.getShops()
-            }
-            else -> {
-                loadingObservable.value = false
-            }
+            viewModel.getTransportId() -> viewModel.getRides()
+            viewModel.getOrderId() -> viewModel.getShops()
+            else -> loadingObservable.value = false
         }
     }
 

@@ -28,7 +28,7 @@ data class ManageServicesResponseModel(
                 @SerializedName("category_id") val categoryId: Int,
                 @SerializedName("sub_category_id") val subCategoryId: Int,
                 @SerializedName("company_id") val companyId: Int,
-                @SerializedName("base_fare") val baseFare: String,
+                @SerializedName("base_fare") val baseFare: Double? = 0.0,
                 @SerializedName("per_miles") val perMiles: String,
                 @SerializedName("per_mins") val perMins: String,
                 val status: String

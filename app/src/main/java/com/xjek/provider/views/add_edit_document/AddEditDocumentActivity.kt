@@ -46,7 +46,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     private lateinit var calendar: Calendar
 
     private var requestCode: Int = -1
-    private var frontFileDownloadID: Int = 0
+    private var frontFileDownloadID: Int? = 0
     private var backFileDownloadID: Int? = null
 
     override fun getLayoutId(): Int = R.layout.activity_add_edit_document
@@ -90,6 +90,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         observeLiveData(viewModelAddEdit.addDocumentResponse) {
             ViewUtils.showToast(this, getString(R.string.docuemnt_added_success), true)
             viewModelAddEdit.incrementPosition()
+            finish()
         }
 
         observeLiveData(viewModelAddEdit.errorResponse) { error ->
@@ -281,23 +282,21 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
             }
 
             FilePickerConst.REQUEST_CODE_DOC -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    when (this.requestCode) {
-                        Enums.DOCUMENT_UPLOAD_FRONT ->{
-                            val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
-                            val frontPageFile = File(selectedDoc!![0])
-                            viewModelAddEdit.documentFrontImageFile.value = frontPageFile
-                            viewModelAddEdit.documentFrontFileName.value = frontPageFile.name
-                            viewModelAddEdit.showFrontView.value = false
-                        }
+                if (resultCode == Activity.RESULT_OK && data != null) when (this.requestCode) {
+                    Enums.DOCUMENT_UPLOAD_FRONT -> {
+                        val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                        val frontPageFile = File(selectedDoc!![0])
+                        viewModelAddEdit.documentFrontImageFile.value = frontPageFile
+                        viewModelAddEdit.documentFrontFileName.value = frontPageFile.name
+                        viewModelAddEdit.showFrontView.value = false
+                    }
 
-                       else ->{
-                           val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
-                           val backPageFile = File(selectedDoc!![0])
-                           viewModelAddEdit.documentBackImageFile.value = backPageFile
-                           viewModelAddEdit.documentBackFileName.value = backPageFile.name
-                           viewModelAddEdit.showFrontView.value = false
-                        }
+                    else -> {
+                        val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                        val backPageFile = File(selectedDoc!![0])
+                        viewModelAddEdit.documentBackImageFile.value = backPageFile
+                        viewModelAddEdit.documentBackFileName.value = backPageFile.name
+                        viewModelAddEdit.showFrontView.value = false
                     }
                 }
             }

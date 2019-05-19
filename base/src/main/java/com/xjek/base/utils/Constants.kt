@@ -10,6 +10,8 @@ class  Constants{
         val SERVICESIMPLEDATEFORMAT = SimpleDateFormat(UTCTIME, Locale.getDefault())
 
         val currency = "$"
+        val REQUEST_CHECK_SETTINGS_GPS = 500
+
 
     }
 }

@@ -39,40 +39,25 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
             0
         else {
             when (serviceId) {
-                readPreferences<Int>(PreferencesKey.TRANSPORT_ID) -> {
-                    (vehicleLiveData.value as SetupRideResponseModel).responseData.size
-                }
-                readPreferences<Int>(PreferencesKey.ORDER_ID) -> {
-                    (vehicleLiveData.value as SetupShopResponseModel).responseData.size
-                }
-                else -> {
-                    0
-                }
+                readPreferences<Int>(PreferencesKey.TRANSPORT_ID) -> (vehicleLiveData.value as SetupRideResponseModel).responseData.size
+                readPreferences<Int>(PreferencesKey.ORDER_ID) -> (vehicleLiveData.value as SetupShopResponseModel).responseData.size
+                else -> 0
             }
         }
     }
 
     fun getVehicleName(position: Int): String {
         return when (serviceId) {
-            transportId -> {
-                (vehicleLiveData.value as SetupRideResponseModel).responseData[position].rideName
-            }
-            orderId -> {
-                (vehicleLiveData.value as SetupShopResponseModel).responseData[position].name
-            }
+            transportId -> (vehicleLiveData.value as SetupRideResponseModel).responseData[position].rideName
+            orderId -> (vehicleLiveData.value as SetupShopResponseModel).responseData[position].name
             else -> return ""
         }
     }
 
     fun isVehicleAdded(position: Int): Boolean {
         return when (serviceId) {
-            transportId -> {
-                (vehicleLiveData.value as SetupRideResponseModel).responseData[position].providerService != null
-            }
-
-            orderId -> {
-                (vehicleLiveData.value as SetupShopResponseModel).responseData[position].providerService != null
-            }
+            transportId -> (vehicleLiveData.value as SetupRideResponseModel).responseData[position].providerService != null
+            orderId -> (vehicleLiveData.value as SetupShopResponseModel).responseData[position].providerService != null
             else -> false
         }
     }

@@ -98,7 +98,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             loadingObservable.value = false
             val vehicleData = it.responseData.transport
             spinnerCarCategory.setItems(vehicleData)
-            if (viewModel.getVehicleData()!!.vehicleId > 0) {
+            if (viewModel.getVehicleData()!!.vehicleId!! > 0) {
                 val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == viewModel.getVehicleData()!!.vehicleId }
                 spinnerCarCategory.selectedIndex = vehiclePosition
             }
@@ -110,6 +110,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             } else {
                 ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.vehicle_update_success), true)
             }
+            finish()
         }
 
         observeLiveData(viewModel.getVehicleDataObservable()) { vehicleData ->

@@ -16,7 +16,7 @@ class CommanMethods {
 
     companion object {
         fun getDefaultFileName(context: Context): File {
-            var imageFile: File? = null
+            val imageFile: File?
             val isSDPresent = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
             if (isSDPresent) { // External storage path
                 imageFile = File(Environment.getExternalStorageDirectory().toString() + File.separator + Constant.TEMP_FILE_NAME + System.currentTimeMillis() + ".png")
@@ -89,21 +89,21 @@ class CommanMethods {
                 when (servicePrices.fare_type) {
                     "HOURLY" -> {
                         if (providerService.isNotEmpty())
-                            providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
+                            providerService[0].per_mins.toString() + " " + activity.getString(R.string.per_hour)
                         else
-                            servicePrices.per_mins + " " + activity.getString(R.string.per_hour)
+                            servicePrices.per_mins.toString() + " " + activity.getString(R.string.per_hour)
                     }
                     "FIXED" -> {
                         if (providerService.isNotEmpty())
-                            providerService[0].base_fare + " " + activity.getString(R.string.fixed)
+                            providerService[0].base_fare.toString() + " " + activity.getString(R.string.fixed)
                         else
-                            servicePrices.base_fare + " " + activity.getString(R.string.fixed)
+                            servicePrices.base_fare.toString() + " " + activity.getString(R.string.fixed)
                     }
                     "DISTANCETIME" -> {
                         if (providerService.isNotEmpty())
-                            providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
+                            providerService[0].per_mins.toString() + " " + activity.getString(R.string.per_hour)
                         else
-                            servicePrices.per_mins + " " + activity.getString(R.string.per_min)
+                            servicePrices.per_mins.toString() + " " + activity.getString(R.string.per_min)
                     }
                     else -> ""
                 }

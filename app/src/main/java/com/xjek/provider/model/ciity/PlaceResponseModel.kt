@@ -25,7 +25,7 @@ class PlaceResponseModel {
     var timezone: Any? = null
     @SerializedName("country_id")
     @Expose
-    var countryid: Int = 0
+    var countryid: Int? = 0
     @SerializedName("country_name")
     @Expose
     var countryName: String? = null

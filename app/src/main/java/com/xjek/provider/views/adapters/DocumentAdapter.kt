@@ -15,7 +15,7 @@ class DocumentAdapter(context: Context, serviceList: ArrayList<String>) : BaseAd
     private var context: Context? = null
     private var serviceLists: ArrayList<String>? = null
     private var inflater: LayoutInflater? = null
-    private var selectedPosition: Int = 0;
+    private var selectedPosition: Int? = 0;
 
 
     init {

@@ -28,7 +28,7 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     fun callFoodieUpdateRequest(status: String) {
         showLoading.value = true
         val update: HashMap<String, String> = HashMap()
-        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id.toString()
+        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id
         update["status"] = status
         update["_method"] = "PATCH"
         getCompositeDisposable().add(FoodieRepository.instance().foodieUpdateRequest
@@ -38,7 +38,7 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     fun callFoodieDeliveryRequest() {
         showLoading.value = true
         val update: HashMap<String, String> = HashMap()
-        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id.toString()
+        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id
         update["status"] = "PAYMENT"
         update["_method"] = "PATCH"
         update["otp"] = foodieCheckRequestModel.value!!.responseData.requests.order_otp
@@ -49,8 +49,8 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     fun callFoodieRatingRequest(rating: String, comment: String) {
         showLoading.value = true
         val update: HashMap<String, String> = HashMap()
-        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id.toString()
-        update["admin_service_id"] = foodieCheckRequestModel.value!!.responseData.requests.admin_service_id.toString()
+        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id
+        update["admin_service_id"] = foodieCheckRequestModel.value!!.responseData.requests.admin_service_id
         update["_method"] = "POST"
         update["rating"] = rating
         update["comment"] = comment

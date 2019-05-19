@@ -95,7 +95,10 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             if (location != null) {
                 foodLiveTaskviewModel.latitude.value = location.latitude
                 foodLiveTaskviewModel.longitude.value = location.longitude
-                foodLiveTaskviewModel.callFoodieCheckRequest()
+                if (location.latitude != 0.0 && location.longitude != 0.0)
+                    foodLiveTaskviewModel.callFoodieCheckRequest()
+                else
+                    loadingObservable.value = false
             }
         }
     }
@@ -192,9 +195,9 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     private fun setUserLocDetails() {
         Glide.with(baseContext).load(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
                 .placeholder(R.drawable.foodie_profile_placeholder).into(resturant_image)
-        loc_name_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name +
+        loc_name_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
                 foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name
-        loc_address_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.street
+        loc_address_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address
     }
 
     private fun whenProcessing() {

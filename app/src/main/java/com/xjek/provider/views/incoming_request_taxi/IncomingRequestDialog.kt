@@ -96,6 +96,8 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                 val address = getCurrentAddress(context!!, latLng)
                 if (address.isNotEmpty()) mViewModel.pickupLocation.value = address[0].getAddressLine(0)
             }
+
+
             mViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
 

@@ -2,11 +2,11 @@
 <resources>
 
     <style name="Bold">
-        <item name="fontFamily">@font/avenirltstd_medium</item>
+        <item name="fontFamily">@font/pacifico</item>
     </style>
 
     <style name="Plain">
-        <item name="fontFamily">@font/avenirltstd_roman</item>
+        <item name="fontFamily">@font/pacifico</item>
     </style>
 
     <style name="MediumText.Plain" parent="@android:style/TextAppearance.Medium">

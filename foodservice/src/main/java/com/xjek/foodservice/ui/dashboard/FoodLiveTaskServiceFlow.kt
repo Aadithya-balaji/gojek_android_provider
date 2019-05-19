@@ -112,7 +112,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     private fun checkRequestResponse() {
         foodLiveTaskviewModel.foodieCheckRequestModel.observe(this, Observer {
             foodLiveTaskviewModel.showLoading.value = false
-            if (it?.responseData != null && it.responseData.requests!=null) {
+            if (it?.responseData != null && it.responseData.requests != null) {
                 if (currentStatus != it.responseData.requests.status) {
                     currentStatus = it.responseData.requests.status
                     when (it.responseData.requests.status) {
@@ -190,7 +190,8 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     }
 
     private fun setUserLocDetails() {
-        Glide.with(baseContext).load(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture).into(resturant_image)
+        Glide.with(baseContext).load(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
+                .placeholder(R.drawable.foodie_profile_placeholder).into(resturant_image)
         loc_name_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name +
                 foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name
         loc_address_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.street
@@ -220,7 +221,8 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     }
 
     private fun setRestaurantDetails() {
-        Glide.with(baseContext).load(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.picture).into(resturant_image)
+        Glide.with(baseContext).load(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.picture)
+                .placeholder(R.drawable.foodie_profile_placeholder).into(resturant_image)
         loc_name_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_name
         loc_address_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_location
     }
@@ -324,7 +326,7 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             getString(R.string.order_delivered) -> {
                 val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
                         foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
-                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.id,
+                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toInt(),
                         foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable
                 )
                 otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
@@ -333,7 +335,8 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             getString(R.string.payment_received) -> {
                 val bundle = Bundle()
                 bundle.putString("id", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toString())
-                bundle.putString("profileImg", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture.toString())
+                if (foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture != null)
+                    bundle.putString("profileImg", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture.toString())
                 bundle.putString("name", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
                         foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name)
                 bundle.putString("bookingID", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id)

@@ -1,5 +1,6 @@
 package com.xjek.provider.models
 
+import com.xjek.foodservice.model.Pickup
 import java.io.Serializable
 
 data class CheckRequestModel(
@@ -92,6 +93,7 @@ data class Request(
         var status: String = "",
         var time_left_to_respond: Int = 0,
         var user: User = User(),
+        var pickup: Pickup = Pickup(),
         var user_id: Int = 0
 ) : Serializable
 

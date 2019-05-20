@@ -22,7 +22,7 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
-import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
+import com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
@@ -129,7 +129,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                     incomingRequestModel!!.responseData.requests[0].admin_service_id == 3 ->
                         activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
                     incomingRequestModel!!.responseData.requests[0].admin_service_id == 2 ->
-                        activity!!.startActivity(Intent(activity, FoodLiveTaskServiceFlow::class.java))
+                        activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
                     else -> activity!!.startActivity(Intent(activity,
                             Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity")))
                 }

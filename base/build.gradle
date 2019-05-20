@@ -17,10 +17,10 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         //      Go-X official KEY
-        resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
+//        resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
         //      Temp Key
 //        resValue("string", "google_map_key", "AIzaSyArFGZVGMsdJvHRezGfYMv-pkvvl0XKZLE")
-//        resValue("string", "google_map_key", "AIzaSyCZybR1LjXmLugPxvVyXpn173am_JYpdN4")
+        resValue("string", "google_map_key", "AIzaSyCZybR1LjXmLugPxvVyXpn173am_JYpdN4")
 
     }
     buildTypes {

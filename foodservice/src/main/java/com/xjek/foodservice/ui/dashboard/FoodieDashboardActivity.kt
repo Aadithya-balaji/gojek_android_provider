@@ -9,6 +9,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.RequiresApi
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
+import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.utils.ViewUtils
 import com.xjek.foodservice.R
@@ -32,56 +34,52 @@ import com.xjek.foodservice.ui.rating.FoodieRatingFragment
 import com.xjek.foodservice.ui.verifyotp.FoodieVerifyOtpDialog
 import kotlinx.android.synthetic.main.activty_livetask_laoyut.*
 
-class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), FoodLiveTaskServiceNavigator {
+class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), FoodLiveTaskServiceNavigator {
 
     lateinit var mViewDataBinding: ActivtyLivetaskLaoyutBinding
     var i = 0
     override fun getLayoutId(): Int = R.layout.activty_livetask_laoyut
-    private lateinit var foodLiveTaskviewModel: FoodLiveTaskServiceViewModel
+    private lateinit var mViewModel: FoodLiveTaskServiceViewModel
     var currentStatus = ""
     var showingStoreDetail = true
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivtyLivetaskLaoyutBinding
-        foodLiveTaskviewModel = ViewModelProviders.of(this).get(FoodLiveTaskServiceViewModel::class.java)
-        mViewDataBinding.foodLiveTaskviewModel = foodLiveTaskviewModel
+        mViewModel = ViewModelProviders.of(this).get(FoodLiveTaskServiceViewModel::class.java)
+        mViewDataBinding.foodLiveTaskviewModel = mViewModel
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this, listOf())
-        foodLiveTaskviewModel.navigator = this
+        mViewModel.navigator = this
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
-        foodLiveTaskviewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        foodLiveTaskviewModel.showLoading.value = true
+        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        mViewModel.showLoading.value = true
         checkRequestResponse()
         checkRatingReq()
         call_img.setOnClickListener {
-            var phoneNumber = ""
-            if (showingStoreDetail)
-                phoneNumber = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.contact_number
+            val phoneNumber = if (showingStoreDetail)
+                mViewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.contact_number
             else
-                phoneNumber = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.mobile
+                mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.mobile
             if (phoneNumber.isNotEmpty()) {
-                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber)))
-            } else {
-                ViewUtils.showToast(this, getString(R.string.no_valid_mobile), false)
-            }
+                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber")))
+            } else ViewUtils.showToast(this, getString(R.string.no_valid_mobile), false)
         }
         loc_txt.setOnClickListener {
-            var latitude = ""
-            var longitude = ""
+            val latitude: String
+            val longitude: String
             if (showingStoreDetail) {
-                latitude = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.latitude
-                longitude = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.longitude
+                latitude = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.latitude
+                longitude = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.longitude
             } else {
-                latitude = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.latitude
-                longitude = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.longitude
+                latitude = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.latitude
+                longitude = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.longitude
             }
             if (latitude.isNotEmpty() && longitude.isNotEmpty()) {
-                val intent = Intent(Intent.ACTION_VIEW,
-                        Uri.parse("http://maps.google.com/maps?saddr=" + foodLiveTaskviewModel.latitude.value + "," + foodLiveTaskviewModel.longitude.value +
-                                "&daddr=" + latitude + "," + longitude))
+                val url = "http://maps.google.com/maps?saddr=" + mViewModel.latitude.value + "," +
+                        mViewModel.longitude.value + "&daddr=" + latitude + "," + longitude
+                println("RRR :: Navigation url = $url")
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                 startActivity(intent)
-            } else {
-                ViewUtils.showToast(this, getString(R.string.no_valid_loction), false)
-            }
+            } else ViewUtils.showToast(this, getString(R.string.no_valid_loction), false)
         }
     }
 
@@ -93,28 +91,25 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         override fun onReceive(contxt: Context?, intent: Intent?) {
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             if (location != null) {
-                foodLiveTaskviewModel.latitude.value = location.latitude
-                foodLiveTaskviewModel.longitude.value = location.longitude
+                mViewModel.latitude.value = location.latitude
+                mViewModel.longitude.value = location.longitude
                 if (location.latitude != 0.0 && location.longitude != 0.0)
-                    foodLiveTaskviewModel.callFoodieCheckRequest()
-                else
-                    loadingObservable.value = false
+                    mViewModel.callFoodieCheckRequest()
+                else loadingObservable.value = false
             }
         }
     }
 
     private fun checkRatingReq() {
-        foodLiveTaskviewModel.foodieRatingRequestModel.observe(this, Observer {
-            foodLiveTaskviewModel.showLoading.value = false
-            if (it?.responseData != null && it.responseData.isEmpty()) {
-                finish()
-            }
+        mViewModel.foodieRatingRequestModel.observe(this, Observer {
+            mViewModel.showLoading.value = false
+            if (it?.responseData != null && it.responseData.isEmpty()) finish()
         })
     }
 
     private fun checkRequestResponse() {
-        foodLiveTaskviewModel.foodieCheckRequestModel.observe(this, Observer {
-            foodLiveTaskviewModel.showLoading.value = false
+        mViewModel.foodieCheckRequestModel.observe(this, Observer {
+            mViewModel.showLoading.value = false
             if (it?.responseData != null && it.responseData.requests != null) {
                 if (currentStatus != it.responseData.requests.status) {
                     currentStatus = it.responseData.requests.status
@@ -126,18 +121,17 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                         "COMPLETED" -> whenPaid()
                     }
                 }
-            } else {
-                finish()
-            }
+            } else finish()
         })
     }
 
     private fun whenPaid() {
         changeToFlowIconView(true)
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, true)
         setOrderId()
         setUserLocDetails()
         setItemsPricing()
-        setPaymentDetails(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
+        setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
         mViewDataBinding.orderStatusBtn.text = getString(R.string.payment_received)
 
         mViewDataBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
@@ -162,10 +156,11 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
 
     private fun whenPickedUp() {
         changeToFlowIconView(true)
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, true)
         setOrderId()
         setUserLocDetails()
         setItemsPricing()
-        setPaymentDetails(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
+        setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
 
         mViewDataBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
         mViewDataBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
@@ -180,11 +175,12 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     }
 
     private fun whenReached() {
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
         changeToFlowIconView(true)
         setOrderId()
         setUserLocDetails()
         setItemsPricing()
-        setPaymentDetails(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
+        setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
         mViewDataBinding.orderStatusBtn.text = getString(R.string.order_picked_up)
         mViewDataBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
         mViewDataBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
@@ -193,45 +189,47 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     }
 
     private fun setUserLocDetails() {
-        Glide.with(baseContext).load(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
+        Glide.with(baseContext).load(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
                 .placeholder(R.drawable.foodie_profile_placeholder).into(resturant_image)
-        loc_name_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
-                foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name
-        loc_address_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address
+        loc_name_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
+                mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name
+        loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address
     }
 
     private fun whenProcessing() {
         changeToFlowIconView(false)
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
         setOrderId()
         setRestaurantDetails()
         setItemsPricing()
-        setPaymentDetails(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
+        setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
         showingStoreDetail = true
     }
 
     private fun whenStared() {
         changeToFlowIconView(true)
+        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
         setOrderId()
         setRestaurantDetails()
         setItemsPricing()
-        setPaymentDetails(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
+        setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
         showingStoreDetail = true
     }
 
     private fun setOrderId() {
-        top_trnx_id.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id
-        order_id_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id
+        top_trnx_id.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id
+        order_id_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id
     }
 
     private fun setRestaurantDetails() {
-        Glide.with(baseContext).load(foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.picture)
+        Glide.with(baseContext).load(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.picture)
                 .placeholder(R.drawable.foodie_profile_placeholder).into(resturant_image)
-        loc_name_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_name
-        loc_address_tv.text = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_location
+        loc_name_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_name
+        loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_location
     }
 
     private fun setItemsPricing() {
-        mViewDataBinding.orderItemListAdpter!!.itemList = foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.items
+        mViewDataBinding.orderItemListAdpter!!.itemList = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.items
         mViewDataBinding.orderItemListAdpter!!.notifyDataSetChanged()
     }
 
@@ -318,31 +316,32 @@ class FoodLiveTaskServiceFlow : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     override fun checkOrderDeliverStatus() {
         when (order_status_btn.text) {
             getString(R.string.started_towards_restaturant) -> {
-                foodLiveTaskviewModel.callFoodieUpdateRequest("STARTED")
+                mViewModel.callFoodieUpdateRequest("STARTED")
             }
             getString(R.string.reached_restaurant) -> {
-                foodLiveTaskviewModel.callFoodieUpdateRequest("REACHED")
+                mViewModel.callFoodieUpdateRequest("REACHED")
             }
             getString(R.string.order_picked_up) -> {
-                foodLiveTaskviewModel.callFoodieUpdateRequest("PICKEDUP")
+                mViewModel.callFoodieUpdateRequest("PICKEDUP")
             }
             getString(R.string.order_delivered) -> {
                 val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
-                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
-                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toInt(),
-                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable
+                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
+                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toInt(),
+                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable
                 )
                 otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
                 otpDialogFragment.isCancelable = false
             }
             getString(R.string.payment_received) -> {
+                writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
                 val bundle = Bundle()
-                bundle.putString("id", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toString())
-                if (foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture != null)
-                    bundle.putString("profileImg", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture.toString())
-                bundle.putString("name", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
-                        foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name)
-                bundle.putString("bookingID", foodLiveTaskviewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id)
+                bundle.putString("id", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id)
+                if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture != null)
+                    bundle.putString("profileImg", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture.toString())
+                bundle.putString("name", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
+                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name)
+                bundle.putString("bookingID", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id)
                 val ratingFragment = FoodieRatingFragment(bundle)
                 ratingFragment.show(supportFragmentManager, "rating")
                 ratingFragment.isCancelable = false

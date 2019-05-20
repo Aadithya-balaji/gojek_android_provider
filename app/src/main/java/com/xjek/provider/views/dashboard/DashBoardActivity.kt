@@ -45,7 +45,7 @@ import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
-import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
+import com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityDashboardBinding
 import com.xjek.provider.views.account.AccountFragment
@@ -261,7 +261,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             ORDER -> {
                                 BROADCAST = ORDER
                                 if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                    val intent = Intent(this, FoodLiveTaskServiceFlow::class.java)
+                                    val intent = Intent(this, FoodieDashboardActivity::class.java)
                                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                     startActivity(intent)
                                 }

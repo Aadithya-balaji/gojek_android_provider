@@ -2,7 +2,7 @@
     package="com.xjek.foodservice" >
 
     <application>
-        <activity android:name="com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow"
+        <activity android:name="com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity"
             android:screenOrientation="portrait"/>
     </application>
 

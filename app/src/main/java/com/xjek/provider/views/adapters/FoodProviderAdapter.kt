@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
+import com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.RowFoodproviderItemBinding
 
@@ -23,7 +23,7 @@ class FoodProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<Fo
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         holder.rowFoodproviderItemBinding.tvApprove.setOnClickListener() {
-            activity!!.startActivity(Intent(activity, FoodLiveTaskServiceFlow::class.java))
+            activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
         }
 
     }

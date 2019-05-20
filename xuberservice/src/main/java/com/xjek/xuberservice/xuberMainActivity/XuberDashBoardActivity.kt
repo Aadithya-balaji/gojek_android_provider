@@ -398,7 +398,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun polyLineRerouting(point: LatLng, polyLine: ArrayList<LatLng>) {
-        val index = polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 10.0)
+        val index = polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 50.0)
         if (index >= 0) {
             polyLine.subList(0, index + 1).clear()
 //            polyLine.add(0, point)

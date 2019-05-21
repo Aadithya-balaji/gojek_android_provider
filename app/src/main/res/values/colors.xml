@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <color name="colorPrimary">#2676bc</color>
+    <color name="colorPrimary">#2676BC</color>
     <color name="colorPrimaryDark">#2676bc</color>
-    <color name="colorAccent">#2676bc</color>
+    <color name="colorAccent">#2676BC</color>
     <color name="app_background_color">#f2f2f2</color>
 
     <!--Background Colors-->
@@ -47,7 +47,7 @@
     <color name="et_text_color">#888888</color>
 
     <!-- Dashboard -->
-    <color name="card_left_bg">#364bea</color>
+    <color name="card_left_bg">#2676bc</color>
     <color name="home_reject">#d43d59</color>
 
     <!-- Orders -->

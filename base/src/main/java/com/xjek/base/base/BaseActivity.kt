@@ -53,7 +53,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
-    val loadingObservable: MutableLiveData<*> get() = loadingLiveData
+    val loadingObservable: MutableLiveData<Boolean>
+        get() = loadingLiveData
 
     protected val isNetworkConnected: Boolean get() = NetworkUtils.isNetworkConnected(applicationContext)
 

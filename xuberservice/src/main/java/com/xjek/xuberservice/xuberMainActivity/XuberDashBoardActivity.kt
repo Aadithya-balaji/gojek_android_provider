@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.RideStatus.ACCEPTED
 import com.xjek.base.data.Constants.RideStatus.ARRIVED
@@ -51,7 +52,6 @@ import com.xjek.base.data.Constants.XuperProvider.CANCEL
 import com.xjek.base.data.Constants.XuperProvider.START
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
-import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.socket.SocketListener
@@ -382,7 +382,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     Log.e("SOCKET", "SOCKET_SK Location update service called")
                 }
 
-                if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) {
+                if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
                     if (startLatLng.latitude > 0) endLatLng = startLatLng
                     startLatLng = LatLng(location.latitude, location.longitude)
 
@@ -496,8 +496,8 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     //When ride arrived
     private fun whenArrived() {
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
-        if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) edtXuperOtp.visibility = View.VISIBLE
-        else if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) edtXuperOtp.visibility = View.GONE
+        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.VISIBLE
+        else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.GONE
         mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvAllow.text = START
@@ -553,12 +553,12 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             R.id.tvAllow -> {
                 when (mBinding.llBottomService.llConfirm.tvAllow.text) {
                     ARRIVED -> {
-                        if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) edtXuperOtp.visibility = View.VISIBLE
-                        else if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) edtXuperOtp.visibility = View.GONE
+                        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.VISIBLE
+                        else edtXuperOtp.visibility = View.GONE
                         mViewModel.updateRequest(ARRIVED, null, false)
                     }
 
-                    START -> if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) {
+                    START -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
                         when {
                             mViewModel.otp.value.isNullOrEmpty() ->
                                 ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)

@@ -219,7 +219,7 @@
 
     <!--Add Vehicle Screen-->
     <string name="title_add_vehicle">Add Vehicle</string>
-    <string name="hint_car_category">Car Category</string>
+    <string name="hint_car_category">Vehicle Category</string>
     <string name="hint_vehicle_model">Vehicle Model</string>
     <string name="hint_vehicle_year">Vehicle Year</string>
     <string name="hint_vehicle_color">Vehicle Color</string>

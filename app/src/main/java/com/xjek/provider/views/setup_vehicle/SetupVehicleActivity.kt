@@ -54,8 +54,12 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
     private fun setupVehicle() {
         loadingObservable.value = true
         when (viewModel.getServiceId()) {
-            viewModel.getTransportId() -> viewModel.getRides()
-            viewModel.getOrderId() -> viewModel.getShops()
+            viewModel.getTransportId() -> {
+                viewModel.getRides()
+            }
+            viewModel.getOrderId() -> {
+                viewModel.getShops()
+            }
             else -> loadingObservable.value = false
         }
     }
@@ -70,6 +74,11 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             intent.putExtra(Constant.CATEGORY_ID, providerService.responseData[position].id)
         else if (providerService is SetupShopResponseModel)
             intent.putExtra(Constant.CATEGORY_ID, providerService.responseData[position].id)
+
+        if (providerService is SetupRideResponseModel && providerService.responseData[position].serviceList.isNotEmpty()) {
+            intent.putExtra(Constant.TRANSPORT_VEHICLES,
+                    ArrayList(providerService.responseData[position].serviceList))
+        }
 
         if (providerService is SetupRideResponseModel && providerService.responseData[position].providerService != null) {
             intent.putExtra(Constant.PROVIDER_TRANSPORT_VEHICLE,

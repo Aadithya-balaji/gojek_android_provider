@@ -44,6 +44,7 @@
         android:contentDescription="@string/app_name"
         android:gravity="center"
         android:padding="10dp"
+        android:scaleType="centerCrop"
         android:src="@drawable/app_logo"
         android:textColor="@color/xuber_black"
         android:textSize="18sp"

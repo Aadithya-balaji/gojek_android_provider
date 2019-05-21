@@ -1,6 +1,7 @@
 package com.xjek.provider.views.setup_vehicle
 
 import androidx.lifecycle.MutableLiveData
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
@@ -12,14 +13,14 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
 
     private val appRepository = AppRepository.instance()
     private val vehicleLiveData = MutableLiveData<Any>()
-    private val transportId: Int = readPreferences(PreferencesKey.TRANSPORT_ID)
-    private val orderId: Int = readPreferences(PreferencesKey.ORDER_ID)
+    private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID,1)
+    private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID,2)
 
     private var serviceId: Int = -1
     private val adapter: SetupVehicleAdapter = SetupVehicleAdapter(this)
 
+    //TODO preference issue
     fun getTransportId() = transportId
-
     fun getOrderId() = orderId
 
     fun setServiceId(serviceId: Int) {
@@ -39,8 +40,8 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
             0
         else {
             when (serviceId) {
-                readPreferences<Int>(PreferencesKey.TRANSPORT_ID) -> (vehicleLiveData.value as SetupRideResponseModel).responseData.size
-                readPreferences<Int>(PreferencesKey.ORDER_ID) -> (vehicleLiveData.value as SetupShopResponseModel).responseData.size
+                transportId -> (vehicleLiveData.value as SetupRideResponseModel).responseData.size
+                orderId -> (vehicleLiveData.value as SetupShopResponseModel).responseData.size
                 else -> 0
             }
         }

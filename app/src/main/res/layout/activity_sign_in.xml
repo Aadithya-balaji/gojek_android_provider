@@ -27,11 +27,10 @@
 
             <ImageView
                 android:id="@+id/toplayout_applogo"
-                android:layout_width="70dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/app_logo"
                 android:contentDescription="@string/app_name" />
 
@@ -134,7 +133,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/countrycode_register_et"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="@dimen/_40sdp"
                                     android:drawableStart="@drawable/ic_us"
                                     android:drawablePadding="1dp"
                                     android:focusable="false"
@@ -167,7 +166,7 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/phonenumber_register_et"
                                     android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
+                                    android:layout_height="@dimen/_40sdp"
                                     android:inputType="number"
                                     android:maxLines="1"
                                     android:paddingStart="20dp"
@@ -187,7 +186,7 @@
                             android:id="@+id/til_email_"
                             style="@style/Edittext_OutlinedTheme"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginLeft="8dp"
                             android:layout_marginTop="8dp"
                             android:layout_marginRight="8dp"
@@ -198,7 +197,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/emailid_register_et"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="@dimen/_40sdp"
                                 android:maxLines="1"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
@@ -224,7 +223,7 @@
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/password_register_et"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="@dimen/_40sdp"
                                 android:drawableEnd="@drawable/ic_iconfinder_icons_view"
                                 android:drawablePadding="@dimen/_3sdp"
                                 android:imeOptions="actionGo"

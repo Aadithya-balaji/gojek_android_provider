@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
@@ -52,6 +53,7 @@ import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.CAN_SAVE_LOCATION
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
@@ -127,7 +129,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        //mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        observeLiveData(mViewModel.showLoading){
+            loadingObservable.value = it
+        }
 
         ibNavigation.setOnClickListener {
             openGoogleNavigation()
@@ -434,7 +439,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_picked_up.setOnClickListener {
-            if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) {
+            if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
                 if (!isWaitingTime!!) {
                     val otpDialogFragment = VerifyOtpDialog.newInstance(
                             responseData.request.otp,

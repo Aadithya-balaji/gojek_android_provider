@@ -66,10 +66,10 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         resultIntent.putExtra("countryFlag", R.drawable.flag_in)
         handleCountryCodePickerResult(resultIntent)
 
-        if (BuildConfig.DEBUG) {
+        /*if (BuildConfig.DEBUG) {
             viewModel.email.value = "toni@yopmail.com"
             viewModel.password.value = "112233"
-        }
+        }*/
     }
 
     private fun observeViewModel() {

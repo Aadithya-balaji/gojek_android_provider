@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.Marker
 
 class CarMarkerAnimUtil {
 
-    fun carAnim(marker: Marker, start: LatLng, end: LatLng) {
+    fun carAnimWithBearing(marker: Marker, start: LatLng, end: LatLng) {
         val valueAnimator = ValueAnimator.ofFloat(0F, 1F)
         valueAnimator.duration = 1900
         val latLngInterpolator = LatLngInterpolatorNew.LinearFixed()
@@ -19,6 +19,21 @@ class CarMarkerAnimUtil {
             marker.position = newPos
             marker.setAnchor(0.5f, 0.5f)
             marker.rotation = bearingBetweenLocations(start, end).toFloat()
+        }
+        valueAnimator.start()
+    }
+
+    fun carAnim(marker: Marker, start: LatLng, end: LatLng) {
+        val valueAnimator = ValueAnimator.ofFloat(0F, 1F)
+        valueAnimator.duration = 1900
+        val latLngInterpolator = LatLngInterpolatorNew.LinearFixed()
+        valueAnimator.interpolator = LinearInterpolator()
+        valueAnimator.addUpdateListener { valueAnimator1 ->
+            val v = valueAnimator1.animatedFraction
+            val newPos = latLngInterpolator.interpolate(v, start, end)
+            marker.position = newPos
+            marker.setAnchor(0.5f, 0.5f)
+            marker.rotation = 0.0F
         }
         valueAnimator.start()
     }

@@ -23,6 +23,7 @@ import com.stripe.android.Stripe
 import com.stripe.android.TokenCallback
 import com.stripe.android.model.Card
 import com.stripe.android.model.Token
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.observeLiveData
@@ -55,7 +56,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     private var paymentList: List<ConfigResponseModel.ResponseData.AppSetting.Payments>? = null
 
     companion object {
-        var loadingProgress: MutableLiveData<Boolean>? = null
+        var loadingProgress: MutableLiveData<Boolean> = MutableLiveData()
     }
 
 
@@ -74,7 +75,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         // flexboxLayoutManager.justifyContent = JustifyContent.SPACE_BETWEEN
         rvPaymentModes = activity!!.findViewById(R.id.rv_payment_modes)
         val paytypes = object : TypeToken<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>() {}.type
-        paymentList = Gson().fromJson<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>(readPreferences<String>(PreferencesKey.PAYMENT_LIST), paytypes)
+        paymentList = Gson().fromJson<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST,""), paytypes)
         rvPaymentModes.apply {
             layoutManager = flexboxLayoutManager
             addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.rv_space).toInt()))
@@ -82,8 +83,17 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         }
         fragmentWalletBinding.edtAmount.addTextChangedListener(EditListener())
         val activity: ManagePaymentActivity = activity as ManagePaymentActivity
-        loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
-        walletViewModel.showLoading = loadingProgress as MutableLiveData<Boolean>
+        //loadingProgress = activity.loadingObservable as MutableLiveData<Boolean>
+
+        observeLiveData(loadingProgress){
+            loadingObservable.value = it
+        }
+
+        observeLiveData(walletViewModel.showLoading){
+            loadingProgress.value = it
+        }
+
+
         walletViewModel.getCardList()
         getApiRespoonse()
     }
@@ -207,7 +217,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
             card.name = mCardHolderName
             if (card.validateNumber() && card.validateCVC()) {
                 loadingProgress?.value = true
-                val stripe = Stripe(activity!!, readPreferences(PreferencesKey.STRIPE_KEY,""))
+                val stripe = Stripe(activity!!, BaseApplication.getCustomPreference!!.getString(PreferencesKey.STRIPE_KEY,""))
                 stripe.createToken(
                         card,
                         object : TokenCallback {

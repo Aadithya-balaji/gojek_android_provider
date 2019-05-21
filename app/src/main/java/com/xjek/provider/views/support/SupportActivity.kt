@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.databinding.ViewDataBinding
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.provider.R
@@ -34,7 +35,7 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
         }
 
 
-        val baseApiResponseString: String = preference.get(PreferencesKey.BASE_CONFIG_RESPONSE, "")!! as String
+        val baseApiResponseString: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.BASE_CONFIG_RESPONSE, "")!! as String
         val baseApiResponsedata: ConfigResponseModel.ResponseData = Gson().fromJson<ConfigResponseModel.ResponseData>(baseApiResponseString, ConfigResponseModel.ResponseData::class.java)
         supportDetails = baseApiResponsedata.appSetting.supportDetails
 

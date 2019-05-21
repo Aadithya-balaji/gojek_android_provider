@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.data.Constants
 import com.xjek.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
@@ -52,6 +53,7 @@ import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.CAN_SAVE_LOCATION
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
@@ -127,7 +129,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        //mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        observeLiveData(mViewModel.showLoading){
+            loadingObservable.value = it
+        }
 
         ibNavigation.setOnClickListener {
             openGoogleNavigation()
@@ -178,7 +183,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     @SuppressLint("MissingPermission")
-    private fun updateCurrentLocation() {
+    override fun updateCurrentLocation() {
         runOnUiThread {
             mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
             mGoogleMap!!.uiSettings.isCompassEnabled = true
@@ -384,7 +389,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val lat = responseData.request.s_latitude
             val lon = responseData.request.s_longitude
             val latLng: com.google.maps.model.LatLng?
-            latLng = com.google.maps.model.LatLng(lat, lon)
+            latLng = com.google.maps.model.LatLng(lat!!, lon!!)
             val address = getCurrentAddress(this, latLng)
             if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
         }
@@ -400,7 +405,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                LatLng(responseData.request.s_latitude, responseData.request.s_longitude))
+                LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!))
     }
 
     private fun whenStatusArrived(responseData: ResponseData) {
@@ -428,17 +433,17 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val lat = responseData.request.s_latitude
             val lon = responseData.request.s_longitude
             val latLng: com.google.maps.model.LatLng?
-            latLng = com.google.maps.model.LatLng(lat, lon)
+            latLng = com.google.maps.model.LatLng(lat!!, lon!!)
             val address = getCurrentAddress(this, latLng)
             if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
         }
 
         btn_picked_up.setOnClickListener {
-            if (readPreferences(PreferencesKey.SHOW_OTP, false)!!) {
+            if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
                 if (!isWaitingTime!!) {
                     val otpDialogFragment = VerifyOtpDialog.newInstance(
                             responseData.request.otp,
-                            responseData.request.id
+                            responseData.request.id!!
                     )
                     otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
                 } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
@@ -452,7 +457,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                LatLng(responseData.request.s_latitude, responseData.request.s_longitude))
+                LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!))
     }
 
     private fun whenStatusPickedUp(responseData: ResponseData) {
@@ -489,7 +494,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val lat = responseData.request.d_latitude
             val lon = responseData.request.d_longitude
             val latLng: com.google.maps.model.LatLng?
-            latLng = com.google.maps.model.LatLng(lat, lon)
+            latLng = com.google.maps.model.LatLng(lat!!, lon!!)
             val address = getCurrentAddress(this, latLng)
             if (address.isNotEmpty()) tv_user_address_one.text = address[0].getAddressLine(0)
         }
@@ -517,8 +522,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             }) else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
         }
 
-        drawRoute(LatLng(responseData.request.s_latitude, responseData.request.s_longitude),
-                LatLng(responseData.request.d_latitude, responseData.request.d_longitude))
+        drawRoute(LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!),
+                LatLng(responseData.request.d_latitude!!, responseData.request.d_longitude!!))
     }
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
@@ -552,16 +557,26 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     Log.e("SOCKET", "SOCKET_SK Location update called")
                 }
 
-                if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
+                if (checkStatusApiCounter++ % 3 == 0)
+                    if (location.latitude > 0 && location.longitude > 0) {
+                        mViewModel.callTaxiCheckStatusAPI()
+                    } else updateCurrentLocation()
 
                 if (startLatLng.latitude > 0) endLatLng = startLatLng
                 startLatLng = LatLng(location.latitude, location.longitude)
 
                 println("RRRR :: TaxiDashboardActivity LatLng(location = ${LatLng(location.latitude, location.longitude)}")
 
-                if (endLatLng.latitude > 0 && polyLine.size > 0) try {
-                    CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
-                    polyLineRerouting(endLatLng, polyLine)
+                if (endLatLng.latitude > 0 && polyLine.size > 0) {
+                    try {
+                        CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, endLatLng, startLatLng)
+                        polyLineRerouting(endLatLng, polyLine)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                } else if (mViewModel.latitude.value!! > 0 && polyLine.size == 0) try {
+                    drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
+                            mViewModel.polyLineDest.value!!)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -622,11 +637,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
 
-            CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
+            CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, polyLine[0], polyLine[1])
 
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
-        }catch (e:java.lang.Exception){
+        } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
 

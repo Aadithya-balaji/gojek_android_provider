@@ -10,5 +10,6 @@ interface DashBoardNavigator {
     fun updateLocation(isTrue: Boolean)
     fun showErrorMessage(s: String)
     fun getInstance(): DashBoardActivity
+    fun updateCurrentLocation()
 }
 

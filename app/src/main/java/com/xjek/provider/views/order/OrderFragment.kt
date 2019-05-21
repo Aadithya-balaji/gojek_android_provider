@@ -1,22 +1,19 @@
 package com.xjek.provider.views.order
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
-import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FilterDialogBinding
 import com.xjek.provider.databinding.FragmentOrderBinding
@@ -51,11 +48,13 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
         orderFragmentViewModel.navigator = this
         this.mViewDataBinding.orderfragmentviewmodel = orderFragmentViewModel
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.container_order, PastOrderFragment())?.commit()
-        val baseApiResponseString: String = readPreferences(PreferencesKey.BASE_CONFIG_RESPONSE, "")!! as String
-        val baseApiResponsedata: ConfigResponseModel.ResponseData = Gson().fromJson<ConfigResponseModel.ResponseData>(baseApiResponseString
-                , ConfigResponseModel.ResponseData::class.java)
-        selectedServiceTypeID=baseApiResponsedata.services.get(0).id
-        filterServiceListName = baseApiResponsedata.services
+        val baseApiResponseString: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.BASE_CONFIG_RESPONSE, "")!! as String
+        if(!baseApiResponseString.isNullOrEmpty()){
+            val baseApiResponsedata: ConfigResponseModel.ResponseData = Gson().fromJson<ConfigResponseModel.ResponseData>(baseApiResponseString
+                    , ConfigResponseModel.ResponseData::class.java)
+            selectedServiceTypeID = baseApiResponsedata.services.get(0).id
+            filterServiceListName = baseApiResponsedata.services
+        }
 
     }
 
@@ -97,18 +96,19 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
     }
 
     override fun opeFilterlayout() {
-        val view = DataBindingUtil.inflate<FilterDialogBinding>(LayoutInflater.from(context), R.layout.filter_dialog, null, false)
-        val filterServiceAdapter= FilterServiceListAdapter(dashboardViewModel, filterServiceListName,this,selectedServiceTypeID!!)
-        view.filterServiceListAdapter=filterServiceAdapter
-        val dialog = BottomSheetDialog(activity!!)
-        dialog.setContentView(view.root)
-        dialog.show()
-        view.applyFilter.setOnClickListener(View.OnClickListener {
-            mViewDataBinding.serviceNameToolbarTv.setText(dashboardViewModel.selectedFilterService.value)
-            dashboardViewModel.selectedFilterService.value=selectedService
-            dialog.dismiss()
-        })
-
+        if (!filterServiceListName.isNullOrEmpty()) {
+            val view = DataBindingUtil.inflate<FilterDialogBinding>(LayoutInflater.from(context), R.layout.filter_dialog, null, false)
+            val filterServiceAdapter = FilterServiceListAdapter(dashboardViewModel, filterServiceListName, this, selectedServiceTypeID!!)
+            view.filterServiceListAdapter = filterServiceAdapter
+            val dialog = BottomSheetDialog(activity!!)
+            dialog.setContentView(view.root)
+            dialog.show()
+            view.applyFilter.setOnClickListener(View.OnClickListener {
+                mViewDataBinding.serviceNameToolbarTv.setText(dashboardViewModel.selectedFilterService.value)
+                dashboardViewModel.selectedFilterService.value = selectedService
+                dialog.dismiss()
+            })
+        }
     }
 
 

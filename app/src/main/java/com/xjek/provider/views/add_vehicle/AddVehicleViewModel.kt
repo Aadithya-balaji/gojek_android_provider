@@ -3,6 +3,7 @@ package com.xjek.provider.views.add_vehicle
 import android.net.Uri
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.createMultipartBody
@@ -22,8 +23,8 @@ import java.io.File
 class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     private val appRepository = AppRepository.instance()
-    private val transportId: Int = readPreferences(PreferencesKey.TRANSPORT_ID)
-    private val orderId: Int = readPreferences(PreferencesKey.ORDER_ID)
+    private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID,1)
+    private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID,2)
     private val vehicleCategoryLiveData = MutableLiveData<VehicleCategoryResponseModel>()
     private val vehicleResponseLiveData = MutableLiveData<AddVehicleResponseModel>()
 

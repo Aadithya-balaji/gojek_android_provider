@@ -1,14 +1,14 @@
 package com.xjek.provider.views.splash
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.util.Base64
 import android.util.Log
 import androidx.databinding.ViewDataBinding
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
-import com.xjek.base.BuildConfig
 import com.xjek.base.base.BaseActivity
 import com.xjek.base.base.BaseApplication
 import com.xjek.base.data.Constants.ModuleTypes.ORDER
@@ -34,7 +34,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     public override fun getLayoutId() = R.layout.activity_splash
 
-    private lateinit var mUrlPersistence: SharedPreferences
+    private lateinit var customPrefrence: SharedPreferences
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivitySplashBinding
@@ -47,34 +47,47 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
         viewModel.getConfig()
 
-        mUrlPersistence = BaseApplication.run { getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE) }
+        customPrefrence = BaseApplication.getCustomPreference!!!!
+
+        FirebaseInstanceId.getInstance().instanceId
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w("Tag", "getInstanceId failed", task.exception)
+                        return@OnCompleteListener
+                    }
+
+                    println("RRR :: token = ${task.result?.token}")
+//                    writePreferences(PreferencesKey.DEVICE_TOKEN, task.result?.token)
+                    customPrefrence.edit().putString(PreferencesKey.DEVICE_TOKEN,task.result?.token).apply()
+                })
     }
 
     @SuppressLint("CommitPrefEdits")
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
-            writePreferences("0", it.responseData.baseUrl + "/")
-            writePreferences(PreferencesKey.BASE_ID, "0")
+//            writePreferences("0", it.responseData.baseUrl + "/")
+            customPrefrence.edit().putString("0", it.responseData.baseUrl + "/").apply()
+            customPrefrence.edit().putString(PreferencesKey.BASE_ID, "0").apply()
 
             try {
-                writePreferences(PreferencesKey.SOS_NUMBER, it.responseData.appSetting.supportDetails.contactNumber[0].number)
-                if (it.responseData.appSetting.otpVerify == 0) writePreferences(PreferencesKey.SHOW_OTP, false)
-                else if (it.responseData.appSetting.otpVerify == 1) writePreferences(PreferencesKey.SHOW_OTP, true)
+                customPrefrence.edit().putString(PreferencesKey.SOS_NUMBER, it.responseData.appSetting.supportDetails.contactNumber[0].number).apply()
+                if (it.responseData.appSetting.otpVerify == 0) customPrefrence.edit().putBoolean(PreferencesKey.SHOW_OTP, false).apply()
+                else if (it.responseData.appSetting.otpVerify == 1) customPrefrence.edit().putBoolean(PreferencesKey.SHOW_OTP, true).apply()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
-            mUrlPersistence.run {
+            customPrefrence.run {
                 edit().putString(PreferencesKey.BASE_URL, it.responseData.baseUrl).apply()
             }
 
-            writePreferences(PreferencesKey.BASE_CONFIG_RESPONSE, Gson().toJson(it.responseData))
+            customPrefrence.edit().putString(PreferencesKey.BASE_CONFIG_RESPONSE, Gson().toJson(it.responseData)).apply()
 
             it.responseData.services.forEach { service ->
                 when (service.adminServiceName) {
-                    TRANSPORT -> mUrlPersistence.edit().putString(PreferencesKey.TRANSPORT_URL, service.baseUrl).apply()
-                    ORDER -> mUrlPersistence.edit().putString(PreferencesKey.ORDER_URL, service.baseUrl).apply()
-                    SERVICE -> mUrlPersistence.edit().putString(PreferencesKey.SERVICE_URL, service.baseUrl).apply()
+                    TRANSPORT -> customPrefrence.edit().putString(PreferencesKey.TRANSPORT_URL, service.baseUrl).apply()
+                    ORDER -> customPrefrence.edit().putString(PreferencesKey.ORDER_URL, service.baseUrl).apply()
+                    SERVICE -> customPrefrence.edit().putString(PreferencesKey.SERVICE_URL, service.baseUrl).apply()
                 }
             }
 
@@ -84,27 +97,27 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                     "card" -> {
                         for (j in 0 until it.responseData.appSetting.payments[i].credentials.size) {
                             val credential = it.responseData.appSetting.payments[i].credentials[j]
-                            if (credential.name.toLowerCase() == "stripe_publishable_key") writePreferences(PreferencesKey.STRIPE_KEY, credential.value)
+                            if (credential.name.toLowerCase() == "stripe_publishable_key") customPrefrence.edit().putString(PreferencesKey.STRIPE_KEY, credential.value).apply()
                         }
                     }
                 }
             }
 
-            writePreferences("0", it.responseData.baseUrl + "/")
-            writePreferences(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id)
-            writePreferences(it.responseData.services[0].id.toString(), it.responseData.services[0].baseUrl + "/")
-            writePreferences(PreferencesKey.ORDER_ID, it.responseData.services[1].id)
-            writePreferences(it.responseData.services[1].id.toString(), it.responseData.services[1].baseUrl + "/")
-            writePreferences(PreferencesKey.SERVICE_ID, it.responseData.services[2].id)
-            writePreferences(it.responseData.services[2].id.toString(), it.responseData.services[2].baseUrl + "/")
-            writePreferences(PreferencesKey.PRIVACY_POLICY, it.responseData.appSetting.cmsPage.privacyPolicy)
-            writePreferences(PreferencesKey.HELP, it.responseData.appSetting.cmsPage.help)
-            writePreferences(PreferencesKey.TERMS, it.responseData.appSetting.cmsPage.terms)
+            customPrefrence.edit().putString("0", it.responseData.baseUrl + "/").apply()
+            customPrefrence.edit().putInt(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id).apply()
+            customPrefrence.edit().putString(it.responseData.services[0].id.toString(), it.responseData.services[0].baseUrl + "/").apply()
+            customPrefrence.edit().putInt(PreferencesKey.ORDER_ID, it.responseData.services[1].id).apply()
+            customPrefrence.edit().putString(it.responseData.services[1].id.toString(), it.responseData.services[1].baseUrl + "/").apply()
+            customPrefrence.edit().putInt(PreferencesKey.SERVICE_ID, it.responseData.services[2].id).apply()
+            customPrefrence.edit().putString(it.responseData.services[2].id.toString(), it.responseData.services[2].baseUrl + "/").apply()
+            customPrefrence.edit().putString(PreferencesKey.PRIVACY_POLICY, it.responseData.appSetting.cmsPage.privacyPolicy).apply()
+            customPrefrence.edit().putString(PreferencesKey.HELP, it.responseData.appSetting.cmsPage.help).apply()
+            customPrefrence.edit().putString(PreferencesKey.TERMS, it.responseData.appSetting.cmsPage.terms).apply()
             val contactNumbers = hashSetOf<String>()
             for (contact in it.responseData.appSetting.supportDetails.contactNumber)
                 contactNumbers.add(contact.number)
             writePreferences(PreferencesKey.CONTACT_NUMBER, contactNumbers.toSet())
-            writePreferences(PreferencesKey.CONTACT_EMAIL, it.responseData.appSetting.supportDetails.contactEmail)
+            customPrefrence.edit().putString(PreferencesKey.CONTACT_EMAIL, it.responseData.appSetting.supportDetails.contactEmail).apply()
             setLanguage(it)
             setPayment(it)
             Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
@@ -115,8 +128,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     private fun setPayment(it: ConfigResponseModel) {
-        writePreferences(PreferencesKey.PAYMENT_LIST, Gson().toJson(it.responseData.appSetting.payments))
+        customPrefrence.edit().putString(PreferencesKey.PAYMENT_LIST, Gson().toJson(it.responseData.appSetting.payments)).apply()
     }
 
     private fun setLanguage(it: ConfigResponseModel) {

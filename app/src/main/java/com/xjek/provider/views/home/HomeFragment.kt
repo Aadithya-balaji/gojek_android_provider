@@ -104,11 +104,11 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 writePreferences(PROVIDER_ID, providerDetailsModel.id)
 
                 val verificationModel = VerificationModel()
-                verificationModel.isBankDetail = providerDetailsModel.is_bankdetail
-                verificationModel.isDocument = providerDetailsModel.is_document
-                verificationModel.isService = providerDetailsModel.is_service
+                verificationModel.isBankDetail = providerDetailsModel.is_bankdetail!!
+                verificationModel.isDocument = providerDetailsModel.is_document!!
+                verificationModel.isService = providerDetailsModel.is_service!!
                 verificationModel.providerStatus = checkStatusData.responseData.provider_details.status
-                verificationModel.providerWalletBalance = checkStatusData.responseData.provider_details.wallet_balance
+                verificationModel.providerWalletBalance = checkStatusData.responseData.provider_details.wallet_balance!!
                 Constant.verificationObservable.value = verificationModel
 
                 if (providerDetailsModel.is_online == 1) {

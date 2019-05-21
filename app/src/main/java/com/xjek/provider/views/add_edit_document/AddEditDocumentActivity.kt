@@ -46,7 +46,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     private lateinit var calendar: Calendar
 
     private var requestCode: Int = -1
-    private var frontFileDownloadID: Int = 0
+    private var frontFileDownloadID: Int? = 0
     private var backFileDownloadID: Int? = null
 
     override fun getLayoutId(): Int = R.layout.activity_add_edit_document

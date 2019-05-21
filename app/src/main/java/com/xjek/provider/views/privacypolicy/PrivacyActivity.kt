@@ -10,6 +10,7 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseActivity
+import com.xjek.base.extensions.observeLiveData
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityPrivacyPolicyBinding
 import com.xjek.provider.utils.Constant
@@ -43,7 +44,12 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivactyNa
             privacyBinding.wvPrivacy.setWebViewClient(WebClient())
         }
         privacyBinding.wvPrivacy.loadUrl(Constant.privacyPolicyUrl)
-        loadingProgress = loadingObservable as MutableLiveData<Boolean>
+        loadingProgress?.let {
+            observeLiveData(it){
+                loadingObservable.value = it
+            }
+        }
+        //loadingProgress = loadingObservable as MutableLiveData<Boolean>
 
     }
 

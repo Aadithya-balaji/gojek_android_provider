@@ -12,6 +12,8 @@ import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
 import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
@@ -27,11 +29,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
-import com.xjek.base.data.Constants
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
 import com.xjek.base.utils.LocaleUtils
@@ -51,11 +50,11 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private var locationRequest: LocationRequest? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
 
-
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
-    val loadingObservable: MutableLiveData<*> get() = loadingLiveData
+    val loadingObservable: MutableLiveData<Boolean>
+        get() = loadingLiveData
 
     protected val isNetworkConnected: Boolean get() = NetworkUtils.isNetworkConnected(applicationContext)
 
@@ -71,6 +70,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView(mViewDataBinding)
         context = this
@@ -155,11 +156,13 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     private fun checkGps() {
         locationRequest = LocationRequest.create()
-        locationRequest!!.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-        locationRequest!!.setInterval(1000)
-        locationRequest!!.setNumUpdates(1)
-        locationRequest!!.setFastestInterval((5 * 1000).toLong())
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED) {
+        locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest!!.interval = 1000
+        locationRequest!!.numUpdates = 1
+        locationRequest!!.fastestInterval = (5 * 1000).toLong()
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                !== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED) {
             return
         }
         val settingsBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
@@ -173,13 +176,13 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                     LocationSettingsStatusCodes.SUCCESS -> {
                         val permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                         if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-                           // mFusedLocationClient.requestLocationUpdates(locationRequest, getPendingIntent())
+                            // mFusedLocationClient.requestLocationUpdates(locationRequest, getPendingIntent())
                         }
                     }
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
                         val resolvableApiException = ex as ResolvableApiException
                         resolvableApiException.startResolutionForResult(context as Activity,
-                                        REQUEST_CHECK_SETTINGS_GPS)
+                                REQUEST_CHECK_SETTINGS_GPS)
                     } catch (e: IntentSender.SendIntentException) {
 
                     }
@@ -194,6 +197,5 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
    /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val strTesting="boopathi"
-        Log.e("Result","-------"+"BaseActivity")
     }*/
 }

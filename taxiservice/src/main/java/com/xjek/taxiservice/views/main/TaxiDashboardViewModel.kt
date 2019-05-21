@@ -7,7 +7,6 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
 import com.xjek.taxiservice.model.CancelRequestModel
 import com.xjek.taxiservice.model.CheckRequestModel
-import com.xjek.taxiservice.model.ReasonModel
 import com.xjek.taxiservice.model.WaitingTime
 import com.xjek.taxiservice.repositary.TaxiRepository
 
@@ -28,10 +27,12 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     var showLoading = MutableLiveData<Boolean>()
 
     fun callTaxiCheckStatusAPI() {
-        getCompositeDisposable().add(mRepository.checkRequest(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
-                latitude.value!!, longitude.value!!)
-        )
+        if (latitude.value!! > 0 && longitude.value!! > 0)
+            getCompositeDisposable().add(mRepository.checkRequest(this,
+                    "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
+                    latitude.value!!, longitude.value!!)
+            )
+        else navigator.updateCurrentLocation()
     }
 
     fun taxiStatusUpdate(params: HashMap<String, String>) {

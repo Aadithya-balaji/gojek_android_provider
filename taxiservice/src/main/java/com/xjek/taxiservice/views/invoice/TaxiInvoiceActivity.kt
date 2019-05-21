@@ -98,7 +98,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 mViewModel.tax.value = requestModel!!.request.currency + requestModel!!.request.payment.tax.toString()
                 mViewModel.tips.value = requestModel!!.request.currency + requestModel!!.request.payment.tips.toString()
                 mViewModel.total.value = requestModel!!.request.currency + requestModel!!.request.payment.total.toString()
-                if (requestModel!!.request.payment.toll_charge > 0)
+                if (requestModel!!.request.payment.toll_charge!! > 0)
                     mViewModel.tollCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.toll_charge.toString()
                 else mViewModel.tollCharge.value = requestModel!!.request.currency + "0"
             }
@@ -109,7 +109,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 val lat = requestModel!!.request.s_latitude
                 val lon = requestModel!!.request.s_longitude
                 val latLng: com.google.maps.model.LatLng?
-                latLng = com.google.maps.model.LatLng(lat, lon)
+                latLng = com.google.maps.model.LatLng(lat!!, lon!!)
                 val address = getCurrentAddress(this, latLng)
                 if (address.isNotEmpty()) mViewModel.pickuplocation.value = address[0].getAddressLine(0)
             }
@@ -120,7 +120,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 val lat = requestModel!!.request.d_latitude
                 val lon = requestModel!!.request.d_longitude
                 val latLng: com.google.maps.model.LatLng?
-                latLng = com.google.maps.model.LatLng(lat, lon)
+                latLng = com.google.maps.model.LatLng(lat!!, lon!!)
                 val address = getCurrentAddress(this, latLng)
                 if (address.isNotEmpty()) mViewModel.dropLocation.value = address[0].getAddressLine(0)
             }

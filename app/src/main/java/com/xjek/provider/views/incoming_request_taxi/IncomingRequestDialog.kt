@@ -22,7 +22,7 @@ import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
 import com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
-import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
+import com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
@@ -76,8 +76,8 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         dialogTaxiIncomingReqBinding.lifecycleOwner = this
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()
-                && incomingRequestModel!!.responseData.requests[0].time_left_to_respond > 0) {
-            totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond)
+                && incomingRequestModel!!.responseData.requests[0].time_left_to_respond!! > 0) {
+            totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond!!)
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
             val time = String.format("%d:%d", minutes, seconds)
@@ -93,13 +93,16 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                 val lat = incomingRequestModel!!.responseData.requests[0].request.s_latitude
                 val lon = incomingRequestModel!!.responseData.requests[0].request.s_longitude
                 var latLng: LatLng? = null
-                latLng = LatLng(lat, lon)
+                latLng = LatLng(lat!!, lon!!)
                 val address = getCurrentAddress(context!!, latLng)
                 if (address.isNotEmpty()) mViewModel.pickupLocation.value = address[0].getAddressLine(0)
             }
+            if (incomingRequestModel!!.responseData.requests[0].request.pickup != null) {
+                mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.pickup.store_name + "\n" +
+                        incomingRequestModel!!.responseData.requests[0].request.pickup.store_location
+            }
             mViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
-
         getApiResponse()
     }
 
@@ -114,7 +117,6 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         return addresses
     }
 
@@ -127,7 +129,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                     incomingRequestModel!!.responseData.requests[0].admin_service_id == 3 ->
                         activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
                     incomingRequestModel!!.responseData.requests[0].admin_service_id == 2 ->
-                        activity!!.startActivity(Intent(activity, FoodLiveTaskServiceFlow::class.java))
+                        activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
                     else -> activity!!.startActivity(Intent(activity,
                             Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity")))
                 }

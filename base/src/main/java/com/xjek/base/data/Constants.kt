@@ -14,6 +14,7 @@ import java.nio.charset.Charset
 object Constants {
 
     const val DEFAULT_ZOOM = 15.0f
+    const val CUSTOM_PREFERENCE:String = "BaseConfigSetting"
     val DEFAULT_LOCATION = LatLng(-33.8523341, 151.2106085)
     var isSocketFailed: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
 
@@ -46,13 +47,13 @@ object Constants {
 
     object BaseUrl {
         @JvmField
-        var APP_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,
+        var APP_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
                 Context.MODE_PRIVATE).getString(PreferencesKey.BASE_URL, BuildConfig.BASE_URL) }
-        var TAXI_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,
+        var TAXI_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
                 Context.MODE_PRIVATE).getString(PreferencesKey.TRANSPORT_URL, BuildConfig.BASE_URL) }
-        var ORDER_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,
+        var ORDER_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
                 Context.MODE_PRIVATE).getString(PreferencesKey.ORDER_URL, BuildConfig.BASE_URL) }
-        var SERVICE_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(BuildConfig.APPLICATION_ID,
+        var SERVICE_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
                 Context.MODE_PRIVATE).getString(PreferencesKey.SERVICE_URL, BuildConfig.BASE_URL) }
     }
 

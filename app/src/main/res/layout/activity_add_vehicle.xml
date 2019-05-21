@@ -61,17 +61,16 @@
                             <androidx.cardview.widget.CardView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:cardCornerRadius="25dp"
                                 android:layout_margin="@dimen/_5sdp"
-                                android:visibility="invisible">
+                                android:visibility="invisible"
+                                app:cardCornerRadius="25dp">
 
-                            <com.jaredrummler.materialspinner.MaterialSpinner
-                                android:id="@+id/spinnerCarCategory"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                app:ms_background_color="@color/colorScreenBackground"
-                                app:ms_text_color="@color/colorBlack"
-                                 />
+                                <com.jaredrummler.materialspinner.MaterialSpinner
+                                    android:id="@+id/spinnerCarCategory"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    app:ms_background_color="@color/colorScreenBackground"
+                                    app:ms_text_color="@color/colorBlack" />
 
                             </androidx.cardview.widget.CardView>
 
@@ -93,11 +92,9 @@
                                     android:imeOptions="actionNext"
                                     android:maxLines="1"
                                     android:scrollHorizontally="true"
-                                    android:singleLine="true"
-                                    android:text="Sedan" />
+                                    android:singleLine="true" />
 
                             </com.google.android.material.textfield.TextInputLayout>
-
 
 
                         </FrameLayout>

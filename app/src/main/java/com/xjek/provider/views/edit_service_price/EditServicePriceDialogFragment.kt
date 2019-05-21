@@ -53,6 +53,8 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
                 if (miles_lt.visibility == VISIBLE) {
                     if (price_miles_edt.text.isNotEmpty() && price_miles_edt.text.toString().toDouble() > 0) {
                         service.perMiles = price_miles_edt.text.toString()
+                        price_miles_edt.setText(service.perMiles)
+                        service.perMiles = price_miles_edt.text.toString()
                     } else {
                         ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)
                         return@setOnClickListener

@@ -16,6 +16,7 @@ import com.xjek.base.utils.ImageCropperUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityAddVehicleBinding
+import com.xjek.provider.models.SetupRideResponseModel
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Enums
 import kotlinx.android.synthetic.main.activity_add_vehicle.*
@@ -31,6 +32,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     private lateinit var permissions: Array<String>
     private var requestCode: Int = -1
 
+
+    private lateinit var vehicleData:ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
 
     override fun getLayoutId(): Int {
         return R.layout.activity_add_vehicle
@@ -57,6 +60,11 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             viewModel.setIsEdit(false)
         }
 
+        if (intent.hasExtra(Constant.TRANSPORT_VEHICLES)) {
+            vehicleData = intent.getSerializableExtra(Constant.TRANSPORT_VEHICLES) as ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
+            setVehicle(vehicleData)
+        }
+
         if (intent.hasExtra(Constant.PROVIDER_TRANSPORT_VEHICLE)) {
             viewModel.setVehicleLiveData(intent.getParcelableExtra(Constant.PROVIDER_TRANSPORT_VEHICLE))
         } else if (intent.hasExtra(Constant.PROVIDER_ORDER_VEHICLE)) {
@@ -71,8 +79,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
         observeViewModel()
 
-        if (viewModel.getServiceId() == viewModel.getTransportId())
-            getVehicleCategories()
+       /* if (viewModel.getServiceId() == viewModel.getTransportId())
+            getVehicleCategories()*/
 
         txt_category_selection.setOnClickListener {
             spinnerCarCategory.expand()
@@ -85,7 +93,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         spinnerCarCategory.setOnItemSelectedListener { view, position, id, item ->
             run {
                 txt_category_selection.setText(item.toString())
-                viewModel.getVehicleData()!!.vehicleId = viewModel.getVehicleCategoryObservable().value!!.responseData.transport[position].id
+                viewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
             }
         }
 
@@ -96,12 +104,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     private fun observeViewModel() {
         observeLiveData(viewModel.getVehicleCategoryObservable()) {
             loadingObservable.value = false
-            val vehicleData = it.responseData.transport
-            spinnerCarCategory.setItems(vehicleData)
-            if (viewModel.getVehicleData()!!.vehicleId > 0) {
-                val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == viewModel.getVehicleData()!!.vehicleId }
-                spinnerCarCategory.selectedIndex = vehiclePosition
-            }
+            //setVehicle(it)
         }
         observeLiveData(viewModel.getVehicleResponseObservable()) {
             loadingObservable.value = false
@@ -135,6 +138,27 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         }
     }
 
+    /*private fun setVehicle(it: VehicleCategoryResponseModel) {
+        val vehicleData = it.responseData.transport
+        spinnerCarCategory.setItems(vehicleData)
+        if (viewModel.getVehicleData()!!.vehicleId!! > 0) {
+            val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == viewModel.getVehicleData()!!.vehicleId }
+            spinnerCarCategory.selectedIndex = vehiclePosition
+        }
+    }*/
+
+    private fun setVehicle(vehicleData:ArrayList<SetupRideResponseModel.ResponseData.ServiceList>) {
+        spinnerCarCategory.setItems(vehicleData)
+        if (viewModel.getVehicleData()!!.vehicleId!! > 0) {
+            val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == viewModel.getVehicleData()!!.vehicleId }
+            spinnerCarCategory.selectedIndex = vehiclePosition
+            txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
+        }else{
+            spinnerCarCategory.selectedIndex = 0
+            txt_category_selection.setText(vehicleData[0].vehicleName)
+        }
+    }
+
     private fun getVehicleCategories() {
         loadingObservable.value = true
         viewModel.getVehicleCategories()
@@ -165,9 +189,9 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             }
         } else {
             when {
-                (data?.vehicleId==0) -> {
+                /*(data?.vehicleId==0) -> {
                     ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_name), false)
-                }
+                }*/
                 data?.vehicleModel.isNullOrEmpty() -> {
                     ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_model), false)
                 }

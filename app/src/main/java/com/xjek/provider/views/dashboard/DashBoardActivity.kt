@@ -46,10 +46,11 @@ import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
+import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
-import com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceFlow
+import com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityDashboardBinding
 import com.xjek.provider.views.account.AccountFragment
@@ -202,19 +203,15 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     @SuppressLint("MissingPermission")
-    private fun updateCurrentLocation() {
-        Log.e("Result_Ok", "-------" + "DashboardActivity" + "UpdateLocation")
+    override fun updateCurrentLocation() {
         try {
             LocationUtils.getLastKnownLocation(context, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {
-                    Log.e("Result_Ok", "-------" + "DashboardActivity" + "UpdateLocation   Success")
                     if (dialog != null)
                         dialog!!.cancel()
                     mViewModel.latitude.value = location!!.latitude
-                    mViewModel.longitude.value = location!!.longitude
-                    Log.e("Result", "------" + location!!.latitude)
-                    Log.e("Result", "------" + location!!.longitude)
-                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), true)
+                    mViewModel.longitude.value = location.longitude
+                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
                     when {
                         mViewModel.currentStatus.value == TRANSPORT -> {
@@ -236,12 +233,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 }
 
                 override fun onFailure(messsage: String?) {
-                    Log.e("Result_Ok", "-------" + "DashboardActivity" + "Failure")
                     mViewModel.callCheckStatusAPI()
                 }
             })
         } catch (e: Exception) {
-            Log.e("Result_Ok", "-------" + "DashboardActivity" + "Exception")
             e.printStackTrace()
         }
     }
@@ -254,7 +249,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
                     mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
-                    Log.e("CheckStatus", "-----" + mViewModel.currentStatus.value)
                     writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
                     writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
                     when (checkStatusData.responseData.requests[0].request.status) {
@@ -289,7 +283,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             ORDER -> {
                                 BROADCAST = ORDER
                                 if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                    val intent = Intent(this, FoodLiveTaskServiceFlow::class.java)
+                                    val intent = Intent(this, FoodieDashboardActivity::class.java)
                                     intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                     startActivity(intent)
                                 }
@@ -351,13 +345,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                         isGPSEnabled = true
                         isLocationDialogShown = false
                         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                            Log.e("Result_Ok", "-------" + "DashboardActivity" + "Permission Granted")
-                            showGpsDialog()
-                            // Thread.sleep(10000)
-                            Timer().schedule(10000) {
-                                updateCurrentLocation()
-                            }
-
+                            updateLocation(true)
+                            updateCurrentLocation()
                         } else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION)) {
 
                             updateCurrentLocation()
@@ -367,7 +356,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                     Activity.RESULT_CANCELED -> {
                         Log.e("Result_Canceled", "-------" + "DashboardActivity" + requestCode + "  " + resultCode)
                     }
-                    //  Activity.RESULT_CANCELED -> checkGps()
                 }
 
 
@@ -434,13 +422,4 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     }
 
-
-    fun showGpsDialog() {
-        dialog = Dialog(context)
-        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog!!.setCancelable(false)
-        dialog!!.setContentView(R.layout.layout_enable_gbs)
-        dialog!!.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog!!.show()
-    }
 }

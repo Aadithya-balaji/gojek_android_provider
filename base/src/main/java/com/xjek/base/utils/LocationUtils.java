@@ -61,6 +61,7 @@ public final class LocationUtils {
         }
     }
 
+
     public static List<Address> getCurrentAddress(@NonNull Context context, LatLng currentLocation) {
         List<Address> addresses = new ArrayList<>();
         Geocoder geocoder;

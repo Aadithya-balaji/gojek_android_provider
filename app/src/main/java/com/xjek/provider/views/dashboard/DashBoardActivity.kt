@@ -3,12 +3,15 @@ package com.xjek.provider.views.dashboard
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -17,7 +20,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -41,7 +46,6 @@ import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
-import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
@@ -59,8 +63,11 @@ import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
+import java.util.*
+import kotlin.concurrent.schedule
 
-class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator {
+class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var mViewModel: DashBoardViewModel
@@ -69,16 +76,19 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     private var checkStatusApiCounter = 0
     private var mHomeFragment = HomeFragment()
     private var locationRequest: LocationRequest? = null
-    private  var isGPSEnabled:Boolean=false
-    private  var isLocationDialogShown:Boolean =false
-    private  lateinit var context:Context
+    private var isGPSEnabled: Boolean = false
+    private var isLocationDialogShown: Boolean = false
+    private lateinit var context: Context
+    private var googleApiClient: GoogleApiClient? = null
+    private var dialog: Dialog? = null
+
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-          context=this
+        context = this
+        setUpGClient()
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-
         binding = mViewDataBinding as ActivityDashboardBinding
         mViewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
         mViewModel.navigator = this
@@ -181,14 +191,30 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         }
     }
 
+    @Synchronized
+    private fun setUpGClient() {
+        googleApiClient = GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build()
+        googleApiClient!!.connect()
+    }
+
     @SuppressLint("MissingPermission")
     private fun updateCurrentLocation() {
+        Log.e("Result_Ok", "-------" + "DashboardActivity" + "UpdateLocation")
         try {
-            LocationUtils.getLastKnownLocation(this, object : LocationCallBack.LastKnownLocation {
+            LocationUtils.getLastKnownLocation(context, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {
+                    Log.e("Result_Ok", "-------" + "DashboardActivity" + "UpdateLocation   Success")
+                    if (dialog != null)
+                        dialog!!.cancel()
                     mViewModel.latitude.value = location!!.latitude
-                    mViewModel.longitude.value = location.longitude
-                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
+                    mViewModel.longitude.value = location!!.longitude
+                    Log.e("Result", "------" + location!!.latitude)
+                    Log.e("Result", "------" + location!!.longitude)
+                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), true)
                     mViewModel.callCheckStatusAPI()
                     when {
                         mViewModel.currentStatus.value == TRANSPORT -> {
@@ -210,10 +236,12 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 }
 
                 override fun onFailure(messsage: String?) {
+                    Log.e("Result_Ok", "-------" + "DashboardActivity" + "Failure")
                     mViewModel.callCheckStatusAPI()
                 }
             })
         } catch (e: Exception) {
+            Log.e("Result_Ok", "-------" + "DashboardActivity" + "Exception")
             e.printStackTrace()
         }
     }
@@ -295,16 +323,16 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         override fun onReceive(contxt: Context?, intent: Intent?) {
             println("RRRR:: DashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
-            val isGpsEnabled=intent!!.getBooleanExtra("ISGPS_EXITS",false)
-            if(isGpsEnabled==true) {
+            val isGpsEnabled = intent!!.getBooleanExtra("ISGPS_EXITS", false)
+            if (isGpsEnabled == true) {
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
                     if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
                 }
-            }else{
-                if(isLocationDialogShown==false)
-                 checkGps()
+            } else {
+                if (isLocationDialogShown == false)
+                    checkGps()
             }
         }
     }
@@ -314,53 +342,47 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("Result", "-------" + "DashboardActivity" + requestCode + "  " + resultCode)
         when (requestCode) {
-            REQUEST_CHECK_SETTINGS_GPS ->
+            500 ->
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-                        isGPSEnabled=true
-                        isLocationDialogShown=false
+                        Log.e("Result_Ok", "-------" + "DashboardActivity" + requestCode + "  " + resultCode)
+                        isGPSEnabled = true
+                        isLocationDialogShown = false
                         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                            updateLocation(true)
-                            updateCurrentLocation()
+                            Log.e("Result_Ok", "-------" + "DashboardActivity" + "Permission Granted")
+                            showGpsDialog()
+                            // Thread.sleep(10000)
+                            Timer().schedule(10000) {
+                                updateCurrentLocation()
+                            }
+
                         } else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION)) {
-                            updateLocation(true)
+
                             updateCurrentLocation()
+
                         }
+                    }
+                    Activity.RESULT_CANCELED -> {
+                        Log.e("Result_Canceled", "-------" + "DashboardActivity" + requestCode + "  " + resultCode)
                     }
                     //  Activity.RESULT_CANCELED -> checkGps()
                 }
+
+
         }
+        super.onActivityResult(requestCode, resultCode, data)
+
     }
 
-    /*  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-            when (requestCode) {
-                REQUEST_CHECK_SETTINGS_GPS ->
-                    when (resultCode) {
-                        Activity.RESULT_OK -> {
-                           isGPSEnabled=true
-                            isLocationDialogShown=false
-                            if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                updateLocation(true)
-                                updateCurrentLocation()
-                            } else if (getPermissionUtil().requestPermissions(this, PERMISSIONS_LOCATION, PERMISSIONS_CODE_LOCATION)) {
-                                updateLocation(true)
-                                updateCurrentLocation()
-                            }
-                        }
-                      //  Activity.RESULT_CANCELED -> checkGps()
-                    }
-            }
-            super.onActivityResult(requestCode, resultCode, data)
-        }
-    */
+
     override fun getInstance(): DashBoardActivity = this@DashBoardActivity
 
 
     private fun checkGps() {
-        Log.e("checkgps","----------")
-        isLocationDialogShown=true
+        Log.e("checkgps", "----------")
+        isLocationDialogShown = true
         locationRequest = LocationRequest.create()
         locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         locationRequest?.interval = 1000
@@ -371,7 +393,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         }
         val settingsBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
         settingsBuilder.setAlwaysShow(true)
-        val result = LocationServices.getSettingsClient(this).checkLocationSettings(settingsBuilder.build())
+        val result = LocationServices.getSettingsClient(context).checkLocationSettings(settingsBuilder.build())
         result.addOnCompleteListener { task ->
             try {
                 val response = task.getResult(ApiException::class.java)
@@ -385,8 +407,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                     }
                     LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
                         val resolvableApiException = ex as ResolvableApiException
-                        isLocationDialogShown=true
-                        resolvableApiException.startResolutionForResult(context as AppCompatActivity,REQUEST_CHECK_SETTINGS_GPS)
+                        isLocationDialogShown = true
+                        resolvableApiException.startResolutionForResult(context as AppCompatActivity, 500)
                     } catch (e: IntentSender.SendIntentException) {
 
                     }
@@ -396,6 +418,29 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 }
             }
         }
+
+
     }
 
+    override fun onConnectionFailed(p0: ConnectionResult) {
+
+    }
+
+    override fun onConnected(p0: Bundle?) {
+        checkGps()
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+
+    }
+
+
+    fun showGpsDialog() {
+        dialog = Dialog(context)
+        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog!!.setCancelable(false)
+        dialog!!.setContentView(R.layout.layout_enable_gbs)
+        dialog!!.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog!!.show()
+    }
 }

@@ -66,9 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mViewModel.navigator = this
         mHomeDataBinding.homemodel = mViewModel
         mHomeDataBinding.btnChangeStatus.bringToFront()
-
         initializeMap()
-
         observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()
         incomingRequestDialogDialog = IncomingRequestDialog()

@@ -104,7 +104,7 @@ data class XuperCheckRequest(
                 val price: Double? = 0.0,
                 val promocode_id: Double? = 0.0,
                 val provider_id: Int? = 0,
-                val provider_rated: Int? = 0,
+                val provider_rated: Double? = 0.0,
                 val quantity: Any? = Any(),
                 val request_type: String? = "",
                 val route_key: String? = "",
@@ -127,7 +127,7 @@ data class XuperCheckRequest(
                 val use_wallet: Int? = 0,
                 val user: User? = User(),
                 val user_id: Int? = 0,
-                val user_rated: Int? = 0,
+                val user_rated: Double? = 0.0,
                 val category: Category? = Category(),
                 val subcategory: Subcategory? =Subcategory()
         ) {
@@ -152,14 +152,14 @@ data class XuperCheckRequest(
                     val commision_percent: Double? = 0.0,
                     val company_id: Int? = 0,
                     val discount: Double? = 0.0,
-                    val discount_percent: Int? = 0,
+                    val discount_percent: Double? = 0.0,
                     val distance: Double? = 0.0,
-                    val extra_charges: Int? = 0,
+                    val extra_charges: Double? = 0.0,
                     val extra_charges_notes: String? = "",
                     val fixed: Double? = 0.0,
                     val fleet: Double? = 0.0,
                     val fleet_id: Int? = 0,
-                    val fleet_percent: Int? = 0,
+                    val fleet_percent: Double? = 0.0,
                     val hour: Double? = 0.0,
                     val id: Int? = 0,
                     val is_partial: Any? = Any(),
@@ -169,15 +169,15 @@ data class XuperCheckRequest(
                     val payment_mode: String? = "",
                     val promocode_id: Double? = 0.0,
                     val provider_id: Int? = 0,
-                    val provider_pay: Int? = 0,
+                    val provider_pay: Double? = 0.0,
                     val service_request_id: Int? = 0,
                     val surge: Double? = 0.0,
                     val tax: Double? = 0.0,
                     val tax_percent: Double? = 0.0,
-                    val tips: Int? = 0,
+                    val tips: Double? = 0.0,
                     val total: Double? = 0.0,
                     val user_id: Int? = 0,
-                    val wallet: Int? = 0
+                    val wallet: Double? = 0.0
             )
 
             data class User(

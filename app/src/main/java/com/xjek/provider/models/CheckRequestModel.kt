@@ -152,7 +152,7 @@ data class RequestX(
         var pickup: Pickup = Pickup(),
         var promocode_id: Double? = 0.0,
         var provider_id: Int? = 0,
-        var provider_rated: Int? = 0,
+        var provider_rated: Double? = 0.0,
         var provider_service_id: Int? = 0,
         var provider_vehicle_id: Int? = 0,
         var request_type: String = "",
@@ -177,7 +177,7 @@ data class RequestX(
         var use_wallet: Int? = 0,
         var user: User = User(),
         var user_id: Int? = 0,
-        var user_rated: Int? = 0,
+        var user_rated: Double? = 0.0,
         var vehicle_type: String = ""
 ) : Serializable
 
@@ -218,12 +218,12 @@ data class Payment(
         var commision_percent: Double? = 0.0,
         var company_id: Int? = 0,
         var discount: Double? = 0.0,
-        var discount_percent: Int? = 0,
+        var discount_percent: Double? = 0.0,
         var distance: Double? = 0.0,
         var fixed: Double? = 0.0,
         var fleet: Double? = 0.0,
         var fleet_id: Any = Any(),
-        var fleet_percent: Int? = 0,
+        var fleet_percent: Double? = 0.0,
         var hour: Double? = 0.0,
         var id: Int? = 0,
         var is_partial: Any = Any(),
@@ -231,8 +231,8 @@ data class Payment(
         var payable: Double? = 0.0,
         var payment_id: Any = Any(),
         var payment_mode: String = "",
-        var peak_amount: Int? = 0,
-        var peak_comm_amount: Int? = 0,
+        var peak_amount: Double? = 0.0,
+        var peak_comm_amount: Double? = 0.0,
         var promocode_id: Double? = 0.0,
         var provider_id: Int? = 0,
         var provider_pay: Double? = 0.0,
@@ -240,14 +240,14 @@ data class Payment(
         var round_of: Double? = 0.0,
         var tax: Double? = 0.0,
         var tax_percent: Double? = 0.0,
-        var tips: Int? = 0,
+        var tips: Double? = 0.0,
         var toll_charge: Double? = 0.0,
         var total: Double? = 0.0,
         var total_waiting_time: Int? = 0,
         var user_id: Int? = 0,
-        var waiting_amount: Int? = 0,
+        var waiting_amount: Double? = 0.0,
         var waiting_comm_amount: Double? = 0.0,
-        var wallet: Int? = 0
+        var wallet: Double? = 0.0
 ) : Serializable
 
 class Pickup(

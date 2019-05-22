@@ -216,6 +216,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         this.shown = false
+        mPlayer.stop()
     }
 
     inner class MyCountDownTimer(startTime: Long, interval: Long) : CountDownTimer(startTime, interval) {

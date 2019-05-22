@@ -441,6 +441,28 @@
                                 android:textSize="@dimen/_12sdp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Edittext_OutlinedTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:hint="@string/hint_referral_code">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etReferralCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="@dimen/_5sdp"
+                                android:fontFamily="@font/avenirltstd_medium"
+                                android:singleLine="true"
+                                android:paddingStart="25dp"
+                                android:paddingEnd="25dp"
+                                android:textColor="@color/et_text_color"
+                                android:textSize="@dimen/_12sdp" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
 
                         <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_terms_condition"

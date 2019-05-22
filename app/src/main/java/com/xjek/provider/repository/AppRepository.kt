@@ -676,8 +676,10 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
+                    viewModel.loadingProgress.value = false
                     viewModel.historyModelLiveData.postValue(it)
                 }, {
+                    viewModel.loadingProgress.value = false
                     viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }
@@ -689,8 +691,10 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
+                    viewModel.loadingProgress.value = false
                     viewModel.historyModelLiveData.postValue(it)
                 }, {
+                    viewModel.loadingProgress.value = false
                     viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }

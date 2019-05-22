@@ -475,4 +475,5 @@
     <string name="please_select_expiry_date">Please select expiry date</string>
     <string name="choose_application_to_open_with">Choose an application to open with:</string>
     <string name="fetching_loading">Please wait...</string>
+    <string name="hint_referral_code">Referral Code</string>
 </resources>

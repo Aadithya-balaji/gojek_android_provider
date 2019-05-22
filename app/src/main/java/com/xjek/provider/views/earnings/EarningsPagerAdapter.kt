@@ -8,7 +8,7 @@ import androidx.viewpager.widget.ViewPager
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
 import com.xjek.provider.R
-import com.xjek.provider.model.EarningsResponseData
+import com.xjek.provider.models.EarningsResponseData
 
 class EarningsPagerAdapter(fragmentManager: FragmentManager, private val response: EarningsResponseData, private val activity: EarningsActivity)
     : FragmentPagerAdapter(fragmentManager), ViewPager.PageTransformer {

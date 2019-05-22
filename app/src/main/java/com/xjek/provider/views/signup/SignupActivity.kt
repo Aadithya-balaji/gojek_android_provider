@@ -45,8 +45,8 @@ import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityRegisterBinding
-import com.xjek.provider.model.City
-import com.xjek.provider.model.CountryResponseData
+import com.xjek.provider.models.City
+import com.xjek.provider.models.CountryResponseData
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.utils.CommanMethods
 import com.xjek.provider.utils.Enums

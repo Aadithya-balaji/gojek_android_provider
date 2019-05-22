@@ -33,9 +33,9 @@ import com.xjek.base.utils.ValidationUtils
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityEditProfileBinding
-import com.xjek.provider.model.City
-import com.xjek.provider.model.CountryListResponse
-import com.xjek.provider.model.CountryResponseData
+import com.xjek.provider.models.City
+import com.xjek.provider.models.CountryListResponse
+import com.xjek.provider.models.CountryResponseData
 import com.xjek.provider.utils.Constant
 import com.xjek.provider.utils.Constant.APP_REQUEST_CODE
 import com.xjek.provider.utils.Country

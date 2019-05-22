@@ -60,7 +60,7 @@
                                 android:text="@{viewModel.documentFrontName}"
                                 tools:text="Voter ID (Front)" />
 
-                            <androidx.appcompat.widget.AppCompatTextView
+                       <!--     <androidx.appcompat.widget.AppCompatTextView
                                 style="@style/Theme.TextView.Medium"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                                 android:onClick="@{() -> viewModel.showFrontImage()}"
                                 android:text="@string/view"
                                 android:textColor="@color/colorBasePrimary"
-                                android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />
+                                android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />-->
 
                         </RelativeLayout>
 
@@ -141,7 +141,7 @@
                                 android:text="@{viewModel.documentBackName}"
                                 tools:text="Voter ID (Back)" />
 
-                            <androidx.appcompat.widget.AppCompatTextView
+                          <!--  <androidx.appcompat.widget.AppCompatTextView
                                 style="@style/Theme.TextView.Medium"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                                 android:onClick="@{() -> viewModel.showBackImage()}"
                                 android:text="@string/view"
                                 android:textColor="@color/colorBasePrimary"
-                                android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />
+                                android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />-->
 
                         </RelativeLayout>
 

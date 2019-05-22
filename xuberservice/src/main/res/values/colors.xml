@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="xuber_white">#ffffff</color>
-    <color name="xuber_button_blue">#045eab</color>
+    <color name="xuber_button_blue">#2676BC</color>
     <color name="xuber_grey">#dadada</color>
     <color name="xuber_darkgrey">#E6F0F6</color>
     <color name="xuber_black">#000000</color>

@@ -110,8 +110,11 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                                 .load(url)
                                 .placeholder(circularProgressDrawable)
                                 .into(ivFrontImage)
+                        viewModelAddEdit.showFrontView.value = true
+                    } else {
+                        ivFrontImage.setImageDrawable(null)
                         viewModelAddEdit.showFrontView.value = false
-                    } else ivFrontImage.setImageDrawable(null)
+                    }
                 } else {
                     viewModelAddEdit.isPDF.value = true
                     ivFrontImage.setImageResource(R.drawable.ic_pdf)
@@ -131,7 +134,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                                 .load(url)
                                 .placeholder(circularProgressDrawable)
                                 .into(ivBackImage)
-                        viewModelAddEdit.showBackView.value = false
+                        viewModelAddEdit.showBackView.value = true
                     } else {
                         ivBackImage.setImageDrawable(null)
                         viewModelAddEdit.showBackView.value = false
@@ -265,7 +268,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                                     .load(frontImageFile)
                                     .into(ivFrontImage)
                             viewModelAddEdit.documentFrontImageFile.value = frontImageFile
-                            viewModelAddEdit.showFrontView.value = false
+                            viewModelAddEdit.showFrontView.value = true
                         }
 
                         else -> {
@@ -274,7 +277,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                                     .load(backImageFile)
                                     .into(ivBackImage)
                             viewModelAddEdit.documentBackImageFile.value = backImageFile
-                            viewModelAddEdit.showBackView.value = false
+                            viewModelAddEdit.showBackView.value = true
                         }
                     }
 
@@ -288,7 +291,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                         val frontPageFile = File(selectedDoc!![0])
                         viewModelAddEdit.documentFrontImageFile.value = frontPageFile
                         viewModelAddEdit.documentFrontFileName.value = frontPageFile.name
-                        viewModelAddEdit.showFrontView.value = false
+                        viewModelAddEdit.showFrontView.value = true
                     }
 
                     else -> {
@@ -296,7 +299,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                         val backPageFile = File(selectedDoc!![0])
                         viewModelAddEdit.documentBackImageFile.value = backPageFile
                         viewModelAddEdit.documentBackFileName.value = backPageFile.name
-                        viewModelAddEdit.showFrontView.value = false
+                        viewModelAddEdit.showFrontView.value = true
                     }
                 }
             }

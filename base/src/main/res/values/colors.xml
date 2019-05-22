@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorBasePrimary" >#364bea</color>
-    <color name="colorBaseTheme">#364bea</color>
+    <color name="colorBasePrimary" >#2676bc </color>
+    <color name="colorBaseTheme">#2676bc </color>
     <color name="colorBaseWhite">#FFFFFF</color>
 
     <color name="colorTaxiYellow">#FFA200</color>

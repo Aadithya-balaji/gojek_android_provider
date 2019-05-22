@@ -66,9 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mViewModel.navigator = this
         mHomeDataBinding.homemodel = mViewModel
         mHomeDataBinding.btnChangeStatus.bringToFront()
-
         initializeMap()
-
         observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()
         incomingRequestDialogDialog = IncomingRequestDialog()
@@ -76,18 +74,18 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
-            fragmentMap.view!!.visibility = View.VISIBLE
+            rlOnline.visibility = View.VISIBLE
         } else {
             mHomeDataBinding.llOffline.visibility = View.VISIBLE
-            fragmentMap.view!!.visibility = View.GONE
+            rlOnline.visibility = View.GONE
         }
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE
-            fragmentMap.view!!.visibility = View.VISIBLE
+            rlOnline.visibility = View.VISIBLE
         } else {
             mHomeDataBinding.llOffline.visibility = View.VISIBLE
-            fragmentMap.view!!.visibility = View.GONE
+            rlOnline.visibility = View.GONE
         }
 
         getApiResponse()
@@ -162,6 +160,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
             try {
                 mGoogleMap!!.isMyLocationEnabled = true
+                mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = false
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -252,12 +251,26 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private fun changeView(isOnline: Boolean) {
         if (!isOnline) {
             mHomeDataBinding.llOffline.visibility = View.VISIBLE
-            fragmentMap.view!!.visibility = View.GONE
+            rlOnline.visibility = View.GONE
             mHomeDataBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.online)
         } else {
             mHomeDataBinding.llOffline.visibility = View.GONE
-            fragmentMap.view!!.visibility = View.VISIBLE
+            rlOnline.visibility = View.VISIBLE
             mHomeDataBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.offline)
         }
+    }
+
+    override fun showCurrentLocation() {
+        Dexter.withActivity(activity!!)
+                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        updateCurrentLocation()
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                        token?.continuePermissionRequest()
+                    }
+                }).check()
     }
 }

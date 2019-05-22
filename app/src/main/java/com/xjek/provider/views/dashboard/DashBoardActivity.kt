@@ -291,6 +291,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             else -> BROADCAST = "BASE_BROADCAST"
                         }
                     }
+                }else{
+                    if(mIncomingRequestDialog.isShown()){
+                        mIncomingRequestDialog.dismiss()
+                    }
                 }
             }
         })

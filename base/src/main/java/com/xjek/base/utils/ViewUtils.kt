@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -135,7 +134,9 @@ object ViewUtils {
             val date1 = simpleDateFormat.parse(simpleDateFormat.format(Calendar.getInstance().time))
             val date2 = simpleDateFormat.parse(date)
 
-            var different = date2.time - date1.time
+            var different = date1.time - date2.time
+            val diffInMill = different * 1000
+
             val secondsInMilli: Long = 1000
             val minutesInMilli = secondsInMilli * 60
             val hoursInMilli = minutesInMilli * 60
@@ -153,10 +154,31 @@ object ViewUtils {
 
             val elapsedSeconds = different / secondsInMilli
 
-            return if (elapsedHours == 0L) {
-                if (elapsedMinutes > 1) "$elapsedMinutes mins" else elapsedMinutes.toString() + "min"
-            } else
-                if (elapsedHours > 1) "$elapsedHours hrs" else elapsedMinutes.toString() + "hr"
+            println("SK_TEST_TIMES_AGO $elapsedDays days , $elapsedHours hours , $elapsedMinutes mins , $elapsedSeconds seconds")
+
+            return if (diffInMill < secondsInMilli) {
+                "just now"
+            } else if (diffInMill < minutesInMilli) {
+                if (elapsedSeconds > 1)
+                    "$elapsedSeconds secs ago"
+                else
+                    "$elapsedSeconds sec ago"
+            } else if (diffInMill < hoursInMilli) {
+                if (elapsedMinutes > 1)
+                    "$elapsedMinutes mins ago"
+                else
+                    "$elapsedMinutes min ago"
+            } else if (diffInMill < daysInMilli) {
+                if (elapsedHours > 1)
+                    "$elapsedHours hours ago"
+                else
+                    "$elapsedHours hour ago"
+            } else {
+                if (elapsedDays > 1)
+                    "$elapsedDays days ago"
+                else
+                    "$elapsedDays day ago"
+            }
 
 
         } catch (e: ParseException) {

@@ -11,9 +11,9 @@ import com.xjek.base.utils.ViewUtils.getTimeDifference
 import com.xjek.provider.R
 import com.xjek.provider.databinding.NotificationListitemBinding
 import com.xjek.provider.interfaces.CustomClickListner
-import com.xjek.provider.models.NotificationResponseData
+import com.xjek.provider.models.NotificationResponse
 
-class NotificationAdapter(val activity: FragmentActivity?, val notificationResponseData: NotificationResponseData)
+class NotificationAdapter(val activity: FragmentActivity?, val notificationResponseData: NotificationResponse.ResponseData.Notification)
     : RecyclerView.Adapter<NotificationAdapter.MyViewHolder>(), CustomClickListner {
 
 
@@ -31,7 +31,7 @@ class NotificationAdapter(val activity: FragmentActivity?, val notificationRespo
         holder.notificationListitemBinding.notificationTimeTv.text = getTimeDifference(notificationResponseData
                 .data[position].created_at)
         holder.notificationListitemBinding.titlenotificationListTv.text = notificationResponseData.data[position].title
-        holder.notificationListitemBinding.descriptionNotificationTv.text = notificationResponseData.data[position].description
+        holder.notificationListitemBinding.descriptionNotificationTv.text = notificationResponseData.data[position].descriptions
         Glide.with(activity!!).load(notificationResponseData.data[position].image)
                 .into(holder.notificationListitemBinding.notificationImg)
     }

@@ -22,7 +22,7 @@ class CityListActivity : BaseActivity<ActivityCityListBinding>(), CityListNaviga
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivityCityListBinding
-        val cityList = intent.getSerializableExtra("citylistresponse") as List<City>
+        val cityList = intent.getSerializableExtra("citylistresponse") as ArrayList<City>
         mViewDataBinding.cityListAdapter = CityListAdapter(this, cityList)
         val cityListViewModel = CityListViewModel()
         cityListViewModel.navigator = this

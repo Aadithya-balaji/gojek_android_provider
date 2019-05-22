@@ -83,6 +83,7 @@ object WebApiConstants {
         const val EMAIL = "email"
         const val CITY_ID = "city_id"
         const val SOCIAL_ID = "social_unique_id"
+        const val REFERRAL_CODE = "referral_code"
     }
 
     object UpdateProfile {

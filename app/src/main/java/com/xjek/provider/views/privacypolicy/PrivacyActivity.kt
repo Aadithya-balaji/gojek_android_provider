@@ -23,7 +23,7 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivactyNa
     private lateinit var privacyViewModel: PrivacyViewModel
 
     companion object {
-        var loadingProgress: MutableLiveData<Boolean>? = null
+        var loadingProgress: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { false }
 
     }
 
@@ -49,7 +49,6 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivactyNa
                 loadingObservable.value = it
             }
         }
-        //loadingProgress = loadingObservable as MutableLiveData<Boolean>
 
     }
 

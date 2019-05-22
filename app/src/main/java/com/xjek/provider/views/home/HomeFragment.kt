@@ -4,21 +4,24 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.location.Location
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.*
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.xjek.base.base.BaseApplication
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.data.Constants.DEFAULT_ZOOM
 import com.xjek.base.data.PreferencesKey
@@ -52,6 +55,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private lateinit var incomingRequestDialogDialog: IncomingRequestDialog
 
     private var mGoogleMap: GoogleMap? = null
+    private var providerMarker: Marker? = null
 
     private var isOnline: Boolean? = true
     private var pendingListDialog: PendingListDialog? = null
@@ -159,7 +163,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         try {
 
             try {
-                mGoogleMap!!.isMyLocationEnabled = true
+                mGoogleMap!!.isMyLocationEnabled = false
                 mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = false
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -185,8 +189,20 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
+        providerMarker?.remove()
+        providerMarker = mGoogleMap?.addMarker(MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap(bitmapFromVector(BaseApplication.getBaseApplicationContext, R.drawable.ic_marker_provider))))
         if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
+    }
+
+    private fun bitmapFromVector(context: Context, drawableId: Int): Bitmap {
+        val drawable = ContextCompat.getDrawable(context, drawableId)
+        val bitmap = Bitmap.createBitmap(drawable!!.intrinsicWidth,
+                drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+        return bitmap
     }
 
 

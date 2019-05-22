@@ -1,8 +1,11 @@
 package com.xjek.provider.views.adapters
 
+import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -16,9 +19,9 @@ import com.xjek.provider.models.NotificationResponse
 class NotificationAdapter(val activity: FragmentActivity?, val notificationResponseData: NotificationResponse.ResponseData.Notification)
     : RecyclerView.Adapter<NotificationAdapter.MyViewHolder>(), CustomClickListner {
 
-
+    private lateinit var context:Context
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
+        context = parent.context
         val inflate = DataBindingUtil.inflate<NotificationListitemBinding>(LayoutInflater.from(parent.context)
                 , R.layout.notification_listitem, parent, false)
         return MyViewHolder(inflate)
@@ -42,6 +45,11 @@ class NotificationAdapter(val activity: FragmentActivity?, val notificationRespo
         val notificationListitemBinding = itemView
 
         fun bind() {
+            notificationListitemBinding.descriptionNotificationTv.setShowingLine(3)
+            notificationListitemBinding.descriptionNotificationTv.addShowMoreText("show more")
+            notificationListitemBinding.descriptionNotificationTv.addShowLessText("show less")
+            notificationListitemBinding.descriptionNotificationTv.setShowMoreColor(ContextCompat.getColor(context,R.color.colorBasePrimary))
+            notificationListitemBinding.descriptionNotificationTv.setShowLessTextColor(ContextCompat.getColor(context,R.color.colorBasePrimary))
 
         }
 

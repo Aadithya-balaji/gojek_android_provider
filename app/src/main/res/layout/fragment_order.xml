@@ -54,7 +54,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
 
                     <TextView
@@ -98,7 +99,6 @@
                         android:text="Upcoming"
                         android:textAllCaps="false"
                         android:visibility="gone" />
->>>>>>> 25718fa921104016b0cccc21f7b2600e3fcf04d1
 
                 </LinearLayout>
 

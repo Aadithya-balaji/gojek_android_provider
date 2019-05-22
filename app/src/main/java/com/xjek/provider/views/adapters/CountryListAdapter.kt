@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
 import com.xjek.provider.databinding.CountrySearchListItemBinding
 import com.xjek.provider.interfaces.CustomClickListner
-import com.xjek.provider.model.CountryResponseData
+import com.xjek.provider.models.CountryResponseData
 import java.io.Serializable
 
 

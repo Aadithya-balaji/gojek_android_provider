@@ -1,4 +1,4 @@
-package com.xjek.provider.model
+package com.xjek.provider.models
 
 import java.io.Serializable
 

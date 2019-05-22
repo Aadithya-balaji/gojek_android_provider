@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
 import com.xjek.provider.databinding.CurrentOderItemlistBinding
 import com.xjek.provider.interfaces.CustomClickListner
-import com.xjek.provider.model.TransportHistory
+import com.xjek.provider.models.TransportHistory
 import com.xjek.provider.utils.CommanMethods
 import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 

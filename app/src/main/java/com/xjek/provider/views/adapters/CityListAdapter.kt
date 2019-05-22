@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
 import com.xjek.provider.databinding.CountrySearchListItemBinding
 import com.xjek.provider.interfaces.CustomClickListner
-import com.xjek.provider.model.City
+import com.xjek.provider.models.City
 import java.io.Serializable
 
 class CityListAdapter(val activity: FragmentActivity?, val citylist: List<City>) : RecyclerView.Adapter<CityListAdapter.MyViewHolder>(), Filterable {

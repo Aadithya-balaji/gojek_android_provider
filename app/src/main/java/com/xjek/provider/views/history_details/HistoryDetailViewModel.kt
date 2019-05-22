@@ -2,13 +2,12 @@ package com.xjek.provider.views.history_details
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.MutableData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
-import com.xjek.provider.model.DisputeListData
-import com.xjek.provider.model.DisputeListModel
-import com.xjek.provider.model.DisputeStatusModel
+import com.xjek.provider.models.DisputeListData
+import com.xjek.provider.models.DisputeListModel
+import com.xjek.provider.models.DisputeStatusModel
 import com.xjek.provider.models.DisputeStatus
 import com.xjek.provider.models.HistoryDetailModel
 import com.xjek.provider.models.LoginResponseModel

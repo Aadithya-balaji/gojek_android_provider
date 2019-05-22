@@ -1,7 +1,7 @@
 package com.xjek.provider.utils;
 
 import com.xjek.provider.R;
-import com.xjek.provider.model.CountryModel;
+import com.xjek.provider.models.CountryModel;
 
 import java.util.Arrays;
 import java.util.Comparator;

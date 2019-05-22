@@ -12,7 +12,7 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.gojek.taxiservice.views.views.countrypicker.CountrtCodeNavigator
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityCountryCodeBinding
-import com.xjek.provider.model.CountryModel
+import com.xjek.provider.models.CountryModel
 import com.xjek.provider.views.adapters.CountryAdapter
 import com.xjek.provider.views.adapters.PlacesAdapter
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
-import com.xjek.provider.model.CountryListResponse
+import com.xjek.provider.models.CountryListResponse
 import com.xjek.provider.models.ProfileResponse
 import com.xjek.provider.models.ResProfileUpdate
 import com.xjek.provider.repository.AppRepository

@@ -9,7 +9,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import com.xjek.provider.R
-import com.xjek.provider.model.ciity.PlaceResponseModel
+import com.xjek.provider.models.PlaceResponseModel
 
 class PlacesAdapter(val ctxt: Context, isCountry: Boolean, isCity: Boolean, isState: Boolean, val placesList: ArrayList<PlaceResponseModel>) : BaseAdapter(), Filterable {
     private lateinit var mInflater: LayoutInflater

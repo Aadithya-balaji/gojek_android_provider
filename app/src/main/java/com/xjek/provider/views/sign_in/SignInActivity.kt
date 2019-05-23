@@ -139,7 +139,9 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 50, 50, true))
+            val width:Int = resources.getDimension(R.dimen._25sdp).toInt()
+            val height:Int = resources.getDimension(R.dimen._25sdp).toInt()
+            val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
             binding.countrycodeRegisterEt.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }
     }

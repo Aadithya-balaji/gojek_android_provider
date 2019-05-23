@@ -36,14 +36,20 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivactyNa
         privacyViewModel = PrivacyViewModel()
         privacyViewModel.navigator = this
         privacyBinding.privacymodel = privacyViewModel
-        privacyBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(R.string.header_label_privacy)
         privacyBinding.toolbarLayout.ivToolbarBack.setOnClickListener {
             finish()
         }
         if (!Constant.privacyPolicyUrl.isNullOrEmpty()) {
             privacyBinding.wvPrivacy.setWebViewClient(WebClient())
         }
-        privacyBinding.wvPrivacy.loadUrl(Constant.privacyPolicyUrl)
+        if (intent.extras == null) {
+            privacyBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(R.string.header_label_privacy)
+            privacyBinding.wvPrivacy.loadUrl(Constant.privacyPolicyUrl)
+        }else{
+            privacyBinding.toolbarLayout.tvToolbarTitle.text = getString(R.string.terms_conditions)
+            privacyBinding.wvPrivacy.loadUrl(Constant.privacyPolicyUrl)
+        }
+
         loadingProgress?.let {
             observeLiveData(it){
                 loadingObservable.value = it

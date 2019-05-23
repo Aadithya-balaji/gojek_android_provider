@@ -7,8 +7,10 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
+import android.text.Html
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -58,7 +60,9 @@ import com.xjek.provider.views.citylist.CityListActivity
 import com.xjek.provider.views.countrylist.CountryListActivity
 import com.xjek.provider.views.countrypicker.CountryCodeActivity
 import com.xjek.provider.views.dashboard.DashBoardActivity
+import com.xjek.provider.views.privacypolicy.PrivacyActivity
 import com.xjek.provider.views.sign_in.SignInActivity
+import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -166,6 +170,11 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                 }
         }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            terms_conditions_tv.text = Html.fromHtml(getString(R.string.i_accept_the_following_terms_and_conditions), Html.FROM_HTML_MODE_LEGACY)
+        else
+            terms_conditions_tv.text = Html.fromHtml(getString(R.string.i_accept_the_following_terms_and_conditions))
+
     }
 
     private fun getApiResponse() {
@@ -268,6 +277,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         edtPhoneNumber.onFocusChangeListener = this
         edtEmail.addTextChangedListener(this)
         edtPhoneNumber.addTextChangedListener(this)
+        terms_conditions_tv.setOnClickListener(this)
     }
 
     //do registration
@@ -292,6 +302,13 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                 val intent = Intent(this, CountryCodeActivity::class.java)
                 startActivityForResult(intent, Enums.RC_COUNTRY_CODE_PICKER)
             }
+
+            R.id.terms_conditions_tv ->{
+                val intent = Intent(this@SignupActivity,PrivacyActivity::class.java)
+                intent.putExtra("title","terms")
+                startActivity(intent)
+            }
+
         }
     }
 

@@ -4,4 +4,6 @@
     <string name="action_deny">Deny</string>
     <string name="xjek_delete_account">Delete Account</string>
     <string name="xjek_logout_account">Logout Account</string>
+    <string name="fetching_loading">Please wait..</string>
+    <string name="missing_permission">Please Enable Necessary permission to proceed the applcation</string>
 </resources>

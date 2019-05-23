@@ -1,7 +1,10 @@
 package com.xjek.base.utils
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
@@ -17,6 +20,15 @@ import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.PopupWindow
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsStatusCodes
 import com.xjek.base.R
 import java.io.File
 import java.text.ParseException
@@ -43,6 +55,45 @@ class CommonMethods {
             val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             if (!storageDir.exists()) storageDir.mkdirs()
             return File.createTempFile(imageFileName, ".jpg", storageDir)
+        }
+
+        fun checkGps(context:Context){
+           val  locationRequest = LocationRequest.create()
+            locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            locationRequest?.interval = 1000
+            locationRequest?.numUpdates = 1
+            locationRequest?.fastestInterval = (3* 1000).toLong()
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return
+            }
+            val settingsBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
+            settingsBuilder.setAlwaysShow(true)
+            val result = LocationServices.getSettingsClient(context).checkLocationSettings(settingsBuilder.build())
+            result.addOnCompleteListener { task ->
+                try {
+                    val response = task.getResult(ApiException::class.java)
+                } catch (ex: ApiException) {
+                    when (ex.statusCode) {
+                        LocationSettingsStatusCodes.SUCCESS -> {
+                            val permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                            if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+
+                            }
+                        }
+                        LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
+                            val resolvableApiException = ex as ResolvableApiException
+                            resolvableApiException.startResolutionForResult(context as AppCompatActivity, 500)
+                        } catch (e: IntentSender.SendIntentException) {
+
+                        }
+
+                        LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
+                        }
+                    }
+                }
+            }
+
+
         }
 
 

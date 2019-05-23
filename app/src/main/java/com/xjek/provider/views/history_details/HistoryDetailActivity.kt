@@ -19,10 +19,10 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityCurrentorderDetailLayoutBinding
 import com.xjek.provider.databinding.DisputeResonDialogBinding
 import com.xjek.provider.databinding.DisputeStatusBinding
-import com.xjek.provider.model.DisputeListData
-import com.xjek.provider.model.DisputeListModel
-import com.xjek.provider.model.DisputeStatusData
-import com.xjek.provider.model.DisputeStatusModel
+import com.xjek.provider.models.DisputeListData
+import com.xjek.provider.models.DisputeListModel
+import com.xjek.provider.models.DisputeStatusData
+import com.xjek.provider.models.DisputeStatusModel
 import com.xjek.provider.models.DisputeStatus
 import com.xjek.provider.models.HistoryDetailModel
 import com.xjek.provider.utils.CommanMethods

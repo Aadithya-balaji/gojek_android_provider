@@ -6,7 +6,7 @@ import com.xjek.base.base.BaseActivity
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityCityListBinding
-import com.xjek.provider.model.City
+import com.xjek.provider.models.City
 import com.xjek.provider.views.adapters.CityListAdapter
 
 class CityListActivity : BaseActivity<ActivityCityListBinding>(), CityListNavigator, SearchView.OnQueryTextListener {
@@ -22,7 +22,7 @@ class CityListActivity : BaseActivity<ActivityCityListBinding>(), CityListNaviga
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivityCityListBinding
-        val cityList = intent.getSerializableExtra("citylistresponse") as List<City>
+        val cityList = intent.getSerializableExtra("citylistresponse") as ArrayList<City>
         mViewDataBinding.cityListAdapter = CityListAdapter(this, cityList)
         val cityListViewModel = CityListViewModel()
         cityListViewModel.navigator = this

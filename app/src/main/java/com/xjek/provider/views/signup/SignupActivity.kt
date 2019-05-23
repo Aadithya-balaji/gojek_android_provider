@@ -45,8 +45,8 @@ import com.xjek.base.extensions.writePreferences
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityRegisterBinding
-import com.xjek.provider.model.City
-import com.xjek.provider.model.CountryResponseData
+import com.xjek.provider.models.City
+import com.xjek.provider.models.CountryResponseData
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.utils.CommanMethods
 import com.xjek.provider.utils.Enums
@@ -69,6 +69,7 @@ import java.io.FileOutputStream
 import java.io.Serializable
 import java.net.URL
 import java.util.*
+import kotlin.collections.ArrayList
 
 @RuntimePermissions
 class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
@@ -91,7 +92,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     private lateinit var ivProfile: ImageView
     private lateinit var tlPassword: TextInputLayout
     private var message: String = ""
-    private lateinit var cityList: List<City>
+    private var cityList: ArrayList<City> = ArrayList()
     private var isEmailFocus: Boolean? = false
     private var isPhoneFocus: Boolean? = false
     private var filePart: MultipartBody.Part? = null
@@ -189,11 +190,15 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
             when (requestCode) {
                 COUNTRYLIST_REQUEST_CODE -> {
                     val selectedCountry = data?.extras?.get("selected_list") as? CountryResponseData
+                    cityList.clear()
                     Log.d("countrylist", selectedCountry?.country_name + "")
-                    cityList = selectedCountry?.city!!
-                    mViewDataBinding.edtSignupCountry.setText(selectedCountry.country_name)
-                    signupViewmodel.countryName.value = selectedCountry.country_name
-                    signupViewmodel.countryID.value = selectedCountry.id.toString()
+                    mViewDataBinding.edtSignupCountry.setText(selectedCountry?.country_name)
+                    signupViewmodel.countryName.value = selectedCountry?.country_name
+                    signupViewmodel.countryID.value = selectedCountry?.id.toString()
+
+                    selectedCountry?.city?.let {
+                        cityList = it as ArrayList<City>
+                    }
                 }
 
                 CITYLIST_REQUEST_CODE -> {

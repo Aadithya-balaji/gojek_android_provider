@@ -58,8 +58,8 @@ import kotlinx.android.synthetic.main.toolbar_header.view.*
 import java.util.*
 import kotlin.concurrent.schedule
 
-class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
+class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var mViewModel: DashBoardViewModel
@@ -73,7 +73,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     private lateinit var context: Context
     private var googleApiClient: GoogleApiClient? = null
     private var dialog: Dialog? = null
-
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -289,6 +288,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             else -> BROADCAST = "BASE_BROADCAST"
                         }
                     }
+                } else {
+                    if (mIncomingRequestDialog.isShown()) {
+                        mIncomingRequestDialog.dismiss()
+                    }
                 }
             }
         })
@@ -315,8 +318,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         override fun onReceive(contxt: Context?, intent: Intent?) {
             println("RRRR:: DashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
-            val isGpsEnabled = intent!!.getBooleanExtra("ISGPS_EXITS", false)
-            if (isGpsEnabled == true) {
+            val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
+            if (isGpsEnabled) {
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
@@ -345,7 +348,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                         isLocationDialogShown = false
                         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
                             ViewUtils.showGpsDialog(context)
-                            Timer().schedule(10000) {
+                             Timer().schedule(10000) {
                                 ViewUtils.dismissGpsDialog()
                                 updateCurrentLocation()
                                 // updateLocation(true)
@@ -367,8 +370,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     }
 
-
     override fun getInstance(): DashBoardActivity = this@DashBoardActivity
+
 
 
     override fun onConnectionFailed(p0: ConnectionResult) {

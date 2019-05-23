@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.xjek.base.base.BaseFragment
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentCurrentOrdersBinding
-import com.xjek.provider.model.TransportHistory
+import com.xjek.provider.models.TransportHistory
 import com.xjek.provider.views.adapters.CurrentOrdersAdapter
 import com.xjek.provider.views.dashboard.DashBoardViewModel
 import com.xjek.xjek.ui.currentorder_fragment.CurrentOrderNavigator

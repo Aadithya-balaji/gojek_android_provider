@@ -44,20 +44,33 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
         pastOrderViewModel.historyResponseLiveData.observe(this@PastOrderFragment,
                 Observer<HistoryModel> {
                     loadingObservable.value = false
+                    pastOrderViewModel.taxiList.value?.clear()
+                    pastOrderViewModel.serviceList.value?.clear()
+                    pastOrderViewModel.orderList.value?.clear()
+
                     if (it.responseData!!.type.equals("transport", true) && !it.responseData!!.transport!!.isEmpty()) {
                         if (!it.responseData.transport.isNullOrEmpty()) {
+                            this.mViewDataBinding.emptyViewLayout.visibility = View.GONE
                             pastOrderViewModel.taxiList.value!!.addAll(it.responseData.transport)
                             settHistoryAdapter(activity!! as DashBoardActivity, pastOrderViewModel.taxiList.value!!, ArrayList<HistoryModel.ResponseData.Service>(), ArrayList<HistoryModel.ResponseData.Order>(), pastOrderViewModel.selectedServiceType.value!!)
+                        }else{
+                            this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
                         }
                     } else if (it.responseData.type.equals("service", true) && !it.responseData!!.service!!.isEmpty()) {
                         if (!it.responseData.service.isNullOrEmpty()) {
+                            this.mViewDataBinding.emptyViewLayout.visibility = View.GONE
                             pastOrderViewModel.serviceList.value!!.addAll(it.responseData.service)
                             settHistoryAdapter(activity!! as DashBoardActivity, ArrayList(), pastOrderViewModel.serviceList.value!!, ArrayList(), pastOrderViewModel.selectedServiceType.value!!)
+                        }else{
+                            this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
                         }
                     } else if (!it.responseData.order!!.isEmpty()) {
                         if (!it.responseData.order.isNullOrEmpty()) {
+                            this.mViewDataBinding.emptyViewLayout.visibility = View.GONE
                             pastOrderViewModel.orderList.value!!.addAll(it.responseData.order)
                             settHistoryAdapter(activity!! as DashBoardActivity, ArrayList<HistoryModel.ResponseData.Transport>(), ArrayList<HistoryModel.ResponseData.Service>(), pastOrderViewModel.orderList.value!!, pastOrderViewModel.selectedServiceType.value!!)
+                        }else{
+                            this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
                         }
 
                     } else {

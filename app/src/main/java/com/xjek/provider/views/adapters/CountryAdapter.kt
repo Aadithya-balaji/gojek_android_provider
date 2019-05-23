@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.xjek.provider.R
-import com.xjek.provider.model.CountryModel
+import com.xjek.provider.models.CountryModel
 import java.util.*
 
 class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : BaseAdapter(), Filterable {

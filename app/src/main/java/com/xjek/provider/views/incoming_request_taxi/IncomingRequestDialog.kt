@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -18,6 +19,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.maps.model.LatLng
 import com.xjek.base.base.BaseDialogFragment
+import com.xjek.base.data.Constants
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
@@ -26,6 +28,7 @@ import com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
+import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -41,6 +44,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     private var shown: Boolean? = false
     private var totalSeconds: Int? = 0
     private var incomingRequestModel: CheckRequestModel? = null
+    private lateinit var mPlayer: MediaPlayer
 
     override fun getLayout(): Int = R.layout.dialog_taxi_incoming_request
 
@@ -50,9 +54,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
     }
 
-    fun isShown(): Boolean {
-        return shown!!
-    }
+    fun isShown() = shown!!
 
     override fun onStart() {
         super.onStart()
@@ -75,6 +77,9 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         dialogTaxiIncomingReqBinding.requestmodel = mViewModel
         dialogTaxiIncomingReqBinding.lifecycleOwner = this
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+
+        mPlayer = MediaPlayer.create(context, R.raw.alert_tone)
+
         if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()
                 && incomingRequestModel!!.responseData.requests[0].time_left_to_respond!! > 0) {
             totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond!!)
@@ -87,32 +92,39 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
             timerToTakeOrder.start()
 
-            if (mViewModel.pickupLocation.value != null && mViewModel.pickupLocation.value!!.length > 2)
+
+            when (incomingRequestModel!!.responseData.requests[0].service.display_name) {
+                Constants.ModuleTypes.SERVICE -> {
+
+                }
+            }
+
+            if (incomingRequestModel!!.responseData.requests[0].request.s_address.length > 2)
                 mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.s_address
             else {
                 val lat = incomingRequestModel!!.responseData.requests[0].request.s_latitude
                 val lon = incomingRequestModel!!.responseData.requests[0].request.s_longitude
-                var latLng: LatLng? = null
-                latLng = LatLng(lat!!, lon!!)
-                val address = getCurrentAddress(context!!, latLng)
+                val address = getCurrentAddress(context!!, LatLng(lat!!, lon!!))
                 if (address.isNotEmpty()) mViewModel.pickupLocation.value = address[0].getAddressLine(0)
             }
-            if (incomingRequestModel!!.responseData.requests[0].request.pickup != null) {
+            if (incomingRequestModel!!.responseData.requests[0].request.pickup.store_name.length > 2) {
                 mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.pickup.store_name + "\n" +
                         incomingRequestModel!!.responseData.requests[0].request.pickup.store_location
             }
+
             mViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
         getApiResponse()
+        mPlayer.start()
     }
 
     private fun getCurrentAddress(context: Context, currentLocation: LatLng): List<Address> {
         var addresses: List<Address> = ArrayList()
-        val geocoder: Geocoder
+        val geoCoder: Geocoder
         try {
             if (Geocoder.isPresent()) {
-                geocoder = Geocoder(context, Locale.getDefault())
-                addresses = geocoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
+                geoCoder = Geocoder(context, Locale.getDefault())
+                addresses = geoCoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -130,9 +142,9 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                         activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
                     incomingRequestModel!!.responseData.requests[0].admin_service_id == 2 ->
                         activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
-                    else -> activity!!.startActivity(Intent(activity,
-                            Class.forName("com.xjek.taxiservice.views.main.TaxiDashboardActivity")))
+                    else -> activity!!.startActivity(Intent(activity, TaxiDashboardActivity::class.java))
                 }
+                mPlayer.stop()
                 dialog!!.dismiss()
             }
         }
@@ -141,6 +153,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             if (mViewModel.rejectRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
                 ViewUtils.showToast(activity!!, mViewModel.rejectRequestLiveData.value!!.message.toString(), false)
+                mPlayer.stop()
                 dialog!!.dismiss()
             }
         }
@@ -212,11 +225,13 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         this.shown = false
+        mPlayer.stop()
     }
 
     inner class MyCountDownTimer(startTime: Long, interval: Long) : CountDownTimer(startTime, interval) {
 
         override fun onFinish() {
+            mPlayer.stop()
             dismiss()
         }
 
@@ -231,6 +246,11 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             Log.e("percentage", "----" + result.toFloat())
             initCircularSeekBar(result.toFloat(), time)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPlayer.stop()
     }
 
     override fun showErrormessage(error: String) {

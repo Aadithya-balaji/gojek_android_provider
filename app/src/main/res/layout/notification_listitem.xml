@@ -53,14 +53,14 @@
                     android:text="@string/dummy_title"
                     android:textColor="@android:color/black" />
 
-                <TextView
+                <com.skyhope.showmoretextview.ShowMoreTextView
                     android:id="@+id/description_notification_tv"
                     style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/titlenotification_list_tv"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_toRightOf="@+id/notification_img"
+                    android:layout_toEndOf="@+id/notification_img"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/dummy_text"
                     android:textColor="@color/grey" />

@@ -14,7 +14,7 @@ data class ProfileResponse(
 data class ProfileResponseData(
         var activation_status: Int? = 0,
         var admin_id: Any = Any(),
-        var city: City = City(),
+        var city: ProfileCity = ProfileCity(),
         var city_id: Int? = 0,
         var country: Country = Country(),
         var country_code: String = "",
@@ -78,7 +78,7 @@ data class Country(
         var timezone: Any = Any()
 )
 
-data class City(
+data class ProfileCity(
         var city_name: String = "",
         var country_id: Int? = 0,
         var id: Int? = 0,

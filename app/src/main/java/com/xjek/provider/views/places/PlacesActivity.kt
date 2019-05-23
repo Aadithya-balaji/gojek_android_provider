@@ -7,7 +7,7 @@ import androidx.databinding.ViewDataBinding
 import com.xjek.base.base.BaseActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivitySearchPlaceBinding
-import com.xjek.provider.model.ciity.PlaceResponseModel
+import com.xjek.provider.models.PlaceResponseModel
 import com.xjek.provider.views.adapters.PlacesAdapter
 
 class PlacesActivity : BaseActivity<ActivitySearchPlaceBinding>(), SearchView.OnQueryTextListener {

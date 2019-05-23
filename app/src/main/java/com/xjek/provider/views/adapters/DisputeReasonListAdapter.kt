@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
 import com.xjek.provider.databinding.RowDisputeListBinding
-import com.xjek.provider.model.DisputeListData
+import com.xjek.provider.models.DisputeListData
 import com.xjek.provider.views.history_details.HistoryDetailViewModel
 
 

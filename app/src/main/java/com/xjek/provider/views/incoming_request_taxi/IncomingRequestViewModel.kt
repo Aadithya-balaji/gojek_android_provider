@@ -9,6 +9,7 @@ import com.xjek.provider.models.RejectRequestModel
 import com.xjek.provider.repository.AppRepository
 
 class IncomingRequestViewModel : BaseViewModel<IncomingNavigator>() {
+
     val appRepository = AppRepository.instance()
 
     var pickupLocation = MutableLiveData<String>()

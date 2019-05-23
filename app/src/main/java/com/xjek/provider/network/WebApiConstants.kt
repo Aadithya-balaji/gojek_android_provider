@@ -3,26 +3,6 @@ package com.xjek.provider.network
 object WebApiConstants {
 
     const val SALT_KEY = "salt_key"
-    const val REQUESTED_WITH = "X-Requested-With"
-    const val HTTP_REQUEST = "XMLHttpRequest"
-    const val AUTHORIZATION = "Authorization"
-    const val DEVICE_TYPE = "device_type"
-    const val DEVICE_TOKEN = "device_token"
-    const val LOGIN_BY = "login_by"
-    const val EMAIL = "email"
-    const val PASSWORD = "password"
-    const val FIRST_NAME = "first_name"
-    const val LAST_NAME = "last_name"
-    const val GENDER = "gender"
-    const val COUNTRY_CODE = "country_code"
-    const val MOBILE = "mobile"
-    const val CONFIRM_PASSWORD = "password_confirmation"
-    const val COUNTRY_ID = "country_id"
-    const val STATE_ID = "state_id"
-    const val CITY_ID = "city_id"
-    const val PHONE_NUMBER = "mobile"
-    const val LIMIT = "limit"
-    const val OFFSET = "offset"
 
     object Login {
         const val COUNTRY_CODE = "country_code"
@@ -83,19 +63,8 @@ object WebApiConstants {
         const val EMAIL = "email"
         const val CITY_ID = "city_id"
         const val SOCIAL_ID = "social_unique_id"
+        const val REFERRAL_CODE = "referral_code"
     }
-
-    object UpdateProfile {
-        const val FIRST_NAME = "first_name"
-        const val LAST_NAME = "last_name"
-        const val EMAIL = "email"
-        const val MOBILE = "mobile"
-        const val LANGUAGE = "language"
-        const val CITY_ID = "city_id"
-        const val COUNTRY_ID = "country_id"
-        const val PICTURE = "picture"
-    }
-
 
     object AddWallet {
         const val AMOUNT = "amount"
@@ -107,12 +76,6 @@ object WebApiConstants {
     object addCard {
         const val STRIP_TOKEN = "stripe_token"
     }
-
-
-    object Availability {
-        const val STATUS = "status"
-    }
-
 
     object AddService {
         const val ID = "id"
@@ -128,17 +91,5 @@ object WebApiConstants {
         const val VEHICLE_IMAGE = "vechile_image"
         const val PICTURE = "picture"
         const val PICTURE1 = "picture1"
-    }
-
-    object ListDocuments {
-        const val TYPE = "type"
-    }
-
-    object AddDocument {
-        const val DOCUMENT_NAME = "document_name"
-        const val DOCUMENT_ID = "document_id"
-        const val EXPIRES_AT = "expires_at"
-        const val DOCUMENT_FRONTSIDE = "file[0]"
-        const val DOCUMENT_BACKSIDE = "file[1]"
     }
 }

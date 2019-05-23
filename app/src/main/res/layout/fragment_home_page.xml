@@ -15,19 +15,43 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <fragment
-            android:id="@+id/map_home"
-            class="com.google.android.gms.maps.SupportMapFragment"
+        <RelativeLayout
+            android:id="@+id/rlOnline"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
+            android:layout_height="wrap_content"
+            android:visibility="visible">
+
+            <fragment
+                android:id="@+id/map_home"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabCurrentLocation"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="center"
+                app:fabCustomSize="50dp"
+                android:onClick="@{() -> homemodel.showCurrentLocation()}"
+                app:backgroundTint="@color/colorWhite"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/ic_current_location"
+                android:layout_alignParentEnd="true"
+                />
+        </RelativeLayout>
+
 
         <LinearLayout
             android:id="@+id/ll_offline"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="100dp">
+            android:padding="100dp"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -46,8 +70,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_change_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_45sdp"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_15sdp"
@@ -56,7 +82,7 @@
             android:text="@string/online"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:cornerRadius="@dimen/_6sdp" />
+            app:cornerRadius="@dimen/_15sdp" />
 
     </RelativeLayout>
 

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
-import com.xjek.provider.model.TransportHistory
+import com.xjek.provider.models.TransportHistory
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Constant
 import com.xjek.xjek.ui.currentorder_fragment.CurrentOrderNavigator

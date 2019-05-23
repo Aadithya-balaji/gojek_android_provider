@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
-import com.xjek.provider.model.EarningsResponse
+import com.xjek.provider.models.EarningsResponse
 import com.xjek.provider.repository.AppRepository
 
 class EarningsViewModel : BaseViewModel<EarningsNavigator>() {

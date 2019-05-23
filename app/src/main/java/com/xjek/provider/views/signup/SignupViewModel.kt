@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
-import com.xjek.provider.model.CountryListResponse
+import com.xjek.provider.models.CountryListResponse
 import com.xjek.provider.models.SignupResponseModel
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
@@ -26,6 +26,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
     var confirmPassword = MutableLiveData<String>()
     var countryID = MutableLiveData<String>()
     var cityID = MutableLiveData<String>()
+    var referralCode = MutableLiveData<String>()
     var stateID = MutableLiveData<String>()
     var gender = MutableLiveData<String>()
     var countryName = MutableLiveData<String>()
@@ -73,6 +74,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         signupParams.put(WebApiConstants.Signup.PASSWORD, RequestBody.create(MediaType.parse("text/plain"), password.value.toString()))
         signupParams.put(WebApiConstants.Signup.COUNTRY_ID, RequestBody.create(MediaType.parse("text/plain"), countryID.value.toString()))
         signupParams.put(WebApiConstants.Signup.CITY_ID, RequestBody.create(MediaType.parse("text/plain"), cityID.value.toString()))
+        signupParams.put(WebApiConstants.Signup.REFERRAL_CODE, RequestBody.create(MediaType.parse("text/plain"), referralCode.value.toString()))
         if (!socialID.value.isNullOrEmpty())
             signupParams.put(WebApiConstants.Signup.SOCIAL_ID, RequestBody.create(MediaType.parse("text/plain"), socialID.value.toString()))
 

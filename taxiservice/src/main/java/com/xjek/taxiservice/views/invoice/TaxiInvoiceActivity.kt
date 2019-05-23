@@ -90,11 +90,11 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 mViewModel.pickuplocation.value = requestModel!!.request.s_address
                 mViewModel.dropLocation.value = requestModel!!.request.d_address
                 mViewModel.bookingId.value = requestModel!!.request.booking_id
-                mViewModel.distance.value = requestModel!!.request.payment.distance.toString()
+                mViewModel.distance.value = requestModel!!.request.distance.toString() + requestModel!!.request.unit
                 mViewModel.timeTaken.value = requestModel!!.request.travel_time
                 mViewModel.baseFare.value = requestModel!!.request.currency + requestModel!!.request.payment.fixed.toString()
                 mViewModel.waitingCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.waiting_amount.toString()
-                mViewModel.distanceFare.value = requestModel!!.request.currency + requestModel!!.request.distance.toString()
+                mViewModel.distanceFare.value = requestModel!!.request.currency + requestModel!!.request.payment.distance.toString()
                 mViewModel.tax.value = requestModel!!.request.currency + requestModel!!.request.payment.tax.toString()
                 mViewModel.tips.value = requestModel!!.request.currency + requestModel!!.request.payment.tips.toString()
                 mViewModel.total.value = requestModel!!.request.currency + requestModel!!.request.payment.total.toString()

@@ -10,8 +10,6 @@ import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -46,7 +44,6 @@ import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
-import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
 import com.xjek.base.utils.LocationCallBack
 import com.xjek.base.utils.LocationUtils
 import com.xjek.base.utils.ViewUtils
@@ -64,11 +61,9 @@ import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
-import java.util.*
-import kotlin.concurrent.schedule
 
-class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
+class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNavigator,
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private lateinit var binding: ActivityDashboardBinding
     private lateinit var mViewModel: DashBoardViewModel
@@ -82,7 +77,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     private lateinit var context: Context
     private var googleApiClient: GoogleApiClient? = null
     private var dialog: Dialog? = null
-
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -291,8 +285,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                             else -> BROADCAST = "BASE_BROADCAST"
                         }
                     }
-                }else{
-                    if(mIncomingRequestDialog.isShown()){
+                } else {
+                    if (mIncomingRequestDialog.isShown()) {
                         mIncomingRequestDialog.dismiss()
                     }
                 }
@@ -321,17 +315,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         override fun onReceive(contxt: Context?, intent: Intent?) {
             println("RRRR:: DashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
-            val isGpsEnabled = intent!!.getBooleanExtra("ISGPS_EXITS", false)
-            if (isGpsEnabled == true) {
+            val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
+            if (isGpsEnabled) {
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
                     if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
                 }
-            } else {
-                if (isLocationDialogShown == false)
-                    checkGps()
-            }
+            } else if (!isLocationDialogShown) checkGps()
         }
     }
 
@@ -340,7 +331,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.e("Result", "-------" + "DashboardActivity" + requestCode + "  " + resultCode)
+        Log.e("Result", "-------DashboardActivity$requestCode  $resultCode")
         when (requestCode) {
             500 ->
                 when (resultCode) {
@@ -368,9 +359,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     }
 
-
     override fun getInstance(): DashBoardActivity = this@DashBoardActivity
-
 
     private fun checkGps() {
         Log.e("checkgps", "----------")
@@ -380,9 +369,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         locationRequest?.interval = 1000
         locationRequest?.numUpdates = 1
         locationRequest?.fastestInterval = (5 * 1000).toLong()
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return
-        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return
+
         val settingsBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
         settingsBuilder.setAlwaysShow(true)
         val result = LocationServices.getSettingsClient(context).checkLocationSettings(settingsBuilder.build())

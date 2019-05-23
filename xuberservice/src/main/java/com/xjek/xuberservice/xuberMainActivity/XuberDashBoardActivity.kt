@@ -127,7 +127,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mViewModel.navigator = this
         mBinding.xuberViewModel = mViewModel
         mBinding.lifecycleOwner = this
-        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        mViewModel.showLoading = loadingObservable
         mBinding.llBottomService.fbCamera.setOnClickListener(this)
         initialiseMap()
         getApiResponse()
@@ -148,7 +148,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         mViewModel.strDesc.value = xuberCheckRequest.responseData.requests.allow_description.toString()
                         mViewModel.userRating.value = String.format(resources.getString(R.string.xuper_rating_user), xuberCheckRequest.responseData.requests.user!!.rating!!.toDouble())
 
-                        if (xuberCheckRequest.responseData.requests.user!!.picture != null) {
+                        if (xuberCheckRequest.responseData.requests.user.picture != null) {
                             setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
                         } else {
                             setUserImage("")
@@ -700,7 +700,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             xoff = displayFrameWidth - margin - popupWindow!!.width - loc[0]
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) popupWindow!!.elevation = 20f
             popupWindow!!.isOutsideTouchable = false
-            popupWindow!!.showAtLocation(v, Gravity.RIGHT, xoff, y.toInt() + 200)
+            popupWindow!!.showAtLocation(v, Gravity.END, xoff, y.toInt() + 200)
             popupWindow!!.animationStyle = R.anim.popup_anim_in
         }
 
@@ -727,6 +727,5 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             dialogUploadPicture.arguments = bundle
             dialogUploadPicture.show(supportFragmentManager, "takepicture")
         }
-
     }
 }

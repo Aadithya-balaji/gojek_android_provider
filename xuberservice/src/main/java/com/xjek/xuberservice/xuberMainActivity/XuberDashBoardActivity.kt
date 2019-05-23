@@ -1,6 +1,7 @@
 package com.xjek.xuberservice.xuberMainActivity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -82,6 +83,7 @@ import okhttp3.RequestBody
 import org.json.JSONObject
 import java.io.File
 import java.util.*
+import kotlin.concurrent.schedule
 
 class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         XuberDasbBoardNavigator,
@@ -116,6 +118,9 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var checkStatusApiCounter = 0
     private var popupWindow: PopupWindow? = null
     private var popupView: View? = null
+    private var isGPSEnabled: Boolean = false
+    private var isLocationDialogShown: Boolean = false
+    private  lateinit var  context:Context
 
     override fun getLayoutId(): Int = R.layout.activity_xuber_main
 
@@ -124,6 +129,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as ActivityXuberMainBinding
         mViewModel = XuberDashboardViewModel()
+        context=this
         mViewModel.navigator = this
         mBinding.xuberViewModel = mViewModel
         mBinding.lifecycleOwner = this
@@ -367,31 +373,47 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         override fun onReceive(contxt: Context?, intent: Intent?) {
             println("RRRR:: XuberDashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
-            if (location != null) {
-                mViewModel.latitude.value = location.latitude
-                mViewModel.longitude.value = location.longitude
+            val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
 
-                if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuberCheckRequest()
-
-                if (roomConnected) {
-                    val locationObj = JSONObject()
-                    locationObj.put("latitude", location.latitude)
-                    locationObj.put("longitude", location.longitude)
-                    locationObj.put("room", Constants.ROOM_ID.SERVICE_ROOM)
-//                    SocketManager.emit("send_location", locationObj)
-                    Log.e("SOCKET", "SOCKET_SK Location update service called")
+            if(isGpsEnabled){
+                updateMap(location)
+            }else{
+                if (isLocationDialogShown == false) {
+                    isLocationDialogShown = true
+                    CommonMethods.checkGps(context)
                 }
+            }
 
-                if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
-                    if (startLatLng.latitude > 0) endLatLng = startLatLng
-                    startLatLng = LatLng(location.latitude, location.longitude)
 
-                    if (endLatLng.latitude > 0 && polyLine.size > 0) try {
-                        CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
-                        polyLineRerouting(endLatLng, polyLine)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
+        }
+    }
+
+
+    private  fun updateMap(location:Location){
+        if (location != null) {
+            mViewModel.latitude.value = location.latitude
+            mViewModel.longitude.value = location.longitude
+
+            if (checkStatusApiCounter++ % 2 == 0) mViewModel.callXuberCheckRequest()
+
+            if (roomConnected) {
+                val locationObj = JSONObject()
+                locationObj.put("latitude", location.latitude)
+                locationObj.put("longitude", location.longitude)
+                locationObj.put("room", Constants.ROOM_ID.SERVICE_ROOM)
+//                    SocketManager.emit("send_location", locationObj)
+                Log.e("SOCKET", "SOCKET_SK Location update service called")
+            }
+
+            if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
+                if (startLatLng.latitude > 0) endLatLng = startLatLng
+                startLatLng = LatLng(location.latitude, location.longitude)
+
+                if (endLatLng.latitude > 0 && polyLine.size > 0) try {
+                    CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
+                    polyLineRerouting(endLatLng, polyLine)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }
@@ -727,5 +749,40 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             dialogUploadPicture.arguments = bundle
             dialogUploadPicture.show(supportFragmentManager, "takepicture")
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            500 ->
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        isGPSEnabled = true
+                        isLocationDialogShown = false
+                        if (getPermissionUtil().hasPermission(this, Constants.RequestPermission.PERMISSIONS_LOCATION)) {
+                            ViewUtils.showGpsDialog(context)
+                            Timer().schedule(10000) {
+                                ViewUtils.dismissGpsDialog()
+                                updateCurrentLocation()
+                            }
+
+                        }
+                    }
+                    Activity.RESULT_CANCELED -> {
+                    }
+                }
+
+            300 -> {
+                // getPermissionUtil().hasAllPermisson( Constants.RequestPermission.PERMISSIONS_LOCATION,context as AppCompatActivity ,300)
+
+            }
+
+            100 ->{
+                finish()
+            }
+
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+
     }
 }

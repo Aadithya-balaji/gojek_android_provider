@@ -80,6 +80,7 @@ import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
+import kotlin.concurrent.schedule
 
 class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         TaxiDashboardNavigator,
@@ -95,7 +96,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mViewModel: TaxiDashboardViewModel
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
-
     private var isWaitingTime: Boolean? = false
     private var lastWaitingTime: Long? = 0
     private var mGoogleMap: GoogleMap? = null
@@ -103,12 +103,13 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var canDrawPolyLine: Boolean = true
     private var mPolyline: Polyline? = null
     private var isNeedToUpdateWaiting: Boolean = false
-
+    private var isLocationDialogShown: Boolean = false
+    private  lateinit var  context:Context
+    private var isGPSEnabled: Boolean = false
     private var startLatLng = LatLng(0.0, 0.0)
     private var endLatLng = LatLng(0.0, 0.0)
     private var srcMarker: Marker? = null
     private var polyUtil = PolyUtil()
-
     private var polyLine: ArrayList<LatLng> = ArrayList()
     private var checkStatusApiCounter = 0
     private var roomConnected: Boolean = false
@@ -121,6 +122,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         this.activityTaxiMainBinding = mViewDataBinding as ActivityTaxiMainBinding
         mViewModel = ViewModelProviders.of(this).get(TaxiDashboardViewModel::class.java)
         mViewModel.navigator = this
+        context=this
         activityTaxiMainBinding.lifecycleOwner = this
         activityTaxiMainBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
@@ -163,9 +165,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         try {
             this.mGoogleMap?.setOnCameraMoveListener(this)
             this.mGoogleMap?.setOnCameraIdleListener(this)
-
             mGoogleMap!!.isMyLocationEnabled = false
-
             mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json))
             updateCurrentLocation()
         } catch (e: Resources.NotFoundException) {
@@ -544,42 +544,55 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
-            if (location != null) {
-                mViewModel.latitude.value = location.latitude
-                mViewModel.longitude.value = location.longitude
-                println("RRRR :: TaxiDashboardActivity " + mViewModel.latitude.value + " :: " + mViewModel.longitude.value)
-                if (roomConnected) {
-                    val locationObj = JSONObject()
-                    locationObj.put("latitude", location.latitude)
-                    locationObj.put("longitude", location.longitude)
-                    locationObj.put("room", Constants.ROOM_ID.TRANSPORT_ROOM)
+            val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
+             if(isGpsEnabled){
+                 updateMap(location)
+             }else{
+                 if (isLocationDialogShown == false) {
+                     isLocationDialogShown = true
+                     CommonMethods.checkGps(context)
+                 }
+             }
+
+        }
+    }
+
+    private  fun updateMap(location:Location){
+        if (location != null) {
+            mViewModel.latitude.value = location.latitude
+            mViewModel.longitude.value = location.longitude
+            println("RRRR :: TaxiDashboardActivity " + mViewModel.latitude.value + " :: " + mViewModel.longitude.value)
+            if (roomConnected) {
+                val locationObj = JSONObject()
+                locationObj.put("latitude", location.latitude)
+                locationObj.put("longitude", location.longitude)
+                locationObj.put("room", Constants.ROOM_ID.TRANSPORT_ROOM)
 //                    SocketManager.emit("send_location", locationObj)
-                    Log.e("SOCKET", "SOCKET_SK Location update called")
-                }
+                Log.e("SOCKET", "SOCKET_SK Location update called")
+            }
 
-                if (checkStatusApiCounter++ % 3 == 0)
-                    if (location.latitude > 0 && location.longitude > 0) {
-                        mViewModel.callTaxiCheckStatusAPI()
-                    } else updateCurrentLocation()
+            if (checkStatusApiCounter++ % 3 == 0)
+                if (location.latitude > 0 && location.longitude > 0) {
+                    mViewModel.callTaxiCheckStatusAPI()
+                } else updateCurrentLocation()
 
-                if (startLatLng.latitude > 0) endLatLng = startLatLng
-                startLatLng = LatLng(location.latitude, location.longitude)
+            if (startLatLng.latitude > 0) endLatLng = startLatLng
+            startLatLng = LatLng(location.latitude, location.longitude)
 
-                println("RRRR :: TaxiDashboardActivity LatLng(location = ${LatLng(location.latitude, location.longitude)}")
+            println("RRRR :: TaxiDashboardActivity LatLng(location = ${LatLng(location.latitude, location.longitude)}")
 
-                if (endLatLng.latitude > 0 && polyLine.size > 0) {
-                    try {
-                        CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, endLatLng, startLatLng)
-                        polyLineRerouting(endLatLng, polyLine)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                } else if (mViewModel.latitude.value!! > 0 && polyLine.size == 0) try {
-                    drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                            mViewModel.polyLineDest.value!!)
+            if (endLatLng.latitude > 0 && polyLine.size > 0) {
+                try {
+                    CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, endLatLng, startLatLng)
+                    polyLineRerouting(endLatLng, polyLine)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
+            } else if (mViewModel.latitude.value!! > 0 && polyLine.size == 0) try {
+                drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
+                        mViewModel.polyLineDest.value!!)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
@@ -781,7 +794,37 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        println("GGG :: requestCode = [${requestCode}], resultCode = [${resultCode}], data = [${data}]")
-        if (resultCode == Activity.RESULT_OK && requestCode == 100) finish()
-    }
+            when (requestCode) {
+                500 ->
+                    when (resultCode) {
+                        Activity.RESULT_OK -> {
+                            isGPSEnabled = true
+                            isLocationDialogShown = false
+                            if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                ViewUtils.showGpsDialog(context)
+                                Timer().schedule(10000) {
+                                    ViewUtils.dismissGpsDialog()
+                                    updateCurrentLocation()
+                                }
+
+                            }
+                        }
+                        Activity.RESULT_CANCELED -> {
+                        }
+                    }
+
+                300 -> {
+                    // getPermissionUtil().hasAllPermisson( Constants.RequestPermission.PERMISSIONS_LOCATION,context as AppCompatActivity ,300)
+
+                }
+
+                100 ->{
+                    finish()
+                }
+
+            }
+            super.onActivityResult(requestCode, resultCode, data)
+
+        }
+
 }

@@ -32,14 +32,12 @@ import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
 import com.xjek.base.extensions.observeLiveData
+import com.xjek.base.utils.*
 import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
-import com.xjek.base.utils.LocaleUtils
-import com.xjek.base.utils.NetworkUtils
-import com.xjek.base.utils.PermissionUtils
-import com.xjek.base.utils.RunTimePermission
 import com.xjek.base.views.CustomDialog
+import com.xjek.monitorinternet.InternetConnectivityListener
 
-abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
+abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), InternetConnectivityListener {
 
     private val loadingLiveData = MutableLiveData<Boolean>()
     private lateinit var mViewDataBinding: T
@@ -53,8 +51,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
-    val loadingObservable: MutableLiveData<Boolean>
-        get() = loadingLiveData
+    val loadingObservable: MutableLiveData<Boolean> get() = loadingLiveData
 
     protected val isNetworkConnected: Boolean get() = NetworkUtils.isNetworkConnected(applicationContext)
 
@@ -153,49 +150,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                 .into(imageView)
     }
 
-
-    private fun checkGps() {
-        locationRequest = LocationRequest.create()
-        locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        locationRequest!!.interval = 1000
-        locationRequest!!.numUpdates = 1
-        locationRequest!!.fastestInterval = (5 * 1000).toLong()
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                !== PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this, Manifest.permission.ACCESS_COARSE_LOCATION) !== PackageManager.PERMISSION_GRANTED) {
-            return
-        }
-        val settingsBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
-        settingsBuilder.setAlwaysShow(true)
-        val result = LocationServices.getSettingsClient(this).checkLocationSettings(settingsBuilder.build())
-        result.addOnCompleteListener { task ->
-            try {
-                val response = task.getResult(ApiException::class.java)
-            } catch (ex: ApiException) {
-                when (ex.statusCode) {
-                    LocationSettingsStatusCodes.SUCCESS -> {
-                        val permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
-                        if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
-                            // mFusedLocationClient.requestLocationUpdates(locationRequest, getPendingIntent())
-                        }
-                    }
-                    LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> try {
-                        val resolvableApiException = ex as ResolvableApiException
-                        resolvableApiException.startResolutionForResult(context as Activity,
-                                REQUEST_CHECK_SETTINGS_GPS)
-                    } catch (e: IntentSender.SendIntentException) {
-
-                    }
-
-                    LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {
-                    }
-                }
-            }
-        }
+    override fun onInternetConnectivityChanged(isConnected: Boolean) {
+        println("RRR :: isConnected = $isConnected")
+        ViewUtils.showAlert(this, "RRR :: isConnected = $isConnected")
     }
-
-   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        val strTesting="boopathi"
-    }*/
 }

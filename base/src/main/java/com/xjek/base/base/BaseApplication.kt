@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import com.facebook.stetho.Stetho
-import com.xjek.base.BuildConfig
 import com.xjek.base.data.Constants
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.di.BaseComponent
@@ -15,12 +14,11 @@ import com.xjek.base.utils.LocaleUtils
 
 open class BaseApplication : Application() {
 
-
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(LocaleUtils.setLocale(base!!))
     }
 
-    var baseComponent = DaggerBaseComponent.builder()
+    var baseComponent: BaseComponent = DaggerBaseComponent.builder()
             .webServiceModule(WebServiceModule())
             .build()
 
@@ -38,15 +36,11 @@ open class BaseApplication : Application() {
         preferences = getSharedPreferences(Constants.CUSTOM_PREFERENCE, Context.MODE_PRIVATE)
     }
 
-
-
     companion object {
         private lateinit var baseApplication: Context
         private lateinit var preferences: SharedPreferences
-        var getCustomPreference: SharedPreferences? = null
-            get() = preferences
+        val getCustomPreference: SharedPreferences? get() = preferences
         var appController: BaseComponent? = null
-        val getBaseApplicationContext: Context
-            get() = baseApplication
+        val getBaseApplicationContext: Context get() = baseApplication
     }
 }

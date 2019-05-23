@@ -28,10 +28,12 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     fun callTaxiCheckStatusAPI() {
         if (latitude.value!! > 0 && longitude.value!! > 0)
-            getCompositeDisposable().add(mRepository.checkRequest(this,
-                    "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
-                    latitude.value!!, longitude.value!!)
-            )
+            getCompositeDisposable()
+                    .add(mRepository.checkRequest(
+                            this,
+                            "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
+                            latitude.value!!,
+                            longitude.value!!))
         else navigator.updateCurrentLocation()
     }
 

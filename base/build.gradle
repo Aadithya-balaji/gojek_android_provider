@@ -17,10 +17,10 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         //      Go-X official KEY
-//        resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
+        resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
         //      Temp Key
 //        resValue("string", "google_map_key", "AIzaSyArFGZVGMsdJvHRezGfYMv-pkvvl0XKZLE")
-        resValue("string", "google_map_key", "AIzaSyCZybR1LjXmLugPxvVyXpn173am_JYpdN4")
+//        resValue("string", "google_map_key", "AIzaSyCZybR1LjXmLugPxvVyXpn173am_JYpdN4")
 
     }
     buildTypes {
@@ -147,6 +147,8 @@ dependencies {
     // For Kotlin use kapt instead of annotationProcessor
 
     api project(':cropperlibrary')
+    api project(':monitorinternet')
+
     api 'com.github.jkwiecien:EasyImage:2.0.4'
 
     //Socket IO
@@ -161,9 +163,6 @@ dependencies {
     api "com.mindorks.android:prdownloader:0.5.0"
 
     api 'com.github.mahimrocky:ShowMoreText:1.0.2'
-
-
-    implementation project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

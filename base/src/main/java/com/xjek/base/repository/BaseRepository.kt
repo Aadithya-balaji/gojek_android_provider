@@ -38,34 +38,15 @@ open class BaseRepository {
                 .build()
     }
 
-   /* fun <T> createApiClient(serviceId: String, service: Class<T>): T {
-        return reconstructedRetrofit(serviceId).create(service)
-    }
-
-    private fun reconstructedRetrofit(serviceId: String): Retrofit {
-        return retrofit.newBuilder()
-                .baseUrl(StringBuilder(PreferencesHelper.get<String>(serviceId))
-                        .toString())
-                .build()
-    }*/
-
-
-
-
     fun getErrorMessage(e: Throwable): String {
         return when (e) {
             is HttpException -> {
-                val responseBody = e.response().errorBody()
-                if (e.code() == 401 && !PreferencesHelper.get(PreferencesKey.ACCESS_TOKEN,"").equals("")){
-                    SessionManager.clearSession()
-                }
-                getErrorMessage(responseBody!!)
+                if (e.code() == 401 && !PreferencesHelper.get(PreferencesKey.ACCESS_TOKEN,"").equals("")) SessionManager.clearSession()
+                getErrorMessage(e.response().errorBody()    !!)
             }
             is SocketTimeoutException -> NetworkError.TIME_OUT
             is IOException -> NetworkError.IO_EXCEPTION
-            else -> {
-                NetworkError.SERVER_EXCEPTION
-            }
+            else -> NetworkError.SERVER_EXCEPTION
         }
     }
 

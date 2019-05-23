@@ -17,7 +17,6 @@ open class BaseViewModel<N> : ViewModel() {
     private lateinit var mNavigator: WeakReference<N>
     private var liveErrorResponse = MutableLiveData<String>()
 
-
     var navigator: N
         get() = mNavigator.get()!!
         set(navigator) {
@@ -35,21 +34,14 @@ open class BaseViewModel<N> : ViewModel() {
         return liveErrorResponse
     }
 
-
     fun processException(e: Throwable): String? {
         return when (e) {
-            is HttpException -> {
-                val responseBody = e.response().errorBody()
-                getErrorMessage(responseBody!!)
-            }
+            is HttpException -> getErrorMessage(e.response().errorBody()!!)
             is SocketTimeoutException -> NetworkError.TIME_OUT
             is IOException -> NetworkError.IO_EXCEPTION
-            else -> {
-                NetworkError.SERVER_EXCEPTION
-            }
+            else -> NetworkError.SERVER_EXCEPTION
         }
     }
-
 
     private fun getErrorMessage(responseBody: ResponseBody): String? {
         return try {
@@ -58,9 +50,7 @@ open class BaseViewModel<N> : ViewModel() {
         } catch (e: Exception) {
             e.message
         }
-
     }
-
 
     private fun getErrorMessage(responseBody: Any): String? {
         return try {
@@ -69,6 +59,5 @@ open class BaseViewModel<N> : ViewModel() {
         } catch (e: Exception) {
             e.message
         }
-
     }
 }

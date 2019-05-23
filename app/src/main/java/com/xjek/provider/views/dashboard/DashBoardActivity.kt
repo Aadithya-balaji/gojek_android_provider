@@ -177,7 +177,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun hideRightIcon(isNeedHide: Boolean) {
-        if (isNeedHide && iv_right != null) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
+        try {
+            if (isNeedHide && iv_right != null) iv_right.visibility = View.GONE else iv_right.visibility = View.VISIBLE
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun updateLocation(isTrue: Boolean) {

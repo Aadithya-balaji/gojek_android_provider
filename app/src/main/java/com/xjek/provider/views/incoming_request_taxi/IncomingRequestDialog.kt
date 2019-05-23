@@ -28,6 +28,7 @@ import com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.xjek.provider.R
 import com.xjek.provider.databinding.DialogTaxiIncomingRequestBinding
 import com.xjek.provider.models.CheckRequestModel
+import com.xjek.provider.models.Request
 import com.xjek.taxiservice.views.main.TaxiDashboardActivity
 import com.xjek.xuberservice.xuberMainActivity.XuberDashBoardActivity
 import java.util.*
@@ -40,6 +41,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     private lateinit var mViewModel: IncomingRequestViewModel
     private lateinit var circularProgressBar: FullCircularProgressBar
     private lateinit var timerToTakeOrder: MyCountDownTimer
+    private lateinit var request: Request
 
     private var shown: Boolean? = false
     private var totalSeconds: Int? = 0
@@ -50,7 +52,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getBundleArugment()
+        getBundleArgument()
         setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
     }
 
@@ -81,8 +83,8 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         mPlayer = MediaPlayer.create(context, R.raw.alert_tone)
 
         if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()
-                && incomingRequestModel!!.responseData.requests[0].time_left_to_respond!! > 0) {
-            totalSeconds = Math.abs(incomingRequestModel!!.responseData.requests[0].time_left_to_respond!!)
+                && request.time_left_to_respond!! > 0) {
+            totalSeconds = Math.abs(request.time_left_to_respond!!)
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
             val time = String.format("%d:%d", minutes, seconds)
@@ -92,27 +94,32 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
             timerToTakeOrder.start()
 
+            when (request.service.display_name) {
 
-            when (incomingRequestModel!!.responseData.requests[0].service.display_name) {
+                Constants.ModuleTypes.TRANSPORT -> {
+                    mViewModel.pickupLocation.value = request.request.s_address
+
+                    mViewModel.serviceType.value = request.service.display_name + " - " +
+                            request.request.ride_type.ride_name + " - " +
+                            request.request.ride.vehicle_name
+                }
                 Constants.ModuleTypes.SERVICE -> {
+                    mViewModel.pickupLocation.value = request.request.s_address
 
+                    mViewModel.serviceType.value = request.service.display_name + " - " +
+                            request.request.service.service_category.service_category_name + " - " +
+                            request.request.service.servicesub_category.service_subcategory_name + " - " +
+                            request.request.service.service_name
+                }
+                Constants.ModuleTypes.ORDER -> {
+                    if (request.request.pickup.store_name.length > 2)
+                        mViewModel.pickupLocation.value = request.request.pickup.store_location
+
+                    mViewModel.serviceType.value = request.service.display_name + " - " +
+                            request.request.pickup.storetype.name + " - " +
+                            request.request.pickup.store_name
                 }
             }
-
-            if (incomingRequestModel!!.responseData.requests[0].request.s_address.length > 2)
-                mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.s_address
-            else {
-                val lat = incomingRequestModel!!.responseData.requests[0].request.s_latitude
-                val lon = incomingRequestModel!!.responseData.requests[0].request.s_longitude
-                val address = getCurrentAddress(context!!, LatLng(lat!!, lon!!))
-                if (address.isNotEmpty()) mViewModel.pickupLocation.value = address[0].getAddressLine(0)
-            }
-            if (incomingRequestModel!!.responseData.requests[0].request.pickup.store_name.length > 2) {
-                mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.pickup.store_name + "\n" +
-                        incomingRequestModel!!.responseData.requests[0].request.pickup.store_location
-            }
-
-            mViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
         getApiResponse()
         mPlayer.start()
@@ -138,9 +145,9 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             if (mViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
                 when {
-                    incomingRequestModel!!.responseData.requests[0].admin_service_id == 3 ->
+                    request.admin_service_id == 3 ->
                         activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
-                    incomingRequestModel!!.responseData.requests[0].admin_service_id == 2 ->
+                    request.admin_service_id == 2 ->
                         activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
                     else -> activity!!.startActivity(Intent(activity, TaxiDashboardActivity::class.java))
                 }
@@ -162,16 +169,16 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     override fun accept() {
         loadingObservable.value = true
         val params: HashMap<String, String> = HashMap()
-        params["id"] = incomingRequestModel!!.responseData.requests[0].request.id.toString()
-        params["service_id"] = incomingRequestModel!!.responseData.requests[0].service.id.toString()
+        params["id"] = request.request.id.toString()
+        params["service_id"] = request.service.id.toString()
         mViewModel.acceptRequest(params)
     }
 
     override fun cancel() {
         loadingObservable.value = true
         val params: HashMap<String, String> = HashMap()
-        params["id"] = incomingRequestModel!!.responseData.requests[0].request.id.toString()
-        params["service_id"] = incomingRequestModel!!.responseData.requests[0].service.id.toString()
+        params["id"] = request.request.id.toString()
+        params["service_id"] = request.service.id.toString()
         mViewModel.rejectRequest(params)
     }
 
@@ -203,10 +210,12 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         }
     }
 
-    private fun getBundleArugment() {
+    private fun getBundleArgument() {
         val requestModel = if (arguments != null && arguments!!.containsKey("requestModel")) arguments!!.getString("requestModel") else ""
-        if (!requestModel.isNullOrEmpty())
+        if (!requestModel.isNullOrEmpty()) {
             incomingRequestModel = Gson().fromJson(requestModel.toString(), CheckRequestModel::class.java)
+            request = incomingRequestModel!!.responseData.requests[0]
+        }
     }
 
     override fun show(transaction: FragmentTransaction, tag: String?): Int {

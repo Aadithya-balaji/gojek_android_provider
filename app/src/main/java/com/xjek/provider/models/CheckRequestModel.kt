@@ -180,6 +180,7 @@ data class RequestX(
         var user_rated: Double? = 0.0,
         var vehicle_type: String = "",
         var ride_type: RideType = RideType(),
+        var service: ServiceX = ServiceX(),
         var ride: Ride = Ride()
 
 ) : Serializable
@@ -261,7 +262,8 @@ class Pickup(
         var latitude: String = "",
         var longitude: String = "",
         var store_location: String = "",
-        var store_name: String = ""
+        var store_name: String = "",
+        var storetype: StoreType = StoreType()
 ) : Serializable
 
 data class Service(
@@ -273,19 +275,64 @@ data class Service(
 ) : Serializable
 
 data class Ride(
-    var capacity: Int = 0,
-    var company_id: Int = 0,
-    var id: Int = 0,
-    var ride_type_id: Int = 0,
-    var status: Int = 0,
-    var vehicle_image: String = "",
-    var vehicle_marker: String = "",
-    var vehicle_name: String = "",
-    var vehicle_type: String = ""
-)
+        var capacity: Int = 0,
+        var company_id: Int = 0,
+        var id: Int = 0,
+        var ride_type_id: Int = 0,
+        var status: Int = 0,
+        var vehicle_image: String = "",
+        var vehicle_marker: String = "",
+        var vehicle_name: String = "",
+        var vehicle_type: String = ""
+) : Serializable
 
 data class RideType(
-    var id: Int = 0,
-    var ride_name: String = "",
-    var status: Int = 0
-)
+        var id: Int = 0,
+        var ride_name: String = "",
+        var status: Int = 0
+) : Serializable
+
+data class StoreType(
+        var category: String = "",
+        var company_id: Int = 0,
+        var id: Int = 0,
+        var name: String = "",
+        var status: Int = 0
+) : Serializable
+
+data class ServiceX(
+        var allow_after_image: Int = 0,
+        var allow_before_image: Int = 0,
+        var allow_desc: Int = 0,
+        var company_id: Int = 0,
+        var id: Int = 0,
+        var is_professional: Int = 0,
+        var picture: String = "",
+        var service_category: ServiceCategory = ServiceCategory(),
+        var service_category_id: Int = 0,
+        var service_name: String = "",
+        var service_status: Int = 0,
+        var service_subcategory_id: Int = 0,
+        var servicesub_category: ServiceSubCategory = ServiceSubCategory()
+) : Serializable
+
+data class ServiceSubCategory(
+        var company_id: Int = 0,
+        var id: Int = 0,
+        var picture: String = "",
+        var service_category_id: Int = 0,
+        var service_subcategory_name: String = "",
+        var service_subcategory_order: Int = 0,
+        var service_subcategory_status: Int = 0
+) : Serializable
+
+data class ServiceCategory(
+        var alias_name: String = "",
+        var company_id: Int = 0,
+        var id: Int = 0,
+        var picture: String = "",
+        var price_choose: String = "",
+        var service_category_name: String = "",
+        var service_category_order: Int = 0,
+        var service_category_status: Int = 0
+) : Serializable

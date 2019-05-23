@@ -31,12 +31,12 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://xjekapi.xtikr.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.gox.network/\"")
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://xjekapi.xtikr.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.gox.network/\"")
         }
     }
     // Configured Java 8 language features for each module.
@@ -93,14 +93,15 @@ dependencies {
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"
 
     implementation project(':base')
+
     implementation project(':foodservice')
     implementation project(':taxiservice')
     implementation project(':xuberservice')
     implementation project(':countrycodepicker')
+    implementation project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation project(':cropperlibrary')
 }
 apply plugin: 'com.google.gms.google-services'

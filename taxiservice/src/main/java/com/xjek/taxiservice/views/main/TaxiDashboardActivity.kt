@@ -21,7 +21,6 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -54,7 +53,6 @@ import com.xjek.base.data.PreferencesKey
 import com.xjek.base.data.PreferencesKey.CAN_SAVE_LOCATION
 import com.xjek.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.xjek.base.extensions.observeLiveData
-import com.xjek.base.extensions.readPreferences
 import com.xjek.base.extensions.writePreferences
 import com.xjek.base.location_service.BaseLocationService
 import com.xjek.base.location_service.BaseLocationService.Companion.BROADCAST
@@ -132,7 +130,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         cmWaiting.onChronometerTickListener = this
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         //mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        observeLiveData(mViewModel.showLoading){
+        observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
 
@@ -256,7 +254,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         when (checkStatusResponse.responseData.request.status) {
                             SEARCHING -> {
                                 val params = HashMap<String, String>()
-                                params[com.xjek.base.data.Constants.Common.ID] = requestID
+                                params[Constants.Common.ID] = requestID
                                 mViewModel.taxiWaitingTime(params)
                             }
 
@@ -395,13 +393,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_arrived.setOnClickListener {
-            if (!isWaitingTime!!) {
-                val params: HashMap<String, String> = HashMap()
-                params["id"] = responseData.request.id.toString()
-                params["status"] = ARRIVED
-                params["_method"] = "PATCH"
-                mViewModel.taxiStatusUpdate(params)
-            } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
+            val params: HashMap<String, String> = HashMap()
+            params["id"] = responseData.request.id.toString()
+            params["status"] = ARRIVED
+            params["_method"] = "PATCH"
+            mViewModel.taxiStatusUpdate(params)
         }
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
@@ -657,7 +653,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-
     }
 
     override fun whenFail(statusCode: String) {
@@ -719,7 +714,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     override fun onClick(view: View?) {
         when (view!!.id) {
             R.id.btnWaiting -> {
-                if (isWaitingTime == true) {
+                if (isWaitingTime!!) {
                     changeWaitingTimeBackground(false)
                     isWaitingTime = false
                     lastWaitingTime = SystemClock.elapsedRealtime()

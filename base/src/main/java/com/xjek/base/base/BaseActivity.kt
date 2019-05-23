@@ -57,12 +57,15 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), Internet
 
     protected abstract fun initView(mViewDataBinding: ViewDataBinding?)
 
-    private val mPermissionUtils: PermissionUtils? = null
+    private var mPermissionUtils: PermissionUtils? = null
 
     protected var runtimePermission: RunTimePermission? = null
 
     fun getPermissionUtil(): PermissionUtils {
-        return mPermissionUtils ?: PermissionUtils()
+        if(mPermissionUtils==null){
+            mPermissionUtils = PermissionUtils()
+        }
+        return  mPermissionUtils!!
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

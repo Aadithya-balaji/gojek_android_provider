@@ -1,11 +1,14 @@
 package com.xjek.base.utils
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -21,6 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object ViewUtils {
+    private  var dialog:Dialog?=null
 
     fun showSoftInputWindow(activity: Activity) {
         val manager = activity
@@ -98,6 +102,21 @@ object ViewUtils {
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
+    }
+
+
+    fun showGpsDialog(context: Context) {
+        dialog = Dialog(context)
+        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog!!.setCancelable(false)
+        dialog!!.setContentView(R.layout.layout_enable_gbs)
+        dialog!!.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog!!.show()
+    }
+
+    fun dismissGpsDialog(){
+        if(dialog!=null)
+             dialog!!.dismiss()
     }
 
 /* @MainThread

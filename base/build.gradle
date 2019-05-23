@@ -25,17 +25,18 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://xjekapi.xtikr.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.gox.network/\"")
             buildConfigField("String", "SALT_KEY", "\"MQ==\"")
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "BASE_URL", "\"https://xjekapi.xtikr.com/\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.gox.network/\"")
             buildConfigField("String", "SALT_KEY", "\"MQ==\"")
             buildConfigField("String", "STRIPE_KEY", "\"pk_test_DbfzA8Pv1MDErUiHakK9XfLe\"")
         }
     }
+
     // Configured Java 8 language features for each module.
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

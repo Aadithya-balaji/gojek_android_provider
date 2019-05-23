@@ -1,18 +1,33 @@
 package com.xjek.base.utils
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.preference.PreferenceManager
 import android.provider.Settings
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.xjek.base.R
+import com.xjek.base.data.PreferencesHelper.preferences
+
 
 class PermissionUtils {
+
+
+    var isFirstTimePermission: Boolean
+        get() = preferences.getBoolean("isFirstTimePermission", false)
+        set(isFirstTime) = preferences.edit().putBoolean("isFirstTimePermission", isFirstTime).apply()
 
     fun useRunTimePermissions(): Boolean {
         return Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1
@@ -22,6 +37,9 @@ class PermissionUtils {
         return !useRunTimePermissions()
                 || activity.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED
     }
+
+    private val isMarshmallow: Boolean
+        get() = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) or (Build.VERSION.SDK_INT == Build.VERSION_CODES.LOLLIPOP_MR1)
 
     fun hasPermission(activity: Activity, permissions: Array<String>): Boolean {
         for (permission in permissions) if (!hasPermission(activity, permission)) return false
@@ -54,15 +72,103 @@ class PermissionUtils {
         activity.startActivity(intent)
     }
 
+
+    private fun callPermissionSettings(context: Context) {
+        val intent = Intent()
+        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val uri = Uri.fromParts("package", context.getPackageName(), null)
+        intent.data = uri
+        val appCompatActivity = context as AppCompatActivity
+        appCompatActivity.startActivityForResult(intent, 300)
+    }
+
+
     fun hasAskedForPermission(activity: Activity, permission: String): Boolean {
         return PreferenceManager.getDefaultSharedPreferences(activity).getBoolean(permission, false)
     }
 
-    fun markedPermissionAsAsked(activity: Activity, permission: String) {
-        PreferenceManager
-                .getDefaultSharedPreferences(activity)
-                .edit()
-                .putBoolean(permission, true)
-                .apply()
+
+    fun hasAllPermisson(permission: Array<String>, context: Context, requestCode: Int): Boolean {
+        var isPermissionNeed = false
+        val blockedPermission = checkHasPermission(context as AppCompatActivity, permission)
+        if (blockedPermission.size > 0) {
+            val isBlocked = isPermissionBlocked(context!!, blockedPermission)
+            if (isBlocked) {
+                showMessageOKCancel(context, "Please Enable the Permssion to Proceed the application",
+                        DialogInterface.OnClickListener { dialog, which -> callPermissionSettings(context) })
+
+            } else {
+                ActivityCompat.requestPermissions(context as AppCompatActivity, permission, requestCode)
+            }
+        } else {
+            isPermissionNeed = true
+        }
+
+        return isPermissionNeed
+
+    }
+
+
+    fun checkHasPermission(context: AppCompatActivity?, permissions: Array<String>?): ArrayList<String> {
+        var permissionList = ArrayList<String>()
+        if (isMarshmallow && context != null && permissions != null) {
+            for (permission in permissions) {
+                if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    permissionList.add(permission)
+                }
+            }
+        }
+        return permissionList
+    }
+
+
+    fun onRequestPermissionsResult(permissions: Array<String>, grantResults: IntArray?): Array<String> {
+        val permissionList = ArrayList<String>()
+        if (grantResults != null && grantResults.isNotEmpty()) {
+            for (i in permissions.indices) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    permissionList.add(permissions[i])
+                }
+            }
+        }
+        return permissionList.toTypedArray()
+    }
+
+    fun isPermissionBlocked(context: Activity?, permissions: ArrayList<String>?): Boolean {
+        if (isMarshmallow && context != null && permissions != null && isFirstTimePermission) {
+            for (permission in permissions) {
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(context, permission)) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+
+    private fun showMessageOKCancel(context: Context, message: String, okListener: DialogInterface.OnClickListener) {
+        var dialog: AlertDialog? = null
+        val dialogBuilder = AlertDialog.Builder(context)
+        val li = LayoutInflater.from(context)
+        val dialogView = li.inflate(R.layout.layout_permission_setting, null)
+        dialogBuilder.setView(dialogView);
+        val tvOk = dialogView.findViewById(R.id.tvOk) as TextView
+        tvOk.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                okListener.onClick(dialog, v!!.id)
+                dialog!!.dismiss()
+            }
+        })
+        val tvCancel = dialogView.findViewById(R.id.tvCancel) as TextView
+        tvCancel.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+               // dialog!!.dismiss()
+            }
+
+        })
+
+        dialog = dialogBuilder.create()
+        dialog.show()
     }
 }

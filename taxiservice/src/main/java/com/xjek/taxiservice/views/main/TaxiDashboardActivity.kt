@@ -94,7 +94,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private lateinit var mViewModel: TaxiDashboardViewModel
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
 
-    private var isWaitingTime: Boolean? = false
+    private var isWaitingTime: Boolean = false
     private var lastWaitingTime: Long? = 0
     private var mGoogleMap: GoogleMap? = null
     private var mLastKnownLocation: Location? = null
@@ -393,13 +393,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_arrived.setOnClickListener {
-            if (!isWaitingTime!!) {
-                val params: HashMap<String, String> = HashMap()
-                params["id"] = responseData.request.id.toString()
-                params["status"] = ARRIVED
-                params["_method"] = "PATCH"
-                mViewModel.taxiStatusUpdate(params)
-            } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
+            val params: HashMap<String, String> = HashMap()
+            params["id"] = responseData.request.id.toString()
+            params["status"] = ARRIVED
+            params["_method"] = "PATCH"
+            mViewModel.taxiStatusUpdate(params)
         }
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
@@ -438,7 +436,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         btn_picked_up.setOnClickListener {
             if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
-                if (!isWaitingTime!!) {
+                if (!isWaitingTime) {
                     val otpDialogFragment = VerifyOtpDialog.newInstance(
                             responseData.request.otp,
                             responseData.request.id!!
@@ -498,7 +496,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_drop.setOnClickListener {
-            if (!isWaitingTime!!) ViewUtils.showAlert(this, "Do you have any Toll charge",
+            if (!isWaitingTime) ViewUtils.showAlert(this, "Do you have any Toll charge",
                     "Yes", "No", object : ViewUtils.ViewCallBack {
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     val tollChargeDialog = TollChargeDialog()
@@ -703,7 +701,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     override fun onClick(view: View?) {
         when (view!!.id) {
             R.id.btnWaiting -> {
-                if (isWaitingTime == true) {
+                if (isWaitingTime) {
                     changeWaitingTimeBackground(false)
                     isWaitingTime = false
                     lastWaitingTime = SystemClock.elapsedRealtime()

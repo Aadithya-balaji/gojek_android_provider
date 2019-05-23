@@ -30,7 +30,7 @@ class XUberCancelReasonFragment : BaseDialogFragment<DialogReasonBinding>(), Cus
         mViewModel.navigator = this
         mReasonFragmentBinding.lifecycleOwner = this
         getApiResponse()
-        mViewModel.getReason(com.xjek.base.data.Constants.Reasons.SERVICE)
+        mViewModel.getReason(com.xjek.base.data.Constants.ModuleTypes.SERVICE)
     }
 
     fun getApiResponse() {

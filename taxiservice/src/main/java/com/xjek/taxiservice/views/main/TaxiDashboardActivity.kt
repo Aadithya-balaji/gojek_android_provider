@@ -224,7 +224,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun showErrorMessage(error: String) {
-        mViewModel.showLoading.value = false
+        runOnUiThread { mViewModel.showLoading.value = false }
     }
 
     private fun checkStatusAPIResponse() {
@@ -347,7 +347,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             params[Constants.Common.ID] = mViewModel.checkStatusTaxiLiveData
                     .value!!.responseData.request.id.toString()
             params[Constants.Common.SERVICEID] = "1"
-            params[Constants.XuperProvider.CANCEL] = reason
+            params[Constants.XuperProvider.REASON] = reason
             mViewModel.cancelRequest(params)
         }
     }

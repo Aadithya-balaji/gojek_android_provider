@@ -6,7 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.os.*
+import android.os.Build
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
 import android.provider.Settings
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -32,7 +35,8 @@ class BaseLocationService : Service() {
 
     private val channelId = "channel_01"
 
-    private val checkInterval = 5000
+    private val
+            checkInterval = 5000
 
     private var r: Runnable? = null
     private var h: Handler? = null
@@ -76,6 +80,7 @@ class BaseLocationService : Service() {
 
         mLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
+                println("RRRR:: BaseLocationService.LocationCallBack")
                 super.onLocationResult(locationResult)
                 onNewLocation(locationResult!!.lastLocation)
                 if (h != null) {
@@ -93,8 +98,7 @@ class BaseLocationService : Service() {
         mLocationRequest!!.interval = updateInterval
         mLocationRequest!!.fastestInterval = fastestUpdateInterval
         mLocationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        mLocationRequest!!.smallestDisplacement = displacement.toFloat()
-
+        //  mLocationRequest!!.smallestDisplacement = displacement.toFloat()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -103,20 +107,14 @@ class BaseLocationService : Service() {
             }
 
         mFusedLocationClient!!.requestLocationUpdates(mLocationRequest, mLocationCallback!!, Looper.myLooper())
-
         streamLocation()
-
-        val thread = HandlerThread("BaseLocationService")
-        thread.start()
         mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = getString(R.string.app_name)
             val mChannel = NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_DEFAULT)
             mNotificationManager!!.createNotificationChannel(mChannel)
         }
-
-        requestLocationUpdates()
+        // requestLocationUpdates()
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -146,11 +144,11 @@ class BaseLocationService : Service() {
                     println("RRRR:: mFusedLocationClient received $mLocation")
                     onNewLocation(mLocation!!)
                 } else println("RRRR:: Failed to get location.")
+                val location = Location("setting")
+                location.setLatitude(0.0)
+                location.setLongitude(0.0)
+                onNewLocation(location)
                 println("RRRR:: streamLocation::task = $task")
-//                val loc = Location("dummyprovider")
-//                loc.latitude = 0.0
-//                loc.longitude = 0.0
-//                onNewLocation(loc)
             }
         } catch (unlikely: SecurityException) {
             println("RRRR:: Lost location permission.$unlikely")
@@ -166,11 +164,9 @@ class BaseLocationService : Service() {
         val provider = Settings.Secure.getString(contentResolver, Settings.Secure.LOCATION_PROVIDERS_ALLOWED)
         if (!provider.contains("gps")) intent.putExtra("ISGPS_EXITS", false)
         else intent.putExtra("ISGPS_EXITS", true)
-
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
         val providerId = readPreferences(FIRE_BASE_PROVIDER_IDENTITY, 0)
-        val point = LocationPointsEntity(null, location.latitude, location.longitude,
-                DateFormat.getDateTimeInstance().format(Date()))
+        val point = LocationPointsEntity(null, location.latitude, location.longitude, DateFormat.getDateTimeInstance().format(Date()))
         try {
             if (providerId!! > 0 && readPreferences(PreferencesKey.CAN_SAVE_LOCATION, false)!!) {
                 FirebaseDatabase.getInstance().getReference("providerId$providerId").setValue(point)
@@ -179,7 +175,6 @@ class BaseLocationService : Service() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         val notificationId = 12345678
         if (serviceIsRunningInForeground(this))
             mNotificationManager!!.notify(notificationId, notification)

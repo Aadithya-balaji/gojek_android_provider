@@ -50,10 +50,6 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     }
 
     fun cancelRequest(params: HashMap<String, String>) {
-        try {
-            showLoading.value = true
-        } catch (e: Exception) {
-        }
         getCompositeDisposable().add(mRepository.taxiCancelReason(this,
                 "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
     }

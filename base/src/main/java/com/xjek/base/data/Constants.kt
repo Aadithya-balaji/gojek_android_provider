@@ -126,19 +126,13 @@ object Constants {
         const val EXTRA_CHARGE_NOTES = "extra_charge_notes"
         const val PAYMENT = "PAYMENT"
         const val START = "START"
-        const val CANCEL = "CANCEL"
+        const val CANCEL = "cancel"
         const val STATUS = "status"
         const val REQCANCEL = "cancel"
         const val RATING = "rating"
         const val COMMENT = "comment"
+        const val REASON = "reason"
     }
-
-    object Reasons {
-        const val TRANSPORT = "TRANSPORT"
-        const val SERVICE = "SERVICE"
-        const val ORDER = "ORDER"
-    }
-
 
     object Dispute {
         const val DIPUSTE_TYPE = "dispute_type"

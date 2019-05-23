@@ -178,7 +178,10 @@ data class RequestX(
         var user: User = User(),
         var user_id: Int? = 0,
         var user_rated: Double? = 0.0,
-        var vehicle_type: String = ""
+        var vehicle_type: String = "",
+        var ride_type: RideType = RideType(),
+        var ride: Ride = Ride()
+
 ) : Serializable
 
 data class Invoice(
@@ -268,3 +271,21 @@ data class Service(
         var id: Int? = 0,
         var status: Int? = 0
 ) : Serializable
+
+data class Ride(
+    var capacity: Int = 0,
+    var company_id: Int = 0,
+    var id: Int = 0,
+    var ride_type_id: Int = 0,
+    var status: Int = 0,
+    var vehicle_image: String = "",
+    var vehicle_marker: String = "",
+    var vehicle_name: String = "",
+    var vehicle_type: String = ""
+)
+
+data class RideType(
+    var id: Int = 0,
+    var ride_name: String = "",
+    var status: Int = 0
+)

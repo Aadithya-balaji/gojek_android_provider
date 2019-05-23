@@ -19,6 +19,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.maps.model.LatLng
 import com.xjek.base.base.BaseDialogFragment
+import com.xjek.base.data.Constants
 import com.xjek.base.extensions.observeLiveData
 import com.xjek.base.utils.ViewUtils
 import com.xjek.base.views.customviews.circularseekbar.CircularProgressBarModel
@@ -43,7 +44,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     private var shown: Boolean? = false
     private var totalSeconds: Int? = 0
     private var incomingRequestModel: CheckRequestModel? = null
-    private lateinit var mPlayer : MediaPlayer
+    private lateinit var mPlayer: MediaPlayer
 
     override fun getLayout(): Int = R.layout.dialog_taxi_incoming_request
 
@@ -91,6 +92,13 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
             timerToTakeOrder.start()
 
+
+            when (incomingRequestModel!!.responseData.requests[0].service.display_name) {
+                Constants.ModuleTypes.SERVICE -> {
+
+                }
+            }
+
             if (incomingRequestModel!!.responseData.requests[0].request.s_address.length > 2)
                 mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.s_address
             else {
@@ -103,6 +111,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                 mViewModel.pickupLocation.value = incomingRequestModel!!.responseData.requests[0].request.pickup.store_name + "\n" +
                         incomingRequestModel!!.responseData.requests[0].request.pickup.store_location
             }
+
             mViewModel.serviceType.value = incomingRequestModel!!.responseData.requests[0].service.display_name
         }
         getApiResponse()

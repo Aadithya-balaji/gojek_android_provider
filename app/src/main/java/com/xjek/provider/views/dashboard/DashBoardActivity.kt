@@ -127,12 +127,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         val permission = getPermissionUtil().onRequestPermissionsResult(permissions, grantResults)
-        if (permission != null && permission!!.size > 0) run {
+        if (permission != null && permission.isNotEmpty()) run {
             getPermissionUtil().isFirstTimePermission = true
             getPermissionUtil().hasAllPermisson(permission, context, 150)
-        } else {
-            updateLocation(true)
-        }
+        } else updateLocation(true)
     }
 
     override fun onResume() {

@@ -90,6 +90,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             loadingObservable.value = it
         }
 
+
+
         spinnerCarCategory.setOnItemSelectedListener { view, position, id, item ->
             run {
                 txt_category_selection.setText(item.toString())
@@ -148,14 +150,17 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     }*/
 
     private fun setVehicle(vehicleData:ArrayList<SetupRideResponseModel.ResponseData.ServiceList>) {
-        spinnerCarCategory.setItems(vehicleData)
-        if (viewModel.getVehicleData()!!.vehicleId!! > 0) {
-            val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == viewModel.getVehicleData()!!.vehicleId }
-            spinnerCarCategory.selectedIndex = vehiclePosition
-            txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
-        }else{
-            spinnerCarCategory.selectedIndex = 0
-            txt_category_selection.setText(vehicleData[0].vehicleName)
+        if (!vehicleData.isNullOrEmpty()) {
+            spinnerCarCategory.setItems(vehicleData)
+            if (viewModel.getVehicleData()!!.vehicleId!! != 0) {
+                val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == viewModel.getVehicleData()!!.vehicleId }
+                spinnerCarCategory.selectedIndex = vehiclePosition
+                txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
+            } else {
+                spinnerCarCategory.selectedIndex = 0
+                txt_category_selection.setText(vehicleData[0].vehicleName)
+                viewModel.getVehicleData()!!.vehicleId = vehicleData[0].id
+            }
         }
     }
 
@@ -166,9 +171,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
     private fun performValidation() {
         ViewUtils.hideSoftInputWindow(this)
-
-        val isTransport = viewModel.getServiceId() == viewModel.getTransportId()
         val data = viewModel.getVehicleData()
+        val isTransport = viewModel.getServiceId() == viewModel.getTransportId()
         if (!isTransport) {
             when {
                 data?.vehicleMake.isNullOrEmpty() -> {

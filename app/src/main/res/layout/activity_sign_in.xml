@@ -267,6 +267,7 @@
                         android:padding="@dimen/_3sdp"
                         android:text="@string/do_not_have_account"
                         android:textSize="@dimen/_12sdp"
+                        android:onClick="@{signInViewModel::onSignUpClick}"
                         tools:ignore="RelativeOverlap" />
 
                     <!--Sign up textview-->

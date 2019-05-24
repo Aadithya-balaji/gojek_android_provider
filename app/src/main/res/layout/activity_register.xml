@@ -465,13 +465,44 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
 
-                        <com.google.android.material.checkbox.MaterialCheckBox
+                    <!--    <com.google.android.material.checkbox.MaterialCheckBox
                             android:id="@+id/cb_terms_condition"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_30sdp"
                             android:fontFamily="@font/avenirltstd_medium"
-                            android:text="@string/terms_condition" />
+                            android:text="@string/terms_condition" />-->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:id="@+id/cb_terms_condition"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                />
+
+                            <TextView
+                                android:id="@+id/terms_conditions_tv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:layout_marginEnd="@dimen/_12sdp"
+                                android:fontFamily="@font/avenirltstd_medium"
+                                android:textColor="@color/colorGray"
+                                android:textSize="@dimen/_10sdp" />
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
@@ -494,6 +525,7 @@
                     android:padding="@dimen/_3sdp"
                     android:text="@string/already_have_account"
                     android:textSize="@dimen/_12sdp"
+                    android:onClick="@{() -> registermodel.gotoSignin()}"
                     tools:ignore="RelativeOverlap" />
 
                 <!--Signin textview-->

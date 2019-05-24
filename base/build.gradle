@@ -54,7 +54,6 @@ dependencies {
     api 'androidx.cardview:cardview:1.0.0'
     api 'com.google.android.material:material:1.0.0'
 
-
     // Google Sign-In Integration
     api 'com.google.android.gms:play-services-auth:16.0.1'
 
@@ -91,6 +90,7 @@ dependencies {
     api 'com.google.android.gms:play-services-maps:16.1.0'
     api 'com.google.maps:google-maps-services:0.2.7'
     api 'com.google.android.gms:play-services-location:16.0.0'
+
     //      Map Utils
     api 'com.google.maps.android:android-maps-utils:0.5'
 //    api ("com.google.android.libraries.places:places:1.0.0") {
@@ -146,7 +146,6 @@ dependencies {
     kapt "androidx.room:room-compiler:2.1.0-beta01"
 
     // For Kotlin use kapt instead of annotationProcessor
-
     api project(':cropperlibrary')
     api project(':monitorinternet')
 

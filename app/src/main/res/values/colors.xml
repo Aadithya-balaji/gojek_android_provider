@@ -76,6 +76,12 @@
     <color name="red">#fc3a14</color>
     <color name="card_unselected">#faf9f6</color>
 
-    <color name="darkgrey">#505050</color>
+    <color name="darkgrey">#065FAC</color>
+
+    <!-- Dispute Status -->
+    <color name="bg_dispute_closed">#FFB4CEE5</color>
+    <color name="dispute_status_closed">#FF065FAC</color>
+    <color name="bg_dispute_open">#02FF02</color>
+    <color name="dispute_status_open">#02FF02</color>
 
 </resources>

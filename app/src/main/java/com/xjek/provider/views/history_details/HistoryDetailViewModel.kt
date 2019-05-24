@@ -5,12 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesHelper
 import com.xjek.base.data.PreferencesKey
-import com.xjek.provider.models.DisputeListData
-import com.xjek.provider.models.DisputeListModel
-import com.xjek.provider.models.DisputeStatusModel
-import com.xjek.provider.models.DisputeStatus
-import com.xjek.provider.models.HistoryDetailModel
-import com.xjek.provider.models.LoginResponseModel
+import com.xjek.provider.models.*
 import com.xjek.provider.repository.AppRepository
 import com.xjek.provider.utils.Constant
 
@@ -20,6 +15,9 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     val preferenceHelper = PreferencesHelper
     var historyDetailResponse = MutableLiveData<HistoryDetailModel>()
     var historyUpcomingDetailResponse = MutableLiveData<HistoryDetailModel>()
+    var transportDetail = MutableLiveData<HistoryDetailModel.ResponseData.Transport>()
+    var orderDetaIL = MutableLiveData<HistoryDetailModel.ResponseData.Order>()
+    var serviceDetail = MutableLiveData<HistoryDetailModel.ResponseData.Service>()
     var disputeListData = MutableLiveData<DisputeListModel>()
     var disputeStatusResponse = MutableLiveData<DisputeStatusModel>()
     var addDisputeResponse = MutableLiveData<LoginResponseModel.ResponseData>()
@@ -29,16 +27,17 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     var errorResponse = MutableLiveData<String>()
     var historyModelLiveData = MutableLiveData<HistoryDetailModel>()
     var serviceType = MutableLiveData<String>()
+    var disputeType = MutableLiveData<String>()
+    var disputeName = MutableLiveData<String>()
+    var userID = MutableLiveData<String>()
+    var providerID = MutableLiveData<String>()
+    var storeID = MutableLiveData<String>()
+    var requestID = MutableLiveData<String>()
+    var comments = MutableLiveData<String>()
+    var selectedDisputeModel = MutableLiveData<DisputeListData>()
+    var disputeID = MutableLiveData<String>()
     var postDisputeLiveData = MutableLiveData<DisputeStatus>()
-    var disputeType=MutableLiveData<String>()
-    var disputeName=MutableLiveData<String>()
-    var userID=MutableLiveData<String>()
-    var providerID=MutableLiveData<String>()
-    var storeID=MutableLiveData<String>()
-    var requestID=MutableLiveData<String>()
-    var comments=MutableLiveData<String>()
-    var selectedDisputeModel=MutableLiveData<DisputeListData>()
-    var  disputeID=MutableLiveData<String>()
+    var disputeStatusLiveData = MutableLiveData<DisputeStatusModel>()
 
     fun moveToMainActivity() {
         navigator.goBack()
@@ -87,6 +86,24 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     fun postOrderDispute(params: HashMap<String, String>) {
         loadingProgress.value = true
         getCompositeDisposable().add(appRepository.addOrderDispute(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
+    }
+
+
+    fun getTransPortDisputeStatus(requestID: String) {
+        loadingProgress.value = true
+        getCompositeDisposable().add(appRepository.getTransportDisputeStatus(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
+    }
+
+    fun getOrderDisputeStatus(requestID: String) {
+        loadingProgress.value =
+                getCompositeDisposable().add(appRepository.getOrderDisputeStatus(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
+
+    }
+
+    fun getServiceDisputeStatus(requestID: String) {
+        loadingProgress.value = true
+        getCompositeDisposable().add(appRepository.getServicefDisputeStatus(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
+
     }
 
     fun setSelectedValue(Selecteddata: String) {

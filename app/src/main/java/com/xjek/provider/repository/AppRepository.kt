@@ -744,33 +744,6 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun addDispute(viewModel: HistoryDetailViewModel, token: String, hashMap: HashMap<String, String>): Disposable {
-        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .addDispute(token, hashMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
-    }
-
-
-    fun getDisputeStatus(viewModel: HistoryDetailViewModel, token: String, selected_id: String): Disposable {
-        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getDisputeStatus(token, selected_id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.disputeStatusResponse.value = it
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
-    }
 
     fun getEarnings(viewModel: EarningsViewModel, token: String, userId: Int): Disposable {
         viewModel.loadingProgress.value = true
@@ -821,6 +794,44 @@ class AppRepository : BaseRepository() {
                     viewModel.postDisputeLiveData.postValue(it)
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                })
+    }
+
+    fun getTransportDisputeStatus(viewModel: HistoryDetailViewModel, token: String, requestID: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getTransportDisputeStatus(token, requestID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.disputeStatusLiveData.postValue(it)
+                }, {
+                    viewModel.errorResponse.postValue(getErrorMessage(it))
+                })
+    }
+
+
+    fun getOrderDisputeStatus(viewModel: HistoryDetailViewModel, token: String, requestID: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getOrderDisputeStatus(token, requestID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.disputeStatusLiveData.postValue(it)
+                }, {
+                    viewModel.errorResponse.postValue(getErrorMessage(it))
+                })
+    }
+
+
+    fun getServicefDisputeStatus(viewModel: HistoryDetailViewModel, token: String, requestID: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getServiceDisputeStatus(token, requestID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.disputeStatusLiveData.postValue(it)
+                }, {
+                    viewModel.errorResponse.postValue(getErrorMessage(it))
                 })
     }
 

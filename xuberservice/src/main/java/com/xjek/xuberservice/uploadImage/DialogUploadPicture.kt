@@ -24,7 +24,8 @@ import com.xjek.xuberservice.databinding.DialogUploadImageBinding
 import com.xjek.xuberservice.interfaces.GetFilePathInterface
 import java.io.File
 
-class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUploadPictureNavigator {
+class
+DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUploadPictureNavigator {
 
 
     private lateinit var dialogUploadImageBinding: DialogUploadImageBinding

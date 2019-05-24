@@ -163,7 +163,7 @@ class PermissionUtils {
         val tvCancel = dialogView.findViewById(R.id.tvCancel) as TextView
         tvCancel.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-               // dialog!!.dismiss()
+                dialog!!.dismiss()
             }
 
         })
@@ -171,4 +171,7 @@ class PermissionUtils {
         dialog = dialogBuilder.create()
         dialog.show()
     }
+
+
+
 }

@@ -120,7 +120,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             customPrefrence.edit().putString(PreferencesKey.CONTACT_EMAIL, it.responseData.appSetting.supportDetails.contactEmail).apply()
             setLanguage(it)
             setPayment(it)
+
             Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
+            Constant.termsUrl = it.responseData.appSetting.cmsPage.terms
 
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)

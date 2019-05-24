@@ -102,6 +102,7 @@
     <string name="search_city">Search city</string>
     <string name="gender">Gender</string>
     <string name="social_signup">Sign up via</string>
+    <string name="i_accept_the_following_terms_and_conditions">I accept the following &lt;font color="#364bea"&gt;&lt;u&gt;Terms and Conditions&lt;/u&gt;&lt;/font&gt;</string>
 
 
     <!-- Sign in -->
@@ -476,4 +477,5 @@
     <string name="choose_application_to_open_with">Choose an application to open with:</string>
     <string name="fetching_loading">Please wait...</string>
     <string name="hint_referral_code">Referral Code</string>
+    <string name="terms_conditions">Terms and Conditions</string>
 </resources>

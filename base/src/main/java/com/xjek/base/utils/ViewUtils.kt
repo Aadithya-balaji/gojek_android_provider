@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object ViewUtils {
-    private  var dialog:Dialog?=null
+    private var dialog: Dialog? = null
 
     fun showSoftInputWindow(activity: Activity) {
         val manager = activity
@@ -106,7 +106,7 @@ object ViewUtils {
 
 
     fun showGpsDialog(context: Context) {
-        dialog = Dialog(context)
+        dialog = Dialog(context, R.style.DialogCustomTheme)
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog!!.setCancelable(false)
         dialog!!.setContentView(R.layout.layout_enable_gbs)
@@ -114,9 +114,9 @@ object ViewUtils {
         dialog!!.show()
     }
 
-    fun dismissGpsDialog(){
-        if(dialog!=null)
-             dialog!!.dismiss()
+    fun dismissGpsDialog() {
+        if (dialog != null)
+            dialog!!.dismiss()
     }
 
 /* @MainThread

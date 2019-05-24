@@ -8,10 +8,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -117,7 +120,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         if (getPermissionUtil().hasAllPermisson(PERMISSIONS_LOCATION, context, 150)) {
             updateLocation(true)
         }
-
         mViewModel.getProfile()
         getApiResponse()
 
@@ -206,8 +208,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
         try {
             LocationUtils.getLastKnownLocation(context, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {
-                    if (dialog != null)
-                        dialog!!.cancel()
                     mViewModel.latitude.value = location!!.latitude
                     mViewModel.longitude.value = location.longitude
                     mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
@@ -342,6 +342,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.e("Location","------Result"+requestCode)
         when (requestCode) {
             500 ->
                 when (resultCode) {
@@ -353,8 +354,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                              Timer().schedule(10000) {
                                 ViewUtils.dismissGpsDialog()
                                 updateCurrentLocation()
-                                // updateLocation(true)
-
                             }
 
                         }
@@ -364,7 +363,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
                 }
 
             300 -> {
-                CommonMethods.checkGps(context)
+                 // getPermissionUtil().hasAllPermisson( Constants.RequestPermission.PERMISSIONS_LOCATION,context as AppCompatActivity ,300)
+
             }
 
         }

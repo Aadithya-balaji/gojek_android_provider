@@ -35,6 +35,7 @@ object Constant {
 
     const val TEMP_FILE_NAME = "Gojek_Provider"
     lateinit var privacyPolicyUrl: String
+    lateinit var termsUrl: String
     const val TYPE_PROVIDER = "provider"
     lateinit var languages: List<Language>
 

@@ -28,7 +28,7 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     fun callFoodieUpdateRequest(status: String) {
         showLoading.value = true
         val update: HashMap<String, String> = HashMap()
-        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id
+        update["id"] = foodieCheckRequestModel.value?.responseData?.requests?.id.toString()
         update["status"] = status
         update["_method"] = "PATCH"
         getCompositeDisposable().add(FoodieRepository.instance().foodieUpdateRequest

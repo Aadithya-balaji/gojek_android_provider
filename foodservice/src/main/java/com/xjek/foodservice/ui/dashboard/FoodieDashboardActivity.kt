@@ -9,7 +9,6 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.RequiresApi
@@ -42,6 +41,8 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     private lateinit var mViewModel: FoodLiveTaskServiceViewModel
     var currentStatus = ""
     var showingStoreDetail = true
+    private var checkStatusApiCounter = 0
+
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivtyLivetaskLaoyutBinding
@@ -93,8 +94,9 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-                if (location.latitude != 0.0 && location.longitude != 0.0)
-                    mViewModel.callFoodieCheckRequest()
+                if (checkStatusApiCounter++ % 3 == 0)
+                    if (location.latitude != 0.0 && location.longitude != 0.0)
+                        mViewModel.callFoodieCheckRequest()
                 else loadingObservable.value = false
             }
         }
@@ -327,7 +329,12 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             getString(R.string.order_delivered) -> {
                 val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
-                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toInt(),
+                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.let {
+                            if(it.isNotEmpty()){
+                                it.toInt()
+                            }else
+                                0
+                        },
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable
                 )
                 otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")

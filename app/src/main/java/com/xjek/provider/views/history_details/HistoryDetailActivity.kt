@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -19,12 +20,7 @@ import com.xjek.provider.R
 import com.xjek.provider.databinding.ActivityCurrentorderDetailLayoutBinding
 import com.xjek.provider.databinding.DisputeResonDialogBinding
 import com.xjek.provider.databinding.DisputeStatusBinding
-import com.xjek.provider.models.DisputeListData
-import com.xjek.provider.models.DisputeListModel
-import com.xjek.provider.models.DisputeStatusData
-import com.xjek.provider.models.DisputeStatusModel
-import com.xjek.provider.models.DisputeStatus
-import com.xjek.provider.models.HistoryDetailModel
+import com.xjek.provider.models.*
 import com.xjek.provider.utils.CommanMethods
 import com.xjek.provider.views.adapters.DisputeReasonListAdapter
 import com.xjek.provider.views.adapters.ReasonListClicklistner
@@ -44,6 +40,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     private var serviceType: String? = ""
     private var disputeListBinding: DisputeResonDialogBinding? = null
     private var disputeStatusBinding: DisputeStatusBinding? = null
+    private var bottomSheetDialog: BottomSheetDialog? = null
+    private var isShowDisputeStatus: Boolean = false
 
 
     // Get Layout
@@ -107,15 +105,17 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         historyDetailViewModel.postDisputeLiveData.observe(this@HistoryDetailActivity, Observer<DisputeStatus> {
             loadingObservable.value = false
             if (it.statusCode.equals("200")) {
+                isShowDisputeStatus = true
+                mViewDataBinding.disputeBtn.setText(resources.getString(R.string.dispute_status))
                 ViewUtils.showToast(this@HistoryDetailActivity, resources.getString(R.string.dispute_created_succefully), true)
             }
         })
 
 
-        historyDetailViewModel.disputeStatusResponse.observe(this@HistoryDetailActivity,
+        historyDetailViewModel.disputeStatusLiveData.observe(this@HistoryDetailActivity,
                 Observer<DisputeStatusModel> {
                     loadingObservable.value = false
-                    showDisputeStatus(it.responseData)
+                    showDisputeStatus(it)
                 })
 
 
@@ -136,12 +136,19 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         getDisputeList()
     }
 
-    private fun showDisputeStatus(disputeStatusResponseData: DisputeStatusData) {
-        disputeStatusBinding = DataBindingUtil.inflate<DisputeStatusBinding>(LayoutInflater.from(baseContext)
-                , R.layout.dispute_status, null, false)
-        disputeStatusBinding!!.disputeTitle.text = (disputeStatusResponseData.dispute_title)
-        disputeStatusBinding!!.disputeComment.text = (disputeStatusResponseData.comments)
-        disputeStatusBinding!!.disputeStatus.text = (disputeStatusResponseData.status)
+    private fun showDisputeStatus(disputeStatusResponseData: DisputeStatusModel) {
+        disputeStatusBinding = DataBindingUtil.inflate<DisputeStatusBinding>(LayoutInflater.from(baseContext), R.layout.dispute_status, null, false)
+        disputeStatusBinding!!.disputeComment.text = (disputeStatusResponseData.responseData!!.dispute_name)
+        disputeStatusBinding!!.disputeStatus.text = (disputeStatusResponseData.responseData.status)
+
+        if (disputeStatusResponseData.responseData.status.equals("open")) {
+            disputeStatusBinding!!.disputeStatus.background = ContextCompat.getDrawable(this@HistoryDetailActivity, R.drawable.bg_dispute_open)
+            disputeStatusBinding!!.disputeStatus.setTextColor(ContextCompat.getColor(this@HistoryDetailActivity, R.color.dispute_status_closed))
+        } else {
+            disputeStatusBinding!!.disputeStatus.background = ContextCompat.getDrawable(this@HistoryDetailActivity, R.drawable.bg_dispute_close)
+            disputeStatusBinding!!.disputeStatus.setTextColor(ContextCompat.getColor(this@HistoryDetailActivity, R.color.dispute_status_open))
+        }
+
         val dialog = BottomSheetDialog(this)
         dialog.setContentView(disputeStatusBinding!!.root)
         dialog.show()
@@ -228,17 +235,29 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         disputeListBinding!!.disputeReasonListAdapter = DisputeReasonListAdapter(historyDetailViewModel, disputeListData)
         disputeListBinding!!.disputeReasonListAdapter!!.setOnClickListener(mOnAdapterClickListener)
         historyDetailViewModel.selectedDisputeModel.observe(this, Observer {
+            bottomSheetDialog!!.dismiss()
             selectedDiputeData = it
+            createDisputeRequest()
         })
     }
 
     override fun showDisputeList() {
-        disputeListBinding = DataBindingUtil.inflate(LayoutInflater.from(this@HistoryDetailActivity), R.layout.dispute_reson_dialog, null, false)
-        disputeListBinding!!.applyFilter.isEnabled = false
-        val dialog = BottomSheetDialog(this@HistoryDetailActivity)
-        dialog.setContentView(disputeListBinding!!.root)
-        dialog.show()
-        historyDetailViewModel.getDisputeList()
+        if (isShowDisputeStatus == false) {
+            disputeListBinding = DataBindingUtil.inflate(LayoutInflater.from(this@HistoryDetailActivity), R.layout.dispute_reson_dialog, null, false)
+            disputeListBinding!!.applyFilter.isEnabled = false
+            bottomSheetDialog = BottomSheetDialog(this@HistoryDetailActivity)
+            bottomSheetDialog!!.setContentView(disputeListBinding!!.root)
+            bottomSheetDialog!!.show()
+            historyDetailViewModel.getDisputeList()
+        } else {
+            if (serviceType.equals("transport")) {
+                historyDetailViewModel.getTransPortDisputeStatus(historyDetailViewModel.transportDetail.value!!.id.toString())
+            } else if (serviceType.equals("order")) {
+                historyDetailViewModel.getServiceHistoryDetail(historyDetailViewModel.serviceDetail.value!!.id.toString())
+            } else {
+                historyDetailViewModel.getOrderDisputeStatus(historyDetailViewModel.orderDetaIL.value!!.id.toString())
+            }
+        }
     }
 
     private fun createDisputeRequest() {
@@ -249,17 +268,16 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         }
 
         val params = HashMap<String, String>()
-        params.put(com.xjek.base.data.Constants.Dispute.USER_ID, historyDetailViewModel.userID.value!!)
         params.put(com.xjek.base.data.Constants.Dispute.DIPUSTE_TYPE, historyDetailViewModel.disputeType.value!!)
         params.put(com.xjek.base.data.Constants.Dispute.DISPUTE_NAME, historyDetailViewModel.disputeName.value!!)
 
         if (serviceType.equals("transport")) {
-            historyDetailViewModel.userID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.transport.user!!.id.toString()
-            historyDetailViewModel.providerID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.transport.provider_id.toString()
-            historyDetailViewModel.requestID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.transport.id.toString()
-
-            params.put(com.xjek.base.data.Constants.Dispute.REQUEST_ID,historyDetailViewModel.requestID.value.toString())
-            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID,historyDetailViewModel.providerID.value.toString())
+            historyDetailViewModel.userID.value = historyDetailViewModel.transportDetail.value!!.user!!.id.toString()
+            historyDetailViewModel.providerID.value = historyDetailViewModel.transportDetail.value!!.provider_id.toString()
+            historyDetailViewModel.requestID.value = historyDetailViewModel.transportDetail.value!!.id.toString()
+            params.put(com.xjek.base.data.Constants.Dispute.REQUEST_ID, historyDetailViewModel.requestID.value.toString())
+            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID, historyDetailViewModel.providerID.value.toString())
+            params.put(com.xjek.base.data.Constants.Dispute.USER_ID, historyDetailViewModel.userID.value!!.toString())
 
             historyDetailViewModel.postTaxiDispute(params)
 
@@ -267,18 +285,19 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             historyDetailViewModel.userID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.service.user!!.id.toString()
             historyDetailViewModel.providerID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.service.provider_id.toString()
             historyDetailViewModel.requestID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.service.id.toString()
-
-            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID,historyDetailViewModel.providerID.value.toString())
-            historyDetailViewModel.postServiceDispute(params,historyDetailViewModel.requestID.value!!)
+            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID, historyDetailViewModel.providerID.value.toString())
+            params.put(com.xjek.base.data.Constants.Dispute.USER_ID, historyDetailViewModel.userID.value!!.toString())
+            historyDetailViewModel.postServiceDispute(params, historyDetailViewModel.requestID.value!!)
 
         } else {
             historyDetailViewModel.userID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.order.user!!.id.toString()
             historyDetailViewModel.providerID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.order.provider_id.toString()
             historyDetailViewModel.requestID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.order.id.toString()
-            historyDetailViewModel.storeID.value=historyDetailViewModel.historyDetailResponse.value!!.responseData.order.order_invoice!!.items!!.get(0)!!.store_id.toString()
+            historyDetailViewModel.storeID.value = historyDetailViewModel.historyDetailResponse.value!!.responseData.order.order_invoice!!.items!!.get(0)!!.store_id.toString()
 
-            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID,historyDetailViewModel.providerID.value.toString())
-            params.put(com.xjek.base.data.Constants.Dispute.STORE_ID,historyDetailViewModel.storeID.value.toString())
+            params.put(com.xjek.base.data.Constants.Dispute.PROVIDER_ID, historyDetailViewModel.providerID.value.toString())
+            params.put(com.xjek.base.data.Constants.Dispute.USER_ID, historyDetailViewModel.userID.value!!.toString())
+            params.put(com.xjek.base.data.Constants.Dispute.STORE_ID, historyDetailViewModel.storeID.value.toString())
             historyDetailViewModel.postOrderDispute(params)
 
         }
@@ -295,6 +314,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
 
     private fun setupTransportDetail(transPastDetail: HistoryDetailModel.ResponseData.Transport) {
+        historyDetailViewModel.transportDetail.value = transPastDetail
         mViewDataBinding.currentorderdetailTitleTv.text = transPastDetail.booking_id
         mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_Date_Month") + "")
         mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_time") + "")
@@ -311,10 +331,12 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
         if (transPastDetail.dispute != null) {
             mViewDataBinding.disputeBtn.text = getString(R.string.dispute_status)
+            isShowDisputeStatus = true
         }
     }
 
     private fun setupServiceDetail(serviceDetail: HistoryDetailModel.ResponseData.Service) {
+        historyDetailViewModel.serviceDetail.value = serviceDetail
         mViewDataBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
         mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(serviceDetail.started_at!!,
                 "Req_Date_Month") + "")
@@ -327,9 +349,14 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mViewDataBinding.providerNameTv.text = (serviceDetail.user.first_name + " " +
                 serviceDetail.user.last_name)
         mViewDataBinding.rvUser.rating = serviceDetail.user!!.rating!!.toFloat()
+        if (serviceDetail.dispute != null) {
+            mViewDataBinding.disputeBtn.text = getString(R.string.dispute_status)
+            isShowDisputeStatus = true
+        }
     }
 
     private fun setupOrderHistoryDetail(orderDetail: HistoryDetailModel.ResponseData.Order) {
+        historyDetailViewModel.orderDetaIL.value = orderDetail
         mViewDataBinding.currentorderdetailTitleTv.text = orderDetail.store_order_invoice_id
         mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(orderDetail.created_at!!,
                 "Req_Date_Month") + "")
@@ -338,11 +365,13 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mViewDataBinding.historydetailDestValueTv.text = orderDetail.delivery!!.flat_no + " " + orderDetail.delivery.street
         mViewDataBinding.historydetailStatusValueTv.text = orderDetail.status
         mViewDataBinding.historydetailPaymentmodeValTv.text = orderDetail.order_invoice!!.payment_mode
-        Glide.with(this@HistoryDetailActivity).load(orderDetail.user!!.picture)
-                .into(mViewDataBinding.providerCimgv)
-        mViewDataBinding.providerNameTv.text = (orderDetail.user.first_name + " " +
-                orderDetail.user.last_name)
+        Glide.with(this@HistoryDetailActivity).load(orderDetail.user!!.picture).into(mViewDataBinding.providerCimgv)
+        mViewDataBinding.providerNameTv.text = (orderDetail.user.first_name + " " + orderDetail.user.last_name)
         mViewDataBinding.rvUser.rating = orderDetail.user!!.rating!!.toFloat()
+        if (orderDetail.dispute != null) {
+            mViewDataBinding.disputeBtn.text = getString(R.string.dispute_status)
+            isShowDisputeStatus = true
+        }
 
     }
 

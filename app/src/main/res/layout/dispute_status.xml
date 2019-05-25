@@ -10,14 +10,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background_color"
+        android:background="@color/white"
         android:orientation="vertical"
         android:padding="@dimen/_5sdp">
 
-        <RelativeLayout
+        <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp">
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@color/xuber_white"
+            android:elevation="5dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp">
 
             <TextView
                 android:id="@+id/dispute_title"
@@ -25,13 +33,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="@string/dispute" />
-        </RelativeLayout>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/dispute_status" />
+        </androidx.appcompat.widget.Toolbar>
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:orientation="horizontal"
             android:weightSum="2">
 
@@ -69,7 +80,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
-                        android:text="dfdfadfdafdafadsfdafdfdafdfdaffadfadsfadfadfadfdfafdfdfadsffdafadfadsfadfadfadfadfafdfadfdfdfdfadfafadfadfadsfadfdfdasfdfadsfadsfdfdfadsfadsfadsfadsfadfadfadfadsfafafadsfadfadsfadsfadfadf"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/_12sdp" />
 
@@ -83,24 +93,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_weight="0.5"
-                android:background="@drawable/custom_roundcorner_selectedorder"
+                android:background="@drawable/bg_dispute_open"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:textColor="@color/colorAccent" />
+                android:text="open"
+                android:textColor="@color/dispute_status_closed" />
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
                 android:layout_toLeftOf="@+id/ivlogo"
+                android:gravity="end"
                 android:orientation="vertical">
 
                 <TextView
@@ -115,8 +127,8 @@
                     android:id="@+id/tvAdminComment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenirltstd_medium"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
                     android:text="dfdafadfadsfdafaddf" />
             </LinearLayout>
 

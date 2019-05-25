@@ -237,10 +237,10 @@ interface AppWebService {
                          @Path("id") id: String): Observable<HistoryDetailModel>
 
     @GET("provider/history/service/{id}")
-    fun getServiceDetail(@Header("Authorization") token:String,@Path("id") id:String):Observable<HistoryDetailModel>
+    fun getServiceDetail(@Header("Authorization") token: String, @Path("id") id: String): Observable<HistoryDetailModel>
 
     @GET("provider/history/order/{id}")
-    fun getOrderDetail(@Header("Authorization") token:String,@Path("id") id:String):Observable<HistoryDetailModel>
+    fun getOrderDetail(@Header("Authorization") token: String, @Path("id") id: String): Observable<HistoryDetailModel>
 
 
     @GET("provider/history/transport/{id}")
@@ -260,20 +260,33 @@ interface AppWebService {
                          @Path("id") id: String): Observable<DisputeStatusModel>
 
     @GET("provider/dispute/{service}")
-    fun getDisputeReasons(@Header("Authorization") token:String,@Path("service")  servicetype:String):Observable<DisputeListModel>
+    fun getDisputeReasons(@Header("Authorization") token: String, @Path("service") servicetype: String): Observable<DisputeListModel>
 
     @FormUrlEncoded
     @POST("provider/history-dispute/transport")
-    fun postTaxiDispute(@Header("Authorization") token:String,@FieldMap params: HashMap<String, String>):Observable<DisputeStatus>
+    fun postTaxiDispute(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<DisputeStatus>
 
     @FormUrlEncoded
     @POST("provider/history-dispute/service/{requestID}")
-    fun  postServiceDispute(@Header("Authorization") token:String,@FieldMap params: HashMap<String, String>, @Path("requestID") requestID:String):Observable<DisputeStatus>
+    fun postServiceDispute(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>, @Path("requestID") requestID: String): Observable<DisputeStatus>
 
     @FormUrlEncoded
     @POST("provider/history-dispute/order")
-    fun postOrderDispute(@Header("Authorization") token: String,@FieldMap params: HashMap<String, String>):Observable<DisputeStatus>
+    fun postOrderDispute(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<DisputeStatus>
 
     @GET("provider/earnings/{id}")
     fun getEarnings(@Header("Authorization") token: String, @Path("id") id: Int): Observable<EarningsResponse>
+
+
+    @GET("provider/history-dispute/transport/{request_id}")
+    fun getTransportDisputeStatus(@Header("Authorization") token: String, @Path("request_id") id: String): Observable<DisputeStatusModel>
+
+
+    @GET("provider/history-dispute/order/{request_id}")
+    fun getOrderDisputeStatus(@Header("Authorization") token: String, @Path("request_id") id: String): Observable<DisputeStatusModel>
+
+
+    @GET("provider/history-dispute/service/{request_id}")
+    fun getServiceDisputeStatus(@Header("Authorization") token: String, @Path("request_id") id: String): Observable<DisputeStatusModel>
+
 }

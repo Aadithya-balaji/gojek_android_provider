@@ -3,7 +3,13 @@ package com.xjek.provider.models
 data class DisputeStatus(
         val error: List<Any?>? = listOf(),
         val message: String? = "",
-        val responseData: List<Any?>? = listOf(),
+        val responseData: List<ResponseData?>? = listOf(),
         val statusCode: String? = "",
         val title: String? = ""
-)
+) {
+    data class ResponseData(
+            val dispute_name: String? = "",
+            val id: Int? = 0,
+            val service: String? = ""
+    )
+}

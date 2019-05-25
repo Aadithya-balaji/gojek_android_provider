@@ -418,7 +418,6 @@
     <string name="press_the_icon_to_mention_the_loss_item">Press the icon to mention the loss item</string>
     <string name="view_receipt">View Receipt</string>
     <string name="dispute">Dispute</string>
-    <string name="dispute_status">Dispute Status</string>
     <string name="tax_fare">Tax Fare</string>
     <string name="hourly_fare">Hourly Fare</string>
     <string name="discount_applied">Discount Applied</string>
@@ -430,6 +429,8 @@
     <!-- History -->
     <string name="no_comments">No comments</string>
     <string name="dispute_created_succefully">Dispute Created Successfully</string>
+    <string name="dispute_status">Dispute Status</string>
+
 
 
     <!-- InVoice -->
@@ -440,6 +441,7 @@
     <string name="delivery_charge">Delivery Charge</string>
     <string name="packaging_charge">Packaging Service</string>
     <string name="promo_code">PromoCode</string>
+
 
     <!-- Loader -->
     <string name="prg_loading">Loading …</string>

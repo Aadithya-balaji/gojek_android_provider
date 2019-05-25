@@ -39,7 +39,7 @@
                         android:id="@+id/status_flow_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_20sdp"
                         android:orientation="vertical">
 
                         <TextView
@@ -60,14 +60,17 @@
                             android:id="@+id/tvXuberPickupLocation"
                             style="@style/SmallText.colorWhite"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="0dp"
                             android:layout_weight="5"
                             android:fontFamily="@font/avenirltstd_medium"
                             android:padding="@dimen/_5sdp"
                             android:textColor="@color/xuber_white"
                             android:textSize="@dimen/_9sdp" />
+
                     </LinearLayout>
+
                 </RelativeLayout>
+
             </androidx.cardview.widget.CardView>
 
             <fragment
@@ -88,5 +91,7 @@
             app:behavior_hideable="true"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             bind:bottomServiceModel="@{xuberViewModel}" />
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

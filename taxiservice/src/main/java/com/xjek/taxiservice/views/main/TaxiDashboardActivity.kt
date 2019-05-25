@@ -402,6 +402,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
                 LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!))
+
+        ViewUtils.showSoftInputWindow(this)
     }
 
     private fun whenStatusArrived(responseData: ResponseData) {
@@ -454,6 +456,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
                 LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!))
+
+        ViewUtils.showSoftInputWindow(this)
     }
 
     private fun whenStatusPickedUp(responseData: ResponseData) {
@@ -520,6 +524,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         drawRoute(LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!),
                 LatLng(responseData.request.d_latitude!!, responseData.request.d_longitude!!))
+
+        ViewUtils.showSoftInputWindow(this)
     }
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {

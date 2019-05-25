@@ -11,7 +11,6 @@ import com.xjek.base.session.SessionListener
 import com.xjek.base.session.SessionManager
 import com.xjek.base.socket.SocketListener
 import com.xjek.base.socket.SocketManager
-import com.xjek.monitorinternet.MonitorInternet
 import com.xjek.provider.views.on_board.OnBoardActivity
 import io.socket.emitter.Emitter
 
@@ -19,8 +18,6 @@ class GoJekApplication : BaseApplication() {
 
     override fun onCreate() {
         super.onCreate()
-
-        MonitorInternet.init(this)
 
         PRDownloader.initialize(applicationContext)
 
@@ -57,7 +54,6 @@ class GoJekApplication : BaseApplication() {
             }
         })
         SocketManager.connect(BuildConfig.BASE_URL)
-
     }
 
     private fun logoutApp() {
@@ -66,11 +62,6 @@ class GoJekApplication : BaseApplication() {
         newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(newIntent)
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        MonitorInternet.instance!!.removeAllInternetConnectivityChangeListeners()
     }
 
 }

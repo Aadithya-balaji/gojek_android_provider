@@ -1,11 +1,7 @@
 package com.xjek.base.base
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.IntentSender
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Bundle
@@ -17,36 +13,42 @@ import android.view.WindowManager
 import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
 import com.google.android.material.snackbar.Snackbar
 import com.xjek.base.R
 import com.xjek.base.extensions.observeLiveData
-import com.xjek.base.utils.*
-import com.xjek.base.utils.Constants.Companion.REQUEST_CHECK_SETTINGS_GPS
+import com.xjek.base.utils.LocaleUtils
+import com.xjek.base.utils.NetworkUtils
+import com.xjek.base.utils.PermissionUtils
+import com.xjek.base.utils.RunTimePermission
 import com.xjek.base.views.CustomDialog
-import com.xjek.monitorinternet.InternetConnectivityListener
 
-abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), InternetConnectivityListener {
+abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     private val loadingLiveData = MutableLiveData<Boolean>()
+
     private lateinit var mViewDataBinding: T
     private lateinit var customDialog: CustomDialog
     private lateinit var mParentView: View
     private lateinit var context: Context
+    private lateinit var snack: Snackbar
+
     private var locationManager: LocationManager? = null
     private var locationRequest: LocationRequest? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
+
+    private lateinit var builder: AlertDialog.Builder
+    private lateinit var alertDialog: AlertDialog
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
@@ -62,16 +64,14 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), Internet
     protected var runtimePermission: RunTimePermission? = null
 
     fun getPermissionUtil(): PermissionUtils {
-        if(mPermissionUtils==null){
-            mPermissionUtils = PermissionUtils()
-        }
-        return  mPermissionUtils!!
+        if (mPermissionUtils == null) mPermissionUtils = PermissionUtils()
+        return mPermissionUtils!!
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView(mViewDataBinding)
         context = this
@@ -79,6 +79,23 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), Internet
 
         observeLiveData(loadingLiveData) { isShowLoading ->
             if (isShowLoading) showLoading() else hideLoading()
+        }
+
+        try {
+            builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+                    .setTitle(resources.getString(R.string.app_name))
+                    .setMessage("No internet :(")
+                    .setPositiveButton(android.R.string.yes) { dialog, _ -> dialog.dismiss() }
+            alertDialog = builder.create()
+
+//            mParentView = window.decorView.findViewById(R.id.content)
+//            snack = Snackbar.make(mParentView, "No internet :(", Snackbar.LENGTH_LONG)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        observeLiveData(BaseApplication.getInternetMonitorLiveData) { isInternetAvailable ->
+            if (isInternetAvailable) showSnackBar("You are online :)") else showSnackBar("You are offline :(")
         }
     }
 
@@ -151,10 +168,5 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), Internet
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(imageView)
-    }
-
-    override fun onInternetConnectivityChanged(isConnected: Boolean) {
-        println("RRR :: isConnected = $isConnected")
-        ViewUtils.showAlert(this, "RRR :: isConnected = $isConnected")
     }
 }

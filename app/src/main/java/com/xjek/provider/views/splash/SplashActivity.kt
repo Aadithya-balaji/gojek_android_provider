@@ -45,9 +45,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         observeViewModel()
         generateHash()
 
-        viewModel.getConfig()
-
-        customPrefrence = BaseApplication.getCustomPreference!!!!
+        if (isNetworkConnected) viewModel.getConfig()
+        customPrefrence = BaseApplication.getCustomPreference!!
 
         FirebaseInstanceId.getInstance().instanceId
                 .addOnCompleteListener(OnCompleteListener { task ->
@@ -58,14 +57,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
                     println("RRR :: token = ${task.result?.token}")
 //                    writePreferences(PreferencesKey.DEVICE_TOKEN, task.result?.token)
-                    customPrefrence.edit().putString(PreferencesKey.DEVICE_TOKEN,task.result?.token).apply()
+                    customPrefrence.edit().putString(PreferencesKey.DEVICE_TOKEN, task.result?.token).apply()
                 })
     }
 
     @SuppressLint("CommitPrefEdits")
     private fun observeViewModel() {
         observeLiveData(viewModel.getConfigObservable()) {
-//            writePreferences("0", it.responseData.baseUrl + "/")
+            //            writePreferences("0", it.responseData.baseUrl + "/")
             customPrefrence.edit().putString("0", it.responseData.baseUrl + "/").apply()
             customPrefrence.edit().putString(PreferencesKey.BASE_ID, "0").apply()
 

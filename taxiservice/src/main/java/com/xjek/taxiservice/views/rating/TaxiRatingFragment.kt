@@ -37,7 +37,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
 
     override fun showErrorMessage(errorMessage: String) {
         try {
-            ViewUtils.showToast(context!!, errorMessage, false)
+            activity!!.runOnUiThread { ViewUtils.showToast(context!!, errorMessage, false) }
         } catch (e: Exception) {
             e.printStackTrace()
         }

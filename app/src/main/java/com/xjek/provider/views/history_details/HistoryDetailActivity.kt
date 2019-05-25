@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
@@ -44,6 +45,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     private var isShowDisputeStatus: Boolean = false
 
 
+
     // Get Layout
     override fun getLayoutId(): Int = R.layout.activity_currentorder_detail_layout
 
@@ -54,6 +56,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         this.mViewDataBinding.currentOrderDetailModel = historyDetailViewModel
         historyDetailViewModel.navigator = this
         loadingObservable.value = true
+        historyDetailViewModel.loadingProgress = loadingObservable as MutableLiveData<Boolean>
         mViewDataBinding.upcmngCancelBtn.visibility = View.GONE
         //Get Intent Values
         getIntentValues()
@@ -148,7 +151,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             disputeStatusBinding!!.disputeStatus.background = ContextCompat.getDrawable(this@HistoryDetailActivity, R.drawable.bg_dispute_close)
             disputeStatusBinding!!.disputeStatus.setTextColor(ContextCompat.getColor(this@HistoryDetailActivity, R.color.dispute_status_open))
         }
-
 
         val dialog = BottomSheetDialog(this)
         dialog.setContentView(disputeStatusBinding!!.root)
@@ -345,10 +347,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mViewDataBinding.historydetailSrcValueTv.text = serviceDetail.s_address
         mViewDataBinding.historydetailStatusValueTv.text = serviceDetail.status
         mViewDataBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
-        Glide.with(this@HistoryDetailActivity).load(serviceDetail.user!!.picture)
-                .into(mViewDataBinding.providerCimgv)
-        mViewDataBinding.providerNameTv.text = (serviceDetail.user.first_name + " " +
-                serviceDetail.user.last_name)
+        Glide.with(this@HistoryDetailActivity).load(serviceDetail.user!!.picture).into(mViewDataBinding.providerCimgv)
+        mViewDataBinding.providerNameTv.text = (serviceDetail.user.first_name + " " + serviceDetail.user.last_name)
         mViewDataBinding.rvUser.rating = serviceDetail.user!!.rating!!.toFloat()
         if (serviceDetail.dispute != null) {
             mViewDataBinding.disputeBtn.text = getString(R.string.dispute_status)

@@ -95,7 +95,7 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     }
 
     fun getOrderDisputeStatus(requestID: String) {
-        loadingProgress.value =
+        loadingProgress.value =true
                 getCompositeDisposable().add(appRepository.getOrderDisputeStatus(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
 
     }

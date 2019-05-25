@@ -85,8 +85,8 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
 
             3 -> {
                 pendingListDialogBinding.llDocPending.visibility = View.GONE
-                pendingListDialogBinding.llLowBalance.visibility = View.GONE
-                pendingListDialogBinding.llWaiting.visibility = View.VISIBLE
+                pendingListDialogBinding.llLowBalance.visibility = View.VISIBLE
+                pendingListDialogBinding.llWaiting.visibility = View.GONE
             }
         }
 

@@ -149,6 +149,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             disputeStatusBinding!!.disputeStatus.setTextColor(ContextCompat.getColor(this@HistoryDetailActivity, R.color.dispute_status_open))
         }
 
+
         val dialog = BottomSheetDialog(this)
         dialog.setContentView(disputeStatusBinding!!.root)
         dialog.show()

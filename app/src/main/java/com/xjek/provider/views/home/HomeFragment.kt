@@ -51,12 +51,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mViewModel: HomeViewModel
     private lateinit var mDashboardViewModel: DashBoardViewModel
-
     private lateinit var incomingRequestDialogDialog: IncomingRequestDialog
-
     private var mGoogleMap: GoogleMap? = null
     private var providerMarker: Marker? = null
-
     private var isOnline: Boolean? = true
     private var pendingListDialog: PendingListDialog? = null
 
@@ -113,7 +110,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 verificationModel.isService = providerDetailsModel.is_service!!
                 verificationModel.providerStatus = checkStatusData.responseData.provider_details.status
                 verificationModel.providerWalletBalance = checkStatusData.responseData.provider_details.wallet_balance!!
-                Constant.verificationObservable.value = verificationModel
+                Constant.
+                        verificationObservable.value = verificationModel
 
                 if (providerDetailsModel.is_online == 1) {
                     isOnline = true

@@ -30,7 +30,6 @@ import android.widget.PopupWindow
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
@@ -120,7 +119,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var popupView: View? = null
     private var isGPSEnabled: Boolean = false
     private var isLocationDialogShown: Boolean = false
-    private  lateinit var  context:Context
+    private lateinit var context: Context
 
     override fun getLayoutId(): Int = R.layout.activity_xuber_main
 
@@ -129,7 +128,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as ActivityXuberMainBinding
         mViewModel = XuberDashboardViewModel()
-        context=this
+        context = this
         mViewModel.navigator = this
         mBinding.xuberViewModel = mViewModel
         mBinding.lifecycleOwner = this
@@ -375,21 +374,15 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
 
-            if(isGpsEnabled){
-                updateMap(location)
-            }else{
-                if (isLocationDialogShown == false) {
-                    isLocationDialogShown = true
-                    CommonMethods.checkGps(context)
-                }
+            if (isGpsEnabled) updateMap(location)
+            else if (!isLocationDialogShown) {
+                isLocationDialogShown = true
+                CommonMethods.checkGps(context)
             }
-
-
         }
     }
 
-
-    private  fun updateMap(location:Location){
+    private fun updateMap(location: Location) {
         if (location != null) {
             mViewModel.latitude.value = location.latitude
             mViewModel.longitude.value = location.longitude
@@ -466,9 +459,9 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("Map","------------"+e.message.toString())
+            Log.e("Map", "------------" + e.message.toString())
         }
 
     }
@@ -520,7 +513,9 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
         if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.VISIBLE
         else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.GONE
-        mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
+        if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1)
+            mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
+        else mBinding.llBottomService.fbCamera.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvAllow.text = START
         writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
@@ -528,7 +523,9 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     private fun whenStarted() {
         mGoogleMap!!.clear()
-        mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
+        if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.service!!.allow_after_image == 1)
+            mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
+        else mBinding.llBottomService.fbCamera.visibility = View.GONE
         edtXuperOtp.visibility = View.GONE
         mBinding.llBottomService.llServiceTime.visibility = View.VISIBLE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
@@ -648,7 +645,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     override fun getFilePath(filePath: Uri) {
         if ((mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED)
                         && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
-                        ||(mViewModel.xuperUdpateRequest.value!=null) && mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
+                        || (mViewModel.xuperUdpateRequest.value != null) && mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
             getImageFile(true, filePath)
         else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
                 || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED) getImageFile(false, filePath)
@@ -685,7 +682,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         val ivClose = popupView!!.ivClose
         val ivDesImage = popupView!!.ivInfo
         val tvDescription = popupView!!.tv_description
-        ivClose.setOnClickListener {popupWindow!!.dismiss()}
+        ivClose.setOnClickListener { popupWindow!!.dismiss() }
 
         if (!allowImage.isNullOrEmpty()) {
             Glide.with(this)
@@ -736,10 +733,10 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun onClick(v: View?) {
-        if(mViewModel.xuperCheckRequest.value!=null){
+        if (mViewModel.xuperCheckRequest.value != null) {
             if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED)
-                            && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
-                            || (mViewModel.xuperUdpateRequest.value!=null) &&(mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
+                    && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
+                    || (mViewModel.xuperUdpateRequest.value != null) && (mViewModel.xuperUdpateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
                 isFront = true
             else if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
                     || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED) isFront = false
@@ -777,7 +774,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
             }
 
-            100 ->{
+            100 -> {
                 finish()
             }
 

@@ -47,10 +47,8 @@ object ViewUtils {
 
     @MainThread
     fun showToast(context: Context, message: String, isSuccess: Boolean) {
-        if (isSuccess)
-            Toasty.success(context, message, Toast.LENGTH_SHORT).show()
-        else
-            Toasty.error(context, message, Toast.LENGTH_SHORT).show()
+        if (isSuccess) Toasty.success(context, message, Toast.LENGTH_SHORT).show()
+        else Toasty.error(context, message, Toast.LENGTH_SHORT).show()
     }
 
     @MainThread
@@ -104,13 +102,12 @@ object ViewUtils {
         dialog.show()
     }
 
-
     fun showGpsDialog(context: Context) {
         dialog = Dialog(context, R.style.DialogCustomTheme)
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog!!.setCancelable(false)
         dialog!!.setContentView(R.layout.layout_enable_gbs)
-        dialog!!.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog!!.show()
     }
 

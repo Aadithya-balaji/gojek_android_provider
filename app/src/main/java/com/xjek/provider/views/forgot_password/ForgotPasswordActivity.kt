@@ -119,8 +119,11 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
+            val width:Int = resources.getDimension(R.dimen.flag_width).toInt()
+            val height:Int = resources.getDimension(R.dimen.flag_height).toInt()
             val drawable = BitmapDrawable(resources,
-                    Bitmap.createScaledBitmap(bitmap, 64, 64, true))
+                    Bitmap.createScaledBitmap(bitmap, width, height
+                            , true))
             binding.tietCountryCode
                     .setCompoundDrawablesWithIntrinsicBounds(drawable, null,
                             null, null)

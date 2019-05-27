@@ -1,6 +1,7 @@
 package com.xjek.provider.views.sign_in
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
@@ -139,12 +140,19 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val width:Int = resources.getDimension(R.dimen._25sdp).toInt()
-            val height:Int = resources.getDimension(R.dimen._25sdp).toInt()
+            val width:Int = resources.getDimension(R.dimen.flag_width).toInt()
+            val height:Int = resources.getDimension(R.dimen.flag_height).toInt()
+            /*val widht:Int=dpToPx(25)
+            val height:Int=dpToPx(25)*/
             val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
             binding.countrycodeRegisterEt.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }
     }
+
+    fun  dpToPx(dp:Int):Int{
+    val density = this@SignInActivity.resources.getDisplayMetrics().density;
+    return Math.round( dp.toFloat() * density);
+}
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (isFacebookLoginClicked)

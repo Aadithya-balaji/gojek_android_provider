@@ -135,7 +135,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="@dimen/_40sdp"
                                     android:drawableStart="@drawable/ic_us"
-                                    android:drawablePadding="1dp"
+                                    android:drawablePadding="5dp"
                                     android:focusable="false"
                                     android:focusableInTouchMode="false"
                                     android:inputType="text"
@@ -148,7 +148,6 @@
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp"
                                     tools:text="+91" />
-
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <!--TextInputLayout Phonenume-->

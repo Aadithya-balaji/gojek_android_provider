@@ -41,7 +41,6 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private lateinit var customDialog: CustomDialog
     private lateinit var mParentView: View
     private lateinit var context: Context
-    private lateinit var snack: Snackbar
 
     private var locationManager: LocationManager? = null
     private var locationRequest: LocationRequest? = null
@@ -83,19 +82,15 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
         try {
             builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-                    .setTitle(resources.getString(R.string.app_name))
-                    .setMessage("No internet :(")
-                    .setPositiveButton(android.R.string.yes) { dialog, _ -> dialog.dismiss() }
+                    .setMessage("No internet connection :(")
+                    .setCancelable(false)
             alertDialog = builder.create()
-
-//            mParentView = window.decorView.findViewById(R.id.content)
-//            snack = Snackbar.make(mParentView, "No internet :(", Snackbar.LENGTH_LONG)
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         observeLiveData(BaseApplication.getInternetMonitorLiveData) { isInternetAvailable ->
-            if (isInternetAvailable) showSnackBar("You are online :)") else showSnackBar("You are offline :(")
+            if (isInternetAvailable) alertDialog.dismiss() else alertDialog.show()
         }
     }
 
@@ -146,8 +141,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         transaction.commit()
     }
 
-    protected fun showSnackBar(msg: String) {
-        val snackBar = Snackbar.make(mParentView, msg, Snackbar.LENGTH_LONG)
+    private fun showSnackBar(msg: String) {
+        val snackBar = Snackbar.make(window.decorView.rootView, msg, Snackbar.LENGTH_LONG)
         snackBar.setActionTextColor(Color.RED)
         snackBar.show()
     }

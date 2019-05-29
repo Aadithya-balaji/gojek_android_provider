@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
 import org.json.JSONObject
 import java.util.*
+import kotlin.Exception as Exception1
 
 class ParserTask internal constructor(private val mPolyLineListener: PolyLineListener)
     : AsyncTask<String, Int, List<List<HashMap<String, String>>>>() {
@@ -21,7 +22,7 @@ class ParserTask internal constructor(private val mPolyLineListener: PolyLineLis
             jObject = JSONObject(jsonData[0])
             val parser = DirectionsJSONParser()
             routes = parser.parse(jObject)
-            if (routes.size <= 0) error = jObject.toString()
+            if (routes.isEmpty()) error = jObject.toString()
         } catch (e: Exception) {
             e.printStackTrace()
         }

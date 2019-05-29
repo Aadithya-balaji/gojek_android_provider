@@ -102,7 +102,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var mPolyline: Polyline? = null
     private var isNeedToUpdateWaiting: Boolean = false
     private var isLocationDialogShown: Boolean = false
-    private  lateinit var  context:Context
+    private lateinit var context: Context
     private var isGPSEnabled: Boolean = false
     private var startLatLng = LatLng(0.0, 0.0)
     private var endLatLng = LatLng(0.0, 0.0)
@@ -120,7 +120,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         this.activityTaxiMainBinding = mViewDataBinding as ActivityTaxiMainBinding
         mViewModel = ViewModelProviders.of(this).get(TaxiDashboardViewModel::class.java)
         mViewModel.navigator = this
-        context=this
+        context = this
         activityTaxiMainBinding.lifecycleOwner = this
         activityTaxiMainBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
@@ -547,19 +547,15 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         override fun onReceive(contxt: Context?, intent: Intent?) {
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
-             if(isGpsEnabled){
-                 updateMap(location)
-             }else{
-                 if (isLocationDialogShown == false) {
-                     isLocationDialogShown = true
-                     CommonMethods.checkGps(context)
-                 }
-             }
-
+            if (isGpsEnabled) updateMap(location)
+            else if (!isLocationDialogShown) {
+                isLocationDialogShown = true
+                CommonMethods.checkGps(context)
+            }
         }
     }
 
-    private  fun updateMap(location:Location){
+    private fun updateMap(location: Location) {
         if (location != null) {
             mViewModel.latitude.value = location.latitude
             mViewModel.longitude.value = location.longitude
@@ -574,9 +570,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             }
 
             if (checkStatusApiCounter++ % 3 == 0)
-                if (location.latitude > 0 && location.longitude > 0) {
-                    mViewModel.callTaxiCheckStatusAPI()
-                } else updateCurrentLocation()
+                if (location.latitude > 0 && location.longitude > 0)
+                    mViewModel.callTaxiCheckStatusAPI() else updateCurrentLocation()
 
             if (startLatLng.latitude > 0) endLatLng = startLatLng
             startLatLng = LatLng(location.latitude, location.longitude)
@@ -740,8 +735,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     if (mViewModel.checkStatusTaxiLiveData.value != null) {
                         val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                         val params = HashMap<String, String>()
-                        params.put(Constants.Common.ID, requestID)
-                        params.put("status", "1")
+                        params[Constants.Common.ID] = requestID
+                        params["status"] = "1"
                         mViewModel.taxiWaitingTime(params)
                     }
                     cmWaiting.start()
@@ -795,37 +790,33 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-            when (requestCode) {
-                500 ->
-                    when (resultCode) {
-                        Activity.RESULT_OK -> {
-                            isGPSEnabled = true
-                            isLocationDialogShown = false
-                            if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                ViewUtils.showGpsDialog(context)
-                                Timer().schedule(10000) {
-                                    ViewUtils.dismissGpsDialog()
-                                    updateCurrentLocation()
-                                }
-
+        when (requestCode) {
+            500 ->
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        isGPSEnabled = true
+                        isLocationDialogShown = false
+                        if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                            ViewUtils.showGpsDialog(context)
+                            Timer().schedule(10000) {
+                                ViewUtils.dismissGpsDialog()
+                                updateCurrentLocation()
                             }
-                        }
-                        Activity.RESULT_CANCELED -> {
+
                         }
                     }
-
-                300 -> {
-                    // getPermissionUtil().hasAllPermisson( Constants.RequestPermission.PERMISSIONS_LOCATION,context as AppCompatActivity ,300)
-
+                    Activity.RESULT_CANCELED -> {
+                    }
                 }
 
-                100 ->{
-                    finish()
-                }
-
+            300 -> {
+                // getPermissionUtil().hasAllPermisson( Constants.RequestPermission.PERMISSIONS_LOCATION,context as AppCompatActivity ,300)
             }
-            super.onActivityResult(requestCode, resultCode, data)
 
+            100 -> {
+                finish()
+            }
         }
-
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 }

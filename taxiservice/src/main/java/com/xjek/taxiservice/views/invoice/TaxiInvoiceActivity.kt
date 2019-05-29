@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
@@ -19,6 +18,7 @@ import com.xjek.base.extensions.writePreferences
 import com.xjek.base.persistence.AppDatabase
 import com.xjek.base.persistence.LocationPointsEntity
 import com.xjek.base.utils.ViewUtils
+import com.xjek.base.utils.distanceCalc.DistanceUtils
 import com.xjek.taxiservice.R
 import com.xjek.taxiservice.databinding.ActivityInvoiceTaxiBinding
 import com.xjek.taxiservice.model.ResponseData
@@ -54,7 +54,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         rl_status_unselected.visibility = View.GONE
         rl_status_selected.visibility = View.VISIBLE
         mViewModel.tollCharge.value = "0"
-        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        mViewModel.showLoading = loadingObservable
 
         writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, 0)
 
@@ -131,11 +131,11 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
         var addresses: List<Address> = java.util.ArrayList()
-        val geocoder: Geocoder
+        val geoCoder: Geocoder
         try {
             if (Geocoder.isPresent()) {
-                geocoder = Geocoder(context, Locale.getDefault())
-                addresses = geocoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
+                geoCoder = Geocoder(context, Locale.getDefault())
+                addresses = geoCoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
                 // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             }
         } catch (e: Exception) {
@@ -186,7 +186,21 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
 
-        frameDistanceAPI(iteratePointsForDistanceCalc)
+        println("RRR :: URL = ${frameDistanceAPI(iteratePointsForDistanceCalc)}")
+        println("RRR :: URL = ${DistanceUtils().getUrl(iteratePointsForDistanceCalc, getString(R.string.google_map_key))}")
+        try {
+            googleApiCall(iteratePointsForApi)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun googleApiCall(list: MutableList<LatLng>) {
+        val key = getString(R.string.google_map_key)
+        if (list.size > 25) {
+            println("RRR :: URL = ${DistanceUtils().getUrl(list.subList(0, 24), key)}")
+            googleApiCall(list.subList(25, list.size - 1))
+        } else println("RRR :: URL = ${DistanceUtils().getUrl(list, key)}")
     }
 
     private fun distBt(a: LatLng, b: LatLng): Double {
@@ -230,20 +244,22 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 
     private fun frameDistanceAPI(latLng: List<LatLng>): String {
 
-        val origins = StringBuilder()
-        val destinations = StringBuilder()
-        origins.append(latLng[0].latitude).append(",").append(latLng[0].longitude)
+        val origin = StringBuilder()
+        val destination = StringBuilder()
+        val wayPoints = StringBuilder()
+
+        origin.append(latLng[0].latitude).append(",").append(latLng[0].longitude)
+        destination.append(latLng[latLng.size - 1].latitude).append(",").append(latLng[latLng.size - 1].longitude)
 
         for (i in 2 until latLng.size) {
             println("RRRR :: i = $i")
-            destinations.append("|").append(latLng[i].latitude).append(",").append(latLng[i].longitude)
+            wayPoints.append("|").append(latLng[i].latitude).append(",").append(latLng[i].longitude)
         }
 
-        destinations.append(latLng[latLng.size - 1].latitude).append(",").append(latLng[latLng.size - 1].longitude)
-        return "https://maps.googleapis.com/maps/api/distancematrix/json" +
-                "?units=imperial" +
-                "&origins=" + origins +
-                "&destinations=" + destinations +
-                "&key=AIzaSyAdXoVw-M-g4vgEOZZK7Dc9jMUlLR5xVXI"
+        return " https://maps.googleapis.com/maps/api/directions/json?" +
+                "origin=" + origin +
+                "&destination=" + destination +
+                "&waypoints=" + wayPoints +
+                "&key=" + getString(R.string.google_map_key)
     }
 }

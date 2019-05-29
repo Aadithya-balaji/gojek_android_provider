@@ -188,7 +188,12 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
         providerMarker?.remove()
-        providerMarker = mGoogleMap?.addMarker(MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap(bitmapFromVector(BaseApplication.getBaseApplicationContext, R.drawable.ic_marker_provider))))
+        try {
+            providerMarker = mGoogleMap?.addMarker(MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap
+            (bitmapFromVector(BaseApplication.getBaseApplicationContext, R.drawable.ic_marker_provider))))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
     }
@@ -202,7 +207,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         drawable.draw(canvas)
         return bitmap
     }
-
 
     override fun onResume() {
         super.onResume()

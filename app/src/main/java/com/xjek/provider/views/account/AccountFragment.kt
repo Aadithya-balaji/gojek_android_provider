@@ -11,6 +11,7 @@ import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentAccountBinding
 import com.xjek.provider.models.AccountMenuModel
+import com.xjek.provider.views.account_card.ActivityCardList
 import com.xjek.provider.views.dashboard.DashBoardNavigator
 import com.xjek.provider.views.earnings.EarningsActivity
 import com.xjek.provider.views.invitereferals.InviteReferalsActivity
@@ -85,17 +86,19 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
 
         3 -> launchNewActivity(ManageBankDetailsActivity::class.java, false)
 
-        4 -> launchNewActivity(ManagePaymentActivity::class.java, false)
+        4 -> launchNewActivity(ActivityCardList::class.java,false)
 
-        5 -> launchNewActivity(EarningsActivity::class.java, false)
+        5 -> launchNewActivity(ManagePaymentActivity::class.java, false)
 
-        6 -> launchNewActivity(InviteReferalsActivity::class.java, false)
+        6 -> launchNewActivity(EarningsActivity::class.java, false)
 
-        7 -> launchNewActivity(PrivacyActivity::class.java, false)
+        7 -> launchNewActivity(InviteReferalsActivity::class.java, false)
 
-        8 -> launchNewActivity(SupportActivity::class.java, false)
+        8 -> launchNewActivity(PrivacyActivity::class.java, false)
 
-        9 -> launchNewActivity(LanguageActivity::class.java, false)
+        9 -> launchNewActivity(SupportActivity::class.java, false)
+
+        10 -> launchNewActivity(LanguageActivity::class.java, false)
 
         else -> {
 

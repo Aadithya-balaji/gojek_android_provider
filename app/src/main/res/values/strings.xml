@@ -127,6 +127,7 @@
         <item>@drawable/ic_document</item>
         <item>@drawable/ic_bank_details</item>
         <item>@drawable/ic_card</item>
+        <item>@drawable/wallet</item>
         <item>@drawable/ic_earnings</item>
         <item>@drawable/ic_gift_card</item>
         <item>@drawable/ic_policy</item>
@@ -139,6 +140,7 @@
         <item>@string/title_manage_documents</item>
         <item>@string/title_bank_details</item>
         <item>@string/title_payment</item>
+        <item>@string/title_wallet</item>
         <item>@string/title_earnings</item>
         <item>@string/title_invite_referrals</item>
         <item>@string/title_privacy_policy</item>
@@ -173,11 +175,16 @@
     <!--Manage Services Screen-->
     <string name="title_manage_services">Manage Services</string>
 
+    <!-- Payment -->
+    <string name="title_wallet">Wallet</string>
+
     <!--Earnings Screen-->
     <string name="title_earnings">Earnings</string>
 
     <!--Bank Details Screen-->
     <string name="title_bank_details">Bank Details</string>
+
+    <string name="title_payment_type">Payment Type</string>
 
 
     <array name="color_manage_services">
@@ -294,7 +301,6 @@
     <string name="dummy_number">+91123456789</string>
     <string name="dummy_website">www.support.com</string>
     <string name="dummy_mail_id">mail@mail.com</string>
-    <string name="status">Status</string>
     <string name="dummy_status">Pending</string>
     <string name="taxi_app">Taxi App</string>
     <string name="food">Food</string>
@@ -308,6 +314,7 @@
     <string name="dummy_src_type">Sedan Type (Tn 39 aa 1234)</string>
     <string name="cancelled">Cancelled</string>
     <string name="time">3:30 pm</string>
+    <string name="status">Status</string>
 
     <!--Action Messages-->
     <string name="action_sign_up">Sign Up</string>
@@ -366,8 +373,8 @@
     <string name="add_bank_details_added">Bank Details Updated Successfully</string>
     <string name="select_language">Select Language</string>
     <string name="language_change_success">Language changed</string>
-
-
+    <string name="credited">Credited</string>
+    <string name="depited">Debited</string>
     <string name="offline">Go Offline</string>
     <string name="online">Go Online</string>
     <string name="no_documents_found">No Documents Found</string>
@@ -445,7 +452,6 @@
 
     <!-- Loader -->
     <string name="prg_loading">Loading …</string>
-
     <string name="today">Today</string>
     <string name="this_month">This Month</string>
     <string name="this_week">This week</string>

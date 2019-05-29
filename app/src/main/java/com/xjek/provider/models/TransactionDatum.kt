@@ -6,25 +6,38 @@ import com.google.gson.annotations.SerializedName
 class TransactionDatum {
     @SerializedName("id")
     @Expose
-    private var id: Int? = null
+    private var id: Int? = 0
     @SerializedName("transaction_id")
     @Expose
-    private var transactionId: Int? = null
+    private var transactionId: Int? = 0
     @SerializedName("transaction_desc")
     @Expose
     private var transactionDesc: Any? = null
     @SerializedName("type")
     @Expose
-    private var type: String? = null
+    private var type: String? = ""
     @SerializedName("amount")
     @Expose
-    private var amount: Double? = null
+    private var amount: Double? =0.0
     @SerializedName("created_at")
     @Expose
-    private var createdAt: String? = null
+    private var createdAt: String? = ""
     @SerializedName("payment_log")
     @Expose
     private var paymentLog: PaymentLog? = null
+    @SerializedName("transaction_alias")
+    @Expose
+    private  var transactionAlias:String=""
+
+
+    fun  getTransactionAlias():String{
+        return transactionAlias
+    }
+
+
+    fun setTransactionAlias(alias:String){
+        this.transactionAlias=alias
+    }
 
     fun getId(): Int? {
         return id

@@ -30,6 +30,8 @@ object Constants {
         const val PERMISSIONS_CODE_FILE = 1002
         const val ORDER = "ORDER"
         const val PERMISSION_CODE_CAMERA = 1003
+        const val ADDCARD=125
+        const val SELECTED_CARD=1004
     }
 
     object RequestPermission {

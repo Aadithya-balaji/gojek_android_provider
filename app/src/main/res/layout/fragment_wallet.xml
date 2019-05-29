@@ -20,113 +20,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_payment_modes"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_10sdp" />
 
+            <ImageView
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:src="@drawable/wallet_new"
+                android:tint="@color/blue_color" />
 
-            <RelativeLayout
-                android:id="@+id/rl_payment_card"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginRight="@dimen/_15sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@color/white"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingTop="@dimen/_15sdp"
-                android:paddingRight="@dimen/_15sdp">
-
-                <RelativeLayout
-                    android:id="@+id/rl_remove"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_30sdp"
-                    android:visibility="visible">
-
-                    <TextView
-                        android:id="@+id/tv_saved_cards"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:text="@string/saved_card"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <ImageButton
-                        android:id="@+id/iv_delete"
-                        android:layout_width="@dimen/_31sdp"
-                        android:layout_height="@dimen/_29sdp"
-                        android:layout_toLeftOf="@+id/iv_remove"
-                        android:background="@color/card_unselected"
-                        android:elevation="@dimen/_2sdp"
-                        android:onClick="@{() -> walletmodel.callCardDeleteCardAPi()}"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_delete" />
-
-                    <ImageButton
-                        android:id="@+id/iv_remove"
-                        android:layout_width="@dimen/_31sdp"
-                        android:layout_height="@dimen/_29sdp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginLeft="@dimen/_20sdp"
-                        android:background="@color/card_unselected"
-                        android:elevation="@dimen/_2sdp"
-                        android:onClick="@{() -> walletmodel.deselectCard()}"
-                        android:visibility="gone"
-                        app:srcCompat="@drawable/ic_cross" />
-                </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/iv_empty_card"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_centerInParent="true"
-                    app:srcCompat="@drawable/ic_empty_state_card" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_cards"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl_remove"
-                    android:layout_centerInParent="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/tv_add_card"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
-                    android:background="@drawable/bg_white_payment"
-                    android:backgroundTint="@color/colorBasePrimary"
-                    android:fontFamily="@font/avenirltstd_medium"
-                    android:gravity="center"
-                    android:onClick="@{() -> walletmodel.saveCard()}"
-                    android:paddingStart="@dimen/_50sdp"
-                    android:paddingEnd="@dimen/_50sdp"
-                    android:text="@string/add_card"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_12sdp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_wallet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/bg_white"

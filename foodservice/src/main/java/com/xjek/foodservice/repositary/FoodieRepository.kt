@@ -19,8 +19,10 @@ class FoodieRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.foodieCheckRequestModel.postValue(it)
+                    viewModel.showLoading.value = false
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                    viewModel.showLoading.value = false
                 })
     }
 

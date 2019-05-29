@@ -15,7 +15,7 @@ import com.xjek.base.utils.LocaleUtils
 import com.xjek.monitorinternet.InternetConnectivityListener
 import com.xjek.monitorinternet.MonitorInternet
 
-open class BaseApplication : Application() , InternetConnectivityListener {
+open class BaseApplication : Application(), InternetConnectivityListener {
 
     private var mMonitorInternet: MonitorInternet? = null
 
@@ -61,6 +61,7 @@ open class BaseApplication : Application() , InternetConnectivityListener {
     }
 
     override fun onInternetConnectivityChanged(isConnected: Boolean) {
-
+        println("isConnected = $isConnected")
+        getInternetMonitorLiveData.value = isConnected
     }
 }

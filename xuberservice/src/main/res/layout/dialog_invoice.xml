@@ -5,7 +5,7 @@
     <data>
         <variable
             name="invoicemodel"
-            type="com.xjek.xuberservice.invoice.XuperInvoiceViewModel" />
+            type="com.gox.xuberservice.invoice.XuperInvoiceViewModel" />
     </data>
 
     <LinearLayout

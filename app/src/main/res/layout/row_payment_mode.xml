@@ -6,7 +6,7 @@
 
         <variable
             name="paymentmodel"
-            type="com.xjek.provider.interfaces.CustomClickListner"></variable>
+            type="com.gox.partner.interfaces.CustomClickListner"></variable>
     </data>
 
 

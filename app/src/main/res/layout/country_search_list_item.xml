@@ -5,7 +5,7 @@
 
         <variable
             name="itemClickListener"
-            type="com.xjek.provider.interfaces.CustomClickListner" />
+            type="com.gox.partner.interfaces.CustomClickListner" />
 
     </data>
 

@@ -6,7 +6,7 @@
 
         <variable
             name="otpviewmodel"
-            type="com.xjek.taxiservice.views.verifyotp.VerifyOTPModule" />
+            type="com.gox.taxiservice.views.verifyotp.VerifyOTPModule" />
 
     </data>
 

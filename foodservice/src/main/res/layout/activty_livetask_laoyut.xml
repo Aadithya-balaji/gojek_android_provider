@@ -6,11 +6,11 @@
 
         <variable
             name="orderItemListAdpter"
-            type="com.xjek.foodservice.adapter.OrderItemListAdapter" />
+            type="com.gox.foodservice.adapter.OrderItemListAdapter" />
 
         <variable
             name="foodLiveTaskviewModel"
-            type="com.xjek.foodservice.ui.dashboard.FoodLiveTaskServiceViewModel" />
+            type="com.gox.foodservice.ui.dashboard.FoodLiveTaskServiceViewModel" />
     </data>
 
     <RelativeLayout

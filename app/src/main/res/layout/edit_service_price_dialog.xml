@@ -6,7 +6,7 @@
 
         <variable
             name="editServicePriceViewModel"
-            type="com.xjek.provider.views.edit_service_price.EditServicePriceViewModel" />
+            type="com.gox.partner.views.edit_service_price.EditServicePriceViewModel" />
     </data>
 
     <LinearLayout

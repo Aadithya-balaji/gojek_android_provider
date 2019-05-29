@@ -8,7 +8,7 @@
 
         <variable
             name="addVehicleViewModel"
-            type="com.xjek.provider.views.add_vehicle.AddVehicleViewModel" />
+            type="com.gox.partner.views.add_vehicle.AddVehicleViewModel" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat

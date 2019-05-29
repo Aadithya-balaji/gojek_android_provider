@@ -6,7 +6,7 @@
     <data>
         <variable
             name="reasonadapter"
-            type="com.xjek.xuberservice.adapters.XuberReasonAdapter"/>
+            type="com.gox.xuberservice.adapters.XuberReasonAdapter"/>
     </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/cvreasontype"

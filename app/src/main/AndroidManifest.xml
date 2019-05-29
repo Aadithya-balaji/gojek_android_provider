@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.xjek.provider">
+    package="com.gox.partner">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,7 +14,7 @@
     <uses-feature android:name="android.hardware.location.gps" />
 
     <application
-        android:name=".GoJekApplication"
+        android:name="com.gox.partner.GoJekApplication"
         android:allowBackup="true"
         android:appComponentFactory="androidx"
         android:hardwareAccelerated="false"
@@ -30,39 +30,39 @@
         tools:targetApi="p">
 
         <activity
-            android:name=".views.earnings.EarningsActivity"
+            android:name="com.gox.partner.views.earnings.EarningsActivity"
             android:configChanges="keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.manage_bank_details.ManageBankDetailsActivity"
+            android:name="com.gox.partner.views.manage_bank_details.ManageBankDetailsActivity"
             android:configChanges="keyboardHidden"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.set_service.SetServiceActivity"
+            android:name="com.gox.partner.views.set_service.SetServiceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.set_subservice.SetSubServiceActivity"
+            android:name="com.gox.partner.views.set_subservice.SetSubServiceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.set_service_category_price.SetServicePriceActivity"
+            android:name="com.gox.partner.views.set_service_category_price.SetServicePriceActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.language.LanguageActivity"
+            android:name="com.gox.partner.views.language.LanguageActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.add_edit_document.AddEditDocumentActivity"
+            android:name="com.gox.partner.views.add_edit_document.AddEditDocumentActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.setup_vehicle.SetupVehicleActivity"
+            android:name="com.gox.partner.views.setup_vehicle.SetupVehicleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.manage_documents.ManageDocumentsActivity"
+            android:name="com.gox.partner.views.manage_documents.ManageDocumentsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.manage_services.ManageServicesActivity"
+            android:name="com.gox.partner.views.manage_services.ManageServicesActivity"
             android:screenOrientation="portrait" />
 
-        <activity android:name=".views.account_card.ActivityCardList"
+        <activity android:name="com.gox.partner.views.account_card.ActivityCardList"
             android:screenOrientation="portrait"/>
         <!--
             Added the following meta-data element, an activity for Facebook, and an activity and
@@ -96,7 +96,7 @@
         </activity>
         <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
         <activity
-            android:name=".views.splash.SplashActivity"
+            android:name="com.gox.partner.views.splash.SplashActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -106,35 +106,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.on_board.OnBoardActivity"
+            android:name="com.gox.partner.views.on_board.OnBoardActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.sign_in.SignInActivity"
+            android:name="com.gox.partner.views.sign_in.SignInActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.forgot_password.ForgotPasswordActivity"
+            android:name="com.gox.partner.views.forgot_password.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.reset_password.ResetPasswordActivity"
+            android:name="com.gox.partner.views.reset_password.ResetPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.signup.SignupActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".views.dashboard.DashBoardActivity"
+            android:name="com.gox.partner.views.signup.SignupActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.countrypicker.CountryCodeActivity"
+            android:name="com.gox.partner.views.dashboard.DashBoardActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name="com.gox.partner.views.countrypicker.CountryCodeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -144,63 +144,63 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />-->
         <activity
-            android:name=".views.uploaddocumentlist.VechileDetailActivity"
+            android:name="com.gox.partner.views.uploaddocumentlist.VechileDetailActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.change_password.ChangePasswordActivity"
+            android:name="com.gox.partner.views.change_password.ChangePasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name=".views.verifyfile.VerifyFileActivity"
+            android:name="com.gox.partner.views.verifyfile.VerifyFileActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.profile.ProfileActivity"
+            android:name="com.gox.partner.views.profile.ProfileActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.manage_payment.ManagePaymentActivity"
+            android:name="com.gox.partner.views.manage_payment.ManagePaymentActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.support.SupportActivity"
+            android:name="com.gox.partner.views.support.SupportActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.transaction_status.TransactionStatusActivity"
+            android:name="com.gox.partner.views.transaction_status.TransactionStatusActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.invitereferals.InviteReferalsActivity"
+            android:name="com.gox.partner.views.invitereferals.InviteReferalsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.countrylist.CountryListActivity"
+            android:name="com.gox.partner.views.countrylist.CountryListActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.citylist.CityListActivity"
+            android:name="com.gox.partner.views.citylist.CityListActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".views.add_vehicle.AddVehicleActivity"
+            android:name="com.gox.partner.views.add_vehicle.AddVehicleActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ImageCropper" />
         <activity
-            android:name=".views.privacypolicy.PrivacyActivity"
+            android:name="com.gox.partner.views.privacypolicy.PrivacyActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -208,7 +208,7 @@
             android:name="com.cooltechworks.creditcarddesign.CardEditActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".views.history_details.HistoryDetailActivity"
+            android:name="com.gox.partner.views.history_details.HistoryDetailActivity"
             android:screenOrientation="portrait" />
 
         <meta-data
@@ -216,7 +216,7 @@
             android:value="@string/google_map_key" />
 
         <service
-            android:name="com.xjek.base.location_service.BaseLocationService"
+            android:name="com.gox.base.location_service.BaseLocationService"
             android:enabled="true"
             android:exported="true" />
 
@@ -231,7 +231,7 @@
         </provider>
 
         <service
-            android:name=".fcm.FcmService"
+            android:name="com.gox.partner.fcm.FcmService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

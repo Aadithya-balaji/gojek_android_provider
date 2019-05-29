@@ -6,11 +6,11 @@
 
         <variable
             name="orderfragmentviewmodel"
-            type="com.xjek.provider.views.order.OrderFragmentViewModel" />
+            type="com.gox.partner.views.order.OrderFragmentViewModel" />
 
         <variable
             name="disputeReasonListAdapter"
-            type="com.xjek.provider.views.adapters.DisputeReasonListAdapter" />
+            type="com.gox.partner.views.adapters.DisputeReasonListAdapter" />
 
     </data>
 

@@ -6,7 +6,7 @@
 
         <variable
             name="invoicemodel"
-            type="com.xjek.taxiservice.views.invoice.TaxiInvoiceViewModel" />
+            type="com.gox.taxiservice.views.invoice.TaxiInvoiceViewModel" />
     </data>
 
     <ScrollView

@@ -9,7 +9,7 @@
 
         <variable
             name="viewModel"
-            type="com.xjek.provider.views.manage_bank_details.ManageBankDetailsViewModel" />
+            type="com.gox.partner.views.manage_bank_details.ManageBankDetailsViewModel" />
     </data>
 
     <LinearLayout

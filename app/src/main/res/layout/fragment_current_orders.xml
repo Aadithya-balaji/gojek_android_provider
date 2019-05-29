@@ -6,11 +6,11 @@
 
         <variable
             name="currentorderviewmodel"
-            type="com.xjek.provider.views.currentorder_fragment.CurrentOrderViewModel" />
+            type="com.gox.partner.views.currentorder_fragment.CurrentOrderViewModel" />
 
         <variable
             name="currrentOrdersAdapter"
-            type="com.xjek.provider.views.adapters.CurrentOrdersAdapter" />
+            type="com.gox.partner.views.adapters.CurrentOrdersAdapter" />
 
     </data>
 

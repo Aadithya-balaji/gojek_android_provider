@@ -1,16 +1,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xjek.taxiservice" >
+    package="com.gox.taxiservice" >
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application>
-        <activity android:name="com.xjek.taxiservice.views.main.TaxiDashboardActivity"
+        <activity android:name="com.gox.taxiservice.views.main.TaxiDashboardActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysVisible"/>
 
-        <activity android:name=".views.invoice.TaxiInvoiceActivity"
+        <activity android:name="com.gox.taxiservice.views.invoice.TaxiInvoiceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"/>
 

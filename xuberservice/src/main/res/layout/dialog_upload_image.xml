@@ -6,7 +6,7 @@
 
         <variable
             name="uploadImageModel"
-            type="com.xjek.xuberservice.uploadImage.DialogUploadPictureViewModel" />
+            type="com.gox.xuberservice.uploadImage.DialogUploadPictureViewModel" />
     </data>
 
     <LinearLayout

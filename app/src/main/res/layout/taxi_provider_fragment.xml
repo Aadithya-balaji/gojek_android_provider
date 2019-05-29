@@ -6,11 +6,11 @@
 
         <variable
             name="taxiProviderViewModel"
-            type="com.xjek.provider.views.taxiproviderfragment.TaxiProviderViewModel" />
+            type="com.gox.partner.views.taxiproviderfragment.TaxiProviderViewModel" />
 
         <variable
             name="taxiProviderAdapter"
-            type="com.xjek.provider.views.adapters.TaxiProviderAdapter" />
+            type="com.gox.partner.views.adapters.TaxiProviderAdapter" />
 
     </data>
 

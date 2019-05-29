@@ -6,7 +6,7 @@
 
         <variable
             name="pendinglistModel"
-            type="com.xjek.provider.views.pendinglist.PendingListViewModel" />
+            type="com.gox.partner.views.pendinglist.PendingListViewModel" />
     </data>
 
 

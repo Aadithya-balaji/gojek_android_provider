@@ -6,11 +6,11 @@
 
         <variable
             name="citylistmodel"
-            type="com.xjek.provider.views.citylist.CityListViewModel" />
+            type="com.gox.partner.views.citylist.CityListViewModel" />
 
         <variable
             name="cityListAdapter"
-            type="com.xjek.provider.views.adapters.CityListAdapter" />
+            type="com.gox.partner.views.adapters.CityListAdapter" />
     </data>
 
     <LinearLayout

@@ -6,7 +6,7 @@
 
         <variable
             name="requestmodel"
-            type="com.xjek.provider.views.incoming_request_taxi.IncomingRequestViewModel" />
+            type="com.gox.partner.views.incoming_request_taxi.IncomingRequestViewModel" />
 
     </data>
 
@@ -27,7 +27,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
 
-        <com.xjek.base.views.customviews.circularseekbar.FullCircularProgressBar
+        <com.gox.base.views.customviews.circularseekbar.FullCircularProgressBar
             android:id="@+id/iv_request_time"
             android:layout_width="150dp"
             android:layout_height="150dp" />

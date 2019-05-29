@@ -7,7 +7,7 @@
 
         <variable
             name="accountViewModel"
-            type="com.xjek.provider.views.account.AccountViewModel" />
+            type="com.gox.partner.views.account.AccountViewModel" />
     </data>
 
     <androidx.recyclerview.widget.RecyclerView

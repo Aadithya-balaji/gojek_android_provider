@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xjek.foodservice" >
+    package="com.gox.foodservice" >
 
     <application>
-        <activity android:name="com.xjek.foodservice.ui.dashboard.FoodieDashboardActivity"
+        <activity android:name="com.gox.foodservice.ui.dashboard.FoodieDashboardActivity"
             android:screenOrientation="portrait"/>
     </application>
 

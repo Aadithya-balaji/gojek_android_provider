@@ -11,7 +11,7 @@
 
         <variable
             name="setupServicesViewModel"
-            type="com.xjek.provider.views.setup_services.SetupServicesViewModel" />
+            type="com.gox.partner.views.setup_services.SetupServicesViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

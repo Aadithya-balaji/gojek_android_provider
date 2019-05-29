@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.xjek.foodservice.ui.rating.FoodieRatingViewModel" />
+            type="com.gox.foodservice.ui.rating.FoodieRatingViewModel" />
     </data>
 
     <RelativeLayout

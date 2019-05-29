@@ -2,9 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:attr/selectableItemBackground"
-    android:id="@+id/item_country_rly"
-    >
+    android:id="@+id/item_country_rly">
 
   <LinearLayout
       android:id="@+id/flag_holder_lly"
@@ -34,7 +34,7 @@
       android:layout_toRightOf="@+id/flag_holder_lly"
       android:layout_toStartOf="@+id/code_tv"
       android:gravity="center_vertical"
-      android:text="Indonesia (ID)"
+      tools:text="Indonesia (ID)"
       android:visibility="gone"
       android:textColor="@android:color/secondary_text_light"
       />
@@ -51,7 +51,7 @@
       android:paddingLeft="10dp"
       android:paddingRight="10dp"
       android:paddingStart="10dp"
-      android:text="+91"
+      android:text="@string/defualt_inr_code"
       android:visibility="gone"
       android:textColor="@android:color/secondary_text_light"
       />

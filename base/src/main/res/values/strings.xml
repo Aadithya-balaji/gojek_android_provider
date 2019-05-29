@@ -1,9 +1,11 @@
-<resources>
-    <string name="app_name">BaseModule</string>
-    <string name="action_allow">Allow</string>
-    <string name="action_deny">Deny</string>
-    <string name="xjek_delete_account">Delete Account</string>
-    <string name="xjek_logout_account">Logout Account</string>
-    <string name="fetching_loading">Please wait, while finding your location</string>
-    <string name="missing_permission">Please Enable Necessary permission to proceed the applcation</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">BaseModule</string>
+    <string name="action_allow" translatable="false">Allow</string>
+    <string name="action_deny" tools:ignore="MissingTranslation">Deny</string>
+    <string name="xjek_delete_account" tools:ignore="MissingTranslation">Delete Account</string>
+    <string name="xjek_logout_account" tools:ignore="MissingTranslation">Logout Account</string>
+    <string name="fetching_loading" tools:ignore="MissingTranslation">Please wait, while finding your location</string>
+    <string name="missing_permission" tools:ignore="MissingTranslation">Please Enable Necessary permission to proceed the applcation</string>
+    <string name="ok" tools:ignore="MissingTranslation">OK</string>
+    <string name="cancel" tools:ignore="MissingTranslation">Cancel</string>
 </resources>

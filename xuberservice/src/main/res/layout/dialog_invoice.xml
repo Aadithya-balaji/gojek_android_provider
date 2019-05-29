@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -115,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_3sdp"
-                        android:text="Car Wash - HatchBack"
+                        tools:text="@string/dummy_xuberservice_text"
                         android:textColor="@color/xuper_invoice_grey"
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
@@ -153,7 +154,7 @@
                         android:id="@+id/tvXuperTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="00:00:00"
+                        android:text= "@string/start_timer"
                         android:textColor="@color/xuper_invoice_grey" />
                 </LinearLayout>
 

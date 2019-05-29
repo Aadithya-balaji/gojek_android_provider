@@ -65,7 +65,7 @@
             android:id="@+id/clearDatabase"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Clear database"
+            android:text="@string/clear_database"
             android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton

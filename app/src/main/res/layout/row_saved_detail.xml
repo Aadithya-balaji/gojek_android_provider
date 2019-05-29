@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
 
     <data>
@@ -31,7 +32,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:text="Visa"
+                android:text="@string/visa"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_11sdp" />
 
@@ -43,7 +44,7 @@
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:text="xxxx xxxx xxxx xxxx"
+                tools:text="xxxx xxxx xxxx xxxx"
                 android:textAllCaps="true"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_8sdp" />

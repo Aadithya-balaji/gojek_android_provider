@@ -76,7 +76,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:text="12 sec lef" />
+                    tools:text="12 sec lef" />
 
             </RelativeLayout>
 
@@ -127,7 +127,7 @@
                         android:layout_alignStart="@+id/tv_label_schedule"
                         android:layout_alignLeft="@+id/tv_label_schedule"
                         android:layout_marginTop="@dimen/_1sdp"
-                        android:text="12/02/2019" />
+                        tools:text="12/02/2019" />
                 </RelativeLayout>
 
                 <LinearLayout

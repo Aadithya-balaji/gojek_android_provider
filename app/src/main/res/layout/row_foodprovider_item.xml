@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -71,7 +72,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:text="12 sec lef" />
+                    tools:text="12 sec lef" />
 
             </RelativeLayout>
 
@@ -106,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="sdfdfdfdfdfdfdfdf dfdf"
+                        tools:text="sdfdfdfdfdfdfdfdf dfdf"
                         android:textColor="@color/et_stroke_color"
                         android:textSize="@dimen/_10sdp" />
 
@@ -116,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="India"
+                        tools:text="India"
                         android:textColor="@color/et_stroke_color" />
 
                 </LinearLayout>

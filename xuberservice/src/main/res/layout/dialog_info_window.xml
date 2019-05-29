@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="@dimen/_220sdp"
     android:background="@drawable/shadow"
@@ -64,7 +64,7 @@
         android:layout_marginTop="@dimen/_9sdp"
         android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:text="this is the sample description label in feature it will change"/>
+        tools:text="this is the sample description label in feature it will change"/>
 
 
 </RelativeLayout>

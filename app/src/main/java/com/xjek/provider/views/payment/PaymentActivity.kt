@@ -64,7 +64,6 @@ class PaymentActivity : BaseActivity<ActivityPaymentBinding>(), PaymentNavigator
 
         // Your processing goes here.
         val temp = mCardExpiryDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-
         val month = Integer.parseInt(temp[0])
         val year = Integer.parseInt(temp[1])
 

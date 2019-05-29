@@ -61,6 +61,9 @@
         <activity
             android:name=".views.manage_services.ManageServicesActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".views.account_card.ActivityCardList"
+            android:screenOrientation="portrait"/>
         <!--
             Added the following meta-data element, an activity for Facebook, and an activity and
             intent filter for Chrome Custom Tabs inside your application element.

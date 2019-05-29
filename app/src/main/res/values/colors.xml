@@ -68,20 +68,27 @@
 
     <!-- Taxi -->
     <color name="taxi_bg_yellow">#FFA200</color>
-    <color name="taxi_bg_grey">#F8F7F6</color>
+    <color name="taxi_bg_grey">#F4F4F4</color>
 
     <!--TransactionStatus-->
     <color name="transactinstatus">#F8FFA200</color>
     <color name="blue_transaction_bg">#11aba9</color>
     <color name="red">#fc3a14</color>
     <color name="card_unselected">#faf9f6</color>
-
-    <color name="darkgrey">#065FAC</color>
+    <color name="credit">#22FF20</color>
+    <color name="darkgrey">#055EAB</color>
+    <color name="bg_payment">#FFF4F4F4</color>
 
     <!-- Dispute Status -->
-    <color name="bg_dispute_closed">#FFB4CEE5</color>
+    <color name="bg_dispute_closed">#CDDFED</color>
     <color name="dispute_status_closed">#FF065FAC</color>
-    <color name="bg_dispute_open">#02FF02</color>
-    <color name="dispute_status_open">#02FF02</color>
+    <color name="bg_dispute_open">#E4F0FE</color>
+    <color name="dispute_status_open">#FF1717</color>
+
+    <!-- Card list -->
+    <color name="bg_card_default">#F2F2F2</color>
+    <color name="bg_button_delete">#FFE4F0FE</color>
+    <color name="bg_card_selected">#FF055EAB</color>
+
 
 </resources>

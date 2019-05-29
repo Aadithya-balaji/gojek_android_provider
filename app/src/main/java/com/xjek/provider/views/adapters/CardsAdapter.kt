@@ -10,19 +10,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
 import com.xjek.provider.databinding.RowSavedDetailBinding
 import com.xjek.provider.models.CardResponseModel
+import com.xjek.provider.views.account_card.CardListViewModel
 import com.xjek.provider.views.wallet.WalletViewModel
 
-class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, walletViewModel: WalletViewModel) : RecyclerView.Adapter<CardsAdapter.CardViewHolder>(), View.OnLongClickListener, View.OnClickListener {
+class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, cardListModel: CardListViewModel) : RecyclerView.Adapter<CardsAdapter.CardViewHolder>(), View.OnClickListener {
 
     private var context: Context? = null
     private var cardList: MutableList<CardResponseModel>? = null
-    private var walletViewModel: WalletViewModel? = null
+    private var cardListViewModel: CardListViewModel? = null
     private var selectedPosition: Int? = -1
 
     init {
         this.context = context
         this.cardList = cardList
-        this.walletViewModel = walletViewModel
+        this.cardListViewModel = cardListModel
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
@@ -42,7 +43,7 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
             selectedPosition = -1
         }
         if (cardList!!.get(position).isCardSelected == false) {
-            holder.cardViewBinding.root.setBackgroundColor(ContextCompat.getColor(context!!, R.color.card_unselected))
+            holder.cardViewBinding.root.setBackgroundColor(ContextCompat.getColor(context!!, R.color.bg_dispute_closed))
             holder.cardViewBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.black))
             holder.cardViewBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.black))
         } else {
@@ -62,16 +63,7 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
         val cardViewBinding = cardViewBinding
     }
 
-    override fun onLongClick(v: View?): Boolean {
-        /*var cardViewHolder = v!!.tag as CardViewHolder
-        var position = cardViewHolder.adapterPosition
-        if (selectedPosition != position) {
-            selectedPosition=position
-            val cardResponseModel=cardList!!.get(selectedPosition!!)
-            walletViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(),cardResponseModel.getId().toString(), selectedPosition!!)
-        }*/
-        return true
-    }
+
 
     override fun onClick(v: View?) {
         var cardViewHolder = v!!.tag as CardViewHolder
@@ -79,7 +71,7 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, w
         if (selectedPosition != position) {
             selectedPosition = position
             val cardResponseModel = cardList!!.get(selectedPosition!!)
-            walletViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(), cardResponseModel.getId().toString(), selectedPosition!!)
+            cardListViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(), cardResponseModel.getId().toString(), selectedPosition!!)
         }
     }
 }

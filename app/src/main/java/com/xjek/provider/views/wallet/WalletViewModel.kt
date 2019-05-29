@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.xjek.base.base.BaseViewModel
 import com.xjek.base.data.PreferencesKey
 import com.xjek.base.extensions.readPreferences
+import com.xjek.provider.R
 import com.xjek.provider.models.AddCardModel
 import com.xjek.provider.models.CardListModel
 import com.xjek.provider.models.WalletResponse
@@ -25,23 +26,21 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
     var resources: Resources? = null
     var showLoading = MutableLiveData<Boolean>()
     var selectedCardID = MutableLiveData<String>()
-
-    init {
-        this.resources = resources
-    }
-
     val appRepository = AppRepository.instance()
 
-    fun getCardList() {
-        showLoading?.let { it.value = true }
-        getCompositeDisposable().add(appRepository.getCardList(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), "100", "1"))
-    }
 
     fun amountAdd(view: View) {
         navigator.addAmount(view)
     }
 
     fun addWalletAmount() {
+        if (walletAmount.value.isNullOrEmpty())
+            navigator.showErrorMsg(resources!!.getString(R.string.empty_wallet_amount))
+        else
+            navigator.getCard()
+    }
+
+    fun callAddAmtApi() {
         if (navigator.validate()) {
             showLoading?.let { it.value = true }
             val params = HashMap<String, String>()
@@ -53,35 +52,5 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
         }
     }
 
-    fun callAddCardApi(stripeID: String) {
-        showLoading?.let { it.value = true }
-        val params = HashMap<String, String>()
-        params.put(WebApiConstants.addCard.STRIP_TOKEN, stripeID)
-        getCompositeDisposable().add(appRepository.addCard(this, params, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
-    }
-
-    fun callCardDeleteCardAPi() {
-        showLoading?.let { it.value = true }
-        if (!selectedCardID.value.isNullOrEmpty())
-            getCompositeDisposable().add(appRepository.deleteCDard(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), selectedCardID.value!!))
-        else
-            navigator.showErrorMsg(resources!!.getString(com.xjek.provider.R.string.empty_card))
-    }
-
-    fun onCardSelected(cardId: String, position: Int) {
-        navigator.cardPicked(selectedStripeID.value!!, selectedCardID.value!!, position)
-    }
-
-    fun saveCard() {
-        navigator.addCard()
-    }
-
-    fun deselectCard() {
-        navigator.deselectCard()
-    }
-
-    fun changePaymentType(type: Int) {
-        navigator.paymentType(type)
-    }
 
 }

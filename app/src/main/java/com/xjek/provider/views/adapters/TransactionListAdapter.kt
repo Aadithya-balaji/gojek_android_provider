@@ -3,6 +3,7 @@ package com.xjek.provider.views.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.xjek.provider.R
@@ -31,10 +32,17 @@ class TransactionListAdapter(context: Context, transactionList: List<Transaction
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.currentOderItemlistBinding.transactionIdTv.setText(transactionList!!.get(position).getTransactionId().toString())
+        holder.currentOderItemlistBinding.tvTransactionID.setText(transactionList!!.get(position).getTransactionAlias().toString())
         var strDate = CommanMethods.getLocalTimeStamp(transactionList!!.get(position).getCreatedAt().toString())
-        holder.currentOderItemlistBinding.transactionDateTv.setText(strDate)
-        holder.currentOderItemlistBinding.transactionAmountTv.setText(String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount()))
+        holder.currentOderItemlistBinding.tvTransactionAmount.setText(String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount()))
+        if(transactionList!!.get(position).getType().equals("D"))
+        {
+           holder.currentOderItemlistBinding.tvTransactionStatus.setText(context!!.resources.getString(R.string.depited))
+            holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,R.color.dispute_status_open))
+        }else{
+            holder.currentOderItemlistBinding.tvTransactionStatus.setText(context!!.resources.getString(R.string.credited))
+            holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,R.color.credit))
+        }
     }
 
     inner class MyViewHolder(itemView: TransactionListItemBinding) : RecyclerView.ViewHolder(itemView.root) {

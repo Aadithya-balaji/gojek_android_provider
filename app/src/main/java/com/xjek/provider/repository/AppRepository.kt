@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.xjek.base.data.Constants
 import com.xjek.base.repository.BaseRepository
 import com.xjek.provider.network.AppWebService
+import com.xjek.provider.views.account_card.CardListViewModel
 import com.xjek.provider.views.add_edit_document.AddEditDocumentViewModel
 import com.xjek.provider.views.add_vehicle.AddVehicleViewModel
 import com.xjek.provider.views.change_password.ChangePasswordViewModel
@@ -248,15 +249,15 @@ class AppRepository : BaseRepository() {
     }
 
 
-    fun getCardList(viewModel: WalletViewModel, token: String, limit: String, offset: String): Disposable {
+    fun getCardList(viewModel: CardListViewModel, token: String, limit: String, offset: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getCardList(token, limit, offset)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.cardResponseData.postValue(it)
+                    viewModel.cardListLiveResponse.postValue(it)
                 }, {
-
+                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
                 })
     }
 
@@ -284,7 +285,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun deleteCDard(viewModel: WalletViewModel, token: String, cardId: String): Disposable {
+    fun deleteCDard(viewModel:CardListViewModel, token: String, cardId: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .deleteCard(token, cardId)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -297,7 +298,7 @@ class AppRepository : BaseRepository() {
 
     }
 
-    fun addCard(viewModel: WalletViewModel, params: HashMap<String, String>, token: String): Disposable {
+    fun addCard(viewModel: CardListViewModel, params: HashMap<String, String>, token: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .addCard(token, params)
                 .observeOn(AndroidSchedulers.mainThread())

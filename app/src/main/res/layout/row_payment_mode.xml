@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,16 +9,24 @@
             type="com.xjek.provider.interfaces.CustomClickListner"></variable>
     </data>
 
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        app:cardBackgroundColor="#FFFFFF">
     <TextView
         android:id="@+id/tv_payment_mode"
-        android:layout_width="@dimen/_80sdp"
-        android:layout_height="@dimen/_30sdp"
-        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_white"
         android:fontFamily="@font/avenirltstd_medium"
-        android:gravity="center"
+        android:gravity="start"
         android:onClick="@{() -> paymentmodel.onListClickListner()}"
         android:textColor="@color/black"
-        android:textSize="@dimen/_11sdp"></TextView>
+        android:textAllCaps="true"
+        android:textSize="@dimen/_10sdp"/>
+    </androidx.cardview.widget.CardView>
 
 </layout>

@@ -7,7 +7,7 @@
 
         <variable
             name="orderfragmentviewmodel"
-            type="com.xjek.provider.views.order.OrderFragmentViewModel" />
+            type="com.gox.partner.views.order.OrderFragmentViewModel" />
 
 
     </data>

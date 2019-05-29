@@ -7,7 +7,7 @@
 
         <variable
             name="servicePriceViewModel"
-            type="com.xjek.provider.views.set_service_category_price.SetServicePriceViewModel" />
+            type="com.gox.partner.views.set_service_category_price.SetServicePriceViewModel" />
     </data>
 
     <RelativeLayout

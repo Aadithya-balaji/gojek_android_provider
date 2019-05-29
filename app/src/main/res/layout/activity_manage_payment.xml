@@ -32,7 +32,7 @@
                 app:tabTextColor="@color/black" />
         </androidx.appcompat.widget.Toolbar>
 
-        <com.xjek.provider.utils.NonSwipeableViewPager
+        <com.gox.partner.utils.NonSwipeableViewPager
             android:id="@+id/vb_payment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

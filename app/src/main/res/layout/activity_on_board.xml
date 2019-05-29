@@ -6,7 +6,7 @@
 
         <variable
             name="dashboardViewModel"
-            type="com.xjek.provider.views.on_board.OnBoardViewModel" />
+            type="com.gox.partner.views.on_board.OnBoardViewModel" />
 
     </data>
 

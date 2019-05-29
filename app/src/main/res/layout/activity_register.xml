@@ -7,7 +7,7 @@
 
         <variable
             name="registermodel"
-            type="com.xjek.provider.views.signup.SignupViewModel" />
+            type="com.gox.partner.views.signup.SignupViewModel" />
     </data>
 
 

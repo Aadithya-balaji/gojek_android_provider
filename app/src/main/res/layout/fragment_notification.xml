@@ -9,11 +9,11 @@
 
         <variable
             name="notificationviewmodel"
-            type="com.xjek.provider.views.notification.NotificationViewModel" />
+            type="com.gox.partner.views.notification.NotificationViewModel" />
 
         <variable
             name="notificationAdapter"
-            type="com.xjek.provider.views.adapters.NotificationAdapter" />
+            type="com.gox.partner.views.adapters.NotificationAdapter" />
 
     </data>
 

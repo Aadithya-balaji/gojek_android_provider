@@ -13,7 +13,7 @@
 
         <variable
             name="languageViewModel"
-            type="com.xjek.provider.views.language.LanguageViewModel" />
+            type="com.gox.partner.views.language.LanguageViewModel" />
     </data>
 
     <RelativeLayout

@@ -6,11 +6,11 @@
 
         <variable
             name="taxiReasonAdapter"
-            type="com.xjek.taxiservice.views.adapter.TaxiReasonAdapter" />
+            type="com.gox.taxiservice.views.adapter.TaxiReasonAdapter" />
 
         <variable
             name="viewModel"
-            type="com.xjek.taxiservice.views.reasons.TaxiCancelReasonViewModel" />
+            type="com.gox.taxiservice.views.reasons.TaxiCancelReasonViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -8,7 +8,7 @@
 
         <variable
             name="signInViewModel"
-            type="com.xjek.provider.views.sign_in.SignInViewModel" />
+            type="com.gox.partner.views.sign_in.SignInViewModel" />
 
     </data>
 

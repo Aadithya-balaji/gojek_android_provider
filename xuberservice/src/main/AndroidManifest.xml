@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.xjek.xuberservice">
+    package="com.gox.xuberservice">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -9,7 +9,7 @@
 
     <application>
         <activity
-            android:name=".xuberMainActivity.XuberDashBoardActivity"
+            android:name="com.gox.xuberservice.xuberMainActivity.XuberDashBoardActivity"
             android:screenOrientation="portrait" />
 
         <activity

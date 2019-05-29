@@ -7,7 +7,7 @@
 
         <variable
             name="currentOrderDetailModel"
-            type="com.xjek.provider.views.history_details.HistoryDetailViewModel" />
+            type="com.gox.partner.views.history_details.HistoryDetailViewModel" />
 
     </data>
 

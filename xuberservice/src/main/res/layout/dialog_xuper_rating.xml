@@ -3,7 +3,7 @@
     <data>
         <variable
             name="ratingmodel"
-            type="com.xjek.xuberservice.rating.XuperRatingViewModel" />
+            type="com.gox.xuberservice.rating.XuperRatingViewModel" />
     </data>
 
     <LinearLayout

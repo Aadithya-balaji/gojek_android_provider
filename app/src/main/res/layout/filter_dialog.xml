@@ -7,11 +7,11 @@
 
         <variable
             name="orderfragmentviewmodel"
-            type="com.xjek.provider.views.order.OrderFragmentViewModel" />
+            type="com.gox.partner.views.order.OrderFragmentViewModel" />
 
         <variable
             name="filterServiceListAdapter"
-            type="com.xjek.provider.views.adapters.FilterServiceListAdapter" />
+            type="com.gox.partner.views.adapters.FilterServiceListAdapter" />
 
     </data>
 

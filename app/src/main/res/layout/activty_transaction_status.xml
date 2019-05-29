@@ -6,7 +6,7 @@
 
         <variable
             name="transactionStatusAdapter"
-            type="com.xjek.provider.views.adapters.TransactionStatusListAdapter" />
+            type="com.gox.partner.views.adapters.TransactionStatusListAdapter" />
     </data>
 
     <LinearLayout

@@ -5,7 +5,7 @@
 
         <variable
             name="privacymodel"
-            type="com.xjek.provider.views.privacypolicy.PrivacyViewModel" />
+            type="com.gox.partner.views.privacypolicy.PrivacyViewModel" />
     </data>
 
     <LinearLayout

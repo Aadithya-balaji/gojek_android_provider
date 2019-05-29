@@ -578,7 +578,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
             println("RRRR :: TaxiDashboardActivity LatLng(location = ${LatLng(location.latitude, location.longitude)}")
 
-            if (endLatLng.latitude > 0 && polyLine.size > 0) {
+            if (mViewModel.latitude.value!! > 0 && endLatLng.latitude > 0 && polyLine.size > 0) {
                 try {
                     CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, endLatLng, startLatLng)
                     polyLineRerouting(endLatLng, polyLine)

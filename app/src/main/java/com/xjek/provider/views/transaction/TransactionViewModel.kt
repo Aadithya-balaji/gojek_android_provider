@@ -11,6 +11,7 @@ class TransactionViewModel : BaseViewModel<TransactionNavigator>() {
     var transcationLiveResponse = MutableLiveData<WalletTransactionList>()
     var errorResponse = MutableLiveData<String>()
     val appRepository = AppRepository.instance()
+    var showLoading=MutableLiveData<Boolean>()
     fun callTranscationApi() {
         getCompositeDisposable().add(appRepository.getTransaction(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
     }

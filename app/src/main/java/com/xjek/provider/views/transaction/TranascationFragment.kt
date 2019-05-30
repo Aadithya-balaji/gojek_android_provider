@@ -3,6 +3,7 @@ package com.xjek.provider.views.transaction
 import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.xjek.base.base.BaseFragment
 import com.xjek.base.extensions.observeLiveData
@@ -30,24 +31,13 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
         linearLayoutManager = LinearLayoutManager(activity)
         fragmentTransactionBinding.transactionListRv.layoutManager = linearLayoutManager
         fragmentTransactionBinding.lifecycleOwner = this
-
-        //callGetTrancation Api
-        transcationViewModel.callTranscationApi()
-
+        transcationViewModel.showLoading=loadingObservable as MutableLiveData<Boolean>
         //getApiResponse
         getApiResponse()
     }
 
     private fun getApiResponse() {
         observeLiveData(transcationViewModel.transcationLiveResponse) {
-            val walletTransactionList = transcationViewModel.transcationLiveResponse
-            if (walletTransactionList.value == null) {
-                Log.e("wallet", "------null")
-            } else {
-                Log.e("wallet", "------non null")
-
-            }
-
             if (it.getResponseData()?.getData() != null && it.getResponseData()?.getData()!!.isNotEmpty()) {
                 contentMain.visibility = View.VISIBLE
                 llEmptyView.visibility = View.GONE
@@ -65,6 +55,14 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
             contentMain.visibility = View.GONE
             llEmptyView.visibility = View.VISIBLE
         }
+
+
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser)
+            transcationViewModel.callTranscationApi()
     }
 }
 

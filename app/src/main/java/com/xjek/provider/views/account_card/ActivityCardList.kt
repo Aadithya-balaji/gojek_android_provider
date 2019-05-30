@@ -2,6 +2,7 @@ package com.xjek.provider.views.account_card
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.text.TextUtils
 import android.util.Log
@@ -51,7 +52,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     private var cardList: MutableList<CardResponseModel>? = null
     private var selectedPosition: Int? = -1
     private var isFromWallet: Boolean = false
-    private  var  paymentModeAdapter:PaymentModeAdapter?=null
+    private var paymentModeAdapter: PaymentModeAdapter? = null
 
 
     override fun getLayoutId(): Int {
@@ -72,11 +73,11 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         }
         getIntentValues()
         val paytypes = object : TypeToken<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>() {}.type
-        paymentList = Gson().fromJson<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST,""), paytypes)
+        paymentList = Gson().fromJson<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), paytypes)
         val linearLayoutManager = LinearLayoutManager(this)
-        activitySavedCardListBinding.rvPaymentModes.layoutManager=linearLayoutManager
-        paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, cardListViewModel)
-        activitySavedCardListBinding.rvPaymentModes.adapter=paymentModeAdapter
+        activitySavedCardListBinding.rvPaymentModes.layoutManager = linearLayoutManager
+        paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, cardListViewModel,isFromWallet)
+        activitySavedCardListBinding.rvPaymentModes.adapter = paymentModeAdapter
         cardListViewModel.loadingProgress = loadingObservable as MutableLiveData<Boolean>
         cardListViewModel.getCardList()
     }
@@ -88,13 +89,13 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     fun getApiResponse() {
         cardListViewModel.addCardLiveResposne.observe(this, Observer<AddCardModel> { addCardModel ->
             if (addCardModel.getStatusCode().equals("200")) {
-                cardListViewModel.loadingProgress.value=false
+                cardListViewModel.loadingProgress.value = false
                 cardListViewModel.getCardList()
             }
         })
 
         cardListViewModel.cardListLiveResponse.observe(this, Observer<CardListModel> { cardListModel ->
-            cardListViewModel.loadingProgress.value=false
+            cardListViewModel.loadingProgress.value = false
             if (cardListViewModel.cardListLiveResponse != null && cardListViewModel.cardListLiveResponse.value!!.getResponseData() != null && cardListViewModel!!.cardListLiveResponse.value!!.getResponseData()!!.size > 0) {
                 activitySavedCardListBinding.ivEmptyCard.visibility = View.GONE
                 activitySavedCardListBinding.rvCards.visibility = View.VISIBLE
@@ -112,7 +113,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         })
 
         cardListViewModel.deleCardLivResponse.observe(this, Observer<AddCardModel> { addCardModel ->
-            cardListViewModel.loadingProgress.value=false
+            cardListViewModel.loadingProgress.value = false
             if (cardListViewModel.deleCardLivResponse != null) {
                 if (cardListViewModel.deleCardLivResponse.value!!.getStatusCode().equals("200")) {
                     cardList?.let { selectedPosition?.let { it1 -> it.removeAt(it1) } }
@@ -225,14 +226,15 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         if (isFromWallet) {
             val intent = Intent()
             intent.putExtra("cardStripeID", cardListViewModel.selectedStripeID.value)
-            setResult(Activity.RESULT_OK,intent)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
 
 
     override fun removeCard() {
-        cardListViewModel.callCardDeleteCardAPi()
+        ViewUtils.showMessageOKCancel(context, resources.getString(R.string.delete_card), DialogInterface.OnClickListener { dialog, which -> cardListViewModel.callCardDeleteCardAPi() })
+
     }
 
     override fun deselectCard() {

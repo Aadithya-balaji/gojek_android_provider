@@ -8,11 +8,8 @@ import android.text.TextWatcher
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexDirection
-import com.google.android.flexbox.FlexboxLayoutManager
-import com.google.android.flexbox.JustifyContent
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.xjek.base.base.BaseApplication
@@ -24,11 +21,9 @@ import com.xjek.base.utils.PrefixCustomEditText
 import com.xjek.base.utils.ViewUtils
 import com.xjek.provider.R
 import com.xjek.provider.databinding.FragmentWalletBinding
-import com.xjek.provider.models.CardResponseModel
 import com.xjek.provider.models.ConfigResponseModel
+import com.xjek.provider.models.ProfileResponse
 import com.xjek.provider.views.account_card.ActivityCardList
-import com.xjek.provider.views.adapters.CardsAdapter
-import com.xjek.provider.views.adapters.PaymentModeAdapter
 import com.xjek.provider.views.manage_payment.ManagePaymentActivity
 
 class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
@@ -51,10 +46,10 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         walletViewModel.navigator = this
         fragmentWalletBinding.walletmodel = walletViewModel
         fragmentWalletBinding.lifecycleOwner = this
-        walletViewModel.resources=activity!!.resources
-       /* val flexboxLayoutManager = FlexboxLayoutManager(activity)
-        flexboxLayoutManager.setFlexDirection(FlexDirection.ROW)
-        flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START)*/
+        walletViewModel.resources = activity!!.resources
+        /* val flexboxLayoutManager = FlexboxLayoutManager(activity)
+         flexboxLayoutManager.setFlexDirection(FlexDirection.ROW)
+         flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START)*/
         // flexboxLayoutManager.justifyContent = JustifyContent.SPACE_BETWEEN
         val paytypes = object : TypeToken<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>() {}.type
         paymentList = Gson().fromJson<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), paytypes)
@@ -76,6 +71,8 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         }
 
         getApiRespoonse()
+
+        walletViewModel.getProfile()
     }
 
 
@@ -91,6 +88,16 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
                 }
             }
         }
+
+        //Profile Data
+        walletViewModel.mProfileResponse.observe(this, Observer<ProfileResponse> { profileResposne ->
+            loadingProgress?.let { it.value = false }
+            if (profileResposne.statusCode.equals("200")) {
+                val walletbanlance = profileResposne.profileData.wallet_balance
+                fragmentWalletBinding.tvWalletBal.setText(String.format(resources.getString(R.string.wallet_balance), walletbanlance))
+            }
+
+        })
 
 
     }
@@ -156,11 +163,10 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when(requestCode)
-        {
+        when (requestCode) {
             Constants.RequestCode.SELECTED_CARD -> {
 
-                if(resultCode==Activity.RESULT_OK) {
+                if (resultCode == Activity.RESULT_OK) {
                     val stripeID = if (data != null && data.hasExtra("cardStripeID")) data.getStringExtra("cardStripeID") else ""
                     walletViewModel.selectedStripeID.value = stripeID
                     walletViewModel.callAddAmtApi()
@@ -169,6 +175,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
         }
     }
+
     fun setPrefix(editText: PrefixCustomEditText, s: Editable?, strPref: String) {
         if (s.toString().length > 0) {
             editText.setPrefix(strPref)
@@ -178,9 +185,9 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     }
 
     override fun getCard() {
-        val intent =Intent(activity!!,ActivityCardList::class.java)
-        intent.putExtra("isFromWallet",true)
-        startActivityForResult(intent,Constants.RequestCode.SELECTED_CARD)
+        val intent = Intent(activity!!, ActivityCardList::class.java)
+        intent.putExtra("isFromWallet", true)
+        startActivityForResult(intent, Constants.RequestCode.SELECTED_CARD)
     }
 
 

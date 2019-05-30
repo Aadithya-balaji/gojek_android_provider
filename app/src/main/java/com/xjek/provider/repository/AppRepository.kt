@@ -210,6 +210,18 @@ class AppRepository : BaseRepository() {
     }
 
 
+    fun getProfile(viewModel:WalletViewModel,token:String):Disposable{
+           return BaseRepository().createApiClient(serviceId,AppWebService::class.java)
+                   .getProfile(token)
+                   .observeOn(AndroidSchedulers.mainThread())
+                   .subscribeOn(Schedulers.io())
+                   .subscribe({
+                       viewModel.mProfileResponse.postValue(it)
+                   },{
+                       viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                   })
+    }
+
     fun getProviderProfile(viewModel: ViewModel, token: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getProfile(token)

@@ -43,11 +43,11 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, c
             selectedPosition = -1
         }
         if (cardList!!.get(position).isCardSelected == false) {
-            holder.cardViewBinding.root.setBackgroundColor(ContextCompat.getColor(context!!, R.color.bg_dispute_closed))
+            holder.cardViewBinding.cvSavedCard.setCardBackgroundColor(ContextCompat.getColor(context!!, R.color.bg_dispute_closed))
             holder.cardViewBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.black))
             holder.cardViewBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.black))
         } else {
-            holder.cardViewBinding.root.setBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+            holder.cardViewBinding.cvSavedCard.setCardBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
             holder.cardViewBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.white))
             holder.cardViewBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.white))
         }

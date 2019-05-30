@@ -363,7 +363,7 @@
     <string name="wallet">Wallet</string>
     <string name="transaction">Transaction</string>
     <string name="add_card">Add Cards</string>
-    <string name="row_card_number">XXXX XXXX XXXX XXXX %s</string>
+    <string name="row_card_number">XXXX XXXX XXXX %s</string>
     <string name="transaction_amount">%.2f</string>
     <string name="wallet_balance">( %.2f $ )</string>
     <string name="please_complete_below_steps">Please Complete below steps</string>
@@ -486,4 +486,6 @@
     <string name="fetching_loading">Please wait...</string>
     <string name="hint_referral_code">Referral Code</string>
     <string name="terms_conditions">Terms and Conditions</string>
+    <string name="delete_card">Are you Sure you want Delete this Card</string>
+    <string name="payment_modes">Available Payment Types</string>
 </resources>

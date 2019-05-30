@@ -9,6 +9,7 @@ import com.xjek.base.extensions.readPreferences
 import com.xjek.provider.R
 import com.xjek.provider.models.AddCardModel
 import com.xjek.provider.models.CardListModel
+import com.xjek.provider.models.ProfileResponse
 import com.xjek.provider.models.WalletResponse
 import com.xjek.provider.network.WebApiConstants
 import com.xjek.provider.repository.AppRepository
@@ -27,6 +28,8 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
     var showLoading = MutableLiveData<Boolean>()
     var selectedCardID = MutableLiveData<String>()
     val appRepository = AppRepository.instance()
+    var mProfileResponse = MutableLiveData<ProfileResponse>()
+
 
 
     fun amountAdd(view: View) {
@@ -52,5 +55,8 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
         }
     }
 
-
+  fun getProfile(){
+      showLoading.value=true
+      getCompositeDisposable().add(appRepository.getProfile(this,"Bearer"+readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
+  }
 }

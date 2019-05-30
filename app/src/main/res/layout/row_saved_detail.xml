@@ -11,11 +11,13 @@
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvSavedCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/_15sdp"
-        app:cardBackgroundColor="#faf9f6	"
-        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="#ffffff	"
+        app:cardUseCompatPadding="false"
+        app:cardCornerRadius="@dimen/_5sdp"
         app:elevation="@dimen/_5sdp">
 
         <LinearLayout

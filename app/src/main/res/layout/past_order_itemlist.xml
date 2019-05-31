@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="itemClickListener"
-            type="com.xjek.provider.interfaces.CustomClickListner" />
+            type="com.gox.partner.interfaces.CustomClickListner" />
 
     </data>
 
@@ -39,7 +40,7 @@
                         android:id="@+id/tvDatePastItem"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="dfdf"
+                        tools:text="dfdf"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:textColor="@android:color/white" />
 
@@ -49,7 +50,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="dfdf"
+                        tools:text="dfdf"
                         android:textColor="@color/colorWhite" />
                 </LinearLayout>
 
@@ -93,7 +94,7 @@
                         android:paddingRight="@dimen/_3sdp"
                         android:paddingBottom="@dimen/_6sdp"
                         android:layout_marginRight="@dimen/_3sdp"
-                        android:text="Completed"
+                        android:text="@string/completed"
                         android:textColor="@color/red"
                         android:textSize="@dimen/_9sdp" />
 

@@ -5,7 +5,7 @@
 
         <variable
             name="verifyFileModel"
-            type="com.xjek.provider.views.verifyfile.VerifyFIleVIewModel" />
+            type="com.gox.partner.views.verifyfile.VerifyFIleVIewModel" />
     </data>
 
     <RelativeLayout

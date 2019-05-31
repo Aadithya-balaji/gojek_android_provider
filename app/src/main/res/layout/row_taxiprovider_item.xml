@@ -71,7 +71,7 @@
                         android:transformPivotX="0dp"
                         android:transformPivotY="0dp"/>-->
 
-                    <com.xjek.base.views.customviews.SmartRatingBar
+                    <com.gox.base.views.customviews.SmartRatingBar
                         android:id="@+id/smart_rating_bar"
                         android:layout_width="wrap_content"
                         android:layout_height="13dp"
@@ -144,7 +144,7 @@
                         android:layout_alignStart="@+id/tv_label_schedule"
                         android:layout_alignLeft="@+id/tv_label_schedule"
                         android:layout_marginTop="@dimen/_1sdp"
-                        android:text="12/02/2019"
+                        tools:text="12/02/2019"
                         android:textSize="@dimen/_10sdp" />
                 </RelativeLayout>
 
@@ -171,7 +171,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="sdfdfdfdfdfdfdfdf dfdf"
+                        tools:text="sdfdfdfdfdfdfdfdf dfdf"
                         android:textColor="@color/et_stroke_color"
                         android:textSize="@dimen/_10sdp" />
 
@@ -181,7 +181,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="India"
+                        tools:text="India"
                         android:textColor="@color/et_stroke_color" />
 
                 </LinearLayout>

@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_11sdp"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:text="dummy"
+                tools:text="dummy"
                 android:textColor="@color/xuber_white"
                 android:textSize="@dimen/_12sdp" />
 

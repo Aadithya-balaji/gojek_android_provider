@@ -5,7 +5,7 @@
 
         <variable
             name="vechiledetailmodel"
-            type="com.xjek.provider.views.uploaddocumentlist.VechileDetailModel" />
+            type="com.gox.partner.views.uploaddocumentlist.VechileDetailModel" />
     </data>
 
     <RelativeLayout

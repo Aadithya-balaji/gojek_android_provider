@@ -37,7 +37,7 @@
             android:paddingBottom="@dimen/_5sdp"
             android:gravity="center"
             android:textColor="@color/colorBaseWhite"
-            android:text="OK"/>
+            android:text="@string/ok"/>
 
 
         <TextView
@@ -52,7 +52,7 @@
             android:gravity="center"
             android:textColor="@color/colorBaseWhite"
             android:layout_marginLeft="@dimen/_20sdp"
-            android:text="Cancel"/>
+            android:text="@string/cancel"/>
 
     </LinearLayout>
 

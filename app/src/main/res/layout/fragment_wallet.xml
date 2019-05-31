@@ -7,7 +7,7 @@
 
         <variable
             name="walletmodel"
-            type="com.xjek.provider.views.wallet.WalletViewModel" />
+            type="com.gox.partner.views.wallet.WalletViewModel" />
     </data>
 
     <ScrollView
@@ -88,7 +88,7 @@
                         android:padding="@dimen/_5sdp"
                         android:weightSum="4">
 
-                        <com.xjek.base.utils.PrefixCustomEditText
+                        <com.gox.base.utils.PrefixCustomEditText
                             android:id="@+id/edt_amount"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"

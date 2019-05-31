@@ -7,7 +7,7 @@
 
         <variable
             name="profileviewmodel"
-            type="com.xjek.provider.views.profile.ProfileViewModel" />
+            type="com.gox.partner.views.profile.ProfileViewModel" />
     </data>
 
     <RelativeLayout

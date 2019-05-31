@@ -5,7 +5,7 @@
 
         <variable
             name="tollmodel"
-            type="com.xjek.taxiservice.views.tollcharge.TollChargeViewModel" />
+            type="com.gox.taxiservice.views.tollcharge.TollChargeViewModel" />
     </data>
 
     <LinearLayout
@@ -27,7 +27,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/_13sdp" />
 
-        <com.xjek.base.utils.PrefixCustomEditText
+        <com.gox.base.utils.PrefixCustomEditText
             android:id="@+id/edt_amount"
             android:layout_width="@dimen/_100sdp"
             android:layout_height="@dimen/_30sdp"

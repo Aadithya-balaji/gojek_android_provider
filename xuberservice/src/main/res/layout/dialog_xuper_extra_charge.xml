@@ -4,7 +4,7 @@
     <data>
         <variable
             name="extraChargeModel"
-            type="com.xjek.xuberservice.extracharge.XuperExtraChargeViwModel" />
+            type="com.gox.xuberservice.extracharge.XuperExtraChargeViwModel" />
     </data>
 
     <LinearLayout
@@ -76,7 +76,7 @@
             android:textColor="@color/xuper_light_black" />
 
 
-        <com.xjek.base.utils.PrefixCustomEditText
+        <com.gox.base.utils.PrefixCustomEditText
             android:id="@+id/edtExtraAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

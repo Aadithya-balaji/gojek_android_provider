@@ -6,7 +6,7 @@
 
         <variable
             name="taximainmodule"
-            type="com.xjek.taxiservice.views.main.TaxiDashboardViewModel" />
+            type="com.gox.taxiservice.views.main.TaxiDashboardViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

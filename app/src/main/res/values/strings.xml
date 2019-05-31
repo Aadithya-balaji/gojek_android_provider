@@ -108,7 +108,6 @@
     <!-- Sign in -->
     <string name="login_via">Login Via</string>
     <string name="dont_have_account">Don\'t have an account</string>
-    <string name="or">OR</string>
     <string name="social_login">Social Login</string>
     <string name="connect_via_google">Connect via Google</string>
     <string name="connect_via_facebook">Connect via Facebook</string>
@@ -282,9 +281,9 @@
     <string name="dummy_rating">4.6</string>
 
     <string name="services_hint_service">Service</string>
-    <string name="_50">$50</string>
-    <string name="_100">$100</string>
-    <string name="_1000">$1000</string>
+    <string name="_50" translatable="false">$50</string>
+    <string name="_100" translatable="false">$100</string>
+    <string name="_1000" translatable="false">$1000</string>
     <string name="add_amount">Add amount</string>
     <string name="save_card">Save Card</string>
     <string name="card_for_receving_the_user_s_payment">Card for receving the user\'s payment.</string>
@@ -296,7 +295,7 @@
     <string name="amount">Amount</string>
     <string name="dummy_transaction_id">abc123asda</string>
     <string name="dummy_date">12/03/2019</string>
-    <string name="dummy_amount">$ 15</string>
+    <string name="dummy_amount" translatable="false">$ 15</string>
     <string name="contact_our_team_via">Contact Our Team Via</string>
     <string name="dummy_number">+91123456789</string>
     <string name="dummy_website">www.support.com</string>
@@ -488,4 +487,18 @@
     <string name="terms_conditions">Terms and Conditions</string>
     <string name="delete_card">Are you Sure you want Delete this Card</string>
     <string name="payment_modes">Available Payment Types</string>
+    <string name="referral_count">Referral Count:</string>
+    <string name="referral_amount">Referral Amount:</string>
+    <string name="or">OR</string>
+    <string name="you">You</string>
+    <string name="open">open</string>
+    <string name="admin">Admin</string>
+    <string name="dummyyyy_describtion">dummyyyy describtion</string>
+    <string name="today_s_completed_target">Today\'s completed target</string>
+    <string name="dummy_250" translatable="false">$250</string>
+    <string name="clear_database">Clear database</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="todays_completed_target">Today\'s completed target</string>
+    <string name="completed">Completed</string>
+    <string name="visa">Visa</string>
 </resources>

@@ -6,11 +6,11 @@
 
         <variable
             name="countrylistmodel"
-            type="com.xjek.provider.views.countrylist.CountryViewModel" />
+            type="com.gox.partner.views.countrylist.CountryViewModel" />
 
         <variable
             name="countrylistadapter"
-            type="com.xjek.provider.views.adapters.CountryListAdapter" />
+            type="com.gox.partner.views.adapters.CountryListAdapter" />
     </data>
 
     <LinearLayout

@@ -6,7 +6,7 @@
 
         <variable
             name="cardListModel"
-            type="com.xjek.provider.views.account_card.CardListViewModel" />
+            type="com.gox.partner.views.account_card.CardListViewModel" />
     </data>
 
     <LinearLayout
@@ -27,6 +27,7 @@
             android:text="@string/payment_modes"
             android:fontFamily="@font/avenirltstd_medium"
             android:textSize="@dimen/_13sdp"
+            android:visibility="visible"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"/>
 

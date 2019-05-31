@@ -6,11 +6,11 @@
 
         <variable
             name="taxiReasonAdapter"
-            type="com.xjek.taxiservice.views.adapter.TaxiReasonAdapter" />
+            type="com.gox.taxiservice.views.adapter.TaxiReasonAdapter" />
 
         <variable
             name="viewModel"
-            type="com.xjek.taxiservice.views.reasons.TaxiCancelReasonViewModel" />
+            type="com.gox.taxiservice.views.reasons.TaxiCancelReasonViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -31,7 +31,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
-                android:text="Reason"
+                android:text="@string/reason"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
 

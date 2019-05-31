@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.xjek.foodservice.ui.rating.FoodieRatingViewModel" />
+            type="com.gox.foodservice.ui.rating.FoodieRatingViewModel" />
     </data>
 
     <RelativeLayout
@@ -67,7 +67,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:text="Bala"
+                    tools:text="@string/dummy_user_name"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp" />
 
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:text="Tsdom2r433oi"
+                    tools:text="@string/dummy_vechineplatenum"
                     android:textColor="@color/black" />
 
             </LinearLayout>

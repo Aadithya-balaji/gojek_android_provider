@@ -6,7 +6,7 @@
     <data>
         <variable
             name="reasonadapter"
-            type="com.xjek.xuberservice.adapters.XuberReasonAdapter"/>
+            type="com.gox.xuberservice.adapters.XuberReasonAdapter"/>
     </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/cvreasontype"
@@ -27,7 +27,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="@dimen/_5sdp"
                 android:padding="@dimen/_5sdp"
-                android:text="Reason"
+                android:text="@string/reason"
                 android:textColor="@color/xuber_black"
                 android:textSize="@dimen/_12sdp" />
 

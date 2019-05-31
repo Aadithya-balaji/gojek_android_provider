@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_20sdp"
-            android:text="Today's completed target" />
+            android:text="@string/today_s_completed_target" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -27,7 +27,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="@dimen/_65sdp"
-            android:text="$250"
+            android:text="@string/dummy_250"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_30sdp" />
 

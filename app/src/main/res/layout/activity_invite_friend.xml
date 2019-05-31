@@ -6,7 +6,7 @@
 
         <variable
             name="invitemodel"
-            type="com.xjek.provider.views.invitereferals.InviteReferalsViewModel" />
+            type="com.gox.partner.views.invitereferals.InviteReferalsViewModel" />
 
     </data>
 
@@ -155,7 +155,7 @@
                         android:layout_gravity="start"
                         android:layout_weight="1"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="Referral Count:"
+                        android:text="@string/referral_count"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/_11sdp" />
 
@@ -185,7 +185,7 @@
                         android:layout_gravity="start"
                         android:layout_weight="1"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="Referral Amount:"
+                        android:text="@string/referral_amount"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/_11sdp" />
 

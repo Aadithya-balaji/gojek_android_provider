@@ -8,7 +8,7 @@
 
         <variable
             name="manageDocumentsViewModel"
-            type="com.xjek.provider.views.manage_documents.ManageDocumentsViewModel" />
+            type="com.gox.partner.views.manage_documents.ManageDocumentsViewModel" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat

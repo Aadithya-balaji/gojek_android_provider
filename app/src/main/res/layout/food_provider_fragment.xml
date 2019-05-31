@@ -6,7 +6,7 @@
 
         <variable
             name="foodProviderAdapter"
-            type="com.xjek.provider.views.adapters.FoodProviderAdapter" />
+            type="com.gox.partner.views.adapters.FoodProviderAdapter" />
 
 
     </data>

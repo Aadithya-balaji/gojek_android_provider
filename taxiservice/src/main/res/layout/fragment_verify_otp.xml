@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="otpviewmodel"
-            type="com.xjek.taxiservice.views.verifyotp.VerifyOTPModule" />
+            type="com.gox.taxiservice.views.verifyotp.VerifyOTPModule" />
 
     </data>
 
@@ -36,7 +37,7 @@
             android:background="@drawable/bg_grey_square"
             android:ems="6"
             android:gravity="center"
-            android:hint="1234"
+            tools:hint="1234"
             android:inputType="number"
             android:letterSpacing="0.35"
             android:maxLength="4"

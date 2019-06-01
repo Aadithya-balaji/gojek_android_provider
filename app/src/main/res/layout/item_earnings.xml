@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Today's completed target"
+                    android:text="@string/todays_completed_target"
                     android:textSize="12sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView

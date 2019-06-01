@@ -96,7 +96,7 @@
                         android:layout_margin="@dimen/_5sdp"
                         android:layout_weight="1"
                         android:onClick="@{() -> orderfragmentviewmodel.moveToUpcomingOrderList()}"
-                        android:text="Upcoming"
+                        android:text="@string/upcoming"
                         android:textAllCaps="false"
                         android:visibility="gone" />
 

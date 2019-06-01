@@ -18,7 +18,7 @@
             android:id="@+id/contentMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/grey"
+            android:background="#FFF2F2F2"
             android:paddingLeft="@dimen/_15sdp"
             android:paddingRight="@dimen/_15sdp"
             android:visibility="visible">
@@ -47,10 +47,12 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
+                            android:gravity="start"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/transaction_id"
                             android:textColor="@color/black"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -61,6 +63,8 @@
                             android:padding="@dimen/_5sdp"
                             android:text="@string/amount"
                             android:textColor="@color/black"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -71,6 +75,8 @@
                             android:padding="@dimen/_5sdp"
                             android:text="@string/status"
                             android:textColor="@color/black"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
                     </LinearLayout>
 

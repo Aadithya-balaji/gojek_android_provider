@@ -6,10 +6,12 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
@@ -202,6 +204,33 @@ object ViewUtils {
         }
 
         return "0"
+    }
+
+     fun showMessageOKCancel(context: Context, message: String, okListener: DialogInterface.OnClickListener) {
+        var dialog: android.app.AlertDialog? = null
+        val dialogBuilder = android.app.AlertDialog.Builder(context)
+        val li = LayoutInflater.from(context)
+        val dialogView = li.inflate(R.layout.layout_permission_setting, null)
+        dialogBuilder.setView(dialogView);
+        val tvMessage=dialogView.findViewById(R.id.tvMessage) as TextView
+        tvMessage.setText(message)
+        val tvOk = dialogView.findViewById(R.id.tvOk) as TextView
+        tvOk.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                okListener.onClick(dialog, v!!.id)
+                dialog!!.dismiss()
+            }
+        })
+        val tvCancel = dialogView.findViewById(R.id.tvCancel) as TextView
+        tvCancel.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                dialog!!.dismiss()
+            }
+
+        })
+
+        dialog = dialogBuilder.create()
+        dialog.show()
     }
 
 }

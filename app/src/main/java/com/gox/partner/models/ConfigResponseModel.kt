@@ -12,14 +12,14 @@ data class ConfigResponseModel(
 ) : CommonResponse {
     data class ResponseData(
             @SerializedName("base_url") val baseUrl: String,
-            val services: List<Service>,
+            var services: List<Service>,
             @SerializedName("appsetting") val appSetting: AppSetting
     ) {
         data class Service(
                 val id: Int,
                 @SerializedName("admin_service_name") val adminServiceName: String,
                 @SerializedName("display_name") val displayName: String,
-                @SerializedName("base_url") val baseUrl: String,
+                @SerializedName("base_url") var baseUrl: String,
                 val status: Int
         )
 

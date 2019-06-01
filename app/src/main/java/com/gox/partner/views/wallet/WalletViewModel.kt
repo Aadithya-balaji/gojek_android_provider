@@ -9,6 +9,7 @@ import com.gox.base.extensions.readPreferences
 import com.gox.partner.R
 import com.gox.partner.models.AddCardModel
 import com.gox.partner.models.CardListModel
+import com.gox.partner.models.ProfileResponse
 import com.gox.partner.models.WalletResponse
 import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
@@ -27,6 +28,8 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
     var showLoading = MutableLiveData<Boolean>()
     var selectedCardID = MutableLiveData<String>()
     val appRepository = AppRepository.instance()
+    var mProfileResponse = MutableLiveData<ProfileResponse>()
+
 
 
     fun amountAdd(view: View) {
@@ -52,5 +55,8 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
         }
     }
 
-
+  fun getProfile(){
+      showLoading.value=true
+      getCompositeDisposable().add(appRepository.getProfile(this,"Bearer"+readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
+  }
 }

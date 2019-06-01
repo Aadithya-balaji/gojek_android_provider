@@ -130,7 +130,7 @@
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_12sdp"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:text="OR"
+                android:text="@string/or"
                 android:textColor="@color/colorBasePrimary"
                 android:visibility="gone" />
 

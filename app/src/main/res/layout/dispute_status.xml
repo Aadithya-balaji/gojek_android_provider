@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -70,7 +71,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:text="You"
+                        android:text="@string/you"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
 
@@ -96,7 +97,7 @@
                 android:background="@drawable/bg_dispute_open"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:text="open"
+                android:text="@string/open"
                 android:textColor="@color/dispute_status_closed" />
         </LinearLayout>
 
@@ -119,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:text="Admin"
+                    android:text="@string/admin"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_8sdp" />
 
@@ -129,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/avenirltstd_medium"
-                    android:text="dfdafadfadsfdafaddf" />
+                    tools:text="@string/dummyyyy_describtion" />
             </LinearLayout>
 
             <ImageView

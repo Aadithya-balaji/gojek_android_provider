@@ -21,8 +21,8 @@ class FoodieVerifyOtpDialog : BaseDialogFragment<FoodieFragmentVerifyOtpBinding>
     companion object {
         var otp: String? = null
         var requestId: String? = null
-        var payable: String? = null
-        fun newInstance(s: String, id: Int, pay: String): FoodieVerifyOtpDialog {
+        var payable: Int? = 0
+        fun newInstance(s: String, id: Int, pay: Int): FoodieVerifyOtpDialog {
             otp = s
             requestId = id.toString()
             payable = pay
@@ -37,9 +37,11 @@ class FoodieVerifyOtpDialog : BaseDialogFragment<FoodieFragmentVerifyOtpBinding>
         fragmentVerifyOtpBinding!!.otpviewmodel = verifyOTPModule
         foodLiveTaskServiceViewModel = ViewModelProviders.of(activity!!).get(FoodLiveTaskServiceViewModel::class.java)
 
-        when{
-            payable!!.toDouble()>0->{
-                payment_txt.visibility= VISIBLE
+        when {
+            payable!!.toDouble() > 0 -> {
+
+
+                payment_txt.visibility = VISIBLE
             }
         }
 

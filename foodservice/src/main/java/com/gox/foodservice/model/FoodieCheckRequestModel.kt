@@ -91,7 +91,7 @@ data class Request(
         var schedule_at: Any = Any(),
         var service: Service = Service(),
         var status: String = "",
-        var time_left_to_respond: String = "",
+        var time_left_to_respond: Int = 0,
         var user: User = User(),
         var user_id: String = "",
         var store_order_invoice_id: String = "",
@@ -135,7 +135,7 @@ class OrderInvoice(
         var store_package_amount: String = "",
         var total_amount: String = "",
         var cash: String = "",
-        var payable: String = "",
+        var payable: Int = 0,
         var cart_details: String = "",
         var items: List<Item> = listOf()
 

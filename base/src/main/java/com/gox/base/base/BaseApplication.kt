@@ -14,6 +14,7 @@ import com.gox.base.di.WebServiceModule
 import com.gox.base.utils.LocaleUtils
 import com.gox.monitorinternet.InternetConnectivityListener
 import com.gox.monitorinternet.MonitorInternet
+import com.testfairy.TestFairy
 
 open class BaseApplication : Application(), InternetConnectivityListener {
 
@@ -42,6 +43,7 @@ open class BaseApplication : Application(), InternetConnectivityListener {
         Stetho.initializeWithDefaults(this)
         PreferencesHelper.setDefaultPreferences(this)
         preferences = getSharedPreferences(Constants.CUSTOM_PREFERENCE, Context.MODE_PRIVATE)
+        TestFairy.begin(this, "SDK-OHDYC1Nx")
     }
 
     companion object {

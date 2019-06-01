@@ -168,7 +168,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(), DashBoardNav
     }
 
     override fun setRightIcon(rightIcon: Int) {
-        iv_right.setImageResource(rightIcon)
+        try {
+            iv_right.setImageResource(rightIcon)
+        } catch (e: Exception) {
+        }
     }
 
     override fun hideRightIcon(isNeedHide: Boolean) {

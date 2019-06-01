@@ -1,10 +1,7 @@
 package com.gox.partner.views.incoming_request_taxi
 
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.location.Address
-import android.location.Geocoder
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -17,7 +14,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
-import com.google.maps.model.LatLng
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
@@ -31,9 +27,7 @@ import com.gox.partner.models.CheckRequestModel
 import com.gox.partner.models.Request
 import com.gox.taxiservice.views.main.TaxiDashboardActivity
 import com.gox.xuberservice.xuberMainActivity.XuberDashBoardActivity
-import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.collections.HashMap
 
 class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
 
@@ -83,8 +77,9 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         mPlayer = MediaPlayer.create(context, R.raw.alert_tone)
 
         if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()
-                && request.time_left_to_respond!! > 0) {
-            totalSeconds = Math.abs(request.time_left_to_respond!!)
+                /*&& request.time_left_to_respond!! > 0*/) {
+//            totalSeconds = Math.abs(request.time_left_to_respond!!)
+            totalSeconds = 60
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
             val time = String.format("%d:%d", minutes, seconds)
@@ -123,20 +118,6 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         }
         getApiResponse()
         mPlayer.start()
-    }
-
-    private fun getCurrentAddress(context: Context, currentLocation: LatLng): List<Address> {
-        var addresses: List<Address> = ArrayList()
-        val geoCoder: Geocoder
-        try {
-            if (Geocoder.isPresent()) {
-                geoCoder = Geocoder(context, Locale.getDefault())
-                addresses = geoCoder.getFromLocation(currentLocation.lat, currentLocation.lng, 1)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return addresses
     }
 
     private fun getApiResponse() {

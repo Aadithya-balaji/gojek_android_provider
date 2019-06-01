@@ -14,12 +14,6 @@ import com.bumptech.glide.Glide
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.theartofdev.edmodo.cropper.CropImage
 import com.gox.base.base.BaseActivity
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
@@ -30,6 +24,12 @@ import com.gox.partner.R
 import com.gox.partner.databinding.ActivityAddEditDocumentBinding
 import com.gox.partner.utils.Constant
 import com.gox.partner.utils.Enums
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.theartofdev.edmodo.cropper.CropImage
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
 import kotlinx.android.synthetic.main.activity_add_edit_document.*
@@ -90,7 +90,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         observeLiveData(viewModelAddEdit.addDocumentResponse) {
             ViewUtils.showToast(this, getString(R.string.docuemnt_added_success), true)
             viewModelAddEdit.incrementPosition()
-            finish()
+            if (viewModelAddEdit.getData().size < (viewModelAddEdit.currentPosition + 1)) finish()
         }
 
         observeLiveData(viewModelAddEdit.errorResponse) { error ->

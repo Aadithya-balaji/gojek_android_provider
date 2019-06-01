@@ -57,6 +57,8 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
             showEmpty.value = true
     }
 
+    fun getData() = data
+
     private fun updateDetails() {
         documentFrontName.value = data[currentPosition].name + " (Front)"
         documentBackName.value = data[currentPosition].name + " (Back)"

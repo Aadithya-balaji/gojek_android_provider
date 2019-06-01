@@ -56,9 +56,15 @@ import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
 import com.gox.base.location_service.BaseLocationService
 import com.gox.base.location_service.BaseLocationService.Companion.BROADCAST
+import com.gox.base.persistence.AppDatabase
+import com.gox.base.persistence.LocationPointsEntity
 import com.gox.base.socket.SocketListener
 import com.gox.base.socket.SocketManager
 import com.gox.base.utils.*
+import com.gox.base.utils.distanceCalc.DistanceCalcModel
+import com.gox.base.utils.distanceCalc.DistanceListener
+import com.gox.base.utils.distanceCalc.DistanceProcessing
+import com.gox.base.utils.distanceCalc.DistanceUtils
 import com.gox.base.utils.polyline.DirectionUtils
 import com.gox.base.utils.polyline.PolyLineListener
 import com.gox.base.utils.polyline.PolylineUtil
@@ -66,6 +72,7 @@ import com.gox.taxiservice.R
 import com.gox.taxiservice.databinding.ActivityTaxiMainBinding
 import com.gox.taxiservice.interfaces.GetReasonsInterface
 import com.gox.taxiservice.model.CancelRequestModel
+import com.gox.taxiservice.model.DistanceApiProcessing
 import com.gox.taxiservice.model.ResponseData
 import com.gox.taxiservice.views.invoice.TaxiInvoiceActivity
 import com.gox.taxiservice.views.reasons.TaxiCancelReasonFragment
@@ -84,6 +91,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         TaxiDashboardNavigator,
         OnMapReadyCallback,
         PolyLineListener,
+        DistanceListener,
         GetReasonsInterface,
         Chronometer.OnChronometerTickListener,
         GoogleMap.OnCameraMoveListener,
@@ -91,9 +99,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         View.OnClickListener {
 
     private lateinit var activityTaxiMainBinding: ActivityTaxiMainBinding
-    private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mViewModel: TaxiDashboardViewModel
+    private lateinit var fragmentMap: SupportMapFragment
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
+
     private var isWaitingTime: Boolean? = false
     private var lastWaitingTime: Long? = 0
     private var mGoogleMap: GoogleMap? = null
@@ -112,6 +121,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var checkStatusApiCounter = 0
     private var roomConnected: Boolean = false
     private var doubleBackToExit: Boolean = false
+    private var distanceApiCallCount = 0
+
+    private var points = ArrayList<LocationPointsEntity>()
+    private var tempPoints = ArrayList<LatLng>()
+    private var iteratePointsForApi = ArrayList<LatLng>()
+    private var iteratePointsForDistanceCalc = ArrayList<LatLng>()
+    private var tempPoint: LatLng? = null
+    private var tempPointForDistanceCal: LatLng? = null
+    private var iterationDistForApi = 50.0
+    private var iterationDistForDistanceCal = 500.0
 
     override fun getLayoutId(): Int = R.layout.activity_taxi_main
 
@@ -148,7 +167,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         initializeMap()
 
-        checkStatusAPIResponse()
+        observeLiveDataVariables()
         isNeedToUpdateWaiting = true
     }
 
@@ -227,11 +246,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         runOnUiThread { mViewModel.showLoading.value = false }
     }
 
-    private fun checkStatusAPIResponse() {
+    private fun observeLiveDataVariables() {
         mViewModel.showLoading.value = true
 
         mViewModel.checkStatusTaxiLiveData.observe(this, Observer { checkStatusResponse ->
-            //            run {
             if (checkStatusResponse?.statusCode.equals("200")) try {
                 mViewModel.showLoading.value = false
                 if (checkStatusResponse.responseData.request.status.isNotEmpty()) {
@@ -317,7 +335,41 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 BROADCAST = BASE_BROADCAST
                 finish()
             }
-//                }
+        })
+
+        mViewModel.distanceApiProcessing.observe(this, Observer {
+            var canShowTollChargeDialog = false
+            println("RRR::distanceApiProcessing = ${it.size}")
+            println("RRR::distanceApiProcessing = ${Gson().toJson(it)}")
+            if (it.isNotEmpty() && it.size == distanceApiCallCount) for (items in it) {
+                mViewModel.distanceMeter.value = mViewModel.distanceMeter.value!! + items.distance
+                println("RRR::distanceMeter.value = ${mViewModel.distanceMeter.value}")
+                mViewModel.showLoading.value = false
+                canShowTollChargeDialog = true
+            }
+
+            if (canShowTollChargeDialog) {
+                ViewUtils.showAlert(this, "Do you have any Toll charge",
+                        "Yes", "No", object : ViewUtils.ViewCallBack {
+                    override fun onPositiveButtonClick(dialog: DialogInterface) {
+                        val tollChargeDialog = TollChargeDialog()
+                        val bundle = Bundle()
+                        bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
+                        tollChargeDialog.arguments = bundle
+                        tollChargeDialog.show(supportFragmentManager, "tollCharge")
+                    }
+
+                    override fun onNegativeButtonClick(dialog: DialogInterface) {
+                        val params: HashMap<String, String> = HashMap()
+                        params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                        params["status"] = DROPPED
+                        params["_method"] = "PATCH"
+                        params["toll_price"] = "0"
+                        mViewModel.taxiDroppingStatus(params)
+                        dialog.dismiss()
+                    }
+                })
+            }
         })
 
         mViewModel.taxiCancelRequest.observe(this, Observer<CancelRequestModel> {
@@ -500,26 +552,87 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_drop.setOnClickListener {
-            if (!isWaitingTime!!) ViewUtils.showAlert(this, "Do you have any Toll charge",
-                    "Yes", "No", object : ViewUtils.ViewCallBack {
-                override fun onPositiveButtonClick(dialog: DialogInterface) {
-                    val tollChargeDialog = TollChargeDialog()
-                    val bundle = Bundle()
-                    bundle.putString("requestID", responseData.request.id.toString())
-                    tollChargeDialog.arguments = bundle
-                    tollChargeDialog.show(supportFragmentManager, "tollCharge")
-                }
 
-                override fun onNegativeButtonClick(dialog: DialogInterface) {
-                    val params: HashMap<String, String> = HashMap()
-                    params["id"] = responseData.request.id.toString()
-                    params["status"] = DROPPED
-                    params["_method"] = "PATCH"
-                    params["toll_price"] = "0"
-                    mViewModel.taxiStatusUpdate(params)
-                    dialog.dismiss()
+            if (isWaitingTime!!) ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
+            else {
+                points.clear()
+                tempPoints.clear()
+                iteratePointsForApi.clear()
+                iteratePointsForDistanceCalc.clear()
+
+                points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints() as ArrayList<LocationPointsEntity>
+
+                if (points.size > 2) {
+                    for (point in points) {
+                        val latLng = LatLng(point.lat, point.lng)
+                        if (latLng.latitude > 0 && latLng.longitude > 0) tempPoints.add(latLng)
+                    }
+                    if (tempPoints.size > 2) locationProcessing(tempPoints)
+
+                    ViewUtils.showAlert(this, "Do you have any Toll charge",
+                            "Yes", "No", object : ViewUtils.ViewCallBack {
+                        override fun onPositiveButtonClick(dialog: DialogInterface) {
+                            val tollChargeDialog = TollChargeDialog()
+                            val bundle = Bundle()
+                            bundle.putString("requestID", responseData.request.id.toString())
+                            tollChargeDialog.arguments = bundle
+                            tollChargeDialog.show(supportFragmentManager, "tollCharge")
+                        }
+
+                        override fun onNegativeButtonClick(dialog: DialogInterface) {
+                            val params: HashMap<String, String> = HashMap()
+                            params["id"] = responseData.request.id.toString()
+                            params["status"] = DROPPED
+                            params["_method"] = "PATCH"
+                            params["toll_price"] = "0"
+                            mViewModel.taxiDroppingStatus(params)
+                            dialog.dismiss()
+                        }
+                    })
                 }
-            }) else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
+            }
+
+//            droppedApiCallProcessing(responseData)
+//
+//            points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints() as ArrayList<LocationPointsEntity>
+//
+//            if (points.size > 2) {
+//                for (point in points) {
+//                    val latLng = LatLng(point.lat, point.lng)
+//                    if (latLng.latitude > 0 && latLng.longitude > 0) tempPoints.add(latLng)
+//                }
+//                locationProcessing(tempPoints)
+//            } else {
+//                val params: HashMap<String, String> = HashMap()
+//                params["id"] = responseData.request.id.toString()
+//                params["status"] = DROPPED
+//                params["_method"] = "PATCH"
+//                params["toll_price"] = "0"
+//                mViewModel.taxiDroppingStatus(params)
+//            }
+//
+//            if (!isWaitingTime!!) {
+//                ViewUtils.showAlert(this, "Do you have any Toll charge",
+//                        "Yes", "No", object : ViewUtils.ViewCallBack {
+//                    override fun onPositiveButtonClick(dialog: DialogInterface) {
+//                        val tollChargeDialog = TollChargeDialog()
+//                        val bundle = Bundle()
+//                        bundle.putString("requestID", responseData.request.id.toString())
+//                        tollChargeDialog.arguments = bundle
+//                        tollChargeDialog.show(supportFragmentManager, "tollCharge")
+//                    }
+//
+//                    override fun onNegativeButtonClick(dialog: DialogInterface) {
+//                        val params: HashMap<String, String> = HashMap()
+//                        params["id"] = responseData.request.id.toString()
+//                        params["status"] = DROPPED
+//                        params["_method"] = "PATCH"
+//                        params["toll_price"] = "0"
+//                        mViewModel.taxiDroppingStatus(params)
+//                        dialog.dismiss()
+//                    }
+//                })
+//            } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
         }
 
         drawRoute(LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!),
@@ -602,7 +715,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         println("RRR locationIndexOnEdgeOrPath = " + polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 50.0))
 
         val index = polyUtil.locationIndexOnEdgeOrPath(point, polyLine, false, true, 50.0)
-        if (index >= 0) {
+
+        if (index > 0) {
             polyLine.subList(0, index + 2).clear()
 //            polyLine.add(0, point)
             mPolyline!!.remove()
@@ -611,7 +725,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             mPolyline = mGoogleMap!!.addPolyline(options.width(5f).color
             (ContextCompat.getColor(baseContext, R.color.colorBlack)))
             println("RRR mPolyline = " + polyLine.size)
-        } else {
+        } else if (index < 0) {
             canDrawPolyLine = true
             drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
                     mViewModel.polyLineDest.value!!)
@@ -622,10 +736,30 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         if (canDrawPolyLine) {
             canDrawPolyLine = false
             Handler().postDelayed({ canDrawPolyLine = true }, 10000)
-            PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString()))
+            PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
+            (src, dest, getText(R.string.google_map_key).toString()))
         }
         mViewModel.polyLineSrc.value = src
         mViewModel.polyLineDest.value = dest
+    }
+
+    override fun whenDone(output: DistanceCalcModel) {
+        println("RRR::TaxiDashboardActivity.whenDone")
+        val distanceProcessing = DistanceApiProcessing()
+        distanceProcessing.id = distanceApiCallCount
+        distanceProcessing.apiResponseStatus = "success"
+
+        val values = mViewModel.distanceApiProcessing.value!!
+        for (leg in output.routes[0].legs)
+            distanceProcessing.distance = distanceProcessing.distance + leg.distance.value
+
+        values.add(distanceProcessing)
+        distanceApiCallCount++
+        mViewModel.distanceApiProcessing.postValue(values)
+    }
+
+    private fun droppedApiCallProcessing(responseData: ResponseData) {
+
     }
 
     override fun whenDone(output: PolylineOptions) {
@@ -647,12 +781,41 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
 
-            CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, polyLine[0], polyLine[1])
+//            CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, polyLine[0], polyLine[1])
+            srcMarker!!.rotation = CarMarkerAnimUtil().bearingBetweenLocations(polyLine[0], polyLine[1]).toFloat()
 
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
+        }
+    }
+
+    override fun whenDirectionFail(statusCode: String) {
+        println("RRR::TaxiDashboardActivity.whenDirectionFail")
+        val distanceProcessing = DistanceApiProcessing()
+        distanceProcessing.id = distanceApiCallCount
+        distanceProcessing.apiResponseStatus = statusCode
+        distanceProcessing.distance = 0.0
+
+        val values: ArrayList<DistanceApiProcessing> = arrayListOf()
+        values.add(distanceProcessing)
+        mViewModel.distanceApiProcessing.postValue(values)
+
+        distanceApiCallCount++
+
+        println("RRR whenDirectionFail = $statusCode")
+        when (statusCode) {
+            "NOT_FOUND" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
+            "ZERO_RESULTS" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
+            "MAX_WAYPOINTS_EXCEEDED" -> Toast.makeText(this, "Way point limit exceeded...", Toast.LENGTH_SHORT).show()
+            "MAX_ROUTE_LENGTH_EXCEEDED" -> Toast.makeText(this, "Road map limit exceeded...", Toast.LENGTH_SHORT).show()
+            "INVALID_REQUEST" -> Toast.makeText(this, "Invalid inputs...", Toast.LENGTH_SHORT).show()
+            "OVER_DAILY_LIMIT" -> Toast.makeText(this, "MayBe invalid API/Billing pending/Method Deprecated...", Toast.LENGTH_SHORT).show()
+            "OVER_QUERY_LIMIT" -> Toast.makeText(this, "Too many request, limit exceeded...", Toast.LENGTH_SHORT).show()
+            "REQUEST_DENIED" -> Toast.makeText(this, "Directions service not enabled...", Toast.LENGTH_SHORT).show()
+            "UNKNOWN_ERROR" -> Toast.makeText(this, "Server Error...", Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(this, statusCode, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -684,15 +847,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun openGoogleNavigation() {
-        //      Guindy Location :: 12.998219, 80.205836
-        //      Tranxit         :: 13.058687, 80.253300
-
-//        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
-//                "http://maps.google.com/maps?saddr=" +
-//                        "12.998219,80.205836" +
-//                        "&daddr=" +
-//                        "13.058687,80.253300")))
-
         if (mViewModel.polyLineSrc.value != null && mViewModel.polyLineDest.value != null)
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(
                     "http://maps.google.com/maps?saddr=" +
@@ -783,9 +937,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         doubleBackToExit = true
         ViewUtils.showToast(this@TaxiDashboardActivity, "Please click back again to exit", true)
-        Handler().postDelayed({
-            doubleBackToExit = false
-        }, 2000)
+        Handler().postDelayed({ doubleBackToExit = false }, 2000)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -802,7 +954,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                                 ViewUtils.dismissGpsDialog()
                                 updateCurrentLocation()
                             }
-
                         }
                     }
                     Activity.RESULT_CANCELED -> {
@@ -813,10 +964,86 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 // getPermissionUtil().hasAllPermisson( Constants.RequestPermission.PERMISSIONS_LOCATION,context as AppCompatActivity ,300)
             }
 
-            100 -> {
-                finish()
-            }
+            100 -> finish()
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun locationProcessing(latLng: ArrayList<LatLng>) {
+        println("GGGG :: locationProcessing = " + latLng.size)
+
+        iteratePointsForApi.add(latLng[0])
+        for (i in latLng.indices) if (i < latLng.size - 1)
+            iteratePointsForApi(latLng[i], latLng[i + 1])
+        iteratePointsForApi.add(latLng[latLng.size - 1])
+        longLog(Gson().toJson(iteratePointsForApi), "BBB")
+        println("GGGG :: locationProcessing::iteratePointsForApi = " + iteratePointsForApi.size)
+
+        iteratePointsForDistanceCalc.add(latLng[0])
+        for (i in iteratePointsForApi.indices) if (i < iteratePointsForApi.size - 1)
+            iteratePointsForDistanceCal(iteratePointsForApi[i], iteratePointsForApi[i + 1])
+        iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
+        longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
+        println("GGGG :: locationProcessing::iteratePointsForDistanceCalc = " + iteratePointsForDistanceCalc.size)
+
+        try {
+            googleApiCall(iteratePointsForApi)
+//            googleApiCall(iteratePointsForDistanceCalc)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun iteratePointsForApi(s: LatLng, e: LatLng) {
+        var dist = distBt(s, e)
+        if (dist >= iterationDistForApi) {
+            iteratePointsForApi.add(e)
+            tempPoint = null
+        } else if (tempPoint != null) {
+            dist = distBt(tempPoint!!, e)
+            if (dist >= iterationDistForApi) {
+                iteratePointsForApi.add(e)
+                tempPoint = null
+            }
+        } else tempPoint = s
+    }
+
+    private fun iteratePointsForDistanceCal(s: LatLng, e: LatLng) {
+        var dist = distBt(s, e)
+        if (dist >= iterationDistForDistanceCal) {
+            iteratePointsForDistanceCalc.add(e)
+            tempPointForDistanceCal = null
+        } else if (tempPointForDistanceCal != null) {
+            dist = distBt(tempPointForDistanceCal!!, e)
+            if (dist >= iterationDistForDistanceCal) {
+                iteratePointsForDistanceCalc.add(e)
+                tempPointForDistanceCal = null
+            }
+        } else tempPointForDistanceCal = s
+    }
+
+    private fun distBt(a: LatLng, b: LatLng): Double {
+        val startPoint = Location("start")
+        startPoint.latitude = a.latitude
+        startPoint.longitude = a.longitude
+
+        val endPoint = Location("end")
+        endPoint.latitude = b.latitude
+        endPoint.longitude = b.longitude
+        return startPoint.distanceTo(endPoint).toDouble()
+    }
+
+    private fun googleApiCall(list: MutableList<LatLng>) {
+        mViewModel.showLoading.value = true
+        distanceApiCallCount++
+        val key = getString(R.string.google_map_key)
+        if (list.size > 25) {
+//            println("RRR :: URL = ${DistanceUtils().getUrl(list.subList(0, 24), key)}")
+            DistanceProcessing(this).execute(DistanceUtils().getUrl(list.subList(0, 24), key))
+            googleApiCall(list.subList(25, list.size - 1))
+        } else {
+            DistanceProcessing(this).execute(DistanceUtils().getUrl(list, key))
+//            println("RRR :: URL = ${DistanceUtils().getUrl(list, key)}")
+        }
     }
 }

@@ -97,7 +97,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 if (checkStatusApiCounter++ % 3 == 0)
                     if (location.latitude != 0.0 && location.longitude != 0.0)
                         mViewModel.callFoodieCheckRequest()
-                else loadingObservable.value = false
+                    else loadingObservable.value = false
             }
         }
     }
@@ -330,9 +330,9 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.let {
-                            if(it.isNotEmpty()){
+                            if (it.isNotEmpty()) {
                                 it.toInt()
-                            }else
+                            } else
                                 0
                         },
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable

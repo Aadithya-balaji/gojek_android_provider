@@ -18,7 +18,8 @@ class DistanceUtils {
                 "&destination=" + strDest +
                 "&waypoints=" + wayPoints +
                 "&key=" + key
-        println("RRR Google PolyLine URL = $url")
+
+        println("RRR Google distance URL = $url")
 
         return url
     }

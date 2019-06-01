@@ -1,5 +1,6 @@
 package com.gox.taxiservice.repositary
 
+import com.gox.base.utils.distanceCalc.DistanceCalcModel
 import com.gox.taxiservice.model.*
 import io.reactivex.Observable
 import retrofit2.http.*
@@ -36,6 +37,12 @@ interface TaxiWebService {
     fun taxiStatusUpdate(
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
+    ): Observable<CheckRequestModel>
+
+    @POST("provider/update/ride/request")
+    fun taxiDroppingStatus(
+            @Header("Authorization") token: String,
+            @Body request: DroppedStatusModel
     ): Observable<CheckRequestModel>
 
     @FormUrlEncoded

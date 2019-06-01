@@ -467,7 +467,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun whenFail(statusCode: String) {
-        println("RRR whenFail = $statusCode")
+        println("RRR whenDirectionFail = $statusCode")
         when (statusCode) {
             "NOT_FOUND" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
             "ZERO_RESULTS" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
@@ -569,38 +569,42 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     override fun updateService(view: View) {
         when (view.id) {
-            R.id.tvAllow -> {
-                when (mBinding.llBottomService.llConfirm.tvAllow.text) {
-                    ARRIVED -> {
-                        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.VISIBLE
-                        else edtXuperOtp.visibility = View.GONE
-                        mViewModel.updateRequest(ARRIVED, null, false)
-                    }
+            R.id.tvAllow -> when (mBinding.llBottomService.llConfirm.tvAllow.text) {
+                ARRIVED -> {
+                    if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.VISIBLE
+                    else edtXuperOtp.visibility = View.GONE
+                    mViewModel.updateRequest(ARRIVED, null, false)
+                }
 
-                    START -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
-                        when {
-                            mViewModel.otp.value.isNullOrEmpty() ->
-                                ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
-                            frontImgFile == null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
-                            mViewModel.otp.value.isNullOrEmpty() ->
-                                ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
-                            else -> if (mViewModel.otp.value == mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.otp) {
-                                frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
-                                mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
-                            } else ViewUtils.showToast(this, resources.getString(R.string.invalid_otp), false)
-                        }
-                    } else when (frontImgFile) {
-                        null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
-                        else -> {
+                START -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
+                    when {
+                        mViewModel.otp.value.isNullOrEmpty() ->
+                            ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
+                        frontImgFile == null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
+                        mViewModel.otp.value.isNullOrEmpty() ->
+                            ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
+                        else -> if (mViewModel.otp.value == mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.otp) {
                             frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
                             mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
-                        }
+                        } else ViewUtils.showToast(this, resources.getString(R.string.invalid_otp), false)
                     }
+                } else when (frontImgFile) {
+                    null -> if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1)
+                        ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
+                    else mViewModel.updateRequest(PICKED_UP, null, true)
+                    else -> {
+                        frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
+                        mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
+                    }
+                }
 
-                    COMPLETED -> if (backImgFile == null) ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false) else {
-                        backImgMultiPart = getImageMultiPart(backImgFile!!, false)
-                        mViewModel.updateRequest(DROPPED, backImgMultiPart, false)
-                    }
+                COMPLETED -> if (backImgFile == null) {
+                    if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1)
+                        ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false)
+                    else mViewModel.updateRequest(DROPPED, null, false)
+                } else {
+                    backImgMultiPart = getImageMultiPart(backImgFile!!, false)
+                    mViewModel.updateRequest(DROPPED, backImgMultiPart, false)
                 }
             }
 

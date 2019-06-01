@@ -9,10 +9,11 @@ import android.view.Window
 import androidx.databinding.DataBindingUtil
 import com.gox.base.BuildConfig
 import com.gox.base.R
+import com.gox.base.databinding.CustomDialogBinding
 
 class CustomDialog(context: Context) : Dialog(context) {
 
-    private lateinit var mCustomDialogBinding: com.gox.base.databinding.CustomDialogBinding
+    private lateinit var mCustomDialogBinding: CustomDialogBinding
     private var enableLottie: Boolean = false
 
     constructor(context: Context, enableLottie: Boolean = false):this(context){

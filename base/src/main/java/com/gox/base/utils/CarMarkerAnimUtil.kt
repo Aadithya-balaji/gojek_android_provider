@@ -38,7 +38,7 @@ class CarMarkerAnimUtil {
         valueAnimator.start()
     }
 
-    private fun bearingBetweenLocations(latLng1: LatLng, latLng2: LatLng): Double {
+    fun bearingBetweenLocations(latLng1: LatLng, latLng2: LatLng): Double {
 
         val PI = 3.14159
         val lat1 = latLng1.latitude * PI / 180

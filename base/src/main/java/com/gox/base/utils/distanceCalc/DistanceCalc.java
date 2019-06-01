@@ -7,9 +7,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class DistanceData {
+public class DistanceCalc {
 
-    String downloadUrl(String strUrl) throws IOException {
+    String downloadData(String strUrl) throws IOException {
         String data = "";
         HttpURLConnection urlConnection = (HttpURLConnection) new URL(strUrl).openConnection();
         urlConnection.connect();

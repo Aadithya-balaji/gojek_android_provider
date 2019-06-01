@@ -1,18 +1,17 @@
 package com.gox.base.utils.distanceCalc
 
 import android.os.AsyncTask
-import com.gox.base.utils.polyline.ParserTask
-import com.gox.base.utils.polyline.PolyLineListener
+import com.google.gson.Gson
 import org.json.JSONException
 import org.json.JSONObject
 
-class DistanceProcessing(private val mListener: PolyLineListener) :
+class DistanceProcessing(private val mListener: DistanceListener) :
         AsyncTask<String, Void, String>() {
 
     override fun doInBackground(vararg url: String): String {
         var data = ""
         try {
-            data = DistanceData().downloadUrl(url[0])
+            data = DistanceCalc().downloadData(url[0])
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -22,14 +21,15 @@ class DistanceProcessing(private val mListener: PolyLineListener) :
 
     override fun onPostExecute(result: String) {
         super.onPostExecute(result)
-
         try {
             val jsonObject = JSONObject(result)
             println("RRR :: jsonObject = $jsonObject")
+
             when {
-                jsonObject.has("error_message") -> mListener.whenFail(jsonObject.optString("error_message"))
-                jsonObject.optString("status") == "OK" -> ParserTask(mListener).execute(result)
-                else -> mListener.whenFail(jsonObject.optString("status"))
+                jsonObject.has("error_message") -> mListener.whenDirectionFail(jsonObject.optString("error_message"))
+                jsonObject.optString("status") == "OK" ->
+                    mListener.whenDone(Gson().fromJson(result, DistanceCalcModel::class.java))
+                else -> mListener.whenDirectionFail(jsonObject.optString("status"))
             }
         } catch (e: JSONException) {
             e.printStackTrace()

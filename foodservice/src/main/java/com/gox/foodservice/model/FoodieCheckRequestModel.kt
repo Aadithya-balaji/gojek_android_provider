@@ -135,7 +135,7 @@ class OrderInvoice(
         var store_package_amount: String = "",
         var total_amount: String = "",
         var cash: String = "",
-        var payable: Int = 0,
+        var payable: Double = 0.0,
         var cart_details: String = "",
         var items: List<Item> = listOf()
 

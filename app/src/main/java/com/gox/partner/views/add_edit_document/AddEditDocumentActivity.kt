@@ -14,6 +14,12 @@ import com.bumptech.glide.Glide
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import com.theartofdev.edmodo.cropper.CropImage
 import com.gox.base.base.BaseActivity
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
@@ -24,12 +30,6 @@ import com.gox.partner.R
 import com.gox.partner.databinding.ActivityAddEditDocumentBinding
 import com.gox.partner.utils.Constant
 import com.gox.partner.utils.Enums
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.theartofdev.edmodo.cropper.CropImage
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
 import kotlinx.android.synthetic.main.activity_add_edit_document.*
@@ -89,8 +89,11 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
         observeLiveData(viewModelAddEdit.addDocumentResponse) {
             ViewUtils.showToast(this, getString(R.string.docuemnt_added_success), true)
-            viewModelAddEdit.incrementPosition()
-            if (viewModelAddEdit.getData().size < (viewModelAddEdit.currentPosition + 1)) finish()
+            if(viewModelAddEdit.getData().size > (viewModelAddEdit.currentPosition+1)) {
+                viewModelAddEdit.incrementPosition()
+            }else{
+                finish()
+            }
         }
 
         observeLiveData(viewModelAddEdit.errorResponse) { error ->
@@ -117,7 +120,12 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     }
                 } else {
                     viewModelAddEdit.isPDF.value = true
-                    ivFrontImage.setImageResource(R.drawable.ic_pdf)
+                    if(!url.isNullOrEmpty()){
+                        viewModelAddEdit.showFrontView.value = true
+                    }else{
+                        viewModelAddEdit.showFrontView.value = false
+                    }
+                    //ivFrontImage.setImageResource(R.drawable.ic_pdf)
                 }
 
                 if (!url.isNullOrEmpty())
@@ -141,7 +149,12 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     }
                 } else {
                     viewModelAddEdit.isPDF.value = true
-                    ivBackImage.setImageResource(R.drawable.ic_pdf)
+                    if(!url.isNullOrEmpty()){
+                        viewModelAddEdit.showBackView.value = true
+                    }else{
+                        viewModelAddEdit.showBackView.value = false
+                    }
+                    //ivBackImage.setImageResource(R.drawable.ic_pdf)
                 }
 
                 if (!url.isNullOrEmpty()) downloadBackSideFile(url)
@@ -233,8 +246,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                 .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        requestCode = Enums.DOCUMENT_UPLOAD_BACK
                         if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
-                            requestCode = Enums.DOCUMENT_UPLOAD_BACK
                             ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
                         } else {
                             FilePickerBuilder.instance
@@ -299,7 +312,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                         val backPageFile = File(selectedDoc!![0])
                         viewModelAddEdit.documentBackImageFile.value = backPageFile
                         viewModelAddEdit.documentBackFileName.value = backPageFile.name
-                        viewModelAddEdit.showFrontView.value = true
+                        viewModelAddEdit.showBackView.value = true
                     }
                 }
             }

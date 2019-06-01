@@ -551,14 +551,14 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getFacebookprofile() {
-        tlPassword.visibility = View.GONE
+//        tlPassword.visibility = View.GONE
         LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY).logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
     }
 
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getGoogleProfile() {
-        tlPassword.visibility = View.GONE
+//        tlPassword.visibility = View.GONE
         val intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient)
         startActivityForResult(intent, GOOGLE_REQ_CODE)
     }

@@ -43,7 +43,6 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     var showingStoreDetail = true
     private var checkStatusApiCounter = 0
 
-
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivtyLivetaskLaoyutBinding
         mViewModel = ViewModelProviders.of(this).get(FoodLiveTaskServiceViewModel::class.java)
@@ -113,6 +112,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         mViewModel.foodieCheckRequestModel.observe(this, Observer {
             mViewModel.showLoading.value = false
             if (it?.responseData != null && it.responseData.requests != null) {
+                mViewModel.orderId.value = it.responseData.requests.id
                 if (currentStatus != it.responseData.requests.status) {
                     currentStatus = it.responseData.requests.status
                     when (it.responseData.requests.status) {
@@ -329,12 +329,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             getString(R.string.order_delivered) -> {
                 val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
-                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.let {
-                            if (it.isNotEmpty()) {
-                                it.toInt()
-                            } else
-                                0
-                        },
+                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id,
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable
                 )
                 otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
@@ -343,7 +338,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
             getString(R.string.payment_received) -> {
                 writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
                 val bundle = Bundle()
-                bundle.putString("id", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id)
+                bundle.putString("id", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toString())
                 if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture != null)
                     bundle.putString("profileImg", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture.toString())
                 bundle.putString("name", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +

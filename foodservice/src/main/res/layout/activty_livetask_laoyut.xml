@@ -518,6 +518,7 @@
                     android:background="#dadada" />
 
             </LinearLayout>
+
         </ScrollView>
 
         <Button
@@ -535,4 +536,5 @@
             android:textColor="@color/white" />
 
     </RelativeLayout>
+
 </layout>

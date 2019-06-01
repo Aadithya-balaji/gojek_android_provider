@@ -3,19 +3,19 @@
     <string name="live_task">LiveTasks</string>
     <string name="time_left">Time Left</string>
     <string name="dummy_time_left">100 secs</string>
-    <string name="reached_restaurant">Reached Resturant</string>
+    <string name="reached_restaurant">Reached Shop</string>
     <string name="order_picked_up">order picked up</string>
-    <string name="order_delivered">order deliverd</string>
-    <string name="payment_received">payment recevied</string>
+    <string name="order_delivered">order delivered</string>
+    <string name="payment_received">payment received</string>
     <string name="dummy_resturant_name">SUBWAY</string>
-    <string name="dummy_address">Tarc Colony,Megberg winsond road,unitedstates-10002</string>
+    <string name="dummy_address">Tarc Colony,Megberg winsond road,United States-10002</string>
     <string name="dummy_order_id">#1888</string>
     <string name="dummy_time">8:30 pm</string>
     <string name="item_total">Item Total</string>
-    <string name="dummy_item_total">$220</string>
+    <string name="dummy_item_total">0</string>
     <string name="service_tax" >Service Tax</string>
     <string name="delivery_charge_tv">Delivery Charge</string>
-    <string name="started_towards_restaturant">Started Towards Restaturant</string>
+    <string name="started_towards_restaturant">Started Towards Shop</string>
     <string name="total">Total</string>
     <string name="dummy_item_name">Spicy Prwan Tikka x1</string>
     <string name="feedback">FEEDBACK</string>
@@ -29,7 +29,7 @@
     <string name="submit">Submit</string>
     <string name="package_amount">Package Amount</string>
     <string name="wallet_amount">Wallet Amount</string>
-    <string name="promocode_deduction">Promocode Deduction</string>
+    <string name="promocode_deduction">Promo code Deduction</string>
     <string name="discount_amount">Discount Amount</string>
     <string name="rating">Rating</string>
     <string name="rate_your_customer">Rate your customer</string>
@@ -39,6 +39,4 @@
     <string name="foodie_make_sure_your_payment">* Make sure your payment from customer</string>
     <string name="no_valid_mobile">There is no valid phone number</string>
     <string name="no_valid_loction">There is no valid location</string>
-    <string name="dummy_user_name">Bala</string>
-    <string name="dummy_vechineplatenum">Tsdom2r433oi</string>
 </resources>

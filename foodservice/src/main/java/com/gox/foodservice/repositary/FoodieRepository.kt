@@ -35,6 +35,7 @@ class FoodieRepository : BaseRepository() {
                     viewModel.foodieCheckRequestModel.postValue(it)
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                    viewModel.showLoading.value = false
                 })
     }
 

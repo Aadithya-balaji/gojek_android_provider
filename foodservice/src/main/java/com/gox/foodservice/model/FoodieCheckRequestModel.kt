@@ -29,7 +29,7 @@ data class Reason(
         var created_type: String = "",
         var deleted_by: Any = Any(),
         var deleted_type: Any = Any(),
-        var id: String = "",
+        var id: Int = 0,
         var modified_by: String = "",
         var modified_type: String = "",
         var reason: String = "",
@@ -52,7 +52,7 @@ data class ProviderDetails(
         var email: String = "",
         var first_name: String = "",
         var gender: Any = Any(),
-        var id: String = "",
+        var id: Int = 0,
         var is_assigned: String = "",
         var is_bankdetail: String = "",
         var is_document: String = "",
@@ -84,7 +84,7 @@ data class Request(
         var admin_service_id: String = "",
         var company_id: String = "",
         var created_at: String = "",
-        var id: String = "",
+        var id: Int = 0,
         var provider_id: String = "",
 //        var request: RequestX = RequestX(),
         var request_id: String = "",
@@ -123,7 +123,7 @@ data class Request(
 ) : Serializable
 
 class OrderInvoice(
-        var id: String = "",
+        var id: Int = 0,
         var store_order_id: String = "",
         var payment_mode: String = "",
         var gross: String = "",
@@ -142,7 +142,7 @@ class OrderInvoice(
 ) : Serializable
 
 class Item(
-        var id: String = "",
+        var id: Int = 0,
         var user_id: String = "",
         var store_item_id: String = "",
         var store_id: String = "",
@@ -160,7 +160,7 @@ class Item(
 ) : Serializable
 
 class CartAddon(
-        var id: String = "",
+        var id: Int = 0,
         var store_cart_id: String = "",
         var store_cart_item_id: String = "",
         var store_item_addons_id: String = "",
@@ -178,13 +178,13 @@ class CartAddon(
 //        var commission: String = "",
 //        var offer_percent: String = "",
 //        var free_delivery: String = "",
-//        var id: String = "",
+//        var id: Int = 0,
 //        var store_type_id: String = "",
 //        var storetype: FoodieStoretype = FoodieStoretype()
 //) : Serializable
 
 class StoreType(
-        var id: String = "",
+        var id: Int = 0,
         var company_id: String = "",
         var name: String = "",
         var category: String = "",
@@ -197,7 +197,7 @@ class Product(
         var id: String = "") : Serializable
 
 class StoreDetails(
-        var id: String = "",
+        var id: Int = 0,
         var store_name: String = "",
         var store_location: String = "",
         var store_zipcode: String = "",
@@ -210,7 +210,7 @@ class StoreDetails(
 ) : Serializable
 
 class Pickup(
-        var id: String = "",
+        var id: Int = 0,
         var picture: String = "",
         var contact_number: String = "",
         var store_type_idd: String = "",
@@ -222,7 +222,7 @@ class Pickup(
 ) : Serializable
 
 class FoodieStoretype(
-        var id: String = "",
+        var id: Int = 0,
         var company_id: String = "",
         var name: String = "",
         var category: String = "",
@@ -230,7 +230,7 @@ class FoodieStoretype(
 ) : Serializable
 
 class Delivery(
-        var id: String = "",
+        var id: Int = 0,
         var latitude: String = "",
         var longitude: String = "",
         var map_address: String = "",
@@ -247,7 +247,7 @@ data class User(
         var email: String = "",
         var first_name: String = "",
         var gender: String = "",
-        var id: String = "",
+        var id: Int = 0,
         var language: String = "",
         var last_name: String = "",
         var latitude: Any = Any(),
@@ -283,7 +283,7 @@ data class User(
 //        var distance: Double = 0.0,
 //        var finished_at: String = "",
 //        var finished_time: String = "",
-//        var id: String = "",
+//        var id: Int = 0,
 //        var invoice: Invoice = Invoice(),
 //        var is_scheduled: String = "",
 //        var is_track: String = "",
@@ -333,7 +333,7 @@ data class User(
 //        var fixed: String = "",
 //        var fleet_id: Any = Any(),
 //        var hour: String = "",
-//        var id: String = "",
+//        var id: Int = 0,
 //        var minute: String = "",
 //        var payable: String = "",
 //        var payment_mode: String = "",
@@ -367,7 +367,7 @@ data class Payment(
         var fleet_id: Any = Any(),
         var fleet_percent: String = "",
         var hour: String = "",
-        var id: String = "",
+        var id: Int = 0,
         var is_partial: Any = Any(),
         var minute: String = "",
         var payable: Double = 0.0,
@@ -396,6 +396,6 @@ data class Service(
         var admin_service_name: String = "",
         var base_url: String = "",
         var display_name: String = "",
-        var id: String = "",
+        var id: Int = 0,
         var status: String = ""
 ) : Serializable

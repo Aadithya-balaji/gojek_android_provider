@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId "com.xjek.provider"
         // Android 4.1 or newer is required since Google sign-in is integrated in the Android app.
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"

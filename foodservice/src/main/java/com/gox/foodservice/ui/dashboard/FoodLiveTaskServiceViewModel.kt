@@ -15,6 +15,7 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     var foodieCheckRequestModel = MutableLiveData<FoodieCheckRequestModel>()
     var showLoading = MutableLiveData<Boolean>()
     var foodieRatingRequestModel = MutableLiveData<FoodieRatingRequestModel>()
+    var orderId = MutableLiveData<Int>()
 
     fun updateFoodDeliverStatus() {
         navigator.checkOrderDeliverStatus()
@@ -28,7 +29,7 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     fun callFoodieUpdateRequest(status: String) {
         showLoading.value = true
         val update: HashMap<String, String> = HashMap()
-        update["id"] = foodieCheckRequestModel.value?.responseData?.requests?.id.toString()
+        update["id"] = orderId.value.toString()
         update["status"] = status
         update["_method"] = "PATCH"
         getCompositeDisposable().add(FoodieRepository.instance().foodieUpdateRequest
@@ -38,7 +39,7 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     fun callFoodieDeliveryRequest() {
         showLoading.value = true
         val update: HashMap<String, String> = HashMap()
-        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id
+        update["id"] = orderId.value.toString()
         update["status"] = "PAYMENT"
         update["_method"] = "PATCH"
         update["otp"] = foodieCheckRequestModel.value!!.responseData.requests.order_otp
@@ -49,7 +50,7 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     fun callFoodieRatingRequest(rating: String, comment: String) {
         showLoading.value = true
         val update: HashMap<String, String> = HashMap()
-        update["id"] = foodieCheckRequestModel.value!!.responseData.requests.id
+        update["id"] = orderId.value.toString()
         update["admin_service_id"] = foodieCheckRequestModel.value!!.responseData.requests.admin_service_id
         update["_method"] = "POST"
         update["rating"] = rating

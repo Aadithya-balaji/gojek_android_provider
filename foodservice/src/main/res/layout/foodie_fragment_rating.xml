@@ -67,7 +67,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
-                    tools:text="@string/dummy_user_name"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_15sdp" />
 
@@ -76,7 +75,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/avenirltstd_medium"
-                    tools:text="@string/dummy_vechineplatenum"
                     android:textColor="@color/black" />
 
             </LinearLayout>

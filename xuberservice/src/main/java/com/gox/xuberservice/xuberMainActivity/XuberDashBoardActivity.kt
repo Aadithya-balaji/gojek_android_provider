@@ -68,7 +68,7 @@ import com.gox.xuberservice.invoice.DialogXuperInvoice
 import com.gox.xuberservice.model.CancelRequestModel
 import com.gox.xuberservice.model.UpdateRequest
 import com.gox.xuberservice.model.XuperCheckRequest
-import com.gox.xuberservice.rating.DialogXuperRating
+import com.gox.xuberservice.rating.DialogXuberRating
 import com.gox.xuberservice.reasons.XUberCancelReasonFragment
 import com.gox.xuberservice.uploadImage.DialogUploadPicture
 import io.socket.emitter.Emitter
@@ -105,7 +105,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var frontImgMultiPart: MultipartBody.Part? = null
     private var backImgMultiPart: MultipartBody.Part? = null
     private val invoicePage = DialogXuperInvoice()
-    private val ratingPage = DialogXuperRating()
+    private val ratingPage = DialogXuberRating()
     private var canDrawPolyLine: Boolean = true
     private var isFront: Boolean = true
     private var startLatLng = LatLng(0.0, 0.0)

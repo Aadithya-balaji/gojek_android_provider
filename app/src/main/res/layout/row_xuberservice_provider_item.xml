@@ -65,6 +65,7 @@
                         android:layout_marginTop="@dimen/_2sdp"
                         android:numStars="5"
                         android:stepSize="1.0"
+                        android:rating="1"
                         android:theme="@style/RatingBar" />
                 </LinearLayout>
 

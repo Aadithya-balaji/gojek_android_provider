@@ -69,9 +69,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             customPrefrence.edit().putString(PreferencesKey.BASE_ID, "0").apply()
 
             try {
-                customPrefrence.edit().putString(PreferencesKey.SOS_NUMBER, it.responseData.appSetting.supportDetails.contactNumber[0].number).apply()
-                if (it.responseData.appSetting.otpVerify == 0) customPrefrence.edit().putBoolean(PreferencesKey.SHOW_OTP, false).apply()
-                else if (it.responseData.appSetting.otpVerify == 1) customPrefrence.edit().putBoolean(PreferencesKey.SHOW_OTP, true).apply()
+                customPrefrence.edit().putString(PreferencesKey.SOS_NUMBER,
+                        it.responseData.appSetting.supportDetails.contactNumber[0].number).apply()
+                if (it.responseData.appSetting.otpVerify == 0)
+                    customPrefrence.edit().putBoolean(PreferencesKey.SHOW_OTP, false).apply()
+                else if (it.responseData.appSetting.otpVerify == 1)
+                    customPrefrence.edit().putBoolean(PreferencesKey.SHOW_OTP, true).apply()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

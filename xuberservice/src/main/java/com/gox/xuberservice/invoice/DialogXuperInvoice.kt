@@ -22,7 +22,7 @@ import com.gox.xuberservice.interfaces.DialogCloseInterface
 import com.gox.xuberservice.interfaces.GetExtraChargeInterface
 import com.gox.xuberservice.model.UpdateRequest
 import com.gox.xuberservice.model.XuperCheckRequest
-import com.gox.xuberservice.rating.DialogXuperRating
+import com.gox.xuberservice.rating.DialogXuberRating
 import kotlinx.android.synthetic.main.dialog_invoice.*
 
 class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvoiceNavigator, GetExtraChargeInterface, DialogCloseInterface {
@@ -75,7 +75,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                 xuperInvoiceModel.showProgress.value = false
                 if (updateRequest!!.statusCode.equals("200")) {
                     Log.e("Dialog","------------")
-                    val ratingDialog = DialogXuperRating()
+                    val ratingDialog = DialogXuberRating()
                     val strupdateRequest = Gson().toJson(updateRequest)
                     val bundle = Bundle()
                     bundle.putBoolean("isFromCheckRequest", false)

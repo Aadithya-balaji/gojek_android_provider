@@ -22,71 +22,65 @@ import com.gox.xuberservice.model.UpdateRequest
 import com.gox.xuberservice.model.XuperCheckRequest
 import com.gox.xuberservice.model.XuperRatingModel
 
-class DialogXuperRating : BaseDialogFragment<DialogXuperRatingBinding>(), XuperRatingNavigator, RatingBar.OnRatingBarChangeListener {
-    private lateinit var dialogXuperRatingBinding: DialogXuperRatingBinding
+class DialogXuberRating : BaseDialogFragment<DialogXuperRatingBinding>(), XuperRatingNavigator, RatingBar.OnRatingBarChangeListener {
+
+    private lateinit var dialogXuberRatingBinding: DialogXuperRatingBinding
     private lateinit var xuperRatingViewModel: XuperRatingViewModel
     private var strUpdateRequestModel: String? = null
-    private var updateRequesModel: UpdateRequest? = null
+    private var updateRequestModel: UpdateRequest? = null
     private var strCheckRequestModel: String? = null
-    private var xuperCheckRequest: XuperCheckRequest? = null
+    private var xuberCheckRequest: XuperCheckRequest? = null
     private var isFromCheckRequest: Boolean? = false
     private var shown: Boolean? = false
 
-
-    override fun getLayout(): Int {
-        return R.layout.dialog_xuper_rating
-    }
+    override fun getLayout() = R.layout.dialog_xuper_rating
 
     override fun onStart() {
         super.onStart()
-        getDialog()!!.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog!!.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.CustomDialog)
+        setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
     }
 
-
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
-        dialogXuperRatingBinding = viewDataBinding as DialogXuperRatingBinding
+        dialogXuberRatingBinding = viewDataBinding as DialogXuperRatingBinding
         xuperRatingViewModel = XuperRatingViewModel()
         xuperRatingViewModel.navigator = this
-        dialogXuperRatingBinding.ratingmodel = xuperRatingViewModel
-        dialogXuperRatingBinding.setLifecycleOwner(this)
+        dialogXuberRatingBinding.ratingmodel = xuperRatingViewModel
+        dialogXuberRatingBinding.lifecycleOwner = this
         xuperRatingViewModel.showProgress = loadingObservable as MutableLiveData<Boolean>
         getBundleValues()
-        dialogXuperRatingBinding.tvRateWithUser.setText(String.format(resources.getString(R.string.xuper_rate), xuperRatingViewModel.firstName.value.toString() + xuperRatingViewModel.lastName.value.toString()))
-        dialogXuperRatingBinding.rbUser.onRatingBarChangeListener = this
+        dialogXuberRatingBinding.tvRateWithUser.text = String.format(resources.getString(R.string.xuper_rate),
+                xuperRatingViewModel.firstName.value.toString() + xuperRatingViewModel.lastName.value.toString())
+        dialogXuberRatingBinding.rbUser.onRatingBarChangeListener = this
         getApiResponse()
     }
 
-    fun getBundleValues() {
+    private fun getBundleValues() {
         isFromCheckRequest = if (arguments!!.containsKey("isFromCheckRequest")) arguments!!.getBoolean("isFromCheckRequest") else false
         if (isFromCheckRequest == false) {
             strUpdateRequestModel = if (arguments!!.containsKey("updateRequestModel")) arguments!!.getString("updateRequestModel") else ""
-            updateRequesModel = Gson().fromJson(strUpdateRequestModel, UpdateRequest::class.java)
-            if (updateRequesModel != null) {
-                xuperRatingViewModel.id.value = updateRequesModel!!.responseData!!.id.toString()
-                xuperRatingViewModel.rating.value = updateRequesModel!!.responseData!!.user_rated.toString()
-                xuperRatingViewModel.firstName.value = updateRequesModel!!.responseData!!.user!!.first_name
-                xuperRatingViewModel.lastName.value = updateRequesModel!!.responseData!!.user!!.last_name
+            updateRequestModel = Gson().fromJson(strUpdateRequestModel, UpdateRequest::class.java)
+            if (updateRequestModel != null) {
+                xuperRatingViewModel.id.value = updateRequestModel!!.responseData!!.id.toString()
+                xuperRatingViewModel.rating.value = updateRequestModel!!.responseData!!.user_rated.toString()
+                xuperRatingViewModel.firstName.value = updateRequestModel!!.responseData!!.user!!.first_name
+                xuperRatingViewModel.lastName.value = updateRequestModel!!.responseData!!.user!!.last_name
             }
         } else {
             strCheckRequestModel = if (arguments!!.containsKey("strCheckReq")) arguments!!.getString("strCheckReq") else ""
-            xuperCheckRequest = Gson().fromJson(strCheckRequestModel, XuperCheckRequest::class.java)
-            if (xuperCheckRequest != null) {
-                xuperRatingViewModel.id.value = xuperCheckRequest!!.responseData!!.requests!!.id.toString()
-                xuperRatingViewModel.rating.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.rating.toString()
-                xuperRatingViewModel.firstName.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.first_name.toString()
-                xuperRatingViewModel.lastName.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.last_name.toString()
-            } else {
-                var request = xuperCheckRequest
-                Log.e("Request", "----" + null)
-            }
+            xuberCheckRequest = Gson().fromJson(strCheckRequestModel, XuperCheckRequest::class.java)
+            if (xuberCheckRequest != null) {
+                xuperRatingViewModel.id.value = xuberCheckRequest!!.responseData!!.requests!!.id.toString()
+                xuperRatingViewModel.rating.value = xuberCheckRequest!!.responseData!!.requests!!.user!!.rating.toString()
+                xuperRatingViewModel.firstName.value = xuberCheckRequest!!.responseData!!.requests!!.user!!.first_name.toString()
+                xuperRatingViewModel.lastName.value = xuberCheckRequest!!.responseData!!.requests!!.user!!.last_name.toString()
+            } else Log.e("Request", "----$xuberCheckRequest")
         }
     }
-
 
     fun getApiResponse() {
         xuperRatingViewModel.ratingLiveData.observe(this, object : Observer<XuperRatingModel> {
@@ -94,18 +88,16 @@ class DialogXuperRating : BaseDialogFragment<DialogXuperRatingBinding>(), XuperR
                 loadingObservable.value = false
                 activity!!.finish()
             }
-
         })
     }
 
-
     override fun sumitRating() {
         val params = HashMap<String, String>()
-        params.put(com.gox.base.data.Constants.Common.ID, xuperRatingViewModel.id.value.toString())
-        params.put(com.gox.base.data.Constants.Common.METHOD, "POST")
-        params.put(com.gox.base.data.Constants.Common.ADMIN_SERVICE_ID, "3")
-        params.put(com.gox.base.data.Constants.XuperProvider.RATING, xuperRatingViewModel.userRating.value.toString())
-        params.put(Constants.XuperProvider.COMMENT, xuperRatingViewModel.comment.value.toString())
+        params[Constants.Common.ID] = xuperRatingViewModel.id.value.toString()
+        params[Constants.Common.METHOD] = "POST"
+        params[Constants.Common.ADMIN_SERVICE_ID] = "3"
+        params[Constants.XuperProvider.RATING] = xuperRatingViewModel.userRating.value.toString()
+        params[Constants.XuperProvider.COMMENT] = xuperRatingViewModel.comment.value.toString()
         xuperRatingViewModel.callRatingApi(params)
     }
 
@@ -149,7 +141,5 @@ class DialogXuperRating : BaseDialogFragment<DialogXuperRatingBinding>(), XuperR
 
     override fun onRatingChanged(ratingBar: RatingBar?, rating: Float, fromUser: Boolean) {
         xuperRatingViewModel.userRating.value = rating.toInt().toString()
-        val rating = rating
     }
-
 }

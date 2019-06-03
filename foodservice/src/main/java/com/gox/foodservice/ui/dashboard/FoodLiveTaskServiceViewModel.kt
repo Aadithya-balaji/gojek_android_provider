@@ -13,6 +13,7 @@ class FoodLiveTaskServiceViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
     var foodieCheckRequestModel = MutableLiveData<FoodieCheckRequestModel>()
+    var foodieUpdateRequestModel = MutableLiveData<FoodieCheckRequestModel>()
     var showLoading = MutableLiveData<Boolean>()
     var foodieRatingRequestModel = MutableLiveData<FoodieRatingRequestModel>()
     var orderId = MutableLiveData<Int>()

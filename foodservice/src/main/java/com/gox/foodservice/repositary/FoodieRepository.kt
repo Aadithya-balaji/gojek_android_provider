@@ -32,7 +32,8 @@ class FoodieRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.foodieCheckRequestModel.postValue(it)
+                    viewModel.showLoading.value = false
+                    viewModel.foodieUpdateRequestModel.postValue(it)
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
                     viewModel.showLoading.value = false

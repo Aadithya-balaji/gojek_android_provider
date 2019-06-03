@@ -21,8 +21,8 @@ class FoodieVerifyOtpDialog : BaseDialogFragment<FoodieFragmentVerifyOtpBinding>
     companion object {
         var otp: String? = null
         var requestId: String? = null
-        var payable: Int? = 0
-        fun newInstance(s: String, id: Int, pay: Int): FoodieVerifyOtpDialog {
+        var payable: Double? = 0.0
+        fun newInstance(s: String, id: Int, pay: Double): FoodieVerifyOtpDialog {
             otp = s
             requestId = id.toString()
             payable = pay

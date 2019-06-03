@@ -49,8 +49,13 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this, listOf())
         mViewModel.navigator = this
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
+<<<<<<< HEAD
         mViewModel.showLoading = loadingObservable
         mViewModel.showLoading.value = true
+=======
+        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        mViewModel.callFoodieCheckRequest()
+>>>>>>> eba54b7215e9c5a2702c19268cc9b950b34ff8e8
         checkRequestResponse()
         checkRatingReq()
         call_img.setOnClickListener {
@@ -93,7 +98,6 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
                 if (checkStatusApiCounter++ % 3 == 0)
-                    if (location.latitude != 0.0 && location.longitude != 0.0)
                         mViewModel.callFoodieCheckRequest()
                     else loadingObservable.value = false
             }
@@ -123,6 +127,11 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                     }
                 }
             } else finish()
+        })
+
+
+        mViewModel.foodieUpdateRequestModel.observe(this, Observer {
+            mViewModel.callFoodieCheckRequest()
         })
     }
 

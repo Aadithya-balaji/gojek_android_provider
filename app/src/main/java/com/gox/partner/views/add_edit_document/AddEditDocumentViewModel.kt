@@ -57,7 +57,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
             showEmpty.value = true
     }
 
-    fun getData() = data
+    fun getData() = this.data
 
     private fun updateDetails() {
         documentFrontName.value = data[currentPosition].name + " (Front)"
@@ -66,12 +66,12 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         showExpiry.value = data[currentPosition].is_expire == "1"
        // showExpiry.value = true
         if (data[currentPosition].provider_document != null) {
-            showFrontView.value = false
+            showFrontView.value = true
             expiryDate.value = Utils.parseDateToYYYYMMdd(data[currentPosition].provider_document?.expires_at)
             documentFrontImageURL.value = data[currentPosition].provider_document!!.url[0].url
             if (data[currentPosition].provider_document!!.url.size > 1) {
                 documentBackImageURL.value = data[currentPosition].provider_document!!.url[1].url
-                showBackView.value = false
+                showBackView.value = true
             }
         } else {
             showFrontView.value = false
@@ -118,10 +118,8 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     }
 
     fun incrementPosition() {
-        if (data.size > (currentPosition + 1)) {
             currentPosition += 1
             updateDetails()
-        }
     }
 
     fun updateDocument() {

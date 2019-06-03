@@ -58,6 +58,17 @@ class TaxiRepository : BaseRepository() {
                 })
     }
 
+    fun updateRequest(viewModel: TollChargeViewModel, token: String, model: DroppedStatusModel): Disposable {
+        return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
+                .taxiDroppingStatus(token, model)
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.mLiveData.postValue(it)
+                }, {
+                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
+                })
+    }
+
     fun taxiDroppingStatus(viewModel: TaxiDashboardViewModel, token: String, model: DroppedStatusModel): Disposable {
         return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
                 .taxiDroppingStatus(token, model)
@@ -84,18 +95,6 @@ class TaxiRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.waitingTimeLiveData.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
-                })
-    }
-
-
-    fun updateRequest(viewModel: TollChargeViewModel, token: String, params: HashMap<String, String>): Disposable {
-        return BaseRepository().createApiClient(serviceId, TaxiWebService::class.java)
-                .taxiStatusUpdate(token, params)
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.mLiveData.postValue(it)
                 }, {
                     viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })
@@ -147,7 +146,6 @@ class TaxiRepository : BaseRepository() {
     }
 
     companion object {
-        private val TAG = TaxiRepository::class.java.simpleName
         private var taxiRepository: TaxiRepository? = null
 
         fun instance(): TaxiRepository {
@@ -157,6 +155,4 @@ class TaxiRepository : BaseRepository() {
             return taxiRepository!!
         }
     }
-
-
 }

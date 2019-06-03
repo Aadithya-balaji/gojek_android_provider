@@ -14,7 +14,6 @@ import android.view.View.VISIBLE
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -50,7 +49,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this, listOf())
         mViewModel.navigator = this
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
-        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        mViewModel.showLoading = loadingObservable
         mViewModel.showLoading.value = true
         checkRequestResponse()
         checkRatingReq()
@@ -129,7 +128,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
 
     private fun whenPaid() {
         changeToFlowIconView(true)
-        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, true)
+        writePreferences(PreferencesKey.CAN_SEND_LOCATION, true)
         setOrderId()
         setUserLocDetails()
         setItemsPricing()
@@ -158,7 +157,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
 
     private fun whenPickedUp() {
         changeToFlowIconView(true)
-        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, true)
+        writePreferences(PreferencesKey.CAN_SEND_LOCATION, true)
         setOrderId()
         setUserLocDetails()
         setItemsPricing()
@@ -177,7 +176,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     }
 
     private fun whenReached() {
-        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
+        writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
         changeToFlowIconView(true)
         setOrderId()
         setUserLocDetails()
@@ -200,7 +199,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
 
     private fun whenProcessing() {
         changeToFlowIconView(false)
-        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
+        writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
         setOrderId()
         setRestaurantDetails()
         setItemsPricing()
@@ -210,7 +209,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
 
     private fun whenStared() {
         changeToFlowIconView(true)
-        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
+        writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
         setOrderId()
         setRestaurantDetails()
         setItemsPricing()
@@ -336,7 +335,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 otpDialogFragment.isCancelable = false
             }
             getString(R.string.payment_received) -> {
-                writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
+                writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
                 val bundle = Bundle()
                 bundle.putString("id", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toString())
                 if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture != null)

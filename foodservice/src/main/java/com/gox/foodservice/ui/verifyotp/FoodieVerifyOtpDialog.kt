@@ -16,7 +16,7 @@ class FoodieVerifyOtpDialog : BaseDialogFragment<FoodieFragmentVerifyOtpBinding>
     private var fragmentVerifyOtpBinding: FoodieFragmentVerifyOtpBinding? = null
     private lateinit var foodLiveTaskServiceViewModel: FoodLiveTaskServiceViewModel
 
-    override fun getLayout(): Int = R.layout.foodie_fragment_verify_otp
+    override fun getLayout() = R.layout.foodie_fragment_verify_otp
 
     companion object {
         var otp: String? = null
@@ -38,11 +38,7 @@ class FoodieVerifyOtpDialog : BaseDialogFragment<FoodieFragmentVerifyOtpBinding>
         foodLiveTaskServiceViewModel = ViewModelProviders.of(activity!!).get(FoodLiveTaskServiceViewModel::class.java)
 
         when {
-            payable!!.toDouble() > 0 -> {
-
-
-                payment_txt.visibility = VISIBLE
-            }
+            payable!!.toDouble() > 0 -> payment_txt.visibility = VISIBLE
         }
 
         bt_start_trip.setOnClickListener {

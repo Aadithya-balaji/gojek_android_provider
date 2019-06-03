@@ -5,7 +5,6 @@
 
     <data>
 
-
     </data>
 
     <androidx.cardview.widget.CardView
@@ -30,27 +29,27 @@
                 android:paddingLeft="@dimen/_8sdp"
                 android:paddingRight="@dimen/_8sdp">
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <ImageView
                     android:id="@+id/profile_image"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/flower"
-                    app:civ_border_width="0dp" />
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/flower" />
+                <!--app:civ_border_width="0dp"-->
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_toRightOf="@+id/profile_image"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_toEndOf="@+id/profile_image"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/restaturant_name_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:singleLine="true"
                         android:text="@string/dummy_restaturant_name"
@@ -69,58 +68,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/avenirltstd_medium"
                     tools:text="12 sec lef" />
 
             </RelativeLayout>
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_3sdp"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/_8sdp"
-                android:paddingRight="@dimen/_8sdp">
+                android:paddingRight="@dimen/_8sdp"
+                android:visibility="gone">
 
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/tv_label_pickup_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_3sdp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:text="@string/label_pickup_location"
+                    android:textColor="@color/doc_font_service_enabled"
+                    android:textSize="@dimen/_12sdp" />
 
-                    <TextView
-                        android:id="@+id/tv_label_pickup_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:text="@string/label_pickup_location"
-                        android:textColor="@color/doc_font_service_enabled"
-                        android:textSize="@dimen/_12sdp" />
+                <TextView
+                    android:id="@+id/tv_street_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:textColor="@color/et_stroke_color"
+                    android:textSize="@dimen/_10sdp"
+                    tools:text="sdfdfdfdfdfdfdfdf dfdf" />
 
-                    <TextView
-                        android:id="@+id/tv_street_address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        tools:text="sdfdfdfdfdfdfdfdf dfdf"
-                        android:textColor="@color/et_stroke_color"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <TextView
-                        android:id="@+id/tv_country"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        tools:text="India"
-                        android:textColor="@color/et_stroke_color" />
-
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_country"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:textColor="@color/et_stroke_color"
+                    tools:text="India" />
 
             </LinearLayout>
 
@@ -152,6 +141,7 @@
                         android:text="@string/label_order_reject"
                         android:textColor="@color/home_reject"
                         android:textSize="@dimen/_15sdp" />
+
                 </LinearLayout>
 
                 <View
@@ -175,9 +165,13 @@
                         android:text="@string/label_order_aprrove"
                         android:textColor="@color/card_left_bg"
                         android:textSize="@dimen/_15sdp" />
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
 </layout>

@@ -111,7 +111,8 @@
                         android:paddingTop="@dimen/_15sdp"
                         android:paddingBottom="@dimen/_15sdp">
 
-                        <de.hdodenhof.circleimageview.CircleImageView
+                        <ImageView
+                            android:contentDescription="@string/app_name"
                             android:id="@+id/provider_cimgv"
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"

@@ -18,6 +18,7 @@ object PreferencesKey {
     const val CURRENT_TRANXIT_STATUS = "CURRENT_TRANXIT_STATUS"
     const val CITY_ID = "city_id"
     const val REQ_ID = "req_id"
+    const val CAN_SEND_LOCATION = "CAN_SEND_LOCATION"
     const val CAN_SAVE_LOCATION = "CAN_SAVE_LOCATION"
     const val CURRENCY_SYMBOL = "CURRENCY_SYMBOL"
     const val STRIPE_KEY = "stripe_key"

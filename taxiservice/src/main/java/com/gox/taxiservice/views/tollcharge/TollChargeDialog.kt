@@ -12,21 +12,27 @@ import android.view.Window
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
+import com.google.gson.Gson
 import com.gox.base.base.BaseDialogFragment
+import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.utils.PrefixCustomEditText
 import com.gox.base.utils.ViewUtils
 import com.gox.taxiservice.R
 import com.gox.taxiservice.databinding.DialogTollChargeBinding
+import com.gox.taxiservice.model.DroppedStatusModel
+import com.gox.taxiservice.model.LocationPoint
 import com.gox.taxiservice.views.main.TaxiDashboardViewModel
+import kotlinx.android.synthetic.main.dialog_toll_charge.*
 
 class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChargeNavigator {
 
-    private lateinit var dialogTollChargeBinding: DialogTollChargeBinding
+    private lateinit var mBinding: DialogTollChargeBinding
     private lateinit var mViewModel: TollChargeViewModel
     private lateinit var mDashboardViewModel: TaxiDashboardViewModel
+    private var tollCharge = ""
 
-    override fun getLayout(): Int = R.layout.dialog_toll_charge
+    override fun getLayout() = R.layout.dialog_toll_charge
 
     override fun onStart() {
         super.onStart()
@@ -39,19 +45,46 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
-        dialogTollChargeBinding = viewDataBinding as DialogTollChargeBinding
+        mBinding = viewDataBinding as DialogTollChargeBinding
         mViewModel = TollChargeViewModel()
         mDashboardViewModel = ViewModelProviders.of(activity!!).get(TaxiDashboardViewModel::class.java)
 
         mViewModel.navigator = this
-        dialogTollChargeBinding.tollmodel = mViewModel
-        dialogTollChargeBinding.lifecycleOwner = this
-        dialogTollChargeBinding.edtAmount.addTextChangedListener(EditListener())
+        mBinding.tollmodel = mViewModel
+        mBinding.lifecycleOwner = this
+        mBinding.edtAmount.addTextChangedListener(EditListener())
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
         val strRequestID = if (arguments != null && arguments!!.containsKey("requestID")) arguments!!.getString("requestID") else ""
 
-        if (strRequestID.isNotEmpty()) mViewModel.requestID.value = strRequestID
+        val locationPoint: ArrayList<LocationPoint> = arrayListOf()
+
+        tv_toll_submit.setOnClickListener {
+            if (isValidCharge()) {
+
+                val model = DroppedStatusModel()
+                try {
+                    mViewModel.showLoading.value = true
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+                for (points in mDashboardViewModel.iteratePointsForApi)
+                    locationPoint.add(LocationPoint(points.latitude, points.longitude))
+
+                model.id = strRequestID
+                model.status = Constants.RideStatus.DROPPED
+                model._method = "PATCH"
+                model.toll_price = tollCharge
+                model.distance = mDashboardViewModel.distanceMeter.value!!
+                model.latitude = mDashboardViewModel.latitude.value!!
+                model.longitude = mDashboardViewModel.longitude.value!!
+                model.location_points = locationPoint
+
+                println("RRR::" + Gson().toJson(model))
+                mViewModel.callUpdateRequestApi(model)
+            }
+        }
 
         observeLiveData(mViewModel.mLiveData) {
             if (mViewModel.mLiveData.value != null)
@@ -79,8 +112,8 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
 
     inner class EditListener : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-//            setPrefix(dialogTollChargeBinding.edtAmount, s, "$")
-            setPrefix(dialogTollChargeBinding.edtAmount, s, "")
+//            setPrefix(mBinding.edtAmount, s, "$")
+            setPrefix(mBinding.edtAmount, s, "")
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -93,6 +126,7 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
     fun setPrefix(editText: PrefixCustomEditText, s: Editable?, strPref: String) {
         println("RRR :: s = [$s], strPref = [$strPref]")
         mViewModel.tollChargeLiveData.value = s.toString()
+        tollCharge = s.toString()
         if (s.toString().isNotEmpty()) editText.setPrefix(strPref) else editText.setPrefix("")
     }
 
@@ -105,11 +139,11 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
 
     override fun isValidCharge(): Boolean {
         return when {
-            mViewModel.tollChargeLiveData.value.isNullOrEmpty() -> {
+            tollCharge.isEmpty() -> {
                 showErrorMessage(activity!!.getString(R.string.empty_toll_charge))
                 false
             }
-            mViewModel.tollChargeLiveData.value!!.toInt() <= 0 -> {
+            tollCharge.toInt() <= 0 -> {
                 showErrorMessage(activity!!.getString(R.string.invalid_toll_charge))
                 false
             }

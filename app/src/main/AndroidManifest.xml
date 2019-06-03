@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
         android:name="com.gox.partner.GoJekApplication"
@@ -217,8 +218,11 @@
 
         <service
             android:name="com.gox.base.location_service.BaseLocationService"
-            android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
+
+        <service
+            android:name=".utils.floatingview.ChatHeadService"
+            android:exported="false"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

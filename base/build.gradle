@@ -63,6 +63,8 @@ dependencies {
 
     //Image & Lottie
     api 'com.airbnb.android:lottie:2.7.0'
+    api 'com.github.bumptech.glide:glide:4.9.0'
+//    api 'de.hdodenhof:circleimageview:3.0.0'
 
     // Dagger
     api "com.google.dagger:dagger:$dagger_version"
@@ -71,9 +73,6 @@ dependencies {
     //      LiveData
     api 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01'
-
-    // Circle Image
-    api 'de.hdodenhof:circleimageview:3.0.0'
 
     // Rx java dependency
     api 'io.reactivex.rxjava2:rxjava:2.2.3' // please add current version of dependencies.
@@ -110,10 +109,6 @@ dependencies {
     // Toasty
     api 'com.github.GrenderG:Toasty:1.3.1'
 
-    // Image Library
-    api 'com.squareup.picasso:picasso:2.71828'
-    api 'com.github.bumptech.glide:glide:4.9.0'
-
     //Permission check(need to remove after implment the manual permssion check)
     api 'com.karumi:dexter:4.2.0'
 
@@ -146,8 +141,6 @@ dependencies {
     // For Kotlin use kapt instead of annotationProcessor
     api project(':cropperlibrary')
     api project(':monitorinternet')
-
-    api 'com.github.jkwiecien:EasyImage:2.0.4'
 
     //Socket IO
     api('io.socket:socket.io-client:1.0.0') {

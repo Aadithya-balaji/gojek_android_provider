@@ -168,9 +168,10 @@ class BaseLocationService : Service() {
         val providerId = readPreferences(FIRE_BASE_PROVIDER_IDENTITY, 0)
         val point = LocationPointsEntity(null, location.latitude, location.longitude, DateFormat.getDateTimeInstance().format(Date()))
         try {
-            if (providerId!! > 0 && readPreferences(PreferencesKey.CAN_SAVE_LOCATION, false)!!) {
+            if (providerId!! > 0 && readPreferences(PreferencesKey.CAN_SEND_LOCATION, false)!!) {
                 FirebaseDatabase.getInstance().getReference("providerId$providerId").setValue(point)
-                AppDatabase.getAppDataBase(this)!!.locationPointsDao().insertPoint(point)
+                if (readPreferences(PreferencesKey.CAN_SAVE_LOCATION, false)!!)
+                    AppDatabase.getAppDataBase(this)!!.locationPointsDao().insertPoint(point)
             }
         } catch (e: Exception) {
             e.printStackTrace()

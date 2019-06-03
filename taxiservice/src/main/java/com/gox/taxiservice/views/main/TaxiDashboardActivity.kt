@@ -51,6 +51,7 @@ import com.gox.base.data.Constants.RideStatus.STARTED
 import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.base.data.PreferencesKey.CAN_SAVE_LOCATION
+import com.gox.base.data.PreferencesKey.CAN_SEND_LOCATION
 import com.gox.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
@@ -125,7 +126,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var points = ArrayList<LocationPointsEntity>()
     private var tempPoints = ArrayList<LatLng>()
-    private var iteratePointsForApi = ArrayList<LatLng>()
+    //    private var iteratePointsForApi = ArrayList<LatLng>()
     private var iteratePointsForDistanceCalc = ArrayList<LatLng>()
     private var tempPoint: LatLng? = null
     private var tempPointForDistanceCal: LatLng? = null
@@ -205,7 +206,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
             mGoogleMap!!.uiSettings.isCompassEnabled = true
         }
-
         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION))
             LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack.LastKnownLocation {
                 override fun onSuccess(location: Location?) {
@@ -291,36 +291,33 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             STARTED -> {
                                 println("RRR :: inside STARTED = ")
                                 whenStatusStarted(checkStatusResponse.responseData)
-                                writePreferences(CAN_SAVE_LOCATION, true)
                             }
 
                             ARRIVED -> {
                                 println("RRR :: inside ARRIVED = ")
                                 whenStatusArrived(checkStatusResponse.responseData)
-                                writePreferences(CAN_SAVE_LOCATION, true)
                             }
 
                             PICKED_UP -> {
                                 println("RRR :: inside PICKED_UP = ")
                                 whenStatusPickedUp(checkStatusResponse.responseData)
-                                writePreferences(CAN_SAVE_LOCATION, true)
                             }
 
                             DROPPED -> {
-                                writePreferences(CAN_SAVE_LOCATION, false)
                                 println("RRR :: inside DROPPED = ")
-                                val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
+                                writePreferences(CAN_SEND_LOCATION, false)
+                                writePreferences(CAN_SAVE_LOCATION, false)
                                 startActivityForResult(Intent(this, TaxiInvoiceActivity::class.java)
-                                        .putExtra("ResponseData", strCheckRequestModel), 100)
+                                        .putExtra("ResponseData", Gson().toJson(checkStatusResponse.responseData)), 100)
                                 finish()
                             }
 
                             COMPLETED -> {
+                                writePreferences(CAN_SEND_LOCATION, false)
                                 writePreferences(CAN_SAVE_LOCATION, false)
                                 println("RRR :: inside COMPLETED = ")
-                                val strCheckRequestModel = Gson().toJson(checkStatusResponse.responseData)
                                 startActivityForResult(Intent(this, TaxiInvoiceActivity::class.java)
-                                        .putExtra("ResponseData", strCheckRequestModel), 100)
+                                        .putExtra("ResponseData", Gson().toJson(checkStatusResponse.responseData)), 100)
                                 finish()
                             }
                         }
@@ -340,36 +337,38 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mViewModel.distanceApiProcessing.observe(this, Observer {
             var canShowTollChargeDialog = false
             println("RRR::distanceApiProcessing = ${it.size}")
+            println("RRR::distanceApiProcessing:distanceApiCallCount = $distanceApiCallCount")
             println("RRR::distanceApiProcessing = ${Gson().toJson(it)}")
-            if (it.isNotEmpty() && it.size == distanceApiCallCount) for (items in it) {
-                mViewModel.distanceMeter.value = mViewModel.distanceMeter.value!! + items.distance
-                println("RRR::distanceMeter.value = ${mViewModel.distanceMeter.value}")
-                mViewModel.showLoading.value = false
-                canShowTollChargeDialog = true
+            if (it.isNotEmpty() && it.size > 0 && it.size == distanceApiCallCount) {
+                println("RRR::distanceApiProcessing::inside if = ${it.size}")
+                for (items in it) {
+                    mViewModel.distanceMeter.value = mViewModel.distanceMeter.value!! + items.distance
+                    println("RRR::distanceMeter.value = ${mViewModel.distanceMeter.value}")
+                    mViewModel.showLoading.value = false
+                    canShowTollChargeDialog = true
+                }
             }
 
-            if (canShowTollChargeDialog) {
-                ViewUtils.showAlert(this, "Do you have any Toll charge",
-                        "Yes", "No", object : ViewUtils.ViewCallBack {
-                    override fun onPositiveButtonClick(dialog: DialogInterface) {
-                        val tollChargeDialog = TollChargeDialog()
-                        val bundle = Bundle()
-                        bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
-                        tollChargeDialog.arguments = bundle
-                        tollChargeDialog.show(supportFragmentManager, "tollCharge")
-                    }
+            if (canShowTollChargeDialog) ViewUtils.showAlert(this, "Do you have any Toll charge",
+                    "Yes", "No", object : ViewUtils.ViewCallBack {
+                override fun onPositiveButtonClick(dialog: DialogInterface) {
+                    val tollChargeDialog = TollChargeDialog()
+                    val bundle = Bundle()
+                    bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
+                    tollChargeDialog.arguments = bundle
+                    tollChargeDialog.show(supportFragmentManager, "tollCharge")
+                }
 
-                    override fun onNegativeButtonClick(dialog: DialogInterface) {
-                        val params: HashMap<String, String> = HashMap()
-                        params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-                        params["status"] = DROPPED
-                        params["_method"] = "PATCH"
-                        params["toll_price"] = "0"
-                        mViewModel.taxiDroppingStatus(params)
-                        dialog.dismiss()
-                    }
-                })
-            }
+                override fun onNegativeButtonClick(dialog: DialogInterface) {
+                    val params: HashMap<String, String> = HashMap()
+                    params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                    params["status"] = DROPPED
+                    params["_method"] = "PATCH"
+                    params["toll_price"] = "0"
+                    mViewModel.taxiDroppingStatus(params)
+                    dialog.dismiss()
+                }
+            })
         })
 
         mViewModel.taxiCancelRequest.observe(this, Observer<CancelRequestModel> {
@@ -415,6 +414,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun whenStatusStarted(responseData: ResponseData) {
+        writePreferences(CAN_SEND_LOCATION, true)
+        writePreferences(CAN_SAVE_LOCATION, false)
         setWaitingTime()
         btn_cancel.visibility = View.VISIBLE
         btn_arrived.visibility = View.VISIBLE
@@ -459,6 +460,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun whenStatusArrived(responseData: ResponseData) {
+        writePreferences(CAN_SEND_LOCATION, true)
+        writePreferences(CAN_SAVE_LOCATION, false)
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
         btn_cancel.visibility = View.VISIBLE
         btn_arrived.visibility = View.GONE
@@ -513,6 +516,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun whenStatusPickedUp(responseData: ResponseData) {
+        writePreferences(CAN_SEND_LOCATION, true)
+        writePreferences(CAN_SAVE_LOCATION, true)
         setWaitingTime()
         llWaitingTimeContainer.visibility = View.VISIBLE
 
@@ -552,12 +557,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_drop.setOnClickListener {
-
             if (isWaitingTime!!) ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
             else {
+                mViewModel.distanceApiProcessing.value = arrayListOf()
                 points.clear()
                 tempPoints.clear()
-                iteratePointsForApi.clear()
+                mViewModel.iteratePointsForApi.clear()
                 iteratePointsForDistanceCalc.clear()
 
                 points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints() as ArrayList<LocationPointsEntity>
@@ -568,71 +573,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         if (latLng.latitude > 0 && latLng.longitude > 0) tempPoints.add(latLng)
                     }
                     if (tempPoints.size > 2) locationProcessing(tempPoints)
-
-                    ViewUtils.showAlert(this, "Do you have any Toll charge",
-                            "Yes", "No", object : ViewUtils.ViewCallBack {
-                        override fun onPositiveButtonClick(dialog: DialogInterface) {
-                            val tollChargeDialog = TollChargeDialog()
-                            val bundle = Bundle()
-                            bundle.putString("requestID", responseData.request.id.toString())
-                            tollChargeDialog.arguments = bundle
-                            tollChargeDialog.show(supportFragmentManager, "tollCharge")
-                        }
-
-                        override fun onNegativeButtonClick(dialog: DialogInterface) {
-                            val params: HashMap<String, String> = HashMap()
-                            params["id"] = responseData.request.id.toString()
-                            params["status"] = DROPPED
-                            params["_method"] = "PATCH"
-                            params["toll_price"] = "0"
-                            mViewModel.taxiDroppingStatus(params)
-                            dialog.dismiss()
-                        }
-                    })
                 }
             }
-
-//            droppedApiCallProcessing(responseData)
-//
-//            points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints() as ArrayList<LocationPointsEntity>
-//
-//            if (points.size > 2) {
-//                for (point in points) {
-//                    val latLng = LatLng(point.lat, point.lng)
-//                    if (latLng.latitude > 0 && latLng.longitude > 0) tempPoints.add(latLng)
-//                }
-//                locationProcessing(tempPoints)
-//            } else {
-//                val params: HashMap<String, String> = HashMap()
-//                params["id"] = responseData.request.id.toString()
-//                params["status"] = DROPPED
-//                params["_method"] = "PATCH"
-//                params["toll_price"] = "0"
-//                mViewModel.taxiDroppingStatus(params)
-//            }
-//
-//            if (!isWaitingTime!!) {
-//                ViewUtils.showAlert(this, "Do you have any Toll charge",
-//                        "Yes", "No", object : ViewUtils.ViewCallBack {
-//                    override fun onPositiveButtonClick(dialog: DialogInterface) {
-//                        val tollChargeDialog = TollChargeDialog()
-//                        val bundle = Bundle()
-//                        bundle.putString("requestID", responseData.request.id.toString())
-//                        tollChargeDialog.arguments = bundle
-//                        tollChargeDialog.show(supportFragmentManager, "tollCharge")
-//                    }
-//
-//                    override fun onNegativeButtonClick(dialog: DialogInterface) {
-//                        val params: HashMap<String, String> = HashMap()
-//                        params["id"] = responseData.request.id.toString()
-//                        params["status"] = DROPPED
-//                        params["_method"] = "PATCH"
-//                        params["toll_price"] = "0"
-//                        mViewModel.taxiDroppingStatus(params)
-//                        dialog.dismiss()
-//                    }
-//                })
-//            } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
         }
 
         drawRoute(LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!),
@@ -672,7 +614,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         if (location != null) {
             mViewModel.latitude.value = location.latitude
             mViewModel.longitude.value = location.longitude
+            if (mViewModel.latitude.value!! == 0.0 && mViewModel.longitude.value!! == 0.0)
+                updateCurrentLocation()
             println("RRRR :: TaxiDashboardActivity " + mViewModel.latitude.value + " :: " + mViewModel.longitude.value)
+
             if (roomConnected) {
                 val locationObj = JSONObject()
                 locationObj.put("latitude", location.latitude)
@@ -682,14 +627,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 Log.e("SOCKET", "SOCKET_SK Location update called")
             }
 
-            if (checkStatusApiCounter++ % 3 == 0)
-                if (location.latitude > 0 && location.longitude > 0)
-                    mViewModel.callTaxiCheckStatusAPI() else updateCurrentLocation()
+            if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
 
             if (startLatLng.latitude > 0) endLatLng = startLatLng
-            startLatLng = LatLng(location.latitude, location.longitude)
+            startLatLng = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
 
-            println("RRRR :: TaxiDashboardActivity LatLng(location = ${LatLng(location.latitude, location.longitude)}")
+            println("RRRR :: TaxiDashboardActivity LatLng(location = ${LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)}")
 
             if (mViewModel.latitude.value!! > 0 && endLatLng.latitude > 0 && polyLine.size > 0) {
                 try {
@@ -754,7 +697,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             distanceProcessing.distance = distanceProcessing.distance + leg.distance.value
 
         values.add(distanceProcessing)
-        distanceApiCallCount++
         mViewModel.distanceApiProcessing.postValue(values)
     }
 
@@ -801,8 +743,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         val values: ArrayList<DistanceApiProcessing> = arrayListOf()
         values.add(distanceProcessing)
         mViewModel.distanceApiProcessing.postValue(values)
-
-        distanceApiCallCount++
 
         println("RRR whenDirectionFail = $statusCode")
         when (statusCode) {
@@ -972,37 +912,38 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun locationProcessing(latLng: ArrayList<LatLng>) {
         println("GGGG :: locationProcessing = " + latLng.size)
 
-        iteratePointsForApi.add(latLng[0])
+        mViewModel.iteratePointsForApi.add(latLng[0])
         for (i in latLng.indices) if (i < latLng.size - 1)
-            iteratePointsForApi(latLng[i], latLng[i + 1])
-        iteratePointsForApi.add(latLng[latLng.size - 1])
-        longLog(Gson().toJson(iteratePointsForApi), "BBB")
-        println("GGGG :: locationProcessing::iteratePointsForApi = " + iteratePointsForApi.size)
+            iteratePointsApi(latLng[i], latLng[i + 1])
+        mViewModel.iteratePointsForApi.add(latLng[latLng.size - 1])
+        longLog(Gson().toJson(mViewModel.iteratePointsForApi), "BBB")
+        println("GGGG :: locationProcessing::iteratePointsApi = " + mViewModel.iteratePointsForApi.size)
 
         iteratePointsForDistanceCalc.add(latLng[0])
-        for (i in iteratePointsForApi.indices) if (i < iteratePointsForApi.size - 1)
-            iteratePointsForDistanceCal(iteratePointsForApi[i], iteratePointsForApi[i + 1])
+        for (i in mViewModel.iteratePointsForApi.indices) if (i < mViewModel.iteratePointsForApi.size - 1)
+            iteratePointsForDistanceCal(mViewModel.iteratePointsForApi[i], mViewModel.iteratePointsForApi[i + 1])
         iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
         println("GGGG :: locationProcessing::iteratePointsForDistanceCalc = " + iteratePointsForDistanceCalc.size)
 
         try {
-            googleApiCall(iteratePointsForApi)
+            distanceApiCallCount = 0
+            googleApiCall(mViewModel.iteratePointsForApi)
 //            googleApiCall(iteratePointsForDistanceCalc)
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
-    private fun iteratePointsForApi(s: LatLng, e: LatLng) {
+    private fun iteratePointsApi(s: LatLng, e: LatLng) {
         var dist = distBt(s, e)
         if (dist >= iterationDistForApi) {
-            iteratePointsForApi.add(e)
+            mViewModel.iteratePointsForApi.add(e)
             tempPoint = null
         } else if (tempPoint != null) {
             dist = distBt(tempPoint!!, e)
             if (dist >= iterationDistForApi) {
-                iteratePointsForApi.add(e)
+                mViewModel.iteratePointsForApi.add(e)
                 tempPoint = null
             }
         } else tempPoint = s

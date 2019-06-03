@@ -1,149 +1,180 @@
 {
   "project_info": {
-    "project_number": "602657530672",
-    "firebase_url": "https://gojek-234610.firebaseio.com",
-    "project_id": "gojek-234610",
-    "storage_bucket": "gojek-234610.appspot.com"
+    "project_number": "708455232400",
+    "firebase_url": "https://noted-amphora-240206.firebaseio.com",
+    "project_id": "noted-amphora-240206",
+    "storage_bucket": "noted-amphora-240206.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:602657530672:android:f63d7c60ca85b2a8",
+        "mobilesdk_app_id": "1:708455232400:android:a8118978f9e3c27a",
         "android_client_info": {
-          "package_name": "com.appoets.gojek.provider"
+          "package_name": "com.gox.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "602657530672-bi7qko89s2aj5kcf5p5kubprbupdenr1.apps.googleusercontent.com",
+          "client_id": "708455232400-jckr3csttno8mchokg8dklo6n0059abp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.appoets.gojek.provider",
-            "certificate_hash": "21f915f6f2499b05689b1c0042d6dfc631bca4dc"
+            "package_name": "com.gox.app",
+            "certificate_hash": "0fc76c03151d8f5a39a655c90281b2a7f91df54b"
           }
         },
         {
-          "client_id": "602657530672-64v6kp59idfloruuviflcj2pfo96gp7d.apps.googleusercontent.com",
+          "client_id": "708455232400-k8ngn499u7q5g1ql61sfi25eooao1b55.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.appoets.gojek.provider",
-            "certificate_hash": "30efe85527ec08ad1d3cc661325ede4466f32919"
-          }
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "602657530672-iecjpa7qljsr3npsjctlbaq8fm3ch4lb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "602657530672-jdf357auu7q2ibehlrdp358bmh1it6e2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.xjek.user"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:602657530672:android:7332ce63dd017716",
-        "android_client_info": {
-          "package_name": "com.xjek.provider"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "602657530672-b8hbpldjc8af1re1b8pcifrq3j1fgeuq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.xjek.provider",
-            "certificate_hash": "21f915f6f2499b05689b1c0042d6dfc631bca4dc"
-          }
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "602657530672-iecjpa7qljsr3npsjctlbaq8fm3ch4lb.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "602657530672-jdf357auu7q2ibehlrdp358bmh1it6e2.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.xjek.user"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:602657530672:android:7c0665dc081e2c4b",
-        "android_client_info": {
-          "package_name": "com.xjek.user"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "602657530672-vlrnghll1dq82ms755sgp12c4gh7lt76.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.xjek.user",
-            "certificate_hash": "d6531e3f8080099f506d8579fe5b3fafaba89327"
-          }
-        },
-        {
-          "client_id": "602657530672-395klb9aev2j952qanqrr39hs8gouk8l.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.xjek.user",
+            "package_name": "com.gox.app",
             "certificate_hash": "84bd8014da2449f0585dbab22d05c16f7a0a0703"
           }
-        },
-        {
-          "client_id": "602657530672-5f4dufu7hrrck7ec66voiejh7a6vj6h7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.xjek.user",
-            "certificate_hash": "f2681ec443d1db5ad8c1abe63e800774b27aa6e9"
-          }
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ"
+          "current_key": "AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "602657530672-iecjpa7qljsr3npsjctlbaq8fm3ch4lb.apps.googleusercontent.com",
+              "client_id": "708455232400-1069asopqf5h2ost292afl8nbgl81me6.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "602657530672-jdf357auu7q2ibehlrdp358bmh1it6e2.apps.googleusercontent.com",
+              "client_id": "708455232400-afu88l8aj17tbnlt4j99b4lv14ejfbvt.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.xjek.user"
+                "bundle_id": "com.gojekclone.partner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708455232400:android:2e18c0be034b8ed9",
+        "android_client_info": {
+          "package_name": "com.gox.partner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708455232400-1069asopqf5h2ost292afl8nbgl81me6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "708455232400-afu88l8aj17tbnlt4j99b4lv14ejfbvt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gojekclone.partner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708455232400:android:3dea4c9ae114164c",
+        "android_client_info": {
+          "package_name": "com.goxtaxi.provider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708455232400-m2c0tqa58trngk3g805d64lsgr5kg1mo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.goxtaxi.provider",
+            "certificate_hash": "38152bcc1f6a75f55bf5ba9aa620fba478dcf2b9"
+          }
+        },
+        {
+          "client_id": "708455232400-2j6fkr1dti6g4902oehsct28c9ti3ubt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.goxtaxi.provider",
+            "certificate_hash": "84bd8014da2449f0585dbab22d05c16f7a0a0703"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708455232400-1069asopqf5h2ost292afl8nbgl81me6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "708455232400-afu88l8aj17tbnlt4j99b4lv14ejfbvt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gojekclone.partner"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708455232400:android:70ff3a95be9a45fd",
+        "android_client_info": {
+          "package_name": "com.goxtaxi.user"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708455232400-g9i6cbm9c77l90ctdvtm2gmlgfq5t8ls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.goxtaxi.user",
+            "certificate_hash": "28c77812f9feed3bb8b1ee4c2771359cc00ff295"
+          }
+        },
+        {
+          "client_id": "708455232400-g8s71buiui0sbf4tdlq83kamrl1ntn29.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.goxtaxi.user",
+            "certificate_hash": "84bd8014da2449f0585dbab22d05c16f7a0a0703"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708455232400-1069asopqf5h2ost292afl8nbgl81me6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "708455232400-afu88l8aj17tbnlt4j99b4lv14ejfbvt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gojekclone.partner"
               }
             }
           ]

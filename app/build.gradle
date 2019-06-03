@@ -8,8 +8,18 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
+
+    signingConfigs {
+        release {
+            keyAlias 'gox_android_provider'
+            keyPassword 'gox_android_provider'
+            storeFile file('jks/gox_android_provider.jks')
+            storePassword 'gox_android_provider'
+        }
+    }
+
     defaultConfig {
-        applicationId "com.xjek.provider"
+        applicationId "com.gox.partner"
         // Android 4.1 or newer is required since Google sign-in is integrated in the Android app.
         minSdkVersion 21
         targetSdkVersion 28
@@ -25,14 +35,14 @@ android {
         resValue("string", "app_name", "GoX Provider")
         resValue("string", "google_signin_server_client_id","602657530672-otdsmtkdip8bvf3miqhcfcdpn2mp6qr2.apps.googleusercontent.com")
         resValue("string", "facebook_app_id", "394261008038577")
+        resValue("string", "facebook_accountkit_id", "86a614c0d50f8e010c15b3b92a26dfb4")
         resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
-        resValue("string", "stripe_key", "pk_test_DbfzA8Pv1MDErUiHakK9XfLe")
-        buildConfigField "String", "BASE_URL", '"https://api.gox.network/"'
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     // Configured Java 8 language features for each module.

@@ -1,6 +1,7 @@
 package com.gox.partner.views.signup
 
 import androidx.lifecycle.MutableLiveData
+import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
@@ -63,7 +64,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         val signupParams = HashMap<String, RequestBody>()
         signupParams.put(WebApiConstants.SALT_KEY, RequestBody.create(MediaType.parse("text/plain"), "MQ=="))
         signupParams.put(WebApiConstants.Signup.DEVICE_TYPE, RequestBody.create(MediaType.parse("text/plain"), Enums.DEVICE_TYPE))
-        signupParams.put(WebApiConstants.Signup.DEVICE_TOKEN, RequestBody.create(MediaType.parse("text/plain"), readPreferences(PreferencesKey.DEVICE_TOKEN, "123")!!))
+        signupParams.put(WebApiConstants.Signup.DEVICE_TOKEN, RequestBody.create(MediaType.parse("text/plain"), BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")!!))
         signupParams.put(WebApiConstants.Signup.LOGIN_BY, RequestBody.create(MediaType.parse("text/plain"), loginby.value.toString()))
         signupParams.put(WebApiConstants.Signup.FIRST_NAME, RequestBody.create(MediaType.parse("text/plain"), firstName.value.toString()))
         signupParams.put(WebApiConstants.Signup.LAST_NAME, RequestBody.create(MediaType.parse("text/plain"), lastName.value.toString()))

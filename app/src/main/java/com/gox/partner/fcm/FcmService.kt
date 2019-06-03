@@ -1,5 +1,6 @@
 package com.gox.partner.fcm
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -25,6 +26,7 @@ class FcmService : FirebaseMessagingService() {
 
     private lateinit var mUrlPersistence: SharedPreferences
 
+    @SuppressLint("CommitPrefEdits")
     override fun onNewToken(token: String?) {
         super.onNewToken(token)
         mUrlPersistence = BaseApplication.run { getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE) }
@@ -37,15 +39,10 @@ class FcmService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-        Log.d(tagName, "msg: $remoteMessage")
-        val content = Gson().toJson(remoteMessage?.data)
-        Log.d(tagName, "jsonContent: $content")
-
-//        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-//        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//        val mBuilder = NotificationCompat.Builder(this, channelId)
-
-        sendNotification(remoteMessage.toString())
+        if (remoteMessage?.notification != null)
+            sendNotification(remoteMessage?.notification?.body.toString())
+        else
+            sendNotification(remoteMessage?.data?.get("message").toString())
     }
 
     private fun sendNotification(messageBody: String) {

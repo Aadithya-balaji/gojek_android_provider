@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="firebase_database_url" translatable="false">https://gojek-234610.firebaseio.com</string>
-    <string name="gcm_defaultSenderId" translatable="false">602657530672</string>
-    <string name="google_api_key" translatable="false">AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ</string>
-    <string name="google_app_id" translatable="false">1:602657530672:android:7332ce63dd017716</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBT6iRI75C8l71oviGG0isSmv-Xzt62ffQ</string>
-    <string name="google_storage_bucket" translatable="false">gojek-234610.appspot.com</string>
-    <string name="project_id" translatable="false">gojek-234610</string>
+    <string name="firebase_database_url" translatable="false">https://noted-amphora-240206.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">708455232400</string>
+    <string name="google_api_key" translatable="false">AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY</string>
+    <string name="google_app_id" translatable="false">1:708455232400:android:2e18c0be034b8ed9</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY</string>
+    <string name="google_storage_bucket" translatable="false">noted-amphora-240206.appspot.com</string>
+    <string name="project_id" translatable="false">noted-amphora-240206</string>
 </resources>

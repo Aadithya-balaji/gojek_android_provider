@@ -6,32 +6,26 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
+
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // Configured the app to use vector support libraries with all Android platform versions
-        // back to Android 2.1 (API level 7+).
         vectorDrawables.useSupportLibrary = true
 
-        //      Go-X official KEY
         resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
-        //      Temp Key
-//        resValue("string", "google_map_key", "AIzaSyArFGZVGMsdJvHRezGfYMv-pkvvl0XKZLE")
-//        resValue("string", "google_map_key", "AIzaSyCZybR1LjXmLugPxvVyXpn173am_JYpdN4")
-        buildConfigField("String", "BASE_URL", "\"https://api.gox.network/\"")
-//            buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
+        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
         buildConfigField("String", "SALT_KEY", "\"MQ==\"")
 
     }
+
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField("String", "SALT_KEY", "\"MQ==\"")
-            buildConfigField("String", "STRIPE_KEY", "\"pk_test_DbfzA8Pv1MDErUiHakK9XfLe\"")
         }
     }
 

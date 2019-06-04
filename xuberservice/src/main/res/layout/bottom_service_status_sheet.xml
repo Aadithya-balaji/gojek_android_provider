@@ -90,7 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
+                    android:contentDescription="@string/app_name"
                     android:id="@+id/ivXuperUSer"
                     android:layout_width="@dimen/_34sdp"
                     android:layout_height="@dimen/_34sdp"

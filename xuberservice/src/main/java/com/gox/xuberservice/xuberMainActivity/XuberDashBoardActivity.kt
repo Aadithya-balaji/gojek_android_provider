@@ -505,7 +505,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.llBottomService.llConfirm.tvAllow.text = ARRIVED
         mBinding.llBottomService.llConfirm.tvCancel.text = CANCEL
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), mViewModel.polyLineSrc.value!!)
-        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, true)
+        writePreferences(PreferencesKey.CAN_SEND_LOCATION, true)
     }
 
     //When ride arrived
@@ -518,7 +518,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         else mBinding.llBottomService.fbCamera.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvAllow.text = START
-        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
+        writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
     }
 
     private fun whenStarted() {
@@ -530,7 +530,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.llBottomService.llServiceTime.visibility = View.VISIBLE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvAllow.text = COMPLETED
-        writePreferences(PreferencesKey.CAN_SAVE_LOCATION, false)
+        writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
     }
 
     //After Payment Successful

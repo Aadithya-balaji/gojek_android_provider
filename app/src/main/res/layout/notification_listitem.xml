@@ -24,7 +24,8 @@
                 android:padding="@dimen/_5sdp">
 
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <ImageView
+                    android:contentDescription="@string/app_name"
                     android:id="@+id/notification_img"
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"

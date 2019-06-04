@@ -22,7 +22,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    // Configured Java 8 language features for each module.
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -36,14 +36,13 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    // The data binding library for Kotlin that allows to bind UI components in your layouts to
-    // data sources.
     kapt "com.android.databinding:compiler:$compiler_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
-    // Permission check lib compiler
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
+
+    //      Permission check lib compiler
     kapt "com.github.hotchemi:permissionsdispatcher-processor:4.1.0"
 
-    // Added dependent library modules into the Android app module.
+    //      Added dependent library modules into the Android app module.
     implementation project(':base')
 
     testImplementation 'junit:junit:4.12'

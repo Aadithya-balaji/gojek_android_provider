@@ -25,7 +25,8 @@
             android:textColor="@color/xuber_black"
             android:textSize="@dimen/_14sdp" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
+            android:contentDescription="@string/app_name"
             android:id="@+id/ivXuperRatingUser"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"

@@ -263,7 +263,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     private fun showPendingListDialog() {
         pendingListDialog?.show(activity!!.supportFragmentManager, "pendinglist")
-        pendingListDialog?.isCancelable = true
+        pendingListDialog?.isCancelable = false
     }
 
     private fun changeView(isOnline: Boolean) {

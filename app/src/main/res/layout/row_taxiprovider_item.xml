@@ -31,7 +31,8 @@
                 android:paddingLeft="@dimen/_8sdp"
                 android:paddingRight="@dimen/_8sdp">
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <ImageView
+                    android:contentDescription="@string/app_name"
                     android:id="@+id/profile_image"
                     android:layout_width="60dp"
                     android:layout_height="60dp"

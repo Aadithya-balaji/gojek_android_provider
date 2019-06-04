@@ -165,7 +165,8 @@
                             android:onClick="@{() -> registermodel.getImage()}"
                             android:padding="@dimen/_5sdp">
 
-                            <de.hdodenhof.circleimageview.CircleImageView
+                            <ImageView
+                                android:contentDescription="@string/app_name"
                                 android:id="@+id/profile_image"
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_50sdp"

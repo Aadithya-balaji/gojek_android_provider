@@ -31,9 +31,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     private var dialogType: Int? = 0
     private var shown: Boolean? = false
 
-    override fun getLayout(): Int {
-        return R.layout.pending_list_dialog
-    }
+    override fun getLayout() = R.layout.pending_list_dialog
 
     override fun onStart() {
         super.onStart()
@@ -88,23 +86,9 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
         }
 
 
-        pendingListDialogBinding.tvAddService.visibility = if (isServiceNeed == 0) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        pendingListDialogBinding.tvAddDocument.visibility = if (isDocumentNeed == 0) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-        pendingListDialogBinding.tvBankDetails.visibility = if (isBankDetailNeed == 0) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
-
-
+        pendingListDialogBinding.tvAddService.visibility = (if (isServiceNeed == 0) View.VISIBLE else View.GONE)
+        pendingListDialogBinding.tvAddDocument.visibility = (if (isDocumentNeed == 0) View.VISIBLE else View.GONE)
+        pendingListDialogBinding.tvBankDetails.visibility = (if (isBankDetailNeed == 0) View.VISIBLE else View.GONE)
     }
 
     /*fun getBundleArugment() {
@@ -114,18 +98,13 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
         dialogType = if (arguments != null && arguments!!.containsKey("TYPE")) arguments!!.getInt("TYPE") else -1
     }*/
 
-    fun isShown(): Boolean {
-        return shown!!
-    }
+    fun isShown() = shown!!
 
     override fun pickItem(view: View) {
         when (view.id) {
             R.id.tv_add_document -> startActivity(Intent(dashBoardActivity, ManageDocumentsActivity::class.java))
 
-            R.id.tv_bank_details -> {
-                val intent = Intent(dashBoardActivity, ManageBankDetailsActivity::class.java)
-                startActivity(intent)
-            }
+            R.id.tv_bank_details -> startActivity(Intent(dashBoardActivity, ManageBankDetailsActivity::class.java))
 
             R.id.tv_add_service -> startActivity(Intent(dashBoardActivity, ManageServicesActivity::class.java))
 

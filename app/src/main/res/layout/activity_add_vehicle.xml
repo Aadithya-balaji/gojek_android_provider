@@ -218,7 +218,8 @@
                     </androidx.appcompat.widget.LinearLayoutCompat>
                 </androidx.cardview.widget.CardView>
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
+                    android:contentDescription="@string/app_name"
                     android:id="@+id/iv_vehicle"
                     android:layout_width="90dp"
                     android:layout_height="90dp"

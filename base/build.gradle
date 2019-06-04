@@ -16,7 +16,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
-        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
+//        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
+        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
         buildConfigField("String", "SALT_KEY", '"MQ=="')
 
     }

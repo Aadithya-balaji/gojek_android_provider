@@ -2,10 +2,13 @@ package com.gox.base.base
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.lifecycle.MutableLiveData
 import com.facebook.stetho.Stetho
+import com.gox.base.BatteryChangeReceiver
 import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesHelper
 import com.gox.base.di.BaseComponent
@@ -19,6 +22,7 @@ import com.testfairy.TestFairy
 open class BaseApplication : Application(), InternetConnectivityListener {
 
     private var mMonitorInternet: MonitorInternet? = null
+    private var batteryChangeReceiver: BatteryChangeReceiver? = null
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(LocaleUtils.setLocale(base!!))
@@ -44,6 +48,10 @@ open class BaseApplication : Application(), InternetConnectivityListener {
         PreferencesHelper.setDefaultPreferences(this)
         preferences = getSharedPreferences(Constants.CUSTOM_PREFERENCE, Context.MODE_PRIVATE)
         TestFairy.begin(this, "SDK-OHDYC1Nx")
+
+        batteryChangeReceiver = BatteryChangeReceiver()
+
+        registerReceiver(batteryChangeReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
     }
 
     companion object {
@@ -60,6 +68,7 @@ open class BaseApplication : Application(), InternetConnectivityListener {
     override fun onLowMemory() {
         super.onLowMemory()
         MonitorInternet.instance!!.removeAllInternetConnectivityChangeListeners()
+        unregisterReceiver(batteryChangeReceiver)
     }
 
     override fun onInternetConnectivityChanged(isConnected: Boolean) {

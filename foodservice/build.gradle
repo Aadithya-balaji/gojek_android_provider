@@ -14,17 +14,16 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // Configured the app to use vector support libraries with all Android platform versions
-        // back to Android 2.1 (API level 7+).
         vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    // Configured Java 8 language features for each module.
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -38,17 +37,14 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    // The data binding library for Kotlin that allows to bind UI components in your layouts to
-    // data sources.
     kapt "com.android.databinding:compiler:$compiler_version"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-    // Added dependent library modules into the Android app module.
     implementation project(':base')
+    implementation 'me.philio:pinentryview:1.0.6'
+    implementation ('com.alimuzaffar.lib:pinentryedittext:2.0.6')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'me.philio:pinentryview:1.0.6'
-    implementation ('com.alimuzaffar.lib:pinentryedittext:2.0.6')
 }

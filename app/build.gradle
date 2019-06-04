@@ -20,24 +20,21 @@ android {
 
     defaultConfig {
         applicationId "com.gox.partner"
-        // Android 4.1 or newer is required since Google sign-in is integrated in the Android app.
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // Configured the app to use vector support libraries with all Android platform versions
-        // back to Android 2.1 (API level 7+).
         vectorDrawables.useSupportLibrary = true
-        // Setup your app project to use a multi-dex configuration if your minSdkVersion is set
-        // to 21 or higher.
         multiDexEnabled true
+
         resValue("string", "app_name", "GoX Provider")
         resValue("string", "google_signin_server_client_id","602657530672-otdsmtkdip8bvf3miqhcfcdpn2mp6qr2.apps.googleusercontent.com")
         resValue("string", "facebook_app_id", "394261008038577")
         resValue("string", "facebook_accountkit_id", "86a614c0d50f8e010c15b3b92a26dfb4")
         resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -45,7 +42,7 @@ android {
             signingConfig signingConfigs.release
         }
     }
-    // Configured Java 8 language features for each module.
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -64,8 +61,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
-    // The data binding library for Kotlin that allows to bind UI components in your layouts to
-    // data sources.
     kapt "com.android.databinding:compiler:$compiler_version"
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha05'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
@@ -73,27 +68,37 @@ dependencies {
 
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.android.support:multidex:1.0.3'
-    // Basic design support library
+
+    //      Basic design support library
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    // android dimen support
+
+    //      android dimen support
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+
     /*      Glide       */
     implementation 'com.github.bumptech.glide:glide:4.9.0'
+
     /* square image */
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
-    // Circle with elevation image
+
+    //      Circle with elevation image
     implementation 'com.mikhaellopez:circularimageview:3.2.0'
-    // Circle image with no elevation
+
+    //      Circle image with no elevation
     implementation 'de.hdodenhof:circleimageview:3.0.0'
-    // ViewPager Animation
+
+    //      ViewPager Animation
     implementation 'com.novoda:spritz:1.0.0'
     implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
-    //Facebook Account Kit
+
+    //      Facebook Account Kit
     implementation 'com.facebook.android:account-kit-sdk:4.39.0'
-    //Facebook Login
+
+    //      Facebook Login
     implementation 'com.facebook.android:facebook-login:4.39.0'
-    // Added dependent library modules into the Android app module.
+
+    //      Added dependent library modules into the Android app module.
     implementation 'com.github.recruit-lifestyle:FloatingView:2.4.4'
 
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.3.0"
@@ -110,4 +115,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
 apply plugin: 'com.google.gms.google-services'

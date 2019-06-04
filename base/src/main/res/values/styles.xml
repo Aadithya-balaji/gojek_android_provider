@@ -1,10 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="ImageRatingBar" parent="@style/Widget.AppCompat.RatingBar.Small">
-        <item name="android:progressDrawable">@drawable/rating_selector</item>
-        <item name="android:minHeight">50dp</item>
-        <item name="android:maxHeight">50dp</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--App Module-->
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorBasePrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="toolbarStyle">@style/CustomToolBarStyle</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDisablePreview">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:windowBackground">@null</item>
     </style>
+
+    <style name="CustomToolBarStyle" parent="@style/Widget.AppCompat.Toolbar">
+        <item name="background">@android:color/white</item>
+        <item name="titleTextColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
+    </style>
+
+    <style name="selectedTabButton" parent="@style/Widget.AppCompat.Button">
+        <item name="android:textColor">@color/colorBasePrimary</item>
+        <item name="android:background">@drawable/custom_roundcorner_selectedorder</item>
+    </style>
+
+    <style name="unSelectedTabButton" parent="@style/Widget.AppCompat.Button">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:background">@drawable/custom_roundcorner_unselectedorder</item>
+    </style>
+
+
+    <style name="Theme.ImageCropper" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorBasePrimary</item>
+    </style>
+
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/xuber_white</item>
+        <item name="colorControlActivated">@color/colorBasePrimary</item>
+    </style>
+
+
+    <style name="Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="backgroundTint">@color/colorBasePrimary</item>
+    </style>
+
+    <style name="TabLayoutStyle" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@color/light_grey</item>
+    </style>
+
+    <!--Toolbar Theme-->
+    <style name="Theme.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:fontFamily">@font/avenir_lt_std_medium</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <!--TextInputLayout Theme-->
+    <style name="Theme.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxBackgroundColor">@color/colorBoxBackground</item>
+        <item name="boxStrokeColor">@color/colorBoxStroke</item>
+        <item name="boxCornerRadiusBottomStart">25dp</item>
+        <item name="boxCornerRadiusBottomEnd">25dp</item>
+        <item name="boxCornerRadiusTopStart">25dp</item>
+        <item name="boxCornerRadiusTopEnd">25dp</item>
+        <item name="hintTextColor">@color/colorOverflowText</item>
+        <item name="android:textColorHint">@color/colorHintText</item>
+    </style>
+
+    <style name="Theme.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
+        <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:textColor">@color/colorCounterText</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--TextView Theme-->
+    <style name="Theme.TextView.Normal" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--TextView Theme-->
+    <style name="Theme.TextView.Medium" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--TextView Theme-->
+    <style name="Theme.TextView.Small" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <!--TextView Theme-->
+    <style name="Theme.TextView.Normal.Gray" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
+        <item name="android:textColor">@color/colorGray</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--TextView Theme-->
+    <style name="Theme.TextView.Medium.Gray" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
+        <item name="android:textColor">@color/colorGray</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!--TextView Theme-->
+    <style name="Theme.TextView.Small.Gray" parent="Widget.AppCompat.TextView">
+        <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
+        <item name="android:textColor">@color/colorGray</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Edittext_OutlinedTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/et_stroke_color</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/boxCornerRadius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/boxCornerRadius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/boxCornerRadius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/boxCornerRadius</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="hintTextAppearance">@style/AppTheme.TextFloatLabelAppearance</item>
+        <item name="errorTextAppearance">@style/AppTheme.TextErrorAppearance</item>
+        <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
+        <item name="hintTextColor">@color/light_grey</item>
+        <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
+    </style>
+
+    <style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">
+        <!-- Floating label appearance here -->
+        <item name="android:textColor">@color/colorGray</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+
+    <style name="AppTheme.TextErrorAppearance" parent="TextAppearance.Design.Error">
+        <!-- Error message appearance here -->
+        <item name="android:textColor">#ff0000</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="LibAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:colorBackground">@android:color/background_light</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <style name="PickerTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@color/colorPrimary</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMaxWidth">0dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="SmoothCheckBoxStyle">
+        <item name="color_checked">@color/checkbox_color</item>
+        <item name="color_unchecked">@android:color/white</item>
+        <item name="color_unchecked_stroke">@color/checkbox_unchecked_color</item>
+        <item name="color_tick">@android:color/white</item>
+    </style>
+
+
+    <style name="BottomNavigationTheme"
+        parent="Widget.Design.BottomNavigationView">
+        <item name="fontFamily">@font/avenirltstd_medium</item>
+    </style>
+
+    <!--Base Module-->
 
     <style name="AlertDialogTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -14,14 +202,134 @@
 
     </style>
 
-    <style name="CustomToolBarStyle" parent="@style/Widget.AppCompat.Toolbar">
-        <item name="background">@android:color/white</item>
-        <item name="titleTextColor">@android:color/black</item>
-    </style>
-
     <style name="DialogCustomTheme" parent="android:Theme.Holo.Dialog.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
     </style>
+
+
+    <!--Taxi Module-->
+
+    <style name="CustomBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="share_dialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
+    </style>
+
+    <style name="RatingTheme" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorTaxiYellow</item>
+    </style>
+
+    <style name="MyAnimation.Window" parent="@android:style/Animation.Activity">
+        <item name="android:windowEnterAnimation">@anim/dialog_anim_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_anim_out</item>
+    </style>
+
+    <style name="TaxiRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/colorTaxiYellow</item>
+        <item name="colorControlActivated">@color/colorTaxiYellow</item>
+    </style>
+
+    <style name="CustomDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
+    </style>
+
+
+    <!--Foodie Module-->
+
+    <style name="MediumText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
+    </style>
+
+    <style name="SmallText" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
+    </style>
+
+
+    <style name="FoodieRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/light_grey</item>
+        <item name="colorControlActivated">@color/colorTaxiYellow</item>
+    </style>
+
+    <style name="customRatingBar" parent="android:style/Widget.Material.RatingBar.Small">
+        <item name="android:progressTint" tools:targetApi="lollipop">@color/duskYellow</item>
+
+    </style>
+
+    <style name="xuberRatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/xuber_grey</item>
+        <item name="colorControlActivated">@color/colorTaxiYellow</item>
+    </style>
+
+
+    <style name="MediumText.Black" parent="MediumText">
+        <item name="android:textColor">@color/xuber_black</item>
+    </style>
+
+
+    <style name="MediumText.colorTaxiPrimary" parent="MediumText">
+        <item name="android:textColor">@color/xuber_button_blue</item>
+    </style>
+
+
+    <style name="SmallText.Black" parent="SmallText">
+        <item name="android:textColor">@color/xuber_black</item>
+    </style>
+
+    <style name="SmallText.Grey" parent="SmallText">
+        <item name="android:textColor">@color/xuber_darkgrey</item>
+    </style>
+
+
+    <style name="SmallText.colorWhite" parent="SmallText">
+        <item name="android:textColor">@color/xuber_white</item>
+    </style>
+
+    <style name="VerySmallText" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
+    </style>
+
+    <style name="VerySmallText.Black" parent="VerySmallText">
+        <item name="android:textColor">@color/xuber_black</item>
+    </style>
+
+    <style name="VerySmallText.colorTaxiPrimary" parent="VerySmallText">
+        <item name="android:textColor">@color/xuber_button_blue</item>
+    </style>
+
+    <style name="VerySmallText.colorTaxiWhite" parent="VerySmallText">
+        <item name="android:textColor">@color/xuber_white</item>
+    </style>
+
+    <color name="duskYellow">#ffa200</color>
+
+
 
 </resources>

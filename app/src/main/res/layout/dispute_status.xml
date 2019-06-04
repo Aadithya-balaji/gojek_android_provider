@@ -23,6 +23,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@color/xuber_white"
             android:elevation="5dp"
+            app:titleTextAppearance="@style/MediumText"
             app:contentInsetEnd="0dp"
             app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp"

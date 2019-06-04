@@ -18,6 +18,7 @@ import com.gox.base.BuildConfig
 import com.gox.base.R
 import com.gox.base.base.BaseApplication
 import com.gox.base.data.PreferencesKey
+import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.splash.SplashActivity
 
 class FcmService : FirebaseMessagingService() {

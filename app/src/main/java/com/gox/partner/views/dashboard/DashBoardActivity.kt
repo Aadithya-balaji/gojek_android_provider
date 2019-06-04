@@ -43,7 +43,7 @@ import com.gox.base.utils.CommonMethods
 import com.gox.base.utils.LocationCallBack
 import com.gox.base.utils.LocationUtils
 import com.gox.base.utils.ViewUtils
-import com.gox.partner.utils.floatingview.ChatHeadService
+import com.gox.partner.utils.floatingview.FloatingViewService
 import com.gox.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityDashboardBinding
@@ -397,7 +397,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 throw RuntimeException("Do not set Activity to landscape")
         }
 
-        ContextCompat.startForegroundService(activity, Intent(activity, ChatHeadService::class.java))
+        ContextCompat.startForegroundService(activity, Intent(activity, FloatingViewService::class.java))
     }
 
     override fun getInstance(): DashBoardActivity = this@DashBoardActivity

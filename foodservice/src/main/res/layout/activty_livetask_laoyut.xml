@@ -10,7 +10,7 @@
 
         <variable
             name="foodLiveTaskviewModel"
-            type="com.gox.foodservice.ui.dashboard.FoodLiveTaskServiceViewModel" />
+            type="com.gox.foodservice.ui.dashboard.FoodieDashboardViewModel" />
     </data>
 
     <RelativeLayout

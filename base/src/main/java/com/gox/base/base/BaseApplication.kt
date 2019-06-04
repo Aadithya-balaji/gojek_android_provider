@@ -54,8 +54,8 @@ open class BaseApplication : Application(), InternetConnectivityListener {
         val getBaseApplicationContext: Context get() = baseApplication
         private val monitorInternetLiveData = MutableLiveData<Boolean>()
         val getInternetMonitorLiveData: MutableLiveData<Boolean> get() = monitorInternetLiveData
+        var isNetworkAvailable = false
     }
-
 
     override fun onLowMemory() {
         super.onLowMemory()
@@ -65,5 +65,6 @@ open class BaseApplication : Application(), InternetConnectivityListener {
     override fun onInternetConnectivityChanged(isConnected: Boolean) {
         println("isConnected = $isConnected")
         getInternetMonitorLiveData.value = isConnected
+        isNetworkAvailable = isConnected
     }
 }

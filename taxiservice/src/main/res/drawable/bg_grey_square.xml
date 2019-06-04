@@ -4,7 +4,6 @@
 
     <solid android:color="@color/taxi_bg_grey" />
 
-
     <corners
         android:bottomLeftRadius="@dimen/_8sdp"
         android:bottomRightRadius="@dimen/_8sdp"

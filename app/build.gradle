@@ -47,6 +47,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     dataBinding {
         enabled = true
     }
@@ -81,12 +82,6 @@ dependencies {
 
     /* square image */
     implementation 'com.github.siyamed:android-shape-imageview:0.9.3@aar'
-
-    //      Circle with elevation image
-    implementation 'com.mikhaellopez:circularimageview:3.2.0'
-
-    //      Circle image with no elevation
-    implementation 'de.hdodenhof:circleimageview:3.0.0'
 
     //      ViewPager Animation
     implementation 'com.novoda:spritz:1.0.0'

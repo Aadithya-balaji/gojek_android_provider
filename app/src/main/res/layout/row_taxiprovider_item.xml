@@ -6,7 +6,6 @@
 
     <data>
 
-
     </data>
 
     <androidx.cardview.widget.CardView
@@ -32,21 +31,20 @@
                 android:paddingRight="@dimen/_8sdp">
 
                 <ImageView
-                    android:contentDescription="@string/app_name"
                     android:id="@+id/profile_image"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/flower"
-                    app:civ_border_width="0dp" />
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/flower" />
 
                 <RelativeLayout
                     android:id="@+id/ll_rating"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_toRightOf="@+id/profile_image"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_toEndOf="@+id/profile_image"
                     android:orientation="vertical">
 
                     <TextView
@@ -84,15 +82,14 @@
                         app:orientation="horizontal"
                         app:rating="3.5" />
 
-
                     <TextView
                         android:id="@+id/tv_taxi_order_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
+
                 </RelativeLayout>
 
             </RelativeLayout>
@@ -102,8 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/_13sdp"
-                android:paddingRight="@dimen/_8sdp">
+                android:paddingStart="@dimen/_13sdp"
+                android:paddingEnd="@dimen/_8sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -132,7 +129,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:text="@string/label_schedule_date"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
@@ -143,10 +139,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_label_schedule"
                         android:layout_alignStart="@+id/tv_label_schedule"
-                        android:layout_alignLeft="@+id/tv_label_schedule"
                         android:layout_marginTop="@dimen/_1sdp"
-                        tools:text="12/02/2019"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_10sdp"
+                        tools:text="12/02/2019" />
+
                 </RelativeLayout>
 
                 <LinearLayout
@@ -172,9 +168,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:fontFamily="@font/avenirltstd_medium"
-                        tools:text="sdfdfdfdfdfdfdfdf dfdf"
                         android:textColor="@color/et_stroke_color"
-                        android:textSize="@dimen/_10sdp" />
+                        android:textSize="@dimen/_10sdp"
+                        tools:text="sdfdfdfdfdfdfdfdf dfdf" />
 
                     <TextView
                         android:id="@+id/tv_country"
@@ -182,8 +178,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:fontFamily="@font/avenirltstd_medium"
-                        tools:text="India"
-                        android:textColor="@color/et_stroke_color" />
+                        android:textColor="@color/et_stroke_color"
+                        tools:text="India" />
 
                 </LinearLayout>
 
@@ -218,6 +214,7 @@
                         android:textAllCaps="true"
                         android:textColor="@color/home_reject"
                         android:textSize="@dimen/_13sdp" />
+
                 </LinearLayout>
 
                 <View
@@ -242,9 +239,13 @@
                         android:textAllCaps="true"
                         android:textColor="@color/card_left_bg"
                         android:textSize="@dimen/_13sdp" />
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
 </layout>

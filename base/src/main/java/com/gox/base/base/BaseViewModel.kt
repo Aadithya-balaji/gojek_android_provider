@@ -1,9 +1,10 @@
 package com.gox.base.base
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.gox.base.data.NetworkError
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.disposables.CompositeDisposable
 import okhttp3.ResponseBody
 import org.json.JSONObject

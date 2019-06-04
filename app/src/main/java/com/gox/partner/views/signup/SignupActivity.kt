@@ -456,20 +456,14 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         signupViewmodel.email.value = email.toString()
         signupViewmodel.socialID.value = socialId
 
-        if (!signupViewmodel.firstName.value.isNullOrEmpty()) {
-            edtFirstName.isEnabled = false
-        } else if (!signupViewmodel.lastName.value.isNullOrEmpty()) {
-            edtLastName.isEnabled = false
-        } else if (!signupViewmodel.email.value.isNullOrEmpty()) {
-            edtEmail.isEnabled = false
-        }
+        if (!signupViewmodel.firstName.value.isNullOrEmpty()) edtFirstName.isEnabled = false
+        else if (!signupViewmodel.lastName.value.isNullOrEmpty()) edtLastName.isEnabled = false
+        else if (!signupViewmodel.email.value.isNullOrEmpty()) edtEmail.isEnabled = false
 
         signupViewmodel.loginby.value = "GOOGLE"
         tlPassword.visibility = View.GONE
 
-        val url = URL(profileImage.toString())
-        DownloadImage(this).execute(url.toString())
-
+        DownloadImage(this).execute(URL(profileImage.toString()).toString())
 
         Log.e("firstName", "==$socialFirstName")
         Log.e("email", "===$email")

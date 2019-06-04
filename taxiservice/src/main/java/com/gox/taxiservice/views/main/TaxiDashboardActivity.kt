@@ -25,6 +25,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -424,7 +425,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         Glide
                 .with(this)
-                .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                .applyDefaultRequestOptions(RequestOptions()
+                        .circleCrop()
                         .placeholder(R.drawable.ic_profile_placeholder)
                         .error(R.drawable.ic_profile_placeholder))
                 .load(responseData.request.user.picture)
@@ -470,7 +472,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         Glide
                 .with(this)
-                .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                .applyDefaultRequestOptions(RequestOptions()
+                        .circleCrop()
                         .placeholder(R.drawable.ic_profile_placeholder)
                         .error(R.drawable.ic_profile_placeholder))
                 .load(responseData.request.user.picture)
@@ -535,7 +538,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         Glide
                 .with(this)
-                .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                .applyDefaultRequestOptions(RequestOptions()
+                        .circleCrop()
                         .placeholder(R.drawable.ic_profile_placeholder)
                         .error(R.drawable.ic_profile_placeholder))
                 .load(responseData.request.user.picture)
@@ -698,10 +702,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         values.add(distanceProcessing)
         mViewModel.distanceApiProcessing.postValue(values)
-    }
-
-    private fun droppedApiCallProcessing(responseData: ResponseData) {
-
     }
 
     override fun whenDone(output: PolylineOptions) {

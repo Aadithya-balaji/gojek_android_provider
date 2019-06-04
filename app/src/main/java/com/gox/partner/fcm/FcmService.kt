@@ -1,6 +1,7 @@
 package com.gox.partner.fcm
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -13,7 +14,6 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
 import com.gox.base.BuildConfig
 import com.gox.base.R
 import com.gox.base.base.BaseApplication
@@ -31,21 +31,22 @@ class FcmService : FirebaseMessagingService() {
         super.onNewToken(token)
         mUrlPersistence = BaseApplication.run { getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE) }
 
-        Log.d(tagName, "onNewToken()")
         Log.d(tagName, "FireBaseRegToken: " + token!!)
         Log.e("FCMToken", "----$token")
+
         mUrlPersistence.edit().putString(PreferencesKey.DEVICE_TOKEN, token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
+        println("RRR push notification:: $remoteMessage")
         if (remoteMessage?.notification != null)
-            sendNotification(remoteMessage?.notification?.body.toString())
-        else
-            sendNotification(remoteMessage?.data?.get("message").toString())
+            sendNotification(remoteMessage.notification?.body.toString())
+        else sendNotification(remoteMessage?.data?.get("message").toString())
     }
 
     private fun sendNotification(messageBody: String) {
+        println("RRR push messageBody = $messageBody")
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -54,7 +55,7 @@ class FcmService : FirebaseMessagingService() {
         val channelId = getString(R.string.app_name)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_play_icon)
+                .setSmallIcon(R.mipmap.ic_launcher_round)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(messageBody)
                 .setAutoCancel(true)
@@ -72,5 +73,17 @@ class FcmService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
+
+    private fun isAppIsInBackground(context: Context): Boolean {
+        var isInBackground = true
+        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val runningProcesses = am.runningAppProcesses
+        for (processInfo in runningProcesses)
+            if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
+                for (activeProcess in processInfo.pkgList)
+                    if (activeProcess == context.packageName) isInBackground = false
+
+        return isInBackground
     }
 }

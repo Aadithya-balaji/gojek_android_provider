@@ -18,6 +18,7 @@ import com.gox.base.BuildConfig
 import com.gox.base.R
 import com.gox.base.base.BaseApplication
 import com.gox.base.data.PreferencesKey
+import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.splash.SplashActivity
 
 class FcmService : FirebaseMessagingService() {
@@ -46,7 +47,7 @@ class FcmService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(messageBody: String) {
-        val intent = Intent(this, SplashActivity::class.java)
+        val intent = Intent(this, DashBoardActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT)

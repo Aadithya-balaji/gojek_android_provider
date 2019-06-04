@@ -14,6 +14,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tbr_payment"
             android:layout_width="match_parent"
+            app:titleTextAppearance="@style/MediumText"
             android:layout_height="?attr/actionBarSize"
             app:contentInsetEnd="0dp"
             app:contentInsetStart="0dp"

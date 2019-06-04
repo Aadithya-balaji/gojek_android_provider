@@ -1,13 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
     <color name="colorBasePrimary" >#2676bc </color>
     <color name="colorBaseTheme">#2676bc </color>
     <color name="colorBaseWhite">#FFFFFF</color>
-
     <color name="colorTaxiYellow">#FFA200</color>
     <color name="schedule_blue_txt">#11aba9</color>
     <color name="dark_grey">#F2F2F2</color>
-
+    <color name="grey">#F2F2F2</color>
     <color name="colorBlack">#000000</color>
+
+
+    <!--App Module-->
+
+    <color name="colorPrimary">#2676BC</color>
+    <color name="colorPrimaryDark">#2676bc</color>
+    <color name="colorAccent">#2676BC</color>
+    <color name="app_background_color">#f2f2f2</color>
+    <color name="colorScreenBackground" tools:ignore="MissingDefaultResource">#F2F2F2</color>
+    <color name="colorBoxBackground" tools:ignore="MissingDefaultResource">#D14007</color>
+    <color name="colorBoxStroke">#FFE4DA</color>
+    <color name="colorOverflowText">#DAFFF3</color>
+    <color name="colorHintText">#888888</color>
+    <color name="colorCounterText">#000000</color>
+    <color name="colorGray">#9D9D9D</color>
+    <color name="colorGreen">#FFE4DA</color>
+    <color name="colorFullTransparent">#00000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorLightBlue">#B6C0E3</color>
+    <color name="colorDrive">#E94D6F</color>
+    <color name="colorDeliver">#3BBDB2</color>
+    <color name="colorServe">#8B4F97</color>
+    <color name="service_bg_color">#514659F7</color>
+    <color name="selected_provider_tc">#B5364BEA</color>
+    <color name="bg_doc_button">#FCFCFC</color>
+    <color name="bg_service_enabled">#ECEFFF</color>
+    <color name="bg_service_disabled">#f8f7f6</color>
+    <color name="doc_font_service_enabled">#242428</color>
+    <color name="doc_font_service_disabled">#989fcb</color>
+    <color name="et_stroke_color">#4F666772</color>
+    <color name="et_text_color">#888888</color>
+    <color name="card_left_bg">#2676bc</color>
+    <color name="home_reject">#d43d59</color>
+    <color name="bg_on_ride">#ffe4da</color>
+    <color name="text_on_ride">#d13b00</color>
+    <color name="past_item_cancelled">#0F9A6C</color>
+    <color name="bg_notification_read"></color>
+    <color name="txt_notication_read"></color>
+    <color name="bg_notification_unread"></color>
+    <color name="txt_notification_unread"></color>
+    <color name="button_textcolor">#ffffff</color>
+    <color name="bg_vechile_profile">#F2F2F2</color>
+    <color name="bg_vechile_edittext">#F8F7F6</color>
+    <color name="taxi_bg_yellow">#FFA200</color>
+    <color name="taxi_bg_grey">#F4F4F4</color>
+    <color name="transactinstatus">#F8FFA200</color>
+    <color name="blue_transaction_bg">#11aba9</color>
+    <color name="card_unselected">#faf9f6</color>
+    <color name="credit">#22FF20</color>
+    <color name="darkgrey">#055EAB</color>
+    <color name="bg_payment">#FFF4F4F4</color>
+    <color name="bg_dispute_closed">#CDDFED</color>
+    <color name="dispute_status_closed">#FF065FAC</color>
+    <color name="bg_dispute_open">#E4F0FE</color>
+    <color name="dispute_status_open">#FF1717</color>
+    <color name="bg_card_default">#F2F2F2</color>
+    <color name="bg_button_delete">#FFE4F0FE</color>
+    <color name="bg_card_selected">#FF055EAB</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="bg_vehicle_profile">#F2F2F2</color>
+    <color name="bg_vehicle_edittext">#F8F7F6</color>
+    <color name="taxi_bg_status_solid">#FFF8ED</color>
+    <color name="taxi_circle_grey">#9F9F9F</color>
+    <color name="toll_submit">#83d0f2</color>
+    <color name="bg_invoice_image">#FF9E80</color>
+    <color name="greeen">#008000</color>
+    <color name="red">#FF0000</color>
+
+
+    <!--Foodie Module-->
+
+    <color name="food_red">#fc3a14</color>
+    <color name="light_grey">#9f9f9f</color>
+
+
+    <!--Xuber Module-->
+
+    <color name="xuber_white">#ffffff</color>
+    <color name="xuber_button_blue">#2676BC</color>
+    <color name="xuber_grey">#dadada</color>
+    <color name="xuber_darkgrey">#E6F0F6</color>
+    <color name="xuber_black">#000000</color>
+    <color name="schedule_blue">#E9F1F7</color>
+    <color name="bg_inst">#FFE6F0F6</color>
+    <color name="xuper_blue">#4C8EBF</color>
+    <color name="bg_picture_option">#FFE9F1F7</color>
+    <color name="bg_xuper_submit">#D1D1D1</color>
+    <color name="xuper_upload_image">#297BB5</color>
+    <color name="xuper_after_service">#626262</color>
+    <color name="transparent">#00000000</color>
+    <color name="xuper_invoice_grey">#DDDDDD</color>
+    <color name="xuper_light_black">#FF626262</color>
+    <color name="xuper_invoice_paid">#02AFEF</color>
+    <color name="xuper_invoice_confirm_pay">#FF297BB5</color>
+    <color name="xuper_cmt_bg">#FFF6F6F6</color>
+    <color name="xuper_extra_amt_bg">#FFDDDDDD</color>
+    <color name="xuper_circle_blue">#FF02AFEF</color>
+    <color name="xuper_red">#FF0000</color>
+
 
 </resources>

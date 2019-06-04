@@ -21,6 +21,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/title_toolbar"
         android:layout_width="match_parent"
+        app:titleTextAppearance="@style/MediumText"
         android:layout_height="?attr/actionBarSize"
         android:background="@drawable/bg_white"
         tools:targetApi="honeycomb" />

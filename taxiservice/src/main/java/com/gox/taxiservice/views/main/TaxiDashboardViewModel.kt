@@ -2,6 +2,7 @@ package com.gox.taxiservice.views.main
 
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
@@ -22,8 +23,9 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
     var distanceMeter = MutableLiveData(0.0)
-    var locationPoint: List<LocationPoint> = listOf()
+    var locationPoint: ArrayList<LocationPoint> = arrayListOf()
     var distanceApiProcessing = MutableLiveData<ArrayList<DistanceApiProcessing>>()
+    var iteratePointsForApi = ArrayList<LatLng>()
 
     init {
         distanceApiProcessing.value = arrayListOf()
@@ -53,20 +55,28 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     fun taxiDroppingStatus(params: HashMap<String, String>) {
         val model = DroppedStatusModel()
-//        try {
-//            showLoading.value = true
-//        } catch (e: Exception) {
-//        }
+        try {
+            showLoading.value = true
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        for (points in iteratePointsForApi)
+            locationPoint.add(LocationPoint(points.latitude, points.longitude))
+
         model.id = params["id"]!!
         model.status = params["status"]!!
         model._method = params["_method"]!!
         model.toll_price = params["toll_price"]!!
+        model.distance = distanceMeter.value!!
         model.latitude = latitude.value!!
         model.longitude = longitude.value!!
         model.location_points = locationPoint
 
-//        getCompositeDisposable().add(mRepository.taxiDroppingStatus
-//        (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), model))
+        println("RRR::" + Gson().toJson(model))
+
+        getCompositeDisposable().add(mRepository.taxiDroppingStatus
+        (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), model))
     }
 
     fun taxiWaitingTime(params: HashMap<String, String>) {

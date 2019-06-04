@@ -3,10 +3,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-
-    </data>
+    <data></data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -30,27 +27,26 @@
                 android:paddingLeft="@dimen/_8sdp"
                 android:paddingRight="@dimen/_8sdp">
 
-                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <ImageView
                     android:id="@+id/profile_image"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/flower"
-                    app:civ_border_width="0dp" />
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/flower" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_toRightOf="@+id/profile_image"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_toEndOf="@+id/profile_image"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tv_user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:singleLine="true"
                         android:text="@string/dummy_provider_name"
@@ -61,12 +57,12 @@
                         style="@android:style/Widget.Holo.Light.RatingBar.Small"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_user_name"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:numStars="5"
-                        android:stepSize="1.0"
                         android:rating="1"
+                        android:stepSize="1.0"
                         android:theme="@style/RatingBar" />
+
                 </LinearLayout>
 
                 <TextView
@@ -74,13 +70,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/avenirltstd_medium"
                     tools:text="12 sec lef" />
 
             </RelativeLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,7 +109,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:text="@string/label_schedule_date"
                         android:textColor="@color/xuber_black"
                         android:textSize="@dimen/_10sdp" />
@@ -126,9 +119,9 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tv_label_schedule"
                         android:layout_alignStart="@+id/tv_label_schedule"
-                        android:layout_alignLeft="@+id/tv_label_schedule"
                         android:layout_marginTop="@dimen/_1sdp"
                         tools:text="12/02/2019" />
+
                 </RelativeLayout>
 
                 <LinearLayout
@@ -198,6 +191,7 @@
                         android:text="@string/label_order_reject"
                         android:textColor="@color/home_reject"
                         android:textSize="@dimen/_15sdp" />
+
                 </LinearLayout>
 
                 <View
@@ -221,9 +215,13 @@
                         android:text="@string/label_order_aprrove"
                         android:textColor="@color/card_left_bg"
                         android:textSize="@dimen/_15sdp" />
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
 </layout>

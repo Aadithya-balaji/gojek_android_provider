@@ -33,6 +33,7 @@ class DistanceProcessing(private val mListener: DistanceListener) :
             }
         } catch (e: JSONException) {
             e.printStackTrace()
+            mListener.whenDirectionFail("Google API call failed")
         }
     }
 }

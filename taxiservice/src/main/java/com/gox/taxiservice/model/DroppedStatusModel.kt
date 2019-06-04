@@ -15,8 +15,6 @@ data class DroppedStatusModel(
 ) : Serializable
 
 data class LocationPoint(
-        var id: Int = 0,
         var lat: Double = 0.0,
-        var lng: Double = 0.0,
-        var time: String = ""
+        var lng: Double = 0.0
 ) : Serializable

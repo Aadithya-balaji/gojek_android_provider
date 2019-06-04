@@ -20,7 +20,6 @@ android {
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
         buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
         buildConfigField("String", "SALT_KEY", '"MQ=="')
-
     }
 
     buildTypes {
@@ -120,9 +119,9 @@ dependencies {
     api 'com.google.firebase:firebase-messaging:18.0.0'
 
     //      Room Database
-    api "androidx.room:room-runtime:2.1.0-beta01"
-    api "androidx.room:room-ktx:2.1.0-beta01"
-    kapt "androidx.room:room-compiler:2.1.0-beta01"
+    api "androidx.room:room-runtime:2.1.0-rc01"
+    api "androidx.room:room-ktx:2.1.0-rc01"
+    kapt "androidx.room:room-compiler:2.1.0-rc01"
 
     //      For Kotlin use kapt instead of annotationProcessor
     api project(':cropperlibrary')

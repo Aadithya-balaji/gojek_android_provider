@@ -11,8 +11,8 @@ import com.gox.partner.databinding.ActivityVechileDetailPageBinding
 import com.gox.partner.views.adapters.ServiceListAdapter
 import com.gox.partner.views.verifyfile.VerifyFileActivity
 
-class VechileDetailActivity : BaseActivity<ActivityVechileDetailPageBinding>(), VechileDetailNavigator {
-    private var mVechileDetailPageBinding: ActivityVechileDetailPageBinding? = null
+class VechicleDetailActivity : BaseActivity<ActivityVechileDetailPageBinding>(), VechileDetailNavigator {
+    private var mBinding: ActivityVechileDetailPageBinding? = null
     private lateinit var llTaxiVechileDetail: CoordinatorLayout
     private lateinit var llFoodieDetail: LinearLayout
     private lateinit var llService: LinearLayout
@@ -25,9 +25,9 @@ class VechileDetailActivity : BaseActivity<ActivityVechileDetailPageBinding>(), 
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        mVechileDetailPageBinding = mViewDataBinding as ActivityVechileDetailPageBinding
+        mBinding = mViewDataBinding as ActivityVechileDetailPageBinding
         val vechileDetailModel = VechileDetailModel()
-        mVechileDetailPageBinding!!.vechiledetailmodel = vechileDetailModel
+        mBinding!!.vechiledetailmodel = vechileDetailModel
 
         llTaxiVechileDetail = findViewById(R.id.cl_taxi)
         llFoodieDetail = findViewById(R.id.ll_foodie)
@@ -68,7 +68,7 @@ class VechileDetailActivity : BaseActivity<ActivityVechileDetailPageBinding>(), 
     }
 
     override fun gotoVerificationPage() {
-        val intent = Intent(this@VechileDetailActivity, VerifyFileActivity::class.java)
+        val intent = Intent(this@VechicleDetailActivity, VerifyFileActivity::class.java)
         startActivity(intent)
     }
 

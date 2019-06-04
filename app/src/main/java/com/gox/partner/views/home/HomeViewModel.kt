@@ -2,6 +2,7 @@ package com.gox.partner.views.home
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
+import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
@@ -16,17 +17,17 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
     var onlineStatusLiveData = MutableLiveData<StatusResponseModel>()
 
-
-    fun showCurrentLocation(){
+    fun showCurrentLocation() {
         navigator.showCurrentLocation()
     }
-
 
     fun changeStatus(view: View) {
         navigator.changeStatus(view)
     }
 
     fun changeOnlineStatus(status: String) {
-        getCompositeDisposable().add(appRepository.changeOnlineStatus(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), status))
+        if (BaseApplication.isNetworkAvailable)
+            getCompositeDisposable().add(appRepository.changeOnlineStatus
+            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), status))
     }
 }

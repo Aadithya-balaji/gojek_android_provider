@@ -38,24 +38,26 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     lateinit var mViewDataBinding: ActivtyLivetaskLaoyutBinding
     var i = 0
     override fun getLayoutId(): Int = R.layout.activty_livetask_laoyut
-    private lateinit var mViewModel: FoodLiveTaskServiceViewModel
+    private lateinit var mViewModel: FoodieDashboardViewModel
     var currentStatus = ""
     var showingStoreDetail = true
     private var checkStatusApiCounter = 0
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         this.mViewDataBinding = mViewDataBinding as ActivtyLivetaskLaoyutBinding
-        mViewModel = ViewModelProviders.of(this).get(FoodLiveTaskServiceViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this).get(FoodieDashboardViewModel::class.java)
         mViewDataBinding.foodLiveTaskviewModel = mViewModel
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this, listOf())
         mViewModel.navigator = this
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver,
+                IntentFilter(BaseLocationService.BROADCAST))
 
-        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        mViewModel.callFoodieCheckRequest()
+        mViewModel.showLoading = loadingObservable
+        mViewModel.showLoading.value = true
 
         checkRequestResponse()
         checkRatingReq()
+
         call_img.setOnClickListener {
             val phoneNumber = if (showingStoreDetail)
                 mViewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.contact_number

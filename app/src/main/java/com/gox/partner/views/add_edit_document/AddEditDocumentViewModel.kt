@@ -47,7 +47,6 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         getCompositeDisposable().add(appRepository.getDocumentList(this, documentType))
     }
 
-
     fun setData(data: List<ListDocumentResponse.ResponseData>) {
         this.data = data
         if (data.isNotEmpty()) {
@@ -85,9 +84,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     }
 
 
-    fun selectFrontImage() {
-        navigator.selectFrontImage()
-    }
+    fun selectFrontImage() = navigator.selectFrontImage()
 
     fun showFrontImage() {
         navigator.showFrontImage()
@@ -99,23 +96,15 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
     fun getFileType(): String {
         var fileType = Enums.IMAGE_TYPE
-        if (data.isNotEmpty() && data[currentPosition].file_type.equals("pdf", true)) {
-            fileType = Enums.PDF_TYPE
-        }
+        if (data.isNotEmpty() && data[currentPosition].file_type.equals("pdf", true)) fileType = Enums.PDF_TYPE
         return fileType
     }
 
-    fun selectBackImage() {
-        navigator.selectBackImage()
-    }
+    fun selectBackImage() = navigator.selectBackImage()
 
-    fun onExpiryDateClick() {
-        navigator.onDateChanged()
-    }
+    fun onExpiryDateClick() = navigator.onDateChanged()
 
-    fun submitDocument() {
-        navigator.submitDocument()
-    }
+    fun submitDocument() = navigator.submitDocument()
 
     fun incrementPosition() {
             currentPosition += 1
@@ -126,16 +115,15 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         showLoading.value = true
 
         val hashMap: HashMap<String, RequestBody> = HashMap()
-        if (!expiryDate.value.isNullOrEmpty()) {
-            hashMap["expires_at"] = RequestBody.create(MediaType.parse("text/plain"), expiryDate.value!!)
-        }
+        if (!expiryDate.value.isNullOrEmpty()) hashMap["expires_at"] =
+                RequestBody.create(MediaType.parse("text/plain"), expiryDate.value!!)
         hashMap["document_id"] = RequestBody.create(MediaType.parse("text/plain"), data[currentPosition].id.toString())
 
         var frontImageRequestBody: RequestBody? = null
         if (documentFrontImageFile.value != null) {
             frontImageRequestBody = RequestBody.create(
                     MediaType.parse("*/*"),
-                    documentFrontImageFile.value)
+                    documentFrontImageFile.value!!)
         }
 
         var backImageFile: RequestBody? = null
@@ -143,18 +131,16 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         if (documentBackImageFile.value != null) {
             backImageFile = RequestBody.create(
                     MediaType.parse("*/*"),
-                    documentBackImageFile.value)
+                    documentBackImageFile.value!!)
         }
 
         var fileFrontImageBody: MultipartBody.Part? = null
-        if (frontImageRequestBody != null) {
-            fileFrontImageBody = MultipartBody.Part.createFormData("file[0]", data[currentPosition].name + "_front", frontImageRequestBody)
-        }
+        if (frontImageRequestBody != null) fileFrontImageBody = MultipartBody.Part.createFormData("file[0]",
+                data[currentPosition].name + "_front", frontImageRequestBody)
 
         var fileBackImageBody: MultipartBody.Part? = null
-        if (backImageFile != null) {
-            fileBackImageBody = MultipartBody.Part.createFormData("file[1]", data[currentPosition].name + "_back", backImageFile)
-        }
+        if (backImageFile != null) fileBackImageBody = MultipartBody.Part.createFormData("file[1]",
+                data[currentPosition].name + "_back", backImageFile)
 
         getCompositeDisposable().add(appRepository.postDocument(this, hashMap, fileFrontImageBody, fileBackImageBody))
     }

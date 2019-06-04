@@ -4,6 +4,7 @@ import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
+import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.Constants.Common.ID
 import com.gox.base.data.Constants.Common.METHOD
@@ -34,33 +35,21 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
     var otp = MutableLiveData<String>()
     var polyLineSrc = MutableLiveData<LatLng>()
     var currentStatus = MutableLiveData<String>()
-    var userName=MutableLiveData<String>()
-    var descImage=MutableLiveData<String>()
-    var strDesc=MutableLiveData<String>()
+    var userName = MutableLiveData<String>()
+    var descImage = MutableLiveData<String>()
+    var strDesc = MutableLiveData<String>()
 
-    fun showInfoDialog(view:View) {
-        navigator.showInfoWindow(view)
-    }
+    fun showInfoDialog(view: View) = navigator.showInfoWindow(view)
 
-    fun pickLocation() {
-        navigator.goToLocationPick()
-    }
+    fun pickLocation() = navigator.goToLocationPick()
 
-    fun goBack() {
-        navigator.goBack()
-    }
+    fun goBack() = navigator.goBack()
 
-    fun onClickStatus(view: View) {
-        navigator.updateService(view)
-    }
+    fun onClickStatus(view: View) = navigator.updateService(view)
 
-    fun showCamPage(isFrontImage: Boolean) {
-        navigator.showPicturePreview(isFrontImage)
-    }
+    fun showCamPage(isFrontImage: Boolean) = navigator.showPicturePreview(isFrontImage)
 
-    fun moveStatusFlow() {
-        navigator.moveStatusFlow()
-    }
+    fun moveStatusFlow() = navigator.moveStatusFlow()
 
     fun setDriverStatus(status: String) {
         driverStatus.set(status)
@@ -68,27 +57,34 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
     }
 
     fun callXuberCheckRequest() {
-        // showLoading.value=true
-        getCompositeDisposable().add(xuperRepository.xuperCheckRequesst
-        (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), latitude.value.toString(), longitude.value.toString()))
+        if (BaseApplication.isNetworkAvailable) {// showLoading.value=true
+            getCompositeDisposable().add(xuperRepository.xuperCheckRequesst
+            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
+                    latitude.value.toString(), longitude.value.toString()))
+        }
     }
 
     fun updateRequest(status: String, file: MultipartBody.Part?, isFrontImage: Boolean) {
-        showLoading.value=true
-        val params = HashMap<String, RequestBody>()
-        params[ID] = RequestBody.create(MediaType.parse("text/plain"), xuperCheckRequest.value!!.responseData!!.requests!!.id.toString())
-        params[STATUS] = RequestBody.create(MediaType.parse("text/plain"), status)
-        params[METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
+        if (BaseApplication.isNetworkAvailable) {
+            showLoading.value = true
+            val params = HashMap<String, RequestBody>()
+            params[ID] = RequestBody.create(MediaType.parse("text/plain"),
+                    xuperCheckRequest.value!!.responseData!!.requests!!.id.toString())
+            params[STATUS] = RequestBody.create(MediaType.parse("text/plain"), status)
+            params[METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
 
-        if (isFrontImage) getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, file, null))
-        else getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null, file))
+            if (isFrontImage) getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this,
+                    "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, file, null))
+            else getCompositeDisposable().add(xuperRepository.xuperUpdateRequest(this,
+                    "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params, null, file))
+        }
     }
 
     fun cancelRequest(params: HashMap<String, String>) {
-        showLoading.value = true
-        getCompositeDisposable().add(xuperRepository.xuperCancelRequest(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+        if (BaseApplication.isNetworkAvailable) {
+            showLoading.value = true
+            getCompositeDisposable().add(xuperRepository.xuperCancelRequest(this,
+                    "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+        }
     }
 }

@@ -48,8 +48,7 @@
                 android:id="@+id/civProfileImg"
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="@dimen/_50sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:src="@drawable/foodie_profile_placeholder" />
+                android:layout_marginStart="@dimen/_10sdp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

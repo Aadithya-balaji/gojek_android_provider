@@ -8,11 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.utils.ViewUtils
 import com.gox.foodservice.R
 import com.gox.foodservice.databinding.FoodieFragmentRatingBinding
-import com.gox.foodservice.ui.dashboard.FoodLiveTaskServiceViewModel
+import com.gox.foodservice.ui.dashboard.FoodieDashboardViewModel
 import kotlinx.android.synthetic.main.foodie_fragment_rating.*
 
 class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRatingBinding>(), FoodieRatingNavigator {
@@ -44,7 +45,7 @@ class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRa
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         fragmentRatingBinding = viewDataBinding as FoodieFragmentRatingBinding
-        val mTaxiInvoiceViewModel = ViewModelProviders.of(activity!!).get(FoodLiveTaskServiceViewModel::class.java)
+        val mTaxiInvoiceViewModel = ViewModelProviders.of(activity!!).get(FoodieDashboardViewModel::class.java)
         val mViewModel = FoodieRatingViewModel()
         fragmentRatingBinding!!.viewModel = mViewModel
         mViewModel.navigator = this
@@ -53,7 +54,8 @@ class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRa
         try {
             Glide
                     .with(context!!)
-                    .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                    .applyDefaultRequestOptions(RequestOptions()
+                            .circleCrop()
                             .placeholder(R.drawable.foodie_profile_placeholder)
                             .error(R.drawable.foodie_profile_placeholder))
                     .load(b.getString("profileImg")!!)

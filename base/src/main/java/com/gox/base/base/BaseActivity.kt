@@ -1,5 +1,6 @@
 package com.gox.base.base
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -13,9 +14,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -46,8 +45,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private var locationRequest: LocationRequest? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
 
-    private lateinit var builder: AlertDialog.Builder
-    private lateinit var alertDialog: AlertDialog
+    private lateinit var dialog: Dialog
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
@@ -81,16 +79,16 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         }
 
         try {
-            builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-                    .setMessage("No internet connection :(")
-                    .setCancelable(false)
-            alertDialog = builder.create()
+            dialog = Dialog(this)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.dialog_no_internet)
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         observeLiveData(BaseApplication.getInternetMonitorLiveData) { isInternetAvailable ->
-            if (isInternetAvailable) alertDialog.dismiss() else alertDialog.show()
+            if (isInternetAvailable) dialog.dismiss() else dialog.show()
         }
     }
 

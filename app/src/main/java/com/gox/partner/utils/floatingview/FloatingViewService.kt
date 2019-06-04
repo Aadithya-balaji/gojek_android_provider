@@ -11,18 +11,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.WindowManager
 import android.widget.ImageView
-
 import androidx.core.app.NotificationCompat
-
 import com.gox.base.R
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
-import com.gox.partner.views.dashboard.DashBoardActivity
-
+import com.gox.partner.views.splash.SplashActivity
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewListener
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewManager
 
-class ChatHeadService : Service(), FloatingViewListener {
+class FloatingViewService : Service(), FloatingViewListener {
     private var mFloatingViewManager: FloatingViewManager? = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -34,14 +29,9 @@ class ChatHeadService : Service(), FloatingViewListener {
         val iconView = inflater.inflate(R.layout.widget_chathead, null, false) as ImageView
         iconView.setOnClickListener { Log.d(TAG, "Clicked") }
         iconView.setOnClickListener {
-            if (isAppIsInBackground(applicationContext)) {
-                val isLogged = readPreferences(PreferencesKey.ACCESS_TOKEN, "")
-                if (isLogged!!.length > 2) {
-                    val intent1 = Intent(applicationContext, DashBoardActivity::class.java)
-                    intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent1)
-                }
-            }
+            val intent1 = Intent(applicationContext, SplashActivity::class.java)
+            intent1.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent1)
         }
 
         mFloatingViewManager = FloatingViewManager(this, this)
@@ -55,18 +45,6 @@ class ChatHeadService : Service(), FloatingViewListener {
         startForeground(NOTIFICATION_ID, createNotification(this))
 
         return START_REDELIVER_INTENT
-    }
-
-    private fun isAppIsInBackground(context: Context): Boolean {
-        var isInBackground = true
-        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val runningProcesses = am.runningAppProcesses
-        for (processInfo in runningProcesses)
-            if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
-                for (activeProcess in processInfo.pkgList)
-                    if (activeProcess == context.packageName) isInBackground = false
-
-        return isInBackground
     }
 
     override fun onDestroy() {
@@ -97,7 +75,7 @@ class ChatHeadService : Service(), FloatingViewListener {
 
     companion object {
 
-        private const val TAG = "RRR::ChatHeadService::"
+        private const val TAG = "RRR::FloatingView::"
         private const val EXTRA_CUTOUT_SAFE_AREA = "cutout_safe_area"
         private const val NOTIFICATION_ID = 9083150
 

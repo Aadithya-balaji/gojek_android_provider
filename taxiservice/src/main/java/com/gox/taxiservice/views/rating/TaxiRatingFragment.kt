@@ -10,6 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.utils.ViewUtils
@@ -23,7 +24,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
     private var appCompatActivity: AppCompatActivity? = null
     private var fragmentRatingBinding: FragmentRatingBinding? = null
 
-    val b = bundle
+    private val b = bundle
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -43,7 +44,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         }
     }
 
-    override fun getLayout(): Int = R.layout.fragment_rating
+    override fun getLayout() = R.layout.fragment_rating
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         fragmentRatingBinding = viewDataBinding as FragmentRatingBinding
@@ -61,7 +62,8 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         try {
             Glide
                     .with(context!!)
-                    .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                    .applyDefaultRequestOptions(RequestOptions()
+                            .circleCrop()
                             .placeholder(R.drawable.ic_profile_placeholder)
                             .error(R.drawable.ic_profile_placeholder))
                     .load(b.getString("profileImg")!!)

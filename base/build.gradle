@@ -17,6 +17,7 @@ android {
 
         resValue("string", "google_map_key", "AIzaSyC7wX2-cJ84mqODLjOcqIQKvIHAuBo8IUM")
 //        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
+        resValue "string", "default_notification_channel_id", "fcm_default_channel"
         buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
         buildConfigField("String", "SALT_KEY", '"MQ=="')
 
@@ -140,7 +141,12 @@ dependencies {
 
     api 'com.github.mahimrocky:ShowMoreText:1.0.2'
 
-    //
+    //Firebase Crash Reporting
+    api 'com.google.firebase:firebase-crash:16.2.1'
+    api 'com.google.firebase:firebase-auth:17.0.0'
+    api 'com.google.firebase:firebase-analytics:16.5.0'
+    api 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+
     implementation 'testfairy:testfairy-android-sdk:1.+@aar'
 
     testImplementation 'junit:junit:4.12'

@@ -36,7 +36,13 @@ android {
     }
 
     buildTypes {
+
+        debug {
+            manifestPlaceholders = [crashlyticsEnabled: false]
+        }
+
         release {
+            manifestPlaceholders = [crashlyticsEnabled: true]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
@@ -47,6 +53,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     dataBinding {
         enabled = true
     }

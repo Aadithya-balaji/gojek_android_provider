@@ -1,10 +1,13 @@
 package com.gox.partner.utils.floatingview
 
-import android.app.ActivityManager
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.IBinder
 import android.util.DisplayMetrics
 import android.util.Log
@@ -42,7 +45,8 @@ class FloatingViewService : Service(), FloatingViewListener {
         options.overMargin = (16 * metrics.density).toInt()
         mFloatingViewManager!!.addViewToWindow(iconView, options)
 
-        startForeground(NOTIFICATION_ID, createNotification(this))
+//        startForeground(NOTIFICATION_ID, createNotification(this))
+//        startForeground(NOTIFICATION_ID, createNotification(this))
 
         return START_REDELIVER_INTENT
     }
@@ -89,4 +93,30 @@ class FloatingViewService : Service(), FloatingViewListener {
             return builder.build()
         }
     }
+
+    private fun createNotificationChannel(channelId: String, channelName: String): String {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val chan = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE)
+            chan.lightColor = Color.BLUE
+            chan.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            val service = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            service.createNotificationChannel(chan)
+        }
+        return channelId
+    }
+
+    private fun startForeground() {
+        val channelId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            createNotificationChannel("my_service", "My Background Service") else ""
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+        val notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(com.gox.partner.R.mipmap.ic_launcher)
+                .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build()
+        startForeground(101, notification)
+    }
+
+
 }

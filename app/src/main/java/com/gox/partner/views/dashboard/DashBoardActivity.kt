@@ -43,10 +43,10 @@ import com.gox.base.utils.CommonMethods
 import com.gox.base.utils.LocationCallBack
 import com.gox.base.utils.LocationUtils
 import com.gox.base.utils.ViewUtils
-import com.gox.partner.utils.floatingview.FloatingViewService
 import com.gox.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityDashboardBinding
+import com.gox.partner.utils.floatingview.FloatingViewService
 import com.gox.partner.views.account.AccountFragment
 import com.gox.partner.views.home.HomeFragment
 import com.gox.partner.views.incoming_request_taxi.IncomingRequestDialog
@@ -291,11 +291,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                             else -> BROADCAST = "BASE_BROADCAST"
                         }
                     }
-                } else {
-                    if (mIncomingRequestDialog.isShown()) {
-                        mIncomingRequestDialog.dismiss()
-                    }
-                }
+                } else if (mIncomingRequestDialog.isShown()) mIncomingRequestDialog.dismiss()
             }
         })
 
@@ -397,7 +393,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 throw RuntimeException("Do not set Activity to landscape")
         }
 
-        ContextCompat.startForegroundService(activity, Intent(activity, FloatingViewService::class.java))
+        try {
+//            ContextCompat.startForegroundService(activity, Intent(activity, FloatingViewService::class.java))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun getInstance(): DashBoardActivity = this@DashBoardActivity

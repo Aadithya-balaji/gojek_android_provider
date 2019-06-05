@@ -259,7 +259,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="com.gox.base.BatteryChangeReceiver">
+        <receiver android:name="com.gox.base.BatteryChargeReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_BATTERY_LOW" />
                 <action android:name="android.intent.action.ACTION_BATTERY_OKAY" />

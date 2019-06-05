@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.media.AudioManager
 import android.media.RingtoneManager
 import android.os.Build
-import android.os.PowerManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -17,12 +16,12 @@ import com.gox.base.BuildConfig
 import com.gox.base.R
 import com.gox.base.base.BaseApplication
 import com.gox.base.data.PreferencesKey
-import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.splash.SplashActivity
 
 class FcmService : FirebaseMessagingService() {
 
     private val tagName = "FCMService"
+    private var notificationId = 0
 
     private lateinit var mUrlPersistence: SharedPreferences
 
@@ -39,20 +38,61 @@ class FcmService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-        println("RRR push notification:: $remoteMessage")
-        if (remoteMessage?.notification != null)
-            sendNotification(remoteMessage.notification?.body.toString())
-        else sendNotification(remoteMessage?.data?.get("message").toString())
+        println("RRR push notification:: ${remoteMessage!!.data!!}")
+        val message = remoteMessage.data!!["message"]
+
+        println(tagName
+                + " message = " + message
+                + " status = Background-> " + isBackground(applicationContext)
+                + " isLocked ->" + isLocked(applicationContext)
+                + " is CallActive -> " + isCallActive(applicationContext))
+
+        if (message != null && message.contains("New Incoming Ride")) sendProlongedNotification(message.toString())
+        else sendNotification(message.toString())
+
+        if (message != null && (message.contains("New Incoming Ride") || message.contains("RRRR"))
+                && isBackground(applicationContext)
+                && !isLocked(applicationContext)
+                && !isCallActive(applicationContext)) restartApp()
     }
 
     private fun sendNotification(messageBody: String) {
         println("RRR push messageBody = $messageBody")
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT)
 
         val channelId = getString(R.string.app_name)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_push)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(messageBody)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri)
+                .setContentIntent(pendingIntent)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        notificationManager.notify(notificationId++, notificationBuilder.build())
+    }
+
+    private fun sendProlongedNotification(messageBody: String) {
+        println("RRR push messageBody = $messageBody")
+        val intent = Intent(this, SplashActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT)
+
+        val channelId = getString(com.gox.partner.R.string.app_name)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
@@ -62,9 +102,11 @@ class FcmService : FirebaseMessagingService() {
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
 
+        val mNotification = notificationBuilder.build()
+        mNotification.flags = Notification.DEFAULT_LIGHTS or Notification.FLAG_AUTO_CANCEL or Notification.DEFAULT_SOUND
+
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(channelId,
                     "Channel human readable title",
@@ -72,10 +114,10 @@ class FcmService : FirebaseMessagingService() {
             notificationManager.createNotificationChannel(channel)
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+        notificationManager.notify(notificationId++, mNotification)
     }
 
-    private fun isAppIsInBackground(context: Context): Boolean {
+    private fun isBackground(context: Context): Boolean {
         var isInBackground = true
         val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val runningProcesses = am.runningAppProcesses
@@ -83,66 +125,6 @@ class FcmService : FirebaseMessagingService() {
             if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
                 for (activeProcess in processInfo.pkgList)
                     if (activeProcess == context.packageName) isInBackground = false
-
-        return isInBackground
-    }
-
-    private fun sendNotificationProlonged(messageBody: String) {
-
-//        val pm = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-//        if (!pm.isScreenOn) {
-//            println("RRR MyFireBaseMessagingService.sendNotificationProlonged")
-//            val screenLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).newWakeLock(
-//                    PowerManager.PARTIAL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP or PowerManager.ON_AFTER_RELEASE, "TAG")
-//            screenLock.acquire()
-//
-//        }
-//        val intent = Intent(this, SplashActivity::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-//                PendingIntent.FLAG_ONE_SHOT)
-//
-//        val channelId = getString(R.string.default_notification_channel_id)
-//        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-//        val notificationBuilder = NotificationCompat.Builder(this, channelId)
-//                .setSmallIcon(R.mipmap.ic_launcher_round)
-//                .setContentTitle(getString(R.string.app_name))
-//                .setContentText(messageBody)
-//                .setAutoCancel(true)
-//                .setSound(defaultSoundUri)
-//                .setContentIntent(pendingIntent)
-//
-//        val mNotification = notificationBuilder.build()
-//        mNotification.flags = Notification.DEFAULT_LIGHTS or Notification.FLAG_AUTO_CANCEL or Notification.DEFAULT_SOUND
-//
-//        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val channel = NotificationChannel(channelId,
-//                    "Channel human readable title",
-//                    NotificationManager.IMPORTANCE_HIGH)
-//            nm.createNotificationChannel(channel)
-//        }
-//
-//        nm.notify(notificationId++, mNotification)
-    }
-
-    private fun isBackground(context: Context): Boolean {
-        var isInBackground = true
-        val am = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT_WATCH) {
-            val runningProcesses = am.runningAppProcesses
-            for (processInfo in runningProcesses)
-                if (processInfo.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND)
-                    for (activeProcess in processInfo.pkgList)
-                        if (activeProcess == context.packageName) isInBackground = false
-        } else {
-            val taskInfo = am.getRunningTasks(1)
-            val componentInfo = taskInfo[0].topActivity
-            if (componentInfo.packageName == context.packageName)
-                isInBackground = false
-        }
-
         return isInBackground
     }
 

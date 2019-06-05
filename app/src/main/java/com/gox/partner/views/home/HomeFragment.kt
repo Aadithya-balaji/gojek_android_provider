@@ -51,7 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mViewModel: HomeViewModel
     private lateinit var mDashboardViewModel: DashBoardViewModel
-    private lateinit var incomingRequestDialogDialog: IncomingRequestDialog
+    private lateinit var mIncomingRequestDialog: IncomingRequestDialog
     private var mGoogleMap: GoogleMap? = null
     private var providerMarker: Marker? = null
     private var isOnline: Boolean? = true
@@ -70,8 +70,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         initializeMap()
         observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()
-        incomingRequestDialogDialog = IncomingRequestDialog()
-        incomingRequestDialogDialog.isCancelable = false
+        mIncomingRequestDialog = IncomingRequestDialog()
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
             mHomeDataBinding.llOffline.visibility = View.GONE

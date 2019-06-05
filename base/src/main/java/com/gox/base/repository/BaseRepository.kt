@@ -1,11 +1,11 @@
 package com.gox.base.repository
 
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import com.gox.base.base.BaseApplication
 import com.gox.base.data.NetworkError
 import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.base.session.SessionManager
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Retrofit
@@ -41,8 +41,9 @@ open class BaseRepository {
     fun getErrorMessage(e: Throwable): String {
         return when (e) {
             is HttpException -> {
-                if (e.code() == 401 && !PreferencesHelper.get(PreferencesKey.ACCESS_TOKEN,"").equals("")) SessionManager.clearSession()
-                getErrorMessage(e.response().errorBody()    !!)
+                if (e.code() == 401 && !PreferencesHelper.get(PreferencesKey.ACCESS_TOKEN, "")
+                                .equals("")) SessionManager.clearSession()
+                getErrorMessage(e.response().errorBody()!!)
             }
             is SocketTimeoutException -> NetworkError.TIME_OUT
             is IOException -> NetworkError.IO_EXCEPTION

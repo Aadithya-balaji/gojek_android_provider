@@ -140,7 +140,7 @@ dependencies {
 
     api 'com.github.mahimrocky:ShowMoreText:1.0.2'
 
-    //Firebase Crash Reporting
+    //      Firebase Crash Reporting
     api 'com.google.firebase:firebase-crash:16.2.1'
     api 'com.google.firebase:firebase-auth:17.0.0'
     api 'com.google.firebase:firebase-analytics:16.5.0'

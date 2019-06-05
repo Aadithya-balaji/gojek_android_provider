@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-// https://docs.gradle.org/current/userguide/publishing_maven.html
-// http://www.flexlabs.org/2013/06/using-local-aar-android-library-packages-in-gradle-builds
 apply plugin: 'maven-publish'
 
 android {
@@ -22,19 +20,13 @@ android {
     }
 }
 
-// This configuration is used to publish the library to a local repo while a being forked and modified.
-// It should really be set up so that the version are all in line, and set to be a SNAPSHOT.
-// The version listed here is a temp hack to allow me to keep working.
 android.libraryVariants
 publishing {
     publications {
         maven(MavenPublication) {
-
             groupId PUBLISH_GROUP_ID
             artifactId PUBLISH_ARTIFACT_ID
             version PUBLISH_VERSION + '-SNAPSHOT'
-
-            //artifact bundleRelease
         }
     }
 }
@@ -45,4 +37,3 @@ dependencies {
     api 'com.google.android.material:material:1.1.0-alpha06'
     implementation "androidx.exifinterface:exifinterface:$androidx_version"
 }
-

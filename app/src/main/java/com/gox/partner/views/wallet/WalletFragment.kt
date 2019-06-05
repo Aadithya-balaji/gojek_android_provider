@@ -21,7 +21,7 @@ import com.gox.base.utils.PrefixCustomEditText
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.FragmentWalletBinding
-import com.gox.partner.models.ConfigResponseModel
+import com.gox.partner.models.ConfigPayment
 import com.gox.partner.models.ProfileResponse
 import com.gox.partner.views.account_card.ActivityCardList
 import com.gox.partner.views.manage_payment.ManagePaymentActivity
@@ -31,12 +31,11 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     private lateinit var fragmentWalletBinding: FragmentWalletBinding
     private lateinit var walletViewModel: WalletViewModel
     private var strAmount: String? = null
-    private var paymentList: List<ConfigResponseModel.ResponseData.AppSetting.Payments>? = null
+    private var paymentList: List<ConfigPayment>? = null
 
     companion object {
         var loadingProgress: MutableLiveData<Boolean> = MutableLiveData()
     }
-
 
     override fun getLayoutId() = R.layout.fragment_wallet
 
@@ -51,8 +50,8 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
          flexboxLayoutManager.setFlexDirection(FlexDirection.ROW)
          flexboxLayoutManager.setJustifyContent(JustifyContent.FLEX_START)*/
         // flexboxLayoutManager.justifyContent = JustifyContent.SPACE_BETWEEN
-        val paytypes = object : TypeToken<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>() {}.type
-        paymentList = Gson().fromJson<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), paytypes)
+        val paytypes = object : TypeToken<List<ConfigPayment>>() {}.type
+        paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), paytypes)
         /*rvPaymentModes.apply {
             layoutManager = flexboxLayoutManager
             addItemDecoration(MarginItemDecoration(resources.getDimension(R.dimen.rv_space).toInt()))
@@ -76,29 +75,28 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     }
 
 
-    fun getApiRespoonse() {
+    private fun getApiRespoonse() {
 
         //Add Amount
         observeLiveData(walletViewModel.walletLiveResponse) {
-            loadingProgress?.let { it.value = false }
+            loadingProgress.value = false
             if (walletViewModel.walletLiveResponse.value!!.getStatusCode().equals("200")) {
                 if (walletViewModel.walletLiveResponse.value!!.getResponseData() != null) {
-                    var balance = walletViewModel.walletLiveResponse.value!!.getResponseData()!!.getWalletBalance()
-                    fragmentWalletBinding.tvWalletBal.setText(String.format(resources.getString(R.string.wallet_balance), balance))
+                    val balance = walletViewModel.walletLiveResponse.value!!.getResponseData()!!.getWalletBalance()
+                    fragmentWalletBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), balance)
                 }
             }
         }
 
         //Profile Data
         walletViewModel.mProfileResponse.observe(this, Observer<ProfileResponse> { profileResposne ->
-            loadingProgress?.let { it.value = false }
+            loadingProgress.value = false
             if (profileResposne.statusCode.equals("200")) {
                 val walletbanlance = profileResposne.profileData.wallet_balance
-                fragmentWalletBinding.tvWalletBal.setText(String.format(resources.getString(R.string.wallet_balance), walletbanlance))
+                fragmentWalletBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), walletbanlance)
             }
 
         })
-
 
     }
 
@@ -111,24 +109,17 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     }
 
     override fun showErrorMsg(error: String) {
-        loadingProgress!!.value = false
+        loadingProgress.value = false
         ViewUtils.showToast(activity!!, error, false)
     }
 
-
     override fun addAmount(view: View) {
         when (view.id) {
-            R.id.bt_fifty -> {
-                strAmount = "50"
-            }
+            R.id.bt_fifty -> strAmount = "50"
 
-            R.id.bt_hundred -> {
-                strAmount = "100"
-            }
+            R.id.bt_hundred -> strAmount = "100"
 
-            R.id.bt_thousand -> {
-                strAmount = "1000"
-            }
+            R.id.bt_thousand -> strAmount = "1000"
         }
 
         walletViewModel.walletAmount.value = strAmount
@@ -136,14 +127,16 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
 
     override fun validate(): Boolean {
-        if (walletViewModel.walletAmount.value.isNullOrEmpty()) {
-            ViewUtils.showToast(activity!!, resources.getString(R.string.empty_wallet_amount), false)
-            return false
-        } else if (walletViewModel.selectedStripeID.value.isNullOrEmpty()) {
-            ViewUtils.showToast(activity!!, resources.getString(R.string.empty_card), false)
-            return false
-        } else {
-            return true
+        return when {
+            walletViewModel.walletAmount.value.isNullOrEmpty() -> {
+                ViewUtils.showToast(activity!!, resources.getString(R.string.empty_wallet_amount), false)
+                false
+            }
+            walletViewModel.selectedStripeID.value.isNullOrEmpty() -> {
+                ViewUtils.showToast(activity!!, resources.getString(R.string.empty_card), false)
+                false
+            }
+            else -> true
         }
     }
 
@@ -164,24 +157,17 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            Constants.RequestCode.SELECTED_CARD -> {
-
-                if (resultCode == Activity.RESULT_OK) {
-                    val stripeID = if (data != null && data.hasExtra("cardStripeID")) data.getStringExtra("cardStripeID") else ""
-                    walletViewModel.selectedStripeID.value = stripeID
-                    walletViewModel.callAddAmtApi()
-                }
+            Constants.RequestCode.SELECTED_CARD -> if (resultCode == Activity.RESULT_OK) {
+                val stripeID = if (data != null && data.hasExtra("cardStripeID")) data.getStringExtra("cardStripeID") else ""
+                walletViewModel.selectedStripeID.value = stripeID
+                walletViewModel.callAddAmtApi()
             }
-
         }
     }
 
     fun setPrefix(editText: PrefixCustomEditText, s: Editable?, strPref: String) {
-        if (s.toString().length > 0) {
-            editText.setPrefix(strPref)
-        } else {
-            editText.setPrefix("")
-        }
+        if (s.toString().isNotEmpty()) editText.setPrefix(strPref)
+        else editText.setPrefix("")
     }
 
     override fun getCard() {
@@ -189,6 +175,5 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         intent.putExtra("isFromWallet", true)
         startActivityForResult(intent, Constants.RequestCode.SELECTED_CARD)
     }
-
 
 }

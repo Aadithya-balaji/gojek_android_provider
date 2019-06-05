@@ -28,6 +28,9 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     var distanceApiProcessing = MutableLiveData<ArrayList<DistanceApiProcessing>>()
     var iteratePointsForApi = ArrayList<LatLng>()
 
+    var tempSrc = MutableLiveData<LatLng>()
+    var tempDest = MutableLiveData<LatLng>()
+
     init {
         distanceApiProcessing.value = arrayListOf()
     }

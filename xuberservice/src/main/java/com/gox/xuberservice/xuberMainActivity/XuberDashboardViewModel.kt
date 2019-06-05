@@ -39,6 +39,9 @@ class XuberDashboardViewModel : BaseViewModel<XuberDasbBoardNavigator>() {
     var descImage = MutableLiveData<String>()
     var strDesc = MutableLiveData<String>()
 
+    var tempSrc = MutableLiveData<LatLng>()
+    var tempDest = MutableLiveData<LatLng>()
+
     fun showInfoDialog(view: View) = navigator.showInfoWindow(view)
 
     fun pickLocation() = navigator.goToLocationPick()

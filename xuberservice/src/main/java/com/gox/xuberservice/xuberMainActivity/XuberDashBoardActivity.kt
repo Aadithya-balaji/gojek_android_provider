@@ -430,6 +430,8 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun drawRoute(src: LatLng, dest: LatLng) {
+        mViewModel.tempSrc.value = src
+        mViewModel.tempDest.value = dest
         if (canDrawPolyLine) {
             canDrawPolyLine = false
             Handler().postDelayed({ canDrawPolyLine = true }, 10000)
@@ -463,23 +465,31 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             e.printStackTrace()
             Log.e("Map", "------------" + e.message.toString())
         }
-
     }
 
     override fun whenFail(statusCode: String) {
-        println("RRR whenDirectionFail = $statusCode")
+
+        val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
+        PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
+        (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
+
+        println("RRR whenFail = $statusCode")
         when (statusCode) {
-            "NOT_FOUND" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
-            "ZERO_RESULTS" -> Toast.makeText(this, "No road map available...", Toast.LENGTH_SHORT).show()
-            "MAX_WAYPOINTS_EXCEEDED" -> Toast.makeText(this, "Way point limit exceeded...", Toast.LENGTH_SHORT).show()
-            "MAX_ROUTE_LENGTH_EXCEEDED" -> Toast.makeText(this, "Road map limit exceeded...", Toast.LENGTH_SHORT).show()
-            "INVALID_REQUEST" -> Toast.makeText(this, "Invalid inputs...", Toast.LENGTH_SHORT).show()
-            "OVER_DAILY_LIMIT" -> Toast.makeText(this, "MayBe invalid API/Billing pending/Method Deprecated...", Toast.LENGTH_SHORT).show()
-            "OVER_QUERY_LIMIT" -> Toast.makeText(this, "Too many request, limit exceeded...", Toast.LENGTH_SHORT).show()
-            "REQUEST_DENIED" -> Toast.makeText(this, "Directions service not enabled...", Toast.LENGTH_SHORT).show()
-            "UNKNOWN_ERROR" -> Toast.makeText(this, "Server Error...", Toast.LENGTH_SHORT).show()
-            else -> Toast.makeText(this, statusCode, Toast.LENGTH_SHORT).show()
+            "NOT_FOUND" -> showLog("No road map available...")
+            "ZERO_RESULTS" -> showLog("No road map available...")
+            "MAX_WAYPOINTS_EXCEEDED" -> showLog("Way point limit exceeded...")
+            "MAX_ROUTE_LENGTH_EXCEEDED" -> showLog("Road map limit exceeded...")
+            "INVALID_REQUEST" -> showLog("Invalid inputs...")
+            "OVER_DAILY_LIMIT" -> showLog("MayBe invalid API/Billing pending/Method Deprecated...")
+            "OVER_QUERY_LIMIT" -> showLog("Too many request, limit exceeded...")
+            "REQUEST_DENIED" -> showLog("Directions service not enabled...")
+            "UNKNOWN_ERROR" -> showLog("Server Error...")
+            else -> showLog(statusCode)
         }
+    }
+
+    private fun showLog(msg: String) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun bitmapFromVector(context: Context, drawableId: Int): Bitmap {

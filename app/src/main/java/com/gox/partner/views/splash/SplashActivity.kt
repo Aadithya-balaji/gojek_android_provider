@@ -26,6 +26,7 @@ import com.gox.base.extensions.writePreferences
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivitySplashBinding
 import com.gox.partner.models.ConfigResponseModel
+import com.gox.partner.models.Language
 import com.gox.partner.utils.Constant
 import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.on_board.OnBoardActivity
@@ -35,7 +36,7 @@ import java.security.NoSuchAlgorithmException
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
 
     private lateinit var binding: ActivitySplashBinding
-    private lateinit var viewModel: SplashViewModel
+    private lateinit var mViewModel: SplashViewModel
 
     public override fun getLayoutId() = R.layout.activity_splash
 
@@ -44,13 +45,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         binding = mViewDataBinding as ActivitySplashBinding
         binding.lifecycleOwner = this
-        viewModel = provideViewModel { SplashViewModel() }
-        viewModel.navigator = this
+        mViewModel = provideViewModel { SplashViewModel() }
+        mViewModel.navigator = this
 
         observeViewModel()
         generateHash()
 
-        if (isNetworkConnected) viewModel.getConfig()
+        if (isNetworkConnected) mViewModel.getConfig()
         customPreference = BaseApplication.getCustomPreference!!
 
         FirebaseInstanceId.getInstance().instanceId
@@ -61,75 +62,73 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                     }
 
                     println("RRR :: token = ${task.result?.token}")
-//                    writePreferences(PreferencesKey.DEVICE_TOKEN, task.result?.token)
                     customPreference.edit().putString(PreferencesKey.DEVICE_TOKEN, task.result?.token).apply()
                 })
     }
 
     @SuppressLint("CommitPrefEdits")
     private fun observeViewModel() {
-        observeLiveData(viewModel.getConfigObservable()) {
-            //            writePreferences("0", it.responseData.baseUrl + "/")
-            customPreference.edit().putString("0", it.responseData.baseUrl + "/").apply()
+        observeLiveData(mViewModel.getConfigObservable()) {
+            customPreference.edit().putString("0", it.responseData.base_url + "/").apply()
             customPreference.edit().putString(PreferencesKey.BASE_ID, "0").apply()
+            customPreference.edit().putString(PreferencesKey.ALTERNATE_MAP_KEY, it.responseData.appsetting.android_key).apply()
 
             try {
                 customPreference.edit().putString(PreferencesKey.SOS_NUMBER,
-                        it.responseData.appSetting.supportDetails.contactNumber[0].number).apply()
-                if (it.responseData.appSetting.otpVerify == 0)
+                        it.responseData.appsetting.supportdetails.contact_number[0].number).apply()
+                if (it.responseData.appsetting.otp_verify == 0)
                     customPreference.edit().putBoolean(PreferencesKey.SHOW_OTP, false).apply()
-                else if (it.responseData.appSetting.otpVerify == 1)
+                else if (it.responseData.appsetting.otp_verify == 1)
                     customPreference.edit().putBoolean(PreferencesKey.SHOW_OTP, true).apply()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
             customPreference.run {
-                edit().putString(PreferencesKey.BASE_URL, it.responseData.baseUrl).apply()
+                edit().putString(PreferencesKey.BASE_URL, it.responseData.base_url).apply()
             }
 
             customPreference.edit().putString(PreferencesKey.BASE_CONFIG_RESPONSE, Gson().toJson(it.responseData)).apply()
 
             it.responseData.services.forEach { service ->
-                when (service.adminServiceName) {
-                    TRANSPORT -> customPreference.edit().putString(PreferencesKey.TRANSPORT_URL, service.baseUrl).apply()
-                    ORDER -> customPreference.edit().putString(PreferencesKey.ORDER_URL, service.baseUrl).apply()
-                    SERVICE -> customPreference.edit().putString(PreferencesKey.SERVICE_URL, service.baseUrl).apply()
+                when (service.admin_service_name) {
+                    TRANSPORT -> customPreference.edit().putString(PreferencesKey.TRANSPORT_URL, service.base_url).apply()
+                    ORDER -> customPreference.edit().putString(PreferencesKey.ORDER_URL, service.base_url).apply()
+                    SERVICE -> customPreference.edit().putString(PreferencesKey.SERVICE_URL, service.base_url).apply()
                 }
             }
 
-            for (i in 0 until it.responseData.appSetting.payments.size) {
-                val paymentData = it.responseData.appSetting.payments[i]
+            for (i in 0 until it.responseData.appsetting.payments.size) {
+                val paymentData = it.responseData.appsetting.payments[i]
                 when (paymentData.name.toLowerCase()) {
-                    "card" -> {
-                        for (j in 0 until it.responseData.appSetting.payments[i].credentials.size) {
-                            val credential = it.responseData.appSetting.payments[i].credentials[j]
-                            if (credential.name.toLowerCase() == "stripe_publishable_key") customPreference.edit().putString(PreferencesKey.STRIPE_KEY, credential.value).apply()
-                        }
+                    "card" -> for (j in 0 until it.responseData.appsetting.payments[i].credentials.size) {
+                        val credential = it.responseData.appsetting.payments[i].credentials[j]
+                        if (credential.name.toLowerCase() == "stripe_publishable_key")
+                            customPreference.edit().putString(PreferencesKey.STRIPE_KEY, credential.value).apply()
                     }
                 }
             }
 
-            customPreference.edit().putString("0", it.responseData.baseUrl + "/").apply()
+            customPreference.edit().putString("0", it.responseData.base_url + "/").apply()
             customPreference.edit().putInt(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id).apply()
-            customPreference.edit().putString(it.responseData.services[0].id.toString(), it.responseData.services[0].baseUrl + "/").apply()
+            customPreference.edit().putString(it.responseData.services[0].id.toString(), it.responseData.services[0].base_url + "/").apply()
             customPreference.edit().putInt(PreferencesKey.ORDER_ID, it.responseData.services[1].id).apply()
-            customPreference.edit().putString(it.responseData.services[1].id.toString(), it.responseData.services[1].baseUrl + "/").apply()
+            customPreference.edit().putString(it.responseData.services[1].id.toString(), it.responseData.services[1].base_url + "/").apply()
             customPreference.edit().putInt(PreferencesKey.SERVICE_ID, it.responseData.services[2].id).apply()
-            customPreference.edit().putString(it.responseData.services[2].id.toString(), it.responseData.services[2].baseUrl + "/").apply()
-            customPreference.edit().putString(PreferencesKey.PRIVACY_POLICY, it.responseData.appSetting.cmsPage.privacyPolicy).apply()
-            customPreference.edit().putString(PreferencesKey.HELP, it.responseData.appSetting.cmsPage.help).apply()
-            customPreference.edit().putString(PreferencesKey.TERMS, it.responseData.appSetting.cmsPage.terms).apply()
+            customPreference.edit().putString(it.responseData.services[2].id.toString(), it.responseData.services[2].base_url + "/").apply()
+            customPreference.edit().putString(PreferencesKey.PRIVACY_POLICY, it.responseData.appsetting.cmspage.privacypolicy).apply()
+            customPreference.edit().putString(PreferencesKey.HELP, it.responseData.appsetting.cmspage.help).apply()
+            customPreference.edit().putString(PreferencesKey.TERMS, it.responseData.appsetting.cmspage.terms).apply()
             val contactNumbers = hashSetOf<String>()
-            for (contact in it.responseData.appSetting.supportDetails.contactNumber)
+            for (contact in it.responseData.appsetting.supportdetails.contact_number)
                 contactNumbers.add(contact.number)
             writePreferences(PreferencesKey.CONTACT_NUMBER, contactNumbers.toSet())
-            customPreference.edit().putString(PreferencesKey.CONTACT_EMAIL, it.responseData.appSetting.supportDetails.contactEmail).apply()
+            customPreference.edit().putString(PreferencesKey.CONTACT_EMAIL, it.responseData.appsetting.supportdetails.contact_email).apply()
             setLanguage(it)
             setPayment(it)
 
-            Constant.privacyPolicyUrl = it.responseData.appSetting.cmsPage.privacyPolicy
-            Constant.termsUrl = it.responseData.appSetting.cmsPage.terms
+            Constant.privacyPolicyUrl = it.responseData.appsetting.cmspage.privacypolicy
+            Constant.termsUrl = it.responseData.appsetting.cmspage.terms
 
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)
@@ -139,13 +138,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     @SuppressLint("CommitPrefEdits")
     private fun setPayment(it: ConfigResponseModel) {
-        customPreference.edit().putString(PreferencesKey.PAYMENT_LIST, Gson().toJson(it.responseData.appSetting.payments)).apply()
+        customPreference.edit().putString(PreferencesKey.PAYMENT_LIST, Gson().toJson(it.responseData.appsetting.payments)).apply()
     }
 
     private fun setLanguage(it: ConfigResponseModel) {
-        val languages = it.responseData.appSetting.languages
+        val languages = it.responseData.appsetting.languages
         if (languages.isNotEmpty()) Constant.languages = languages
-        else Constant.languages = listOf(ConfigResponseModel.ResponseData.AppSetting.Language("English", "en"))
+        else Constant.languages = listOf(Language("English", "en"))
     }
 
     override fun showError(error: String) {

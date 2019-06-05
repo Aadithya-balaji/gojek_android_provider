@@ -1,7 +1,7 @@
 package com.gox.partner.views.language
 
 import com.gox.base.base.BaseViewModel
-import com.gox.partner.models.ConfigResponseModel.ResponseData.AppSetting.Language
+import com.gox.partner.models.Language
 import com.gox.partner.utils.Constant
 
 class LanguageViewModel : BaseViewModel<LanguageNavigator>() {

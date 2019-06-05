@@ -194,7 +194,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         } else {
             when {
                 /*(data?.vehicleId==0) -> {
-                    ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_name), false)
+                    ViewUtils.showLog(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_name), false)
                 }*/
                 data?.vehicleModel.isNullOrEmpty() -> {
                     ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_model), false)

@@ -52,7 +52,7 @@ class CurrentOrderFragment : BaseFragment<FragmentCurrentOrdersBinding>(), Curre
             this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
 
             Log.d("_D", error + "")
-//            ViewUtils.showToast(activity as Context, error, false)
+//            ViewUtils.showLog(activity as Context, error, false)
 
         })
 

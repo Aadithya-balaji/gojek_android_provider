@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,10 +15,6 @@ import com.cooltechworks.creditcarddesign.CardEditActivity
 import com.cooltechworks.creditcarddesign.CreditCardUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.stripe.android.Stripe
-import com.stripe.android.TokenCallback
-import com.stripe.android.model.Card
-import com.stripe.android.model.Token
 import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
 import com.gox.base.data.Constants
@@ -30,10 +25,14 @@ import com.gox.partner.databinding.ActivitySavedCardListBinding
 import com.gox.partner.models.AddCardModel
 import com.gox.partner.models.CardListModel
 import com.gox.partner.models.CardResponseModel
-import com.gox.partner.models.ConfigResponseModel
+import com.gox.partner.models.ConfigPayment
 import com.gox.partner.views.adapters.CardsAdapter
 import com.gox.partner.views.adapters.PaymentModeAdapter
 import com.gox.partner.views.wallet.WalletFragment
+import com.stripe.android.Stripe
+import com.stripe.android.TokenCallback
+import com.stripe.android.model.Card
+import com.stripe.android.model.Token
 
 class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListNavigator {
 
@@ -47,17 +46,14 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     private var mCardHolderName: String? = ""
     private var selectedCardID: String? = ""
     private lateinit var cardsAdapter: CardsAdapter
-    private var paymentList: List<ConfigResponseModel.ResponseData.AppSetting.Payments>? = null
+    private var paymentList: List<ConfigPayment>? = null
     private lateinit var rvPaymentModes: RecyclerView
     private var cardList: MutableList<CardResponseModel>? = null
     private var selectedPosition: Int? = -1
     private var isFromWallet: Boolean = false
     private var paymentModeAdapter: PaymentModeAdapter? = null
 
-
-    override fun getLayoutId(): Int {
-        return R.layout.activity_saved_card_list
-    }
+    override fun getLayoutId() = R.layout.activity_saved_card_list
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         context = this
@@ -65,28 +61,29 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         cardListViewModel = CardListViewModel()
         cardListViewModel.navigator = this
         activitySavedCardListBinding.cardListModel = cardListViewModel
-        activitySavedCardListBinding.setLifecycleOwner(this)
+        activitySavedCardListBinding.lifecycleOwner = this
         getApiResponse()
-        activitySavedCardListBinding.toolbarLayout.tvToolbarTitle.setText(resources.getString(R.string.title_payment_type))
+        activitySavedCardListBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(R.string.title_payment_type)
         activitySavedCardListBinding.toolbarLayout.ivToolbarBack.setOnClickListener {
             finish()
         }
         getIntentValues()
-        val paytypes = object : TypeToken<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>() {}.type
-        paymentList = Gson().fromJson<List<ConfigResponseModel.ResponseData.AppSetting.Payments>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), paytypes)
+        val paytypes = object : TypeToken<List<ConfigPayment>>() {}.type
+        paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), paytypes)
         val linearLayoutManager = LinearLayoutManager(this)
         activitySavedCardListBinding.rvPaymentModes.layoutManager = linearLayoutManager
-        paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, cardListViewModel,isFromWallet)
+        paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, cardListViewModel, isFromWallet)
         activitySavedCardListBinding.rvPaymentModes.adapter = paymentModeAdapter
-        cardListViewModel.loadingProgress = loadingObservable as MutableLiveData<Boolean>
+        cardListViewModel.loadingProgress = loadingObservable
         cardListViewModel.getCardList()
     }
 
-    fun getIntentValues() {
-        isFromWallet = if (intent != null && intent.hasExtra("isFromWallet")) intent.getBooleanExtra("isFromWallet", false) else false
+    private fun getIntentValues() {
+        isFromWallet = if (intent != null && intent.hasExtra("isFromWallet"))
+            intent.getBooleanExtra("isFromWallet", false) else false
     }
 
-    fun getApiResponse() {
+    private fun getApiResponse() {
         cardListViewModel.addCardLiveResposne.observe(this, Observer<AddCardModel> { addCardModel ->
             if (addCardModel.getStatusCode().equals("200")) {
                 cardListViewModel.loadingProgress.value = false
@@ -96,20 +93,20 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
         cardListViewModel.cardListLiveResponse.observe(this, Observer<CardListModel> { cardListModel ->
             cardListViewModel.loadingProgress.value = false
-            if (cardListViewModel.cardListLiveResponse != null && cardListViewModel.cardListLiveResponse.value!!.getResponseData() != null && cardListViewModel!!.cardListLiveResponse.value!!.getResponseData()!!.size > 0) {
+            if (cardListViewModel.cardListLiveResponse != null
+                    && cardListViewModel.cardListLiveResponse.value!!.getResponseData() != null
+                    && cardListViewModel.cardListLiveResponse.value!!.getResponseData()!!.size > 0) {
                 activitySavedCardListBinding.ivEmptyCard.visibility = View.GONE
                 activitySavedCardListBinding.rvCards.visibility = View.VISIBLE
                 val linearLayoutManager = LinearLayoutManager(this)
                 linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
                 cardList = cardListViewModel.cardListLiveResponse.value!!.getResponseData()
                 if (cardList != null && cardList!!.size > 0) {
-                    cardsAdapter = CardsAdapter(context!!, cardList!!, cardListViewModel)
+                    cardsAdapter = CardsAdapter(context, cardList!!, cardListViewModel)
                     activitySavedCardListBinding.rvCards.adapter = cardsAdapter
                     activitySavedCardListBinding.rvCards.layoutManager = linearLayoutManager
                 }
-
             }
-
         })
 
         cardListViewModel.deleCardLivResponse.observe(this, Observer<AddCardModel> { addCardModel ->
@@ -129,9 +126,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
                     cardsAdapter.notifyDataSetChanged()
                 }
             }
-
         })
-
     }
 
     override fun addAmount(view: View) {
@@ -154,7 +149,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
     override fun addCard() {
         val intent = Intent(this, CardEditActivity::class.java)
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, "Name As per in your card");
+        intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, "Name As per in your card")
         startActivityForResult(intent, Constants.RequestCode.ADDCARD)
     }
 
@@ -162,10 +157,10 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
-            mCardNumber = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER) }
-            mCardExpiryDate = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY) }
-            mCardCVV = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV) }
-            mCardHolderName = data?.let { it.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME) }
+            mCardNumber = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER)
+            mCardExpiryDate = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY)
+            mCardCVV = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV)
+            mCardHolderName = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME)
 
             // Your processing goes here.
             val temp = mCardExpiryDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
@@ -183,12 +178,11 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
             if (card.validateNumber() && card.validateCVC()) {
                 cardListViewModel.loadingProgress.value = true
                 val stripe = Stripe(this, BaseApplication.getCustomPreference!!.getString(PreferencesKey.STRIPE_KEY, ""))
-                stripe.createToken(
-                        card,
+                stripe.createToken(card,
                         object : TokenCallback {
                             override fun onSuccess(token: Token) {
                                 Log.e("card", "-----" + token.id)
-                                WalletFragment.loadingProgress!!.value = false
+                                WalletFragment.loadingProgress.value = false
                                 // Send token to your server
                                 if (!TextUtils.isEmpty(token.id))
                                     cardListViewModel.callAddCardApi(token.id)
@@ -197,16 +191,14 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
                             override fun onError(error: Exception) {
                                 // Show localized error message
-                                cardListViewModel.loadingProgress?.value = false
+                                cardListViewModel.loadingProgress.value = false
                                 Log.e("card", "-----" + error.message.toString())
 
 
                             }
                         }
                 )
-            } else {
-                WalletFragment.loadingProgress!!.value = false
-            }
+            } else WalletFragment.loadingProgress.value = false
         }
     }
 
@@ -231,10 +223,9 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         }
     }
 
-
     override fun removeCard() {
-        ViewUtils.showMessageOKCancel(context, resources.getString(R.string.delete_card), DialogInterface.OnClickListener { dialog, which -> cardListViewModel.callCardDeleteCardAPi() })
-
+        ViewUtils.showMessageOKCancel(context, resources.getString(R.string.delete_card),
+                DialogInterface.OnClickListener { dialog, which -> cardListViewModel.callCardDeleteCardAPi() })
     }
 
     override fun deselectCard() {

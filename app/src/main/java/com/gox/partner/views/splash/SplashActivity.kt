@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.util.Base64
 import android.util.Log
 import androidx.databinding.ViewDataBinding
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson

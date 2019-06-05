@@ -38,7 +38,7 @@ android {
     buildTypes {
 
         debug {
-            manifestPlaceholders = [crashlyticsEnabled: false]
+            manifestPlaceholders = [crashlyticsEnabled: true]
         }
 
         release {

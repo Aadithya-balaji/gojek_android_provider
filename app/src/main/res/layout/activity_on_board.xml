@@ -5,91 +5,96 @@
     <data>
 
         <variable
-            name="dashboardViewModel"
-            type="com.gox.partner.views.on_board.OnBoardViewModel" />
-
+            name="viewModel"
+            type="com.gox.app.ui.onboard.OnBoardViewModel" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorScreenBackground">
+        android:background="@color/app_background_color"
+        android:orientation="vertical">
 
-        <FrameLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/ll_button">
-
-            <androidx.viewpager.widget.ViewPager
-                android:overScrollMode="never"
-                android:id="@+id/viewpager_onboard"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animation_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:lottie_autoPlay="false"
-                app:lottie_fileName="onboard_lottie.json" />
-
-        </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="@dimen/_5sdp"
             android:orientation="vertical">
 
-            <com.google.android.material.button.MaterialButton
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewpager_onboard"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_height="@dimen/_300sdp" />
+
+            <com.gox.partner.views.on_board.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_below="@+id/viewpager_onboard"
+                app:ci_animator="@animator/indicator_animator"
+                app:ci_animator_reverse="@animator/indicator_animator_reverse"
+                app:ci_drawable="@drawable/indicator_black"
+                app:ci_height="4dp"
+                app:ci_margin="6dp"
+                app:ci_width="10dp" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp">
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signup_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/signin_btn"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
-                android:backgroundTint="@color/colorBasePrimary"
-                android:gravity="center"
-                android:onClick="@{dashboardViewModel::onSignUpClick}"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingBottom="@dimen/_10sdp"
+                style="@style/SmallText.Black"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/custom_full_round_corner"
+                android:backgroundTint="@color/colorPrimary"
+                android:onClick="@{() -> viewModel.openSignUp()}"
+                android:padding="@dimen/_10sdp"
                 android:text="@string/sign_up"
-                android:textAllCaps="false"
                 android:textColor="@color/button_textcolor"
-                android:textSize="@dimen/_14sdp"
-                app:cornerRadius="@dimen/_20sdp" />
+                android:textSize="@dimen/_12sdp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signin_btn"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_90sdp"
                 android:layout_height="wrap_content"
+                android:layout_above="@+id/signleline_view"
+                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_4sdp"
                 android:layout_marginRight="@dimen/_20sdp"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center"
-                android:onClick="@{dashboardViewModel::onSignInClick}"
-                android:paddingStart="@dimen/_25sdp"
-                android:paddingTop="@dimen/_10sdp"
-                android:paddingEnd="@dimen/_25sdp"
-                android:paddingBottom="@dimen/_10sdp"
+                android:background="@android:color/transparent"
+                android:elevation="@dimen/_10sdp"
+                style="@style/SmallText.Black"
+                android:onClick="@{() -> viewModel.openSignIn()}"
+                android:padding="@dimen/_10sdp"
                 android:text="@string/sign_in"
                 android:textAllCaps="false"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_14sdp" />
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/_12sdp" />
 
             <View
                 android:id="@+id/signleline_view"
                 android:layout_width="@dimen/_90sdp"
                 android:layout_height="@dimen/_2sdp"
-                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:background="#E4E4E4" />
+        </RelativeLayout>
 
-        </LinearLayout>
 
-    </RelativeLayout>
-
+    </LinearLayout>
 </layout>

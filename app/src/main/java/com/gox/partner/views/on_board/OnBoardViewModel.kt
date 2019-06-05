@@ -1,15 +1,27 @@
-package com.gox.partner.views.on_board
+package com.gox.app.ui.onboard
 
-import android.view.View
 import com.gox.base.base.BaseViewModel
+import com.gox.partner.views.on_board.OnBoardNavigator
+import io.reactivex.disposables.CompositeDisposable
 
 class OnBoardViewModel : BaseViewModel<OnBoardNavigator>() {
 
-    fun onSignInClick(view: View) {
-        navigator.onSignInClicked()
+
+
+    private val mCompositeDisposable = CompositeDisposable()
+
+
+    fun openSignIn() {
+        navigator.goToSignIn()
     }
 
-    fun onSignUpClick(view: View) {
-        navigator.onSignUpClicked()
+    fun openSignUp() {
+        navigator.goToSignUp()
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        mCompositeDisposable.clear()
     }
 }

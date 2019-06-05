@@ -47,6 +47,8 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
     private lateinit var message: String
     private var isFacebookLoginClicked = false
 
+    private var isEmailLogin: Boolean = false
+
     override fun getLayoutId() = R.layout.activity_sign_in
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
@@ -87,12 +89,12 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         ViewUtils.hideSoftInputWindow(this)
         if (isSignInDataValid()) {
             loadingObservable.value = true
-            viewModel.postLogin((binding.rgSignin.checkedRadioButtonId == R.id.rb_email))
+            viewModel.postLogin((isEmailLogin))
         } else ViewUtils.showToast(applicationContext, message, false)
     }
 
     private fun isSignInDataValid(): Boolean {
-        if (binding.rgSignin.checkedRadioButtonId == R.id.rb_email) {
+        if (isEmailLogin) {
             if (viewModel.email.value.isNullOrBlank()) {
                 message = resources.getString(R.string.email_empty)
                 return false
@@ -163,7 +165,7 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
         }
     }
 
-    override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
+   /* override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
         when (checkedId) {
             R.id.rb_phone -> {
                 binding.tilEmail.visibility = View.GONE
@@ -175,6 +177,29 @@ class SignInActivity : BaseActivity<ActivitySignInBinding>(), SignInViewModel.Si
                 binding.tilEmail.requestFocus()
             }
         }
+    }*/
+
+
+    override fun changeSigninViaPhone() {
+        isEmailLogin = false
+        binding.passwordRegisterEt.setText("")
+        binding.tilEmail.visibility = View.GONE
+        binding.llPhoneNumber.visibility = View.VISIBLE
+        binding.phoneSigninImgview.setColorFilter(ContextCompat.getColor(this@SignInActivity, R.color.colorAccent))
+        binding.mailSinginImgview.setColorFilter(ContextCompat.getColor(this@SignInActivity, R.color.dark_grey))
+        binding.phoneSigninImgview.setBackgroundResource((R.drawable.login_icon_selected_bg))
+        binding.mailSinginImgview.setBackgroundResource((R.drawable.login_icon_normal_bg))
+    }
+
+    override fun changeSigninViaMail() {
+        isEmailLogin = true
+        binding.passwordRegisterEt.setText("")
+        binding.llPhoneNumber.visibility = View.GONE
+        binding.tilEmail.visibility = View.VISIBLE
+        binding.phoneSigninImgview.setColorFilter(ContextCompat.getColor(this@SignInActivity, R.color.dark_grey))
+        binding.mailSinginImgview.setColorFilter(ContextCompat.getColor(this@SignInActivity, R.color.colorAccent))
+        binding.phoneSigninImgview.setBackgroundResource((R.drawable.login_icon_normal_bg))
+        binding.mailSinginImgview.setBackgroundResource((R.drawable.login_icon_selected_bg))
     }
 
     override fun onCountryCodeClicked() {

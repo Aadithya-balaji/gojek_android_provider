@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:text="@={requestmodel.pickupLocation}"
-                android:textColor="@color/grey"
+                android:textColor="@color/dark_grey"
                 android:textSize="@dimen/_12sdp" />
 
             <View
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/avenirltstd_medium"
                 android:text="@={requestmodel.serviceType}"
-                android:textColor="@color/grey"
+                android:textColor="@color/dark_grey"
                 android:textSize="@dimen/_12sdp" />
 
             <View

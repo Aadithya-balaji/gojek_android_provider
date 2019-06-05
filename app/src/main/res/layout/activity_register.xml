@@ -55,6 +55,7 @@
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/social_signup"
+                        style="@style/SmallText"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/_12sdp" />
 
@@ -81,6 +82,7 @@
                         android:gravity="center"
                         android:onClick="@{() -> registermodel.fbLogin()}"
                         android:padding="@dimen/_8sdp"
+                        style="@style/SmallText"
                         android:text="@string/connect_via_facebook"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
@@ -91,7 +93,7 @@
                     android:id="@+id/social_google_login_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_white">
 
@@ -103,6 +105,7 @@
                         android:drawableStart="@drawable/ic_google"
                         android:drawablePadding="@dimen/_8sdp"
                         android:gravity="center"
+                        style="@style/SmallText"
                         android:onClick="@{() -> registermodel.googleSignin()}"
                         android:padding="@dimen/_8sdp"
                         android:text="@string/connect_via_google"
@@ -117,6 +120,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_15sdp"
                     android:text="@string/or"
+                    style="@style/SmallText"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_10sdp" />
 
@@ -129,7 +133,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_12sdp"
-                android:fontFamily="@font/avenirltstd_medium"
+                style="@style/SmallText"
                 android:text="@string/or"
                 android:textColor="@color/colorBasePrimary"
                 android:visibility="gone" />
@@ -156,6 +160,7 @@
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/create_account"
+                            style="@style/SmallText"
                             android:textColor="@android:color/black" />
 
                         <RelativeLayout
@@ -200,7 +205,7 @@
                                 android:id="@+id/edt_singup_firstname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
@@ -224,7 +229,7 @@
                                 android:id="@+id/edt_singup_lastname"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
@@ -266,7 +271,7 @@
                                     android:drawablePadding="@dimen/_3sdp"
                                     android:paddingStart="25dp"
                                     android:paddingEnd="8dp"
-                                    android:fontFamily="@font/avenirltstd_medium"
+                                    style="@style/SmallText"
                                     android:onClick="@{() -> registermodel.gotToCountryPage()}"
                                     android:singleLine="true"
                                     android:text="@{registermodel.countryCode}"
@@ -290,7 +295,7 @@
                                     android:id="@+id/edt_signup_phone"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:fontFamily="@font/avenirltstd_medium"
+                                    style="@style/SmallText"
                                     android:inputType="number"
                                     android:singleLine="true"
                                     android:paddingStart="20dp"
@@ -309,7 +314,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_12sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:fontFamily="@font/avenirltstd_medium"
+                            style="@style/SmallText"
+                            android:textSize="@dimen/_12sdp"
                             android:text="@string/label_gender"
                             android:textColor="@color/black" />
 
@@ -327,9 +333,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:text="@string/gender_male"
-                                android:textColor="@color/grey"
+                                android:textColor="@color/dark_grey"
                                 android:textSize="@dimen/_10sdp" />
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
@@ -337,9 +343,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:text="@string/gender_female"
-                                android:textColor="@color/grey"
+                                android:textColor="@color/dark_grey"
                                 android:textSize="@dimen/_10sdp" />
 
                         </RadioGroup>
@@ -357,7 +363,7 @@
                                 android:id="@+id/edt_signup_mail"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
@@ -384,7 +390,7 @@
                                 android:layout_height="wrap_content"
                                 android:drawableEnd="@drawable/ic_iconfinder_icons_view"
                                 android:drawablePadding="@dimen/_3sdp"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:inputType="textPassword"
                                 android:singleLine="true"
                                 android:paddingStart="25dp"
@@ -412,6 +418,7 @@
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:onClick="@{() ->registermodel.getCountryList()}"
                                 android:singleLine="true"
+                                style="@style/SmallText"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
                                 android:textColor="@color/et_text_color"
@@ -433,7 +440,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:onClick="@{() -> registermodel.getCityList()}"
                                 android:singleLine="true"
                                 android:paddingStart="25dp"
@@ -456,7 +463,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:text="@={registermodel.referralCode}"
@@ -471,7 +478,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_30sdp"
-                            android:fontFamily="@font/avenirltstd_medium"
+                            style="@style/SmallText"
                             android:text="@string/terms_condition" />-->
 
                         <LinearLayout
@@ -499,7 +506,7 @@
                                 android:layout_gravity="center"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginEnd="@dimen/_12sdp"
-                                android:fontFamily="@font/avenirltstd_medium"
+                                style="@style/SmallText"
                                 android:textColor="@color/colorGray"
                                 android:textSize="@dimen/_10sdp" />
 
@@ -522,7 +529,7 @@
                     android:id="@+id/alreadyaccount_register_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/avenirltstd_medium"
+                    style="@style/SmallText"
                     android:padding="@dimen/_3sdp"
                     android:text="@string/already_have_account"
                     android:textSize="@dimen/_12sdp"
@@ -535,7 +542,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/alreadyaccount_register_tv"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:fontFamily="@font/avenirltstd_medium"
+                    style="@style/SmallText"
                     android:onClick="@{() -> registermodel.gotoSignin()}"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/sign_in"
@@ -554,7 +561,8 @@
                     app:backgroundTint="@color/colorBasePrimary"
                     app:fabSize="mini"
                     app:srcCompat="@drawable/ic_forward_arrow"
-                    app:tint="@android:color/white" />
+                    app:tint="@android:color/white"
+                    tools:ignore="RelativeOverlap" />
 
             </RelativeLayout>
 

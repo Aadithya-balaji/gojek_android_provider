@@ -32,7 +32,7 @@
             tools:itemCount="3"
             tools:listitem="@layout/layout_setup_services_item" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/service_save_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -4,7 +4,7 @@
     <!--App Module-->
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorBasePrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -75,6 +75,7 @@
         <item name="boxCornerRadiusTopEnd">25dp</item>
         <item name="hintTextColor">@color/colorOverflowText</item>
         <item name="android:textColorHint">@color/colorHintText</item>
+        <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
     </style>
 
     <style name="Theme.TextInputEditText" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
@@ -137,24 +138,48 @@
         <item name="boxCornerRadiusTopEnd">@dimen/boxCornerRadius</item>
         <item name="boxCornerRadiusTopStart">@dimen/boxCornerRadius</item>
         <item name="android:textSize">@dimen/_10sdp</item>
-        <item name="hintTextAppearance">@style/AppTheme.TextFloatLabelAppearance</item>
-        <item name="errorTextAppearance">@style/AppTheme.TextErrorAppearance</item>
+        <item name="hintTextAppearance">@style/TextInputLayoutHintText</item>
+        <item name="helperTextTextAppearance">@style/TextInputLayoutHelperText</item>
+        <item name="errorTextAppearance">@style/TextInputLayoutErrorText</item>
         <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
         <item name="hintTextColor">@color/light_grey</item>
         <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
+        <item name="android:editTextStyle">@style/TextInputEditText.OutlinedBox.CustomFont</item>
     </style>
 
-    <style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">
-        <!-- Floating label appearance here -->
+    <style name="TextInputLayoutHintText" parent="TextAppearance.Design.Hint">
         <item name="android:textColor">@color/colorGray</item>
         <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>    </style>
+
+    <style name="TextInputLayoutHelperText" parent="TextAppearance.Design.HelperText">
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
+    </style>
+
+    <style name="TextInputEditText.OutlinedBox.CustomFont" parent="Widget.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
+    </style>
+
+
+    <style name="TextInputLayoutErrorText" parent="TextAppearance.Design.Error">
+        <item name="android:textColor">#ff0000</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>    </style>
+
+   <!-- <style name="AppTheme.TextFloatLabelAppearance" parent="TextAppearance.Design.Hint">
+        &lt;!&ndash; Floating label appearance here &ndash;&gt;
+        <item name="android:textColor">@color/colorGray</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
     </style>
 
     <style name="AppTheme.TextErrorAppearance" parent="TextAppearance.Design.Error">
-        <!-- Error message appearance here -->
+        &lt;!&ndash; Error message appearance here &ndash;&gt;
         <item name="android:textColor">#ff0000</item>
         <item name="android:textSize">20sp</item>
-    </style>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
+    </style>-->
 
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="windowNoTitle">true</item>

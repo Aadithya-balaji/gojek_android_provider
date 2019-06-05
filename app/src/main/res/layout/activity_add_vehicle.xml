@@ -326,7 +326,7 @@
                         app:setImageResource="@{addVehicleViewModel.vehicleData.vehicleInsurance}" />
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
@@ -334,6 +334,10 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:onClick="@{addVehicleViewModel::onVehicleSubmitClick}"
                     android:paddingTop="@dimen/_10sdp"
+                    style="@style/SmallText"
+                    android:background="@drawable/custom_full_round_corner"
+                    android:backgroundTint="@color/colorBasePrimary"
+                    android:textColor="@color/white"
                     android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/submit"
                     android:textAllCaps="false"

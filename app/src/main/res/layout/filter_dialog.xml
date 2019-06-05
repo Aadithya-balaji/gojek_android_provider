@@ -54,7 +54,7 @@
             tools:itemCount="3"
             tools:listitem="@layout/filterservice_rowitem" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/apply_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

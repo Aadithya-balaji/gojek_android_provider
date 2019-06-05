@@ -51,6 +51,9 @@
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/create_account"
+                            style="@style/SmallText"
+                            android:visibility="invisible"
+                            android:textSize="@dimen/_14sdp"
                             android:textColor="@android:color/black" />
 
                         <!--TextInputLayout username-->
@@ -70,6 +73,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                style="@style/SmallText"
                                 android:text="@={profileviewmodel.MUserName}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/et_textsize" />
@@ -107,6 +111,7 @@
                                     android:enabled="false"
                                     android:paddingStart="30dp"
                                     android:paddingEnd="8dp"
+                                    style="@style/SmallText"
                                     android:text="@={profileviewmodel.MCountryCode}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/et_textsize" />
@@ -132,6 +137,7 @@
                                     android:layout_height="match_parent"
                                     android:paddingStart="10dp"
                                     android:paddingEnd="30dp"
+                                    style="@style/SmallText"
                                     android:text="@={profileviewmodel.MMobileNumber}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/et_textsize" />
@@ -157,6 +163,7 @@
                                 android:enabled="false"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                style="@style/SmallText"
                                 android:text="@={profileviewmodel.MEmail}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/et_textsize" />
@@ -184,6 +191,7 @@
                                 android:onClick="@{profileviewmodel::getProfileCountryList}"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                style="@style/SmallText"
                                 android:text="@={profileviewmodel.MCountry}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/et_textsize" />
@@ -205,6 +213,7 @@
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:enabled="false"
+                                style="@style/SmallText"
                                 android:focusable="false"
                                 android:imeOptions="actionDone"
                                 android:onClick="@{() -> profileviewmodel.getCityList()}"
@@ -226,6 +235,7 @@
                             android:text="@string/change_password"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_12sdp"
+                            style="@style/SmallText"
                             tools:ignore="RtlHardcoded" />
 
                     </LinearLayout>
@@ -236,7 +246,7 @@
 
         </RelativeLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save_editprofile_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -246,6 +256,7 @@
             android:backgroundTint="@color/colorBasePrimary"
             android:padding="10dp"
             android:text="@string/save"
+            style="@style/SmallText"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp" />

@@ -221,15 +221,24 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 Toast.makeText(this, "Cropping failed: ", Toast.LENGTH_LONG).show()
             }
         }
-        if (requestCode == Constant.COUNTRYLIST_REQUEST_CODE) {
+        if (requestCode == Constant.COUNTRYLIST_REQUEST_CODE && data!=null) {
             setCountry(data)
             mViewDataBinding.cityRegisterEt.isEnabled = true
+            mViewModel.loadingProgress.value = false
+        }else{
+            mViewModel.loadingProgress.value = false
         }
-        if (requestCode == Constant.CITYLIST_REQUEST_CODE) {
+        if (requestCode == Constant.CITYLIST_REQUEST_CODE && data!=null) {
             setCity(data)
+            mViewModel.loadingProgress.value = false
+        }else{
+            mViewModel.loadingProgress.value = false
         }
-        if (resultCode == APP_REQUEST_CODE) {
+        if (resultCode == APP_REQUEST_CODE && data!=null) {
             accountKitOtpVerified(data)
+            mViewModel.loadingProgress.value = false
+        }else{
+            mViewModel.loadingProgress.value = false
         }
     }
 

@@ -99,7 +99,7 @@
                     android:textSize="@dimen/_11sdp" />
 
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/status_past_tv"
                     android:layout_width="@dimen/_90sdp"
                     android:layout_height="@dimen/_30sdp"

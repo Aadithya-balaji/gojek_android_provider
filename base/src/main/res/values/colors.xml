@@ -6,9 +6,11 @@
     <color name="colorBaseWhite">#FFFFFF</color>
     <color name="colorTaxiYellow">#FFA200</color>
     <color name="schedule_blue_txt">#11aba9</color>
-    <color name="dark_grey">#F2F2F2</color>
+    <color name="dark_grey">#666772</color>
     <color name="grey">#F2F2F2</color>
+    <color name="notification_grey">#989fcb</color>
     <color name="colorBlack">#000000</color>
+
 
 
     <!--App Module-->
@@ -77,7 +79,7 @@
     <color name="bg_invoice_image">#FF9E80</color>
     <color name="greeen">#008000</color>
     <color name="red">#FF0000</color>
-
+    <color name="login_icon_selected_color">#f1f3ff</color>
 
     <!--Foodie Module-->
 

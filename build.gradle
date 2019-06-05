@@ -11,9 +11,9 @@ buildscript {
         PUBLISH_VERSION = '2.8.0'
     }
     repositories {
-        maven {  url 'https://maven.fabric.io/public' }
         google()
         jcenter()
+        maven {  url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:${compiler_version}"

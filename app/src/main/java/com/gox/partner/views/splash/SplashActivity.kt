@@ -1,12 +1,15 @@
 package com.gox.partner.views.splash
 
+//import com.crashlytics.android.Crashlytics
 import android.annotation.SuppressLint
+import android.app.NotificationManager
+import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Base64
 import android.util.Log
 import androidx.databinding.ViewDataBinding
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
@@ -27,6 +30,7 @@ import com.gox.partner.utils.Constant
 import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.on_board.OnBoardActivity
 import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
 
@@ -150,16 +154,27 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     private fun generateHash() {
         try {
-            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures) {
+            if (Build.VERSION.SDK_INT >= 28) {
+                val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+                val signatures = packageInfo.signingInfo.apkContentsSigners
                 val md = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+                for (signature in signatures) {
+                    md.update(signature.toByteArray())
+                    val signatureBase64 = String(Base64.encode(md.digest(), Base64.DEFAULT))
+                    Log.d("KeyHash:: ", signatureBase64)
+                }
             }
-        } catch (e: Exception) {
-            Log.d("_genratehash", e.message)
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        } catch (e: NoSuchAlgorithmException) {
             e.printStackTrace()
         }
-
     }
+
+    override fun onResume() {
+        super.onResume()
+        val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
+    }
+
 }

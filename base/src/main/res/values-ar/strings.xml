@@ -11,5 +11,6 @@
     <string name="pick_image_intent_chooser_title">Select source</string>
     <string name="crop_image_activity_no_permissions">Cancelling, required permissions are not granted</string>
     <string name="no_internet_connection">No Internet Connection :( </string>
-
+    <string name="floating_app">Floating app icon</string>
+    <string name="low_battery">Your battery is low</string>
 </resources>

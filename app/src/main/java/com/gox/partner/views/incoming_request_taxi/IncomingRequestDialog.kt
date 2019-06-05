@@ -1,5 +1,7 @@
 package com.gox.partner.views.incoming_request_taxi
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.media.MediaPlayer
@@ -9,6 +11,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -55,6 +58,13 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog!!.setCancelable(false)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val notificationManager = activity!!.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
     override fun onPause() {
@@ -64,6 +74,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        mPlayer.stop()
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
@@ -77,7 +88,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         mPlayer = MediaPlayer.create(context, R.raw.alert_tone)
 
         if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()
-                /*&& request.time_left_to_respond!! > 0*/) {
+        /*&& request.time_left_to_respond!! > 0*/) {
 //            totalSeconds = Math.abs(request.time_left_to_respond!!)
             totalSeconds = 60
             val minutes = totalSeconds!! / 60
@@ -236,6 +247,11 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             Log.e("percentage", "----" + result.toFloat())
             initCircularSeekBar(result.toFloat(), time)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mPlayer.stop()
     }
 
     override fun onDestroy() {

@@ -136,7 +136,13 @@ dependencies {
     api 'com.google.firebase:firebase-auth:17.0.0'
     api 'com.google.firebase:firebase-analytics:16.5.0'
     api 'com.google.firebase:firebase-database:17.0.0'
-    api 'com.crashlytics.sdk.android:crashlytics:2.10.1@aar'
+    api 'com.google.firebase:firebase-messaging:18.0.0'
+    api ('com.crashlytics.sdk.android:crashlytics:2.10.1@aar'){
+        transitive = true;
+    }
+
+    //Multidex
+    api 'com.android.support:multidex:1.0.3'
 
     //implementation 'testfairy:testfairy-android-sdk:1.+@aar'
 

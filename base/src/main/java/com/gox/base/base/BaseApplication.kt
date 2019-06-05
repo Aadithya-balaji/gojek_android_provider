@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import androidx.lifecycle.MutableLiveData
+import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import com.gox.base.BatteryChangeReceiver
 import com.gox.base.data.Constants
@@ -25,6 +26,7 @@ open class BaseApplication : Application(), InternetConnectivityListener {
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(LocaleUtils.setLocale(base!!))
+        MultiDex.install(this)
     }
 
     var baseComponent: BaseComponent = DaggerBaseComponent.builder()
@@ -74,4 +76,5 @@ open class BaseApplication : Application(), InternetConnectivityListener {
         getInternetMonitorLiveData.value = isConnected
         isNetworkAvailable = isConnected
     }
+
 }

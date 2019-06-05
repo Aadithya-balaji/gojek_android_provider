@@ -1,101 +1,149 @@
 package com.gox.partner.views.on_board
 
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.NonNull
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
-import com.novoda.spritz.Spritz
-import com.novoda.spritz.SpritzStep
+import com.bumptech.glide.Glide
+import com.gox.app.ui.onboard.OnBoardViewModel
 import com.gox.base.base.BaseActivity
-import com.gox.base.base.BaseFragment
-import com.gox.base.extensions.provideViewModel
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityOnBoardBinding
-import com.gox.partner.databinding.FragmentAnimationpageBinding
 import com.gox.partner.views.sign_in.SignInActivity
 import com.gox.partner.views.signup.SignupActivity
-import java.util.concurrent.TimeUnit
+import com.novoda.spritz.Spritz
 
-class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>(), OnBoardNavigator {
 
-    private lateinit var binding: ActivityOnBoardBinding
-    private lateinit var viewModel: OnBoardViewModel
+class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>()
+        , OnBoardNavigator, ViewPager.OnPageChangeListener {
+    override fun onPageScrollStateChanged(state: Int) {
+
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float
+                                , positionOffsetPixels: Int) {
+    }
+
+    override fun onPageSelected(position: Int) {
+    }
+
+    private lateinit var mViewDataBinding: ActivityOnBoardBinding
     private lateinit var spritz: Spritz
     private lateinit var viewPager: ViewPager
-    private lateinit var ivBack: ImageView
-    private lateinit var tbrRightTitle: TextView
-    private lateinit var ivLogo: ImageView
-    private lateinit var ivRight: ImageView
+    private val PAGE_COUNT = 3
+    private var dotsCount: Int = 0
+    private var dots: Array<ImageView>? = null
+    private val onBoardItems = java.util.ArrayList<OnBoardItem>()
+    private var mIndicator: CircleIndicator? = null
 
-    override fun getLayoutId() = R.layout.activity_on_board
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_on_board
+    }
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivityOnBoardBinding
-        binding.lifecycleOwner = this
-        viewModel = provideViewModel {
-            OnBoardViewModel()
-        }
-        viewModel.navigator = this
-        mViewDataBinding.dashboardViewModel = viewModel
+
+        this.mViewDataBinding = mViewDataBinding as ActivityOnBoardBinding
+        val onBoardViewModel = OnBoardViewModel()
+        onBoardViewModel.navigator = this
+
+        mViewDataBinding.viewModel = onBoardViewModel
+        mViewDataBinding!!.executePendingBindings()
+
+        val list = ArrayList<WalkThrough>()
+        list.add(WalkThrough(R.drawable.bg_walk_one,
+                getString(R.string.walk_1), getString(R.string.walk_1_description)))
+        list.add(WalkThrough(R.drawable.bg_walk_two,
+                getString(R.string.walk_2), getString(R.string.walk_2_description)))
+        list.add(WalkThrough(R.drawable.bg_walk_three,
+                getString(R.string.walk_3), getString(R.string.walk_3_description)))
         viewPager = mViewDataBinding.viewpagerOnboard
-        viewPager.adapter = ScreenSlidePagerAdapter(supportFragmentManager)
-        initSpritz()
+
+        viewPager.adapter = MyViewPagerAdapter(this, list)
+        viewPager.currentItem = 0
+        viewPager.addOnPageChangeListener(this)
+//       mViewDataBinding.onboardPageIndicatorView.setViewPager(viewPager)
+        mIndicator = findViewById(R.id.indicator)
+
+        loadAdapter();
+
     }
 
-    private fun initSpritz() {
-        spritz = Spritz.with(binding.animationView)
-                .withSteps(SpritzStep.Builder()
-                        .withAutoPlayDuration(0, TimeUnit.SECONDS)
-                        .withSwipeDuration(5, TimeUnit.SECONDS)
-                        .build(),
-                        SpritzStep.Builder()
-                                .withAutoPlayDuration(3, TimeUnit.SECONDS)
-                                .withSwipeDuration(2, TimeUnit.SECONDS)
-                                .build(),
-                        SpritzStep.Builder()
-                                .withAutoPlayDuration(3, TimeUnit.SECONDS)
-                                .withSwipeDuration(4, TimeUnit.SECONDS)
-                                .build()).build()
+    fun loadAdapter() {
+
+        val header = intArrayOf(R.string.walk_1, R.string.walk_2
+                , R.string.walk_3)
+        val desc = intArrayOf(R.string.walk_1_description
+                , R.string.walk_2_description, R.string.walk_3_description)
+        val imageId = intArrayOf(R.drawable.bg_walk_one
+                , R.drawable.bg_walk_two, R.drawable.bg_walk_three)
+
+        for (i in imageId.indices) {
+            val item = OnBoardItem()
+            item.imageID = imageId[i]
+            item.title = (resources.getString(header[i]))
+            item.description = (resources.getString(desc[i]))
+            onBoardItems.add(item)
+        }
+
+        viewPager.adapter = IntroSliderAdapter(this, onBoardItems)
+//        viewPager.setPageTransformer(true, IntroSliderTransformation())
+        mIndicator!!.setViewPager(viewPager)
+        viewPager.setCurrentItem(0)
     }
 
-    override fun onStart() {
-        super.onStart()
-        spritz.attachTo(viewPager)
-        spritz.startPendingAnimations()
+    private fun lerp(startValue: Float, endValue: Float, f: Float): Float {
+        return startValue + f * (endValue - startValue)
     }
 
-    override fun onStop() {
-        super.onStop()
-        spritz.detachFrom(viewPager)
-    }
 
-    override fun onSignInClicked() {
+    override fun goToSignIn() {
         launchNewActivity(SignInActivity::class.java, false)
     }
 
-    override fun onSignUpClicked() {
+    override fun goToSignUp() {
         launchNewActivity(SignupActivity::class.java, false)
+
     }
+
 }
 
-class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+class MyViewPagerAdapter internal constructor(internal var context: Context, internal var list: List<WalkThrough>) : PagerAdapter() {
 
-    override fun getItem(p0: Int): Fragment {
-        return AnimationFragment()
+    override fun getCount(): Int {
+        return list.size
     }
 
-    override fun getCount(): Int = 3
-}
 
-class AnimationFragment : BaseFragment<FragmentAnimationpageBinding>() {
+    @NonNull
+    override fun instantiateItem(@NonNull container: ViewGroup, position: Int): Any {
+        val itemView = LayoutInflater.from(container.context).inflate(R.layout.pager_item, container, false)
+        val walk = list[position]
 
-    override fun getLayoutId(): Int = R.layout.fragment_animationpage
+        val title = itemView.findViewById<TextView>(R.id.title)
+        val description = itemView.findViewById<TextView>(R.id.description)
+        val imageView = itemView.findViewById<ImageView>(R.id.img_pager_item)
 
-    override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
+        title.setText(walk.title)
+        description.setText(walk.description)
+        Glide.with(context).load(walk.drawable).into(imageView)
+        container.addView(itemView)
+
+        return itemView
     }
 
+    override fun isViewFromObject(@NonNull view: View, @NonNull obj: Any): Boolean {
+        return view === obj
+    }
+
+    override fun destroyItem(@NonNull container: ViewGroup, position: Int, @NonNull `object`: Any) {
+        val view = `object` as View
+        container.removeView(view)
+    }
 }

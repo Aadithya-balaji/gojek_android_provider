@@ -23,8 +23,16 @@ class SignInViewModel : BaseViewModel<SignInViewModel.SignInNavigator>() {
     val password = MutableLiveData<String>()
 
 
-    fun onSignInOptionsClick(group: RadioGroup, checkedId: Int) {
+    /*fun onSignInOptionsClick(group: RadioGroup, checkedId: Int) {
         navigator.onCheckedChanged(group, checkedId)
+    }*/
+
+    fun changeSigninViaPhone() {
+        return navigator.changeSigninViaPhone()
+    }
+
+    fun changeSigninViaMail() {
+        return navigator.changeSigninViaMail()
     }
 
     fun onCountryCodeClick(view: View) {
@@ -84,7 +92,9 @@ class SignInViewModel : BaseViewModel<SignInViewModel.SignInNavigator>() {
     fun getLoginObservable() = loginLiveData
 
     interface SignInNavigator {
-        fun onCheckedChanged(group: RadioGroup, checkedId: Int)
+        fun changeSigninViaPhone()
+        fun changeSigninViaMail()
+        //fun onCheckedChanged(group: RadioGroup, checkedId: Int)
         fun onCountryCodeClicked()
         fun onForgotPasswordClicked()
         fun onSignUpClicked()

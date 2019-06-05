@@ -2,14 +2,20 @@
     <!--On-Board Screen-->
     <string name="sign_up">Sign Up</string>
     <string name="sign_in">Sign In</string>
-
     <string name="location_updated">Location Updated: %1$s</string>
+    <string name="walk_1_description">Services to transport you where you need to go. A lot can happen, on our ride.</string>
+    <string name="walk_2_description">Take a ride whenever and wherever you want. Plan and Schedule for us to pick you up.</string>
+    <string name="walk_3_description">We have the most friendly drivers who will go the extra mile for you.</string>
+    <string name="walk_1">Service Selection</string>
+    <string name="walk_2">Service Ongoing</string>
+    <string name="walk_3">Rate Service</string>
+
 
     <!--Sign Up Screen-->
     <string name="social_sign_up">Social Signup</string>
     <string name="hint_first_name">FirstName</string>
     <string name="hint_last_name">LastName</string>
-    <string name="hint_code">code</string>
+    <string name="hint_code">Code</string>
     <string name="hint_phone_number">Phone Number</string>
     <string name="label_gender">Gender</string>
     <string name="gender_male">Male</string>

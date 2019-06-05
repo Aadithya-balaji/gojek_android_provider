@@ -69,42 +69,44 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                style="@style/SmallText.Black"
                                 android:padding="@dimen/_5sdp"
                                 android:text="@string/login_via"
-                                android:textColor="@android:color/black"
-                                android:textSize="@dimen/_12sdp" />
-
-                            <RadioGroup
-                                android:id="@+id/rg_signin"
+                                />
+                            <!--Login via mail imageview -->
+                            <ImageView
+                                android:id="@+id/mail_singin_imgview"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"
-                                android:checkedButton="@+id/rb_phone"
-                                android:onCheckedChanged="@{signInViewModel::onSignInOptionsClick}"
-                                android:orientation="horizontal">
+                                android:layout_marginEnd="@dimen/_8sdp"
+                                android:background="@drawable/login_icon_normal_bg"
+                                android:contentDescription="@string/mail"
+                                android:elevation="@dimen/_1sdp"
+                                android:onClick="@{() -> signInViewModel.changeSigninViaMail()}"
+                                android:shadowRadius="1"
+                                android:padding="@dimen/_5sdp"
+                                android:tint="@color/dark_grey"
+                                app:srcCompat="@drawable/ic_mail" />
+                            <!--Login via phone number imageview -->
 
-                                <RadioButton
-                                    android:id="@+id/rb_phone"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:button="@null"
-                                    android:drawableTop="@drawable/selector_signin_phone_radio"
-                                    android:gravity="center"
-                                    android:padding="@dimen/_5sdp" />
-
-                                <RadioButton
-                                    android:id="@+id/rb_email"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/_20sdp"
-                                    android:button="@null"
-                                    android:drawableTop="@drawable/selector_signin_email_radio"
-                                    android:gravity="center"
-                                    android:padding="@dimen/_5sdp" />
-
-                            </RadioGroup>
+                            <ImageView
+                                android:id="@+id/phone_signin_imgview"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/_15sdp"
+                                android:layout_toStartOf="@+id/mail_singin_imgview"
+                                android:background="@drawable/login_icon_selected_bg"
+                                android:contentDescription="@string/app_name"
+                                android:elevation="@dimen/_1sdp"
+                                android:onClick="@{() -> signInViewModel.changeSigninViaPhone()}"
+                                android:padding="@dimen/_5sdp"
+                                android:tint="@color/colorPrimary"
+                                android:shadowRadius="1"
+                                app:srcCompat="@drawable/ic_call" />
 
                         </RelativeLayout>
+
 
                         <LinearLayout
                             android:id="@+id/ll_phone_number"
@@ -142,6 +144,7 @@
                                     android:paddingStart="30dp"
                                     android:paddingEnd="8dp"
                                     android:maxLines="1"
+                                    style="@style/SmallText"
                                     android:onClick="@{signInViewModel::onCountryCodeClick}"
                                     android:singleLine="true"
                                     android:text="@={signInViewModel.countryCode}"
@@ -171,6 +174,7 @@
                                     android:paddingStart="20dp"
                                     android:paddingEnd="30dp"
                                     android:singleLine="true"
+                                    style="@style/SmallText"
                                     android:text="@={signInViewModel.phoneNumber}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp"
@@ -228,6 +232,7 @@
                                 android:imeOptions="actionGo"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                style="@style/SmallText"
                                 android:inputType="textPassword"
                                 android:text="@={signInViewModel.password}"
                                 android:textColor="@color/et_text_color"
@@ -243,6 +248,7 @@
                             android:layout_marginTop="@dimen/_5sdp"
                             android:onClick="@{signInViewModel::onForgotPasswordClick}"
                             android:padding="@dimen/_5sdp"
+                            style="@style/SmallText"
                             android:text="@string/forgot_password"
                             android:textSize="@dimen/_12sdp" />
 
@@ -266,6 +272,7 @@
                         android:padding="@dimen/_3sdp"
                         android:text="@string/do_not_have_account"
                         android:textSize="@dimen/_12sdp"
+                        style="@style/SmallText"
                         android:onClick="@{signInViewModel::onSignUpClick}"
                         tools:ignore="RelativeOverlap" />
 
@@ -278,6 +285,7 @@
                         android:onClick="@{signInViewModel::onSignUpClick}"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/sign_up"
+                        style="@style/SmallText"
                         android:textColor="@color/colorBasePrimary"
                         android:textSize="@dimen/_12sdp" />
 
@@ -301,6 +309,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="@string/or"
+                    style="@style/SmallText"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_10sdp" />
 
@@ -330,6 +339,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/_5sdp"
                                 android:text="@string/social_login"
+                                style="@style/SmallText"
                                 android:textColor="@android:color/black"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -345,6 +355,7 @@
                             android:onClick="@{signInViewModel::onGoogleSignInClick}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/connect_via_google"
+                            style="@style/SmallText"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/_12sdp" />
 
@@ -357,6 +368,7 @@
                             android:drawablePadding="8dp"
                             android:onClick="@{signInViewModel::onFacebookLoginClick}"
                             android:padding="@dimen/_5sdp"
+                            style="@style/SmallText"
                             android:text="@string/connect_via_facebook"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/_12sdp" />

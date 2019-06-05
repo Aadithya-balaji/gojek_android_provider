@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingLeft="@dimen/_10sdp"
+    android:background="@color/grey"
     android:paddingRight="@dimen/_10sdp">
 
     <ImageView

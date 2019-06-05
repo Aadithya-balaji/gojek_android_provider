@@ -454,7 +454,7 @@
             android:orientation="horizontal"
             android:weightSum="2">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/dispute_btn"
                 style="@style/SmallText.colorWhite"
                 android:layout_width="0dp"
@@ -467,7 +467,7 @@
                 android:text="@string/dispute"
                 android:textAllCaps="false" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/view_recepit_btn"
                 style="@style/SmallText.colorWhite"
                 android:layout_width="0dp"
@@ -490,7 +490,7 @@
             android:background="@color/colorWhite"
             android:visibility="gone" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/upcmng_cancel_btn"
             style="@style/SmallText.colorWhite"
             android:layout_width="match_parent"

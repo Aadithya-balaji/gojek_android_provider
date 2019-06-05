@@ -54,7 +54,7 @@
             android:visibility="gone"
             android:weightSum="1">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
@@ -62,7 +62,7 @@
                 android:text="@string/otp_call"
                 android:textColor="@color/white" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_15sdp"

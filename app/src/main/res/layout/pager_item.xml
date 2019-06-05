@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_300sdp"
+    android:padding="@dimen/_10sdp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/img_pager_item"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_200sdp"
+        android:adjustViewBounds="true"
+        android:clickable="false"
+        android:contentDescription="@string/app_name"
+        android:layout_gravity="center_horizontal"
+        android:padding="@dimen/_20sdp"
+        android:src="@drawable/bg_walk_two"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_3sdp"
+        android:textColor="@color/black"
+        tools:text="Service Ongoing"
+        android:textStyle="bold"
+        style="@style/SmallText" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:maxLines="3"
+        style="@style/SmallText"
+        android:textColor="@color/light_grey"
+        android:padding="@dimen/_8sdp"
+        android:textAlignment="viewStart"
+        tools:ignore="RtlCompat" />
+
+</LinearLayout>

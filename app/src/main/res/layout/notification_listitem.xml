@@ -40,6 +40,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
+                    style="@style/SmallText"
                     android:text="@string/dummy_min"
                     android:textSize="@dimen/_10sdp" />
 
@@ -64,7 +65,7 @@
                     android:layout_toEndOf="@+id/notification_img"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/dummy_text"
-                    android:textColor="@color/grey" />
+                    android:textColor="@color/notification_grey" />
 
 
             </RelativeLayout>

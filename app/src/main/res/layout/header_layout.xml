@@ -30,6 +30,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:padding="10dp"
+            style="@style/SmallText"
             android:textColor="@color/xuber_black"
             android:textSize="18sp"
             android:textStyle="bold" />

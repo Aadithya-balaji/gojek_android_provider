@@ -101,7 +101,7 @@
             android:textSize="@dimen/_15sdp"
             android:visibility="gone" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/bt_start_trip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

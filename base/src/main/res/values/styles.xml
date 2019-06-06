@@ -16,7 +16,7 @@
         <item name="android:windowDisablePreview">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackground">@color/app_background_color</item>
     </style>
 
     <style name="CustomToolBarStyle" parent="@style/Widget.AppCompat.Toolbar">
@@ -54,6 +54,7 @@
 
     <style name="TabLayoutStyle" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/avenirltstd_medium</item>
         <item name="android:background">@color/light_grey</item>
     </style>
 

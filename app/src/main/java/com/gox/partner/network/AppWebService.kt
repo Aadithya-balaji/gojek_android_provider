@@ -86,7 +86,7 @@ interface AppWebService {
     ): Observable<WalletResponse>
 
     @GET("provider/wallet")
-    fun getWalletTransction(@Header("Authorization") token: String): Observable<WalletTransactionList>
+    fun getWalletTransction(@Header("Authorization") token: String): Observable<WalletTransaction>
 
     @FormUrlEncoded
     @POST("provider/card")

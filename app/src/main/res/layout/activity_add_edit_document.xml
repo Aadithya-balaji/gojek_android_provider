@@ -275,6 +275,7 @@
                 android:onClick="@{()->viewModel.submitDocument()}"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/upload"
+                style="@style/SmallText"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_12sdp"

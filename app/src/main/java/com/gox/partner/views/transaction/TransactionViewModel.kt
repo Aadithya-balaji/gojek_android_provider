@@ -4,11 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
-import com.gox.partner.models.WalletTransactionList
+import com.gox.partner.models.WalletTransaction
 import com.gox.partner.repository.AppRepository
 
 class TransactionViewModel : BaseViewModel<TransactionNavigator>() {
-    var transcationLiveResponse = MutableLiveData<WalletTransactionList>()
+    var transcationLiveResponse = MutableLiveData<WalletTransaction>()
     var errorResponse = MutableLiveData<String>()
     val appRepository = AppRepository.instance()
     var showLoading=MutableLiveData<Boolean>()

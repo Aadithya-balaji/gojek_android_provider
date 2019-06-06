@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenirltstd_medium"
             android:text="@string/taxi_incoming_req"
+            style="@style/SmallText"
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
 
@@ -50,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:fontFamily="@font/avenirltstd_medium"
+                style="@style/SmallText"
                 android:text="@string/taxi_location"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
@@ -70,9 +72,10 @@
                 android:id="@+id/tv_taxi_pickup_point"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/avenirltstd_medium"
+                style="@style/SmallText"
                 android:text="@={requestmodel.pickupLocation}"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/light_grey"
+                tools:text="Chennai, India"
                 android:textSize="@dimen/_12sdp" />
 
             <View
@@ -103,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:fontFamily="@font/avenirltstd_medium"
+                style="@style/SmallText"
                 android:text="@string/taxi_service_type"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
@@ -122,9 +125,10 @@
                 android:id="@+id/tv_taxi_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/avenirltstd_medium"
+                style="@style/SmallText"
                 android:text="@={requestmodel.serviceType}"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/light_grey"
+                tools:text="Chennai, India"
                 android:textSize="@dimen/_12sdp" />
 
             <View
@@ -140,26 +144,32 @@
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <com.google.android.material.button.MaterialButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:onClick="@{() -> requestmodel.cancelReq()}"
                     android:padding="10dp"
+                    android:background="@drawable/custom_full_round_corner"
                     android:text="@string/taxi_rejcet"
+                    android:textColor="@color/white"
+                    style="@style/SmallText"
                     android:textSize="@dimen/_10sdp"
                     app:backgroundTint="#ba160c"
                     app:cornerRadius="20dp" />
 
-                <com.google.android.material.button.MaterialButton
+                <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
+                    android:background="@drawable/custom_full_round_corner"
                     android:onClick="@{() -> requestmodel.acceptReq()}"
                     android:padding="10dp"
                     android:text="@string/taxi_accept"
+                    android:textColor="@color/white"
+                    style="@style/SmallText"
                     android:textSize="@dimen/_10sdp"
                     app:cornerRadius="20dp" />
 

@@ -8,13 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gox.partner.R
 import com.gox.partner.databinding.TransactionListItemBinding
-import com.gox.partner.models.TransactionDatum
+import com.gox.partner.models.WalletTransaction
 import com.gox.partner.utils.CommanMethods
 
-class TransactionListAdapter(context: Context, transactionList: List<TransactionDatum>) : RecyclerView.Adapter<TransactionListAdapter.MyViewHolder>() {
+class TransactionListAdapter(context: Context, transactionList: List<WalletTransaction.ResponseData.Data>) : RecyclerView.Adapter<TransactionListAdapter.MyViewHolder>() {
 
     var context: Context? = null
-    var transactionList: List<TransactionDatum>? = null
+    var transactionList: List<WalletTransaction.ResponseData.Data>? = null
 
     init {
         this.context = context
@@ -32,10 +32,10 @@ class TransactionListAdapter(context: Context, transactionList: List<Transaction
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.currentOderItemlistBinding.tvTransactionID.setText(transactionList!!.get(position).getTransactionAlias().toString())
-        var strDate = CommanMethods.getLocalTimeStamp(transactionList!!.get(position).getCreatedAt().toString())
-        holder.currentOderItemlistBinding.tvTransactionAmount.setText(String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount()))
-        if(transactionList!!.get(position).getType().equals("D"))
+        holder.currentOderItemlistBinding.tvTransactionID.setText(transactionList!!.get(position).transaction_alias.toString())
+        var strDate = CommanMethods.getLocalTimeStamp(transactionList!!.get(position).created_at.toString())
+        holder.currentOderItemlistBinding.tvTransactionAmount.setText(String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).amount))
+        if(transactionList!!.get(position).type.equals("D"))
         {
            holder.currentOderItemlistBinding.tvTransactionStatus.setText(context!!.resources.getString(R.string.depited))
             holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,R.color.dispute_status_open))

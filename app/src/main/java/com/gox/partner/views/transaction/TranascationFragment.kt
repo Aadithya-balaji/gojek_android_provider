@@ -1,15 +1,15 @@
 package com.gox.partner.views.transaction
 
-import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gox.base.base.BaseFragment
 import com.gox.base.extensions.observeLiveData
+import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.FragmentTransactionBinding
-import com.gox.partner.models.TransactionDatum
+import com.gox.partner.models.WalletTransaction
 import com.gox.partner.views.adapters.TransactionListAdapter
 import kotlinx.android.synthetic.main.fragment_transaction.*
 
@@ -18,6 +18,7 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
     private lateinit var transcationViewModel: TransactionViewModel
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var transactionListAdapter: TransactionListAdapter
+
     override fun getLayoutId(): Int {
         return R.layout.fragment_transaction
     }
@@ -38,7 +39,7 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
 
     private fun getApiResponse() {
         observeLiveData(transcationViewModel.transcationLiveResponse) {
-            if (it.getResponseData()?.getData() != null && it.getResponseData()?.getData()!!.isNotEmpty()) {
+            if (it.responseData.data != null && it.responseData.data!!.isNotEmpty()) {
                 contentMain.visibility = View.VISIBLE
                 llEmptyView.visibility = View.GONE
             } else {
@@ -46,12 +47,13 @@ class TranascationFragment : BaseFragment<FragmentTransactionBinding>(), Transac
                 llEmptyView.visibility = View.VISIBLE
             }
 
-            val transcationlist: List<TransactionDatum> = transcationViewModel.transcationLiveResponse.value!!.getResponseData()!!.getData()!!
+            val transcationlist: List<WalletTransaction.ResponseData.Data> = transcationViewModel.transcationLiveResponse.value!!.responseData!!.data!!
             transactionListAdapter = TransactionListAdapter(activity!!, transcationlist)
             fragmentTransactionBinding.transactionListRv.adapter = transactionListAdapter
         }
 
         observeLiveData(transcationViewModel.errorResponse) {
+            ViewUtils.showToast(activity!!,it,false)
             contentMain.visibility = View.GONE
             llEmptyView.visibility = View.VISIBLE
         }

@@ -54,6 +54,7 @@
                 android:onClick="@{()->viewModel.submitDetails()}"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/submit"
+                style="@style/SmallText"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_12sdp"

@@ -2,24 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/_220sdp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/shadow"
+    android:background="@drawable/custom_full_round_corner"
+    android:backgroundTint="@color/colorWhite"
+    android:elevation="@dimen/_1sdp"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_cross"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp">
+        >
 
         <TextView
             android:id="@+id/tvlableImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:fontFamily="@font/avenirltstd_medium"
             android:text="@string/xuper_image"
             android:textColor="@color/xuber_black"
@@ -27,10 +27,9 @@
 
         <ImageView
             android:id="@+id/ivClose"
-            android:layout_width="@dimen/_12sdp"
-            android:layout_height="@dimen/_12sdp"
+            android:layout_width="@dimen/_15sdp"
+            android:layout_height="@dimen/_15sdp"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:tint="@color/xuper_red"
             app:srcCompat="@drawable/cross" />
     </RelativeLayout>
@@ -40,7 +39,7 @@
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
         android:layout_below="@+id/rl_cross"
-        android:layout_marginStart="@dimen/_10sdp"
+        android:scaleType="centerCrop"
         android:layout_marginTop="@dimen/_9sdp"
         android:background="@drawable/kittty" />
 
@@ -49,9 +48,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivInfo"
-        android:layout_margin="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         style="@style/SmallText"
-        android:text="@string/xuper_label_description"
+        android:text="@string/instruction"
         android:textColor="@color/xuber_black"
         android:textSize="@dimen/_12sdp" />
 
@@ -60,8 +59,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvlabelDescription"
-        android:layout_margin="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         style="@style/SmallText"
+        android:maxLines="5"
+        android:minLines="3"
         android:textSize="@dimen/_10sdp"
         tools:text="this is the sample description label in feature it will change" />
 

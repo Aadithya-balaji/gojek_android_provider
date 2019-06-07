@@ -82,7 +82,7 @@
                     android:layout_marginRight="@dimen/_10sdp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/icon_started_towards_restaurant"
@@ -190,7 +190,7 @@
                                 android:layout_gravity="center"
                                 android:contentDescription="@string/app_name"
                                 android:padding="@dimen/_8sdp"
-                                app:srcCompat="@drawable/ic_call" />
+                                app:srcCompat="@drawable/ic_phone_call" />
 
                             <ImageView
                                 android:id="@+id/loc_txt"

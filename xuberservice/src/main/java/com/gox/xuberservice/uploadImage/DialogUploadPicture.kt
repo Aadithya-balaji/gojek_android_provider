@@ -24,8 +24,7 @@ import com.gox.xuberservice.databinding.DialogUploadImageBinding
 import com.gox.xuberservice.interfaces.GetFilePathInterface
 import java.io.File
 
-class
-DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUploadPictureNavigator {
+class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUploadPictureNavigator {
 
 
     private lateinit var dialogUploadImageBinding: DialogUploadImageBinding
@@ -127,7 +126,7 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         mediaFile = CommonMethods.createImageFile(activity!!)
         //Kindly change the application id if any changes made in  app application id means
-        mediaUri = FileProvider.getUriForFile(activity!!, "com.xjek.provider" + ".provider", mediaFile)
+        mediaUri = FileProvider.getUriForFile(activity!!, activity!!.packageName + ".provider", mediaFile)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri)
         startActivityForResult(intent, requestCode)
     }

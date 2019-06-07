@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/_15sdp"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:gravity="center"
             android:text="@string/invoice"
             android:textColor="@color/xuber_black" />
@@ -67,7 +67,9 @@
                         android:id="@+id/tvUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
+                        style="@style/SmallText"
+                        android:textStyle="bold"
+                        tools:text="SSS"
                         android:text="@{invoicemodel.userName}"
                         android:textColor="@color/xuper_light_black"
                         android:textSize="@dimen/_12sdp" />
@@ -81,7 +83,7 @@
                             android:id="@+id/tvXuperRating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenirltstd_medium"
+                            style="@style/SmallText"
                             android:text="@={invoicemodel.rating}"
                             android:textColor="@color/xuber_grey"
                             android:textSize="@dimen/_10sdp" />
@@ -91,7 +93,7 @@
                             android:layout_width="@dimen/_10sdp"
                             android:layout_height="@dimen/_10sdp"
                             android:src="@drawable/star"
-                            android:layout_marginLeft="@dimen/_3sdp"
+                            android:layout_marginStart="@dimen/_3sdp"
                             android:tint="@color/chip_yellow_inner_color" />
                     </LinearLayout>
 
@@ -108,7 +110,8 @@
                         android:id="@+id/tvXuperServicelabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
+                        style="@style/SmallText"
+                        android:textColor="@color/colorBlack"
                         android:text="@string/label_service"
                         android:textSize="@dimen/_12sdp" />
 
@@ -118,6 +121,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_3sdp"
                         tools:text="@string/dummy_xuberservice_text"
+                        style="@style/SmallText"
                         android:textColor="@color/xuper_invoice_grey"
                         android:textSize="@dimen/_10sdp" />
                 </LinearLayout>
@@ -146,7 +150,7 @@
                         android:id="@+id/tvXuperTimeTaken"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
+                        style="@style/SmallText"
                         android:text="@string/xuper_label_time"
                         android:textColor="@color/xuper_light_black"
                         android:textSize="@dimen/_12sdp" />
@@ -156,6 +160,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text= "@string/start_timer"
+                        style="@style/SmallText"
                         android:textColor="@color/xuper_invoice_grey" />
                 </LinearLayout>
 
@@ -171,7 +176,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_additional_charge"
-                        android:fontFamily="@font/avenirltstd_medium"
+                        style="@style/SmallText"
                         android:paddingLeft="@dimen/_8sdp"
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingRight="@dimen/_8sdp"
@@ -203,8 +208,8 @@
                 android:id="@+id/tvAmountToBePaidLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@string/xuper_amount_to_be_paid"
                 android:text="@string/xuper_amount_to_be_paid"
+                style="@style/SmallText"
                 android:textColor="@color/xuper_blue"
                 android:textSize="@dimen/_12sdp" />
 
@@ -213,8 +218,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:fontFamily="@font/avenirltstd_medium"
+                android:layout_marginStart="@dimen/_5sdp"
+                style="@style/SmallText"
                 android:text="@={invoicemodel.totalAmount}"
                 android:textColor="@color/xuper_blue"
                 android:textSize="@dimen/_12sdp" />
@@ -238,7 +243,7 @@
             android:layout_gravity="center"
             android:textColor="@color/xuper_blue"
             android:onClick="@{() -> invoicemodel.confirmPayment()}"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:layout_marginBottom="@dimen/_10sdp"/>
 
     </LinearLayout>

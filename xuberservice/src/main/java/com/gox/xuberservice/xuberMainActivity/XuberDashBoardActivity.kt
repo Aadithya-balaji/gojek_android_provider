@@ -609,7 +609,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 }
 
                 COMPLETED -> if (backImgFile == null) {
-                    if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1)
+                    if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.service!!.allow_after_image == 1)
                         ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false)
                     else mViewModel.updateRequest(DROPPED, null, false)
                 } else {
@@ -723,7 +723,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     true)
             popupWindow!!.isOutsideTouchable = false
             popupWindow!!.isFocusable = false
-           // popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
         if (!popupWindow!!.isShowing) {

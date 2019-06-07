@@ -1,5 +1,7 @@
 package com.gox.base.repository
 
+import com.google.gson.JsonSyntaxException
+import com.gox.base.BuildConfig
 import com.gox.base.base.BaseApplication
 import com.gox.base.data.NetworkError
 import com.gox.base.data.PreferencesHelper
@@ -13,6 +15,7 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 open class BaseRepository {
 
@@ -40,6 +43,12 @@ open class BaseRepository {
 
     fun getErrorMessage(e: Throwable): String {
         return when (e) {
+            is JsonSyntaxException -> {
+                if (BuildConfig.DEBUG)
+                    e.message.toString()
+                else
+                    NetworkError.DATA_EXCEPTION
+            }
             is HttpException -> {
                 if (e.code() == 401 && !PreferencesHelper.get(PreferencesKey.ACCESS_TOKEN, "")
                                 .equals("")) SessionManager.clearSession()

@@ -111,6 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/no_transction"
+                style="@style/SmallText"
                 android:textSize="@dimen/_12sdp" />
 
         </LinearLayout>

@@ -113,7 +113,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="@string/dummy_number"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/_10sdp" />
                     </LinearLayout>
@@ -152,7 +151,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="@string/dummy_mail_id"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/_10sdp" />
                     </LinearLayout>
@@ -191,7 +189,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:text="@string/dummy_website"
                             android:textColor="@color/dark_grey"
                             android:textSize="@dimen/_10sdp" />
                     </LinearLayout>

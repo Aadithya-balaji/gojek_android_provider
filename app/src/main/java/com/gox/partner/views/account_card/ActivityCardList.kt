@@ -240,6 +240,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     }
 
     override fun showErrorMsg(error: String) {
+        cardListViewModel.loadingProgress.value = false
         ViewUtils.showToast(context, error, false)
     }
 

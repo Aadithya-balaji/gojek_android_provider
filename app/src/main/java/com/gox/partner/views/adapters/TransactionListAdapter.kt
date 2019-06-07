@@ -8,13 +8,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gox.partner.R
 import com.gox.partner.databinding.TransactionListItemBinding
-import com.gox.partner.models.TransactionDatum
+import com.gox.partner.models.WalletTransaction
 import com.gox.partner.utils.CommonMethods
 
-class TransactionListAdapter(context: Context, transactionList: List<TransactionDatum>) : RecyclerView.Adapter<TransactionListAdapter.MyViewHolder>() {
+class TransactionListAdapter(context: Context, transactionList: List<WalletTransaction.ResponseData.Data>) : RecyclerView.Adapter<TransactionListAdapter.MyViewHolder>() {
 
     var context: Context? = null
-    var transactionList: List<TransactionDatum>? = null
+    var transactionList: List<WalletTransaction.ResponseData.Data>? = null
 
     init {
         this.context = context
@@ -32,15 +32,21 @@ class TransactionListAdapter(context: Context, transactionList: List<Transaction
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.currentOderItemlistBinding.tvTransactionID.setText(transactionList!!.get(position).getTransactionAlias().toString())
-        var strDate = CommonMethods.getLocalTimeStamp(transactionList!!.get(position).getCreatedAt().toString())
-        holder.currentOderItemlistBinding.tvTransactionAmount.setText(String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount()))
-        if(transactionList!!.get(position).getType().equals("D"))
+//<<<<<<< HEAD
+//        holder.currentOderItemlistBinding.tvTransactionID.setText(transactionList!![position].getTransactionAlias().toString())
+//        var strDate = CommonMethods.getLocalTimeStamp(transactionList!![position].getCreatedAt().toString())
+//        holder.currentOderItemlistBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount())
+//        if(transactionList!!.get(position).getType().equals("D"))
+//=======
+        holder.currentOderItemlistBinding.tvTransactionID.text = transactionList!![position].transaction_alias
+        var strDate = CommanMethods.getLocalTimeStamp(transactionList!![position].created_at)
+        holder.currentOderItemlistBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).amount)
+        if(transactionList!![position].type == "D")
         {
-           holder.currentOderItemlistBinding.tvTransactionStatus.setText(context!!.resources.getString(R.string.depited))
+           holder.currentOderItemlistBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.depited)
             holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,R.color.dispute_status_open))
         }else{
-            holder.currentOderItemlistBinding.tvTransactionStatus.setText(context!!.resources.getString(R.string.credited))
+            holder.currentOderItemlistBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.credited)
             holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,R.color.credit))
         }
     }

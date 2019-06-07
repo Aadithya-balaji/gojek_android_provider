@@ -15,6 +15,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.Gson
 import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
+import com.gox.base.data.Constants
 import com.gox.base.data.Constants.ModuleTypes.ORDER
 import com.gox.base.data.Constants.ModuleTypes.SERVICE
 import com.gox.base.data.Constants.ModuleTypes.TRANSPORT
@@ -127,8 +128,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             setLanguage(it)
             setPayment(it)
 
-            Constant.privacyPolicyUrl = it.responseData.appsetting.cmspage.privacypolicy
-            Constant.termsUrl = it.responseData.appsetting.cmspage.terms
+            Constants.privacyPolicyUrl = it.responseData.appsetting.cmspage.privacypolicy
+            Constants.termsUrl = it.responseData.appsetting.cmspage.terms
 
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 launchNewActivity(OnBoardActivity::class.java, true)

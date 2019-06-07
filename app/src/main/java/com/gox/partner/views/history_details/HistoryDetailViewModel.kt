@@ -3,11 +3,11 @@ package com.gox.partner.views.history_details
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.partner.models.*
 import com.gox.partner.repository.AppRepository
-import com.gox.partner.utils.Constant
 
 class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
 
@@ -45,15 +45,18 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
 
     fun getTransportHistoryDetail(selectedID: String) {
         getCompositeDisposable().add(appRepository
-                .getTransPortDetail(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
+                .getTransPortDetail(this, Constants.M_TOKEN +
+                        preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
     }
 
     fun getServiceHistoryDetail(selectedID: String) {
-        getCompositeDisposable().addAll(appRepository.getServiceDetail(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
+        getCompositeDisposable().addAll(appRepository.getServiceDetail(this, Constants.M_TOKEN +
+                preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
     }
 
     fun getOrderHistoryDetail(selectedID: String) {
-        getCompositeDisposable().addAll(appRepository.getOrderDetail(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
+        getCompositeDisposable().addAll(appRepository.getOrderDetail(this, Constants.M_TOKEN +
+                preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
     }
 
 
@@ -65,44 +68,52 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
         loadingProgress.value = true
         Log.e("servicetype", "----------" + serviceType.value)
         if (serviceType.value.equals("transport")) {
-            getCompositeDisposable().add(appRepository.getDisputeList(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")))
+            getCompositeDisposable().add(appRepository.getDisputeList(this, Constants.M_TOKEN +
+                    preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")))
         } else {
-            getCompositeDisposable().add(appRepository.getDisputeList(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), serviceType.value!!))
+            getCompositeDisposable().add(appRepository.getDisputeList(this, Constants.M_TOKEN +
+                    preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), serviceType.value!!))
         }
     }
 
 
     fun postTaxiDispute(params: HashMap<String, String>) {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository.addTaxiDispute(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
+        getCompositeDisposable().add(appRepository.addTaxiDispute(this, Constants.M_TOKEN +
+                preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
     }
 
 
     fun postServiceDispute(params: HashMap<String, String>, requestID: String) {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository.addServiceDispute(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID, params))
+        getCompositeDisposable().add(appRepository.addServiceDispute(this, Constants.M_TOKEN +
+                preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID, params))
     }
 
     fun postOrderDispute(params: HashMap<String, String>) {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository.addOrderDispute(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
+        getCompositeDisposable().add(appRepository.addOrderDispute(this, Constants.M_TOKEN +
+                preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
     }
 
 
     fun getTransPortDisputeStatus(requestID: String) {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository.getTransportDisputeStatus(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
+        getCompositeDisposable().add(appRepository.getTransportDisputeStatus(this,
+                Constants.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
     }
 
     fun getOrderDisputeStatus(requestID: String) {
         loadingProgress.value =true
-                getCompositeDisposable().add(appRepository.getOrderDisputeStatus(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
+                getCompositeDisposable().add(appRepository.getOrderDisputeStatus(this,
+                        Constants.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
 
     }
 
     fun getServiceDisputeStatus(requestID: String) {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository.getServicefDisputeStatus(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
+        getCompositeDisposable().add(appRepository.getServicefDisputeStatus(this,
+                Constants.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
 
     }
 
@@ -130,6 +141,4 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
         navigator.onClickCancelBtn()
 
     }
-
-
 }

@@ -2,11 +2,11 @@ package com.gox.partner.views.notification
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.partner.models.NotificationResponse
 import com.gox.partner.repository.AppRepository
-import com.gox.partner.utils.Constant
 
 class NotificationViewModel : BaseViewModel<NotificationNavigator>() {
 
@@ -29,7 +29,7 @@ class NotificationViewModel : BaseViewModel<NotificationNavigator>() {
 
         getCompositeDisposable().add(appRepository
                 .getNotification(this
-                        , Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "")))
+                        , Constants.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "")))
     }
 
 }

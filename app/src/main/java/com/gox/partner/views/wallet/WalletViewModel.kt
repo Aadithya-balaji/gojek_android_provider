@@ -4,6 +4,7 @@ import android.content.res.Resources
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.partner.R
@@ -13,8 +14,6 @@ import com.gox.partner.models.ProfileResponse
 import com.gox.partner.models.WalletResponse
 import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
-import com.gox.partner.utils.Constant
-
 
 class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
     var cardResponseData = MutableLiveData<CardListModel>()
@@ -49,7 +48,7 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
             val params = HashMap<String, String>()
             params.put(WebApiConstants.AddWallet.AMOUNT, walletAmount.value.toString())
             params.put(WebApiConstants.AddWallet.CARD_ID, selectedStripeID.value.toString())
-            params.put(WebApiConstants.AddWallet.USER_TYPE, Constant.TYPE_PROVIDER)
+            params.put(WebApiConstants.AddWallet.USER_TYPE, Constants.TYPE_PROVIDER)
             params.put(WebApiConstants.AddWallet.PAYMENT_MODE, "card")
             getCompositeDisposable().add(appRepository.addWalletAmount(this, params, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
         }

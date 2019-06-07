@@ -14,7 +14,6 @@ import com.gox.partner.views.adapters.PastOrdersAdapter
 import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.dashboard.DashBoardViewModel
 import com.gox.xjek.ui.pastorder_fragment.PastOrderNavigator
-import com.gox.xjek.ui.pastorder_fragment.PastOrderViewModel
 
 class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNavigator, ServiceTypeListener {
     private lateinit var mViewDataBinding: FragmentPastOrdersBinding

@@ -1,5 +1,7 @@
 package com.gox.partner.network
 
+import com.gox.base.chatmessage.ResCommonSuccessModel
+import com.gox.base.chatmessage.ResMessageModel
 import com.gox.partner.models.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -288,5 +290,15 @@ interface AppWebService {
 
     @GET("provider/history-dispute/service/{request_id}")
     fun getServiceDisputeStatus(@Header("Authorization") token: String, @Path("request_id") id: String): Observable<DisputeStatusModel>
+
+    @FormUrlEncoded
+    @POST("user/chat")
+    fun sendMessage(@Header("Authorization") token: String,
+                    @FieldMap params: java.util.HashMap<String, Any>): Observable<ResCommonSuccessModel>
+
+    @GET("user/chat")
+    fun getMessages(@Header("Authorization") token: String,
+                    @Query("admin_service") adminService: String, @Query("id") id: Int): Observable<ResMessageModel>
+
 
 }

@@ -35,6 +35,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
+import com.gox.base.chatmessage.ChatActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.gox.base.data.Constants.DEFAULT_ZOOM
@@ -100,7 +101,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         GoogleMap.OnCameraIdleListener,
         View.OnClickListener {
 
-    private lateinit var activityTaxiMainBinding: ActivityTaxiMainBinding
+    private lateinit var mBinding: ActivityTaxiMainBinding
     private lateinit var mViewModel: TaxiDashboardViewModel
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
@@ -134,23 +135,26 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var iterationDistForApi = 50.0
     private var iterationDistForDistanceCal = 500.0
 
-    override fun getLayoutId(): Int = R.layout.activity_taxi_main
+    override fun getLayoutId() = R.layout.activity_taxi_main
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        this.activityTaxiMainBinding = mViewDataBinding as ActivityTaxiMainBinding
+        this.mBinding = mViewDataBinding as ActivityTaxiMainBinding
         mViewModel = ViewModelProviders.of(this).get(TaxiDashboardViewModel::class.java)
         mViewModel.navigator = this
         context = this
-        activityTaxiMainBinding.lifecycleOwner = this
-        activityTaxiMainBinding.taximainmodule = mViewModel
+        mBinding.lifecycleOwner = this
+        mBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
         sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bsContainer)
         sheetBehavior.peekHeight = resources.getDimension(R.dimen._280sdp).toInt()
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
         if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        //mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+
+        fab_taxi_menu.isIconAnimated = false
+        fab_taxi_menu.setPadding(50, 50, 50, 50)
+
         observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
@@ -161,6 +165,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         tvSos.setOnClickListener {
             startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:911")))
+        }
+
+        fab_taxi_menu_chat.setOnClickListener {
+            startActivity(Intent(this, ChatActivity::class.java))
         }
 
         btn_cancel.setOnClickListener {
@@ -260,6 +268,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusResponse.responseData.provider_details.id)
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
                         writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
+
+                        fab_taxi_menu_call.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_DIAL)
+                            intent.data = Uri.parse("tel:${checkStatusResponse.responseData.request.user.mobile}")
+                            startActivity(intent)
+                        }
 
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 

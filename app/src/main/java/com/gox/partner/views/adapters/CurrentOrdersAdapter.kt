@@ -10,7 +10,7 @@ import com.gox.partner.R
 import com.gox.partner.databinding.CurrentOderItemlistBinding
 import com.gox.partner.interfaces.CustomClickListner
 import com.gox.partner.models.TransportHistory
-import com.gox.partner.utils.CommanMethods
+import com.gox.partner.utils.CommonMethods
 import com.gox.taxiservice.views.main.TaxiDashboardActivity
 
 class CurrentOrdersAdapter(activity: FragmentActivity?, val transportCurentHistory: List<TransportHistory.TransportResponseData.Transport>)
@@ -29,9 +29,9 @@ class CurrentOrdersAdapter(activity: FragmentActivity?, val transportCurentHisto
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
-        holder.currentOderItemlistBinding.dateCurrentListTv.text = (CommanMethods.getLocalTimeStamp(transportCurentHistory[position]
+        holder.currentOderItemlistBinding.dateCurrentListTv.text = (CommonMethods.getLocalTimeStamp(transportCurentHistory[position]
                 .assigned_at, "Req_Date_Month") + "")
-        holder.currentOderItemlistBinding.timeCurrentListTv.text = (CommanMethods.getLocalTimeStamp(transportCurentHistory[position]
+        holder.currentOderItemlistBinding.timeCurrentListTv.text = (CommonMethods.getLocalTimeStamp(transportCurentHistory[position]
                 .assigned_at, "Req_time") + "")
         holder.currentOderItemlistBinding.titleCurrentListTv.text = (transportCurentHistory[position].booking_id)
         holder.currentOderItemlistBinding.orderedItemTv.text = transportCurentHistory[position].ride.vehicle_name

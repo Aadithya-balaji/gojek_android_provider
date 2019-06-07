@@ -28,6 +28,8 @@ import com.karumi.dexter.listener.single.PermissionListener
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import com.gox.base.base.BaseActivity
+import com.gox.base.data.Constants
+import com.gox.base.data.Constants.APP_REQUEST_CODE
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.utils.ValidationUtils
 import com.gox.base.utils.ViewUtils
@@ -36,8 +38,6 @@ import com.gox.partner.databinding.ActivityEditProfileBinding
 import com.gox.partner.models.City
 import com.gox.partner.models.CountryListResponse
 import com.gox.partner.models.CountryResponseData
-import com.gox.partner.utils.Constant
-import com.gox.partner.utils.Constant.APP_REQUEST_CODE
 import com.gox.partner.utils.Country
 import com.gox.partner.views.change_password.ChangePasswordActivity
 import com.gox.partner.views.citylist.CityListActivity
@@ -81,11 +81,10 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
         mViewModel.countryListResponse.observe(this, Observer<CountryListResponse> {
             Log.d("_D", "country_code :" + it.responseData[0].country_code)
-
             val intent = Intent(this, CountryListActivity::class.java)
             intent.putExtra("selectedfrom", "country")
             intent.putExtra("countrylistresponse", it as Serializable)
-            startActivityForResult(intent, Constant.COUNTRYLIST_REQUEST_CODE)
+            startActivityForResult(intent, Constants.COUNTRYLIST_REQUEST_CODE)
         })
 
         observeLiveData(mViewModel.loadingProgress) {
@@ -97,7 +96,6 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
 
         mViewModel.mProfileResponse.observe(this, Observer { response ->
-
             mViewModel.mUserName.set(response.profileData.first_name)
             mViewModel.mMobileNumber.set(response.profileData.mobile)
             mViewModel.mEmail.set(response.profileData.email)
@@ -111,10 +109,9 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture, R.drawable.dummy_profile_pic)
 
             handleCountryCodePickerResult(response.profileData.country.country_name)
-
         })
 
-        setOnclickListteners()
+        setOnclickListeners()
     }
 
     private fun handleCountryCodePickerResult(country: String?) {
@@ -138,12 +135,12 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         launchNewActivity(ChangePasswordActivity::class.java, true)
     }
 
-    private fun setOnclickListteners() {
+    private fun setOnclickListeners() {
         mViewDataBinding.profileLayout.setOnClickListener {
             checkPermission()
         }
-        save_editprofile_btn.setOnClickListener {
 
+        save_editprofile_btn.setOnClickListener {
             if (mViewModel.mProfileResponse.value!!.profileData.mobile == phonenumber_register_et.text.toString()) {
                 mMobileNumberFlag = 1   //  same
                 if (localPath?.path != null) {
@@ -221,14 +218,14 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 Toast.makeText(this, "Cropping failed: ", Toast.LENGTH_LONG).show()
             }
         }
-        if (requestCode == Constant.COUNTRYLIST_REQUEST_CODE && data!=null) {
+        if (requestCode == Constants.COUNTRYLIST_REQUEST_CODE && data!=null) {
             setCountry(data)
             mViewDataBinding.cityRegisterEt.isEnabled = true
             mViewModel.loadingProgress.value = false
         }else{
             mViewModel.loadingProgress.value = false
         }
-        if (requestCode == Constant.CITYLIST_REQUEST_CODE && data!=null) {
+        if (requestCode == Constants.CITYLIST_REQUEST_CODE && data!=null) {
             setCity(data)
             mViewModel.loadingProgress.value = false
         }else{
@@ -321,7 +318,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             val intent = Intent(this, CityListActivity::class.java)
             intent.putExtra("selectedfrom", "city")
             intent.putExtra("citylistresponse", city as Serializable)
-            startActivityForResult(intent, Constant.CITYLIST_REQUEST_CODE)
+            startActivityForResult(intent, Constants.CITYLIST_REQUEST_CODE)
         }
     }
 }

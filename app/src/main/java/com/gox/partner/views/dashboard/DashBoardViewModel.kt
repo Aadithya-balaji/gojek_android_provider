@@ -3,12 +3,12 @@ package com.gox.partner.views.dashboard
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.partner.models.CheckRequestModel
 import com.gox.partner.models.ProfileResponse
 import com.gox.partner.repository.AppRepository
-import com.gox.partner.utils.Constant
 
 class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
 
@@ -37,6 +37,6 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
     fun getProfile() {
         if (BaseApplication.isNetworkAvailable)
             getCompositeDisposable().add(appRepository.getProviderProfile(this,
-                    Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
+                    Constants.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
     }
 }

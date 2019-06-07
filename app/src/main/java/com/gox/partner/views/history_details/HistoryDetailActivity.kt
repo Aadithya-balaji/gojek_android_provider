@@ -15,14 +15,14 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gox.base.base.BaseActivity
-import com.gox.base.utils.Constants
+import com.gox.base.data.Constants
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityCurrentorderDetailLayoutBinding
 import com.gox.partner.databinding.DisputeResonDialogBinding
 import com.gox.partner.databinding.DisputeStatusBinding
 import com.gox.partner.models.*
-import com.gox.partner.utils.CommanMethods
+import com.gox.partner.utils.CommonMethods
 import com.gox.partner.views.adapters.DisputeReasonListAdapter
 import com.gox.partner.views.adapters.ReasonListClicklistner
 import com.gox.partner.views.dashboard.DashBoardViewModel
@@ -319,8 +319,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     private fun setupTransportDetail(transPastDetail: HistoryDetailModel.ResponseData.Transport) {
         historyDetailViewModel.transportDetail.value = transPastDetail
         mViewDataBinding.currentorderdetailTitleTv.text = transPastDetail.booking_id
-        mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_Date_Month") + "")
-        mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_time") + "")
+        mViewDataBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_Date_Month") + "")
+        mViewDataBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_time") + "")
         mViewDataBinding.historydetailSrcValueTv.text = transPastDetail.s_address
         mViewDataBinding.historydetailDestValueTv.text = transPastDetail.d_address
         mViewDataBinding.historydetailStatusValueTv.text = transPastDetail.status
@@ -341,9 +341,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     private fun setupServiceDetail(serviceDetail: HistoryDetailModel.ResponseData.Service) {
         historyDetailViewModel.serviceDetail.value = serviceDetail
         mViewDataBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
-        mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(serviceDetail.started_at!!,
+        mViewDataBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!,
                 "Req_Date_Month") + "")
-        mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(serviceDetail.started_at, "Req_time") + "")
+        mViewDataBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at, "Req_time") + "")
         mViewDataBinding.historydetailSrcValueTv.text = serviceDetail.s_address
         mViewDataBinding.historydetailStatusValueTv.text = serviceDetail.status
         mViewDataBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
@@ -359,9 +359,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     private fun setupOrderHistoryDetail(orderDetail: HistoryDetailModel.ResponseData.Order) {
         historyDetailViewModel.orderDetaIL.value = orderDetail
         mViewDataBinding.currentorderdetailTitleTv.text = orderDetail.store_order_invoice_id
-        mViewDataBinding.currentorderdetailDateTv.text = (CommanMethods.getLocalTimeStamp(orderDetail.created_at!!,
+        mViewDataBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(orderDetail.created_at!!,
                 "Req_Date_Month") + "")
-        mViewDataBinding.timeCurrentorderdetailTv.text = (CommanMethods.getLocalTimeStamp(orderDetail.created_at!!, "Req_time") + "")
+        mViewDataBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(orderDetail.created_at!!, "Req_time") + "")
         mViewDataBinding.historydetailSrcValueTv.text = orderDetail.pickup!!.store_location
         mViewDataBinding.historydetailDestValueTv.text = orderDetail.delivery!!.flat_no + " " + orderDetail.delivery.street
         mViewDataBinding.historydetailStatusValueTv.text = orderDetail.status

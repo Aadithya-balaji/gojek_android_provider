@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
@@ -27,7 +26,7 @@ import kotlinx.android.synthetic.main.dialog_invoice.*
 
 class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvoiceNavigator, GetExtraChargeInterface, DialogCloseInterface {
 
-    private lateinit var dialogInvoiceBinding: DialogInvoiceBinding
+    private lateinit var mBinding: DialogInvoiceBinding
     private lateinit var xuperInvoiceModel: XuperInvoiceViewModel
     private var updateRequestModel: UpdateRequest? = null
     private var strUpdateRequest: String? = null
@@ -38,31 +37,27 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     private var extraChageDialog: DialogXuperExtraCharge? = null
     private var invoiceDialog: Dialog? = null
     private var timetaken: String? = ""
-    private  var extraAmount:Double?=0.0
+    private var extraAmount: Double? = 0.0
 
-
-    override fun getLayout(): Int {
-        return R.layout.dialog_invoice
-    }
-
+    override fun getLayout() = R.layout.dialog_invoice
 
     override fun onStart() {
         super.onStart()
-        getDialog()!!.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog!!.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.CustomDialog)
+        setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
         getBundleValues()
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
-        dialogInvoiceBinding = viewDataBinding as DialogInvoiceBinding
+        mBinding = viewDataBinding as DialogInvoiceBinding
         xuperInvoiceModel = XuperInvoiceViewModel()
         xuperInvoiceModel.navigator = this
-        dialogInvoiceBinding.invoicemodel = xuperInvoiceModel
-        dialogInvoiceBinding.setLifecycleOwner(this)
+        mBinding.invoicemodel = xuperInvoiceModel
+        mBinding.lifecycleOwner = this
         xuperInvoiceModel.showProgress = loadingObservable as MutableLiveData<Boolean>
         updateUi()
         getApiResponse()
@@ -74,7 +69,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
             override fun onChanged(updateRequest: UpdateRequest?) {
                 xuperInvoiceModel.showProgress.value = false
                 if (updateRequest!!.statusCode.equals("200")) {
-                    Log.e("Dialog","------------")
+                    Log.e("Dialog", "------------")
                     val ratingDialog = DialogXuberRating()
                     val strupdateRequest = Gson().toJson(updateRequest)
                     val bundle = Bundle()
@@ -107,7 +102,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
 
     fun updateUi() {
         if (isFromCheckRequest == false) {
-            xuperInvoiceModel.rating.value =String.format(resources.getString(R.string.xuper_rating_user),updateRequestModel!!.responseData!!.user!!.rating!!.toDouble())
+            xuperInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user), updateRequestModel!!.responseData!!.user!!.rating!!.toDouble())
             xuperInvoiceModel.serviceName.value = updateRequestModel!!.responseData!!.service!!.service_name
             xuperInvoiceModel.userImage.value = updateRequestModel!!.responseData!!.user!!.picture.toString()
             xuperInvoiceModel.totalAmount.value = updateRequestModel!!.responseData!!.payment!!.payable.toString()
@@ -116,23 +111,26 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
             timetaken = CommonMethods.getTimeDifference(updateRequestModel!!.responseData!!.started_at!!, updateRequestModel!!.responseData!!.finished_at!!, "")
 
         } else {
-            xuperInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user),xuperCheckRequest!!.responseData!!.requests!!.user!!.rating!!.toDouble())
+            xuperInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user), xuperCheckRequest!!.responseData!!.requests!!.user!!.rating!!.toDouble())
             xuperInvoiceModel.serviceName.value = xuperCheckRequest!!.responseData!!.requests!!.service!!.service_name
             xuperInvoiceModel.userImage.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.picture.toString()
             xuperInvoiceModel.totalAmount.value = xuperCheckRequest!!.responseData!!.requests!!.payment!!.payable.toString()
             xuperInvoiceModel.requestID.value = xuperCheckRequest!!.responseData!!.requests!!.id.toString()
-            xuperInvoiceModel.userName.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.first_name + " " + xuperCheckRequest!!.responseData!!.requests!!.user!!.last_name
-            timetaken = CommonMethods.getTimeDifference(xuperCheckRequest!!.responseData!!.requests!!.started_at!!, xuperCheckRequest!!.responseData!!.requests!!.finished_at!!, "")
+            xuperInvoiceModel.userName.value = xuperCheckRequest!!.responseData!!.requests!!.user!!.first_name +
+                    " " + xuperCheckRequest!!.responseData!!.requests!!.user!!.last_name
+            timetaken = CommonMethods.getTimeDifference(xuperCheckRequest!!.responseData!!.requests!!.started_at!!,
+                    xuperCheckRequest!!.responseData!!.requests!!.finished_at!!, "")
         }
-        tvXuperTime.setText(timetaken)
+        tvXuperTime.text = timetaken
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                        .centerCrop()
                         .placeholder(R.drawable.ic_profile_placeholder)
                         .error(R.drawable.ic_profile_placeholder))
                 .load(xuperInvoiceModel.userImage.value)
-                .into(dialogInvoiceBinding.ivUserImg)
-        dialogInvoiceBinding.tvAmountToBePaid.setText(xuperInvoiceModel.totalAmount.value)
-        dialogInvoiceBinding.tvXuperService.setText(xuperInvoiceModel.serviceName.value)
+                .into(mBinding.ivUserImg)
+        mBinding.tvAmountToBePaid.text = xuperInvoiceModel.totalAmount.value
+        mBinding.tvXuperService.text = xuperInvoiceModel.serviceName.value
     }
 
     override fun showErrorMessage(error: String) {
@@ -182,8 +180,8 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
         if (!xuperInvoiceModel.extraCharge.value.isNullOrEmpty()) {
             var totalAmount = xuperInvoiceModel.totalAmount.value!!.toDouble()
             val extAmount = xuperInvoiceModel.extraCharge.value!!.toDouble()
-            totalAmount=totalAmount-extraAmount!!
-            extraAmount=extAmount
+            totalAmount = totalAmount - extraAmount!!
+            extraAmount = extAmount
             val total = totalAmount + extAmount
             xuperInvoiceModel.totalAmount.value = total.toString()
         }

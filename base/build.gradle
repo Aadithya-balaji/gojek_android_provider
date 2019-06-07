@@ -138,8 +138,11 @@ dependencies {
     api 'com.google.firebase:firebase-database:17.0.0'
     api 'com.google.firebase:firebase-messaging:18.0.0'
 
-    //Multidex
+    //      Multidex
     api 'com.android.support:multidex:1.0.3'
+
+    //      Floating Action Bar Button
+    api 'com.github.clans:fab:1.6.4'
 
     //implementation 'testfairy:testfairy-android-sdk:1.+@aar'
 

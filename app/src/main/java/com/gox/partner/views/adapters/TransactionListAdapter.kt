@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gox.partner.R
 import com.gox.partner.databinding.TransactionListItemBinding
 import com.gox.partner.models.TransactionDatum
-import com.gox.partner.utils.CommanMethods
+import com.gox.partner.utils.CommonMethods
 
 class TransactionListAdapter(context: Context, transactionList: List<TransactionDatum>) : RecyclerView.Adapter<TransactionListAdapter.MyViewHolder>() {
 
@@ -33,7 +33,7 @@ class TransactionListAdapter(context: Context, transactionList: List<Transaction
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.currentOderItemlistBinding.tvTransactionID.setText(transactionList!!.get(position).getTransactionAlias().toString())
-        var strDate = CommanMethods.getLocalTimeStamp(transactionList!!.get(position).getCreatedAt().toString())
+        var strDate = CommonMethods.getLocalTimeStamp(transactionList!!.get(position).getCreatedAt().toString())
         holder.currentOderItemlistBinding.tvTransactionAmount.setText(String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount()))
         if(transactionList!!.get(position).getType().equals("D"))
         {

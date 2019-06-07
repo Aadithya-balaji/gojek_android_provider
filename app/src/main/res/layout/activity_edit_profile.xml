@@ -47,14 +47,14 @@
                         android:padding="@dimen/_10sdp">
 
                         <TextView
+                            style="@style/SmallText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/create_account"
-                            style="@style/SmallText"
-                            android:visibility="invisible"
+                            android:textColor="@android:color/black"
                             android:textSize="@dimen/_14sdp"
-                            android:textColor="@android:color/black" />
+                            android:visibility="invisible" />
 
                         <!--TextInputLayout username-->
 
@@ -69,11 +69,11 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/username_register_et"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
-                                style="@style/SmallText"
                                 android:text="@={profileviewmodel.MUserName}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/et_textsize" />
@@ -104,6 +104,7 @@
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/countrycode_register_et"
+                                    style="@style/SmallText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:drawableStart="@drawable/ic_us"
@@ -111,7 +112,6 @@
                                     android:enabled="false"
                                     android:paddingStart="30dp"
                                     android:paddingEnd="8dp"
-                                    style="@style/SmallText"
                                     android:text="@={profileviewmodel.MCountryCode}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/et_textsize" />
@@ -133,11 +133,11 @@
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/phonenumber_register_et"
+                                    style="@style/SmallText"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:paddingStart="10dp"
                                     android:paddingEnd="30dp"
-                                    style="@style/SmallText"
                                     android:text="@={profileviewmodel.MMobileNumber}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/et_textsize" />
@@ -158,12 +158,12 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/emailid_register_et"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:enabled="false"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
-                                style="@style/SmallText"
                                 android:text="@={profileviewmodel.MEmail}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/et_textsize" />
@@ -183,6 +183,7 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/country_register_et"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
@@ -191,7 +192,6 @@
                                 android:onClick="@{profileviewmodel::getProfileCountryList}"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
-                                style="@style/SmallText"
                                 android:text="@={profileviewmodel.MCountry}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/et_textsize" />
@@ -209,11 +209,11 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/city_register_et"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:enabled="false"
-                                style="@style/SmallText"
                                 android:focusable="false"
                                 android:imeOptions="actionDone"
                                 android:onClick="@{() -> profileviewmodel.getCityList()}"
@@ -226,6 +226,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <TextView
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
@@ -235,7 +236,6 @@
                             android:text="@string/change_password"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_12sdp"
-                            style="@style/SmallText"
                             tools:ignore="RtlHardcoded" />
 
                     </LinearLayout>
@@ -248,6 +248,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save_editprofile_btn"
+            style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -256,7 +257,6 @@
             android:backgroundTint="@color/colorBasePrimary"
             android:padding="10dp"
             android:text="@string/save"
-            style="@style/SmallText"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp" />
@@ -270,12 +270,11 @@
             android:padding="@dimen/_5sdp">
 
             <ImageView
-                android:contentDescription="@string/app_name"
                 android:id="@+id/profile_image"
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_centerHorizontal="true"
-                android:src="@drawable/dummy_profile_pic" />
+                android:contentDescription="@string/app_name" />
 
             <ImageView
                 android:layout_width="@dimen/_20sdp"

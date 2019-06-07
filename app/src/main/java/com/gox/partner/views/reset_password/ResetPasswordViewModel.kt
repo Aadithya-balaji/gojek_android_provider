@@ -3,6 +3,7 @@ package com.gox.partner.views.reset_password
 import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.BuildConfig
+import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseViewModel
 import com.gox.partner.models.ResetPasswordResponseModel
 import com.gox.partner.network.WebApiConstants
@@ -33,7 +34,7 @@ class ResetPasswordViewModel : BaseViewModel<ResetPasswordViewModel.ResetPasswor
 
     internal fun postResetPassword() {
         val params = HashMap<String, String>()
-        params[WebApiConstants.SALT_KEY] = BuildConfig.SALT_KEY
+        params["salt_key"] = SALT_KEY
         params[WebApiConstants.ResetPassword.OTP] = otp.value!!.trim()
         params[WebApiConstants.ResetPassword.PASSWORD] = newPassword.value!!.trim()
         params[WebApiConstants.ResetPassword.PASSWORD_CONFIRMATION] = confirmPassword.value!!.trim()

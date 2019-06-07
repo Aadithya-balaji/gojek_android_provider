@@ -1,10 +1,10 @@
 package com.gox.partner.views.signup
 
 import androidx.lifecycle.MutableLiveData
+import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
 import com.gox.partner.models.CountryListResponse
 import com.gox.partner.models.SignupResponseModel
 import com.gox.partner.network.WebApiConstants
@@ -62,7 +62,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
 
     fun postSignup() {
         val signupParams = HashMap<String, RequestBody>()
-        signupParams.put(WebApiConstants.SALT_KEY, RequestBody.create(MediaType.parse("text/plain"), "MQ=="))
+        signupParams.put("salt_key", RequestBody.create(MediaType.parse("text/plain"), SALT_KEY))
         signupParams.put(WebApiConstants.Signup.DEVICE_TYPE, RequestBody.create(MediaType.parse("text/plain"), Enums.DEVICE_TYPE))
         signupParams.put(WebApiConstants.Signup.DEVICE_TOKEN, RequestBody.create(MediaType.parse("text/plain"), BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")!!))
         signupParams.put(WebApiConstants.Signup.LOGIN_BY, RequestBody.create(MediaType.parse("text/plain"), loginby.value.toString()))
@@ -75,8 +75,8 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
         signupParams.put(WebApiConstants.Signup.PASSWORD, RequestBody.create(MediaType.parse("text/plain"), password.value.toString()))
         signupParams.put(WebApiConstants.Signup.COUNTRY_ID, RequestBody.create(MediaType.parse("text/plain"), countryID.value.toString()))
         signupParams.put(WebApiConstants.Signup.CITY_ID, RequestBody.create(MediaType.parse("text/plain"), cityID.value.toString()))
-        if(!referralCode.value.isNullOrEmpty())
-        signupParams.put(WebApiConstants.Signup.REFERRAL_CODE, RequestBody.create(MediaType.parse("text/plain"), referralCode.value.toString()))
+        if (!referralCode.value.isNullOrEmpty())
+            signupParams.put(WebApiConstants.Signup.REFERRAL_CODE, RequestBody.create(MediaType.parse("text/plain"), referralCode.value.toString()))
         if (!socialID.value.isNullOrEmpty())
             signupParams.put(WebApiConstants.Signup.SOCIAL_ID, RequestBody.create(MediaType.parse("text/plain"), socialID.value.toString()))
 
@@ -87,7 +87,7 @@ class SignupViewModel(val signupNavigator: SignupNavigator) : BaseViewModel<Sign
     fun getCountryList() {
         // loadingProgress.value=true
         val hashMap: HashMap<String, Any?> = HashMap()
-        hashMap["salt_key"] = "MQ=="
+        hashMap["salt_key"] = SALT_KEY
         getCompositeDisposable().add(appRepository.getCountryList(this, hashMap))
     }
 

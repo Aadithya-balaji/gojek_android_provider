@@ -3,6 +3,7 @@ package com.gox.partner.views.setup_vehicle
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.gox.base.base.BaseActivity
+import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.ViewUtils
@@ -10,7 +11,6 @@ import com.gox.partner.R
 import com.gox.partner.databinding.ActivitySetupVehicleBinding
 import com.gox.partner.models.SetupRideResponseModel
 import com.gox.partner.models.SetupShopResponseModel
-import com.gox.partner.utils.Constant
 import com.gox.partner.views.add_vehicle.AddVehicleActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
@@ -28,7 +28,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             SetupVehicleViewModel()
         }
         viewModel.navigator = this
-        viewModel.setServiceId(intent.getIntExtra(Constant.SERVICE_ID, -1))
+        viewModel.setServiceId(intent.getIntExtra(Constants.SERVICE_ID, -1))
         binding.setupVehicleViewModel = viewModel
 
         setSupportActionBar(binding.toolbar.tbApp)
@@ -68,23 +68,23 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         val providerService = viewModel.getVehicleDataObservable().value
 
         val intent = Intent(applicationContext, AddVehicleActivity::class.java)
-        intent.putExtra(Constant.SERVICE_ID, viewModel.getServiceId())
+        intent.putExtra(Constants.SERVICE_ID, viewModel.getServiceId())
 
         if (providerService is SetupRideResponseModel)
-            intent.putExtra(Constant.CATEGORY_ID, providerService.responseData[position].id)
+            intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
         else if (providerService is SetupShopResponseModel)
-            intent.putExtra(Constant.CATEGORY_ID, providerService.responseData[position].id)
+            intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
 
         if (providerService is SetupRideResponseModel && providerService.responseData[position].serviceList.isNotEmpty()) {
-            intent.putExtra(Constant.TRANSPORT_VEHICLES,
+            intent.putExtra(Constants.TRANSPORT_VEHICLES,
                     ArrayList(providerService.responseData[position].serviceList))
         }
 
         if (providerService is SetupRideResponseModel && providerService.responseData[position].providerService != null) {
-            intent.putExtra(Constant.PROVIDER_TRANSPORT_VEHICLE,
+            intent.putExtra(Constants.PROVIDER_TRANSPORT_VEHICLE,
                     providerService.responseData[position].providerService!!.providerVehicle)
         } else if (providerService is SetupShopResponseModel && providerService.responseData[position].providerService != null) {
-            intent.putExtra(Constant.PROVIDER_ORDER_VEHICLE,
+            intent.putExtra(Constants.PROVIDER_ORDER_VEHICLE,
                     providerService.responseData[position].providerService!!.providerVehicle)
         }
         launchNewActivity(intent, false)

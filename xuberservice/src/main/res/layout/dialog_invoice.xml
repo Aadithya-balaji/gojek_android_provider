@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="invoicemodel"
             type="com.gox.xuberservice.invoice.XuperInvoiceViewModel" />
@@ -12,236 +12,234 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@android:color/transparent">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_dash_square"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@android:color/transparent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:fontFamily="@font/avenirltstd_medium"
-            android:gravity="center"
-            android:text="@string/invoice"
-            android:textColor="@color/xuber_black" />
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp">
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/bg_dash_square"
+            android:orientation="vertical">
 
-            <ImageView
-                android:contentDescription="@string/app_name"
-                android:id="@+id/ivUserImg"
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:src="@drawable/kittty" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:gravity="center"
+                android:text="@string/invoice"
+                android:textColor="@color/xuber_black" />
 
-
-            <LinearLayout
-                android:id="@+id/llXuperInvoiceService"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_12sdp"
-                android:layout_toRightOf="@+id/ivUserImg"
-                android:layout_marginRight="@dimen/_20sdp"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:layout_marginTop="@dimen/_20sdp">
+
+                <ImageView
+                    android:id="@+id/ivUserImg"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:contentDescription="@string/app_name" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/llXuperInvoiceService"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.45"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tvUserName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:text="@{invoicemodel.userName}"
-                        android:textColor="@color/xuper_light_black"
-                        android:textSize="@dimen/_12sdp" />
+                    android:layout_marginLeft="@dimen/_12sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_toRightOf="@+id/ivUserImg"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_weight="0.45"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tvXuperRating"
+                            android:id="@+id/tvUserName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/avenirltstd_medium"
-                            android:text="@={invoicemodel.rating}"
-                            android:textColor="@color/xuber_grey"
-                            android:textSize="@dimen/_10sdp" />
+                            android:text="@{invoicemodel.userName}"
+                            android:textColor="@color/xuper_light_black"
+                            android:textSize="@dimen/_12sdp" />
 
-                        <ImageView
-                            android:id="@+id/ivXuperRate"
-                            android:layout_width="@dimen/_10sdp"
-                            android:layout_height="@dimen/_10sdp"
-                            android:src="@drawable/star"
-                            android:layout_marginLeft="@dimen/_3sdp"
-                            android:tint="@color/chip_yellow_inner_color" />
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/tvXuperRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/avenirltstd_medium"
+                                android:text="@={invoicemodel.rating}"
+                                android:textColor="@color/xuber_grey"
+                                android:textSize="@dimen/_10sdp" />
+
+                            <ImageView
+                                android:id="@+id/ivXuperRate"
+                                android:layout_width="@dimen/_10sdp"
+                                android:layout_height="@dimen/_10sdp"
+                                android:layout_marginLeft="@dimen/_3sdp"
+                                android:src="@drawable/star"
+                                android:tint="@color/chip_yellow_inner_color" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_weight="0.55"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvXuperServicelabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:text="@string/label_service"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tvXuperService"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:textColor="@color/xuper_invoice_grey"
+                            android:textSize="@dimen/_10sdp"
+                            tools:text="@string/dummy_xuberservice_text" />
                     </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:id="@+id/llTime"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.55"
-                    android:layout_marginLeft="@dimen/_8sdp"
-                    android:orientation="vertical">
+                    android:layout_below="@+id/llXuperInvoiceService"
+                    android:layout_alignStart="@+id/llXuperInvoiceService"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_toRightOf="@+id/ivUserImg"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
-                    <TextView
-                        android:id="@+id/tvXuperServicelabel"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:text="@string/label_service"
-                        android:textSize="@dimen/_12sdp" />
+                        android:layout_weight="0.45"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvXuperService"
-                        android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/tvXuperTimeTaken"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:text="@string/xuper_label_time"
+                            android:textColor="@color/xuper_light_black"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tvXuperTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/start_timer"
+                            android:textColor="@color/xuper_invoice_grey" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        tools:text="@string/dummy_xuberservice_text"
-                        android:textColor="@color/xuper_invoice_grey"
-                        android:textSize="@dimen/_10sdp" />
+                        android:layout_marginLeft="@dimen/_8sdp"
+                        android:layout_weight="0.55"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tvAdditionalCharge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_additional_charge"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:onClick="@{() -> invoicemodel.showExtraCharegDialog()}"
+                            android:paddingLeft="@dimen/_8sdp"
+                            android:paddingTop="@dimen/_8sdp"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:paddingBottom="@dimen/_8sdp"
+                            android:text="@string/xuper_label_additional_charge"
+                            android:textColor="@color/xuper_invoice_paid"
+                            android:textSize="@dimen/_10sdp" />
+                    </LinearLayout>
                 </LinearLayout>
+            </RelativeLayout>
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/llTime"
+            <RelativeLayout
+                android:id="@+id/llAmountToBePaid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/llXuperInvoiceService"
-                android:layout_alignStart="@+id/llXuperInvoiceService"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:layout_toRightOf="@+id/ivUserImg"
-                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:background="@drawable/bg_upload_file"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:weightSum="1">
+                android:paddingLeft="@dimen/_30sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingRight="@dimen/_30sdp"
+                android:paddingBottom="@dimen/_10sdp">
 
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvAmountToBePaidLabel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.45"
-                    android:orientation="vertical">
+                    android:fontFamily="@string/xuper_amount_to_be_paid"
+                    android:text="@string/xuper_amount_to_be_paid"
+                    android:textColor="@color/xuper_blue"
+                    android:textSize="@dimen/_12sdp" />
 
-                    <TextView
-                        android:id="@+id/tvXuperTimeTaken"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:text="@string/xuper_label_time"
-                        android:textColor="@color/xuper_light_black"
-                        android:textSize="@dimen/_12sdp" />
-
-                    <TextView
-                        android:id="@+id/tvXuperTime"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text= "@string/start_timer"
-                        android:textColor="@color/xuper_invoice_grey" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvAmountToBePaid"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.55"
-                    android:layout_marginLeft="@dimen/_8sdp"
-                    android:orientation="vertical">
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:text="@={invoicemodel.totalAmount}"
+                    android:textColor="@color/xuper_blue"
+                    android:textSize="@dimen/_12sdp" />
+            </RelativeLayout>
 
-                    <TextView
-                        android:id="@+id/tvAdditionalCharge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_additional_charge"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:paddingLeft="@dimen/_8sdp"
-                        android:paddingTop="@dimen/_8sdp"
-                        android:paddingRight="@dimen/_8sdp"
-                        android:paddingBottom="@dimen/_8sdp"
-                        android:text="@string/xuper_label_additional_charge"
-                        android:onClick="@{() -> invoicemodel.showExtraCharegDialog()}"
-                        android:textColor="@color/xuper_invoice_paid"
-                        android:textSize="@dimen/_10sdp" />
-                </LinearLayout>
-            </LinearLayout>
-        </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@color/xuber_grey" />
 
-        <RelativeLayout
-            android:id="@+id/llAmountToBePaid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_30sdp"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:background="@drawable/bg_upload_file"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/_30sdp"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingRight="@dimen/_30sdp"
-            android:paddingBottom="@dimen/_10sdp">
 
             <TextView
-                android:id="@+id/tvAmountToBePaidLabel"
+                android:id="@+id/tvXuperConfirmPayment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@string/xuper_amount_to_be_paid"
-                android:text="@string/xuper_amount_to_be_paid"
-                android:textColor="@color/xuper_blue"
-                android:textSize="@dimen/_12sdp" />
-
-            <TextView
-                android:id="@+id/tvAmountToBePaid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:fontFamily="@font/avenirltstd_medium"
-                android:text="@={invoicemodel.totalAmount}"
+                android:onClick="@{() -> invoicemodel.confirmPayment()}"
+                android:text="@string/xuper_confirm_payment"
+                android:textAllCaps="true"
                 android:textColor="@color/xuper_blue"
-                android:textSize="@dimen/_12sdp" />
-        </RelativeLayout>
+                android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/xuber_grey"
-            android:layout_marginTop="@dimen/_18sdp"
-            android:layout_marginBottom="@dimen/_10sdp"/>
-
-
-        <TextView
-            android:id="@+id/tvXuperConfirmPayment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/xuper_confirm_payment"
-            android:textStyle="bold"
-            android:textAllCaps="true"
-            android:layout_gravity="center"
-            android:textColor="@color/xuper_blue"
-            android:onClick="@{() -> invoicemodel.confirmPayment()}"
-            android:fontFamily="@font/avenirltstd_medium"
-            android:layout_marginBottom="@dimen/_10sdp"/>
-
-    </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </layout>

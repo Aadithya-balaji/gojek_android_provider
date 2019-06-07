@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
-import com.theartofdev.edmodo.cropper.CropImage
+import com.facebook.FacebookSdk.getApplicationContext
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.data.Constants
 import com.gox.base.utils.CommonMethods
@@ -22,6 +22,7 @@ import com.gox.base.utils.ViewUtils
 import com.gox.xuberservice.R
 import com.gox.xuberservice.databinding.DialogUploadImageBinding
 import com.gox.xuberservice.interfaces.GetFilePathInterface
+import com.theartofdev.edmodo.cropper.CropImage
 import java.io.File
 
 class
@@ -55,7 +56,7 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
 
     override fun onStart() {
         super.onStart()
-        getDialog()!!.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog!!.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
 
@@ -63,13 +64,13 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
         dialogUploadImageBinding = viewDataBinding as DialogUploadImageBinding
         dialogUploadPictureViewModel = DialogUploadPictureViewModel()
         dialogUploadPictureViewModel.navigator = this
-        dialogUploadImageBinding.setLifecycleOwner(this)
+        dialogUploadImageBinding.lifecycleOwner = this
         dialogUploadImageBinding.uploadImageModel = dialogUploadPictureViewModel
         getBundleValues()
         if (isFront)
-            dialogUploadImageBinding.tvServiceState.setText(resources.getString(R.string.before_service))
+            dialogUploadImageBinding.tvServiceState.text = resources.getString(R.string.before_service)
         else
-            dialogUploadImageBinding.tvServiceState.setText(resources.getString(R.string.after_service))
+            dialogUploadImageBinding.tvServiceState.text = resources.getString(R.string.after_service)
 
     }
 
@@ -103,8 +104,8 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
             when (requestCode) {
                 202 -> {
                     CommonMethods.refreshGallery(activity!!, mediaFile)
-                    val intent = CropImage.activity(mediaUri).getIntent(getContext()!!);
-                    startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+                    val intent = CropImage.activity(mediaUri).getIntent(context!!)
+                    startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)
                 }
 
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
@@ -120,17 +121,15 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
                 }
             }
         }
-
     }
 
     fun captureImage(requestCode: Int) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         mediaFile = CommonMethods.createImageFile(activity!!)
         //Kindly change the application id if any changes made in  app application id means
-        mediaUri = FileProvider.getUriForFile(activity!!, "com.xjek.provider" + ".provider", mediaFile)
+        mediaUri = FileProvider.getUriForFile(activity!!, getApplicationContext().packageName + ".provider", mediaFile)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri)
         startActivityForResult(intent, requestCode)
     }
-
-
+    
 }

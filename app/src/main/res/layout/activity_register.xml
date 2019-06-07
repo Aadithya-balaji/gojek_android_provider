@@ -51,11 +51,11 @@
                     android:layout_marginStart="@dimen/_15sdp">
 
                     <TextView
+                        style="@style/SmallText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/social_signup"
-                        style="@style/SmallText"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/_12sdp" />
 
@@ -73,6 +73,7 @@
 
                     <TextView
                         android:id="@+id/tvFacebookSignIn"
+                        style="@style/SmallText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
@@ -82,7 +83,6 @@
                         android:gravity="center"
                         android:onClick="@{() -> registermodel.fbLogin()}"
                         android:padding="@dimen/_8sdp"
-                        style="@style/SmallText"
                         android:text="@string/connect_via_facebook"
                         android:textColor="@color/colorPrimaryDark"
                         android:textSize="@dimen/_12sdp" />
@@ -99,13 +99,13 @@
 
                     <TextView
                         android:id="@+id/goolelogin_signin_tv"
+                        style="@style/SmallText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
                         android:drawableStart="@drawable/ic_google"
                         android:drawablePadding="@dimen/_8sdp"
                         android:gravity="center"
-                        style="@style/SmallText"
                         android:onClick="@{() -> registermodel.googleSignin()}"
                         android:padding="@dimen/_8sdp"
                         android:text="@string/connect_via_google"
@@ -115,12 +115,12 @@
                 </androidx.cardview.widget.CardView>
 
                 <TextView
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/_15sdp"
                     android:text="@string/or"
-                    style="@style/SmallText"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_10sdp" />
 
@@ -128,12 +128,12 @@
 
             <TextView
                 android:id="@+id/tv_signup_or"
+                style="@style/SmallText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:layout_marginBottom="@dimen/_12sdp"
-                style="@style/SmallText"
                 android:text="@string/or"
                 android:textColor="@color/colorBasePrimary"
                 android:visibility="gone" />
@@ -156,11 +156,11 @@
                         android:padding="@dimen/_10sdp">
 
                         <TextView
+                            style="@style/SmallText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/create_account"
-                            style="@style/SmallText"
                             android:textColor="@android:color/black" />
 
                         <RelativeLayout
@@ -171,12 +171,11 @@
                             android:padding="@dimen/_5sdp">
 
                             <ImageView
-                                android:contentDescription="@string/app_name"
                                 android:id="@+id/profile_image"
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_50sdp"
                                 android:layout_centerHorizontal="true"
-                                android:src="@drawable/dummy_profile_pic" />
+                                android:contentDescription="@string/app_name" />
 
                             <ImageView
                                 android:layout_width="@dimen/_15sdp"
@@ -203,18 +202,17 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_singup_firstname"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                style="@style/SmallText"
-                                android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                android:singleLine="true"
                                 android:text="@{registermodel.firstName}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
                         </com.google.android.material.textfield.TextInputLayout>
-
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Edittext_OutlinedTheme"
@@ -227,12 +225,12 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_singup_lastname"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                style="@style/SmallText"
-                                android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                android:singleLine="true"
                                 android:text="@={registermodel.lastName}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
@@ -264,15 +262,15 @@
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edt_signup_code"
+                                    style="@style/SmallText"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:drawableStart="@drawable/ic_us"
                                     android:drawableEnd="@drawable/down_arrow"
                                     android:drawablePadding="@dimen/_3sdp"
+                                    android:onClick="@{() -> registermodel.gotToCountryPage()}"
                                     android:paddingStart="25dp"
                                     android:paddingEnd="8dp"
-                                    style="@style/SmallText"
-                                    android:onClick="@{() -> registermodel.gotToCountryPage()}"
                                     android:singleLine="true"
                                     android:text="@{registermodel.countryCode}"
                                     android:textColor="@color/et_text_color"
@@ -293,13 +291,13 @@
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/edt_signup_phone"
+                                    style="@style/SmallText"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    style="@style/SmallText"
                                     android:inputType="number"
-                                    android:singleLine="true"
                                     android:paddingStart="20dp"
                                     android:paddingEnd="25dp"
+                                    android:singleLine="true"
                                     android:text="@={registermodel.phoneNumber}"
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp" />
@@ -310,14 +308,14 @@
 
                         <TextView
                             android:id="@+id/tv_label_gender"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_12sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            style="@style/SmallText"
-                            android:textSize="@dimen/_12sdp"
                             android:text="@string/label_gender"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp" />
 
                         <RadioGroup
                             android:id="@+id/gender_radiogroup"
@@ -330,20 +328,20 @@
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:id="@+id/rbMale"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                style="@style/SmallText"
                                 android:text="@string/gender_male"
                                 android:textColor="@color/dark_grey"
                                 android:textSize="@dimen/_10sdp" />
 
                             <com.google.android.material.radiobutton.MaterialRadioButton
                                 android:id="@+id/rbFemale"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                style="@style/SmallText"
                                 android:text="@string/gender_female"
                                 android:textColor="@color/dark_grey"
                                 android:textSize="@dimen/_10sdp" />
@@ -361,12 +359,12 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_signup_mail"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                style="@style/SmallText"
-                                android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                android:singleLine="true"
                                 android:text="@={registermodel.email}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
@@ -386,15 +384,15 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_signup_password"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawableEnd="@drawable/ic_iconfinder_icons_view"
                                 android:drawablePadding="@dimen/_3sdp"
-                                style="@style/SmallText"
                                 android:inputType="textPassword"
-                                android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                android:singleLine="true"
                                 android:text="@={registermodel.password}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
@@ -413,14 +411,14 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_signup_country"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:onClick="@{() ->registermodel.getCountryList()}"
-                                android:singleLine="true"
-                                style="@style/SmallText"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                android:singleLine="true"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
 
@@ -437,14 +435,14 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/edt_signup_city"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
-                                style="@style/SmallText"
                                 android:onClick="@{() -> registermodel.getCityList()}"
-                                android:singleLine="true"
                                 android:paddingStart="25dp"
                                 android:paddingEnd="25dp"
+                                android:singleLine="true"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
                         </com.google.android.material.textfield.TextInputLayout>
@@ -460,26 +458,17 @@
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/etReferralCode"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
-                                style="@style/SmallText"
-                                android:singleLine="true"
                                 android:paddingStart="25dp"
-                                android:text="@={registermodel.referralCode}"
                                 android:paddingEnd="25dp"
+                                android:singleLine="true"
+                                android:text="@={registermodel.referralCode}"
                                 android:textColor="@color/et_text_color"
                                 android:textSize="@dimen/_12sdp" />
                         </com.google.android.material.textfield.TextInputLayout>
-
-
-                    <!--    <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cb_terms_condition"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_30sdp"
-                            style="@style/SmallText"
-                            android:text="@string/terms_condition" />-->
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -491,22 +480,20 @@
                             android:gravity="center"
                             android:orientation="horizontal">
 
-
                             <com.google.android.material.checkbox.MaterialCheckBox
                                 android:id="@+id/cb_terms_condition"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                />
+                                android:layout_gravity="center" />
 
                             <TextView
                                 android:id="@+id/terms_conditions_tv"
+                                style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginEnd="@dimen/_12sdp"
-                                style="@style/SmallText"
                                 android:textColor="@color/colorGray"
                                 android:textSize="@dimen/_10sdp" />
 
@@ -527,22 +514,22 @@
 
                 <TextView
                     android:id="@+id/alreadyaccount_register_tv"
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/SmallText"
+                    android:onClick="@{() -> registermodel.gotoSignin()}"
                     android:padding="@dimen/_3sdp"
                     android:text="@string/already_have_account"
                     android:textSize="@dimen/_12sdp"
-                    android:onClick="@{() -> registermodel.gotoSignin()}"
                     tools:ignore="RelativeOverlap" />
 
                 <!--Signin textview-->
                 <TextView
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/alreadyaccount_register_tv"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    style="@style/SmallText"
                     android:onClick="@{() -> registermodel.gotoSignin()}"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/sign_in"

@@ -48,15 +48,15 @@ open class BaseApplication : Application(), InternetConnectivityListener {
         Stetho.initializeWithDefaults(this)
         PreferencesHelper.setDefaultPreferences(this)
         preferences = getSharedPreferences(Constants.CUSTOM_PREFERENCE, Context.MODE_PRIVATE)
-       // TestFairy.begin(this, "SDK-OHDYC1Nx")
+        // TestFairy.begin(this, "SDK-OHDYC1Nx")
         mBatteryChargeReceiver = BatteryChargeReceiver()
 
         registerReceiver(mBatteryChargeReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
     }
 
     companion object {
-        private lateinit var baseApplication: Context
         private lateinit var preferences: SharedPreferences
+        lateinit var baseApplication: Context
         val getCustomPreference: SharedPreferences? get() = preferences
         var appController: BaseComponent? = null
         val getBaseApplicationContext: Context get() = baseApplication

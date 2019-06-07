@@ -156,6 +156,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
                         .placeholder(placeholder)
+                        .circleCrop()
                         .error(placeholder))
                 .load(image)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)

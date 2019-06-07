@@ -19,6 +19,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.LocationSettingsStatusCodes
+import com.gox.base.R
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -40,7 +41,7 @@ class CommonMethods {
 
         fun createImageFile(context: Context): File {
             val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-            val imageFileName: String = Constants.APPNAME + timeStamp + "_"
+            val imageFileName: String = context.getString(R.string.app_name) + timeStamp + "_"
             val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
             if (!storageDir.exists()) storageDir.mkdirs()
             return File.createTempFile(imageFileName, ".jpg", storageDir)

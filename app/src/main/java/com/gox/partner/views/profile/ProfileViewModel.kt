@@ -3,14 +3,15 @@ package com.gox.partner.views.profile
 import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import com.gox.base.BuildConfig
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.partner.models.CountryListResponse
 import com.gox.partner.models.ProfileResponse
 import com.gox.partner.models.ResProfileUpdate
 import com.gox.partner.repository.AppRepository
-import com.gox.partner.utils.Constant
 import com.gox.xjek.ui.profile.ProfileNavigator
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -40,7 +41,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     fun getProfile() {
         loadingProgress.value = true
         getCompositeDisposable().add(appRepository.getProviderProfile(this,
-                Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
+                Constants.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
     }
 
     fun getProfileResponse(): MutableLiveData<ProfileResponse> {
@@ -56,14 +57,14 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
         hashMap.put("city_id", RequestBody.create(MediaType.parse("text/plain"), mCityId.get().toString()))
         // hashMap.put("country_id", RequestBody.create(MediaType.parse("text/plain"), mCountryId.get().toString()))
         getCompositeDisposable().add(appRepository
-                .profileUpdate(this, Constant.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString(), hashMap, file))
+                .profileUpdate(this, Constants.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString(), hashMap, file))
     }
 
     fun getProfileCountryList(view: View) {
         loadingProgress.value = true
 
         val hashMap: HashMap<String, Any?> = HashMap()
-        hashMap["salt_key"] = "MQ=="
+        hashMap["salt_key"] = BuildConfig.SALT_KEY
 
         getCompositeDisposable().add(appRepository.getCountryList(this, hashMap))
     }

@@ -1,21 +1,22 @@
-package com.gox.xjek.ui.pastorder_fragment
+package com.gox.partner.views.pastorder_fragment
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.partner.models.HistoryModel
 import com.gox.partner.repository.AppRepository
-import com.gox.partner.utils.Constant
+import com.gox.xjek.ui.pastorder_fragment.PastOrderNavigator
 
-public class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
+class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
 
     private val appRepository = AppRepository.instance()
     private val preferenceHelper = PreferencesHelper
     var historyResponseLiveData = MutableLiveData<HistoryModel>()
-    var serviceList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Service>>(ArrayList<HistoryModel.ResponseData.Service>())
-    var orderList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Order>>(ArrayList<HistoryModel.ResponseData.Order>())
-    var taxiList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Transport>>(ArrayList<HistoryModel.ResponseData.Transport>())
+    var serviceList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Service>>(ArrayList())
+    var orderList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Order>>(ArrayList())
+    var taxiList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Transport>>(ArrayList())
     var loadingProgress = MutableLiveData<Boolean>()
     var selectedServiceType = MutableLiveData<String>()
      var errorResponse = MutableLiveData<String>()
@@ -30,6 +31,7 @@ public class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
         hashMap.put("offset", "0")
         hashMap.put("type", "past")
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository.getPastORderHistory(this, Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), hashMap, selectedService))
+        getCompositeDisposable().add(appRepository.getPastORderHistory(this,
+                Constants.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), hashMap, selectedService))
     }
 }

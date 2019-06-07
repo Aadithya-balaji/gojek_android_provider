@@ -12,7 +12,7 @@ import com.gox.partner.R
 import com.gox.partner.databinding.PastOrderItemlistBinding
 import com.gox.partner.interfaces.CustomClickListner
 import com.gox.partner.models.HistoryModel
-import com.gox.partner.utils.CommanMethods
+import com.gox.partner.utils.CommonMethods
 import com.gox.partner.views.history_details.HistoryDetailActivity
 
 class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List<HistoryModel.ResponseData.Transport>, orderList: List<HistoryModel.ResponseData.Order>, serviceList: List<HistoryModel.ResponseData.Service>, serviceType: String) : RecyclerView.Adapter<PastOrdersAdapter.MyViewHolder>(), CustomClickListner {
@@ -51,8 +51,8 @@ class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List
         if(serviceType.equals("transport")){
             val transPortModel=transPortList!!.get(position)
             holder.pastOderItemlistBinding.tvTitlePastItem.text=transPortModel.booking_id.toString()
-            holder.pastOderItemlistBinding.tvDatePastItem.text=CommanMethods.getLocalTimeStamp(transPortModel.assigned_at.toString(),"Req_Date_Month")
-            holder.pastOderItemlistBinding.tvTimePastItem.text=CommanMethods.getLocalTimeStamp(transPortModel.assigned_at.toString(),"Req_time")
+            holder.pastOderItemlistBinding.tvDatePastItem.text=CommonMethods.getLocalTimeStamp(transPortModel.assigned_at.toString(),"Req_Date_Month")
+            holder.pastOderItemlistBinding.tvTimePastItem.text=CommonMethods.getLocalTimeStamp(transPortModel.assigned_at.toString(),"Req_time")
             holder.pastOderItemlistBinding.tvPastItem.text=String.format(activity!!.getString(R.string.history_vechile_name),transPortModel.ride!!.vehicle_name!!.toString(),transPortModel.provider_vehicle!!.vehicle_no.toString())
             holder.pastOderItemlistBinding.tvRatingPastItem.text=String.format(activity!!.getString(R.string.transaction_amount),transPortModel.user!!.rating!!.toDouble())
             if(transPortModel.status.equals("COMPLETED")){
@@ -66,8 +66,8 @@ class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List
         }else if(serviceType!!.equals("order")){
             val orderedItem=orderList!!.get(position)
             holder.pastOderItemlistBinding.tvTitlePastItem.text=orderedItem.store_order_invoice_id.toString()
-           holder.pastOderItemlistBinding.tvDatePastItem.text=CommanMethods.getLocalTimeStamp(orderedItem.created_at.toString(),"Req_Date_Month")
-            holder.pastOderItemlistBinding.tvTimePastItem.text=CommanMethods.getLocalTimeStamp(orderedItem.created_at.toString(),"Req_time")
+           holder.pastOderItemlistBinding.tvDatePastItem.text=CommonMethods.getLocalTimeStamp(orderedItem.created_at.toString(),"Req_Date_Month")
+            holder.pastOderItemlistBinding.tvTimePastItem.text=CommonMethods.getLocalTimeStamp(orderedItem.created_at.toString(),"Req_time")
           //  holder.pastOderItemlistBinding.tvPastItem.text=String.format(activity.getString(R.string.history_vechile_name),orderedItem.ride!!.vehicle_name!!.toString(),transPortModel.provider_vehicle!!.vehicle_no.toString())
            // holder.pastOderItemlistBinding.tvRatingPastItem.text=String.format(activity.getString(R.string.transaction_amount),orderedItem.user!!.rating!!.toDouble())
             if(orderedItem.status.equals("COMPLETED")){
@@ -80,8 +80,8 @@ class PastOrdersAdapter( fragmentActivity:FragmentActivity?, transPortList: List
         }else {
             val serviceItem=serviceList!!.get(position)
             holder.pastOderItemlistBinding.tvTitlePastItem.text=serviceItem.booking_id.toString()
-            holder.pastOderItemlistBinding.tvDatePastItem.text=CommanMethods.getLocalTimeStamp(serviceItem.assigned_at.toString(),"Req_Date_Month")
-            holder.pastOderItemlistBinding.tvTimePastItem.text=CommanMethods.getLocalTimeStamp(serviceItem.assigned_at.toString(),"Req_time")
+            holder.pastOderItemlistBinding.tvDatePastItem.text=CommonMethods.getLocalTimeStamp(serviceItem.assigned_at.toString(),"Req_Date_Month")
+            holder.pastOderItemlistBinding.tvTimePastItem.text=CommonMethods.getLocalTimeStamp(serviceItem.assigned_at.toString(),"Req_time")
              holder.pastOderItemlistBinding.tvPastItem.text=serviceItem.service!!.service_name.toString()
              holder.pastOderItemlistBinding.tvRatingPastItem.text=serviceItem.user!!.rating
             if(serviceItem.status.equals("COMPLETED")){

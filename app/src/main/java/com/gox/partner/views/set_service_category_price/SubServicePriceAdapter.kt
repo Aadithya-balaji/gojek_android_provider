@@ -12,7 +12,7 @@ import com.gox.partner.R
 import com.gox.partner.databinding.LayoutSetServicesWithPriceItemBinding
 import com.gox.partner.models.SubServicePriceCategoriesResponse
 import com.gox.partner.models.SubServicePriceCategoriesResponse.ResponseData
-import com.gox.partner.utils.CommanMethods
+import com.gox.partner.utils.CommonMethods
 
 class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subserviceData: SubServicePriceCategoriesResponse, val priceEdit: Boolean)
     : RecyclerView.Adapter<SubServicePriceAdapter.MyViewHolder>() {
@@ -69,7 +69,7 @@ class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subservi
                         else -> holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = GONE
                     }
 
-                    price += CommanMethods.getFare(activity, subserviceData.responseData[position].servicescityprice, subserviceData.responseData[position].providerservices)
+                    price += CommonMethods.getFare(activity, subserviceData.responseData[position].servicescityprice, subserviceData.responseData[position].providerservices)
                 } else {
                     if (subserviceData.responseData[position].providerservices.isNotEmpty())
                         price += subserviceData.responseData[position].providerservices[0].base_fare

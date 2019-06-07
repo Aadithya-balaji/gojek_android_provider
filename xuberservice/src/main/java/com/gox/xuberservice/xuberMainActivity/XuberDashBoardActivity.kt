@@ -42,6 +42,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
 import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
+import com.gox.base.chatmessage.ChatActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.RideStatus.ACCEPTED
 import com.gox.base.data.Constants.RideStatus.ARRIVED
@@ -121,7 +122,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var isLocationDialogShown: Boolean = false
     private lateinit var context: Context
 
-    override fun getLayoutId(): Int = R.layout.activity_xuber_main
+    override fun getLayoutId() = R.layout.activity_xuber_main
 
     private var roomConnected: Boolean = false
 
@@ -134,6 +135,20 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.lifecycleOwner = this
         mViewModel.showLoading = loadingObservable
         mBinding.llBottomService.fbCamera.setOnClickListener(this)
+
+        fab_xuber_menu.isIconAnimated = false
+
+//        fab_xuber_menu.setOnMenuToggleListener { opened ->
+//            run {
+//                if (opened) fab_xuber_menu.menuIconView.setImageResource(R.drawable.ic_close)
+//                else fab_xuber_menu.menuIconView.setImageResource(R.drawable.ic_more_chat_call_xuber)
+//            }
+//        }
+
+        fab_xuber_menu_chat.setOnClickListener {
+            startActivity(Intent(this, ChatActivity::class.java))
+        }
+
         initialiseMap()
         getApiResponse()
     }
@@ -171,6 +186,12 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
                         mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude,
                                 xuberCheckRequest.responseData.requests.s_longitude)
+
+                        fab_xuber_menu_call.setOnClickListener {
+                            val intent = Intent(Intent.ACTION_DIAL)
+                            intent.data = Uri.parse("tel:${xuberCheckRequest.responseData.requests.user.mobile}")
+                            startActivity(intent)
+                        }
 
                         when (status) {
                             ACCEPTED -> whenAccepted()
@@ -262,6 +283,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     //Completed Not Payment Successful
     private fun whenDropped(isCheckRequest: Boolean) {
+        fab_xuber_menu.visibility = View.GONE
         val bundle = Bundle()
         if (isCheckRequest) {
             mBinding.llBottomService.llServiceTime.visibility = View.GONE
@@ -520,6 +542,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     //When ride arrived
     private fun whenArrived() {
+        fab_xuber_menu.visibility = View.GONE
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
         if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.VISIBLE
         else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.GONE
@@ -532,6 +555,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun whenStarted() {
+        fab_xuber_menu.visibility = View.GONE
         mGoogleMap!!.clear()
         if (mViewModel.xuperCheckRequest.value!!.responseData!!.requests!!.service!!.allow_after_image == 1)
             mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
@@ -545,6 +569,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     //After Payment Successful
     private fun whenPayment() {
+        fab_xuber_menu.visibility = View.GONE
         mGoogleMap!!.clear()
         mBinding.llBottomService.fbCamera.visibility = View.GONE
         val bundle = Bundle()
@@ -571,6 +596,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private fun setUserImage(strUrl: String) {
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                        .circleCrop()
                         .placeholder(R.drawable.ic_profile_placeholder)
                         .error(R.drawable.ic_profile_placeholder))
                 .load(strUrl)

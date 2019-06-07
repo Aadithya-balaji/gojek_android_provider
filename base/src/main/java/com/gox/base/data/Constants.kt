@@ -1,22 +1,40 @@
-@file:Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
-
 package com.gox.base.data
 
 import android.Manifest
 import android.content.Context
 import android.util.Base64
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.maps.model.LatLng
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseApplication
+import org.intellij.lang.annotations.Language
 import java.nio.charset.Charset
 
 object Constants {
 
     const val DEFAULT_ZOOM = 15.0f
-    const val CUSTOM_PREFERENCE:String = "BaseConfigSetting"
-    val DEFAULT_LOCATION = LatLng(-33.8523341, 151.2106085)
-    var isSocketFailed: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { postValue(false) }
+    const val CUSTOM_PREFERENCE: String = "BaseConfigSetting"
+
+    const val SALT_KEY = "salt_key"
+
+    const val SERVICE_ID = "service_id"
+    const val CATEGORY_ID = "category_id"
+    const val PROVIDER_TRANSPORT_VEHICLE = "provider_transport_vehicle"
+    const val TRANSPORT_VEHICLES = "transport_vehicles"
+    const val PROVIDER_ORDER_VEHICLE = "provider_order_vehicle"
+    const val DOCUMENT_NAME = "document_name"
+    const val DOCUMENT_TYPE = "document_type"
+
+    const val M_TOKEN = "Bearer "
+    const val APP_REQUEST_CODE = 99
+    const val COUNTRYLIST_REQUEST_CODE = 100
+    const val CITYLIST_REQUEST_CODE = 102
+
+    const val TEMP_FILE_NAME = "Gojek_Provider"
+    const val TYPE_PROVIDER = "provider"
+    const val currency = "$"
+
+    var privacyPolicyUrl: String = ""
+    var termsUrl: String = ""
 
     object RoomConstants {
         @JvmField
@@ -30,8 +48,8 @@ object Constants {
         const val PERMISSIONS_CODE_FILE = 1002
         const val ORDER = "ORDER"
         const val PERMISSION_CODE_CAMERA = 1003
-        const val ADDCARD=125
-        const val SELECTED_CARD=1004
+        const val ADDCARD = 125
+        const val SELECTED_CARD = 1004
     }
 
     object RequestPermission {
@@ -44,19 +62,26 @@ object Constants {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.CAMERA
         )
-
     }
 
     object BaseUrl {
         @JvmField
-        var APP_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
-                Context.MODE_PRIVATE).getString(PreferencesKey.BASE_URL, BuildConfig.BASE_URL) }
-        var TAXI_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
-                Context.MODE_PRIVATE).getString(PreferencesKey.TRANSPORT_URL, BuildConfig.BASE_URL) }
-        var ORDER_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
-                Context.MODE_PRIVATE).getString(PreferencesKey.ORDER_URL, BuildConfig.BASE_URL) }
-        var SERVICE_BASE_URL: String = BaseApplication.run { getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
-                Context.MODE_PRIVATE).getString(PreferencesKey.SERVICE_URL, BuildConfig.BASE_URL) }
+        var APP_BASE_URL: String = BaseApplication.run {
+            getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
+                    Context.MODE_PRIVATE).getString(PreferencesKey.BASE_URL, BuildConfig.BASE_URL)
+        }!!
+        var TAXI_BASE_URL: String = BaseApplication.run {
+            getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
+                    Context.MODE_PRIVATE).getString(PreferencesKey.TRANSPORT_URL, BuildConfig.BASE_URL)
+        }!!
+        var ORDER_BASE_URL: String = BaseApplication.run {
+            getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
+                    Context.MODE_PRIVATE).getString(PreferencesKey.ORDER_URL, BuildConfig.BASE_URL)
+        }!!
+        var SERVICE_BASE_URL: String = BaseApplication.run {
+            getBaseApplicationContext.getSharedPreferences(CUSTOM_PREFERENCE,
+                    Context.MODE_PRIVATE).getString(PreferencesKey.SERVICE_URL, BuildConfig.BASE_URL)
+        }!!
     }
 
     object ROOM_NAME {
@@ -70,6 +95,8 @@ object Constants {
         var SERVICE_ROOM_NAME: String = "joinPrivateRoom"
         var ORDER_ROOM_NAME: String = "joinPrivateRoom"
         var UPDATELOCATION: String = "updateLocation"
+        var JOIN_ROOM_NAME: String = "joinPrivateChatRoom"
+        var ON_MESSAGE_RECEIVE: String = "new_message"
     }
 
     object ROOM_ID {
@@ -144,6 +171,6 @@ object Constants {
         const val USER_ID = "user_id"
         const val PROVIDER_ID = "provider_id"
         const val REQUEST_ID = "id"
-        const val STORE_ID="store_id"
+        const val STORE_ID = "store_id"
     }
 }

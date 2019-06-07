@@ -1,7 +1,6 @@
 package com.gox.base.base
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.gox.base.data.NetworkError
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
@@ -31,9 +30,7 @@ open class BaseViewModel<N> : ViewModel() {
         compositeDisposable.clear()
     }
 
-    fun getErrorObservable(): MutableLiveData<String> {
-        return liveErrorResponse
-    }
+    fun getErrorObservable() = liveErrorResponse
 
     fun processException(e: Throwable): String? {
         return when (e) {

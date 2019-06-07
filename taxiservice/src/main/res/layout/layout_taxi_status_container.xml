@@ -19,7 +19,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="170dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:background="@android:color/transparent">
@@ -28,6 +28,8 @@
                 android:id="@+id/tvSos"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="0dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/bg_black_circle"
                 android:gravity="center"
@@ -35,21 +37,59 @@
                 android:textColor="@color/taxi_bg_yellow"
                 android:textSize="@dimen/_10sdp" />
 
-            <!--<ImageButton-->
-            <!--android:id="@+id/iv_unselected_map_bin"-->
-            <!--android:layout_width="@dimen/_50sdp"-->
-            <!--android:layout_height="@dimen/_50sdp"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:background="@drawable/bg_black_circle"-->
-            <!--android:contentDescription="@string/app_name"-->
-            <!--android:src="@drawable/icons8-more-filled-48"-->
-            <!--android:tint="@color/taxi_bg_yellow" />-->
+            <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/fab_taxi_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:padding="5dp"
+                app:menu_colorNormal="@color/black"
+                app:menu_colorPressed="@color/black"
+                app:menu_colorRipple="@color/black"
+                app:menu_fab_size="mini"
+                app:menu_icon="@drawable/ic_more_chat_call_taxi"
+                app:menu_openDirection="up"
+                app:menu_showShadow="true">
 
-            <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
-            <!--android:id="@+id/fab_bar"-->
-            <!--android:layout_width="20dp"-->
-            <!--android:layout_height="20dp"-->
-            <!--app:backgroundTint="#1E355E" />-->
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab_taxi_menu_call"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_call"
+                    app:fab_colorNormal="@color/black"
+                    app:fab_colorPressed="@color/black"
+                    app:fab_colorRipple="@color/black"
+                    app:fab_label=""
+                    app:fab_size="mini" />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab_taxi_menu_chat"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_chat_bubble"
+                    app:fab_colorNormal="@color/black"
+                    app:fab_colorPressed="@color/black"
+                    app:fab_colorRipple="@color/black"
+                    app:fab_label=""
+                    app:fab_size="mini" />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab_taxi_menu_video"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_video_call"
+                    android:visibility="gone"
+                    app:fab_colorNormal="@color/black"
+                    app:fab_colorPressed="@color/black"
+                    app:fab_colorRipple="@color/black"
+                    app:fab_label=""
+                    app:fab_size="mini" />
+
+            </com.github.clans.fab.FloatingActionMenu>
 
         </RelativeLayout>
 
@@ -76,10 +116,10 @@
                     <ImageView
                         android:id="@+id/civProfile"
                         android:layout_width="70dp"
-                        android:padding="5dp"
                         android:layout_height="70dp"
                         android:background="@drawable/bg_ring_white"
-                        android:contentDescription="@string/app_name" />
+                        android:contentDescription="@string/app_name"
+                        android:padding="5dp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

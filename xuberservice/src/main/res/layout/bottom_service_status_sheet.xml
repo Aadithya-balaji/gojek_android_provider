@@ -18,7 +18,7 @@
         <RelativeLayout
             android:id="@+id/rl_camera"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="170dp"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp">
 
@@ -27,6 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/bg_timer"
                 android:gravity="center_vertical"
@@ -61,12 +62,66 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
+                android:layout_alignParentBottom="true"
                 app:backgroundTint="@color/colorBasePrimary"
                 app:elevation="@dimen/_8sdp"
                 app:fabSize="normal"
                 app:srcCompat="@drawable/camera"
                 app:tint="@android:color/white" />
+
+            <com.github.clans.fab.FloatingActionMenu
+                android:id="@+id/fab_xuber_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:padding="5dp"
+                app:menu_colorNormal="@color/colorBasePrimary"
+                app:menu_colorPressed="@color/colorBasePrimary"
+                app:menu_colorRipple="@color/colorBasePrimary"
+                app:menu_fab_size="mini"
+                app:menu_icon="@drawable/ic_more_chat_call_xuber"
+                app:menu_openDirection="up"
+                app:menu_showShadow="true">
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab_xuber_menu_call"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_call"
+                    app:fab_colorNormal="@color/colorBasePrimary"
+                    app:fab_colorPressed="@color/colorBasePrimary"
+                    app:fab_colorRipple="@color/colorBasePrimary"
+                    app:fab_label=""
+                    app:fab_size="mini" />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab_xuber_menu_chat"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_chat_bubble"
+                    app:fab_colorNormal="@color/colorBasePrimary"
+                    app:fab_colorPressed="@color/colorBasePrimary"
+                    app:fab_colorRipple="@color/colorBasePrimary"
+                    app:fab_label=""
+                    app:fab_size="mini" />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab_xuber_menu_video"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="@dimen/_12sdp"
+                    android:src="@drawable/ic_video_call"
+                    android:visibility="gone"
+                    app:fab_colorNormal="@color/black"
+                    app:fab_colorPressed="@color/black"
+                    app:fab_colorRipple="@color/black"
+                    app:fab_label=""
+                    app:fab_size="mini" />
+
+            </com.github.clans.fab.FloatingActionMenu>
 
         </RelativeLayout>
 
@@ -91,12 +146,11 @@
                 android:layout_marginTop="@dimen/_8sdp">
 
                 <ImageView
-                    android:contentDescription="@string/app_name"
                     android:id="@+id/ivXuperUSer"
                     android:layout_width="@dimen/_34sdp"
                     android:layout_height="@dimen/_34sdp"
                     android:layout_marginStart="@dimen/_11sdp"
-                    android:src="@drawable/kittty" />
+                    android:contentDescription="@string/app_name" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

@@ -2,8 +2,6 @@ package com.gox.partner.network
 
 object WebApiConstants {
 
-    const val SALT_KEY = "salt_key"
-
     object Login {
         const val COUNTRY_CODE = "country_code"
         const val MOBILE = "mobile"

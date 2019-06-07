@@ -16,7 +16,7 @@ class SplashViewModel : BaseViewModel<SplashViewModel.SplashNavigator>() {
 
     internal fun getConfig() {
         val params = HashMap<String, String>()
-        params[WebApiConstants.SALT_KEY] = BuildConfig.SALT_KEY
+        params["salt_key"] = BuildConfig.SALT_KEY
         getCompositeDisposable().add(appRepository.getConfig(this, params))
     }
 

@@ -10,11 +10,10 @@ import androidx.annotation.RequiresApi
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseActivity
+import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityPrivacyPolicyBinding
-import com.gox.partner.utils.Constant
-
 
 class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivactyNavigator {
     private lateinit var privacyBinding: ActivityPrivacyPolicyBinding
@@ -39,15 +38,15 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivactyNa
         privacyBinding.toolbarLayout.ivToolbarBack.setOnClickListener {
             finish()
         }
-        if (!Constant.privacyPolicyUrl.isNullOrEmpty()) {
+        if (!Constants.privacyPolicyUrl.isNullOrEmpty()) {
             privacyBinding.wvPrivacy.setWebViewClient(WebClient())
         }
         if (intent.extras == null) {
             privacyBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(R.string.header_label_privacy)
-            privacyBinding.wvPrivacy.loadUrl(Constant.privacyPolicyUrl)
+            privacyBinding.wvPrivacy.loadUrl(Constants.privacyPolicyUrl)
         }else{
             privacyBinding.toolbarLayout.tvToolbarTitle.text = getString(R.string.terms_conditions)
-            privacyBinding.wvPrivacy.loadUrl(Constant.privacyPolicyUrl)
+            privacyBinding.wvPrivacy.loadUrl(Constants.privacyPolicyUrl)
         }
 
         loadingProgress?.let {

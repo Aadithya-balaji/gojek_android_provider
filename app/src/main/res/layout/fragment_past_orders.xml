@@ -6,7 +6,7 @@
 
         <variable
             name="pastfragmentviewmodel"
-            type="com.gox.xjek.ui.pastorder_fragment.PastOrderViewModel" />
+            type="com.gox.partner.views.pastorder_fragment.PastOrderViewModel" />
 
         <variable
             name="pastOrdersAdapter"

@@ -10,6 +10,7 @@ import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.theartofdev.edmodo.cropper.CropImage
 import com.gox.base.base.BaseActivity
+import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.ImageCropperUtils
@@ -17,7 +18,6 @@ import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityAddVehicleBinding
 import com.gox.partner.models.SetupRideResponseModel
-import com.gox.partner.utils.Constant
 import com.gox.partner.utils.Enums
 import kotlinx.android.synthetic.main.activity_add_vehicle.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
@@ -50,25 +50,25 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         }
         viewModel.navigator = this
 
-        viewModel.setServiceId(intent.getIntExtra(Constant.SERVICE_ID, -1))
-        viewModel.setCategoryId(intent.getIntExtra(Constant.CATEGORY_ID, -1))
+        viewModel.setServiceId(intent.getIntExtra(Constants.SERVICE_ID, -1))
+        viewModel.setCategoryId(intent.getIntExtra(Constants.CATEGORY_ID, -1))
 
 
-        if (intent.hasExtra(Constant.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constant.PROVIDER_ORDER_VEHICLE)) {
+        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE)) {
             viewModel.setIsEdit(true)
         } else {
             viewModel.setIsEdit(false)
         }
 
-        if (intent.hasExtra(Constant.TRANSPORT_VEHICLES)) {
-            vehicleData = intent.getSerializableExtra(Constant.TRANSPORT_VEHICLES) as ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
+        if (intent.hasExtra(Constants.TRANSPORT_VEHICLES)) {
+            vehicleData = intent.getSerializableExtra(Constants.TRANSPORT_VEHICLES) as ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
             setVehicle(vehicleData)
         }
 
-        if (intent.hasExtra(Constant.PROVIDER_TRANSPORT_VEHICLE)) {
-            viewModel.setVehicleLiveData(intent.getParcelableExtra(Constant.PROVIDER_TRANSPORT_VEHICLE))
-        } else if (intent.hasExtra(Constant.PROVIDER_ORDER_VEHICLE)) {
-            viewModel.setVehicleLiveData(intent.getParcelableExtra(Constant.PROVIDER_ORDER_VEHICLE))
+        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE)) {
+            viewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
+        } else if (intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE)) {
+            viewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_ORDER_VEHICLE))
         }
 
         binding.addVehicleViewModel = viewModel

@@ -26,12 +26,11 @@
             android:textSize="@dimen/_14sdp" />
 
         <ImageView
-            android:contentDescription="@string/app_name"
             android:id="@+id/ivXuperRatingUser"
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginTop="@dimen/_10sdp"
-            android:src="@drawable/kittty" />
+            android:contentDescription="@string/app_name" />
 
         <TextView
             android:id="@+id/tvRateWithUser"

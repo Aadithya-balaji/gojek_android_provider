@@ -228,6 +228,9 @@
         <activity
             android:name="com.gox.partner.views.history_details.HistoryDetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.gox.base.chatmessage.ChatActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

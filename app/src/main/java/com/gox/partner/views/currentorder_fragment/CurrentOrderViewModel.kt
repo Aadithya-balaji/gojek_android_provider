@@ -2,11 +2,11 @@ package com.gox.partner.views.currentorder_fragment
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.partner.models.TransportHistory
 import com.gox.partner.repository.AppRepository
-import com.gox.partner.utils.Constant
 import com.gox.xjek.ui.currentorder_fragment.CurrentOrderNavigator
 
 class CurrentOrderViewModel : BaseViewModel<CurrentOrderNavigator>() {
@@ -31,7 +31,7 @@ class CurrentOrderViewModel : BaseViewModel<CurrentOrderNavigator>() {
         hashMap.put("type", "current")
         getCompositeDisposable().add(appRepository
                 .getTransaportCurrentHistory(this
-                        , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")
+                        , Constants.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")
                         , hashMap, selectedservice))
 
     }
@@ -44,7 +44,7 @@ class CurrentOrderViewModel : BaseViewModel<CurrentOrderNavigator>() {
         hashMap.put("type", "current")
         getCompositeDisposable().add(appRepository
                 .getServiceCurrentHistory(this
-                        , Constant.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")
+                        , Constants.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, "")
                         , hashMap))
     }
 }

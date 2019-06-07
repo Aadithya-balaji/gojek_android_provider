@@ -38,8 +38,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
@@ -50,7 +49,7 @@ import com.gox.partner.databinding.ActivityRegisterBinding
 import com.gox.partner.models.City
 import com.gox.partner.models.CountryResponseData
 import com.gox.partner.network.WebApiConstants
-import com.gox.partner.utils.CommanMethods
+import com.gox.partner.utils.CommonMethods
 import com.gox.partner.utils.Enums
 import com.gox.partner.utils.Enums.Companion.CITYLIST_REQUEST_CODE
 import com.gox.partner.utils.Enums.Companion.COUNTRYLIST_REQUEST_CODE
@@ -62,6 +61,8 @@ import com.gox.partner.views.countrypicker.CountryCodeActivity
 import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.privacypolicy.PrivacyActivity
 import com.gox.partner.views.sign_in.SignInActivity
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -95,13 +96,16 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     private lateinit var edtLastName: TextInputEditText
     private lateinit var ivProfile: ImageView
     private lateinit var tlPassword: TextInputLayout
+    private lateinit var rbMale: MaterialRadioButton
+    private lateinit var rbFemale: MaterialRadioButton
+    private lateinit var signupViewmodel: SignupViewModel
+    private lateinit var callbackManager: CallbackManager
+
     private var message: String = ""
     private var cityList: ArrayList<City> = ArrayList()
     private var isEmailFocus: Boolean? = false
     private var isPhoneFocus: Boolean? = false
     private var filePart: MultipartBody.Part? = null
-    private lateinit var rbMale: MaterialRadioButton
-    private lateinit var rbFemale: MaterialRadioButton
     private var isConditionChecked: Boolean? = false
 
     private var strPhoneCode: String? = ""
@@ -114,8 +118,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     private var strConfirmPwd: String? = ""
     private var strFirstName: String? = ""
     private var strLastName: String? = ""
-    private lateinit var signupViewmodel: SignupViewModel
-    private lateinit var callbackManager: CallbackManager
     private var mGoogleApiClient: GoogleApiClient? = null
     private var imageUrl: String? = null
 
@@ -127,7 +129,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         signupViewmodel = SignupViewModel(this)
         this.mViewDataBinding.registermodel = signupViewmodel
         this.mViewDataBinding.lifecycleOwner = this
-        //initListener
+
+        //      initListener
         tlCountryCode = findViewById(R.id.tl_country_code)
         edtCountryCode = findViewById(R.id.edt_signup_code)
         edtFirstName = findViewById(R.id.edt_singup_firstname)
@@ -158,9 +161,9 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         getApiResponse()
         observeLiveData(signupViewmodel.phoneNumber) {
             if (!TextUtils.isEmpty(signupViewmodel.countryCode.value.toString()))
-                if (CommanMethods.validatePhone(signupViewmodel.phoneNumber.value.toString())) {
+                if (CommonMethods.validatePhone(signupViewmodel.phoneNumber.value.toString())) {
                     val params = HashMap<String, String>()
-                    params[WebApiConstants.SALT_KEY] = "MQ=="
+                    params["salt_key"] = SALT_KEY
                     params[WebApiConstants.ValidateUser.PHONE] = signupViewmodel.phoneNumber.value.toString()
                     params[WebApiConstants.ValidateUser.COUNTRYCODE] = signupViewmodel.countryCode.toString()
                     Log.e("phone ", "-------observe" + signupViewmodel.countryCode.value
@@ -172,9 +175,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             terms_conditions_tv.text = Html.fromHtml(getString(R.string.i_accept_the_following_terms_and_conditions), Html.FROM_HTML_MODE_LEGACY)
-        else
-            terms_conditions_tv.text = Html.fromHtml(getString(R.string.i_accept_the_following_terms_and_conditions))
-
+        else terms_conditions_tv.text = Html.fromHtml(getString(R.string.i_accept_the_following_terms_and_conditions))
     }
 
     private fun getApiResponse() {
@@ -189,7 +190,6 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
             intent.putExtra("countrylistresponse", it as Serializable)
             startActivityForResult(intent, COUNTRYLIST_REQUEST_CODE)
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -231,21 +231,16 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                         // Signed in successfully, show authenticated UI.
                         val acct = result.signInAccount
                         if (acct != null) handleGplusSignInResult(acct)
-                    } else {
-                        // Signed out, show unauthenticated UI.
-                        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback { status -> Log.e("status", "logout $status") }
-                    }
+                    } else Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback { status -> Log.e("status", "logout $status") }
                 }
 
                 CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode() -> {
-                    //Facebook Login
                     callbackManager.onActivityResult(requestCode, resultCode, data)
                 }
 
                 Enums.RC_COUNTRY_CODE_PICKER -> {
                     if (data != null && data.extras != null) handleCountryCodePickerResult(data)
                 }
-
 
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
@@ -257,11 +252,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                         signupViewmodel.fileName.value = filePart
                     }
                 }
-
-
             }
         }
-
     }
 
     private fun initListener() {
@@ -280,12 +272,10 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         terms_conditions_tv.setOnClickListener(this)
     }
 
-    //do registration
     override fun signup() {
 
     }
 
-    // move to signin page
     override fun openSignin() {
         launchNewActivity(SignInActivity::class.java, false)
     }
@@ -295,24 +285,16 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
 //        startActivity(intent)
     }
 
-
     override fun onClick(v: View?) {
         when (v!!.id) {
-            R.id.countrycode_register_et -> {
-                val intent = Intent(this, CountryCodeActivity::class.java)
-                startActivityForResult(intent, Enums.RC_COUNTRY_CODE_PICKER)
-            }
-
-            R.id.terms_conditions_tv ->{
-                val intent = Intent(this@SignupActivity,PrivacyActivity::class.java)
-                intent.putExtra("title","terms")
-                startActivity(intent)
-            }
-
+            R.id.countrycode_register_et -> startActivityForResult(Intent(this,
+                    CountryCodeActivity::class.java), Enums.RC_COUNTRY_CODE_PICKER)
+            R.id.terms_conditions_tv -> startActivity(Intent(this@SignupActivity,
+                    PrivacyActivity::class.java).putExtra("title", "terms"))
         }
     }
 
-    fun initGoogle() {
+    private fun initGoogle() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(resources.getString(R.string.google_signin_server_client_id))
                 .requestEmail()
@@ -323,7 +305,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                 .build()
     }
 
-    fun isValidCredential(): Boolean {
+    private fun isValidCredential(): Boolean {
         if (TextUtils.isEmpty(signupViewmodel.firstName.value)) {
             message = resources.getString(R.string.empty_firstname)
             return false
@@ -489,8 +471,8 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val width:Int = resources.getDimension(R.dimen.flag_width).toInt()
-            val height:Int = resources.getDimension(R.dimen.flag_height).toInt()
+            val width: Int = resources.getDimension(R.dimen.flag_width).toInt()
+            val height: Int = resources.getDimension(R.dimen.flag_height).toInt()
             val drawable = BitmapDrawable(resources,
                     Bitmap.createScaledBitmap(bitmap, width, height, true))
             mViewDataBinding.edtSignupCode
@@ -593,7 +575,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
                     .downsample(DownsampleStrategy.CENTER_INSIDE)
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-            val file = CommanMethods.getDefaultFileName(mContext)
+            val file = CommonMethods.getDefaultFileName(mContext)
             mContext.let {
                 val bitmap = Glide.with(it)
                         .asBitmap()
@@ -651,7 +633,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
 
         if (isEmailFocus == true) {
-            /*if (CommanMethods.validateEmail(s.toString())) {
+            /*if (CommonMethods.validateEmail(s.toString())) {
                 val params = HashMap<String, String>()
                 params.put(WebApiConstants.SALT_KEY, "MQ==")
                 params.put(WebApiConstants.EMAIL, signupViewmodel.email.value.toString())
@@ -660,7 +642,7 @@ class SignupActivity : BaseActivity<ActivityRegisterBinding>(),
             }*/
         } else if (isPhoneFocus == true) {
 //            if (!TextUtils.isEmpty(signupViewmodel.countryCode.value.toString()))
-//                if (CommanMethods.validatePhone(s.toString())) {
+//                if (CommonMethods.validatePhone(s.toString())) {
 //                    val params = HashMap<String, String>()
 //                    params.put(WebApiConstants.SALT_KEY, "MQ==")
 //                    params.put(WebApiConstants.ValidateUser.PHONE, signupViewmodel.phoneNumber.value.toString())

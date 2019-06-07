@@ -1,9 +1,9 @@
 package com.gox.partner.views.sign_in
 
 import android.view.View
-import android.widget.RadioGroup
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.BuildConfig
+import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
@@ -70,7 +70,7 @@ class SignInViewModel : BaseViewModel<SignInViewModel.SignInNavigator>() {
         params[WebApiConstants.Login.DEVICE_TYPE] = Enums.DEVICE_TYPE
 //        params[WebApiConstants.Login.DEVICE_TOKEN] = readPreferences(PreferencesKey.DEVICE_TOKEN, "123")!!
         params[WebApiConstants.Login.DEVICE_TOKEN] = BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")!!
-        params[WebApiConstants.SALT_KEY] = BuildConfig.SALT_KEY
+        params["salt_key"] = SALT_KEY
         getCompositeDisposable().add(appRepository.postLogin(this, params))
     }
 
@@ -85,7 +85,7 @@ class SignInViewModel : BaseViewModel<SignInViewModel.SignInNavigator>() {
             LoginType.FACEBOOK.value()
         }
         params[WebApiConstants.SocialLogin.SOCIAL_UNIQUE_ID] = id
-        params[WebApiConstants.SALT_KEY] = BuildConfig.SALT_KEY
+        params["salt_key"] = SALT_KEY
         getCompositeDisposable().add(appRepository.postSocialLogin(this, params))
     }
 
@@ -96,6 +96,7 @@ class SignInViewModel : BaseViewModel<SignInViewModel.SignInNavigator>() {
         fun changeSigninViaMail()
         //fun onCheckedChanged(group: RadioGroup, checkedId: Int)
         fun onCountryCodeClicked()
+
         fun onForgotPasswordClicked()
         fun onSignUpClicked()
         fun onSignInClicked()

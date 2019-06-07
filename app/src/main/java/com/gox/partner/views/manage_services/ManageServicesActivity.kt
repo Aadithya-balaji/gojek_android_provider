@@ -3,13 +3,13 @@ package com.gox.partner.views.manage_services
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.gox.base.base.BaseActivity
+import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityManageServicesBinding
 import com.gox.partner.models.ManageServicesDataModel
-import com.gox.partner.utils.Constant
 import com.gox.partner.views.set_service.SetServiceActivity
 import com.gox.partner.views.setup_vehicle.SetupVehicleActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
@@ -72,7 +72,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
 
         val response = viewModel.getServicesObservable().value!!.responseData
         if (!response.isNullOrEmpty() && response.size > position) {
-            intent.putExtra(Constant.SERVICE_ID,
+            intent.putExtra(Constants.SERVICE_ID,
                     viewModel.getServicesObservable().value!!.responseData[position].id)
             launchNewActivity(intent, false)
         } else ViewUtils.showToast(this, "Service not configured. Please contact admin", false)

@@ -16,11 +16,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.karumi.dexter.Dexter
-import com.karumi.dexter.MultiplePermissionsReport
-import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionRequest
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseFragment
 import com.gox.base.data.Constants.DEFAULT_ZOOM
@@ -40,6 +35,11 @@ import com.gox.partner.views.dashboard.DashBoardNavigator
 import com.gox.partner.views.dashboard.DashBoardViewModel
 import com.gox.partner.views.incoming_request_taxi.IncomingRequestDialog
 import com.gox.partner.views.pendinglist.PendingListDialog
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import kotlinx.android.synthetic.main.fragment_home_page.*
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
@@ -109,8 +109,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 verificationModel.isService = providerDetailsModel.is_service!!
                 verificationModel.providerStatus = checkStatusData.responseData.provider_details.status
                 verificationModel.providerWalletBalance = checkStatusData.responseData.provider_details.wallet_balance!!
-                Constant.
-                        verificationObservable.value = verificationModel
+                Constant.verificationObservable.value = verificationModel
 
                 if (providerDetailsModel.is_online == 1) {
                     isOnline = true
@@ -124,9 +123,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 }
 
                 val verificationData = Constant.verificationObservable.value!!
-                if (verificationData.isNeedToShowPendingDialog() && pendingListDialog != null && !pendingListDialog!!.isShown()) {
-                    showPendingListDialog()
-                }
+                if (verificationData.isNeedToShowPendingDialog() && pendingListDialog != null
+                        && !pendingListDialog!!.isShown()) showPendingListDialog()
             }
         }
 

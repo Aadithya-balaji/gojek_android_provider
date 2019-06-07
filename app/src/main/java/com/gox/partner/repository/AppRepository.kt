@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.gox.base.data.Constants
 import com.gox.base.repository.BaseRepository
+import com.gox.base.chatmessage.ChatMainViewModel
 import com.gox.partner.network.AppWebService
 import com.gox.partner.views.account_card.CardListViewModel
 import com.gox.partner.views.add_edit_document.AddEditDocumentViewModel
@@ -32,7 +33,7 @@ import com.gox.partner.views.signup.SignupViewModel
 import com.gox.partner.views.splash.SplashViewModel
 import com.gox.partner.views.transaction.TransactionViewModel
 import com.gox.partner.views.wallet.WalletViewModel
-import com.gox.xjek.ui.pastorder_fragment.PastOrderViewModel
+import com.gox.partner.views.pastorder_fragment.PastOrderViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -210,16 +211,16 @@ class AppRepository : BaseRepository() {
     }
 
 
-    fun getProfile(viewModel:WalletViewModel,token:String):Disposable{
-           return BaseRepository().createApiClient(serviceId,AppWebService::class.java)
-                   .getProfile(token)
-                   .observeOn(AndroidSchedulers.mainThread())
-                   .subscribeOn(Schedulers.io())
-                   .subscribe({
-                       viewModel.mProfileResponse.postValue(it)
-                   },{
-                       viewModel.navigator.showErrorMsg(getErrorMessage(it))
-                   })
+    fun getProfile(viewModel: WalletViewModel, token: String): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getProfile(token)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.mProfileResponse.postValue(it)
+                }, {
+                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
+                })
     }
 
     fun getProviderProfile(viewModel: ViewModel, token: String): Disposable {
@@ -297,7 +298,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun deleteCDard(viewModel:CardListViewModel, token: String, cardId: String): Disposable {
+    fun deleteCDard(viewModel: CardListViewModel, token: String, cardId: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .deleteCard(token, cardId)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -843,9 +844,26 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     viewModel.disputeStatusLiveData.postValue(it)
-                }, {
-                    viewModel.errorResponse.postValue(getErrorMessage(it))
-                })
+                }, { viewModel.errorResponse.postValue(getErrorMessage(it)) })
+    }
+
+    fun sendMessage(viewModel: ChatMainViewModel, s: String, hashMap: HashMap<String, Any>): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .sendMessage(s, hashMap)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ viewModel.successResponse.value = it },
+                        { viewModel.errorResponse.value = getErrorMessage(it) })
+    }
+
+
+    fun getMessage(viewModel: ChatMainViewModel, token: String, adminService: String, id: Int): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.TAXI_BASE_URL, AppWebService::class.java)
+                .getMessages(token, adminService, id)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ viewModel.getMessageResponse.value = it },
+                        { viewModel.errorResponse.value = getErrorMessage(it) })
     }
 
 

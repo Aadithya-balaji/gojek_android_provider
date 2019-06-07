@@ -32,7 +32,7 @@ class ForgotPasswordViewModel : BaseViewModel<ForgotPasswordViewModel.ForgotPass
 
     internal fun postForgotPassword(isEmailLogin: Boolean) {
         val params = HashMap<String, String>()
-        params[WebApiConstants.SALT_KEY] = BuildConfig.SALT_KEY
+        params["salt_key"] = BuildConfig.SALT_KEY
         if (isEmailLogin) {
             params[WebApiConstants.ForgotPassword.ACCOUNT_TYPE] = AccountType.EMAIL.value()
             params[WebApiConstants.ForgotPassword.EMAIL] = email.value!!.trim()

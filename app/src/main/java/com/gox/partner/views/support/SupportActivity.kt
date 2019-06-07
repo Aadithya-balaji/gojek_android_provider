@@ -4,12 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import androidx.databinding.ViewDataBinding
 import com.google.gson.Gson
+import com.gox.base.BuildConfig
 import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
-import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivitySupportBinding
+import com.gox.partner.models.ConfigResponseData
 import com.gox.partner.models.ConfigResponseModel
 import com.gox.partner.models.Supportdetails
 import com.gox.xjek.ui.support.SupportNavigator
@@ -32,12 +33,14 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
         }
 
         val baseApiResponseString: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.BASE_CONFIG_RESPONSE, "")!!
-        val baseApiResponseData: ConfigResponseModel = Gson().fromJson<ConfigResponseModel>(baseApiResponseString, ConfigResponseModel::class.java)
-        supportDetails = baseApiResponseData.responseData.appsetting.supportdetails
+        val baseApiResponseData: ConfigResponseData = Gson().fromJson<ConfigResponseData>(baseApiResponseString, ConfigResponseData::class.java)
+        supportDetails = baseApiResponseData.appsetting.supportdetails
 
+        if(!supportDetails.contact_number.isEmpty())
         phonenumber_support_tv.text = supportDetails.contact_number[0].number
         mail_support_tv.text = supportDetails.contact_email
-        //website_support_tv.text = supportDetails
+        //TODO change to dynamic one
+        website_support_tv.text = BuildConfig.BASE_URL
         call_support_ll.setOnClickListener {
             goToPhoneCall()
         }
@@ -52,21 +55,25 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
     }
 
     override fun goToPhoneCall() {
-        val intent = Intent(Intent.ACTION_DIAL)
-        intent.data = Uri.parse("tel:" + supportDetails.contact_number[0].number)
-        startActivity(intent)
+        if(!supportDetails.contact_number.isEmpty()) {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:" + supportDetails.contact_number[0].number)
+            startActivity(intent)
+        }
     }
 
     override fun goToMail() {
-        val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", supportDetails.contact_email, null))
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_mail))
-        startActivity(Intent.createChooser(emailIntent, "Send email..."))
+        if (supportDetails.contact_email.isNotEmpty()) {
+            val emailIntent = Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                    "mailto", supportDetails.contact_email, null))
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.support_mail))
+            startActivity(Intent.createChooser(emailIntent, "Send email..."))
+        }
     }
 
     override fun goToWebsite() {
         val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse("https://www.google.com")
+        i.data = Uri.parse(BuildConfig.BASE_URL)
         startActivity(i)
     }
 

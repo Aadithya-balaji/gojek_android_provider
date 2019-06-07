@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -32,6 +33,7 @@
                 android:background="@drawable/bg_black_circle"
                 android:gravity="center"
                 android:text="@string/taxi_sos"
+                style="@style/SmallText"
                 android:textColor="@color/taxi_bg_yellow"
                 android:textSize="@dimen/_10sdp" />
 
@@ -98,6 +100,7 @@
                             android:maxLines="1"
                             android:minLines="1"
                             android:padding="5dp"
+                            style="@style/SmallText"
                             android:text="@string/placeholder_string"
                             android:textColor="@color/taxi_bg_yellow" />
 
@@ -140,6 +143,7 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="@string/start_timer"
+                            style="@style/SmallText"
                             android:textColor="@color/black" />
 
                     </LinearLayout>
@@ -157,7 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@id/cvNavigationContainer"
-                        android:fontFamily="@font/avenirltstd_medium"
+                        style="@style/SmallText"
                         android:padding="3dp"
                         android:text="@string/taxi_pickup_location"
                         android:textColor="@color/black"
@@ -169,9 +173,10 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_pickup_location"
                         android:layout_toStartOf="@id/cvNavigationContainer"
-                        android:fontFamily="@font/avenirltstd_medium"
+                        style="@style/SmallText"
                         android:padding="3dp"
-                        android:textColor="@color/grey" />
+                        tools:text="Chennai,India"
+                        android:textColor="@color/light_grey" />
 
                     <TextView
                         android:id="@+id/tv_user_address_two"

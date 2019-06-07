@@ -143,7 +143,7 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
                 showErrorMessage(activity!!.getString(R.string.empty_toll_charge))
                 false
             }
-            tollCharge.toInt() <= 0 -> {
+            tollCharge.toDouble() <= 0 -> {
                 showErrorMessage(activity!!.getString(R.string.invalid_toll_charge))
                 false
             }

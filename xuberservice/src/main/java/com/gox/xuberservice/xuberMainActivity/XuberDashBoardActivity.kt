@@ -723,7 +723,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     true)
             popupWindow!!.isOutsideTouchable = false
             popupWindow!!.isFocusable = false
-            popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+           // popupWindow!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
         if (!popupWindow!!.isShowing) {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -125,14 +126,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            android:fontFamily="@font/avenirltstd_medium"
+                            style="@style/SmallText"
                             android:gravity="center_vertical"
                             android:maxLines="2"
                             android:minLines="2"
                             android:padding="3dp"
+                            tools:text="Chennai,India"
                             android:text="@={invoicemodel.pickuplocation}"
-                            android:textColor="@color/grey"
-                            android:textSize="12sp" />
+                            android:textColor="@color/light_grey"
+                            android:textSize="@dimen/_10sdp" />
 
                         <TextView
                             android:id="@+id/tv_drop_location"
@@ -140,13 +142,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:ellipsize="end"
-                            android:fontFamily="@font/avenirltstd_medium"
+                            style="@style/SmallText"
                             android:gravity="center_vertical"
                             android:maxLines="2"
                             android:minLines="2"
                             android:padding="3dp"
+                            tools:text="Guindy,In"
                             android:text="@={invoicemodel.dropLocation}"
-                            android:textColor="@color/grey"
+                            android:textColor="@color/light_grey"
                             android:textSize="12sp" />
 
                     </LinearLayout>
@@ -444,7 +447,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="@dimen/_12sdp"
                     android:background="#DEDEDE"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/_5sdp"
@@ -458,7 +461,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.60"
-                        android:fontFamily="@font/avenirltstd_medium"
+                        style="@style/SmallText"
                         android:text="@string/taxi_invoice_total"
                         android:textAllCaps="true"
                         android:textColor="@color/black"

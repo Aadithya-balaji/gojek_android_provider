@@ -81,6 +81,8 @@
             android:cursorVisible="false"
             android:digits="1234567890"
             android:inputType="number"
+            style="@style/SmallText"
+            android:imeOptions="actionDone"
             android:maxLength="4"
             android:textIsSelectable="false"
             android:textSize="20sp"

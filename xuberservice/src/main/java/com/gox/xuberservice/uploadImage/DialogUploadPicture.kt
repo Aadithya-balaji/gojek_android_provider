@@ -25,9 +25,7 @@ import com.gox.xuberservice.interfaces.GetFilePathInterface
 import com.theartofdev.edmodo.cropper.CropImage
 import java.io.File
 
-class
-DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUploadPictureNavigator {
-
+class DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUploadPictureNavigator {
 
     private lateinit var dialogUploadImageBinding: DialogUploadImageBinding
     private lateinit var dialogUploadPictureViewModel: DialogUploadPictureViewModel
@@ -37,7 +35,6 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
     private var localPath: Uri? = null
     private lateinit var getFilePath: GetFilePathInterface
     private var isFront: Boolean = false
-
 
     override fun getLayout(): Int {
         return R.layout.dialog_upload_image
@@ -51,14 +48,13 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.CustomDialog)
+        setStyle(STYLE_NO_TITLE, R.style.CustomDialog)
     }
 
     override fun onStart() {
         super.onStart()
         dialog!!.window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
-
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         dialogUploadImageBinding = viewDataBinding as DialogUploadImageBinding
@@ -74,7 +70,7 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
 
     }
 
-    fun getBundleValues() {
+    private fun getBundleValues() {
         isFront = if (arguments != null && arguments!!.containsKey("isFront")) arguments!!.getBoolean("isFront", true) else true
     }
 
@@ -82,23 +78,20 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
     override fun takePicture() {
         if (getPermissionUtil().hasPermission(appCompatActivity, Constants.RequestPermission.PERMISSION_CAMERA)) {
             captureImage(202)
-        } else {
-            getPermissionUtil().requestPermissions(appCompatActivity, Constants.RequestPermission.PERMISSION_CAMERA, Constants.RequestCode.PERMISSION_CODE_CAMERA)
-        }
+        } else getPermissionUtil().requestPermissions(appCompatActivity,
+                Constants.RequestPermission.PERMISSION_CAMERA, Constants.RequestCode.PERMISSION_CODE_CAMERA)
     }
 
     override fun submit() {
         if (localPath != null) {
             getFilePath.getFilePath(localPath!!)
             dialog!!.dismiss()
-        } else {
-            ViewUtils.showToast(appCompatActivity, resources.getString(R.string.empty_image), false)
-        }
+        } else ViewUtils.showToast(appCompatActivity, resources.getString(R.string.empty_image), false)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("ResultCode", "------" + resultCode + "---" + requestCode)
+        Log.e("ResultCode", "------$resultCode---$requestCode")
         if (resultCode == Activity.RESULT_OK) {
 
             when (requestCode) {
@@ -126,10 +119,8 @@ DialogUploadPicture : BaseDialogFragment<DialogUploadImageBinding>(), DialogUplo
     fun captureImage(requestCode: Int) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         mediaFile = CommonMethods.createImageFile(activity!!)
-        //Kindly change the application id if any changes made in  app application id means
         mediaUri = FileProvider.getUriForFile(activity!!, getApplicationContext().packageName + ".provider", mediaFile)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri)
         startActivityForResult(intent, requestCode)
     }
-    
 }

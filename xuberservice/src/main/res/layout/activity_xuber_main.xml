@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -23,49 +24,53 @@
                 android:id="@+id/status_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_40sdp"
-                android:layout_marginRight="@dimen/_20sdp"
+                android:layout_margin="@dimen/_15sdp"
                 android:visibility="visible"
-                app:cardBackgroundColor="@color/xuber_white"
-                app:cardElevation="@dimen/_5sdp">
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardUseCompatPadding="true"
+                app:cardPreventCornerOverlap="false"
+                app:cardBackgroundColor="@color/xuber_black"
+                app:cardElevation="@dimen/_2sdp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/xuber_black">
+                    >
 
                     <LinearLayout
                         android:id="@+id/status_flow_header"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_20sdp"
+                        android:layout_margin="@dimen/_5sdp"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tvXuberLabellocation"
-                            style="@style/SmallText.colorWhite"
+                            style="@style/SmallText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableStart="@drawable/xuber_custom_circle"
                             android:drawablePadding="@dimen/_9sdp"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="center_vertical"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/xuper_service_location"
                             android:textColor="@color/xuber_white"
-                            android:textSize="@dimen/_9sdp" />
+                            android:textSize="@dimen/_10sdp" />
 
                         <TextView
                             android:id="@+id/tvXuberPickupLocation"
-                            style="@style/SmallText.colorWhite"
+                            style="@style/SmallText"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
+                            android:layout_marginStart="@dimen/_18sdp"
                             android:layout_weight="5"
                             android:fontFamily="@font/avenirltstd_medium"
-                            android:padding="@dimen/_5sdp"
-                            android:textColor="@color/xuber_white"
-                            android:textSize="@dimen/_9sdp" />
+                            android:maxLines="2"
+                            android:lineSpacingExtra="5dp"
+                            android:padding="@dimen/_2sdp"
+                            android:textColor="@color/light_grey"
+                            android:textSize="@dimen/_9sdp"
+                            tools:text="Chennai\nTest" />
 
                     </LinearLayout>
 

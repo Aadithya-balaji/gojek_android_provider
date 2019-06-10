@@ -49,15 +49,14 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         mViewDataBinding.foodLiveTaskviewModel = mViewModel
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this, listOf())
         mViewModel.navigator = this
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver,
-                IntentFilter(BaseLocationService.BROADCAST))
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
 
-        mViewModel.showLoading = loadingObservable
+        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         mViewModel.showLoading.value = true
+        mViewModel.callFoodieCheckRequest()
 
         checkRequestResponse()
         checkRatingReq()
-
         call_img.setOnClickListener {
             val phoneNumber = if (showingStoreDetail)
                 mViewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.contact_number
@@ -98,8 +97,8 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
                 if (checkStatusApiCounter++ % 3 == 0)
-                        mViewModel.callFoodieCheckRequest()
-                    else loadingObservable.value = false
+                    mViewModel.callFoodieCheckRequest()
+                else loadingObservable.value = false
             }
         }
     }

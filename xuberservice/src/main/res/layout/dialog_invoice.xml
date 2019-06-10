@@ -24,11 +24,11 @@
             android:orientation="vertical">
 
             <TextView
+                style="@style/SmallText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:fontFamily="@font/avenirltstd_medium"
                 android:gravity="center"
                 android:text="@string/invoice"
                 android:textColor="@color/xuber_black" />
@@ -63,12 +63,14 @@
 
                         <TextView
                             android:id="@+id/tvUserName"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:text="@{invoicemodel.userName}"
                             android:textColor="@color/xuper_light_black"
-                            android:textSize="@dimen/_12sdp" />
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold"
+                            tools:text="SSS" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -77,9 +79,9 @@
 
                             <TextView
                                 android:id="@+id/tvXuperRating"
+                                style="@style/SmallText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/avenirltstd_medium"
                                 android:text="@={invoicemodel.rating}"
                                 android:textColor="@color/xuber_grey"
                                 android:textSize="@dimen/_10sdp" />
@@ -88,7 +90,7 @@
                                 android:id="@+id/ivXuperRate"
                                 android:layout_width="@dimen/_10sdp"
                                 android:layout_height="@dimen/_10sdp"
-                                android:layout_marginLeft="@dimen/_3sdp"
+                                android:layout_marginStart="@dimen/_3sdp"
                                 android:src="@drawable/star"
                                 android:tint="@color/chip_yellow_inner_color" />
                         </LinearLayout>
@@ -104,14 +106,16 @@
 
                         <TextView
                             android:id="@+id/tvXuperServicelabel"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:text="@string/label_service"
+                            android:textColor="@color/colorBlack"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/tvXuperService"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_3sdp"
@@ -142,15 +146,16 @@
 
                         <TextView
                             android:id="@+id/tvXuperTimeTaken"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:text="@string/xuper_label_time"
                             android:textColor="@color/xuper_light_black"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
                             android:id="@+id/tvXuperTime"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/start_timer"
@@ -166,10 +171,10 @@
 
                         <TextView
                             android:id="@+id/tvAdditionalCharge"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_additional_charge"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:onClick="@{() -> invoicemodel.showExtraCharegDialog()}"
                             android:paddingLeft="@dimen/_8sdp"
                             android:paddingTop="@dimen/_8sdp"
@@ -199,20 +204,20 @@
 
                 <TextView
                     android:id="@+id/tvAmountToBePaidLabel"
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@string/xuper_amount_to_be_paid"
                     android:text="@string/xuper_amount_to_be_paid"
                     android:textColor="@color/xuper_blue"
                     android:textSize="@dimen/_12sdp" />
 
                 <TextView
                     android:id="@+id/tvAmountToBePaid"
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:fontFamily="@font/avenirltstd_medium"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:text="@={invoicemodel.totalAmount}"
                     android:textColor="@color/xuper_blue"
                     android:textSize="@dimen/_12sdp" />
@@ -228,11 +233,11 @@
 
             <TextView
                 android:id="@+id/tvXuperConfirmPayment"
+                style="@style/SmallText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:fontFamily="@font/avenirltstd_medium"
                 android:onClick="@{() -> invoicemodel.confirmPayment()}"
                 android:text="@string/xuper_confirm_payment"
                 android:textAllCaps="true"

@@ -53,7 +53,7 @@
             android:id="@+id/countryListAdapter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/grey"
+            android:background="@color/colorWhite"
             android:adapter="@{countrylistadapter}"
             android:forceHasOverlappingRendering="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

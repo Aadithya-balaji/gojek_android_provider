@@ -17,9 +17,9 @@ class ChatMainViewModel : BaseViewModel<ChatNavigator>() {
     fun sendMessage(reqChatModel: ReqChatModel) {
         val hashMap: HashMap<String, Any> = HashMap()
         hashMap["admin_service_id"] = reqChatModel.adminServiceId!!
-        hashMap["request_id"] = reqChatModel.requestId.toString()
-        hashMap["provider"] = reqChatModel.providerFirstName.toString()
-        hashMap["user"] = reqChatModel.userFirstName.toString()
+        hashMap["id"] = reqChatModel.requestId.toString()
+        hashMap["provider_name"] = reqChatModel.providerFirstName.toString()
+        hashMap["user_name"] = reqChatModel.userFirstName.toString()
         hashMap["message"] = reqChatModel.message.toString()
         hashMap["type"] = reqChatModel.type.toString()
 

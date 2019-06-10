@@ -6,6 +6,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.R
 import com.gox.base.base.BaseActivity
@@ -27,12 +28,14 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     private var roomName: String? = null
     private var decodeString: String? = null
 
-    private val requestId = readPreferences("RequestId", 0) as Int
-    private val userId = readPreferences("userId", 0) as Int
-    private val providerId = readPreferences("providerId", 0) as Int
-    private val adminServiceId = readPreferences("adminServiceId", 0) as Int
+    private val userId = readPreferences("userId", 0)
+    private val requestId = readPreferences("RequestId", 0)
+    private val providerId = readPreferences("providerId", 0)
+    private val adminServiceId = readPreferences("adminServiceId", 0)
+    private val userFirstName = readPreferences("userFirstName", "")
+    private val providerFirstName = readPreferences("providerFirstName", "")
 
-    override fun getLayoutId(): Int = R.layout.activity_chat_main
+    override fun getLayoutId() = R.layout.activity_chat_main
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as ActivityChatMainBinding
@@ -44,7 +47,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         mMessageList = ArrayList()
         mMessageList!!.clear()
         mViewModel = ViewModelProviders.of(this).get(ChatMainViewModel::class.java)
-        mViewModel?.getMessages("TRANSPORT", readPreferences("RequestId", 0) as Int)
+        mViewModel?.getMessages("TRANSPORT", requestId!!)
         mViewModel?.getMessageResponse?.observe(this, Observer {
             if (it != null) if (it.statusCode == "200") {
                 mMessageList!!.clear()
@@ -82,16 +85,17 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         }
 
         SocketManager.emit(Constants.ROOM_NAME.JOIN_ROOM_NAME, roomName.toString())
+
         mBinding.sendButton.setOnClickListener {
             if (mBinding.messageInput.text.isNotEmpty()) {
                 message = mBinding.messageInput.text.toString()
                 reqChatMessageModel.requestId = requestId
                 reqChatMessageModel.type = "provider"
-                reqChatMessageModel.userFirstName = readPreferences("userFirstName", "")
-                reqChatMessageModel.providerFirstName = readPreferences("providerFirstName", "")
+                reqChatMessageModel.userFirstName = userFirstName
+                reqChatMessageModel.providerFirstName = providerFirstName
                 reqChatMessageModel.adminServiceId = adminServiceId
                 reqChatMessageModel.message = message.toString()
-                //   SocketManager.emit(Constants.ROOM_NAME.CHATROOM, json)
+                SocketManager.emit(Constants.ROOM_NAME.CHATROOM, Gson().toJson(reqChatMessageModel))
                 mViewModel?.sendMessage(reqChatMessageModel)
             }
         }
@@ -111,7 +115,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
                     mBinding.chatAdapter!!.notifyDataSetChanged()
                 } catch (e: JSONException) {
                     e.printStackTrace()
-                    Log.e("ChatActivity", e.message)
+                    Log.e("ChatActivity ", e.message)
                 }
             }
         })
@@ -121,5 +125,6 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         val roomPrefix = "room"
         roomName = roomPrefix + "_" + decodeString + "_" + requestId +
                 "_" + userId + "_" + providerId + "_" + adminServiceId
+        println("RRR :: roomName = $roomName")
     }
 }

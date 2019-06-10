@@ -44,10 +44,8 @@ open class BaseRepository {
     fun getErrorMessage(e: Throwable): String {
         return when (e) {
             is JsonSyntaxException -> {
-                if (BuildConfig.DEBUG)
-                    e.message.toString()
-                else
-                    NetworkError.DATA_EXCEPTION
+                if (BuildConfig.DEBUG) e.message.toString()
+                else NetworkError.DATA_EXCEPTION
             }
             is HttpException -> {
                 if (e.code() == 401 && !PreferencesHelper.get(PreferencesKey.ACCESS_TOKEN, "")

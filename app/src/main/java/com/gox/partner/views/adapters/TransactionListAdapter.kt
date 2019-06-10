@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gox.partner.R
 import com.gox.partner.databinding.TransactionListItemBinding
 import com.gox.partner.models.WalletTransaction
-import com.gox.partner.utils.CommonMethods
 
 class TransactionListAdapter(context: Context, transactionList: List<WalletTransaction.ResponseData.Data>) : RecyclerView.Adapter<TransactionListAdapter.MyViewHolder>() {
 
@@ -39,15 +38,14 @@ class TransactionListAdapter(context: Context, transactionList: List<WalletTrans
 //        if(transactionList!!.get(position).getType().equals("D"))
 //=======
         holder.currentOderItemlistBinding.tvTransactionID.text = transactionList!![position].transaction_alias
-        var strDate = CommanMethods.getLocalTimeStamp(transactionList!![position].created_at)
+//        var strDate = CommanMethods.getLocalTimeStamp(transactionList!![position].created_at)
         holder.currentOderItemlistBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).amount)
-        if(transactionList!![position].type == "D")
-        {
-           holder.currentOderItemlistBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.depited)
-            holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,R.color.dispute_status_open))
-        }else{
+        if (transactionList!![position].type == "D") {
+            holder.currentOderItemlistBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.depited)
+            holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!, R.color.dispute_status_open))
+        } else {
             holder.currentOderItemlistBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.credited)
-            holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,R.color.credit))
+            holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!, R.color.credit))
         }
     }
 

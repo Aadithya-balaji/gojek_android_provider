@@ -107,6 +107,7 @@ data class Request(
         var cancel_reason: Any = Any(),
         var cancelled_by: Any = Any(),
         var city_id: Int? = 0,
+        var admin_service_id: Int? = 0,
         var company_id: Int? = 0,
         var country_id: Any = Any(),
         var created_at: String = "",

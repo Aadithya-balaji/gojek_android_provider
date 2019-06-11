@@ -275,6 +275,13 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             startActivity(intent)
                         }
 
+                        writePreferences("RequestId", checkStatusResponse.responseData.request.id)
+                        writePreferences("userId", checkStatusResponse.responseData.request.user_id)
+                        writePreferences("providerId", checkStatusResponse.responseData.request.provider_id)
+                        writePreferences("adminServiceId", checkStatusResponse.responseData.request.admin_service_id)
+                        writePreferences("userFirstName", checkStatusResponse.responseData.request.user.first_name)
+                        writePreferences("providerFirstName", checkStatusResponse.responseData.provider_details.first_name)
+
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 
                         if (!roomConnected) {

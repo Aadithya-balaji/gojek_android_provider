@@ -21,9 +21,9 @@ import javax.inject.Singleton
 class WebServiceModule {
 
     companion object {
-        const val CONNECTION_TIMEOUT = 10000L
-        const val READ_TIMEOUT = 10000L
-        const val WRITE_TIMEOUT = 10000L
+        const val CONNECTION_TIMEOUT = 60L
+        const val READ_TIMEOUT = 60L
+        const val WRITE_TIMEOUT = 60L
     }
 
     @Provides
@@ -43,9 +43,9 @@ class WebServiceModule {
                 .addNetworkInterceptor(getRequestHeader())
                 .addInterceptor(getLoggingInterceptor())
                 .addNetworkInterceptor(StethoInterceptor())
-                .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS)
-                .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
-                .writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
+                .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+                .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .build()
     }
@@ -60,7 +60,8 @@ class WebServiceModule {
             val original = it.request()
             val request = original.newBuilder()
                     .header("X-Requested-With", "XMLHttpRequest")
-                    .header("Authorization", "Bearer "+ PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext).getString(PreferencesKey.ACCESS_TOKEN,""))
+                    .header("Authorization",
+                            "Bearer "+ PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext).getString(PreferencesKey.ACCESS_TOKEN,""))
                     .method(original.method(), original.body())
                     .build()
 

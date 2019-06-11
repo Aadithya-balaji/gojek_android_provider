@@ -1,7 +1,7 @@
 package com.gox.base.chatmessage
 import com.google.gson.annotations.SerializedName
 
-class ResMessageModel {
+class ChatMessageList {
     var statusCode: String? = null
     var title: String? = null
     var message: String? = null
@@ -15,6 +15,6 @@ class ResponseData {
     @SerializedName("admin_service_id")
     var adminServiceId: Int? = null
     @SerializedName("data")
-    var messageModel: List<MessageModel>? = null
+    var chatSocketResponseModel: List<ChatSocketResponseModel>? = null
 
 }

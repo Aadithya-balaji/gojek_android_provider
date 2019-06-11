@@ -32,13 +32,11 @@ open class BaseViewModel<N> : ViewModel() {
 
     fun getErrorObservable() = liveErrorResponse
 
-    fun processException(e: Throwable): String? {
-        return when (e) {
-            is HttpException -> getErrorMessage(e.response().errorBody()!!)
-            is SocketTimeoutException -> NetworkError.TIME_OUT
-            is IOException -> NetworkError.IO_EXCEPTION
-            else -> NetworkError.SERVER_EXCEPTION
-        }
+    fun processException(e: Throwable) = when (e) {
+        is HttpException -> getErrorMessage(e.response().errorBody()!!)
+        is SocketTimeoutException -> NetworkError.TIME_OUT
+        is IOException -> NetworkError.IO_EXCEPTION
+        else -> NetworkError.SERVER_EXCEPTION
     }
 
     private fun getErrorMessage(responseBody: ResponseBody): String? {

@@ -1,6 +1,6 @@
 package com.gox.base.chatmessage
 
-class MessageModel {
+class ChatSocketResponseModel {
     var type: String? = ""
     var user: String? = ""
     var provider: String? = ""

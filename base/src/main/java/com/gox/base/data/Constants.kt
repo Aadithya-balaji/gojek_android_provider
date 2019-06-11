@@ -91,6 +91,7 @@ object Constants {
         var RIDE_REQ: String = "rideRequest"
         var SERVICE_REQ: String = "serveRequest"
         var ORDER_REQ: String = "orderRequest"
+        var CHATROOM: String = "send_message"
         var TRANSPORT_ROOM_NAME: String = "joinPrivateRoom"
         var SERVICE_ROOM_NAME: String = "joinPrivateRoom"
         var ORDER_ROOM_NAME: String = "joinPrivateRoom"

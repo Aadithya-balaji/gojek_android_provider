@@ -11,17 +11,17 @@ class ChatMainViewModel : BaseViewModel<ChatNavigator>() {
 
     private val mRepository = BaseModuleRepository.instance()
     var errorResponse = MutableLiveData<String>()
-    var getMessageResponse = MutableLiveData<ResMessageModel>()
-    val successResponse = MutableLiveData<ResCommonSuccessModel>()
+    var getChatMessageList = MutableLiveData<ChatMessageList>()
+    val singleMessageResponse = MutableLiveData<SingleMessageResponse>()
 
-    fun sendMessage(reqChatModel: ReqChatModel) {
+    fun sendMessage(chatRequestModel: ChatRequestModel) {
         val hashMap: HashMap<String, Any> = HashMap()
-        hashMap["admin_service_id"] = reqChatModel.adminServiceId!!
-        hashMap["request_id"] = reqChatModel.requestId.toString()
-        hashMap["provider"] = reqChatModel.providerFirstName.toString()
-        hashMap["user"] = reqChatModel.userFirstName.toString()
-        hashMap["message"] = reqChatModel.message.toString()
-        hashMap["type"] = reqChatModel.type.toString()
+        hashMap["admin_service_id"] = chatRequestModel.adminServiceId!!
+        hashMap["id"] = chatRequestModel.requestId.toString()
+        hashMap["provider_name"] = chatRequestModel.providerFirstName.toString()
+        hashMap["user_name"] = chatRequestModel.userFirstName.toString()
+        hashMap["message"] = chatRequestModel.message.toString()
+        hashMap["type"] = chatRequestModel.type.toString()
 
         getCompositeDisposable().add(mRepository.sendMessage(this, Constants.M_TOKEN
                 + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), hashMap))

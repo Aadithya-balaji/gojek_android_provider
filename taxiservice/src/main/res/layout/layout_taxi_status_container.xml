@@ -6,6 +6,7 @@
         <variable
             name="taximainmodule"
             type="com.gox.taxiservice.views.main.TaxiDashboardViewModel" />
+
     </data>
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -20,13 +21,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="200dp"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:background="@android:color/transparent">
 
             <TextView
                 android:id="@+id/tvSos"
+                style="@style/SmallText"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
@@ -35,7 +36,6 @@
                 android:background="@drawable/bg_black_circle"
                 android:gravity="center"
                 android:text="@string/taxi_sos"
-                style="@style/SmallText"
                 android:textColor="@color/taxi_bg_yellow"
                 android:textSize="@dimen/_10sdp" />
 
@@ -44,8 +44,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_gravity="end"
-                android:padding="5dp"
                 app:menu_colorNormal="@color/black"
                 app:menu_colorPressed="@color/black"
                 app:menu_colorRipple="@color/black"
@@ -134,13 +132,13 @@
 
                         <TextView
                             android:id="@+id/tv_user_name"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:minLines="1"
                             android:padding="5dp"
-                            style="@style/SmallText"
                             android:text="@string/placeholder_string"
                             android:textColor="@color/taxi_bg_yellow" />
 
@@ -179,11 +177,11 @@
 
                         <Chronometer
                             android:id="@+id/cmWaiting"
+                            style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"
                             android:text="@string/start_timer"
-                            style="@style/SmallText"
                             android:textColor="@color/black" />
 
                     </LinearLayout>
@@ -198,10 +196,10 @@
 
                     <TextView
                         android:id="@+id/tv_pickup_location"
+                        style="@style/SmallText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toStartOf="@id/cvNavigationContainer"
-                        style="@style/SmallText"
                         android:padding="3dp"
                         android:text="@string/taxi_pickup_location"
                         android:textColor="@color/black"
@@ -209,14 +207,14 @@
 
                     <TextView
                         android:id="@+id/tv_user_address_one"
+                        style="@style/SmallText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_pickup_location"
                         android:layout_toStartOf="@id/cvNavigationContainer"
-                        style="@style/SmallText"
                         android:padding="3dp"
-                        tools:text="Chennai,India"
-                        android:textColor="@color/light_grey" />
+                        android:textColor="@color/light_grey"
+                        tools:text="Chennai,India" />
 
                     <TextView
                         android:id="@+id/tv_user_address_two"

@@ -13,6 +13,8 @@ import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.gox.base.base.BaseDialogFragment
+import com.gox.base.data.PreferencesKey
+import com.gox.base.extensions.readPreferences
 import com.gox.base.utils.CommonMethods
 import com.gox.xuberservice.R
 import com.gox.xuberservice.databinding.DialogInvoiceBinding
@@ -101,6 +103,7 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
     }
 
     fun updateUi() {
+        val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
         if (isFromCheckRequest == false) {
             xuperInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user), updateRequestModel!!.responseData!!.user!!.rating!!.toDouble())
             xuperInvoiceModel.serviceName.value = updateRequestModel!!.responseData!!.service!!.service_name
@@ -129,8 +132,8 @@ class DialogXuperInvoice : BaseDialogFragment<DialogInvoiceBinding>(), XuperInvo
                         .error(R.drawable.ic_profile_placeholder))
                 .load(xuperInvoiceModel.userImage.value)
                 .into(mBinding.ivUserImg)
-        mBinding.tvAmountToBePaid.text = xuperInvoiceModel.totalAmount.value
-        mBinding.tvXuperService.text = xuperInvoiceModel.serviceName.value
+        mBinding.tvAmountToBePaid.text =  "$currency ${xuperInvoiceModel.totalAmount.value}"
+        mBinding.tvXuperService.text = "$currency ${xuperInvoiceModel.serviceName.value}"
     }
 
     override fun showErrorMessage(error: String) {

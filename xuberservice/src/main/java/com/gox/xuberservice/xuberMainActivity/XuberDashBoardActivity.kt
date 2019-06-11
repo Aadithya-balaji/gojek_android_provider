@@ -499,10 +499,6 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
         }
 
-        val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
-        PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
-        (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
-
         println("RRR whenFail = $statusCode")
         when (statusCode) {
             "NOT_FOUND" -> showLog("No road map available...")

@@ -3,7 +3,7 @@ package com.gox.base.chatmessage
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
-class ReqChatModel : Serializable {
+class ChatRequestModel : Serializable {
     @SerializedName("room")
     var roomName: String? = null
     @SerializedName("type")

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gox.base.R
 
-class ChatAdapter(private var mContext: Context, private var mMessageList: ArrayList<MessageModel>)
+class ChatAdapter(private var mContext: Context, private var mChatSocketResponseList: ArrayList<ChatSocketResponseModel>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -31,10 +31,10 @@ class ChatAdapter(private var mContext: Context, private var mMessageList: Array
 
     private inner class Holder(view: View) : RecyclerView.ViewHolder(view)
 
-    override fun getItemCount() = mMessageList.size
+    override fun getItemCount() = mChatSocketResponseList.size
 
     override fun getItemViewType(position: Int): Int {
-        val model = mMessageList[position]
+        val model = mChatSocketResponseList[position]
         return when {
             model.type == "user" -> ChatMessageModel.USER
             model.type == "provider" -> ChatMessageModel.PROVIDER
@@ -43,7 +43,7 @@ class ChatAdapter(private var mContext: Context, private var mMessageList: Array
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        val model = mMessageList[viewHolder.adapterPosition]
+        val model = mChatSocketResponseList[viewHolder.adapterPosition]
         if (viewHolder is UserViewHolder) setUserMessage(model.message, viewHolder)
         if (viewHolder is ProviderViewHolder) setProviderMessage(model.message, viewHolder)
     }

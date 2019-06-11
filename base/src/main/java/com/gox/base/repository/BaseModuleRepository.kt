@@ -16,7 +16,7 @@ class BaseModuleRepository : BaseRepository() {
                 .sendMessage(s, hashMap)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({ viewModel.successResponse.value = it },
+                .subscribe({ viewModel.singleMessageResponse.value = it },
                         { viewModel.errorResponse.value = getErrorMessage(it) })
     }
 
@@ -25,7 +25,7 @@ class BaseModuleRepository : BaseRepository() {
                 .getMessages(token, adminService, id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({ viewModel.getMessageResponse.value = it },
+                .subscribe({ viewModel.getChatMessageList.value = it },
                         { viewModel.errorResponse.value = getErrorMessage(it) })
     }
 

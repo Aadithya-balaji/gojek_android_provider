@@ -22,8 +22,8 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
 
     private lateinit var mBinding: ActivityChatMainBinding
     private var mViewModel: ChatMainViewModel? = null
-    private var mMessageList: ArrayList<MessageModel>? = null
-    private val reqChatMessageModel = ReqChatModel()
+    private var mChatSocketResponseList: ArrayList<ChatSocketResponseModel>? = null
+    private val chatRequestModel = ChatRequestModel()
     private var message: String? = null
     private var roomName: String? = null
     private var decodeString: String? = null
@@ -44,28 +44,29 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
 
         decodeString = String(Base64.decode(SALT_KEY, Base64.DEFAULT), charset("UTF-8"))
         createRoomName()
-        mMessageList = ArrayList()
-        mMessageList!!.clear()
+        mChatSocketResponseList = ArrayList()
+        mChatSocketResponseList!!.clear()
         mViewModel = ViewModelProviders.of(this).get(ChatMainViewModel::class.java)
         mViewModel?.getMessages("TRANSPORT", requestId!!)
-        mViewModel?.getMessageResponse?.observe(this, Observer {
+        mViewModel?.getChatMessageList?.observe(this, Observer {
             if (it != null) if (it.statusCode == "200") {
-                mMessageList!!.clear()
-                mMessageList!!.addAll(it.responseData!![0].messageModel!!)
+                mChatSocketResponseList!!.clear()
+                mChatSocketResponseList!!.addAll(it.responseData!![0].chatSocketResponseModel!!)
                 mBinding.chatAdapter!!.notifyDataSetChanged()
             }
         })
 
         createRoomName()
-        mViewModel?.successResponse?.observe(this, Observer {
+
+        mViewModel?.singleMessageResponse?.observe(this, Observer {
             if (it != null) if (it.statusCode == "200") {
-                val chatMessageModel = MessageModel()
-                chatMessageModel.type = reqChatMessageModel.type
-                chatMessageModel.user = reqChatMessageModel.userFirstName
-                chatMessageModel.provider = reqChatMessageModel.providerFirstName
-                chatMessageModel.message = message.toString()
-                mMessageList!!.add(chatMessageModel)
-                mBinding.chatAdapter!!.notifyDataSetChanged()
+//                val chatMessageModel = ChatSocketResponseModel()
+//                chatMessageModel.type = chatRequestModel.type
+//                chatMessageModel.user = chatRequestModel.userFirstName
+//                chatMessageModel.provider = chatRequestModel.providerFirstName
+//                chatMessageModel.message = message.toString()
+//                mChatSocketResponseList!!.add(chatMessageModel)
+//                mBinding.chatAdapter!!.notifyDataSetChanged()
                 mBinding.messageInput.text.clear()
             }
         })
@@ -73,7 +74,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         val layoutManager = LinearLayoutManager(this)
         layoutManager.stackFromEnd = true
         mBinding.messages.layoutManager = layoutManager
-        mBinding.chatAdapter = ChatAdapter(this, mMessageList!!)
+        mBinding.chatAdapter = ChatAdapter(this, mChatSocketResponseList!!)
         mBinding.chatAdapter!!.notifyDataSetChanged()
         mBinding.messages.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
             if (bottom < oldBottom) {
@@ -89,14 +90,17 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         mBinding.sendButton.setOnClickListener {
             if (mBinding.messageInput.text.isNotEmpty()) {
                 message = mBinding.messageInput.text.toString()
-                reqChatMessageModel.requestId = requestId
-                reqChatMessageModel.type = "provider"
-                reqChatMessageModel.userFirstName = userFirstName
-                reqChatMessageModel.providerFirstName = providerFirstName
-                reqChatMessageModel.adminServiceId = adminServiceId
-                reqChatMessageModel.message = message.toString()
-                SocketManager.emit(Constants.ROOM_NAME.CHATROOM, Gson().toJson(reqChatMessageModel))
-                mViewModel?.sendMessage(reqChatMessageModel)
+                chatRequestModel.requestId = requestId
+                chatRequestModel.type = "provider"
+                chatRequestModel.userFirstName = userFirstName
+                chatRequestModel.providerFirstName = providerFirstName
+                chatRequestModel.adminServiceId = adminServiceId
+                chatRequestModel.message = message.toString()
+                chatRequestModel.roomName = roomName
+
+                val chatObject = JSONObject(Gson().toJson(chatRequestModel))
+                SocketManager.emit(Constants.ROOM_NAME.CHATROOM, chatObject)
+                mViewModel?.sendMessage(chatRequestModel)
             }
         }
 
@@ -104,14 +108,14 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
 
         SocketManager.onEvent(Constants.ROOM_NAME.ON_MESSAGE_RECEIVE, Emitter.Listener {
             runOnUiThread {
-                val chatMessageModel = MessageModel()
+                val chatMessageModel = ChatSocketResponseModel()
                 val data1 = it[0] as JSONObject
                 try {
                     chatMessageModel.type = data1.getString("type")
                     chatMessageModel.message = data1.getString("message")
                     chatMessageModel.user = data1.getString("user")
                     chatMessageModel.provider = data1.getString("provider")
-                    mMessageList!!.add(chatMessageModel)
+                    mChatSocketResponseList!!.add(chatMessageModel)
                     mBinding.chatAdapter!!.notifyDataSetChanged()
                 } catch (e: JSONException) {
                     e.printStackTrace()

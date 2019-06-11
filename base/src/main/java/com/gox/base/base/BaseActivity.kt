@@ -37,7 +37,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private val loadingLiveData = MutableLiveData<Boolean>()
 
     private lateinit var mViewDataBinding: T
-    private lateinit var customDialog: CustomDialog
+    private lateinit var mCustomLoaderDialog: CustomDialog
     private lateinit var mParentView: View
     private lateinit var context: Context
 
@@ -45,7 +45,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private var locationRequest: LocationRequest? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
 
-    private lateinit var dialog: Dialog
+    private lateinit var mNoInternetDialog: Dialog
 
     @LayoutRes
     protected abstract fun getLayoutId(): Int
@@ -72,23 +72,23 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         mViewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
         initView(mViewDataBinding)
         context = this
-        customDialog = CustomDialog(this, true)
+        mCustomLoaderDialog = CustomDialog(this, true)
 
         observeLiveData(loadingLiveData) { isShowLoading ->
             if (isShowLoading) showLoading() else hideLoading()
         }
 
         try {
-            dialog = Dialog(this)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.setCancelable(false)
-            dialog.setContentView(R.layout.dialog_no_internet)
+            mNoInternetDialog = Dialog(this)
+            mNoInternetDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            mNoInternetDialog.setCancelable(false)
+            mNoInternetDialog.setContentView(R.layout.dialog_no_internet)
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
         observeLiveData(BaseApplication.getInternetMonitorLiveData) { isInternetAvailable ->
-            if (isInternetAvailable) dialog.dismiss() else dialog.show()
+            if (isInternetAvailable) mNoInternetDialog.dismiss() else mNoInternetDialog.show()
         }
     }
 
@@ -108,9 +108,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     private fun showLoading() {
         try {
-            if (customDialog.window != null) {
-                customDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
-                customDialog.show()
+            if (mCustomLoaderDialog.window != null) {
+                mCustomLoaderDialog.window!!.setBackgroundDrawableResource(android.R.color.transparent)
+                mCustomLoaderDialog.show()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -118,7 +118,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     }
 
     private fun hideLoading() {
-        customDialog.cancel()
+        mCustomLoaderDialog.cancel()
     }
 
     protected fun launchNewActivity(cls: Class<*>, shouldCloseActivity: Boolean) {

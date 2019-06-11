@@ -11,6 +11,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -76,6 +77,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     private lateinit var context: Context
     private var googleApiClient: GoogleApiClient? = null
     private val FLOATING_OVERLAY_PERMISSION = 104
+    private var canDrawPolyLine: Boolean = true
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -324,13 +326,15 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
-                    if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
+                    if (checkStatusApiCounter++ % 2 == 0) if (canDrawPolyLine) {
+                        canDrawPolyLine = false
+                        mViewModel.callCheckStatusAPI()
+                        Handler().postDelayed({ canDrawPolyLine = true }, 1000)
+                    }
                 }
-            } else {
-                if (!isLocationDialogShown) {
-                    isLocationDialogShown = true
-                    CommonMethods.checkGps(context)
-                }
+            } else if (!isLocationDialogShown) {
+                isLocationDialogShown = true
+                CommonMethods.checkGps(context)
             }
         }
     }

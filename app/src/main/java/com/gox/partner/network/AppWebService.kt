@@ -69,7 +69,7 @@ interface AppWebService {
     fun profileUpdate(
             @Header("Authorization") token: String,
             @PartMap params: java.util.HashMap<String, RequestBody>,
-            @Part image: MultipartBody.Part
+            @Part image: MultipartBody.Part?
     ): Observable<ResProfileUpdate>
 
 

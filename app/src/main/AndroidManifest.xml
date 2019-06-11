@@ -230,7 +230,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="com.gox.base.chatmessage.ChatActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

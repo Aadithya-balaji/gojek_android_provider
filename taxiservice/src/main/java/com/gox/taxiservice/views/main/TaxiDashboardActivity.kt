@@ -39,6 +39,7 @@ import com.gox.base.chatmessage.ChatActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.gox.base.data.Constants.DEFAULT_ZOOM
+import com.gox.base.data.Constants.ModuleTypes.TRANSPORT
 import com.gox.base.data.Constants.RequestCode.PERMISSIONS_CODE_LOCATION
 import com.gox.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
 import com.gox.base.data.Constants.RideStatus.ACCEPTED
@@ -281,6 +282,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         writePreferences("adminServiceId", checkStatusResponse.responseData.request.admin_service_id)
                         writePreferences("userFirstName", checkStatusResponse.responseData.request.user.first_name)
                         writePreferences("providerFirstName", checkStatusResponse.responseData.provider_details.first_name)
+                        writePreferences("serviceType", TRANSPORT)
 
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 
@@ -783,9 +785,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun whenFail(statusCode: String) {
-        val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
-        PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
-        (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
+
+        if (canDrawPolyLine) {
+            canDrawPolyLine = false
+            Handler().postDelayed({ canDrawPolyLine = true }, 20000)
+            val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
+            PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
+            (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
+        }
 
         println("RRR whenFail = $statusCode")
         when (statusCode) {

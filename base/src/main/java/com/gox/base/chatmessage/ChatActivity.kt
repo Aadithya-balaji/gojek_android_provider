@@ -32,6 +32,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     private val requestId = readPreferences("RequestId", 0)
     private val providerId = readPreferences("providerId", 0)
     private val adminServiceId = readPreferences("adminServiceId", 0)
+    private val serviceType = readPreferences("serviceType", "")
     private val userFirstName = readPreferences("userFirstName", "")
     private val providerFirstName = readPreferences("providerFirstName", "")
 
@@ -47,7 +48,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         mChatSocketResponseList = ArrayList()
         mChatSocketResponseList!!.clear()
         mViewModel = ViewModelProviders.of(this).get(ChatMainViewModel::class.java)
-        mViewModel?.getMessages("TRANSPORT", requestId!!)
+        mViewModel?.getMessages(serviceType!!, requestId!!)
         mViewModel?.getChatMessageList?.observe(this, Observer {
             if (it != null) if (it.statusCode == "200") {
                 mChatSocketResponseList!!.clear()

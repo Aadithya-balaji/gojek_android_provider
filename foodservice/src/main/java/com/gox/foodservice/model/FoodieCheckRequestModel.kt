@@ -81,11 +81,11 @@ data class ProviderDetails(
 ) : Serializable
 
 data class Request(
-        var admin_service_id: String = "",
+        var admin_service_id: Int = 0,
         var company_id: String = "",
         var created_at: String = "",
         var id: Int = 0,
-        var provider_id: String = "",
+        var provider_id: Int = 0,
 //        var request: RequestX = RequestX(),
         var request_id: String = "",
         var schedule_at: Any = Any(),
@@ -93,7 +93,7 @@ data class Request(
         var status: String = "",
         var time_left_to_respond: Int = 0,
         var user: User = User(),
-        var user_id: String = "",
+        var user_id: Int = 0,
         var store_order_invoice_id: String = "",
         var user_address_id: String = "",
         var promocode_id: String = "",
@@ -255,7 +255,7 @@ data class User(
         var longitude: Any = Any(),
         var mobile: String = "",
         var payment_mode: String = "",
-        var picture: Any = Any(),
+        var picture: String = "",
         var rating: String = "",
         var state_id: String = "",
         var status: String = "",

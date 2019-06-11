@@ -44,6 +44,7 @@ import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
 import com.gox.base.chatmessage.ChatActivity
 import com.gox.base.data.Constants
+import com.gox.base.data.Constants.ModuleTypes.SERVICE
 import com.gox.base.data.Constants.RideStatus.ACCEPTED
 import com.gox.base.data.Constants.RideStatus.ARRIVED
 import com.gox.base.data.Constants.RideStatus.COMPLETED
@@ -192,6 +193,14 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                             intent.data = Uri.parse("tel:${xuberCheckRequest.responseData.requests.user.mobile}")
                             startActivity(intent)
                         }
+
+                        writePreferences("RequestId", xuberCheckRequest.responseData.requests.id)
+                        writePreferences("userId", xuberCheckRequest.responseData.requests.user_id)
+                        writePreferences("providerId", xuberCheckRequest.responseData.requests.provider_id)
+                        writePreferences("adminServiceId", xuberCheckRequest.responseData.provider_details!!.service!!.admin_service_id)
+                        writePreferences("userFirstName", xuberCheckRequest.responseData.requests.user.first_name)
+                        writePreferences("providerFirstName", xuberCheckRequest.responseData.provider_details.first_name)
+                        writePreferences("serviceType", SERVICE)
 
                         when (status) {
                             ACCEPTED -> whenAccepted()
@@ -491,9 +500,13 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     override fun whenFail(statusCode: String) {
 
-        val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
-        PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
-        (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
+        if (canDrawPolyLine) {
+            canDrawPolyLine = false
+            Handler().postDelayed({ canDrawPolyLine = true }, 20000)
+            val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
+            PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
+            (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
+        }
 
         println("RRR whenFail = $statusCode")
         when (statusCode) {

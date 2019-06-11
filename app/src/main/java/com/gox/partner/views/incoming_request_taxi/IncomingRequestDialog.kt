@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -45,7 +44,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     private var incomingRequestModel: CheckRequestModel? = null
     private lateinit var mPlayer: MediaPlayer
 
-    override fun getLayout(): Int = R.layout.dialog_taxi_incoming_request
+    override fun getLayout() = R.layout.dialog_taxi_incoming_request
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

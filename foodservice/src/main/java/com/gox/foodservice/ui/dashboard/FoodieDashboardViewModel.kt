@@ -57,7 +57,7 @@ class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
             showLoading.value = true
             val update: HashMap<String, String> = HashMap()
             update["id"] = orderId.value.toString()
-            update["admin_service_id"] = foodieCheckRequestModel.value!!.responseData.requests.admin_service_id
+            update["admin_service_id"] = foodieCheckRequestModel.value!!.responseData.requests.admin_service_id.toString()
             update["_method"] = "POST"
             update["rating"] = rating
             update["comment"] = comment

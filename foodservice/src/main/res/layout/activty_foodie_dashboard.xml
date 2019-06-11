@@ -184,6 +184,15 @@
                             android:orientation="horizontal">
 
                             <ImageView
+                                android:id="@+id/chat_img"
+                                android:layout_width="@dimen/_34sdp"
+                                android:layout_height="@dimen/_34sdp"
+                                android:layout_gravity="center"
+                                android:contentDescription="@string/app_name"
+                                android:padding="@dimen/_8sdp"
+                                app:srcCompat="@drawable/ic_chat" />
+
+                            <ImageView
                                 android:id="@+id/call_img"
                                 android:layout_width="@dimen/_34sdp"
                                 android:layout_height="@dimen/_34sdp"
@@ -202,7 +211,9 @@
                                 app:srcCompat="@drawable/ic_navigation" />
 
                         </LinearLayout>
+
                     </LinearLayout>
+
                 </RelativeLayout>
 
                 <View
@@ -255,6 +266,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
+                    android:overScrollMode="never"
                     android:adapter="@{orderItemListAdpter}"
                     android:padding="@dimen/_5sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />

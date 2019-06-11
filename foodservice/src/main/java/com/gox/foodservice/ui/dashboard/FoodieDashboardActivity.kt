@@ -14,12 +14,13 @@ import android.view.View.VISIBLE
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.gox.base.base.BaseActivity
+import com.gox.base.chatmessage.ChatActivity
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.base.extensions.writePreferences
@@ -27,45 +28,51 @@ import com.gox.base.location_service.BaseLocationService
 import com.gox.base.utils.ViewUtils
 import com.gox.foodservice.R
 import com.gox.foodservice.adapter.OrderItemListAdapter
-import com.gox.foodservice.databinding.ActivtyLivetaskLaoyutBinding
+import com.gox.foodservice.databinding.ActivtyFoodieDashboardBinding
 import com.gox.foodservice.model.OrderInvoice
 import com.gox.foodservice.ui.rating.FoodieRatingFragment
 import com.gox.foodservice.ui.verifyotp.FoodieVerifyOtpDialog
-import kotlinx.android.synthetic.main.activty_livetask_laoyut.*
+import kotlinx.android.synthetic.main.activty_foodie_dashboard.*
 
-class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), FoodLiveTaskServiceNavigator {
+class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), FoodLiveTaskServiceNavigator {
 
-    lateinit var mViewDataBinding: ActivtyLivetaskLaoyutBinding
-    var i = 0
-    override fun getLayoutId(): Int = R.layout.activty_livetask_laoyut
+    private lateinit var mBinding: ActivtyFoodieDashboardBinding
     private lateinit var mViewModel: FoodieDashboardViewModel
-    var currentStatus = ""
-    var showingStoreDetail = true
     private var checkStatusApiCounter = 0
 
+    var i = 0
+    var currentStatus = ""
+    var showingStoreDetail = true
+
+    override fun getLayoutId() = R.layout.activty_foodie_dashboard
+
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        this.mViewDataBinding = mViewDataBinding as ActivtyLivetaskLaoyutBinding
+        this.mBinding = mViewDataBinding as ActivtyFoodieDashboardBinding
         mViewModel = ViewModelProviders.of(this).get(FoodieDashboardViewModel::class.java)
         mViewDataBinding.foodLiveTaskviewModel = mViewModel
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this, listOf())
         mViewModel.navigator = this
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
 
-        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
+        mViewModel.showLoading = loadingObservable
         mViewModel.showLoading.value = true
         mViewModel.callFoodieCheckRequest()
 
         checkRequestResponse()
         checkRatingReq()
+
+        chat_img.setOnClickListener {
+            startActivity(Intent(this, ChatActivity::class.java))
+        }
+
         call_img.setOnClickListener {
             val phoneNumber = if (showingStoreDetail)
                 mViewModel.foodieCheckRequestModel.value!!.responseData.requests.pickup.contact_number
-            else
-                mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.mobile
-            if (phoneNumber.isNotEmpty()) {
-                startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber")))
-            } else ViewUtils.showToast(this, getString(R.string.no_valid_mobile), false)
+            else mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.mobile
+            if (phoneNumber.isNotEmpty()) startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:$phoneNumber")))
+            else ViewUtils.showToast(this, getString(R.string.no_valid_mobile), false)
         }
+
         loc_txt.setOnClickListener {
             val latitude: String
             val longitude: String
@@ -80,8 +87,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 val url = "http://maps.google.com/maps?saddr=" + mViewModel.latitude.value + "," +
                         mViewModel.longitude.value + "&daddr=" + latitude + "," + longitude
                 println("RRR :: Navigation url = $url")
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                startActivity(intent)
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
             } else ViewUtils.showToast(this, getString(R.string.no_valid_loction), false)
         }
     }
@@ -113,10 +119,19 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     private fun checkRequestResponse() {
         mViewModel.foodieCheckRequestModel.observe(this, Observer {
             mViewModel.showLoading.value = false
-            if (it?.responseData != null && it.responseData.requests != null) {
+            if (it?.responseData != null) {
                 mViewModel.orderId.value = it.responseData.requests.id
                 if (currentStatus != it.responseData.requests.status) {
                     currentStatus = it.responseData.requests.status
+
+                    writePreferences("RequestId", it.responseData.requests.id)
+                    writePreferences("userId", it.responseData.requests.user_id)
+                    writePreferences("providerId", it.responseData.requests.provider_id)
+                    writePreferences("adminServiceId", it.responseData.requests.admin_service_id)
+                    writePreferences("userFirstName", it.responseData.requests.user.first_name)
+                    writePreferences("providerFirstName", it.responseData.provider_details.first_name)
+                    writePreferences("serviceType", Constants.ModuleTypes.ORDER)
+
                     when (it.responseData.requests.status) {
                         "PROCESSING" -> whenProcessing()
                         "STARTED" -> whenStared()
@@ -127,7 +142,6 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 }
             } else finish()
         })
-
 
         mViewModel.foodieUpdateRequestModel.observe(this, Observer {
             mViewModel.callFoodieCheckRequest()
@@ -141,25 +155,25 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         setUserLocDetails()
         setItemsPricing()
         setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
-        mViewDataBinding.orderStatusBtn.text = getString(R.string.payment_received)
+        mBinding.orderStatusBtn.text = getString(R.string.payment_received)
 
-        mViewDataBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mViewDataBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
-        mViewDataBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
 
-        mViewDataBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mViewDataBinding.iconOrderDelivered.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mViewDataBinding.iconReachedRestaurant.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mViewDataBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconOrderDelivered.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.iconReachedRestaurant.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
 
-        mViewDataBinding.iconPaymentReceived.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mViewDataBinding.iconPaymentReceived.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mViewDataBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconPaymentReceived.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconPaymentReceived.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
 
-        mViewDataBinding.iconPaymentReceived.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mViewDataBinding.iconPaymentReceived.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mViewDataBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
-        mViewDataBinding.orderStatusBtn.text = getString(R.string.payment_received)
+        mBinding.iconPaymentReceived.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconPaymentReceived.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.orderStatusBtn.text = getString(R.string.payment_received)
         showingStoreDetail = false
     }
 
@@ -171,15 +185,15 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         setItemsPricing()
         setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
 
-        mViewDataBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mViewDataBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
-        mViewDataBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mViewDataBinding.iconReachedRestaurant.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.iconReachedRestaurant.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
 
-        mViewDataBinding.orderStatusBtn.text = getString(R.string.order_delivered)
-        mViewDataBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mViewDataBinding.iconOrderDelivered.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mViewDataBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.orderStatusBtn.text = getString(R.string.order_delivered)
+        mBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconOrderDelivered.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
         showingStoreDetail = false
     }
 
@@ -189,11 +203,12 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         setOrderId()
         setUserLocDetails()
         setItemsPricing()
+
         setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
-        mViewDataBinding.orderStatusBtn.text = getString(R.string.order_picked_up)
-        mViewDataBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mViewDataBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
-        mViewDataBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
+        mBinding.orderStatusBtn.text = getString(R.string.order_picked_up)
+        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
         showingStoreDetail = false
     }
 
@@ -231,15 +246,19 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     }
 
     private fun setRestaurantDetails() {
-        Glide.with(baseContext).load(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.picture)
-                .placeholder(R.drawable.foodie_profile_placeholder).into(resturant_image)
+        Glide
+                .with(baseContext)
+                .load(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.picture)
+                .placeholder(R.drawable.foodie_profile_placeholder)
+                .into(resturant_image)
+
         loc_name_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_name
         loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_location
     }
 
     private fun setItemsPricing() {
-        mViewDataBinding.orderItemListAdpter!!.itemList = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.items
-        mViewDataBinding.orderItemListAdpter!!.notifyDataSetChanged()
+        mBinding.orderItemListAdpter!!.itemList = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.items
+        mBinding.orderItemListAdpter!!.notifyDataSetChanged()
     }
 
     private fun setPaymentDetails(order_invoice: OrderInvoice) {
@@ -251,72 +270,56 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 item_total_tv.text = currency + order_invoice.gross
                 item_total_lt.visibility = VISIBLE
             }
-            else -> {
-                item_total_lt.visibility = GONE
-            }
+            else -> item_total_lt.visibility = GONE
         }
         when {
             order_invoice.tax_amount.toDouble() > 0 -> {
                 servicetax_tv.text = currency + order_invoice.tax_amount
                 service_tax_lt.visibility = VISIBLE
             }
-            else -> {
-                service_tax_lt.visibility = GONE
-            }
+            else -> service_tax_lt.visibility = GONE
         }
         when {
             order_invoice.delivery_amount.toDouble() > 0 -> {
                 delivery_charge_tv.text = currency + order_invoice.delivery_amount
                 delivery_charge_lt.visibility = VISIBLE
             }
-            else -> {
-                delivery_charge_lt.visibility = GONE
-            }
+            else -> delivery_charge_lt.visibility = GONE
         }
         when {
             order_invoice.promocode_amount.toDouble() > 0 -> {
                 promocode_deduction_tv.text = currency + order_invoice.promocode_amount
                 promocode_deduction_lt.visibility = VISIBLE
             }
-            else -> {
-                promocode_deduction_lt.visibility = GONE
-            }
+            else -> promocode_deduction_lt.visibility = GONE
         }
         when {
             order_invoice.discount.toDouble() > 0 -> {
                 discount_amount_tv.text = currency + order_invoice.discount
                 discount_lt.visibility = VISIBLE
             }
-            else -> {
-                discount_lt.visibility = GONE
-            }
+            else -> discount_lt.visibility = GONE
         }
         when {
             order_invoice.wallet_amount.toDouble() > 0 -> {
                 wallet_amount_tv.text = currency + order_invoice.wallet_amount
                 wallet_amount_lt.visibility = VISIBLE
             }
-            else -> {
-                wallet_amount_lt.visibility = GONE
-            }
+            else -> wallet_amount_lt.visibility = GONE
         }
         when {
             order_invoice.store_package_amount.toDouble() > 0 -> {
                 package_amount_tv.text = currency + order_invoice.store_package_amount
                 package_amount_lt.visibility = VISIBLE
             }
-            else -> {
-                package_amount_lt.visibility = GONE
-            }
+            else -> package_amount_lt.visibility = GONE
         }
         when {
             order_invoice.total_amount.toDouble() > 0 -> {
                 total_value_tv.text = currency + order_invoice.total_amount
                 total_value_lt.visibility = VISIBLE
             }
-            else -> {
-                total_value_lt.visibility = GONE
-            }
+            else -> total_value_lt.visibility = GONE
         }
     }
 
@@ -324,15 +327,9 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun checkOrderDeliverStatus() {
         when (order_status_btn.text) {
-            getString(R.string.started_towards_restaturant) -> {
-                mViewModel.callFoodieUpdateRequest("STARTED")
-            }
-            getString(R.string.reached_restaurant) -> {
-                mViewModel.callFoodieUpdateRequest("REACHED")
-            }
-            getString(R.string.order_picked_up) -> {
-                mViewModel.callFoodieUpdateRequest("PICKEDUP")
-            }
+            getString(R.string.started_towards_restaturant) -> mViewModel.callFoodieUpdateRequest("STARTED")
+            getString(R.string.reached_restaurant) -> mViewModel.callFoodieUpdateRequest("REACHED")
+            getString(R.string.order_picked_up) -> mViewModel.callFoodieUpdateRequest("PICKEDUP")
             getString(R.string.order_delivered) -> {
                 val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
@@ -346,8 +343,8 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
                 writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
                 val bundle = Bundle()
                 bundle.putString("id", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toString())
-                if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture != null)
-                    bundle.putString("profileImg", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture.toString())
+                if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture.length > 1)
+                    bundle.putString("profileImg", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
                 bundle.putString("name", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name)
                 bundle.putString("bookingID", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id)
@@ -362,18 +359,16 @@ class FoodieDashboardActivity : BaseActivity<ActivtyLivetaskLaoyutBinding>(), Fo
         ViewUtils.showToast(this, error, false)
     }
 
-    private fun changeToFlowIconView(flow: Boolean) {
-        when (flow) {
-            true -> {
-                time_left_rl.visibility = GONE
-                service_flow_icon_llayout.visibility = VISIBLE
-                order_status_btn.text = getString(R.string.reached_restaurant)
-            }
-            false -> {
+    private fun changeToFlowIconView(flow: Boolean) = when (flow) {
+        true -> {
+            time_left_rl.visibility = GONE
+            service_flow_icon_llayout.visibility = VISIBLE
+            order_status_btn.text = getString(R.string.reached_restaurant)
+        }
+        false -> {
 //                time_left_rl.visibility = VISIBLE
-                service_flow_icon_llayout.visibility = GONE
-                order_status_btn.text = getString(R.string.started_towards_restaturant)
-            }
+            service_flow_icon_llayout.visibility = GONE
+            order_status_btn.text = getString(R.string.started_towards_restaturant)
         }
     }
 }

@@ -2,26 +2,20 @@ package com.gox.partner.views.dashboard
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
-import android.graphics.Color
 import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationCompat.PRIORITY_MIN
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -44,6 +38,7 @@ import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
 import com.gox.base.location_service.BaseLocationService
 import com.gox.base.location_service.BaseLocationService.Companion.BROADCAST
+import com.gox.base.persistence.AppDatabase
 import com.gox.base.socket.SocketListener
 import com.gox.base.socket.SocketManager
 import com.gox.base.utils.CommonMethods
@@ -82,6 +77,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     private lateinit var context: Context
     private var googleApiClient: GoogleApiClient? = null
     private val FLOATING_OVERLAY_PERMISSION = 104
+    private var canDrawPolyLine: Boolean = true
 
     override fun getLayoutId(): Int = R.layout.activity_dashboard
 
@@ -133,7 +129,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         val permission = getPermissionUtil().onRequestPermissionsResult(permissions, grantResults)
-        if (permission != null && permission.isNotEmpty()) run {
+        if (permission.isNotEmpty()) run {
             getPermissionUtil().isFirstTimePermission = true
             getPermissionUtil().hasAllPermisson(permission, context, 150)
         } else updateLocation(true)
@@ -266,6 +262,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                                 bundle.putString("requestModel", strRequest)
                                 mIncomingRequestDialog.arguments = bundle
                                 mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
+                                AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
                             }
                         }
 
@@ -329,13 +326,15 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
-                    if (checkStatusApiCounter++ % 2 == 0) mViewModel.callCheckStatusAPI()
+                    if (checkStatusApiCounter++ % 2 == 0) if (canDrawPolyLine) {
+                        canDrawPolyLine = false
+                        mViewModel.callCheckStatusAPI()
+                        Handler().postDelayed({ canDrawPolyLine = true }, 1000)
+                    }
                 }
-            } else {
-                if (!isLocationDialogShown) {
-                    isLocationDialogShown = true
-                    CommonMethods.checkGps(context)
-                }
+            } else if (!isLocationDialogShown) {
+                isLocationDialogShown = true
+                CommonMethods.checkGps(context)
             }
         }
     }

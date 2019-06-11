@@ -783,6 +783,15 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun whenFail(statusCode: String) {
+
+        if (canDrawPolyLine) {
+            canDrawPolyLine = false
+            Handler().postDelayed({ canDrawPolyLine = true }, 20000)
+            val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
+            PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
+            (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
+        }
+
         val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
         PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
         (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))

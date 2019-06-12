@@ -182,7 +182,7 @@ class XuberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                             roomConnected = true
                             val reqID = xuberCheckRequest.responseData.requests.id
                             PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
-                            SocketManager.emit(Constants.ROOM_NAME.TRANSPORT_ROOM_NAME, Constants.ROOM_ID.TRANSPORT_ROOM)
+                            SocketManager.emit(Constants.ROOM_NAME.SERVICE_ROOM_NAME, Constants.ROOM_ID.SERVICE_ROOM)
                         }
 
                         mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude,

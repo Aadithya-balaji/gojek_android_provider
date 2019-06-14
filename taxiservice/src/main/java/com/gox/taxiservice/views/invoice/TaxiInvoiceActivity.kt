@@ -141,7 +141,9 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     }
 
     override fun showErrorMessage(error: String) {
-        ViewUtils.showToast(this, error, false)
+        runOnUiThread {
+            ViewUtils.showToast(this, error, false)
+        }
     }
 
     override fun closeInvoiceActivity() = finish()

@@ -118,9 +118,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                             request.request.service.service_name
                 }
                 Constants.ModuleTypes.ORDER -> {
-                    if (request.request.pickup.store_name.length > 2)
-                        mViewModel.pickupLocation.value = request.request.pickup.store_location
-
+                    mViewModel.pickupLocation.value = request.request.pickup.store_location
                     mViewModel.serviceType.value = request.service.display_name + " - " +
                             request.request.pickup.storetype.name + " - " +
                             request.request.pickup.store_name

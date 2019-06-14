@@ -13,6 +13,8 @@ import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.gox.base.base.BaseDialogFragment
+import com.gox.base.data.PreferencesKey
+import com.gox.base.extensions.readPreferences
 import com.gox.base.utils.CommonMethods
 import com.gox.base.utils.ViewUtils
 import com.gox.xuberservice.R
@@ -89,8 +91,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
     }
 
     private fun getBundleValues() {
-        isFromCheckRequest = if (arguments!!.containsKey("fromCheckReq")) arguments!!.
-                getBoolean("fromCheckReq") else false
+        isFromCheckRequest = if (arguments!!.containsKey("fromCheckReq")) arguments!!.getBoolean("fromCheckReq") else false
         if (isFromCheckRequest == true) {
             strXUberCheckRequestModel = if (arguments!!.containsKey("strCheckReq"))
                 arguments!!.getString("strCheckReq") else ""
@@ -104,7 +105,8 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         }
     }
 
-    fun updateUi() {
+    private fun updateUi() {
+        val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
         if (isFromCheckRequest == false) {
             xUberInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user), updateRequestModel!!.responseData!!.user!!.rating!!.toDouble())
             xUberInvoiceModel.serviceName.value = updateRequestModel!!.responseData!!.service!!.service_name
@@ -135,8 +137,9 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
                         .error(R.drawable.ic_profile_placeholder))
                 .load(xUberInvoiceModel.userImage.value)
                 .into(mBinding.ivUserImg)
-        mBinding.tvAmountToBePaid.text = xUberInvoiceModel.totalAmount.value
-        mBinding.tvXuperService.text = xUberInvoiceModel.serviceName.value
+
+        mBinding.tvAmountToBePaid.text = "$currency ${xUberInvoiceModel.totalAmount.value}"
+        mBinding.tvXuperService.text = "$currency ${xUberInvoiceModel.serviceName.value}"
     }
 
     override fun showErrorMessage(error: String) {

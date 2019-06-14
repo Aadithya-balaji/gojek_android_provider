@@ -607,7 +607,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         val h = (time / 3600000).toInt()
         val m = (time - h * 3600000).toInt() / 60000
         val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-        val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+        val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" +
+                (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
         Log.e("Chrono", "------$h---$m---$s")
         chronometer.text = formattedTime
     }
@@ -623,7 +624,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 val h = (timeinMilli / 3600000).toInt()
                 val m = (timeinMilli - h * 3600000).toInt() / 60000
                 val s = (timeinMilli - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-//                val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
                 cmXuberServiceTime.base = localServiceTime!!
                 cmXuberServiceTime.text = "00:00:00"
                 cmXuberServiceTime.start()

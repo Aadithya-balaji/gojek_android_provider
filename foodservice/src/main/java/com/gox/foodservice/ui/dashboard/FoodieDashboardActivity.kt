@@ -126,9 +126,9 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     private fun checkRequestResponse() {
         mViewModel.foodieCheckRequestModel.observe(this, Observer {
             mViewModel.showLoading.value = false
-            if (it?.responseData != null) {
-                mViewModel.orderId.value = it.responseData.requests.id
+            if (it?.responseData?.requests != null) {
                 if (currentStatus != it.responseData.requests.status) {
+                    mViewModel.orderId.value = it.responseData.requests.id
                     currentStatus = it.responseData.requests.status
 
                     writePreferences("RequestId", it.responseData.requests.id)
@@ -350,7 +350,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                 writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
                 val bundle = Bundle()
                 bundle.putString("id", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toString())
-                if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture.length > 1)
+                if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture!=null)
                     bundle.putString("profileImg", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
                 bundle.putString("name", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name)

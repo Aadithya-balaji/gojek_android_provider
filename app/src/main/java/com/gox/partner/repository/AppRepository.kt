@@ -309,18 +309,6 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun changeAvilability(viewModel: HomeViewModel, token: String, params: HashMap<String, String>): Disposable {
-        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .changeAvailability(token, params)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-
-                }, {
-
-                })
-    }
-
     fun checkRequest(viewModel: DashBoardViewModel, token: String, lat: String, lon: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getRequest(token, lat, lon)
@@ -849,6 +837,14 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({ viewModel.getChatMessageList.value = it },
                         { viewModel.errorResponse.value = getErrorMessage(it) })
+    }
+
+    fun logoutApp(): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.TAXI_BASE_URL, AppWebService::class.java)
+                .logout()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ }, { })
     }
 
     companion object {

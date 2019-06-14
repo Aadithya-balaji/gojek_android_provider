@@ -55,6 +55,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     clearPreferences<String>()
+                    mViewModel.logoutApp()
                     launchNewActivity(OnBoardActivity::class.java, false)
                     activity!!.finishAffinity()
                     dialog.dismiss()

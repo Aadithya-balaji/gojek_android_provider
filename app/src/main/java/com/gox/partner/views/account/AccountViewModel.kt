@@ -2,8 +2,11 @@ package com.gox.partner.views.account
 
 import com.gox.base.base.BaseViewModel
 import com.gox.partner.models.AccountMenuModel
+import com.gox.partner.repository.AppRepository
 
 class AccountViewModel : BaseViewModel<AccountNavigator>() {
+
+    private val appRepository = AppRepository.instance()
 
     private lateinit var adapter: AccountMenuAdapter
     private lateinit var accountMenus: List<AccountMenuModel>
@@ -24,4 +27,7 @@ class AccountViewModel : BaseViewModel<AccountNavigator>() {
     fun getAdapter() = adapter
 
     fun onItemClick(position: Int) = navigator.onMenuItemClicked(position)
+
+    fun logoutApp() = getCompositeDisposable().add(appRepository.logoutApp())
+
 }

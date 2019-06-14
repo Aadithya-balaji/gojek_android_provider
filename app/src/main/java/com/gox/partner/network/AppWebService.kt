@@ -297,5 +297,7 @@ interface AppWebService {
     fun getMessages(@Header("Authorization") token: String,
                     @Query("admin_service") adminService: String, @Query("id") id: Int): Observable<ChatMessageList>
 
+    @GET("provider/logout")
+    fun logout(): Observable<ChatMessageList>
 
 }

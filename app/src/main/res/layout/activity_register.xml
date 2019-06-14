@@ -8,6 +8,7 @@
         <variable
             name="registermodel"
             type="com.gox.partner.views.signup.RegistrationViewModel" />
+
     </data>
 
 
@@ -106,7 +107,7 @@
                         android:drawableStart="@drawable/ic_google"
                         android:drawablePadding="@dimen/_8sdp"
                         android:gravity="center"
-                        android:onClick="@{() -> registermodel.googleSignin()}"
+                        android:onClick="@{() -> registermodel.googleSignIn()}"
                         android:padding="@dimen/_8sdp"
                         android:text="@string/connect_via_google"
                         android:textColor="@color/colorPrimaryDark"
@@ -517,7 +518,7 @@
                     style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="@{() -> registermodel.gotoSignin()}"
+                    android:onClick="@{() -> registermodel.gotoLogin()}"
                     android:padding="@dimen/_3sdp"
                     android:text="@string/already_have_account"
                     android:textSize="@dimen/_12sdp"
@@ -530,7 +531,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/alreadyaccount_register_tv"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:onClick="@{() -> registermodel.gotoSignin()}"
+                    android:onClick="@{() -> registermodel.gotoLogin()}"
                     android:padding="@dimen/_5sdp"
                     android:text="@string/sign_in"
                     android:textColor="@color/colorBasePrimary"

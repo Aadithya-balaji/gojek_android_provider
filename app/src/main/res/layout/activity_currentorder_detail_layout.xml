@@ -476,7 +476,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/custom_full_round_corner"
                 android:backgroundTint="@color/colorBasePrimary"
-                android:onClick="@{() -> currentOrderDetailModel.viewRecepit()}"
+                android:onClick="@{() -> currentOrderDetailModel.viewReceipt()}"
                 android:text="@string/view_receipt"
                 android:textAllCaps="false" />
 

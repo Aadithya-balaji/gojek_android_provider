@@ -124,7 +124,7 @@
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:layout_marginBottom="@dimen/_30sdp"
                         android:backgroundTint="@color/colorWhite"
-                        android:onClick="@{() -> orderfragmentviewmodel.showfilter()}"
+                        android:onClick="@{() -> orderfragmentviewmodel.showFilter()}"
                         app:borderWidth="0dp"
                         app:elevation="@dimen/_5sdp"
                         app:pressedTranslationZ="1dp"

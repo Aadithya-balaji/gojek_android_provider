@@ -21,12 +21,12 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
 
-    fun changeSignInViaPhone() {
-        return navigator.changeSignInViaPhone()
+    fun changeLoginViaPhone() {
+        return navigator.changeLoginViaPhone()
     }
 
-    fun changeSignInViaMail() {
-        return navigator.changeSignInViaMail()
+    fun changeLoginViaMail() {
+        return navigator.changeLoginViaMail()
     }
 
     fun onCountryCodeClick(view: View) {
@@ -37,16 +37,16 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
         navigator.onForgotPasswordClicked()
     }
 
-    fun onSignUpClick(view: View) {
-        navigator.onSignUpClicked()
+    fun onRegistrationClick(view: View) {
+        navigator.onRegistrationClicked()
     }
 
-    fun onSignInClick(view: View) {
-        navigator.onSignInClicked()
+    fun onLoginClick(view: View) {
+        navigator.onLoginClicked()
     }
 
-    fun onGoogleSignInClick(view: View) {
-        navigator.onGoogleSignInClicked()
+    fun onGoogleLoginClick(view: View) {
+        navigator.onGoogleLoginClicked()
     }
 
     fun onFacebookLoginClick(view: View) {
@@ -62,7 +62,8 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
         }
         params[WebApiConstants.Login.PASSWORD] = password.value!!.trim()
         params[WebApiConstants.Login.DEVICE_TYPE] = Enums.DEVICE_TYPE
-        params[WebApiConstants.Login.DEVICE_TOKEN] = BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")!!
+        params[WebApiConstants.Login.DEVICE_TOKEN] = BaseApplication.getCustomPreference!!
+                .getString(PreferencesKey.DEVICE_TOKEN, "123")!!
         params["salt_key"] = SALT_KEY
         getCompositeDisposable().add(appRepository.postLogin(this, params))
     }
@@ -81,13 +82,13 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
     fun getLoginObservable() = loginLiveData
 
     interface LoginNavigator {
-        fun changeSignInViaPhone()
-        fun changeSignInViaMail()
+        fun changeLoginViaPhone()
+        fun changeLoginViaMail()
         fun onCountryCodeClicked()
         fun onForgotPasswordClicked()
-        fun onSignUpClicked()
-        fun onSignInClicked()
-        fun onGoogleSignInClicked()
+        fun onRegistrationClicked()
+        fun onLoginClicked()
+        fun onGoogleLoginClicked()
         fun onFacebookLoginClicked()
         fun showAlert(message: String)
         fun showError(error: String)

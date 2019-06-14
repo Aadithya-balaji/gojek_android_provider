@@ -29,7 +29,7 @@ import com.gox.base.extensions.writePreferences
 import com.gox.base.utils.Logger
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
-import com.gox.partner.databinding.ActivitySignInBinding
+import com.gox.partner.databinding.ActivityLoginBinding
 import com.gox.partner.utils.Enums
 import com.gox.partner.views.countrypicker.CountryCodeActivity
 import com.gox.partner.views.dashboard.DashBoardActivity
@@ -37,9 +37,9 @@ import com.gox.partner.views.forgot_password.ForgotPasswordActivity
 import com.gox.partner.views.signup.RegistrationActivity
 import java.util.*
 
-class LoginActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.LoginNavigator, ViewUtils.ViewCallBack {
+class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.LoginNavigator, ViewUtils.ViewCallBack {
 
-    private lateinit var mBinding: ActivitySignInBinding
+    private lateinit var mBinding: ActivityLoginBinding
     private lateinit var mViewModel: LoginViewModel
 
     private lateinit var callbackManager: CallbackManager
@@ -52,11 +52,11 @@ class LoginActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Logi
     override fun getLayoutId() = R.layout.activity_login
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        mBinding = mViewDataBinding as ActivitySignInBinding
+        mBinding = mViewDataBinding as ActivityLoginBinding
         mBinding.lifecycleOwner = this
         mViewModel = provideViewModel { LoginViewModel() }
         mViewModel.navigator = this
-        mBinding.signInViewModel = mViewModel
+        mBinding.loginViewModel = mViewModel
 
         observeViewModel()
 
@@ -65,7 +65,6 @@ class LoginActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Logi
         resultIntent.putExtra("countryCode", "+91")
         resultIntent.putExtra("countryFlag", R.drawable.flag_in)
         handleCountryCodePickerResult(resultIntent)
-
     }
 
     private fun observeViewModel() {
@@ -153,7 +152,7 @@ class LoginActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Logi
         }
     }
 
-    override fun changeSignInViaPhone() {
+    override fun changeLoginViaPhone() {
         isEmailLogin = false
         mBinding.passwordRegisterEt.setText("")
         mBinding.tilEmail.visibility = View.GONE
@@ -164,7 +163,7 @@ class LoginActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Logi
         mBinding.mailSinginImgview.setBackgroundResource((R.drawable.login_icon_normal_bg))
     }
 
-    override fun changeSignInViaMail() {
+    override fun changeLoginViaMail() {
         isEmailLogin = true
         mBinding.passwordRegisterEt.setText("")
         mBinding.llPhoneNumber.visibility = View.GONE
@@ -181,11 +180,11 @@ class LoginActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Logi
     override fun onForgotPasswordClicked() = launchNewActivity(ForgotPasswordActivity::class.java,
             false)
 
-    override fun onSignUpClicked() = launchNewActivity(RegistrationActivity::class.java, false)
+    override fun onRegistrationClicked() = launchNewActivity(RegistrationActivity::class.java, false)
 
-    override fun onSignInClicked() = performValidation()
+    override fun onLoginClicked() = performValidation()
 
-    override fun onGoogleSignInClicked() {
+    override fun onGoogleLoginClicked() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         startActivityForResult(mGoogleSignInClient!!.signInIntent, Enums.RC_GOOGLE_SIGN_IN)
@@ -233,7 +232,7 @@ class LoginActivity : BaseActivity<ActivitySignInBinding>(), LoginViewModel.Logi
     override fun onPositiveButtonClick(dialog: DialogInterface) {
         if (mGoogleSignInClient != null)
             mGoogleSignInClient!!.revokeAccess()
-        onSignUpClicked()
+        onRegistrationClicked()
     }
 
     override fun onNegativeButtonClick(dialog: DialogInterface) {

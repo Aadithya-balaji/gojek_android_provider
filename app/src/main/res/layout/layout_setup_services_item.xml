@@ -11,7 +11,7 @@
 
         <variable
             name="setupServicesViewModel"
-            type="com.gox.partner.views.setup_services.SetupServicesViewModel" />
+            type="com.gox.partner.views.set_service_category_price.SetServicePriceViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

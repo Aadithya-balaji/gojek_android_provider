@@ -94,15 +94,17 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private lateinit var mViewModel: XUberDashboardViewModel
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mBinding: ActivityXuberMainBinding
+    private lateinit var context: Context
+
+    private val invoicePage = XUberInvoiceDialog()
+    private val ratingPage = DialogXuberRating()
 
     private var localServiceTime: Long? = null
     private var mGoogleMap: GoogleMap? = null
-    private var frontImgFile: File? = null
-    private var backImgFile: File? = null
     private var frontImgMultiPart: MultipartBody.Part? = null
     private var backImgMultiPart: MultipartBody.Part? = null
-    private val invoicePage = XUberInvoiceDialog()
-    private val ratingPage = DialogXuberRating()
+    private var frontImgFile: File? = null
+    private var backImgFile: File? = null
     private var canDrawPolyLine: Boolean = true
     private var isFront: Boolean = true
     private var startLatLng = LatLng(0.0, 0.0)
@@ -116,11 +118,9 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var popupView: View? = null
     private var isGPSEnabled: Boolean = false
     private var isLocationDialogShown: Boolean = false
-    private lateinit var context: Context
+    private var roomConnected: Boolean = false
 
     override fun getLayoutId() = R.layout.activity_xuber_main
-
-    private var roomConnected: Boolean = false
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as ActivityXuberMainBinding
@@ -155,7 +155,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         mViewModel.serviceType.value = xuberCheckRequest.responseData.requests.service!!.service_name
                         mViewModel.descImage.value = xuberCheckRequest.responseData.requests.allow_image.toString()
                         mViewModel.strDesc.value = xuberCheckRequest.responseData.requests.allow_description.toString()
-                        mViewModel.userRating.value = String.format(resources.getString(R.string.xuper_rating_user), xuberCheckRequest.responseData.requests.user!!.rating!!.toDouble())
+                        mViewModel.userRating.value = String.format(resources.getString(R.string.xuper_rating_user), xuberCheckRequest.responseData.requests.
+                                user!!.rating!!.toDouble())
 
                         if (xuberCheckRequest.responseData.requests.user.picture != null) {
                             setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
@@ -283,7 +284,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         invoicePage.arguments = bundle
         if (!invoicePage.isShown()) invoicePage.show(supportFragmentManager, "xuperinvoice")
         invoicePage.isCancelable = false
-
     }
 
     @SuppressLint("MissingPermission")
@@ -413,7 +413,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         if (canDrawPolyLine) {
             canDrawPolyLine = false
             Handler().postDelayed({ canDrawPolyLine = true }, 10000)
-            PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl(src, dest, getText(R.string.google_map_key).toString()))
+            PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl(src, dest,
+                    getText(R.string.google_map_key).toString()))
         }
     }
 
@@ -500,8 +501,10 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private fun whenArrived() {
         fab_xuber_menu.visibility = View.GONE
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
-        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.VISIBLE
-        else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.GONE
+        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
+            edtXuperOtp.visibility = View.VISIBLE
+        else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
+            edtXuperOtp.visibility = View.GONE
         if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1)
             mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
         else mBinding.llBottomService.fbCamera.visibility = View.GONE
@@ -539,14 +542,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         }
     }
 
-//    override fun showPicturePreview(isFront: Boolean) {
-//        val dialogUploadPicture = UploadPictureDialog()
-//        val bundle = Bundle()
-//        bundle.putBoolean("isFront", isFront)
-//        dialogUploadPicture.arguments = bundle
-//        dialogUploadPicture.show(supportFragmentManager, "takepicture")
-//    }
-
     private fun setUserImage(strUrl: String) {
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
@@ -561,7 +556,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         when (view.id) {
             R.id.tvAllow -> when (mBinding.llBottomService.llConfirm.tvAllow.text) {
                 ARRIVED -> {
-                    if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) edtXuperOtp.visibility = View.VISIBLE
+                    if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
+                        edtXuperOtp.visibility = View.VISIBLE
                     else edtXuperOtp.visibility = View.GONE
                     mViewModel.updateRequest(ARRIVED, null, false)
                 }
@@ -570,7 +566,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     when {
                         mViewModel.otp.value.isNullOrEmpty() ->
                             ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
-                        frontImgFile == null -> ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
+                        frontImgFile == null -> ViewUtils.showToast(this,
+                                resources.getString(R.string.empty_front_image), false)
                         mViewModel.otp.value.isNullOrEmpty() ->
                             ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
                         else -> if (mViewModel.otp.value == mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.otp) {
@@ -639,7 +636,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     override fun getFilePath(filePath: Uri) {
         if ((mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.status.equals(ARRIVED)
                         && mBinding.llBottomService.llConfirm.tvAllow.text != COMPLETED
-                        || (mViewModel.xUberUpdateRequest.value != null) && mViewModel.xUberUpdateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
+                        || (mViewModel.xUberUpdateRequest.value != null) &&
+                        mViewModel.xUberUpdateRequest.value!!.responseData!!.status.equals(ACCEPTED)))
             getImageFile(true, filePath)
         else if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.status.equals(PICKED_UP)
                 || mBinding.llBottomService.llConfirm.tvAllow.text == COMPLETED) getImageFile(false, filePath)

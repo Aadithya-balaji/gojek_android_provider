@@ -476,7 +476,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun facebookSignUp() {
-        getFacebookprofileWithPermissionCheck()
+//        getFacebookprofileWithPermissionCheck()
     }
 
     override fun getImage() {

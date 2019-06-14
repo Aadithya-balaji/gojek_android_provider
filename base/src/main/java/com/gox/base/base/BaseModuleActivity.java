@@ -18,7 +18,6 @@ public abstract class BaseModuleActivity<T extends ViewDataBinding> extends AppC
     public abstract int getLayoutId();
     public abstract void initView(ViewDataBinding mViewDataBinding);
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +27,6 @@ public abstract class BaseModuleActivity<T extends ViewDataBinding> extends AppC
         initView(mViewDataBinding);
 
     }
-
-
 
     public void showKeyboard() {
         View view = this.getCurrentFocus();
@@ -56,5 +53,4 @@ public abstract class BaseModuleActivity<T extends ViewDataBinding> extends AppC
             activity.finish();
         }
     }
-
 }

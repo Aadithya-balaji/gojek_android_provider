@@ -11,36 +11,34 @@ import com.gox.base.data.PreferencesKey
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivitySupportBinding
 import com.gox.partner.models.ConfigResponseData
-import com.gox.partner.models.ConfigResponseModel
 import com.gox.partner.models.Supportdetails
-import com.gox.xjek.ui.support.SupportNavigator
 import kotlinx.android.synthetic.main.activity_support.*
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
 class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator {
 
-    lateinit var mViewDataBinding: ActivitySupportBinding
+    lateinit var mBinding: ActivitySupportBinding
     private lateinit var supportDetails: Supportdetails
 
-    override fun getLayoutId(): Int = R.layout.activity_support
+    override fun getLayoutId() = R.layout.activity_support
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-
-        this.mViewDataBinding = mViewDataBinding as ActivitySupportBinding
+        this.mBinding = mViewDataBinding as ActivitySupportBinding
         mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.support)
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener {
             finish()
         }
 
         val baseApiResponseString: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.BASE_CONFIG_RESPONSE, "")!!
-        val baseApiResponseData: ConfigResponseData = Gson().fromJson<ConfigResponseData>(baseApiResponseString, ConfigResponseData::class.java)
+        val baseApiResponseData: ConfigResponseData = Gson().fromJson<ConfigResponseData>(
+                baseApiResponseString, ConfigResponseData::class.java)
         supportDetails = baseApiResponseData.appsetting.supportdetails
 
-        if(!supportDetails.contact_number.isEmpty())
-        phonenumber_support_tv.text = supportDetails.contact_number[0].number
+        if (!supportDetails.contact_number.isEmpty())
+            phonenumber_support_tv.text = supportDetails.contact_number[0].number
         mail_support_tv.text = supportDetails.contact_email
-        //TODO change to dynamic one
         website_support_tv.text = BuildConfig.BASE_URL
+
         call_support_ll.setOnClickListener {
             goToPhoneCall()
         }
@@ -55,7 +53,7 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
     }
 
     override fun goToPhoneCall() {
-        if(!supportDetails.contact_number.isEmpty()) {
+        if (!supportDetails.contact_number.isEmpty()) {
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:" + supportDetails.contact_number[0].number)
             startActivity(intent)

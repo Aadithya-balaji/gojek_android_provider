@@ -14,8 +14,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/app_background_color">
+        android:background="@color/app_background_color"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
@@ -220,11 +220,11 @@
                 </androidx.cardview.widget.CardView>
 
                 <ImageView
-                    android:contentDescription="@string/app_name"
                     android:id="@+id/iv_vehicle"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_marginTop="8dp"
+                    android:contentDescription="@string/app_name"
                     android:elevation="4dp"
                     android:onClick="@{addVehicleViewModel::onVehicleImageClick}"
                     android:src="@drawable/vehicle_place_holder"
@@ -328,20 +328,20 @@
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
+                    style="@style/SmallText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:onClick="@{addVehicleViewModel::onVehicleSubmitClick}"
-                    android:paddingTop="@dimen/_10sdp"
-                    style="@style/SmallText"
                     android:background="@drawable/custom_full_round_corner"
                     android:backgroundTint="@color/colorBasePrimary"
-                    android:textColor="@color/white"
+                    android:onClick="@{addVehicleViewModel::onVehicleSubmitClick}"
+                    android:paddingTop="@dimen/_10sdp"
                     android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/submit"
                     android:textAllCaps="false"
+                    android:textColor="@color/white"
                     android:textSize="16sp"
                     app:cornerRadius="@dimen/_25sdp"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -25,19 +25,19 @@ import java.util.*
 
 class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvoiceNavigator {
 
-    private var activityInvoiceBinding: ActivityInvoiceTaxiBinding? = null
+    private var mBinding: ActivityInvoiceTaxiBinding? = null
     private lateinit var mViewModel: TaxiInvoiceViewModel
     private var requestModel: ResponseData? = null
     private var strCheckRequestModel: String? = null
 
-    override fun getLayoutId(): Int = R.layout.activity_invoice_taxi
+    override fun getLayoutId() = R.layout.activity_invoice_taxi
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        activityInvoiceBinding = mViewDataBinding as ActivityInvoiceTaxiBinding
+        mBinding = mViewDataBinding as ActivityInvoiceTaxiBinding
         mViewModel = ViewModelProviders.of(this).get(TaxiInvoiceViewModel::class.java)
         mViewModel.navigator = this
-        activityInvoiceBinding!!.invoicemodel = mViewModel
-        activityInvoiceBinding!!.lifecycleOwner = this
+        mBinding!!.invoicemodel = mViewModel
+        mBinding!!.lifecycleOwner = this
         rl_status_unselected.visibility = View.GONE
         rl_status_selected.visibility = View.VISIBLE
         mViewModel.tollCharge.value = "0"
@@ -52,7 +52,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     private fun getApiResponse() {
         observeLiveData(mViewModel.paymentLiveData) {
             if (mViewModel.paymentLiveData.value != null)
-                if (mViewModel.paymentLiveData.value!!.statusCode.equals("200")) openRatingDialog(requestModel)
+                if (mViewModel.paymentLiveData.value!!.statusCode == "200") openRatingDialog(requestModel)
         }
     }
 
@@ -107,7 +107,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     }
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
-        var addresses: List<Address> = java.util.ArrayList()
+        var addresses: List<Address> = ArrayList()
         val geoCoder: Geocoder
         try {
             if (Geocoder.isPresent()) {
@@ -144,28 +144,6 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         ViewUtils.showToast(this, error, false)
     }
 
-    override fun closeInvoiceActivity() {
-        finish()
-    }
+    override fun closeInvoiceActivity() = finish()
 
-    private fun frameDistanceAPI(latLng: List<LatLng>): String {
-
-        val origin = StringBuilder()
-        val destination = StringBuilder()
-        val wayPoints = StringBuilder()
-
-        origin.append(latLng[0].latitude).append(",").append(latLng[0].longitude)
-        destination.append(latLng[latLng.size - 1].latitude).append(",").append(latLng[latLng.size - 1].longitude)
-
-        for (i in 2 until latLng.size) {
-            println("RRRR :: i = $i")
-            wayPoints.append("|").append(latLng[i].latitude).append(",").append(latLng[i].longitude)
-        }
-
-        return " https://maps.googleapis.com/maps/api/directions/json?" +
-                "origin=" + origin +
-                "&destination=" + destination +
-                "&waypoints=" + wayPoints +
-                "&key=" + getString(R.string.google_map_key)
-    }
 }

@@ -9,28 +9,17 @@ import com.gox.partner.R
 import com.gox.partner.models.CountryModel
 import java.util.*
 
-class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : BaseAdapter(), Filterable {
-    private lateinit var mInflater: LayoutInflater
-    private lateinit var orignalPlaceList: List<CountryModel>
-    private lateinit var context: Context
-    private lateinit var filteredData: List<CountryModel>
-    private lateinit var mFilter: ItemFilter
-    private var isCountry: Boolean = false
-    private var isCity: Boolean = false
-    private var isState: Boolean = false
+class CountryAdapter(private var context: Context, placesList: List<CountryModel>) : BaseAdapter(), Filterable {
 
+    private var mInflater = LayoutInflater.from(this.context)
+    private var originalPlaceList = placesList
+    private var filteredData: List<CountryModel>
+    private var mFilter: ItemFilter
 
     init {
-        this.context = ctxt
-        this.orignalPlaceList = placesList
-        mInflater = LayoutInflater.from(context)
         this.filteredData = placesList
         mFilter = ItemFilter()
-        this.isCountry = isCountry
-        this.isState = isState
-        this.isCity = isCity
     }
-
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         // A ViewHolder keeps references to children views to avoid unnecessary calls
@@ -60,30 +49,20 @@ class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : Ba
         }
 
         // If weren't re-ordering this you could rely on what you set last time
-        holder.tvCountryName!!.setText(filteredData.get(position).name.toString())
-        holder.tvCountryCode!!.setText(filteredData.get(position).dialCode.toString())
-        holder.ivCountryFlag!!.setImageResource(filteredData.get(position).flag)
-
+        holder.tvCountryName!!.text = filteredData[position].name
+        holder.tvCountryCode!!.text = filteredData[position].dialCode
+        holder.ivCountryFlag!!.setImageResource(filteredData[position].flag)
 
         return convertView!!
     }
 
-    override fun getItem(position: Int): Any {
-        return filteredData.get(position)
-    }
+    override fun getItem(position: Int) = filteredData[position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int) = position.toLong()
 
-    override fun getCount(): Int {
-        return filteredData.size
-    }
+    override fun getCount() = filteredData.size
 
-
-    override fun getFilter(): Filter {
-        return mFilter
-    }
+    override fun getFilter() = mFilter
 
     internal class ViewHolder {
         var tvCountryCode: TextView? = null
@@ -91,36 +70,31 @@ class CountryAdapter(val ctxt: Context, val placesList: List<CountryModel>) : Ba
         var ivCountryFlag: ImageView? = null
     }
 
-
     inner class ItemFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
 
             val filterString = constraint.toString().toLowerCase()
 
-            val results = Filter.FilterResults()
+            val results = FilterResults()
 
-            val list = orignalPlaceList
+            val list = originalPlaceList
 
             val count = list.size
-            val nlist = ArrayList<CountryModel>(count)
-            var filterableString: String = ""
+            val mList = ArrayList<CountryModel>(count)
+            var filterableString: String
             for (i in 0 until count) {
-
-                filterableString = list.get(i).name.toString()
-                if (filterableString.toLowerCase().contains(filterString)) {
-                    nlist.add(list.get(i))
-                }
+                filterableString = list[i].name
+                if (filterableString.toLowerCase().contains(filterString)) mList.add(list[i])
             }
 
-            results.values = nlist
-            results.count = nlist.size
+            results.values = mList
+            results.count = mList.size
             return results
         }
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            filteredData = results!!.values as java.util.ArrayList<CountryModel>
+            filteredData = results!!.values as ArrayList<CountryModel>
             notifyDataSetChanged()
         }
-
     }
 }

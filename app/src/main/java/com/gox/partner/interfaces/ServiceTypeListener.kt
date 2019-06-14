@@ -1,5 +1,5 @@
 package com.gox.partner.interfaces
 
-interface  ServiceTypeListener {
-    fun getServiceType(serviceType:String,serviceTypeID:Int)
+interface ServiceTypeListener {
+    fun getServiceType(serviceType: String, serviceTypeID: Int)
 }

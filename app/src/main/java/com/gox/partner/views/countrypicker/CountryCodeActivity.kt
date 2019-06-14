@@ -9,38 +9,33 @@ import android.widget.ListView
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.ViewDataBinding
 import com.gox.base.base.BaseActivity
-import com.gox.gojek.taxiservice.views.views.countrypicker.CountrtCodeNavigator
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityCountryCodeBinding
 import com.gox.partner.models.CountryModel
 import com.gox.partner.views.adapters.CountryAdapter
-import com.gox.partner.views.adapters.PlacesAdapter
 
 class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(),
-        SearchView.OnQueryTextListener, AdapterView.OnItemClickListener, CountrtCodeNavigator {
+        SearchView.OnQueryTextListener, AdapterView.OnItemClickListener, CountryCodeNavigator {
 
+    private lateinit var mBinding: ActivityCountryCodeBinding
     private lateinit var ivBack: ImageView
     private lateinit var llPlaces: ListView
-    private lateinit var placesAdapter: PlacesAdapter
-    private lateinit var placeList: ArrayList<CountryModel>
     private lateinit var svCountry: SearchView
     private lateinit var listCountry: List<CountryModel>
+
     private var countryAdapter: CountryAdapter? = null
     private var countryName: String? = ""
     private var countryCode: String? = ""
     private var countryFlag: Int? = -1
-    private lateinit var activityCountryListBinding: ActivityCountryCodeBinding
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_country_code
-    }
+    override fun getLayoutId() = R.layout.activity_country_code
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
-        this.activityCountryListBinding = mViewDataBinding as ActivityCountryCodeBinding
-        val countryCodeViewModel = CountryCodeViewModel()
-        countryCodeViewModel.navigator = this
-        activityCountryListBinding.placesModel = countryCodeViewModel
+        this.mBinding = mViewDataBinding as ActivityCountryCodeBinding
+        val mViewModel = CountryCodeViewModel()
+        mViewModel.navigator = this
+        mBinding.placesModel = mViewModel
         ivBack = findViewById(R.id.iv_back)
         svCountry = findViewById(R.id.sv_country)
         llPlaces = findViewById(R.id.ll_country)
@@ -79,7 +74,5 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(),
         finish()
     }
 
-    override fun closeActivity() {
-        finish()
-    }
+    override fun closeActivity() = finish()
 }

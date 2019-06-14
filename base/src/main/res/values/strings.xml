@@ -14,4 +14,5 @@
     <string name="low_battery">Your battery is low</string>
     <string name="chat">Chat</string>
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
+    <string name="location_permissing_missing">Location permission missing...</string>
 </resources>

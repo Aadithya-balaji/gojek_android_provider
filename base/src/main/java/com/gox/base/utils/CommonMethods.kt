@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Environment
@@ -47,25 +49,29 @@ class CommonMethods {
             return File.createTempFile(imageFileName, ".jpg", storageDir)
         }
 
-        fun checkGps(context:Context){
-           val  locationRequest = LocationRequest.create()
+        fun checkGps(context: Context) {
+            val locationRequest = LocationRequest.create()
             locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
             locationRequest?.interval = 1000
             locationRequest?.numUpdates = 1
-            locationRequest?.fastestInterval = (3* 1000).toLong()
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return
-            }
-            val settingsBuilder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
+            locationRequest?.fastestInterval = (3 * 1000).toLong()
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) return
+
+            val settingsBuilder = LocationSettingsRequest.Builder()
+                    .addLocationRequest(locationRequest!!)
             settingsBuilder.setAlwaysShow(true)
-            val result = LocationServices.getSettingsClient(context).checkLocationSettings(settingsBuilder.build())
+            val result = LocationServices.getSettingsClient(context)
+                    .checkLocationSettings(settingsBuilder.build())
             result.addOnCompleteListener { task ->
                 try {
                     val response = task.getResult(ApiException::class.java)
                 } catch (ex: ApiException) {
                     when (ex.statusCode) {
                         LocationSettingsStatusCodes.SUCCESS -> {
-                            val permissionLocation = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                            val permissionLocation = ContextCompat.checkSelfPermission(context,
+                                    Manifest.permission.ACCESS_FINE_LOCATION)
                             if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
 
                             }
@@ -82,10 +88,7 @@ class CommonMethods {
                     }
                 }
             }
-
-
         }
-
 
         fun thousandSeparator(cost: Double): String {
             var value = ""
@@ -94,12 +97,10 @@ class CommonMethods {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
             return value
         }
 
-
-        fun getDateinNeededFormat(strDate: String, fromSimpleFormat: SimpleDateFormat): Date {
+        fun getDateNeededFormat(strDate: String, fromSimpleFormat: SimpleDateFormat): Date {
             val date: Date = fromSimpleFormat.parse(strDate)
             return date
         }
@@ -117,46 +118,46 @@ class CommonMethods {
                     calendar.time = date
                 } catch (e: ParseException) {
                     e.printStackTrace()
-                    Log.e("error",":------"+e.message)
+                    Log.e("error", ":------" + e.message)
                 }
                 val hoursFormat = SimpleDateFormat("HH:mm:ss")
                 val formateDate = Date()
                 formateDate.time = calendar!!.timeInMillis
-                timeDiff=formateDate.time
+                timeDiff = formateDate.time
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
-                Log.e("error",":------"+e.message)
+                Log.e("error", ":------" + e.message)
             }
             return timeDiff!!
 
         }
 
-        fun getTimeDifference(strFromDate:String,strToDate:String,format:String):String{
-            var diffTime:Long?=0
-            var hms:String?=""
-            val fromSimpledateFormat=SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.getDefault())
-            fromSimpledateFormat.timeZone= TimeZone.getTimeZone("UTC")
-            var fromDate:Date?=null
-            var fromCalender :Calendar?=null
-            var toDate:Date?=null
-            var toCalendar:Calendar?=null
-            try{
-                fromDate=fromSimpledateFormat.parse(strFromDate)
-                fromCalender= Calendar.getInstance(TimeZone.getDefault())
-                fromCalender.time=fromDate
-                toDate=fromSimpledateFormat.parse(strToDate)
-                toCalendar= Calendar.getInstance(TimeZone.getDefault())
-                toCalendar.time=toDate
-                diffTime=toCalendar.time.time -fromCalender.time.time
-                 hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(diffTime),
-            TimeUnit.MILLISECONDS.toMinutes(diffTime) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(diffTime)),
-            TimeUnit.MILLISECONDS.toSeconds(diffTime) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffTime)));
-
-            }catch (e:java.lang.Exception){
+        fun getTimeDifference(strFromDate: String, strToDate: String, format: String): String {
+            val diffTime: Long?
+            var hms: String? = ""
+            val fromSimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            fromSimpleDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+            val fromDate: Date?
+            val fromCalender: Calendar?
+            val toDate: Date?
+            val toCalendar: Calendar?
+            try {
+                fromDate = fromSimpleDateFormat.parse(strFromDate)
+                fromCalender = Calendar.getInstance(TimeZone.getDefault())
+                fromCalender.time = fromDate
+                toDate = fromSimpleDateFormat.parse(strToDate)
+                toCalendar = Calendar.getInstance(TimeZone.getDefault())
+                toCalendar.time = toDate
+                diffTime = toCalendar.time.time - fromCalender.time.time
+                hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(diffTime),
+                        TimeUnit.MILLISECONDS.toMinutes(diffTime) - TimeUnit.HOURS
+                                .toMinutes(TimeUnit.MILLISECONDS.toHours(diffTime)),
+                        TimeUnit.MILLISECONDS.toSeconds(diffTime) - TimeUnit.MINUTES
+                                .toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffTime)));
+            } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }
-            return  hms!!
-
+            return hms!!
         }
 
         fun decodeSampledBitmapFromFile(path: String, reqWidth: Int, reqHeight: Int): Bitmap? { // BEST QUALITY MATCH

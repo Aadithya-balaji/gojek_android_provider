@@ -55,7 +55,7 @@ class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subservi
                 if (subserviceData.responseData[position].servicescityprice != null &&
                         subserviceData.responseData[position].servicescityprice.base_fare != null) {
                     when (subserviceData.responseData[position].servicescityprice.fare_type) {
-                        "DISTANCETIME" -> {
+                        DISTANCE_TIME -> {
                             holder.subserviceRowlistItemBinding.perMilePriceTv.visibility = VISIBLE
                             if (subserviceData.responseData[position].providerservices.isNotEmpty())
                                 holder.subserviceRowlistItemBinding.perMilePriceTv.text = price +

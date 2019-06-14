@@ -16,33 +16,33 @@ import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupVehicleNavigator {
 
-    private lateinit var binding: ActivitySetupVehicleBinding
-    private lateinit var viewModel: SetupVehicleViewModel
+    private lateinit var mBinding: ActivitySetupVehicleBinding
+    private lateinit var mViewModel: SetupVehicleViewModel
 
     override fun getLayoutId() = R.layout.activity_setup_vehicle
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivitySetupVehicleBinding
-        binding.lifecycleOwner = this
-        viewModel = provideViewModel {
+        mBinding = mViewDataBinding as ActivitySetupVehicleBinding
+        mBinding.lifecycleOwner = this
+        mViewModel = provideViewModel {
             SetupVehicleViewModel()
         }
-        viewModel.navigator = this
-        viewModel.setServiceId(intent.getIntExtra(Constants.SERVICE_ID, -1))
-        binding.setupVehicleViewModel = viewModel
+        mViewModel.navigator = this
+        mViewModel.setServiceId(intent.getIntExtra(Constants.SERVICE_ID, -1))
+        mBinding.setupVehicleViewModel = mViewModel
 
-        setSupportActionBar(binding.toolbar.tbApp)
-        binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_setup_vehicle)
+        setSupportActionBar(mBinding.toolbar.tbApp)
+        mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
+        mBinding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_setup_vehicle)
 
         observeViewModel()
 
     }
 
     private fun observeViewModel() {
-        observeLiveData(viewModel.getVehicleDataObservable()) {
+        observeLiveData(mViewModel.getVehicleDataObservable()) {
             loadingObservable.value = false
-            viewModel.setAdapter()
+            mViewModel.setAdapter()
         }
     }
 
@@ -53,22 +53,22 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
 
     private fun setupVehicle() {
         loadingObservable.value = true
-        when (viewModel.getServiceId()) {
-            viewModel.getTransportId() -> {
-                viewModel.getRides()
+        when (mViewModel.getServiceId()) {
+            mViewModel.getTransportId() -> {
+                mViewModel.getRides()
             }
-            viewModel.getOrderId() -> {
-                viewModel.getShops()
+            mViewModel.getOrderId() -> {
+                mViewModel.getShops()
             }
             else -> loadingObservable.value = false
         }
     }
 
     override fun onMenuItemClicked(position: Int) {
-        val providerService = viewModel.getVehicleDataObservable().value
+        val providerService = mViewModel.getVehicleDataObservable().value
 
         val intent = Intent(applicationContext, AddVehicleActivity::class.java)
-        intent.putExtra(Constants.SERVICE_ID, viewModel.getServiceId())
+        intent.putExtra(Constants.SERVICE_ID, mViewModel.getServiceId())
 
         if (providerService is SetupRideResponseModel)
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)

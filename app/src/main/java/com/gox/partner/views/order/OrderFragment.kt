@@ -27,9 +27,9 @@ import kotlinx.android.synthetic.main.activity_dashboard.*
 
 class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigator, ServiceTypeListener {
 
-    lateinit var mViewDataBinding: FragmentOrderBinding
+    lateinit var mBinding: FragmentOrderBinding
     lateinit var filterServiceListName: List<ConfigService>
-    lateinit var orderFragmentViewModel: OrderFragmentViewModel
+    lateinit var mViewModel: OrderFragmentViewModel
     lateinit var dashboardViewModel: DashBoardViewModel
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private var selectedService: String? = ""
@@ -38,12 +38,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
     override fun getLayoutId(): Int = R.layout.fragment_order
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
-        orderFragmentViewModel = OrderFragmentViewModel()
+        mViewModel = OrderFragmentViewModel()
         dashboardViewModel = ViewModelProviders.of(activity!!).get(DashBoardViewModel::class.java)
-        this.mViewDataBinding = mViewDataBinding as FragmentOrderBinding
-        this.mViewDataBinding.lifecycleOwner = this
-        orderFragmentViewModel.navigator = this
-        this.mViewDataBinding.orderfragmentviewmodel = orderFragmentViewModel
+        this.mBinding = mViewDataBinding as FragmentOrderBinding
+        this.mBinding.lifecycleOwner = this
+        mViewModel.navigator = this
+        this.mBinding.orderfragmentviewmodel = mViewModel
         activity?.supportFragmentManager?.beginTransaction()?.add(R.id.container_order, PastOrderFragment())?.commit()
         val baseApiResponseString: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.BASE_CONFIG_RESPONSE, "")!!
         if (baseApiResponseString.isNotEmpty()) {
@@ -63,7 +63,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
     }
 
     override fun goToCurrentOrder() {
-        mViewDataBinding.pastorderBtn.background = context?.let {
+        mBinding.pastorderBtn.background = context?.let {
             ContextCompat.getDrawable(it
                     , R.drawable.custom_roundcorner_unselectedorder)
         }
@@ -71,7 +71,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
     }
 
     override fun goToPastOrder() {
-        mViewDataBinding.pastorderBtn.background = context?.let {
+        mBinding.pastorderBtn.background = context?.let {
             ContextCompat.getDrawable(it
                     , R.drawable.custom_roundcorner_selectedorder)
         }
@@ -82,18 +82,18 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
 
     }
 
-    override fun opeFilterlayout() {
+    override fun opeFilterLayout() {
         if (!filterServiceListName.isNullOrEmpty()) {
             val view = DataBindingUtil.inflate<FilterDialogBinding>(LayoutInflater.from(context),
                     R.layout.filter_dialog, null, false)
-            val filterServiceAdapter = FilterServiceListAdapter(dashboardViewModel, filterServiceListName,
-                    this, selectedServiceTypeID!!)
+            val filterServiceAdapter = FilterServiceListAdapter(filterServiceListName, this,
+                    selectedServiceTypeID!!)
             view.filterServiceListAdapter = filterServiceAdapter
             val dialog = BottomSheetDialog(activity!!)
             dialog.setContentView(view.root)
             dialog.show()
             view.applyFilter.setOnClickListener {
-                mViewDataBinding.serviceNameToolbarTv.text = dashboardViewModel.selectedFilterService.value
+                mBinding.serviceNameToolbarTv.text = dashboardViewModel.selectedFilterService.value
                 dashboardViewModel.selectedFilterService.value = selectedService
                 dialog.dismiss()
             }

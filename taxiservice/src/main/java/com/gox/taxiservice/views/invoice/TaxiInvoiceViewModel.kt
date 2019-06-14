@@ -2,15 +2,14 @@ package com.gox.taxiservice.views.invoice
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.taxiservice.model.PaymentModel
 import com.gox.taxiservice.model.ResponseData
 import com.gox.taxiservice.repositary.TaxiRepository
 
 class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
 
-    private val taxiRepository = TaxiRepository.instance()
+    private val mRepository = TaxiRepository.instance()
 
     var dropLocation = MutableLiveData<String>()
     var pickuplocation = MutableLiveData<String>()
@@ -33,12 +32,19 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
         if (requestLiveData.value != null && requestLiveData.value != null) {
             showLoading.value = true
             params["id"] = requestLiveData.value!!.request.id.toString()
-            getCompositeDisposable().add(taxiRepository.confirmPayment
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+            getCompositeDisposable().add(mRepository.confirmPayment(object : ApiListener {
+                override fun success(successData: Any) {
+                    paymentLiveData.value = successData as PaymentModel
+                    showLoading.value = false
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                    showLoading.value = false
+                }
+            }, params))
         }
     }
 
-    fun closeActivity(){
-        navigator.closeInvoiceActivity()
-    }
+    fun closeActivity() = navigator.closeInvoiceActivity()
 }

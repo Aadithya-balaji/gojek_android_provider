@@ -20,9 +20,4 @@ class DateTimeUtil {
                 .append(separator)
                 .append(dayOfMonth).toString()
     }
-
-
-    fun changeDateFormat(){
-
-    }
 }

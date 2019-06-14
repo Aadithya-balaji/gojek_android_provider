@@ -2,10 +2,9 @@ package com.gox.partner.views.history_details
 
 interface CurrentOrderDetailsNavigator {
     fun goBack()
-    fun onClickDispute()
-    fun onClickViewRecepit()
+    fun onClickViewReceipt()
     fun onClickLossItem()
     fun onClickCancelBtn()
     fun showDisputeList()
-    fun showErrorMessage(error:String)
+    fun showErrorMessage(error: String)
 }

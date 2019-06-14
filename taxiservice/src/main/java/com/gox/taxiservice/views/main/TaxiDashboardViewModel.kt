@@ -2,11 +2,9 @@ package com.gox.taxiservice.views.main
 
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
-import com.google.gson.Gson
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.taxiservice.model.*
 import com.gox.taxiservice.repositary.TaxiRepository
 
@@ -39,24 +37,35 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     fun callTaxiCheckStatusAPI() {
         if (BaseApplication.isNetworkAvailable)
-        if (latitude.value!! > 0 && longitude.value!! > 0)
-            getCompositeDisposable()
-                    .add(mRepository.checkRequest(
-                            this,
-                            "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
-                            latitude.value!!,
-                            longitude.value!!))
-        else navigator.updateCurrentLocation()
+            if (latitude.value!! > 0 && longitude.value!! > 0)
+                getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
+                    override fun success(successData: Any) {
+                        checkStatusTaxiLiveData.value = successData as CheckRequestModel
+                        showLoading.value = false
+                    }
+
+                    override fun fail(failData: Throwable) {
+                        navigator.showErrorMessage(getErrorMessage(failData))
+                        showLoading.value = false
+                    }
+                }))
+            else navigator.updateCurrentLocation()
     }
 
     fun taxiStatusUpdate(params: HashMap<String, String>) {
         if (BaseApplication.isNetworkAvailable) {
-            try {
-                showLoading.value = true
-            } catch (e: Exception) {
-            }
-            getCompositeDisposable().add(mRepository.taxiStatusUpdate
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+            showLoading.value = true
+            getCompositeDisposable().add(mRepository.taxiStatusUpdate(object : ApiListener {
+                override fun success(successData: Any) {
+                    callTaxiCheckStatusAPI()
+                    showLoading.value = false
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                    showLoading.value = false
+                }
+            }, params))
         }
     }
 
@@ -81,22 +90,47 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
             model.longitude = longitude.value!!
             model.location_points = locationPoint
 
-            println("RRR::" + Gson().toJson(model))
+            getCompositeDisposable().add(mRepository.taxiDroppingStatus(object : ApiListener {
+                override fun success(successData: Any) {
+                    callTaxiCheckStatusAPI()
+                    showLoading.value = false
+                }
 
-            getCompositeDisposable().add(mRepository.taxiDroppingStatus
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), model))
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                    showLoading.value = false
+                }
+            }, model))
         }
     }
 
     fun taxiWaitingTime(params: HashMap<String, String>) {
         if (BaseApplication.isNetworkAvailable)
-        getCompositeDisposable().add(mRepository.waitingTime(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+            getCompositeDisposable().add(mRepository.waitingTime(object : ApiListener {
+                override fun success(successData: Any) {
+                    waitingTimeLiveData.value = successData as WaitingTime
+                    showLoading.value = false
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                    showLoading.value = false
+                }
+            }, params))
     }
 
     fun cancelRequest(params: HashMap<String, String>) {
         if (BaseApplication.isNetworkAvailable)
-        getCompositeDisposable().add(mRepository.taxiCancelReason(this,
-                "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+            getCompositeDisposable().add(mRepository.taxiCancelReason(object : ApiListener {
+                override fun success(successData: Any) {
+                    taxiCancelRequest.value = successData as CancelRequestModel
+                    showLoading.value = false
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                    showLoading.value = false
+                }
+            }, params))
     }
 }

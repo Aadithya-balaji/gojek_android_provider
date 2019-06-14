@@ -44,7 +44,7 @@ class ProfileData {
     @SerializedName("picture")
     var picture: String? = null
     @SerializedName("referral")
-    val referalData: ReferalDataModel? = null
+    val referralData: ReferralDataModel? = null
     @SerializedName("country")
     val countryName: CountryDataModel? = null
     @SerializedName("city")

@@ -26,32 +26,33 @@ import com.gox.partner.views.reset_password.ResetPasswordActivity
 class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
         ForgotPasswordViewModel.ForgotPasswordNavigator {
 
-    private lateinit var binding: ActivityForgotPasswordBinding
-    private lateinit var viewModel: ForgotPasswordViewModel
+    private lateinit var mBinding: ActivityForgotPasswordBinding
+    private lateinit var mViewModel: ForgotPasswordViewModel
+
     private var isEmailLogin: Boolean = false
     private lateinit var message: String
 
     override fun getLayoutId() = R.layout.activity_forgot_password
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivityForgotPasswordBinding
-        binding.lifecycleOwner = this
-        viewModel = provideViewModel {
+        mBinding = mViewDataBinding as ActivityForgotPasswordBinding
+        mBinding.lifecycleOwner = this
+        mViewModel = provideViewModel {
             ForgotPasswordViewModel()
         }
-        viewModel.navigator = this
-        binding.forgotPasswordViewModel = viewModel
+        mViewModel.navigator = this
+        mBinding.forgotPasswordViewModel = mViewModel
 
-        binding.toolbar.tvToolbarTitle.text = resources.getString(R.string.title_forgot_password)
+        mBinding.toolbar.tvToolbarTitle.text = resources.getString(R.string.title_forgot_password)
 
-        binding.toolbar.ivToolbarBack.setOnClickListener(this::onBackClicked)
-        binding.tietEmail.setOnEditorActionListener(this::onEditorAction)
+        mBinding.toolbar.ivToolbarBack.setOnClickListener(this::onBackClicked)
+        mBinding.tietEmail.setOnEditorActionListener(this::onEditorAction)
 
         observeViewModel()
     }
 
     private fun observeViewModel() {
-        observeLiveData(viewModel.getForgotPasswordObservable()) {
+        observeLiveData(mViewModel.getForgotPasswordObservable()) {
             loadingObservable.value = false
             message = if (!it.message.isBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)
@@ -76,28 +77,28 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
         ViewUtils.hideSoftInputWindow(this)
         if (isResetDataValid()) {
             loadingObservable.value = true
-            viewModel.postForgotPassword(isEmailLogin)
+            mViewModel.postForgotPassword(isEmailLogin)
         } else ViewUtils.showToast(applicationContext, message, false)
     }
 
     private fun isResetDataValid(): Boolean {
-        if (binding.rgReset.checkedRadioButtonId == R.id.rb_phone) {
+        if (mBinding.rgReset.checkedRadioButtonId == R.id.rb_phone) {
             return when {
-                viewModel.countryCode.value.isNullOrBlank() -> {
+                mViewModel.countryCode.value.isNullOrBlank() -> {
                     message = resources.getString(R.string.country_code_empty)
                     false
                 }
-                viewModel.phoneNumber.value.isNullOrBlank() -> {
+                mViewModel.phoneNumber.value.isNullOrBlank() -> {
                     message = resources.getString(R.string.phone_number_empty)
                     false
                 }
                 else -> true
             }
         } else {
-            return if (viewModel.email.value.isNullOrBlank()) {
+            return if (mViewModel.email.value.isNullOrBlank()) {
                 message = resources.getString(R.string.email_empty)
                 false
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(viewModel.email.value!!.trim()).matches()) {
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(mViewModel.email.value!!.trim()).matches()) {
                 message = resources.getString(R.string.email_invalid)
                 false
             } else true
@@ -114,17 +115,17 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
 
     private fun handleCountryCodePickerResult(data: Intent) {
         val countryCode = data.getStringExtra("countryCode")
-        viewModel.countryCode.value = countryCode
+        mViewModel.countryCode.value = countryCode
         val countryFlag = data.getIntExtra("countryFlag", -1)
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val width:Int = resources.getDimension(R.dimen.flag_width).toInt()
-            val height:Int = resources.getDimension(R.dimen.flag_height).toInt()
+            val width: Int = resources.getDimension(R.dimen.flag_width).toInt()
+            val height: Int = resources.getDimension(R.dimen.flag_height).toInt()
             val drawable = BitmapDrawable(resources,
                     Bitmap.createScaledBitmap(bitmap, width, height
                             , true))
-            binding.tietCountryCode
+            mBinding.tietCountryCode
                     .setCompoundDrawablesWithIntrinsicBounds(drawable, null,
                             null, null)
         }
@@ -141,25 +142,21 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
         when (checkedId) {
             R.id.rb_phone -> {
                 isEmailLogin = false
-                binding.tilEmail.visibility = View.GONE
-                binding.llPhoneNumber.visibility = View.VISIBLE
+                mBinding.tilEmail.visibility = View.GONE
+                mBinding.llPhoneNumber.visibility = View.VISIBLE
             }
             R.id.rb_email -> {
                 isEmailLogin = true
-                binding.llPhoneNumber.visibility = View.GONE
-                binding.tilEmail.visibility = View.VISIBLE
+                mBinding.llPhoneNumber.visibility = View.GONE
+                mBinding.tilEmail.visibility = View.VISIBLE
             }
         }
     }
 
-    override fun onCountryCodeClicked() {
-        val intent = Intent(applicationContext, CountryCodeActivity::class.java)
-        startActivityForResult(intent, Enums.RC_COUNTRY_CODE_PICKER)
-    }
+    override fun onCountryCodeClicked() =
+            startActivityForResult(Intent(applicationContext, CountryCodeActivity::class.java), Enums.RC_COUNTRY_CODE_PICKER)
 
-    override fun onForgotPasswordClicked() {
-        performValidation()
-    }
+    override fun onForgotPasswordClicked() = performValidation()
 
     override fun showError(error: String) {
         loadingObservable.value = false

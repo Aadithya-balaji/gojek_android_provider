@@ -18,9 +18,7 @@ class ChangePasswordViewModel : BaseViewModel<ChangePasswordViewModel.ChangePass
     val newPassword = MutableLiveData<String>()
     val confirmPassword = MutableLiveData<String>()
 
-    fun onChangePasswordClick(view: View) {
-        navigator.onChangePasswordClicked()
-    }
+    fun onChangePasswordClick(view: View) = navigator.onChangePasswordClicked()
 
     internal fun postChangePassword() {
         val token = StringBuilder("Bearer ")

@@ -17,32 +17,31 @@ class SubServiceAdapter(val activity: SetSubServiceActivity, var subserviceData:
     var serviceItemClick: ServiceItemClick? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val inflate = DataBindingUtil.inflate<LayoutSetServicesItemBinding>(LayoutInflater.from(parent.context)
-                , R.layout.layout_set_services_item, parent, false)
-        return MyViewHolder(inflate)
+        return MyViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context)
+                , R.layout.layout_set_services_item, parent, false))
     }
 
     interface ServiceItemClick {
         fun onItemClick(service: ResponseData)
     }
 
-    override fun getItemCount(): Int = subserviceData.responseData.size
+    override fun getItemCount() = subserviceData.responseData.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
-        holder.subserviceRowlistItemBinding.serviceNameTv.text = subserviceData.responseData[position].service_subcategory_name
-        holder.subserviceRowlistItemBinding.serviceCard.setOnClickListener {
+        holder.mBinding.serviceNameTv.text = subserviceData.responseData[position].service_subcategory_name
+        holder.mBinding.serviceCard.setOnClickListener {
             serviceItemClick?.onItemClick(subserviceData.responseData[position])
         }
         if (position == subserviceData.responseData.size - 1)
-            holder.subserviceRowlistItemBinding.view.visibility = View.GONE
+            holder.mBinding.view.visibility = View.GONE
         else
-            holder.subserviceRowlistItemBinding.view.visibility = VISIBLE
+            holder.mBinding.view.visibility = VISIBLE
     }
 
     inner class MyViewHolder(itemView: LayoutSetServicesItemBinding)
         : RecyclerView.ViewHolder(itemView.root) {
-        val subserviceRowlistItemBinding = itemView
+        val mBinding = itemView
         fun bind() {
 
         }

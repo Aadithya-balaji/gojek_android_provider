@@ -8,33 +8,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gox.partner.R
 import com.gox.partner.databinding.TransactionStatusListBinding
 
-class TransactionStatusListAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<TransactionStatusListAdapter.MyViewHolder>() {
-
-    val activity = activity
+class TransactionStatusListAdapter(val activity: FragmentActivity?)
+    : RecyclerView.Adapter<TransactionStatusListAdapter.MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
-        val inflate = DataBindingUtil.inflate<TransactionStatusListBinding>(LayoutInflater.from(parent.context), R.layout.transaction_status_list, parent, false)
-        return MyViewHolder(inflate)
+        return MyViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                R.layout.transaction_status_list, parent, false))
     }
 
-    override fun getItemCount(): Int = 3
+    override fun getItemCount() = 3
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
     }
 
-
     inner class MyViewHolder(itemView: TransactionStatusListBinding) : RecyclerView.ViewHolder(itemView.root) {
-
-        val currentOderItemlistBinding = itemView
-
+        val mBinding = itemView
         fun bind() {
-
         }
-
-
     }
-
 
 }

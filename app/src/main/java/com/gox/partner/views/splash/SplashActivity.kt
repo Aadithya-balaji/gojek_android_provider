@@ -1,11 +1,11 @@
 package com.gox.partner.views.splash
 
-//import com.crashlytics.android.Crashlytics
 import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
 import android.os.Build
 import android.util.Base64
 import android.util.Log
@@ -36,7 +36,7 @@ import java.security.NoSuchAlgorithmException
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.SplashNavigator {
 
-    private lateinit var binding: ActivitySplashBinding
+    private lateinit var mBinding: ActivitySplashBinding
     private lateinit var mViewModel: SplashViewModel
 
     public override fun getLayoutId() = R.layout.activity_splash
@@ -44,15 +44,18 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     private lateinit var customPreference: SharedPreferences
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivitySplashBinding
-        binding.lifecycleOwner = this
+        mBinding = mViewDataBinding as ActivitySplashBinding
+        mBinding.lifecycleOwner = this
         mViewModel = provideViewModel { SplashViewModel() }
         mViewModel.navigator = this
 
         observeViewModel()
         generateHash()
 
-        if (isNetworkConnected) mViewModel.getConfig()
+        if (isNetworkConnected(this)) mViewModel.getConfig()
+
+        if (BaseApplication.isNetworkAvailable) mViewModel.getConfig()
+
         customPreference = BaseApplication.getCustomPreference!!
 
         FirebaseInstanceId.getInstance().instanceId
@@ -112,19 +115,26 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
             customPreference.edit().putString("0", it.responseData.base_url + "/").apply()
             customPreference.edit().putInt(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id).apply()
-            customPreference.edit().putString(it.responseData.services[0].id.toString(), it.responseData.services[0].base_url + "/").apply()
+            customPreference.edit().putString(it.responseData.services[0].id.toString(),
+                    it.responseData.services[0].base_url + "/").apply()
             customPreference.edit().putInt(PreferencesKey.ORDER_ID, it.responseData.services[1].id).apply()
-            customPreference.edit().putString(it.responseData.services[1].id.toString(), it.responseData.services[1].base_url + "/").apply()
+            customPreference.edit().putString(it.responseData.services[1].id.toString(),
+                    it.responseData.services[1].base_url + "/").apply()
             customPreference.edit().putInt(PreferencesKey.SERVICE_ID, it.responseData.services[2].id).apply()
-            customPreference.edit().putString(it.responseData.services[2].id.toString(), it.responseData.services[2].base_url + "/").apply()
-            customPreference.edit().putString(PreferencesKey.PRIVACY_POLICY, it.responseData.appsetting.cmspage.privacypolicy).apply()
+            customPreference.edit().putString(it.responseData.services[2].id.toString(),
+                    it.responseData.services[2].base_url + "/").apply()
+            customPreference.edit().putString(PreferencesKey.PRIVACY_POLICY,
+                    it.responseData.appsetting.cmspage.privacypolicy).apply()
             customPreference.edit().putString(PreferencesKey.HELP, it.responseData.appsetting.cmspage.help).apply()
             customPreference.edit().putString(PreferencesKey.TERMS, it.responseData.appsetting.cmspage.terms).apply()
+
             val contactNumbers = hashSetOf<String>()
             for (contact in it.responseData.appsetting.supportdetails.contact_number)
                 contactNumbers.add(contact.number)
             writePreferences(PreferencesKey.CONTACT_NUMBER, contactNumbers.toSet())
-            customPreference.edit().putString(PreferencesKey.CONTACT_EMAIL, it.responseData.appsetting.supportdetails.contact_email).apply()
+            customPreference.edit().putString(PreferencesKey.CONTACT_EMAIL,
+                    it.responseData.appsetting.supportdetails.contact_email).apply()
+
             setLanguage(it)
             setPayment(it)
 
@@ -138,9 +148,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
     }
 
     @SuppressLint("CommitPrefEdits")
-    private fun setPayment(it: ConfigResponseModel) {
-        customPreference.edit().putString(PreferencesKey.PAYMENT_LIST, Gson().toJson(it.responseData.appsetting.payments)).apply()
-    }
+    private fun setPayment(it: ConfigResponseModel) =
+            customPreference.edit().putString(PreferencesKey.PAYMENT_LIST,
+                    Gson().toJson(it.responseData.appsetting.payments)).apply()
 
     private fun setLanguage(it: ConfigResponseModel) {
         val languages = it.responseData.appsetting.languages
@@ -148,14 +158,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         else Constant.languages = listOf(Language("English", "en"))
     }
 
-    override fun showError(error: String) {
-        finish()
-    }
+    override fun showError(error: String) = finish()
 
     private fun generateHash() {
         try {
             if (Build.VERSION.SDK_INT >= 28) {
-                val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+                val packageInfo = packageManager.getPackageInfo(packageName,
+                        PackageManager.GET_SIGNING_CERTIFICATES)
                 val signatures = packageInfo.signingInfo.apkContentsSigners
                 val md = MessageDigest.getInstance("SHA")
                 for (signature in signatures) {
@@ -173,8 +182,16 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     override fun onResume() {
         super.onResume()
-        val notificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+                this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancelAll()
+    }
+
+    private fun isNetworkConnected(context: Context): Boolean {
+        val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = connectivityManager.activeNetworkInfo
+        return netInfo != null && netInfo.isAvailable && netInfo.isConnected
     }
 
 }

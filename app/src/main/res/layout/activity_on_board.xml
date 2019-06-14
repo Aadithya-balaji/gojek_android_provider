@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.gox.app.ui.onboard.OnBoardViewModel" />
+            type="com.gox.partner.views.on_board.OnBoardViewModel" />
     </data>
 
     <LinearLayout

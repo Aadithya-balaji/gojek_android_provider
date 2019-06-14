@@ -5,7 +5,6 @@ import android.content.Context
 import android.preference.PreferenceManager
 import java.util.*
 
-
 class LocaleUtils {
 
     object LANGUAGE {
@@ -22,7 +21,6 @@ class LocaleUtils {
             setLanguagePref(mContext, locale)
             return updateResources(mContext, locale)
         }
-
 
         @SuppressLint("NewApi")
         @SuppressWarnings("deprecation")
@@ -47,6 +45,4 @@ class LocaleUtils {
             mPreferences.edit().putString(LANGUAGE.KEY, locale).apply()
         }
     }
-
-
 }

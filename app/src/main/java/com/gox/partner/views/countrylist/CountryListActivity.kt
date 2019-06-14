@@ -9,32 +9,33 @@ import com.gox.partner.databinding.ActivityCountryListBinding
 import com.gox.partner.models.CountryListResponse
 import com.gox.partner.views.adapters.CountryListAdapter
 
-class CountryListActivity : BaseActivity<ActivityCountryListBinding>(), SearchView.OnQueryTextListener, CountryNavigator {
+class CountryListActivity : BaseActivity<ActivityCountryListBinding>(),
+        SearchView.OnQueryTextListener, CountryNavigator {
 
+    lateinit var mBinding: ActivityCountryListBinding
 
-    lateinit var mViewDataBinding: ActivityCountryListBinding
     override fun getLayoutId(): Int = R.layout.activity_country_list
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
-        this.mViewDataBinding = mViewDataBinding as ActivityCountryListBinding
-        this.mViewDataBinding.lifecycleOwner = this
+        this.mBinding = mViewDataBinding as ActivityCountryListBinding
+        this.mBinding.lifecycleOwner = this
         val countrylist = intent.getSerializableExtra("countrylistresponse") as CountryListResponse
         mViewDataBinding.countrylistadapter = CountryListAdapter(this, countrylist.responseData)
-        val countryViewModel = CountryViewModel()
-        countryViewModel.navigator = this
-        mViewDataBinding.countrylistmodel = countryViewModel
+        val mViewModel = CountryViewModel()
+        mViewModel.navigator = this
+        mViewDataBinding.countrylistmodel = mViewModel
         mViewDataBinding.svCountry.setOnQueryTextListener(this)
 
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        mViewDataBinding.countrylistadapter!!.filter.filter(query)
+        mBinding.countrylistadapter!!.filter.filter(query)
         return true
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        mViewDataBinding.countrylistadapter!!.filter.filter(newText)
+        mBinding.countrylistadapter!!.filter.filter(newText)
         return true
     }
 

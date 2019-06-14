@@ -21,12 +21,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Dialog for selecting Country.
- * <p>
- * Created by Joielechong on 11 May 2017.
- */
-
 class CountryCodeDialog extends Dialog {
     private static final String TAG = "CountryCodeDialog";
 
@@ -73,9 +67,8 @@ class CountryCodeDialog extends Dialog {
             mTvNoResult.setTypeface(typeface);
         }
 
-        if (mCountryCodePicker.getBackgroundColor() != mCountryCodePicker.getDefaultBackgroundColor()) {
+        if (mCountryCodePicker.getBackgroundColor() != mCountryCodePicker.getDefaultBackgroundColor())
             mRlyDialog.setBackgroundColor(mCountryCodePicker.getBackgroundColor());
-        }
 
         if (mCountryCodePicker.getDialogTextColor() != mCountryCodePicker.getDefaultContentColor()) {
             int color = mCountryCodePicker.getDialogTextColor();
@@ -118,16 +111,10 @@ class CountryCodeDialog extends Dialog {
     }
 
     private void setSearchBar() {
-        if (mCountryCodePicker.isSelectionDialogShowSearch()) {
-            setTextWatcher();
-        } else {
-            mEdtSearch.setVisibility(View.GONE);
-        }
+        if (mCountryCodePicker.isSelectionDialogShowSearch()) setTextWatcher();
+        else mEdtSearch.setVisibility(View.GONE);
     }
 
-    /**
-     * add textChangeListener, to apply new query each time editText get text changed.
-     */
     private void setTextWatcher() {
         if (mEdtSearch == null) return;
 
@@ -147,33 +134,19 @@ class CountryCodeDialog extends Dialog {
             }
         });
 
-        if (mCountryCodePicker.isKeyboardAutoPopOnSearch()) {
-            if (mInputMethodManager != null) {
-                mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }
-        }
+        if (mCountryCodePicker.isKeyboardAutoPopOnSearch()) if (mInputMethodManager != null)
+            mInputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    /**
-     * Filter country list for given keyWord / query.
-     * Lists all countries that contains @param query in country's name, name code or phone code.
-     *
-     * @param query : text to match against country name, name code or phone code
-     */
     private void applyQuery(String query) {
         mTvNoResult.setVisibility(View.GONE);
         query = query.toLowerCase();
 
-        //if query started from "+" ignore it
-        if (query.length() > 0 && query.charAt(0) == '+') {
-            query = query.substring(1);
-        }
+        if (query.length() > 0 && query.charAt(0) == '+') query = query.substring(1);
 
         mFilteredCountries = getFilteredCountries(query);
 
-        if (mFilteredCountries.size() == 0) {
-            mTvNoResult.setVisibility(View.VISIBLE);
-        }
+        if (mFilteredCountries.size() == 0) mTvNoResult.setVisibility(View.VISIBLE);
 
         mArrayAdapter.notifyDataSetChanged();
     }
@@ -183,30 +156,20 @@ class CountryCodeDialog extends Dialog {
     }
 
     private List<Country> getFilteredCountries(String query) {
-        if (mTempCountries == null) {
-            mTempCountries = new ArrayList<>();
-        } else {
-            mTempCountries.clear();
-        }
+        if (mTempCountries == null) mTempCountries = new ArrayList<>();
+        else mTempCountries.clear();
 
         List<Country> preferredCountries = mCountryCodePicker.getPreferredCountries();
         if (preferredCountries != null && preferredCountries.size() > 0) {
-            for (Country country : preferredCountries) {
-                if (country.isEligibleForQuery(query)) {
-                    mTempCountries.add(country);
-                }
-            }
+            for (Country country : preferredCountries)
+                if (country.isEligibleForQuery(query)) mTempCountries.add(country);
 
-            if (mTempCountries.size() > 0) { //means at least one preferred country is added.
-                mTempCountries.add(null); // this will add separator for preference countries.
-            }
+            if (mTempCountries.size() > 0)
+                mTempCountries.add(null);
         }
 
-        for (Country country : masterCountries) {
-            if (country.isEligibleForQuery(query)) {
-                mTempCountries.add(country);
-            }
-        }
+        for (Country country : masterCountries)
+            if (country.isEligibleForQuery(query)) mTempCountries.add(country);
         return mTempCountries;
     }
 

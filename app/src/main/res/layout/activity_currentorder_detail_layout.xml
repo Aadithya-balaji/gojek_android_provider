@@ -112,11 +112,11 @@
                         android:paddingBottom="@dimen/_15sdp">
 
                         <ImageView
-                            android:contentDescription="@string/app_name"
                             android:id="@+id/provider_cimgv"
                             android:layout_width="@dimen/_50sdp"
                             android:layout_height="@dimen/_50sdp"
                             android:layout_gravity="center"
+                            android:contentDescription="@string/app_name"
                             android:src="@drawable/ic_profile_placeholder" />
 
                         <TextView
@@ -134,8 +134,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:rating="1"
                             android:numStars="5"
+                            android:rating="1"
                             android:stepSize="1"
                             tools:targetApi="lollipop" />
 
@@ -232,7 +232,7 @@
                                     android:layout_below="@+id/currentorderetail_destination_tv"
                                     android:layout_marginStart="@dimen/_15sdp"
                                     android:layout_toEndOf="@+id/destination_dot_view"
-                                    android:padding="@dimen/_1sdp"/>
+                                    android:padding="@dimen/_1sdp" />
 
                             </RelativeLayout>
 

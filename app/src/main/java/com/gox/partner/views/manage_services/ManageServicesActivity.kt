@@ -16,24 +16,24 @@ import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), ManageServicesNavigator {
 
-    private lateinit var binding: ActivityManageServicesBinding
-    private lateinit var viewModel: ManageServicesViewModel
+    private lateinit var mBinding: ActivityManageServicesBinding
+    private lateinit var mViewModel: ManageServicesViewModel
     private lateinit var serviceData: List<ManageServicesDataModel>
 
     override fun getLayoutId() = R.layout.activity_manage_services
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivityManageServicesBinding
-        binding.lifecycleOwner = this
-        viewModel = provideViewModel {
+        mBinding = mViewDataBinding as ActivityManageServicesBinding
+        mBinding.lifecycleOwner = this
+        mViewModel = provideViewModel {
             ManageServicesViewModel()
         }
-        viewModel.navigator = this
-        binding.manageServicesViewModel = viewModel
+        mViewModel.navigator = this
+        mBinding.manageServicesViewModel = mViewModel
 
-        setSupportActionBar(binding.toolbar.tbApp)
-        binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text =
+        setSupportActionBar(mBinding.toolbar.tbApp)
+        mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
+        mBinding.toolbar.tbApp.tv_toolbar_title.text =
                 resources.getString(R.string.title_manage_services)
 
         val colors = resources.getIntArray(R.array.color_manage_services)
@@ -49,31 +49,30 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
         observeViewModel()
 
         loadingObservable.value = true
-        viewModel.getServices()
+        mViewModel.getServices()
     }
 
     private fun observeViewModel() {
-        observeLiveData(viewModel.getServicesObservable()) { response ->
+        observeLiveData(mViewModel.getServicesObservable()) { response ->
             run {
                 loadingObservable.value = false
-                viewModel.setServiceData(serviceData)
-                viewModel.setAdapter()
+                mViewModel.setServiceData(serviceData)
+                mViewModel.setAdapter()
             }
         }
     }
 
     override fun onMenuItemClicked(position: Int) {
-        lazy { var intent: Intent }
         when (position) {
             0 -> intent = Intent(applicationContext, SetupVehicleActivity::class.java)
             1 -> intent = Intent(applicationContext, SetupVehicleActivity::class.java)
             2 -> intent = Intent(applicationContext, SetServiceActivity::class.java)
         }
 
-        val response = viewModel.getServicesObservable().value!!.responseData
+        val response = mViewModel.getServicesObservable().value!!.responseData
         if (!response.isNullOrEmpty() && response.size > position) {
             intent.putExtra(Constants.SERVICE_ID,
-                    viewModel.getServicesObservable().value!!.responseData[position].id)
+                    mViewModel.getServicesObservable().value!!.responseData[position].id)
             launchNewActivity(intent, false)
         } else ViewUtils.showToast(this, "Service not configured. Please contact admin", false)
     }

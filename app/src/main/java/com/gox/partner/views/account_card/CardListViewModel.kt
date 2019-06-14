@@ -1,7 +1,6 @@
 package com.gox.partner.views.account_card
 
 import android.content.res.Resources
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
@@ -13,12 +12,14 @@ import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
 
 class CardListViewModel : BaseViewModel<CardListNavigator>() {
+
     var appRepository = AppRepository.instance()
+
     var loadingProgress = MutableLiveData<Boolean>()
     var selectedCardID = MutableLiveData<String>()
     var selectedStripeID = MutableLiveData<String>()
-    var addCardLiveResposne = MutableLiveData<AddCardModel>()
-    var deleCardLivResponse = MutableLiveData<AddCardModel>()
+    var addCardLiveResponse = MutableLiveData<AddCardModel>()
+    var deleteCardLivResponse = MutableLiveData<AddCardModel>()
     var cardListLiveResponse = MutableLiveData<CardListModel>()
     var amount = MutableLiveData<String>()
     var resources: Resources? = null
@@ -31,17 +32,10 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
         navigator.addCard()
     }
 
-    fun deselectCard() {
-        navigator.deselectCard()
-    }
-
-    fun amountAdd(view: View) {
-        navigator.addAmount(view)
-    }
-
-    fun removeCard(){
+    fun removeCard() {
         navigator.removeCard()
     }
+
     fun cardDeselect() {
         navigator.deselectCard()
     }
@@ -53,7 +47,6 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
             (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), "100", "1"))
         }
     }
-
 
     fun callAddCardApi(stripeID: String) {
         if (BaseApplication.isNetworkAvailable) {

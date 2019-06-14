@@ -3,30 +3,38 @@ package com.gox.foodservice.ui.dashboard
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.foodservice.model.FoodieCheckRequestModel
 import com.gox.foodservice.model.FoodieRatingRequestModel
-import com.gox.foodservice.repositary.FoodieRepository
+import com.gox.foodservice.repositary.FoodieRepository.Companion.FoodieRepoInstance
 
 class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
 
-    var latitude = MutableLiveData<Double>()
-    var longitude = MutableLiveData<Double>()
     var foodieCheckRequestModel = MutableLiveData<FoodieCheckRequestModel>()
     var foodieUpdateRequestModel = MutableLiveData<FoodieCheckRequestModel>()
-    var showLoading = MutableLiveData<Boolean>()
     var foodieRatingRequestModel = MutableLiveData<FoodieRatingRequestModel>()
+
+    var showLoading = MutableLiveData<Boolean>()
+    var latitude = MutableLiveData<Double>()
+    var longitude = MutableLiveData<Double>()
     var orderId = MutableLiveData<Int>()
 
-    fun updateFoodDeliverStatus() {
-        navigator.checkOrderDeliverStatus()
-    }
+    fun updateFoodDeliverStatus() = navigator.checkOrderDeliverStatus()
 
     fun callFoodieCheckRequest() {
         if (BaseApplication.isNetworkAvailable)
-            getCompositeDisposable().add(FoodieRepository.instance().foodieCheckRequest
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
+            getCompositeDisposable().add(FoodieRepoInstance().foodieCheckRequest
+            (object : ApiListener {
+                override fun success(successData: Any) {
+                    foodieCheckRequestModel.value = successData as FoodieCheckRequestModel
+                    showLoading.value = false
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                    showLoading.value = false
+                }
+            }))
     }
 
     fun callFoodieUpdateRequest(status: String) {
@@ -35,8 +43,17 @@ class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
         update["id"] = orderId.value.toString()
         update["status"] = status
         update["_method"] = "PATCH"
-        getCompositeDisposable().add(FoodieRepository.instance().foodieUpdateRequest
-        (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), update))
+        getCompositeDisposable().add(FoodieRepoInstance().foodieUpdateRequest(object : ApiListener {
+            override fun success(successData: Any) {
+                showLoading.value = false
+                foodieUpdateRequestModel.value = successData as FoodieCheckRequestModel
+            }
+
+            override fun fail(failData: Throwable) {
+                showLoading.value = false
+                navigator.showErrorMessage(getErrorMessage(failData))
+            }
+        }, update))
     }
 
     fun callFoodieDeliveryRequest() {
@@ -47,8 +64,17 @@ class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
             update["status"] = "PAYMENT"
             update["_method"] = "PATCH"
             update["otp"] = foodieCheckRequestModel.value!!.responseData.requests.order_otp
-            getCompositeDisposable().add(FoodieRepository.instance().foodieUpdateRequest
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), update))
+            getCompositeDisposable().add(FoodieRepoInstance().foodieUpdateRequest(object : ApiListener {
+                override fun success(successData: Any) {
+                    showLoading.value = false
+                    foodieUpdateRequestModel.value = successData as FoodieCheckRequestModel
+                }
+
+                override fun fail(failData: Throwable) {
+                    showLoading.value = false
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                }
+            }, update))
         }
     }
 
@@ -61,8 +87,18 @@ class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
             update["_method"] = "POST"
             update["rating"] = rating
             update["comment"] = comment
-            getCompositeDisposable().add(FoodieRepository.instance().foodieRatingRequest
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), update))
+            getCompositeDisposable().add(FoodieRepoInstance().foodieRatingRequest
+            (object : ApiListener {
+                override fun success(successData: Any) {
+                    showLoading.value = false
+                    foodieRatingRequestModel.value = successData as FoodieRatingRequestModel
+                }
+
+                override fun fail(failData: Throwable) {
+                    showLoading.value = false
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                }
+            }, update))
         }
     }
 }

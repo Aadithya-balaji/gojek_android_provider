@@ -34,6 +34,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/service_save_btn"
+            style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -43,7 +44,6 @@
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
             android:text="@string/save"
-            style="@style/SmallText"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp"

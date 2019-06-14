@@ -12,7 +12,6 @@ import com.gox.partner.models.CountryListResponse
 import com.gox.partner.models.ProfileResponse
 import com.gox.partner.models.ResProfileUpdate
 import com.gox.partner.repository.AppRepository
-import com.gox.xjek.ui.profile.ProfileNavigator
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

@@ -28,13 +28,14 @@ import com.gox.partner.databinding.DialogTaxiIncomingRequestBinding
 import com.gox.partner.models.CheckRequestModel
 import com.gox.partner.models.Request
 import com.gox.taxiservice.views.main.TaxiDashboardActivity
-import com.gox.xuberservice.xuberMainActivity.XuberDashBoardActivity
+import com.gox.xuberservice.xuberMainActivity.XUberDashBoardActivity
 import java.util.concurrent.TimeUnit
 
 class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBinding>(), IncomingNavigator {
 
-    private lateinit var dialogTaxiIncomingReqBinding: DialogTaxiIncomingRequestBinding
+    private lateinit var mBinding: DialogTaxiIncomingRequestBinding
     private lateinit var mViewModel: IncomingRequestViewModel
+
     private lateinit var circularProgressBar: FullCircularProgressBar
     private lateinit var timerToTakeOrder: MyCountDownTimer
     private lateinit var request: Request
@@ -77,11 +78,11 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
-        dialogTaxiIncomingReqBinding = viewDataBinding as DialogTaxiIncomingRequestBinding
+        mBinding = viewDataBinding as DialogTaxiIncomingRequestBinding
         mViewModel = IncomingRequestViewModel()
         mViewModel.navigator = this
-        dialogTaxiIncomingReqBinding.requestmodel = mViewModel
-        dialogTaxiIncomingReqBinding.lifecycleOwner = this
+        mBinding.requestmodel = mViewModel
+        mBinding.lifecycleOwner = this
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
         mPlayer = MediaPlayer.create(context, R.raw.alert_tone)
@@ -137,7 +138,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                 timerToTakeOrder.cancel()
                 when {
                     request.admin_service_id == 3 ->
-                        activity!!.startActivity(Intent(activity, XuberDashBoardActivity::class.java))
+                        activity!!.startActivity(Intent(activity, XUberDashBoardActivity::class.java))
                     request.admin_service_id == 2 ->
                         activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
                     else -> activity!!.startActivity(Intent(activity, TaxiDashboardActivity::class.java))
@@ -174,7 +175,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     }
 
     fun initCircularSeekBar(percentage: Float, time: String) {
-        circularProgressBar = dialogTaxiIncomingReqBinding.ivRequestTime
+        circularProgressBar = mBinding.ivRequestTime
         val cpbModel = CircularProgressBarModel()
         cpbModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
         cpbModel.color = ContextCompat.getColor(context!!, R.color.grey)
@@ -202,7 +203,9 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     }
 
     private fun getBundleArgument() {
-        val requestModel = if (arguments != null && arguments!!.containsKey("requestModel")) arguments!!.getString("requestModel") else ""
+        val requestModel = if (arguments != null && arguments!!.containsKey("requestModel"))
+            arguments!!.getString("requestModel")
+        else ""
         if (!requestModel.isNullOrEmpty()) {
             incomingRequestModel = Gson().fromJson(requestModel.toString(), CheckRequestModel::class.java)
             request = incomingRequestModel!!.responseData.requests[0]
@@ -258,7 +261,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         mPlayer.stop()
     }
 
-    override fun showErrormessage(error: String) {
+    override fun showErrorMessage(error: String) {
         loadingObservable.value = false
         ViewUtils.showToast(activity!!, error, false)
     }

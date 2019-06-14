@@ -9,7 +9,7 @@
 
     <application>
         <activity
-            android:name="com.gox.xuberservice.xuberMainActivity.XuberDashBoardActivity"
+            android:name="com.gox.xuberservice.xuberMainActivity.XUberDashBoardActivity"
             android:screenOrientation="portrait" />
 
         <activity

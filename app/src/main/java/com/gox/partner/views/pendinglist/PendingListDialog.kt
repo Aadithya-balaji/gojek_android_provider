@@ -21,7 +21,7 @@ import com.gox.partner.views.manage_services.ManageServicesActivity
 
 class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
 
-    private lateinit var pendingListDialogBinding: PendingListDialogBinding
+    private lateinit var mBinding: PendingListDialogBinding
     private lateinit var mViewModel: PendingListViewModel
 
     private var dashBoardActivity: DashBoardActivity? = null
@@ -44,12 +44,12 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
-        pendingListDialogBinding = viewDataBinding as PendingListDialogBinding
+        mBinding = viewDataBinding as PendingListDialogBinding
         mViewModel = ViewModelProviders.of(this).get(PendingListViewModel::class.java)
         mViewModel.navigator = this
-        pendingListDialogBinding.pendinglistModel = mViewModel
+        mBinding.pendinglistModel = mViewModel
 
-        observeLiveData(mViewModel.getVerificationObservable()){
+        observeLiveData(mViewModel.getVerificationObservable()) {
             dialogType = it.getDialogType()
             isServiceNeed = it.isService
             isDocumentNeed = it.isDocument
@@ -62,41 +62,32 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     private fun updateView() {
         when (dialogType) {
 
-            0 -> {
-                dismiss()
-            }
+            0 -> dismiss()
 
             1 -> {
-                pendingListDialogBinding.llDocPending.visibility = View.VISIBLE
-                pendingListDialogBinding.llLowBalance.visibility = View.GONE
-                pendingListDialogBinding.llWaiting.visibility = View.GONE
+                mBinding.llDocPending.visibility = View.VISIBLE
+                mBinding.llLowBalance.visibility = View.GONE
+                mBinding.llWaiting.visibility = View.GONE
             }
 
             2 -> {
-                pendingListDialogBinding.llDocPending.visibility = View.GONE
-                pendingListDialogBinding.llWaiting.visibility = View.VISIBLE
-                pendingListDialogBinding.llLowBalance.visibility = View.GONE
+                mBinding.llDocPending.visibility = View.GONE
+                mBinding.llWaiting.visibility = View.VISIBLE
+                mBinding.llLowBalance.visibility = View.GONE
             }
 
             3 -> {
-                pendingListDialogBinding.llDocPending.visibility = View.GONE
-                pendingListDialogBinding.llLowBalance.visibility = View.VISIBLE
-                pendingListDialogBinding.llWaiting.visibility = View.GONE
+                mBinding.llDocPending.visibility = View.GONE
+                mBinding.llLowBalance.visibility = View.VISIBLE
+                mBinding.llWaiting.visibility = View.GONE
             }
         }
 
 
-        pendingListDialogBinding.tvAddService.visibility = (if (isServiceNeed == 0) View.VISIBLE else View.GONE)
-        pendingListDialogBinding.tvAddDocument.visibility = (if (isDocumentNeed == 0) View.VISIBLE else View.GONE)
-        pendingListDialogBinding.tvBankDetails.visibility = (if (isBankDetailNeed == 0) View.VISIBLE else View.GONE)
+        mBinding.tvAddService.visibility = (if (isServiceNeed == 0) View.VISIBLE else View.GONE)
+        mBinding.tvAddDocument.visibility = (if (isDocumentNeed == 0) View.VISIBLE else View.GONE)
+        mBinding.tvBankDetails.visibility = (if (isBankDetailNeed == 0) View.VISIBLE else View.GONE)
     }
-
-    /*fun getBundleArugment() {
-        isDocumentNeed = if (arguments != null && arguments!!.containsKey("ISDOCUMENTNEED")) arguments!!.getInt("ISDOCUMENTNEED") else 0
-        isServiceNeed = if (arguments != null && arguments!!.containsKey("ISSERVICENEED")) arguments!!.getInt("ISSERVICENEED") else 0
-        isBankDetailNeed = if (arguments != null && arguments!!.containsKey("ISBANCKDETAILNEED")) arguments!!.getInt("ISBANCKDETAILNEED") else 0
-        dialogType = if (arguments != null && arguments!!.containsKey("TYPE")) arguments!!.getInt("TYPE") else -1
-    }*/
 
     fun isShown() = shown!!
 

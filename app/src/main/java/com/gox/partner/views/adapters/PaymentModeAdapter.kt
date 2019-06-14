@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gox.partner.R
 import com.gox.partner.databinding.RowPaymentModeBinding
-import com.gox.partner.interfaces.CustomClickListner
+import com.gox.partner.interfaces.CustomClickListener
 import com.gox.partner.models.ConfigPayment
 import com.gox.partner.views.account_card.CardListViewModel
 
@@ -20,7 +20,6 @@ class PaymentModeAdapter(context: Context,
 ) : RecyclerView.Adapter<PaymentModeAdapter.PaymentViewHolder>() {
 
     private var context: Context? = null
-    private var paymentList: MutableList<String>? = null
     private var selectedPosition: Int? = -1
     private var payTypes: List<ConfigPayment>? = null
     private var cardListViewModel: CardListViewModel? = null
@@ -34,9 +33,8 @@ class PaymentModeAdapter(context: Context,
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaymentViewHolder {
-        val inflate = DataBindingUtil.inflate<RowPaymentModeBinding>(LayoutInflater.from(parent.context),
-                R.layout.row_payment_mode, parent, false)
-        return PaymentViewHolder(inflate)
+        return PaymentViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                R.layout.row_payment_mode, parent, false))
     }
 
     override fun getItemCount() = payTypes!!.size
@@ -49,24 +47,24 @@ class PaymentModeAdapter(context: Context,
             else
                 holder.paymentBinding.tvPaymentMode.visibility = View.VISIBLE
 
-            holder.paymentBinding.tvPaymentMode.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_payment_card, 0, 0, 0)
+            holder.paymentBinding.tvPaymentMode.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_payment_card, 0, 0, 0)
         } else {
             holder.paymentBinding.tvPaymentMode.visibility = View.GONE
-            holder.paymentBinding.tvPaymentMode.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_payment_cash, 0, 0, 0)
+            holder.paymentBinding.tvPaymentMode.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.ic_payment_cash, 0, 0, 0)
         }
         if (selectedPosition == position) {
-            holder.paymentBinding.tvPaymentMode.background = ContextCompat.getDrawable(context!!, R.drawable.bg_blue_rounded_corner)
+            holder.paymentBinding.tvPaymentMode.background = ContextCompat.getDrawable(context!!,
+                    R.drawable.bg_blue_rounded_corner)
             holder.paymentBinding.tvPaymentMode.setTextColor(ContextCompat.getColor(context!!, R.color.white))
         } else {
             holder.paymentBinding.tvPaymentMode.background = ContextCompat.getDrawable(context!!, R.drawable.bg_white)
             holder.paymentBinding.tvPaymentMode.setTextColor(ContextCompat.getColor(context!!, R.color.black))
         }
-        holder.paymentBinding.paymentmodel = object : CustomClickListner {
-            override fun onListClickListner() {
+        holder.paymentBinding.paymentmodel = object : CustomClickListener {
+            override fun onListClickListener() {
                 selectedPosition = holder.adapterPosition
-                // holder.paymentBinding.tvPaymentMode.background = ContextCompat.getDrawable(context!!, R.drawable.bg_blue_rounded_corner)
-                // holder.paymentBinding.tvPaymentMode.setTextColor(ContextCompat.getColor(context!!, R.color.white))
-                // notifyDataSetChanged()
             }
         }
     }

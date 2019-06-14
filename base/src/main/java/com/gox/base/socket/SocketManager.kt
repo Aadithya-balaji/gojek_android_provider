@@ -12,7 +12,7 @@ object SocketManager {
     private lateinit var mURL: String
 
     private var mSocketCallBack: SocketListener.CallBack? = null
-    private var mConnectionListener: SocketListener.connectionRefreshCallBack? = null
+    private var mConnectionListener: SocketListener.ConnectionRefreshCallBack? = null
 
     private var onConnected: Emitter.Listener = Emitter.Listener {
         if (mSocketCallBack != null)
@@ -26,34 +26,27 @@ object SocketManager {
         if (mSocketCallBack != null)
             mSocketCallBack!!.onDisconnected()
         Log.e("SocketManager", "SocketManager DisConnected ")
-
     }
-
 
     private var onConnectionError: Emitter.Listener = Emitter.Listener {
         if (mSocketCallBack != null)
             mSocketCallBack!!.onConnectionError()
         Log.e("SocketManager", "SocketManager ConnectionError ")
-
     }
 
     private var onConnectionTimeOut: Emitter.Listener = Emitter.Listener {
         if (mSocketCallBack != null)
             mSocketCallBack!!.onConnectionTimeOut()
         Log.e("SocketManager", "SocketManager ConnectionTimeout ")
-
     }
-
 
     fun setOnConnectionListener(socketCallBack: SocketListener.CallBack) {
         mSocketCallBack = socketCallBack
     }
 
-    fun setOnSocketRefreshListener(connectionRefreshCallback: SocketListener.connectionRefreshCallBack){
+    fun setOnSocketRefreshListener(connectionRefreshCallback: SocketListener.ConnectionRefreshCallBack){
         mConnectionListener = connectionRefreshCallback
     }
-
-
 
     fun connect(url: String) {
         mURL = url
@@ -73,7 +66,6 @@ object SocketManager {
         Log.e("SocketManager", "SocketManager establishSocketConnection $mURL")
     }
 
-
     fun emit(key: String, value: Any) {
         mSocket!!.emit(key, value)
     }
@@ -81,7 +73,6 @@ object SocketManager {
     fun onEvent(key: String, listener: Emitter.Listener) {
         mSocket!!.on(key, listener)
     }
-
 
     fun isConnected(): Boolean = mSocket!!.connected()
 

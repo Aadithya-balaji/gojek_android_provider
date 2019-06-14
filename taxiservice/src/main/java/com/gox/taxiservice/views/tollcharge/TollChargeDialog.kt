@@ -55,7 +55,8 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
         mBinding.edtAmount.addTextChangedListener(EditListener())
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
-        val strRequestID = if (arguments != null && arguments!!.containsKey("requestID")) arguments!!.getString("requestID") else ""
+        val strRequestID = if (arguments != null && arguments!!.containsKey("requestID"))
+            arguments!!.getString("requestID") else ""
 
         val locationPoint: ArrayList<LocationPoint> = arrayListOf()
 
@@ -137,17 +138,15 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
         }
     }
 
-    override fun isValidCharge(): Boolean {
-        return when {
-            tollCharge.isEmpty() -> {
-                showErrorMessage(activity!!.getString(R.string.empty_toll_charge))
-                false
-            }
-            tollCharge.toDouble() <= 0 -> {
-                showErrorMessage(activity!!.getString(R.string.invalid_toll_charge))
-                false
-            }
-            else -> true
+    override fun isValidCharge() = when {
+        tollCharge.isEmpty() -> {
+            showErrorMessage(activity!!.getString(R.string.empty_toll_charge))
+            false
         }
+        tollCharge.toDouble() <= 0 -> {
+            showErrorMessage(activity!!.getString(R.string.invalid_toll_charge))
+            false
+        }
+        else -> true
     }
 }

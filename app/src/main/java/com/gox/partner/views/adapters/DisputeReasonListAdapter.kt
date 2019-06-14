@@ -11,59 +11,47 @@ import com.gox.partner.databinding.RowDisputeListBinding
 import com.gox.partner.models.DisputeListData
 import com.gox.partner.views.history_details.HistoryDetailViewModel
 
+class DisputeReasonListAdapter(val viewModel: HistoryDetailViewModel, private val disputeReason: List<DisputeListData>)
+    : RecyclerView.Adapter<DisputeReasonListAdapter.MyViewHolder>() {
 
-class DisputeReasonListAdapter(val historyDetailViewModel: HistoryDetailViewModel, val disputereasonList: List<DisputeListData>) : RecyclerView.Adapter<DisputeReasonListAdapter.MyViewHolder>() {
-
-    private var mOnAdapterClickListener: ReasonListClicklistner? = null
+    private var mListener: ReasonListClickListener? = null
     private var selectedPosition = -1
 
-    fun setOnClickListener(onClickListener: ReasonListClicklistner) {
-        this.mOnAdapterClickListener = onClickListener
+    fun setOnClickListener(onClickListener: ReasonListClickListener) {
+        this.mListener = onClickListener
     }
 
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
         this.context = parent.context
         val inflate = DataBindingUtil.inflate<RowDisputeListBinding>(LayoutInflater.from(parent.context),
                 R.layout.row_dispute_list, parent, false)
         return MyViewHolder(inflate)
     }
 
-    override fun getItemCount(): Int = disputereasonList.size
+    override fun getItemCount(): Int = disputeReason.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.rowDisputeListBinding.llDisputeReaons.tag = position
-        holder.rowDisputeListBinding.tvDisbuteReason.setText(disputereasonList.get(position).dispute_name)
+        holder.rowDisputeListBinding.tvDisbuteReason.text = disputeReason.get(position).dispute_name
 
-        if(selectedPosition==position){
-            holder.rowDisputeListBinding.rbDisbute.isChecked=true
-        }else{
-            holder.rowDisputeListBinding.rbDisbute.isChecked=false
-
-
-        }
-      /*  holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener {
-            if (mOnAdapterClickListener != null) {
-                mOnAdapterClickListener!!.reasonOnItemClick((disputereasonList.get(position).dispute_name).toLowerCase().capitalize())
-            }
-        }*/
+        holder.rowDisputeListBinding.rbDisbute.isChecked = selectedPosition == position
+        /*  holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener {
+              if (mListener != null) {
+                  mListener!!.reasonOnItemClick((disputeReason.get(position).dispute_name).toLowerCase().capitalize())
+              }
+          }*/
         holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener { v -> itemCheckChanged(v) }
     }
 
-
     private fun itemCheckChanged(v: View) {
         selectedPosition = v.tag as Int
-        historyDetailViewModel.selectedDisputeModel.value=disputereasonList.get(selectedPosition)
+        viewModel.selectedDisputeModel.value = disputeReason[selectedPosition]
         notifyDataSetChanged()
     }
 
     inner class MyViewHolder(itemView: RowDisputeListBinding) : RecyclerView.ViewHolder(itemView.root) {
         val rowDisputeListBinding = itemView
     }
-
-
 }
-
-

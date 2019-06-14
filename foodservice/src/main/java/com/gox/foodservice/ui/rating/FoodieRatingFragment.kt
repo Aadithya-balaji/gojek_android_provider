@@ -16,10 +16,11 @@ import com.gox.foodservice.databinding.FoodieFragmentRatingBinding
 import com.gox.foodservice.ui.dashboard.FoodieDashboardViewModel
 import kotlinx.android.synthetic.main.foodie_fragment_rating.*
 
-class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRatingBinding>(), FoodieRatingNavigator {
+class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRatingBinding>(),
+        FoodieRatingNavigator {
 
     private var appCompatActivity: AppCompatActivity? = null
-    private var fragmentRatingBinding: FoodieFragmentRatingBinding? = null
+    private var mBinding: FoodieFragmentRatingBinding? = null
 
     val b = bundle
 
@@ -30,7 +31,7 @@ class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRa
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     override fun showErrorMessage(errorMessage: String) {
@@ -41,13 +42,13 @@ class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRa
         }
     }
 
-    override fun getLayout(): Int = R.layout.foodie_fragment_rating
+    override fun getLayout() = R.layout.foodie_fragment_rating
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
-        fragmentRatingBinding = viewDataBinding as FoodieFragmentRatingBinding
-        val mTaxiInvoiceViewModel = ViewModelProviders.of(activity!!).get(FoodieDashboardViewModel::class.java)
+        mBinding = viewDataBinding as FoodieFragmentRatingBinding
+        val mFoodieViewModel = ViewModelProviders.of(activity!!).get(FoodieDashboardViewModel::class.java)
         val mViewModel = FoodieRatingViewModel()
-        fragmentRatingBinding!!.viewModel = mViewModel
+        mBinding!!.viewModel = mViewModel
         mViewModel.navigator = this
         tvUserName.text = b.getString("name")!!
         tvBookingId.text = b.getString("bookingID")!!
@@ -65,7 +66,7 @@ class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRa
         }
 
         tv_rating_submit.setOnClickListener {
-            mTaxiInvoiceViewModel.callFoodieRatingRequest(rbRatingBar.rating.toInt().toString(), tvComments.text.toString())
+            mFoodieViewModel.callFoodieRatingRequest(rbRatingBar.rating.toInt().toString(), tvComments.text.toString())
             dismiss()
         }
     }

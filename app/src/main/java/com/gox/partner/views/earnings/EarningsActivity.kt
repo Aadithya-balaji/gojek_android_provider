@@ -2,7 +2,6 @@ package com.gox.partner.views.earnings
 
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
@@ -25,7 +24,7 @@ class EarningsActivity : BaseActivity<ActivityEarningsBinding>(), EarningsNaviga
         mBinding = mViewDataBinding as ActivityEarningsBinding
         mViewModel = ViewModelProviders.of(this).get(EarningsViewModel::class.java)
         mViewModel.navigator = this
-        mViewModel.loadingProgress = loadingObservable as MutableLiveData<Boolean>
+        mViewModel.loadingProgress = loadingObservable
 
         mBinding.viewModel = mViewModel
 
@@ -99,7 +98,7 @@ class EarningsActivity : BaseActivity<ActivityEarningsBinding>(), EarningsNaviga
         }
 
         mViewModel.earnings.observe(this, Observer {
-            if (it != null){
+            if (it != null) {
                 mBinding.viewPagerAdapter = EarningsPagerAdapter(this.supportFragmentManager, it.responseData, this)
                 vpEarnings.setPageTransformer(false, mBinding.viewPagerAdapter)
                 vpEarnings.currentItem = EarningsPagerAdapter.FIRST_PAGE

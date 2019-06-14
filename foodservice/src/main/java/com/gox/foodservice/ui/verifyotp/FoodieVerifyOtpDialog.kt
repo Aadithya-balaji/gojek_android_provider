@@ -7,16 +7,16 @@ import androidx.lifecycle.ViewModelProviders
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.utils.ViewUtils
 import com.gox.foodservice.R
-import com.gox.foodservice.databinding.FoodieFragmentVerifyOtpBinding
+import com.gox.foodservice.databinding.FragmentFoodieVerifyOtpBinding
 import com.gox.foodservice.ui.dashboard.FoodieDashboardViewModel
-import kotlinx.android.synthetic.main.foodie_fragment_verify_otp.*
+import kotlinx.android.synthetic.main.fragment_foodie_verify_otp.*
 
-class FoodieVerifyOtpDialog : BaseDialogFragment<FoodieFragmentVerifyOtpBinding>(), FoodieVerifyOTPNavigator {
+class FoodieVerifyOtpDialog : BaseDialogFragment<FragmentFoodieVerifyOtpBinding>(), FoodieVerifyOTPNavigator {
 
-    private var fragmentVerifyOtpBinding: FoodieFragmentVerifyOtpBinding? = null
-    private lateinit var foodieDashboardViewModel: FoodieDashboardViewModel
+    private lateinit var mBinding: FragmentFoodieVerifyOtpBinding
+    private lateinit var mViewModel: FoodieDashboardViewModel
 
-    override fun getLayout() = R.layout.foodie_fragment_verify_otp
+    override fun getLayout() = R.layout.fragment_foodie_verify_otp
 
     companion object {
         var otp: String? = null
@@ -31,11 +31,11 @@ class FoodieVerifyOtpDialog : BaseDialogFragment<FoodieFragmentVerifyOtpBinding>
     }
 
     override fun initView(mViewDataBinding: ViewDataBinding, view: View) {
-        fragmentVerifyOtpBinding = mViewDataBinding as FoodieFragmentVerifyOtpBinding
+        mBinding = mViewDataBinding as FragmentFoodieVerifyOtpBinding
         val verifyOTPModule = FoodieVerifyOTPViewModel()
         verifyOTPModule.navigator = this
-        fragmentVerifyOtpBinding!!.otpviewmodel = verifyOTPModule
-        foodieDashboardViewModel = ViewModelProviders.of(activity!!).get(FoodieDashboardViewModel::class.java)
+        mBinding.otpviewmodel = verifyOTPModule
+        mViewModel = ViewModelProviders.of(activity!!).get(FoodieDashboardViewModel::class.java)
 
         when {
             payable!!.toDouble() > 0 -> payment_txt.visibility = VISIBLE
@@ -43,7 +43,7 @@ class FoodieVerifyOtpDialog : BaseDialogFragment<FoodieFragmentVerifyOtpBinding>
 
         bt_start_trip.setOnClickListener {
             if (ed_otp.text.toString() == otp) {
-                foodieDashboardViewModel.callFoodieDeliveryRequest()
+                mViewModel.callFoodieDeliveryRequest()
                 dismiss()
             } else ViewUtils.showToast(context!!, resources.getString(R.string.foodie_invalid_otp), false)
         }

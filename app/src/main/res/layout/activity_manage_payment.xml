@@ -14,12 +14,12 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tbr_payment"
             android:layout_width="match_parent"
-            app:titleTextAppearance="@style/MediumText"
             android:layout_height="?attr/actionBarSize"
             app:contentInsetEnd="0dp"
             app:contentInsetStart="0dp"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:titleTextAppearance="@style/MediumText">
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tb_payment"

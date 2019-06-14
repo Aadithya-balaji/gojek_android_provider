@@ -3,18 +3,14 @@ package com.gox.base.data
 import android.Manifest
 import android.content.Context
 import android.util.Base64
-import androidx.lifecycle.MutableLiveData
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseApplication
-import org.intellij.lang.annotations.Language
 import java.nio.charset.Charset
 
 object Constants {
 
     const val DEFAULT_ZOOM = 15.0f
     const val CUSTOM_PREFERENCE: String = "BaseConfigSetting"
-
-    const val SALT_KEY = "salt_key"
 
     const val SERVICE_ID = "service_id"
     const val CATEGORY_ID = "category_id"
@@ -26,8 +22,8 @@ object Constants {
 
     const val M_TOKEN = "Bearer "
     const val APP_REQUEST_CODE = 99
-    const val COUNTRYLIST_REQUEST_CODE = 100
-    const val CITYLIST_REQUEST_CODE = 102
+    const val COUNTRY_LIST_REQUEST_CODE = 100
+    const val CITY_LIST_REQUEST_CODE = 102
 
     const val TEMP_FILE_NAME = "Gojek_Provider"
     const val TYPE_PROVIDER = "provider"
@@ -45,10 +41,8 @@ object Constants {
 
     object RequestCode {
         const val PERMISSIONS_CODE_LOCATION = 1001
-        const val PERMISSIONS_CODE_FILE = 1002
-        const val ORDER = "ORDER"
         const val PERMISSION_CODE_CAMERA = 1003
-        const val ADDCARD = 125
+        const val ADD_CARD = 125
         const val SELECTED_CARD = 1004
     }
 
@@ -84,7 +78,7 @@ object Constants {
         }!!
     }
 
-    object ROOM_NAME {
+    object RoomName {
         var COMMON_ROOM_NAME: String = "joinCommonRoom"
         var STATUS: String = "socketStatus"
         var NEW_REQ: String = "newRequest"
@@ -100,7 +94,7 @@ object Constants {
         var ON_MESSAGE_RECEIVE: String = "new_message"
     }
 
-    object ROOM_ID {
+    object RoomId {
         @JvmField
         var COMMON_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.CITY_ID}"
         var TRANSPORT_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_TRANSPORT"
@@ -114,17 +108,17 @@ object Constants {
         const val ORDER = "ORDER"
     }
 
+    object FareType {
+        const val DISTANCE_TIME = "DISTANCETIME"
+        const val FIXED = "FIXED"
+        const val HOURLY = "HOURLY"
+    }
+
     object BroadCastTypes {
         const val TRANSPORT_BROADCAST = "TRANSPORT_BROADCAST"
         const val SERVICE_BROADCAST = "SERVICE_BROADCAST"
         const val ORDER_BROADCAST = "ORDER_BROADCAST"
         const val BASE_BROADCAST = "BASE_BROADCAST"
-    }
-
-    object ProviderStatus {
-        const val ACTIVE = "ACTIVE"
-        const val RIDING = "RIDING"
-        const val OFFLINE = "OFFLINE"
     }
 
     object RideStatus {
@@ -137,38 +131,30 @@ object Constants {
         const val PICKED_UP = "PICKEDUP"
         const val DROPPED = "DROPPED"
         const val COMPLETED = "COMPLETED"
+        const val PROCESSING = "PROCESSING"
+        const val REACHED = "REACHED"
     }
 
     object Common {
         const val ID = "id"
-        const val RATING = "rating"
-        const val COMMENT = "comment"
         const val ADMIN_SERVICE_ID = "admin_service_id"
         const val OTP = "otp"
         const val METHOD = "_method"
-        const val SERVICEID = "service_id"
+        const val SERVICE_ID = "service_id"
     }
 
-    object XuperProvider {
-        const val AFTER_IMAGE = "after_picture"
-        const val BEFORE_IMAGE = "before_picture"
-        const val EXTRA_CHARGE = "extra_charge"
-        const val EXTRA_CHARGE_NOTES = "extra_charge_notes"
-        const val PAYMENT = "PAYMENT"
+    object XUberProvider {
         const val START = "START"
         const val CANCEL = "Cancel"
         const val STATUS = "status"
-        const val REQCANCEL = "Cancel"
         const val RATING = "rating"
         const val COMMENT = "comment"
         const val REASON = "reason"
     }
 
     object Dispute {
-        const val DIPUSTE_TYPE = "dispute_type"
+        const val DISPUTE_TYPE = "dispute_type"
         const val DISPUTE_NAME = "dispute_name"
-        const val COMMENTS = "comments"
-        const val DISPUTE_ID = "dispute_id"
         const val USER_ID = "user_id"
         const val PROVIDER_ID = "provider_id"
         const val REQUEST_ID = "id"

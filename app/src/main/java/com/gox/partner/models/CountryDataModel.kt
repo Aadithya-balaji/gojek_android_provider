@@ -3,8 +3,7 @@ package com.gox.partner.models
 import com.google.gson.annotations.SerializedName
 
 data class CountryDataModel(
-        @SerializedName("id")
-        var id: String? = null,
+        var id: String = "",
         @SerializedName("country_name")
-        var CountryName: String? = null
+        var CountryName: String = ""
 )

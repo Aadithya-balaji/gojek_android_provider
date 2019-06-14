@@ -39,8 +39,8 @@ class Enums {
         const val DOCUMENT_UPLOAD_PDF = 108
 
 
-        const val IMAGE_TYPE ="image"
-        const val PDF_TYPE ="pdf"
+        const val IMAGE_TYPE = "image"
+        const val PDF_TYPE = "pdf"
 
         //PaymentType
         const val PAYMENT_CASH = 1

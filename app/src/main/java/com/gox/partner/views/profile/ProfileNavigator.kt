@@ -1,12 +1,12 @@
-package com.gox.xjek.ui.profile
+package com.gox.partner.views.profile
 
 import androidx.databinding.ObservableField
 
 interface ProfileNavigator {
 
     fun profileUpdateValidation(email: String,
-                                phonenumber: String,
-                                firstname: String,
+                                phoneNumber: String,
+                                firstName: String,
                                 country: String,
                                 city: String
     ): Boolean

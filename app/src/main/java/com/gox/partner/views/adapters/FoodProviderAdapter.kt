@@ -10,25 +10,21 @@ import com.gox.foodservice.ui.dashboard.FoodieDashboardActivity
 import com.gox.partner.R
 import com.gox.partner.databinding.RowFoodproviderItemBinding
 
-class FoodProviderAdapter(activity: FragmentActivity?) : RecyclerView.Adapter<FoodProviderAdapter.MyViewHolder>() {
-    val activity = activity
+class FoodProviderAdapter(val activity: FragmentActivity?) : RecyclerView.Adapter<FoodProviderAdapter.MyViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
-        val inflate = DataBindingUtil.inflate<RowFoodproviderItemBinding>(LayoutInflater.from(parent.context), R.layout.row_foodprovider_item, parent, false)
-        return MyViewHolder(inflate)
-
+        return MyViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                R.layout.row_foodprovider_item, parent, false))
     }
 
     override fun getItemCount(): Int = 1
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
-        holder.rowFoodproviderItemBinding.tvApprove.setOnClickListener() {
+        holder.mBinding.tvApprove.setOnClickListener() {
             activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
         }
-
     }
 
     class MyViewHolder(itemView: RowFoodproviderItemBinding) : RecyclerView.ViewHolder(itemView.root) {
-        val rowFoodproviderItemBinding = itemView
+        val mBinding = itemView
     }
 }

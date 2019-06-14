@@ -1603,15 +1603,10 @@ class CountryUtils {
     static Country getByNameCodeFromCustomCountries(Context context,
                                                     List<Country> customCountries,
                                                     String nameCode) {
-        if (customCountries == null || customCountries.size() == 0) {
+        if (customCountries == null || customCountries.size() == 0)
             return getByNameCodeFromAllCountries(context, nameCode);
-        } else {
-            for (Country country : customCountries) {
-                if (country.getIso().equalsIgnoreCase(nameCode)) {
-                    return country;
-                }
-            }
-        }
+        else for (Country country : customCountries)
+            if (country.getIso().equalsIgnoreCase(nameCode)) return country;
         return null;
     }
 
@@ -1624,11 +1619,8 @@ class CountryUtils {
      */
     static Country getByNameCodeFromAllCountries(Context context, String nameCode) {
         List<Country> countries = CountryUtils.getAllCountries(context);
-        for (Country country : countries) {
-            if (country.getIso().equalsIgnoreCase(nameCode)) {
-                return country;
-            }
-        }
+        for (Country country : countries)
+            if (country.getIso().equalsIgnoreCase(nameCode)) return country;
         return null;
     }
 
@@ -1644,9 +1636,8 @@ class CountryUtils {
      * @return List of timezone and country.
      */
     private static Map<String, List<String>> getTimeZoneAndCountryISOs(Context context) {
-        if (timeZoneAndCountryISOs != null && !timeZoneAndCountryISOs.isEmpty()) {
+        if (timeZoneAndCountryISOs != null && !timeZoneAndCountryISOs.isEmpty())
             return timeZoneAndCountryISOs;
-        }
 
         timeZoneAndCountryISOs = new HashMap<>();
 
@@ -1659,12 +1650,11 @@ class CountryUtils {
         try {
             while (true) {
                 lineJustFetched = buf.readLine();
-                if (lineJustFetched == null) {
-                    break;
-                } else {
+                if (lineJustFetched == null) break;
+                else {
                     wordsArray = lineJustFetched.split("\t");
                     // Ignore line which have # as the first character.
-                    if (!lineJustFetched.substring(0, 1).contains("#")) {
+                    if (!lineJustFetched.substring(0, 1).contains("#"))
                         if (wordsArray.length >= 3) {
                             // First word is country code or list of country code separate by comma
                             List<String> isos = new ArrayList<>();
@@ -1672,7 +1662,6 @@ class CountryUtils {
                             // Third word in wordsArray is timezone.
                             timeZoneAndCountryISOs.put(wordsArray[2], isos);
                         }
-                    }
                 }
             }
         } catch (IOException e) {

@@ -10,7 +10,9 @@ import com.gox.base.data.PreferencesKey
 import com.gox.partner.R
 import com.gox.partner.models.EarningsResponseData
 
-class EarningsPagerAdapter(fragmentManager: FragmentManager, private val response: EarningsResponseData, private val activity: EarningsActivity)
+class EarningsPagerAdapter(fragmentManager: FragmentManager,
+                           private val response: EarningsResponseData,
+                           private val activity: EarningsActivity)
     : FragmentPagerAdapter(fragmentManager), ViewPager.PageTransformer {
 
     override fun getItem(position: Int): Fragment {

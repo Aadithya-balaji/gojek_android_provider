@@ -12,5 +12,5 @@ data class StatusResponseModel(
         @SerializedName("responseData")
         var responseData: StatusResponseDataModel? = null,
         @SerializedName("error")
-        var error: List<Object>? = null
+        var error: List<Any>? = null
 )

@@ -9,7 +9,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.gox.partner.R;
 
-
 public class IntroSliderTransformation implements ViewPager.PageTransformer {
     public void transformPage(@NonNull View page, float position) {
         TextView tvDesc = page.findViewById(R.id.description);

@@ -208,7 +208,7 @@ data class HistoryDetailModel(
                 val static_map: String? = "",
                 val status: String? = "",
                 val user: User? = User(),
-                val dispute:Dispute?=Dispute(),
+                val dispute: Dispute? = Dispute(),
                 val user_id: Int? = 0
         ) {
             data class User(
@@ -274,7 +274,7 @@ data class HistoryDetailModel(
                 val status: String? = "",
                 val store_order_invoice_id: String? = "",
                 val user: User? = User(),
-                val dispute:Dispute?=Dispute(),
+                val dispute: Dispute? = Dispute(),
                 val user_id: Int? = 0
         ) {
             data class Delivery(
@@ -355,7 +355,7 @@ data class HistoryDetailModel(
                     )
 
                     data class Store(
-                            val commission:  Double? = 0.0,
+                            val commission: Double? = 0.0,
                             val free_delivery: Int? = 0,
                             val id: Int? = 0,
                             val offer_min_amount: String? = "",

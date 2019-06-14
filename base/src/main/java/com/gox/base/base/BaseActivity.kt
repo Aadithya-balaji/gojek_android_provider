@@ -27,7 +27,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.gox.base.R
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.utils.LocaleUtils
-import com.gox.base.utils.NetworkUtils
 import com.gox.base.utils.PermissionUtils
 import com.gox.base.utils.RunTimePermission
 import com.gox.base.views.CustomDialog
@@ -38,6 +37,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     private lateinit var mViewDataBinding: T
     private lateinit var mCustomLoaderDialog: CustomDialog
+    private lateinit var mNoInternetDialog: Dialog
     private lateinit var mParentView: View
     private lateinit var context: Context
 
@@ -45,14 +45,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private var locationRequest: LocationRequest? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
 
-    private lateinit var mNoInternetDialog: Dialog
-
     @LayoutRes
     protected abstract fun getLayoutId(): Int
 
     val loadingObservable: MutableLiveData<Boolean> get() = loadingLiveData
-
-    protected val isNetworkConnected: Boolean get() = NetworkUtils.isNetworkConnected(applicationContext)
 
     protected abstract fun initView(mViewDataBinding: ViewDataBinding?)
 
@@ -122,7 +118,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     }
 
     protected fun launchNewActivity(cls: Class<*>, shouldCloseActivity: Boolean) {
-        startActivity(Intent(applicationContext, cls))
+        startActivity(Intent(context, cls))
         if (shouldCloseActivity) finish()
     }
 

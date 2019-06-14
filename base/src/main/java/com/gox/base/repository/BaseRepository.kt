@@ -16,7 +16,6 @@ import java.net.SocketTimeoutException
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 open class BaseRepository {
 
     @Inject
@@ -48,8 +47,10 @@ open class BaseRepository {
                 else NetworkError.DATA_EXCEPTION
             }
             is HttpException -> {
-                if (e.code() == 401 && !PreferencesHelper.get(PreferencesKey.ACCESS_TOKEN, "")
-                                .equals("")) SessionManager.clearSession()
+                if (e.code() == 401 && !PreferencesHelper
+                                .get(PreferencesKey.ACCESS_TOKEN, "")
+                                .equals(""))
+                    SessionManager.clearSession()
                 getErrorMessage(e.response().errorBody()!!)
             }
             is SocketTimeoutException -> NetworkError.TIME_OUT

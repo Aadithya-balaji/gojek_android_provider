@@ -5,13 +5,15 @@ import android.content.Context
 import android.os.Environment
 import android.util.Log
 import com.gox.base.data.Constants
+import com.gox.base.data.Constants.FareType.DISTANCE_TIME
+import com.gox.base.data.Constants.FareType.FIXED
+import com.gox.base.data.Constants.FareType.HOURLY
 import com.gox.partner.R
 import com.gox.partner.models.SubServicePriceCategoriesResponse
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.regex.Pattern
 
 class CommonMethods {
 
@@ -19,22 +21,11 @@ class CommonMethods {
         fun getDefaultFileName(context: Context): File {
             val imageFile: File?
             val isSDPresent = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
-            imageFile = if (isSDPresent) { // External storage path
-                File(Environment.getExternalStorageDirectory().toString() +
-                        File.separator + Constants.TEMP_FILE_NAME + System.currentTimeMillis() + ".png")
-            } else {  // Internal storage path
-                File(context.filesDir.toString() + File.separator +
-                        Constants.TEMP_FILE_NAME + System.currentTimeMillis() + ".png")
-            }
+            imageFile = (if (isSDPresent) File(Environment.getExternalStorageDirectory().toString() +
+                    File.separator + Constants.TEMP_FILE_NAME + System.currentTimeMillis() + ".png")
+            else File(context.filesDir.toString() + File.separator +
+                    Constants.TEMP_FILE_NAME + System.currentTimeMillis() + ".png"))
             return imageFile
-        }
-
-        fun validateEmail(email: String): Boolean {
-            val EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +
-                    "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
-            val pattern = Pattern.compile(EMAIL_PATTERN)
-            val matcher = pattern.matcher(email)
-            return email.isNotEmpty() && matcher.matches()
         }
 
         fun validatePhone(phone: String): Boolean {
@@ -64,21 +55,21 @@ class CommonMethods {
             val monthString = SimpleDateFormat("MMM").format(date) // Jun
             val monthNumber = SimpleDateFormat("MM").format(date) // 06
             val hours = SimpleDateFormat("hh").format(date) // 12
-            val mins = SimpleDateFormat("mm").format(date) // 60
-            val am_pm = SimpleDateFormat("a").format(date) // 60
+            val min = SimpleDateFormat("mm").format(date) // 60
+            val amPm = SimpleDateFormat("a").format(date) // 60
 
             val year = calendar!!.get(Calendar.YEAR)
 
             Log.d("Date", day + "-" + dayOfTheWeek + "-" + monthString + "-" + monthNumber +
-                    "-" + year + "/" + hours + ":" + mins + ":" + am_pm)
+                    "-" + year + "/" + hours + ":" + min + ":" + amPm)
 
             if (request == "Req_Date_Month") return "$day $monthString"
-            if (request == "Req_time") return "$hours:$mins $am_pm"
+            if (request == "Req_time") return "$hours:$min $amPm"
 
-            val day_month = calendar.get(Calendar.DAY_OF_MONTH)
+            val dayMonth = calendar.get(Calendar.DAY_OF_MONTH)
             val strMonth = SimpleDateFormat("MMM").format(calendar.time)
 
-            if (strMonth != null) strDate = Integer.toString(day_month) + "-" +
+            if (strMonth != null) strDate = Integer.toString(dayMonth) + "-" +
                     strMonth + "-" + Integer.toString(year)
 
             return strDate
@@ -88,19 +79,19 @@ class CommonMethods {
         fun getFare(activity: Activity, servicePrices: SubServicePriceCategoriesResponse.Servicescityprice,
                     providerService: List<SubServicePriceCategoriesResponse.ProviderServices>): String =
                 when (servicePrices.fare_type) {
-                    "HOURLY" -> {
+                    HOURLY -> {
                         if (providerService.isNotEmpty())
                             providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
                         else
                             servicePrices.per_mins + " " + activity.getString(R.string.per_hour)
                     }
-                    "FIXED" -> {
+                    FIXED -> {
                         if (providerService.isNotEmpty())
                             providerService[0].base_fare + " " + activity.getString(R.string.fixed)
                         else
                             servicePrices.base_fare + " " + activity.getString(R.string.fixed)
                     }
-                    "DISTANCETIME" -> {
+                    DISTANCE_TIME -> {
                         if (providerService.isNotEmpty())
                             providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
                         else
@@ -108,32 +99,5 @@ class CommonMethods {
                     }
                     else -> ""
                 }
-
-        fun getLocalTimeStamp(dateStr: String): String {
-            val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-            df.timeZone = TimeZone.getTimeZone("UTC")
-            val date: Date?
-            var calendar: Calendar? = null
-            var strDate = ""
-            try {
-                date = df.parse(dateStr)
-                calendar = Calendar.getInstance(TimeZone.getDefault())
-                calendar!!.time = date!!
-            } catch (e: ParseException) {
-                e.printStackTrace()
-            }
-
-            val day = calendar!!.get(Calendar.DAY_OF_MONTH)
-            val strMonth = SimpleDateFormat("MMM").format(calendar.time)
-            val year = calendar.get(Calendar.YEAR)
-
-            if (strMonth != null) {
-                strDate = Integer.toString(day) + "-" + strMonth + "-" + Integer.toString(year)
-            }
-
-            return strDate
-            // df.setTimeZone(TimeZone.getDefault());
-            //return Constants.messageTimeFormat.format(date);
-        }
     }
 }

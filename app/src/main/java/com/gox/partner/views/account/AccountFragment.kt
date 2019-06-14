@@ -14,7 +14,7 @@ import com.gox.partner.models.AccountMenuModel
 import com.gox.partner.views.account_card.ActivityCardList
 import com.gox.partner.views.dashboard.DashBoardNavigator
 import com.gox.partner.views.earnings.EarningsActivity
-import com.gox.partner.views.invitereferals.InviteReferalsActivity
+import com.gox.partner.views.invitereferals.InviteReferralsActivity
 import com.gox.partner.views.language.LanguageActivity
 import com.gox.partner.views.manage_bank_details.ManageBankDetailsActivity
 import com.gox.partner.views.manage_documents.ManageDocumentsActivity
@@ -28,8 +28,8 @@ import kotlinx.android.synthetic.main.header_layout.*
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator {
 
-    private lateinit var binding: FragmentAccountBinding
-    private lateinit var viewModel: AccountViewModel
+    private lateinit var mBinding: FragmentAccountBinding
+    private lateinit var mViewModel: AccountViewModel
     private lateinit var dashBoardNavigator: DashBoardNavigator
 
     override fun onAttach(context: Context) {
@@ -40,11 +40,11 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
     override fun getLayoutId() = R.layout.fragment_account
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
-        viewModel = provideViewModel { AccountViewModel() }
-        viewModel.navigator = this
-        binding = mViewDataBinding as FragmentAccountBinding
-        binding.lifecycleOwner = this
-        binding.accountViewModel = viewModel
+        mViewModel = provideViewModel { AccountViewModel() }
+        mViewModel.navigator = this
+        mBinding = mViewDataBinding as FragmentAccountBinding
+        mBinding.lifecycleOwner = this
+        mBinding.accountViewModel = mViewModel
 
         dashBoardNavigator.setTitle(resources.getString(R.string.title_my_account))
         dashBoardNavigator.setRightIcon(R.drawable.ic_logout)
@@ -72,8 +72,8 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
             AccountMenuModel(accountMenuTitles[it], accountMenuIcons.getResourceId(it, -1))
         }
         accountMenuIcons.recycle()
-        viewModel.setAccountMenus(accountMenus)
-        viewModel.setAdapter()
+        mViewModel.setAccountMenus(accountMenus)
+        mViewModel.setAdapter()
     }
 
     override fun onMenuItemClicked(position: Int) = when (position) {
@@ -86,13 +86,13 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
 
         3 -> launchNewActivity(ManageBankDetailsActivity::class.java, false)
 
-        4 -> launchNewActivity(ActivityCardList::class.java,false)
+        4 -> launchNewActivity(ActivityCardList::class.java, false)
 
         5 -> launchNewActivity(ManagePaymentActivity::class.java, false)
 
         6 -> launchNewActivity(EarningsActivity::class.java, false)
 
-        7 -> launchNewActivity(InviteReferalsActivity::class.java, false)
+        7 -> launchNewActivity(InviteReferralsActivity::class.java, false)
 
         8 -> launchNewActivity(PrivacyActivity::class.java, false)
 

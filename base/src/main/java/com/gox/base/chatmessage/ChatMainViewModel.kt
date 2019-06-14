@@ -2,9 +2,7 @@ package com.gox.base.chatmessage
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.Constants
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.base.repository.BaseModuleRepository
 
 class ChatMainViewModel : BaseViewModel<ChatNavigator>() {
@@ -23,12 +21,26 @@ class ChatMainViewModel : BaseViewModel<ChatNavigator>() {
         hashMap["message"] = chatRequestModel.message.toString()
         hashMap["type"] = chatRequestModel.type.toString()
 
-        getCompositeDisposable().add(mRepository.sendMessage(this, Constants.M_TOKEN
-                + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), hashMap))
+        getCompositeDisposable().add(mRepository.sendMessage(object : ApiListener {
+            override fun success(successData: Any) {
+                singleMessageResponse.value = successData as SingleMessageResponse
+            }
+
+            override fun fail(failData: Throwable) {
+                errorResponse.postValue(getErrorMessage(failData))
+            }
+        }, hashMap))
     }
 
     fun getMessages(admin_service: String, id: Int) {
-        getCompositeDisposable().add(mRepository.getMessage(this, Constants.M_TOKEN
-                + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), admin_service, id))
+        getCompositeDisposable().add(mRepository.getMessage(object : ApiListener {
+            override fun success(successData: Any) {
+                getChatMessageList.value = successData as ChatMessageList
+            }
+
+            override fun fail(failData: Throwable) {
+                errorResponse.postValue(getErrorMessage(failData))
+            }
+        }, admin_service, id))
     }
 }

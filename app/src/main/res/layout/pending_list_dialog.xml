@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -42,6 +42,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_add_service"
+                style="@style/SmallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_11sdp"
@@ -49,18 +50,18 @@
                 android:drawableEnd="@drawable/ic_right_arrow"
                 android:drawableTint="@color/colorGray"
                 android:ellipsize="end"
-                style="@style/SmallText"
                 android:maxLines="2"
-                android:textColor="@color/colorGray"
                 android:onClick="@{(v) -> pendinglistModel.selectedPendingList(v)}"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/add_services"
+                android:textColor="@color/colorGray"
                 android:textSize="@dimen/_12sdp"
                 tools:targetApi="m" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_add_document"
+                style="@style/SmallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_11sdp"
@@ -69,7 +70,6 @@
                 android:drawableTint="@color/grey"
                 android:ellipsize="end"
                 android:maxLines="2"
-                style="@style/SmallText"
                 android:onClick="@{(v) -> pendinglistModel.selectedPendingList(v)}"
                 android:paddingLeft="@dimen/_7sdp"
                 android:paddingTop="@dimen/_10sdp"
@@ -83,6 +83,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_bank_details"
+                style="@style/SmallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_11sdp"
@@ -91,7 +92,6 @@
                 android:drawableTint="@color/colorGray"
                 android:ellipsize="end"
                 android:maxLines="2"
-                style="@style/SmallText"
                 android:onClick="@{(v) -> pendinglistModel.selectedPendingList(v)}"
                 android:paddingLeft="@dimen/_7sdp"
                 android:paddingTop="@dimen/_10sdp"
@@ -142,8 +142,8 @@
             android:paddingLeft="@dimen/_15sdp"
             android:paddingTop="@dimen/_15sdp"
             android:paddingRight="@dimen/_15sdp"
-            android:visibility="gone"
-            android:paddingBottom="@dimen/_35sdp">
+            android:paddingBottom="@dimen/_35sdp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_alert"

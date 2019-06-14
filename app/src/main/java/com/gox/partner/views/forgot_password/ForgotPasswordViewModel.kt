@@ -18,17 +18,12 @@ class ForgotPasswordViewModel : BaseViewModel<ForgotPasswordViewModel.ForgotPass
     val phoneNumber = MutableLiveData<String>()
     val email = MutableLiveData<String>()
 
-    fun onResetOptionsClick(group: RadioGroup, checkedId: Int) {
-        navigator.onCheckedChanged(group, checkedId)
-    }
+    fun onResetOptionsClick(group: RadioGroup, checkedId: Int) =
+            navigator.onCheckedChanged(group, checkedId)
 
-    fun onCountryCodeClick(view: View) {
-        navigator.onCountryCodeClicked()
-    }
+    fun onCountryCodeClick(view: View) = navigator.onCountryCodeClicked()
 
-    fun onForgotPasswordClick(view: View) {
-        navigator.onForgotPasswordClicked()
-    }
+    fun onForgotPasswordClick(view: View) = navigator.onForgotPasswordClicked()
 
     internal fun postForgotPassword(isEmailLogin: Boolean) {
         val params = HashMap<String, String>()

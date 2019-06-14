@@ -7,7 +7,7 @@
 
         <variable
             name="paymentmodel"
-            type="com.gox.partner.interfaces.CustomClickListner" />
+            type="com.gox.partner.interfaces.CustomClickListener" />
     </data>
 
 
@@ -20,18 +20,18 @@
 
         <TextView
             android:id="@+id/tv_payment_mode"
+            style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_white"
             android:drawablePadding="@dimen/_5sdp"
-            tools:text="SHHHS"
-            android:padding="@dimen/_10sdp"
-            style="@style/SmallText"
             android:gravity="center_vertical"
-            android:onClick="@{() -> paymentmodel.onListClickListner()}"
+            android:onClick="@{() -> paymentmodel.onListClickListener()}"
+            android:padding="@dimen/_10sdp"
             android:textAllCaps="true"
             android:textColor="@color/black"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_10sdp"
+            tools:text="SHHHS" />
     </androidx.cardview.widget.CardView>
 
 </layout>

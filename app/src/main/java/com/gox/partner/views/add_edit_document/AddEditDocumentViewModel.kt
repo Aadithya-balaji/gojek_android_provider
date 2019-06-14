@@ -12,7 +12,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-
 class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
     private val appRepository = AppRepository.instance()
@@ -52,8 +51,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         if (data.isNotEmpty()) {
             updateDetails()
             showEmpty.value = false
-        } else
-            showEmpty.value = true
+        } else showEmpty.value = true
     }
 
     fun getData() = this.data
@@ -63,7 +61,6 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         documentBackName.value = data[currentPosition].name + " (Back)"
         showBackSide.value = data[currentPosition].is_backside != null && data[currentPosition].is_backside!! == "1"
         showExpiry.value = data[currentPosition].is_expire == "1"
-       // showExpiry.value = true
         if (data[currentPosition].provider_document != null) {
             showFrontView.value = true
             expiryDate.value = Utils.parseDateToYYYYMMdd(data[currentPosition].provider_document?.expires_at)
@@ -83,16 +80,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         documentBackFileName.value = ""
     }
 
-
     fun selectFrontImage() = navigator.selectFrontImage()
-
-    fun showFrontImage() {
-        navigator.showFrontImage()
-    }
-
-    fun showBackImage() {
-        navigator.showBackImage()
-    }
 
     fun getFileType(): String {
         var fileType = Enums.IMAGE_TYPE
@@ -107,8 +95,8 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     fun submitDocument() = navigator.submitDocument()
 
     fun incrementPosition() {
-            currentPosition += 1
-            updateDetails()
+        currentPosition += 1
+        updateDetails()
     }
 
     fun updateDocument() {

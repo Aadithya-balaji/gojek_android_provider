@@ -11,79 +11,65 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.gox.partner.R
 import com.gox.partner.databinding.CountrySearchListItemBinding
-import com.gox.partner.interfaces.CustomClickListner
+import com.gox.partner.interfaces.CustomClickListener
 import com.gox.partner.models.City
 import java.io.Serializable
 
-class CityListAdapter(val activity: FragmentActivity?, val citylist: List<City>) : RecyclerView.Adapter<CityListAdapter.MyViewHolder>(), Filterable {
+class CityListAdapter(val activity: FragmentActivity?, val cityList: List<City>)
+    : RecyclerView.Adapter<CityListAdapter.MyViewHolder>(), Filterable {
 
     private var citySearchList: List<City>? = null
 
     init {
-        this.citySearchList = citylist
+        this.citySearchList = cityList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val inflate = DataBindingUtil.inflate<CountrySearchListItemBinding>(LayoutInflater.from(parent.context), R.layout.country_search_list_item, parent, false)
-        return MyViewHolder(inflate)
+        return MyViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                R.layout.country_search_list_item, parent, false))
     }
 
     override fun getItemCount(): Int = citySearchList!!.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.currentOderItemlistBinding.countyName.setText(citySearchList!![position].city_name)
+        holder.mBinding.countyName.text = citySearchList!![position].city_name
         holder.bind()
-        holder.currentOderItemlistBinding.itemClickListener = object : CustomClickListner {
-            override fun onListClickListner() {
+        holder.mBinding.itemClickListener = object : CustomClickListener {
+            override fun onListClickListener() {
                 val intent = Intent()
                 intent.putExtra("selected_list", citySearchList!!.get(position) as Serializable)
                 activity!!.setResult(Activity.RESULT_OK, intent)
-                activity!!.finish()
+                activity.finish()
             }
-
         }
     }
 
-
     inner class MyViewHolder(itemView: CountrySearchListItemBinding) : RecyclerView.ViewHolder(itemView.root) {
-        val currentOderItemlistBinding = itemView
+        val mBinding = itemView
         fun bind() {
 
         }
-
-
     }
 
     override fun getFilter(): Filter {
-
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence?): FilterResults {
                 val charString = charSequence.toString()
-                if (charString.isEmpty()) {
-                    citySearchList = citylist
-                } else {
+                if (charString.isEmpty()) citySearchList = cityList else {
                     val filteredList = ArrayList<City>()
-                    for (row in citylist) {
-                        if (row.city_name!!.toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(row)
-                        }
-                    }
+                    for (row in cityList) if (row.city_name.toLowerCase().contains(charString.toLowerCase()))
+                        filteredList.add(row)
                     citySearchList = filteredList
                 }
-
-                val filterResults = Filter.FilterResults()
+                val filterResults = FilterResults()
                 filterResults.values = citySearchList
                 return filterResults
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-
                 citySearchList = results?.values as ArrayList<City>
                 notifyDataSetChanged()
             }
-
         }
     }
-
-
 }

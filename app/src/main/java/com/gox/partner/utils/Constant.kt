@@ -1,8 +1,8 @@
 package com.gox.partner.utils
 
 import androidx.lifecycle.MutableLiveData
-import com.gox.partner.views.home.VerificationModel
 import com.gox.partner.models.Language
+import com.gox.partner.views.home.VerificationModel
 
 object Constant {
 

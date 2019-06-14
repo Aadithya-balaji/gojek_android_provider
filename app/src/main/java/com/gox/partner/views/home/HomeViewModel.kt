@@ -17,13 +17,9 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
     var onlineStatusLiveData = MutableLiveData<StatusResponseModel>()
 
-    fun showCurrentLocation() {
-        navigator.showCurrentLocation()
-    }
+    fun showCurrentLocation() = navigator.showCurrentLocation()
 
-    fun changeStatus(view: View) {
-        navigator.changeStatus(view)
-    }
+    fun changeStatus(view: View) = navigator.changeStatus(view)
 
     fun changeOnlineStatus(status: String) {
         if (BaseApplication.isNetworkAvailable)

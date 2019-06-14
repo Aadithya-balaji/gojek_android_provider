@@ -1,7 +1,7 @@
 package com.gox.partner.network
 
-import com.gox.base.chatmessage.SingleMessageResponse
 import com.gox.base.chatmessage.ChatMessageList
+import com.gox.base.chatmessage.SingleMessageResponse
 import com.gox.partner.models.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -35,20 +35,15 @@ interface AppWebService {
 
     @FormUrlEncoded
     @POST("user/countries")
-    fun getCountries(@FieldMap params: HashMap<String, Any?>): Observable<CountryListResponse>
-
-    @GET("states/{state_id}")
-    fun getStateList(@Path("state_id") state_id: String): Observable<StateListResponse>
-
-    @GET("cities/{city_id}")
-    fun getCityList(@Path("city_id") city_id: String): Observable<CityListResponse>
+    fun getCountries(@FieldMap params: HashMap<String, Any?>):
+            Observable<CountryListResponse>
 
     @Multipart
-    @POST("provider/signup")
+    @POST("provider/signUp")
     fun postSignUp(
             @PartMap params: HashMap<String, RequestBody>,
             @Part fileName: MultipartBody.Part?
-    ): Observable<SignupResponseModel>
+    ): Observable<RegistrationResponseModel>
 
     @FormUrlEncoded
     @POST("provider/password")
@@ -59,10 +54,12 @@ interface AppWebService {
 
     @FormUrlEncoded
     @POST("provider/verify")
-    fun verifyUser(@FieldMap params: HashMap<String, String>): Observable<VerifyUser>
+    fun verifyUser(@FieldMap params: HashMap<String, String>):
+            Observable<VerifyUser>
 
     @GET("provider/profile")
-    fun getProfile(@Header("Authorization") token: String): Observable<ProfileResponse>
+    fun getProfile(@Header("Authorization") token: String):
+            Observable<ProfileResponse>
 
     @Multipart
     @POST("provider/profile")
@@ -88,7 +85,8 @@ interface AppWebService {
     ): Observable<WalletResponse>
 
     @GET("provider/wallet")
-    fun getWalletTransction(@Header("Authorization") token: String): Observable<WalletTransaction>
+    fun getWalletTransction(@Header("Authorization") token: String):
+            Observable<WalletTransaction>
 
     @FormUrlEncoded
     @POST("provider/card")
@@ -118,10 +116,14 @@ interface AppWebService {
     ): Observable<CheckRequestModel>
 
     @GET("provider/notification")
-    fun getNotification(@Header("Authorization") token: String): Observable<NotificationResponse>
+    fun getNotification(@Header("Authorization") token: String):
+            Observable<NotificationResponse>
 
     @GET("provider/onlinestatus/{status_id}")
-    fun changeOnlineStatus(@Header("Authorization") token: String, @Path("status_id") statusID: String): Observable<StatusResponseModel>
+    fun changeOnlineStatus(
+            @Header("Authorization") token: String,
+            @Path("status_id") statusID: String):
+            Observable<StatusResponseModel>
 
     @FormUrlEncoded
     @POST("provider/accept/request")
@@ -136,11 +138,6 @@ interface AppWebService {
             @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<RejectRequestModel>
-
-    fun updateProfile(
-            @FieldMap params: HashMap<String, RequestBody>,
-            @Part fileName: MultipartBody.Part?
-    ): Observable<CommonResponse>
 
     @GET("provider/adminservices")
     fun getServices(@Header("Authorization") token: String):

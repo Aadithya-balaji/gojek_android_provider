@@ -14,61 +14,49 @@ import com.gox.partner.views.dashboard.DashBoardNavigator
 
 class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), NotificationNavigator {
 
+    lateinit var mBinding: FragmentNotificationBinding
+    private lateinit var mNavigator: DashBoardNavigator
 
-    lateinit var mViewDataBinding: FragmentNotificationBinding
-    private lateinit var dashBoardNavigator: DashBoardNavigator
-
-
-    override fun getLayoutId(): Int = R.layout.fragment_notification
+    override fun getLayoutId() = R.layout.fragment_notification
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        dashBoardNavigator = context as DashBoardNavigator
+        mNavigator = context as DashBoardNavigator
     }
 
-
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
-        this.mViewDataBinding = mViewDataBinding as FragmentNotificationBinding
-        val notificationViewModel = NotificationViewModel()
-        notificationViewModel.navigator = this
-        mViewDataBinding.notificationviewmodel = notificationViewModel
+        this.mBinding = mViewDataBinding as FragmentNotificationBinding
+        val mViewModel = NotificationViewModel()
+        mViewModel.navigator = this
+        mViewDataBinding.notificationviewmodel = mViewModel
         mViewDataBinding.setLifecycleOwner(this)
 
-        observeLiveData(notificationViewModel.loadingProgress) {
+        observeLiveData(mViewModel.loadingProgress) {
             loadingObservable.value = it
         }
 
-        notificationViewModel.getNotificationList()
+        mViewModel.getNotificationList()
 
-        dashBoardNavigator.setTitle(resources.getString(R.string.title_notification))
-        dashBoardNavigator.hideRightIcon(true)
-        dashBoardNavigator.showLogo(false)
+        mNavigator.setTitle(resources.getString(R.string.title_notification))
+        mNavigator.hideRightIcon(true)
+        mNavigator.showLogo(false)
 
-        observeLiveData(notificationViewModel.notificationResponse) {
-            notificationViewModel.loadingProgress.value = false
-            //show empty view if no data
-            notificationViewModel.showEmptyView.value = it.responseData.notification.data.isNullOrEmpty()
+        observeLiveData(mViewModel.notificationResponse) {
+            mViewModel.loadingProgress.value = false
+            mViewModel.showEmptyView.value = it.responseData.notification.data.isNullOrEmpty()
             setNotificationAdapter(it.responseData.notification)
-
         }
 
-        observeLiveData(notificationViewModel.errorResponse) { errorMessage ->
+        observeLiveData(mViewModel.errorResponse) { errorMessage ->
             run {
-                notificationViewModel.loadingProgress.value = false
-                notificationViewModel.showEmptyView.value = true
+                mViewModel.loadingProgress.value = false
+                mViewModel.showEmptyView.value = true
                 ViewUtils.showToast(activity!!, errorMessage, false)
             }
         }
-
-
     }
 
     private fun setNotificationAdapter(notificationResponseData: NotificationResponse.ResponseData.Notification) {
-        this.mViewDataBinding.notificationRv.adapter = NotificationAdapter(activity, notificationResponseData)
-
+        this.mBinding.notificationRv.adapter = NotificationAdapter(activity, notificationResponseData)
     }
-
-    override fun goToDetailPage() {
-    }
-
 }

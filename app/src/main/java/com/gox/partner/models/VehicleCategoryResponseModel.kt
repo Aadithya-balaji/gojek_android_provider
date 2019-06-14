@@ -17,7 +17,7 @@ data class VehicleCategoryResponseModel(
                 val id: Int,
                 @SerializedName("vehicle_name") val vehicleName: String,
                 @SerializedName("estimated_time") val estimatedTime: String
-        ){
+        ) {
             override fun toString(): String {
                 return vehicleName
             }

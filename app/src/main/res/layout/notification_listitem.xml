@@ -25,22 +25,22 @@
 
 
                 <ImageView
-                    android:contentDescription="@string/app_name"
                     android:id="@+id/notification_img"
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
                     android:padding="@dimen/_5sdp"
                     android:src="@drawable/dummy_profile_pic" />
 
                 <TextView
                     android:id="@+id/notification_time_tv"
+                    style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:padding="@dimen/_5sdp"
-                    style="@style/SmallText"
                     android:text="@string/dummy_min"
                     android:textSize="@dimen/_10sdp" />
 

@@ -1,4 +1,5 @@
 package com.gox.base.chatmessage
+
 import com.google.gson.annotations.SerializedName
 
 class ChatMessageList {

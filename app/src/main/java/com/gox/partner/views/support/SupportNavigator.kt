@@ -1,4 +1,4 @@
-package com.gox.xjek.ui.support
+package com.gox.partner.views.support
 
 interface SupportNavigator {
 

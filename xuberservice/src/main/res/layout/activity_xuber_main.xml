@@ -8,7 +8,7 @@
 
         <variable
             name="xuberViewModel"
-            type="com.gox.xuberservice.xuberMainActivity.XuberDashboardViewModel" />
+            type="com.gox.xuberservice.xuberMainActivity.XUberDashboardViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

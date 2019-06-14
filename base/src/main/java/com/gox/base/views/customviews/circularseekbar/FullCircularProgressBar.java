@@ -12,12 +12,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
-
-
-
-/**
- * Created by Boopathi on 19/04/2019..
- */
 public class FullCircularProgressBar extends View {
 
     private float textHeight;

@@ -8,6 +8,9 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.gox.base.base.BaseDialogFragment
+import com.gox.base.data.Constants.FareType.DISTANCE_TIME
+import com.gox.base.data.Constants.FareType.FIXED
+import com.gox.base.data.Constants.FareType.HOURLY
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.EditServicePriceDialogBinding
@@ -17,31 +20,33 @@ import kotlinx.android.synthetic.main.edit_service_price_dialog.*
 
 class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialogBinding>(), EditServicePriceNavigator {
 
-    private lateinit var binding: EditServicePriceDialogBinding
-    private lateinit var viewModel: EditServicePriceViewModel
+    private lateinit var mBinding: EditServicePriceDialogBinding
+    private lateinit var mViewModel: EditServicePriceViewModel
 
     override fun getLayout() = R.layout.edit_service_price_dialog
+
     var fareType = ""
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
-        binding = viewDataBinding as EditServicePriceDialogBinding
-        viewModel = EditServicePriceViewModel()
-        viewModel.navigator = this
-        binding.editServicePriceViewModel = viewModel
-        val setServicePriceViewModel = ViewModelProviders.of(activity!!).get(SetServicePriceViewModel::class.java)
+        mBinding = viewDataBinding as EditServicePriceDialogBinding
+        mViewModel = EditServicePriceViewModel()
+        mViewModel.navigator = this
+        mBinding.editServicePriceViewModel = mViewModel
+        val setServicePriceViewModel =
+                ViewModelProviders.of(activity!!).get(SetServicePriceViewModel::class.java)
         setServicePriceViewModel.dialogPrice.observe(this, Observer {
             fareType = it.fareType
             when (it.fareType) {
-                "DISTANCETIME" -> {
+                DISTANCE_TIME -> {
                     miles_lt.visibility = VISIBLE
                     price_miles_edt.text = Editable.Factory.getInstance().newEditable(it.perMiles)
                     price_edt.text = Editable.Factory.getInstance().newEditable(it.perMins)
                 }
-                "FIXED" -> {
+                FIXED -> {
                     price_edt.text = Editable.Factory.getInstance().newEditable(it.baseFare)
                     label.text = getString(R.string.fixed)
                 }
-                "HOURLY" -> {
+                HOURLY -> {
                     price_edt.text = Editable.Factory.getInstance().newEditable(it.perMins)
                 }
             }
@@ -60,16 +65,14 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
                         return@setOnClickListener
                     }
                 }
-                if (fareType == "FIXED")
+                if (fareType == FIXED)
                     service.baseFare = price_edt.text.toString()
                 else
                     service.perMins = price_edt.text.toString()
                 service.fareType = fareType
                 setServicePriceViewModel.listPrice.value = service
                 dismiss()
-            } else {
-                ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)
-            }
+            } else ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)
         }
     }
 

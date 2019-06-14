@@ -12,24 +12,16 @@ class AccountViewModel : BaseViewModel<AccountNavigator>() {
         this.accountMenus = accountMenus
     }
 
-    fun getAccountMenus(): List<AccountMenuModel> {
-        return accountMenus
-    }
+    fun getAccountMenus() = accountMenus
 
-    fun getAccountMenu(position: Int): AccountMenuModel {
-        return accountMenus[position]
-    }
+    fun getAccountMenu(position: Int) = accountMenus[position]
 
     fun setAdapter() {
         adapter = AccountMenuAdapter(this)
         adapter.notifyDataSetChanged()
     }
 
-    fun getAdapter(): AccountMenuAdapter {
-        return adapter
-    }
+    fun getAdapter() = adapter
 
-    fun onItemClick(position: Int) {
-        navigator.onMenuItemClicked(position)
-    }
+    fun onItemClick(position: Int) = navigator.onMenuItemClicked(position)
 }

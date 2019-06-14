@@ -73,5 +73,6 @@
     <string name="dummy_xuberservice_text">Car Wash - HatchBack</string>
     <string name="reason">Reason</string>
     <string name="instruction">Instruction</string>
+    <string name="crop_failed">Cropping failed</string>
 
 </resources>

@@ -20,7 +20,6 @@ class LanguageViewModel : BaseViewModel<LanguageNavigator>() {
 
     fun getLanguages(): List<Language> = languages
 
-
     fun getLanguage(position: Int): Language = languages[position]
 
     fun getCurrentLanguage(): String = currentLanguage
@@ -33,8 +32,6 @@ class LanguageViewModel : BaseViewModel<LanguageNavigator>() {
         }
     }
 
-    fun onSaveClicked() {
-        navigator.onLanguageChanged()
-    }
+    fun onSaveClicked() = navigator.onLanguageChanged()
 
 }

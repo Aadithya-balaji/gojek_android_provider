@@ -5,12 +5,10 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.text.TextUtils
-import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.cooltechworks.creditcarddesign.CardEditActivity
 import com.cooltechworks.creditcarddesign.CreditCardUtils
 import com.google.gson.Gson
@@ -36,18 +34,17 @@ import com.stripe.android.model.Token
 
 class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListNavigator {
 
-    private lateinit var cardListViewModel: CardListViewModel
-    private lateinit var activitySavedCardListBinding: ActivitySavedCardListBinding
+    private lateinit var mViewModel: CardListViewModel
+    private lateinit var mBinding: ActivitySavedCardListBinding
     private lateinit var context: Context
-    private var strAmount: String? = null
+    private lateinit var cardsAdapter: CardsAdapter
+
     private var mCardNumber: String? = ""
     private var mCardCVV: String? = ""
     private var mCardExpiryDate: String? = ""
     private var mCardHolderName: String? = ""
     private var selectedCardID: String? = ""
-    private lateinit var cardsAdapter: CardsAdapter
     private var paymentList: List<ConfigPayment>? = null
-    private lateinit var rvPaymentModes: RecyclerView
     private var cardList: MutableList<CardResponseModel>? = null
     private var selectedPosition: Int? = -1
     private var isFromWallet: Boolean = false
@@ -57,25 +54,25 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         context = this
-        activitySavedCardListBinding = mViewDataBinding as ActivitySavedCardListBinding
-        cardListViewModel = CardListViewModel()
-        cardListViewModel.navigator = this
-        activitySavedCardListBinding.cardListModel = cardListViewModel
-        activitySavedCardListBinding.lifecycleOwner = this
+        mBinding = mViewDataBinding as ActivitySavedCardListBinding
+        mViewModel = CardListViewModel()
+        mViewModel.navigator = this
+        mBinding.cardListModel = mViewModel
+        mBinding.lifecycleOwner = this
         getApiResponse()
-        activitySavedCardListBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(R.string.title_payment_type)
-        activitySavedCardListBinding.toolbarLayout.ivToolbarBack.setOnClickListener {
+        mBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(R.string.title_payment_type)
+        mBinding.toolbarLayout.ivToolbarBack.setOnClickListener {
             finish()
         }
         getIntentValues()
-        val paytypes = object : TypeToken<List<ConfigPayment>>() {}.type
-        paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), paytypes)
+        val payTypes = object : TypeToken<List<ConfigPayment>>() {}.type
+        paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), payTypes)
         val linearLayoutManager = LinearLayoutManager(this)
-        activitySavedCardListBinding.rvPaymentModes.layoutManager = linearLayoutManager
-        paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, cardListViewModel, isFromWallet)
-        activitySavedCardListBinding.rvPaymentModes.adapter = paymentModeAdapter
-        cardListViewModel.loadingProgress = loadingObservable
-        cardListViewModel.getCardList()
+        mBinding.rvPaymentModes.layoutManager = linearLayoutManager
+        paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, mViewModel, isFromWallet)
+        mBinding.rvPaymentModes.adapter = paymentModeAdapter
+        mViewModel.loadingProgress = loadingObservable
+        mViewModel.getCardList()
     }
 
     private fun getIntentValues() {
@@ -84,43 +81,43 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     }
 
     private fun getApiResponse() {
-        cardListViewModel.addCardLiveResposne.observe(this, Observer<AddCardModel> { addCardModel ->
+        mViewModel.addCardLiveResponse.observe(this, Observer<AddCardModel> { addCardModel ->
             if (addCardModel.getStatusCode().equals("200")) {
-                cardListViewModel.loadingProgress.value = false
-                cardListViewModel.getCardList()
+                mViewModel.loadingProgress.value = false
+                mViewModel.getCardList()
             }
         })
 
-        cardListViewModel.cardListLiveResponse.observe(this, Observer<CardListModel> { cardListModel ->
-            cardListViewModel.loadingProgress.value = false
-            if (cardListViewModel.cardListLiveResponse != null
-                    && cardListViewModel.cardListLiveResponse.value!!.getResponseData() != null
-                    && cardListViewModel.cardListLiveResponse.value!!.getResponseData()!!.size > 0) {
-                activitySavedCardListBinding.ivEmptyCard.visibility = View.GONE
-                activitySavedCardListBinding.rvCards.visibility = View.VISIBLE
+        mViewModel.cardListLiveResponse.observe(this, Observer<CardListModel> { cardListModel ->
+            mViewModel.loadingProgress.value = false
+            if (mViewModel.cardListLiveResponse != null
+                    && mViewModel.cardListLiveResponse.value!!.getResponseData() != null
+                    && mViewModel.cardListLiveResponse.value!!.getResponseData()!!.size > 0) {
+                mBinding.ivEmptyCard.visibility = View.GONE
+                mBinding.rvCards.visibility = View.VISIBLE
                 val linearLayoutManager = LinearLayoutManager(this)
                 linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-                cardList = cardListViewModel.cardListLiveResponse.value!!.getResponseData()
+                cardList = mViewModel.cardListLiveResponse.value!!.getResponseData()
                 if (cardList != null && cardList!!.size > 0) {
-                    cardsAdapter = CardsAdapter(context, cardList!!, cardListViewModel)
-                    activitySavedCardListBinding.rvCards.adapter = cardsAdapter
-                    activitySavedCardListBinding.rvCards.layoutManager = linearLayoutManager
+                    cardsAdapter = CardsAdapter(context, cardList!!, mViewModel)
+                    mBinding.rvCards.adapter = cardsAdapter
+                    mBinding.rvCards.layoutManager = linearLayoutManager
                 }
             }
         })
 
-        cardListViewModel.deleCardLivResponse.observe(this, Observer<AddCardModel> { addCardModel ->
-            cardListViewModel.loadingProgress.value = false
-            if (cardListViewModel.deleCardLivResponse != null) {
-                if (cardListViewModel.deleCardLivResponse.value!!.getStatusCode().equals("200")) {
+        mViewModel.deleteCardLivResponse.observe(this, Observer<AddCardModel> { addCardModel ->
+            mViewModel.loadingProgress.value = false
+            if (mViewModel.deleteCardLivResponse != null) {
+                if (mViewModel.deleteCardLivResponse.value!!.getStatusCode().equals("200")) {
                     cardList?.let { selectedPosition?.let { it1 -> it.removeAt(it1) } }
                     selectedCardID = ""
                     selectedPosition = -1
-                    activitySavedCardListBinding.ivDelete.visibility = View.GONE
-                    activitySavedCardListBinding.ivRemove.visibility = View.GONE
+                    mBinding.ivDelete.visibility = View.GONE
+                    mBinding.ivRemove.visibility = View.GONE
                     if (cardList!!.size == 0) {
-                        activitySavedCardListBinding.rvCards.visibility = View.GONE
-                        activitySavedCardListBinding.ivEmptyCard.visibility = View.VISIBLE
+                        mBinding.rvCards.visibility = View.GONE
+                        mBinding.ivEmptyCard.visibility = View.VISIBLE
 
                     }
                     cardsAdapter.notifyDataSetChanged()
@@ -129,28 +126,22 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         })
     }
 
-    override fun addAmount(view: View) {
-        when (view.id) {
-            R.id.bt_fifty -> {
-                strAmount = "50"
-            }
-
-            R.id.bt_hundred -> {
-                strAmount = "100"
-            }
-
-            R.id.bt_thousand -> {
-                strAmount = "1000"
-            }
-        }
-        cardListViewModel.amount.value = strAmount
-
-    }
+//    override fun addAmount(view: View) {
+//        when (view.id) {
+//            R.id.bt_fifty -> strAmount = "50"
+//
+//            R.id.bt_hundred -> strAmount = "100"
+//
+//            R.id.bt_thousand -> strAmount = "1000"
+//        }
+//        mViewModel.amount.value = strAmount
+//
+//    }
 
     override fun addCard() {
         val intent = Intent(this, CardEditActivity::class.java)
         intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, "Name As per in your card")
-        startActivityForResult(intent, Constants.RequestCode.ADDCARD)
+        startActivityForResult(intent, Constants.RequestCode.ADD_CARD)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -176,25 +167,19 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
             card.name = mCardHolderName
             if (card.validateNumber() && card.validateCVC()) {
-                cardListViewModel.loadingProgress.value = true
+                mViewModel.loadingProgress.value = true
                 val stripe = Stripe(this, BaseApplication.getCustomPreference!!.getString(PreferencesKey.STRIPE_KEY, ""))
                 stripe.createToken(card,
                         object : TokenCallback {
                             override fun onSuccess(token: Token) {
-                                Log.e("card", "-----" + token.id)
                                 WalletFragment.loadingProgress.value = false
-                                // Send token to your server
                                 if (!TextUtils.isEmpty(token.id))
-                                    cardListViewModel.callAddCardApi(token.id)
+                                    mViewModel.callAddCardApi(token.id)
 
                             }
 
                             override fun onError(error: Exception) {
-                                // Show localized error message
-                                cardListViewModel.loadingProgress.value = false
-                                Log.e("card", "-----" + error.message.toString())
-
-
+                                mViewModel.loadingProgress.value = false
                             }
                         }
                 )
@@ -203,10 +188,10 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     }
 
     override fun cardPicked(stripeID: String, cardID: String, position: Int) {
-        activitySavedCardListBinding.ivDelete.visibility = View.VISIBLE
-        activitySavedCardListBinding.ivRemove.visibility = View.VISIBLE
-        cardListViewModel.selectedStripeID.value = stripeID
-        cardListViewModel.selectedCardID.value = cardID
+        mBinding.ivDelete.visibility = View.VISIBLE
+        mBinding.ivRemove.visibility = View.VISIBLE
+        mViewModel.selectedStripeID.value = stripeID
+        mViewModel.selectedCardID.value = cardID
         if (selectedPosition != -1) {
             selectedPosition?.let { cardList!!.get(it).isCardSelected = false }
             cardsAdapter.notifyItemChanged(selectedPosition!!)
@@ -217,34 +202,26 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
         if (isFromWallet) {
             val intent = Intent()
-            intent.putExtra("cardStripeID", cardListViewModel.selectedStripeID.value)
+            intent.putExtra("cardStripeID", mViewModel.selectedStripeID.value)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
 
-    override fun removeCard() {
-        ViewUtils.showMessageOKCancel(context, resources.getString(R.string.delete_card),
-                DialogInterface.OnClickListener { dialog, which -> cardListViewModel.callCardDeleteCardAPi() })
-    }
+    override fun removeCard() =
+            ViewUtils.showMessageOKCancel(context, resources.getString(R.string.delete_card),
+                    DialogInterface.OnClickListener { dialog, which -> mViewModel.callCardDeleteCardAPi() })
 
     override fun deselectCard() {
         selectedPosition?.let { cardList!!.get(it).isCardSelected = false }
         cardsAdapter.notifyItemChanged(selectedPosition!!)
-        activitySavedCardListBinding.ivRemove.visibility = View.GONE
-        activitySavedCardListBinding.ivDelete.visibility = View.GONE
-        cardListViewModel.selectedStripeID.value = ""
-    }
-
-    override fun paymentType(type: Int) {
+        mBinding.ivRemove.visibility = View.GONE
+        mBinding.ivDelete.visibility = View.GONE
+        mViewModel.selectedStripeID.value = ""
     }
 
     override fun showErrorMsg(error: String) {
-        cardListViewModel.loadingProgress.value = false
+        mViewModel.loadingProgress.value = false
         ViewUtils.showToast(context, error, false)
-    }
-
-    override fun changePaymentMode(paymentId: Int) {
-
     }
 }

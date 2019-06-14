@@ -129,7 +129,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.gox.partner.views.sign_in.SignInActivity"
+            android:name="com.gox.partner.views.sign_in.LoginActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
@@ -142,7 +142,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.gox.partner.views.signup.SignupActivity"
+            android:name="com.gox.partner.views.signup.RegistrationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -162,7 +162,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />-->
         <activity
-            android:name="com.gox.partner.views.uploaddocumentlist.VechicleDetailActivity"
+            android:name="com.gox.partner.views.uploaddocumentlist.VehicleDetailActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -196,7 +196,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.gox.partner.views.invitereferals.InviteReferalsActivity"
+            android:name="com.gox.partner.views.invitereferals.InviteReferralsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />

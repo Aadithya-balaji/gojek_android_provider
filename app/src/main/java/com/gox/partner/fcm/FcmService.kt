@@ -128,12 +128,12 @@ class FcmService : FirebaseMessagingService() {
         return isInBackground
     }
 
-    fun isCallActive(context: Context): Boolean {
+    private fun isCallActive(context: Context): Boolean {
         val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
         return manager.mode == AudioManager.MODE_IN_CALL
     }
 
-    fun isLocked(context: Context): Boolean {
+    private fun isLocked(context: Context): Boolean {
         val myKM = context.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         return myKM.isKeyguardLocked
     }

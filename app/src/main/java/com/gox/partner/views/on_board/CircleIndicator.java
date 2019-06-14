@@ -15,7 +15,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.DrawableRes;
 import androidx.viewpager.widget.ViewPager;
 
-
 import com.gox.partner.R;
 
 import java.util.Objects;
@@ -37,6 +36,47 @@ public class CircleIndicator extends LinearLayout {
     private Animator mImmediateAnimatorIn;
 
     private int mLastPosition = -1;
+    private final ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+
+            if (mViewpager.getAdapter() == null || mViewpager.getAdapter().getCount() <= 0) return;
+
+            if (mAnimatorIn.isRunning()) {
+                mAnimatorIn.end();
+                mAnimatorIn.cancel();
+            }
+
+            if (mAnimatorOut.isRunning()) {
+                mAnimatorOut.end();
+                mAnimatorOut.cancel();
+            }
+
+            View currentIndicator;
+            if (mLastPosition >= 0 && (currentIndicator = getChildAt(mLastPosition)) != null) {
+                currentIndicator.setBackgroundResource(mIndicatorUnselectedBackgroundResId);
+                mAnimatorIn.setTarget(currentIndicator);
+                mAnimatorIn.start();
+            }
+
+            View selectedIndicator = getChildAt(position);
+            if (selectedIndicator != null) {
+                selectedIndicator.setBackgroundResource(mIndicatorBackgroundResId);
+                mAnimatorOut.setTarget(selectedIndicator);
+                mAnimatorOut.start();
+            }
+            mLastPosition = position;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+        }
+    };
 
     public CircleIndicator(Context context) {
         super(context);
@@ -64,28 +104,6 @@ public class CircleIndicator extends LinearLayout {
         checkIndicatorConfig(context);
     }
 
-    private void handleTypedArray(Context context, AttributeSet attrs) {
-        if (attrs == null) return;
-
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircleIndicator);
-        mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.CircleIndicator_ci_width, -1);
-        mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.CircleIndicator_ci_height, -1);
-        mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.CircleIndicator_ci_margin, -1);
-
-        mAnimatorResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_animator, R.animator.scale_with_alpha);
-        mAnimatorReverseResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_animator_reverse, 0);
-        mIndicatorBackgroundResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_drawable, R.drawable.indicator_white);
-        mIndicatorUnselectedBackgroundResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_drawable_unselected, mIndicatorBackgroundResId);
-
-        int orientation = typedArray.getInt(R.styleable.CircleIndicator_ci_orientation, -1);
-        setOrientation(orientation == VERTICAL ? VERTICAL : HORIZONTAL);
-
-        int gravity = typedArray.getInt(R.styleable.CircleIndicator_ci_gravity, -1);
-        setGravity(gravity >= 0 ? gravity : Gravity.CENTER);
-
-        typedArray.recycle();
-    }
-
 //    public void configureIndicator(int indicatorWidth, int indicatorHeight, int indicatorMargin) {
 //        configureIndicator(indicatorWidth, indicatorHeight, indicatorMargin,
 //                R.animator.scale_with_alpha, 0, R.drawable.white_radius, R.drawable.white_radius);
@@ -107,6 +125,28 @@ public class CircleIndicator extends LinearLayout {
 //
 //        checkIndicatorConfig(getContext());
 //    }
+
+    private void handleTypedArray(Context context, AttributeSet attrs) {
+        if (attrs == null) return;
+
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CircleIndicator);
+        mIndicatorWidth = typedArray.getDimensionPixelSize(R.styleable.CircleIndicator_ci_width, -1);
+        mIndicatorHeight = typedArray.getDimensionPixelSize(R.styleable.CircleIndicator_ci_height, -1);
+        mIndicatorMargin = typedArray.getDimensionPixelSize(R.styleable.CircleIndicator_ci_margin, -1);
+
+        mAnimatorResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_animator, R.animator.scale_with_alpha);
+        mAnimatorReverseResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_animator_reverse, 0);
+        mIndicatorBackgroundResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_drawable, R.drawable.indicator_white);
+        mIndicatorUnselectedBackgroundResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_drawable_unselected, mIndicatorBackgroundResId);
+
+        int orientation = typedArray.getInt(R.styleable.CircleIndicator_ci_orientation, -1);
+        setOrientation(orientation == VERTICAL ? VERTICAL : HORIZONTAL);
+
+        int gravity = typedArray.getInt(R.styleable.CircleIndicator_ci_gravity, -1);
+        setGravity(gravity >= 0 ? gravity : Gravity.CENTER);
+
+        typedArray.recycle();
+    }
 
     private void checkIndicatorConfig(Context context) {
         mIndicatorWidth = (mIndicatorWidth < 0) ? dip2px(DEFAULT_INDICATOR_WIDTH) : mIndicatorWidth;
@@ -151,48 +191,6 @@ public class CircleIndicator extends LinearLayout {
             listener.onPageSelected(mViewpager.getCurrentItem());
         }
     }
-
-    private final ViewPager.OnPageChangeListener listener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-
-            if (mViewpager.getAdapter() == null || mViewpager.getAdapter().getCount() <= 0) return;
-
-            if (mAnimatorIn.isRunning()) {
-                mAnimatorIn.end();
-                mAnimatorIn.cancel();
-            }
-
-            if (mAnimatorOut.isRunning()) {
-                mAnimatorOut.end();
-                mAnimatorOut.cancel();
-            }
-
-            View currentIndicator;
-            if (mLastPosition >= 0 && (currentIndicator = getChildAt(mLastPosition)) != null) {
-                currentIndicator.setBackgroundResource(mIndicatorUnselectedBackgroundResId);
-                mAnimatorIn.setTarget(currentIndicator);
-                mAnimatorIn.start();
-            }
-
-            View selectedIndicator = getChildAt(position);
-            if (selectedIndicator != null) {
-                selectedIndicator.setBackgroundResource(mIndicatorBackgroundResId);
-                mAnimatorOut.setTarget(selectedIndicator);
-                mAnimatorOut.start();
-            }
-            mLastPosition = position;
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-        }
-    };
 
 //    public DataSetObserver getDataSetObserver() {
 //        return observer;
@@ -264,15 +262,15 @@ public class CircleIndicator extends LinearLayout {
         animator.start();
     }
 
+    public int dip2px(float dpValue) {
+        final float scale = getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
     private class ReverseInterpolator implements Interpolator {
         @Override
         public float getInterpolation(float value) {
             return Math.abs(1.0f - value);
         }
-    }
-
-    public int dip2px(float dpValue) {
-        final float scale = getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
     }
 }

@@ -33,7 +33,6 @@ import com.gox.partner.databinding.FragmentHomePageBinding
 import com.gox.partner.utils.Constant
 import com.gox.partner.views.dashboard.DashBoardNavigator
 import com.gox.partner.views.dashboard.DashBoardViewModel
-import com.gox.partner.views.incoming_request_taxi.IncomingRequestDialog
 import com.gox.partner.views.pendinglist.PendingListDialog
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -46,10 +45,11 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         HomeNavigator,
         OnMapReadyCallback {
 
-    private lateinit var mHomeDataBinding: FragmentHomePageBinding
+    private lateinit var mBinding: FragmentHomePageBinding
+    private lateinit var mViewModel: HomeViewModel
+
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private lateinit var fragmentMap: SupportMapFragment
-    private lateinit var mViewModel: HomeViewModel
     private lateinit var mDashboardViewModel: DashBoardViewModel
     private var mGoogleMap: GoogleMap? = null
     private var providerMarker: Marker? = null
@@ -60,29 +60,29 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     @SuppressLint("MissingPermission")
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
-        mHomeDataBinding = mViewDataBinding as FragmentHomePageBinding
+        mBinding = mViewDataBinding as FragmentHomePageBinding
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel::class.java)
         mDashboardViewModel = ViewModelProviders.of(activity!!).get(DashBoardViewModel::class.java)
         mViewModel.navigator = this
-        mHomeDataBinding.homemodel = mViewModel
-        mHomeDataBinding.btnChangeStatus.bringToFront()
+        mBinding.homemodel = mViewModel
+        mBinding.btnChangeStatus.bringToFront()
         initializeMap()
         observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
-            mHomeDataBinding.llOffline.visibility = View.GONE
+            mBinding.llOffline.visibility = View.GONE
             rlOnline.visibility = View.VISIBLE
         } else {
-            mHomeDataBinding.llOffline.visibility = View.VISIBLE
+            mBinding.llOffline.visibility = View.VISIBLE
             rlOnline.visibility = View.GONE
         }
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
-            mHomeDataBinding.llOffline.visibility = View.GONE
+            mBinding.llOffline.visibility = View.GONE
             rlOnline.visibility = View.VISIBLE
         } else {
-            mHomeDataBinding.llOffline.visibility = View.VISIBLE
+            mBinding.llOffline.visibility = View.VISIBLE
             rlOnline.visibility = View.GONE
         }
 
@@ -220,12 +220,12 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     @SuppressLint("MissingPermission")
     private fun updateCurrentLocation() {
-        LocationUtils.getLastKnownLocation(activity!!, object : LocationCallBack.LastKnownLocation {
-            override fun onSuccess(location: Location?) {
-                updateMapLocation(LatLng(location!!.latitude, location!!.longitude))
+        LocationUtils.getLastKnownLocation(activity!!, object : LocationCallBack {
+            override fun onSuccess(location: Location) {
+                updateMapLocation(LatLng(location.latitude, location.longitude))
             }
 
-            override fun onFailure(messsage: String?) {
+            override fun onFailure(messsage: String) {
 
             }
         })
@@ -241,7 +241,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     override fun changeStatus(view: View) {
         when (view.id) {
             R.id.btn_change_status -> {
-                if (mHomeDataBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) {
+                if (mBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) {
                     loadingObservable.value = true
                     mViewModel.changeOnlineStatus("0")
                 } else {
@@ -263,13 +263,13 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     private fun changeView(isOnline: Boolean) {
         if (!isOnline) {
-            mHomeDataBinding.llOffline.visibility = View.VISIBLE
+            mBinding.llOffline.visibility = View.VISIBLE
             rlOnline.visibility = View.GONE
-            mHomeDataBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.online)
+            mBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.online)
         } else {
-            mHomeDataBinding.llOffline.visibility = View.GONE
+            mBinding.llOffline.visibility = View.GONE
             rlOnline.visibility = View.VISIBLE
-            mHomeDataBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.offline)
+            mBinding.btnChangeStatus.text = activity!!.resources.getString(R.string.offline)
         }
     }
 

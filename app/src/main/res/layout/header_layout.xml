@@ -25,12 +25,12 @@
 
         <TextView
             android:id="@+id/tv_header"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:padding="10dp"
-            style="@style/SmallText"
             android:textColor="@color/xuber_black"
             android:textSize="18sp"
             android:textStyle="bold" />

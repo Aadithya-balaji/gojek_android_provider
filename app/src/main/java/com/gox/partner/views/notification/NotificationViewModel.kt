@@ -14,19 +14,13 @@ class NotificationViewModel : BaseViewModel<NotificationNavigator>() {
 
     var showEmptyView: MutableLiveData<Boolean> = MutableLiveData(false)
 
-
     var notificationResponse = MutableLiveData<NotificationResponse>()
     var loadingProgress = MutableLiveData<Boolean>()
     var errorResponse = MutableLiveData<String>()
 
 
-    fun moveToDetailPage() {
-        navigator.goToDetailPage()
-    }
-
     fun getNotificationList() {
         loadingProgress.value = true
-
         getCompositeDisposable().add(appRepository
                 .getNotification(this
                         , Constants.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "")))

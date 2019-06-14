@@ -21,6 +21,11 @@ import com.bumptech.glide.Glide
 import com.gox.base.base.BaseActivity
 import com.gox.base.chatmessage.ChatActivity
 import com.gox.base.data.Constants
+import com.gox.base.data.Constants.RideStatus.COMPLETED
+import com.gox.base.data.Constants.RideStatus.PICKED_UP
+import com.gox.base.data.Constants.RideStatus.PROCESSING
+import com.gox.base.data.Constants.RideStatus.REACHED
+import com.gox.base.data.Constants.RideStatus.STARTED
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.base.extensions.writePreferences
@@ -52,7 +57,9 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
         mViewDataBinding.foodLiveTaskviewModel = mViewModel
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this, listOf())
         mViewModel.navigator = this
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
+
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
 
         mViewModel.showLoading = loadingObservable
         mViewModel.showLoading.value = true
@@ -133,11 +140,11 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                     writePreferences("serviceType", Constants.ModuleTypes.ORDER)
 
                     when (it.responseData.requests.status) {
-                        "PROCESSING" -> whenProcessing()
-                        "STARTED" -> whenStared()
-                        "REACHED" -> whenReached()
-                        "PICKEDUP" -> whenPickedUp()
-                        "COMPLETED" -> whenPaid()
+                        PROCESSING -> whenProcessing()
+                        STARTED -> whenStared()
+                        REACHED -> whenReached()
+                        PICKED_UP -> whenPickedUp()
+                        COMPLETED -> whenPaid()
                     }
                 }
             } else finish()
@@ -157,22 +164,22 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
         setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
         mBinding.orderStatusBtn.text = getString(R.string.payment_received)
 
-        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderPickedUp.background = getDrawable(R.drawable.round_grey)
+        mBinding.iconReachedRestaurant.background = getDrawable(R.drawable.round_accent)
         mBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
 
-        mBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconOrderDelivered.background = getDrawable(R.drawable.round_grey)
         mBinding.iconOrderDelivered.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
         mBinding.iconReachedRestaurant.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderPickedUp.background = getDrawable(R.drawable.round_accent)
 
-        mBinding.iconPaymentReceived.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconPaymentReceived.background = getDrawable(R.drawable.round_grey)
         mBinding.iconPaymentReceived.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderDelivered.background = getDrawable(R.drawable.round_accent)
 
-        mBinding.iconPaymentReceived.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconPaymentReceived.background = getDrawable(R.drawable.round_grey)
         mBinding.iconPaymentReceived.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderDelivered.background = getDrawable(R.drawable.round_accent)
         mBinding.orderStatusBtn.text = getString(R.string.payment_received)
         showingStoreDetail = false
     }
@@ -185,15 +192,15 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
         setItemsPricing()
         setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
 
-        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderPickedUp.background = getDrawable(R.drawable.round_grey)
+        mBinding.iconReachedRestaurant.background = getDrawable(R.drawable.round_accent)
         mBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
         mBinding.iconReachedRestaurant.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
 
         mBinding.orderStatusBtn.text = getString(R.string.order_delivered)
-        mBinding.iconOrderDelivered.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
+        mBinding.iconOrderDelivered.background = getDrawable(R.drawable.round_grey)
         mBinding.iconOrderDelivered.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
-        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderPickedUp.background = getDrawable(R.drawable.round_accent)
         showingStoreDetail = false
     }
 
@@ -206,8 +213,8 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
 
         setPaymentDetails(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice)
         mBinding.orderStatusBtn.text = getString(R.string.order_picked_up)
-        mBinding.iconOrderPickedUp.background = ContextCompat.getDrawable(this, R.drawable.round_grey)
-        mBinding.iconReachedRestaurant.background = ContextCompat.getDrawable(this, R.drawable.round_accent)
+        mBinding.iconOrderPickedUp.background = getDrawable(R.drawable.round_grey)
+        mBinding.iconReachedRestaurant.background = getDrawable(R.drawable.round_accent)
         mBinding.iconOrderPickedUp.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
         showingStoreDetail = false
     }
@@ -366,7 +373,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
             order_status_btn.text = getString(R.string.reached_restaurant)
         }
         false -> {
-//                time_left_rl.visibility = VISIBLE
+            /*      time_left_rl.visibility = VISIBLE       */
             service_flow_icon_llayout.visibility = GONE
             order_status_btn.text = getString(R.string.started_towards_restaturant)
         }

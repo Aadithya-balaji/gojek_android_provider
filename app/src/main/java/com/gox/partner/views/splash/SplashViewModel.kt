@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseViewModel
 import com.gox.partner.models.ConfigResponseModel
-import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
 
 class SplashViewModel : BaseViewModel<SplashViewModel.SplashNavigator>() {

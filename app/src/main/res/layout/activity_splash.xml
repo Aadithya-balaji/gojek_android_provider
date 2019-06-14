@@ -12,10 +12,10 @@
         <ImageView
             android:layout_width="@dimen/_180sdp"
             android:layout_height="@dimen/_180sdp"
-            app:srcCompat="@drawable/app_logo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/app_logo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

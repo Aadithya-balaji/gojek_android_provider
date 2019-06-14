@@ -47,20 +47,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp">
-            <include
-                android:id="@+id/llTaxiInvoice"
-                layout="@layout/layout_taxi_invoice"
-                android:visibility="visible" />
 
-            <include
-                android:id="@+id/llOrderInvoice"
-                layout="@layout/layout_order_invoice"
-                android:visibility="gone" />
+                <include
+                    android:id="@+id/llTaxiInvoice"
+                    layout="@layout/layout_taxi_invoice"
+                    android:visibility="visible" />
 
-            <include
-                android:id="@+id/llServiceInvoice"
-                layout="@layout/layout_service_invoice"
-                android:visibility="gone" />
+                <include
+                    android:id="@+id/llOrderInvoice"
+                    layout="@layout/layout_order_invoice"
+                    android:visibility="gone" />
+
+                <include
+                    android:id="@+id/llServiceInvoice"
+                    layout="@layout/layout_service_invoice"
+                    android:visibility="gone" />
             </LinearLayout>
 
         </LinearLayout>

@@ -1,6 +1,5 @@
 package com.gox.base.repository
 
-import com.gox.base.chatmessage.ChatMainViewModel
 import com.gox.base.data.Constants
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -8,25 +7,20 @@ import io.reactivex.schedulers.Schedulers
 
 class BaseModuleRepository : BaseRepository() {
 
-    private val serviceId: String
-        get() = Constants.BaseUrl.APP_BASE_URL
-
-    fun sendMessage(viewModel: ChatMainViewModel, s: String, hashMap: HashMap<String, Any>): Disposable {
+    fun sendMessage(listener: ApiListener, hashMap: HashMap<String, Any>): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, BaseWebService::class.java)
-                .sendMessage(s, hashMap)
+                .sendMessage(hashMap)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({ viewModel.singleMessageResponse.value = it },
-                        { viewModel.errorResponse.value = getErrorMessage(it) })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getMessage(viewModel: ChatMainViewModel, token: String, adminService: String, id: Int): Disposable {
+    fun getMessage(listener: ApiListener, adminService: String, id: Int): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.TAXI_BASE_URL, BaseWebService::class.java)
-                .getMessages(token, adminService, id)
+                .getMessages(adminService, id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({ viewModel.getChatMessageList.value = it },
-                        { viewModel.errorResponse.value = getErrorMessage(it) })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
     companion object {

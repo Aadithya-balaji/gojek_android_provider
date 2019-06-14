@@ -1,4 +1,4 @@
-package com.gox.xjek.ui.pastorder_fragment
+package com.gox.partner.views.pastorder_fragment
 
 interface PastOrderNavigator {
 

@@ -88,9 +88,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tv_order_status"
                     android:fontFamily="@font/avenirltstd_medium"
-                    tools:text="sdfdf dfdafdaf dfdfd "
                     android:textColor="@color/xuber_grey"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:text="sdfdf dfdafdaf dfdfd " />
             </RelativeLayout>
 
             <RelativeLayout

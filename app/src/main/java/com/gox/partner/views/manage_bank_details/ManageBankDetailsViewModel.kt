@@ -46,21 +46,14 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
 
     fun getAdapter() = adapter
 
-
-    fun getItemCount(): Int {
-        return if (bankResponse.value != null) {
-            bankResponse.value!!.responseData.size
-        } else {
-            0
-        }
-    }
+    fun getItemCount() = if (bankResponse.value != null)
+        bankResponse.value!!.responseData.size else 0
 
     fun getBankLabelName(position: Int): String {
         val response = bankResponse.value!!.responseData
         return if (response.isNotEmpty())
             response[position].label
-        else
-            ""
+        else ""
     }
 
     fun getBankLabelValue(position: Int): String {
@@ -72,8 +65,7 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
         val response = bankResponse.value!!.responseData
         return if (response.isNotEmpty())
             response[position].type == "INT"
-        else
-            false
+        else false
     }
 
     fun afterValueChanged(value: CharSequence, position: Int) {

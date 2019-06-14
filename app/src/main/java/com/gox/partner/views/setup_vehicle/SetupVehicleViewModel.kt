@@ -13,13 +13,12 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
 
     private val appRepository = AppRepository.instance()
     private val vehicleLiveData = MutableLiveData<Any>()
-    private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID,1)
-    private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID,2)
+    private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID, 1)
+    private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID, 2)
 
     private var serviceId: Int = -1
     private val adapter: SetupVehicleAdapter = SetupVehicleAdapter(this)
 
-    //TODO preference issue
     fun getTransportId() = transportId
     fun getOrderId() = orderId
 
@@ -29,9 +28,7 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
 
     fun getServiceId() = serviceId
 
-    fun setAdapter() {
-        adapter.notifyDataSetChanged()
-    }
+    fun setAdapter() = adapter.notifyDataSetChanged()
 
     fun getAdapter() = adapter
 
@@ -79,7 +76,5 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
 
     fun getVehicleDataObservable() = vehicleLiveData
 
-    fun onItemClick(position: Int) {
-        navigator.onMenuItemClicked(position)
-    }
+    fun onItemClick(position: Int) = navigator.onMenuItemClicked(position)
 }

@@ -40,8 +40,8 @@ import java.util.*
 class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         DocumentUploadNavigator, DatePickerDialog.OnDateSetListener {
 
-    private lateinit var binding: ActivityAddEditDocumentBinding
-    private lateinit var viewModelAddEdit: AddEditDocumentViewModel
+    private lateinit var mBinding: ActivityAddEditDocumentBinding
+    private lateinit var mViewModel: AddEditDocumentViewModel
 
     private lateinit var calendar: Calendar
 
@@ -49,112 +49,94 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     private var frontFileDownloadID: Int? = 0
     private var backFileDownloadID: Int? = null
 
-    override fun getLayoutId(): Int = R.layout.activity_add_edit_document
+    override fun getLayoutId() = R.layout.activity_add_edit_document
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivityAddEditDocumentBinding
-        binding.lifecycleOwner = this
-        viewModelAddEdit = provideViewModel {
+        mBinding = mViewDataBinding as ActivityAddEditDocumentBinding
+        mBinding.lifecycleOwner = this
+        mViewModel = provideViewModel {
             AddEditDocumentViewModel()
-
-            // setDocumentData(intent.extras!!)
         }
-        viewModelAddEdit.navigator = this
+        mViewModel.navigator = this
 
-        setSupportActionBar(binding.toolbar.tbApp)
-        binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text = intent.getStringExtra(Constants.DOCUMENT_NAME)
-        binding.viewModel = viewModelAddEdit
+        setSupportActionBar(mBinding.toolbar.tbApp)
+        mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
+        mBinding.toolbar.tbApp.tv_toolbar_title.text = intent.getStringExtra(Constants.DOCUMENT_NAME)
+        mBinding.viewModel = mViewModel
 
         calendar = Calendar.getInstance(Locale.getDefault())
-//        val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-//        viewModelAddEdit.expiryDate.value = simpleDateFormat.format(calendar.time)
 
-        observeLiveData(viewModelAddEdit.showLoading) {
+        observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
 
-        viewModelAddEdit.getDocumentList(intent.getStringExtra(Constants.DOCUMENT_TYPE))
+        mViewModel.getDocumentList(intent.getStringExtra(Constants.DOCUMENT_TYPE))
 
         observeResponses()
     }
 
     private fun observeResponses() {
 
-        observeLiveData(viewModelAddEdit.documentResponse) { data ->
+        observeLiveData(mViewModel.documentResponse) { data ->
             run {
-                viewModelAddEdit.setData(data.responseData)
+                mViewModel.setData(data.responseData)
             }
         }
 
-        observeLiveData(viewModelAddEdit.addDocumentResponse) {
+        observeLiveData(mViewModel.addDocumentResponse) {
             ViewUtils.showToast(this, getString(R.string.docuemnt_added_success), true)
-            if (viewModelAddEdit.getData().size > (viewModelAddEdit.currentPosition + 1)) {
-                viewModelAddEdit.incrementPosition()
-            } else {
-                finish()
-            }
+            if (mViewModel.getData().size > (mViewModel.currentPosition + 1))
+                mViewModel.incrementPosition() else finish()
         }
 
-        observeLiveData(viewModelAddEdit.errorResponse) { error ->
+        observeLiveData(mViewModel.errorResponse) { error ->
             run {
                 ViewUtils.showToast(this, error, false)
-                viewModelAddEdit.showEmpty.value = true
+                mViewModel.showEmpty.value = true
             }
         }
 
-        observeLiveData(viewModelAddEdit.documentFrontImageURL) { url ->
+        observeLiveData(mViewModel.documentFrontImageURL) { url ->
             run {
 
-                if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
+                if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true)) {
                     val circularProgressDrawable = getCircularProgressDrawable()
                     if (!url.isNullOrEmpty()) {
                         Glide.with(this)
                                 .load(url)
                                 .placeholder(circularProgressDrawable)
                                 .into(ivFrontImage)
-                        viewModelAddEdit.showFrontView.value = true
+                        mViewModel.showFrontView.value = true
                     } else {
                         ivFrontImage.setImageDrawable(null)
-                        viewModelAddEdit.showFrontView.value = false
+                        mViewModel.showFrontView.value = false
                     }
                 } else {
-                    viewModelAddEdit.isPDF.value = true
-                    if (!url.isNullOrEmpty()) {
-                        viewModelAddEdit.showFrontView.value = true
-                    } else {
-                        viewModelAddEdit.showFrontView.value = false
-                    }
-                    //ivFrontImage.setImageResource(R.drawable.ic_pdf)
+                    mViewModel.isPDF.value = true
+                    mViewModel.showFrontView.value = !url.isNullOrEmpty()
                 }
 
-                if (!url.isNullOrEmpty())
-                    downloadFrontSideFile(url)
+                if (!url.isNullOrEmpty()) downloadFrontSideFile(url)
             }
         }
 
-        observeLiveData(viewModelAddEdit.documentBackImageURL) { url ->
+        observeLiveData(mViewModel.documentBackImageURL) { url ->
             run {
-                if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
+                if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true)) {
                     val circularProgressDrawable = getCircularProgressDrawable()
                     if (!url.isNullOrEmpty()) {
                         Glide.with(this)
                                 .load(url)
                                 .placeholder(circularProgressDrawable)
                                 .into(ivBackImage)
-                        viewModelAddEdit.showBackView.value = true
+                        mViewModel.showBackView.value = true
                     } else {
                         ivBackImage.setImageDrawable(null)
-                        viewModelAddEdit.showBackView.value = false
+                        mViewModel.showBackView.value = false
                     }
                 } else {
-                    viewModelAddEdit.isPDF.value = true
-                    if (!url.isNullOrEmpty()) {
-                        viewModelAddEdit.showBackView.value = true
-                    } else {
-                        viewModelAddEdit.showBackView.value = false
-                    }
-                    //ivBackImage.setImageResource(R.drawable.ic_pdf)
+                    mViewModel.isPDF.value = true
+                    mViewModel.showBackView.value = !url.isNullOrEmpty()
                 }
 
                 if (!url.isNullOrEmpty()) downloadBackSideFile(url)
@@ -166,9 +148,9 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         backFileDownloadID = PRDownloader.download(url, cacheDir.path, "back_image")
                 .build().start(object : OnDownloadListener {
                     override fun onDownloadComplete() {
-                        viewModelAddEdit.documentBackImageFile.value = File(cacheDir.path + File.separator + "back_image")
+                        mViewModel.documentBackImageFile.value =
+                                File(cacheDir.path + File.separator + "back_image")
                         Log.e("SK", "SKDOCUMENT Back image downloaded")
-
                     }
 
                     override fun onError(error: Error?) {
@@ -181,7 +163,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         frontFileDownloadID = PRDownloader.download(url, cacheDir.path, "front_image")
                 .build().start(object : OnDownloadListener {
                     override fun onDownloadComplete() {
-                        viewModelAddEdit.documentFrontImageFile.value = File(cacheDir.path + File.separator + "front_image")
+                        mViewModel.documentFrontImageFile.value =
+                                File(cacheDir.path + File.separator + "front_image")
                         Log.e("SK", "SKDOCUMENT Front image downloaded")
                     }
 
@@ -192,15 +175,15 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     }
 
     private fun getCircularProgressDrawable(): CircularProgressDrawable {
-        val circularProgressDrawable = CircularProgressDrawable(this)
-        circularProgressDrawable.strokeWidth = 5f
-        circularProgressDrawable.centerRadius = 30f
-        circularProgressDrawable.start()
-        return circularProgressDrawable
+        val cpd = CircularProgressDrawable(this)
+        cpd.strokeWidth = 5f
+        cpd.centerRadius = 30f
+        cpd.start()
+        return cpd
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        viewModelAddEdit.expiryDate.value = DateTimeUtil().constructDateString(year, month, dayOfMonth, "-")
+        mViewModel.expiryDate.value = DateTimeUtil().constructDateString(year, month, dayOfMonth, "-")
     }
 
     override fun onDateChanged() {
@@ -210,62 +193,54 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         datePickerDialog.show()
     }
 
-    override fun selectFrontImage() {
-        Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        requestCode = Enums.DOCUMENT_UPLOAD_FRONT
+    override fun selectFrontImage() = Dexter.withActivity(this)
+            .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                    requestCode = Enums.DOCUMENT_UPLOAD_FRONT
 
-                        if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
-                            ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
-                        } else {
-                            /*  val intent = Intent(Intent.ACTION_GET_CONTENT)
-                              intent.type = "application/pdf"
-                              intent.addCategory(Intent.CATEGORY_OPENABLE)
-                              startActivityForResult(intent,Enums.DOCUMENT_UPLOAD_PDF)*/
-                            FilePickerBuilder.instance
-                                    .setMaxCount(1)
-                                    .addFileSupport("Select Front Page", arrayOf(".pdf"), R.drawable.ic_pdf)
-                                    .setActivityTheme(R.style.LibAppTheme)
-                                    .enableDocSupport(false)
-                                    .enableSelectAll(false)
-                                    .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                                    .pickFile(this@AddEditDocumentActivity)
-                        }
+                    if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true))
+                        ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
+                    else {
+                        FilePickerBuilder.instance
+                                .setMaxCount(1)
+                                .addFileSupport("Select Front Page", arrayOf(".pdf"), R.drawable.ic_pdf)
+                                .setActivityTheme(R.style.LibAppTheme)
+                                .enableDocSupport(false)
+                                .enableSelectAll(false)
+                                .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                                .pickFile(this@AddEditDocumentActivity)
                     }
+                }
 
-                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                        token?.continuePermissionRequest()
-                    }
-                }).check()
-    }
+                override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?,
+                                                                token: PermissionToken?) {
+                    token?.continuePermissionRequest()
+                }
+            }).check()
 
-    override fun selectBackImage() {
-        Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        requestCode = Enums.DOCUMENT_UPLOAD_BACK
-                        if (viewModelAddEdit.getFileType().equals(Enums.IMAGE_TYPE, true)) {
-                            ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
-                        } else {
-                            FilePickerBuilder.instance
-                                    .setMaxCount(1)
-                                    .addFileSupport("Select Back Page", arrayOf(".pdf"), R.drawable.ic_pdf)
-                                    .setActivityTheme(R.style.LibAppTheme)
-                                    .enableDocSupport(false)
-                                    .enableSelectAll(false)
-                                    .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                                    .pickFile(this@AddEditDocumentActivity)
-                        }
+    override fun selectBackImage() = Dexter.withActivity(this)
+            .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                    requestCode = Enums.DOCUMENT_UPLOAD_BACK
+                    if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true))
+                        ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity) else {
+                        FilePickerBuilder.instance
+                                .setMaxCount(1)
+                                .addFileSupport("Select Back Page", arrayOf(".pdf"), R.drawable.ic_pdf)
+                                .setActivityTheme(R.style.LibAppTheme)
+                                .enableDocSupport(false)
+                                .enableSelectAll(false)
+                                .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                                .pickFile(this@AddEditDocumentActivity)
                     }
+                }
 
-                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                        token?.continuePermissionRequest()
-                    }
-                }).check()
-    }
+                override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                    token?.continuePermissionRequest()
+                }
+            }).check()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -280,8 +255,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                             Glide.with(this)
                                     .load(frontImageFile)
                                     .into(ivFrontImage)
-                            viewModelAddEdit.documentFrontImageFile.value = frontImageFile
-                            viewModelAddEdit.showFrontView.value = true
+                            mViewModel.documentFrontImageFile.value = frontImageFile
+                            mViewModel.showFrontView.value = true
                         }
 
                         else -> {
@@ -289,11 +264,10 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                             Glide.with(this)
                                     .load(backImageFile)
                                     .into(ivBackImage)
-                            viewModelAddEdit.documentBackImageFile.value = backImageFile
-                            viewModelAddEdit.showBackView.value = true
+                            mViewModel.documentBackImageFile.value = backImageFile
+                            mViewModel.showBackView.value = true
                         }
                     }
-
                 }
             }
 
@@ -302,17 +276,17 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     Enums.DOCUMENT_UPLOAD_FRONT -> {
                         val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
                         val frontPageFile = File(selectedDoc!![0])
-                        viewModelAddEdit.documentFrontImageFile.value = frontPageFile
-                        viewModelAddEdit.documentFrontFileName.value = frontPageFile.name
-                        viewModelAddEdit.showFrontView.value = true
+                        mViewModel.documentFrontImageFile.value = frontPageFile
+                        mViewModel.documentFrontFileName.value = frontPageFile.name
+                        mViewModel.showFrontView.value = true
                     }
 
                     else -> {
                         val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
                         val backPageFile = File(selectedDoc!![0])
-                        viewModelAddEdit.documentBackImageFile.value = backPageFile
-                        viewModelAddEdit.documentBackFileName.value = backPageFile.name
-                        viewModelAddEdit.showBackView.value = true
+                        mViewModel.documentBackImageFile.value = backPageFile
+                        mViewModel.documentBackFileName.value = backPageFile.name
+                        mViewModel.showBackView.value = true
                     }
                 }
             }
@@ -320,28 +294,21 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     }
 
     override fun submitDocument() =
-            if (viewModelAddEdit.documentFrontImageFile.value == null || !viewModelAddEdit.documentFrontImageFile.value!!.isFile) {
+            if (mViewModel.documentFrontImageFile.value == null
+                    || !mViewModel.documentFrontImageFile.value!!.isFile) {
                 ViewUtils.showToast(this, getString(R.string.please_select_front_page), false)
-            } else if (viewModelAddEdit.showBackSide.value!!
-                    && (viewModelAddEdit.documentBackImageFile.value == null
-                            || !viewModelAddEdit.documentBackImageFile.value!!.isFile)) {
+            } else if (mViewModel.showBackSide.value!!
+                    && (mViewModel.documentBackImageFile.value == null
+                            || !mViewModel.documentBackImageFile.value!!.isFile)) {
                 ViewUtils.showToast(this, getString(R.string.please_select_back_page_of_document), false)
-            } else if (viewModelAddEdit.showExpiry.value!! && viewModelAddEdit.expiryDate.value.isNullOrEmpty()) {
+            } else if (mViewModel.showExpiry.value!! && mViewModel.expiryDate.value.isNullOrEmpty())
                 ViewUtils.showToast(this, getString(R.string.please_select_expiry_date), false)
-            } else viewModelAddEdit.updateDocument()
-
-    override fun showFrontImage() {
-        showFile(viewModelAddEdit.documentFrontImageFile.value!!)
-    }
+            else mViewModel.updateDocument()
 
     private fun showFile(file: File) {
         val intent = Intent(Intent.ACTION_VIEW)
         intent.data = FileProvider.getUriForFile(this, applicationContext.packageName + ".provider", file)
         startActivity(Intent.createChooser(intent, getString(R.string.choose_application_to_open_with)))
-    }
-
-    override fun showBackImage() {
-        showFile(viewModelAddEdit.documentBackImageFile.value!!)
     }
 
     override fun onDestroy() {

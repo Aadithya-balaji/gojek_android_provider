@@ -9,9 +9,8 @@ import com.gox.partner.BR
 import com.gox.partner.R
 import com.gox.partner.databinding.BankTemplateInflateBinding
 
-class SetupBankTemplateAdapter
-(private val bankViewModel: ManageBankDetailsViewModel) :
-        RecyclerView.Adapter<SetupBankTemplateAdapter.ViewHolder>() {
+class SetupBankTemplateAdapter(private val bankViewModel: ManageBankDetailsViewModel)
+    : RecyclerView.Adapter<SetupBankTemplateAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -23,9 +22,7 @@ class SetupBankTemplateAdapter
         return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return bankViewModel.getItemCount()
-    }
+    override fun getItemCount() = bankViewModel.getItemCount()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(bankViewModel, position)

@@ -45,7 +45,7 @@ object WebApiConstants {
         const val COUNTRYCODE = "country_code"
     }
 
-    object Signup {
+    object SignUp {
         const val DEVICE_TYPE = "device_type"
         const val DEVICE_TOKEN = "device_token"
         const val LOGIN_BY = "login_by"

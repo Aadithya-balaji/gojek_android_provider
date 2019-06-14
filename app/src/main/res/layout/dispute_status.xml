@@ -23,11 +23,11 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@color/xuber_white"
             android:elevation="5dp"
-            app:titleTextAppearance="@style/MediumText"
             app:contentInsetEnd="0dp"
             app:contentInsetLeft="0dp"
             app:contentInsetRight="0dp"
-            app:contentInsetStart="0dp">
+            app:contentInsetStart="0dp"
+            app:titleTextAppearance="@style/MediumText">
 
             <TextView
                 android:id="@+id/dispute_title"
@@ -56,10 +56,10 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:contentDescription="@string/app_name"
                     android:id="@+id/ivDisPuteUser"
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
+                    android:contentDescription="@string/app_name"
                     android:src="@drawable/kittty" />
 
                 <LinearLayout

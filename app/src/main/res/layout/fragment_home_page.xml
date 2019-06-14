@@ -32,16 +32,15 @@
                 android:id="@+id/fabCurrentLocation"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:scaleType="center"
-                app:fabCustomSize="50dp"
-                android:onClick="@{() -> homemodel.showCurrentLocation()}"
-                app:backgroundTint="@color/colorWhite"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginEnd="@dimen/_20sdp"
-                android:layout_centerHorizontal="true"
-                app:srcCompat="@drawable/ic_current_location"
-                android:layout_alignParentEnd="true"
-                />
+                android:onClick="@{() -> homemodel.showCurrentLocation()}"
+                android:scaleType="center"
+                app:backgroundTint="@color/colorWhite"
+                app:fabCustomSize="50dp"
+                app:srcCompat="@drawable/ic_current_location" />
         </RelativeLayout>
 
 
@@ -72,10 +71,10 @@
             android:id="@+id/btn_change_status"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_45sdp"
-            android:layout_marginStart="@dimen/_30sdp"
-            android:layout_marginEnd="@dimen/_30sdp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/_30sdp"
+            android:layout_marginEnd="@dimen/_30sdp"
             android:layout_marginBottom="@dimen/_15sdp"
             android:fontFamily="@font/avenirltstd_medium"
             android:onClick="@{(v) -> homemodel.changeStatus(v)}"

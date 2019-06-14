@@ -8,7 +8,6 @@ import com.gox.partner.views.home.VerificationModel
 
 class PendingListViewModel : BaseViewModel<PendingListNavigator>() {
 
-
     fun getVerificationObservable(): MutableLiveData<VerificationModel> = Constant.verificationObservable
 
     fun selectedPendingList(view: View) {

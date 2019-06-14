@@ -274,15 +274,11 @@ public class Country {
 
         if (i < 0) {
             return null;
-        } else {
-            return COUNTRIES[i];
-        }
+        } else return COUNTRIES[i];
     }
 
     public static List<CountryModel> getAllCountries() {
-        if (allCountriesList == null) {
-            allCountriesList = Arrays.asList(COUNTRIES);
-        }
+        if (allCountriesList == null) allCountriesList = Arrays.asList(COUNTRIES);
         return allCountriesList;
     }
 
@@ -292,6 +288,5 @@ public class Country {
             return country.getCode().compareTo(t1.getCode());
         }
     }
-
 
 }

@@ -14,18 +14,13 @@ class IncomingRequestViewModel : BaseViewModel<IncomingNavigator>() {
 
     var pickupLocation = MutableLiveData<String>()
     var serviceType = MutableLiveData<String>()
-    var timeLeft = MutableLiveData<String>()
     var acceptRequestLiveData = MutableLiveData<AcceptRequestModel>()
     var rejectRequestLiveData = MutableLiveData<RejectRequestModel>()
     var showLoading = MutableLiveData<Boolean>()
 
-    fun acceptReq() {
-        navigator.accept()
-    }
+    fun acceptReq() = navigator.accept()
 
-    fun cancelReq() {
-        navigator.cancel()
-    }
+    fun cancelReq() = navigator.cancel()
 
     fun acceptRequest(param: HashMap<String, String>) {
         getCompositeDisposable()

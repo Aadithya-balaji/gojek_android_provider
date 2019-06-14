@@ -13,8 +13,8 @@ import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(), ManageDocumentsNavigator {
 
-    private lateinit var binding: ActivityManageDocumentsBinding
-    private lateinit var viewModel: ManageDocumentsViewModel
+    private lateinit var mBinding: ActivityManageDocumentsBinding
+    private lateinit var mViewModel: ManageDocumentsViewModel
 
     private object DocumentType {
         const val ALL = "All"
@@ -26,29 +26,20 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(), 
     override fun getLayoutId() = R.layout.activity_manage_documents
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivityManageDocumentsBinding
-        binding.lifecycleOwner = this
-        viewModel = provideViewModel {
+        mBinding = mViewDataBinding as ActivityManageDocumentsBinding
+        mBinding.lifecycleOwner = this
+        mViewModel = provideViewModel {
             ManageDocumentsViewModel()
         }
-        viewModel.navigator = this
-        binding.manageDocumentsViewModel = viewModel
+        mViewModel.navigator = this
+        mBinding.manageDocumentsViewModel = mViewModel
 
-        setSupportActionBar(binding.toolbar.tbApp)
-        binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_manage_documents)
-
-        observeViewModel()
-
+        setSupportActionBar(mBinding.toolbar.tbApp)
+        mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
+        mBinding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_manage_documents)
     }
 
-    private fun observeViewModel() {
-
-    }
-
-    override fun showError(error: String) {
-        ViewUtils.showToast(applicationContext, error, false)
-    }
+    override fun showError(error: String) = ViewUtils.showToast(applicationContext, error, false)
 
     override fun showAllDocuments() {
         val intent = Intent(this, AddEditDocumentActivity::class.java)
@@ -64,7 +55,7 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(), 
         launchNewActivity(intent, false)
     }
 
-    override fun showDelieveryDocuments() {
+    override fun showDeliveryDocuments() {
         val intent = Intent(this, AddEditDocumentActivity::class.java)
         intent.putExtra(Constants.DOCUMENT_NAME, getString(R.string.delievery_documents))
         intent.putExtra(Constants.DOCUMENT_TYPE, DocumentType.DELIVERY)

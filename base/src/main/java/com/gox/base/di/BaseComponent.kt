@@ -6,9 +6,9 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [WebServiceModule::class,AppContainerModule::class])
+@Component(modules = [WebServiceModule::class, AppContainerModule::class])
 interface BaseComponent {
     fun inject(baseRepository: BaseRepository)
 
-    fun inject(runtimePermission:RunTimePermission)
+    fun inject(runtimePermission: RunTimePermission)
 }

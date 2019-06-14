@@ -3,12 +3,6 @@ package com.gox.base.views.customviews.circularseekbar;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 
-
-
-
-/**
- * Created by Boopathi on 19/04/2019..
- */
 public class CircularProgressBarModel extends CircularProgressDimensions {
 
     // progress properties

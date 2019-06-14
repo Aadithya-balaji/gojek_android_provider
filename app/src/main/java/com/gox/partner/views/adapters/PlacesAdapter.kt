@@ -11,28 +11,27 @@ import android.widget.TextView
 import com.gox.partner.R
 import com.gox.partner.models.PlaceResponseModel
 
-class PlacesAdapter(val ctxt: Context, isCountry: Boolean, isCity: Boolean, isState: Boolean, val placesList: ArrayList<PlaceResponseModel>) : BaseAdapter(), Filterable {
-    private lateinit var mInflater: LayoutInflater
-    private lateinit var orignalPlaceList: ArrayList<PlaceResponseModel>
-    private lateinit var context: Context
-    private lateinit var filteredData: ArrayList<PlaceResponseModel>
-    private lateinit var mFilter: ItemFilter
+class PlacesAdapter(private var context: Context,
+                    isCountry: Boolean,
+                    isCity: Boolean,
+                    isState: Boolean,
+                    placesList: ArrayList<PlaceResponseModel>) : BaseAdapter(), Filterable {
+
+    private var mInflater = LayoutInflater.from(this.context)
+    private var orignalPlaceList = placesList
+    private var filteredData: ArrayList<PlaceResponseModel>
+    private var mFilter: ItemFilter
     private var isCountry: Boolean = false
     private var isCity: Boolean = false
     private var isState: Boolean = false
 
-
     init {
-        this.context = ctxt
-        this.orignalPlaceList = placesList
-        mInflater = LayoutInflater.from(context)
         this.filteredData = placesList
         mFilter = ItemFilter()
         this.isCountry = isCountry
         this.isState = isState
         this.isCity = isCity
     }
-
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         // A ViewHolder keeps references to children views to avoid unnecessary calls
@@ -60,71 +59,50 @@ class PlacesAdapter(val ctxt: Context, isCountry: Boolean, isCity: Boolean, isSt
         }
 
         // If weren't re-ordering this you could rely on what you set last time
-        if (isCountry) {
-            holder.text!!.setText(filteredData.get(position).countryName.toString())
-        } else if (isState) {
-            holder.text!!.setText(filteredData.get(position).stateName.toString())
-
-        } else if (isCity) {
-
-            holder.text!!.setText(filteredData.get(position).cityName.toString())
+        when {
+            isCountry -> holder.text!!.text = filteredData.get(position).countryName.toString()
+            isState -> holder.text!!.text = filteredData.get(position).stateName.toString()
+            isCity -> holder.text!!.text = filteredData.get(position).cityName.toString()
         }
-
 
         return convertView!!
     }
 
-    override fun getItem(position: Int): Any {
-        return filteredData.get(position)
-    }
+    override fun getItem(position: Int) = filteredData[position]
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
+    override fun getItemId(position: Int) = position.toLong()
 
-    override fun getCount(): Int {
-        return filteredData.size
-    }
+    override fun getCount() = filteredData.size
 
-
-    override fun getFilter(): Filter {
-        return mFilter
-    }
+    override fun getFilter() = mFilter
 
     internal class ViewHolder {
         var text: TextView? = null
     }
-
 
     inner class ItemFilter : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
 
             val filterString = constraint.toString().toLowerCase()
 
-            val results = Filter.FilterResults()
+            val results = FilterResults()
 
             val list = orignalPlaceList
 
             val count = list.size
-            val nlist = ArrayList<PlaceResponseModel>(count)
-            var filterableString: String = ""
+            val mList = ArrayList<PlaceResponseModel>(count)
+            var filterableString = ""
             for (i in 0 until count) {
-                if (isCountry) {
-                    filterableString = list.get(i).countryName.toString()
-                } else if (isState) {
-                    filterableString = list.get(i).stateName.toString()
-
-                } else if (isCity) {
-                    filterableString = list.get(i).cityName.toString()
-
+                when {
+                    isCountry -> filterableString = list.get(i).countryName.toString()
+                    isState -> filterableString = list.get(i).stateName.toString()
+                    isCity -> filterableString = list.get(i).cityName.toString()
                 }
-                if (filterableString.toLowerCase().contains(filterString)) {
-                    nlist.add(list.get(i))
-                }
+                if (filterableString.toLowerCase().contains(filterString)) mList.add(list.get(i))
             }
 
-            results.values = nlist
-            results.count = nlist.size
+            results.values = mList
+            results.count = mList.size
             return results
         }
 
@@ -132,6 +110,5 @@ class PlacesAdapter(val ctxt: Context, isCountry: Boolean, isCity: Boolean, isSt
             filteredData = results!!.values as java.util.ArrayList<PlaceResponseModel>
             notifyDataSetChanged()
         }
-
     }
 }

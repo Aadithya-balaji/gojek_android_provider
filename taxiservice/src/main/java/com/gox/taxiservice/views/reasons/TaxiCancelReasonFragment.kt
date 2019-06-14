@@ -17,24 +17,24 @@ import com.gox.taxiservice.views.adapter.TaxiReasonAdapter
 class TaxiCancelReasonFragment : BaseDialogFragment<DialogTaxiReasonBinding>(),
         TaxiCancelReasonNavigator {
 
-    private lateinit var mReasonFragmentBinding: DialogTaxiReasonBinding
+    private lateinit var mBinding: DialogTaxiReasonBinding
     private lateinit var mViewModel: TaxiCancelReasonViewModel
     private lateinit var getReasons: GetReasonsInterface
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
-        mReasonFragmentBinding = viewDataBinding as DialogTaxiReasonBinding
+        mBinding = viewDataBinding as DialogTaxiReasonBinding
         mViewModel = ViewModelProviders.of(this).get(TaxiCancelReasonViewModel::class.java)
         mViewModel.navigator = this
-        mReasonFragmentBinding.lifecycleOwner = this
-        mReasonFragmentBinding.viewModel = mViewModel
+        mBinding.lifecycleOwner = this
+        mBinding.viewModel = mViewModel
         getApiResponse()
         mViewModel.getReason()
     }
 
     private fun getApiResponse() {
         mViewModel.mResponse.observe(this, Observer<ReasonModel> { reasonModel ->
-            if (reasonModel!!.responseData != null) mReasonFragmentBinding.taxiReasonAdapter =
-                    TaxiReasonAdapter(activity!!, mListener, reasonModel.responseData as List<ReasonModel.ResponseData>)
+            if (reasonModel!!.responseData != null) mBinding.taxiReasonAdapter =
+                    TaxiReasonAdapter(mListener, reasonModel.responseData as List<ReasonModel.ResponseData>)
         })
     }
 
@@ -45,7 +45,7 @@ class TaxiCancelReasonFragment : BaseDialogFragment<DialogTaxiReasonBinding>(),
         }
     }
 
-    override fun getLayout(): Int = R.layout.dialog_taxi_reason
+    override fun getLayout() = R.layout.dialog_taxi_reason
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -60,7 +60,5 @@ class TaxiCancelReasonFragment : BaseDialogFragment<DialogTaxiReasonBinding>(),
         }
     }
 
-    override fun closePopup() {
-        dialog!!.cancel()
-    }
+    override fun closePopup() = dialog!!.cancel()
 }

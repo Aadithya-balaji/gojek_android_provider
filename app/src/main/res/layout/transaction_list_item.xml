@@ -15,39 +15,39 @@
 
         <TextView
             android:id="@+id/tvTransactionID"
+            style="@style/SmallText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            tools:text="ID123456"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
+            android:textColor="@color/xuber_black"
             android:textSize="@dimen/_9sdp"
-            android:textColor="@color/xuber_black" />
+            tools:text="ID123456" />
 
         <TextView
             android:id="@+id/tvTransactionAmount"
+            style="@style/SmallText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            tools:text="$100"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
+            android:textColor="@color/xuber_black"
             android:textSize="@dimen/_9sdp"
-            android:textColor="@color/xuber_black" />
+            tools:text="$100" />
 
         <TextView
             android:id="@+id/tvTransactionStatus"
+            style="@style/SmallText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            tools:text="Credited"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
+            android:textColor="@color/home_reject"
             android:textSize="@dimen/_9sdp"
-            android:textColor="@color/home_reject" />
+            tools:text="Credited" />
 
 
     </LinearLayout>

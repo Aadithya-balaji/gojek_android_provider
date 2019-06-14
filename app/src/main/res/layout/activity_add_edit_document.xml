@@ -60,15 +60,15 @@
                                 android:text="@{viewModel.documentFrontName}"
                                 tools:text="Voter ID (Front)" />
 
-                       <!--     <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Theme.TextView.Medium"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:onClick="@{() -> viewModel.showFrontImage()}"
-                                android:text="@string/view"
-                                android:textColor="@color/colorBasePrimary"
-                                android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />-->
+                            <!--     <androidx.appcompat.widget.AppCompatTextView
+                                     style="@style/Theme.TextView.Medium"
+                                     android:layout_width="wrap_content"
+                                     android:layout_height="wrap_content"
+                                     android:layout_alignParentEnd="true"
+                                     android:onClick="@{() -> viewModel.showFrontImage()}"
+                                     android:text="@string/view"
+                                     android:textColor="@color/colorBasePrimary"
+                                     android:visibility="@{viewModel.showFrontView ? View.VISIBLE:View.GONE}" />-->
 
                         </RelativeLayout>
 
@@ -141,15 +141,15 @@
                                 android:text="@{viewModel.documentBackName}"
                                 tools:text="Voter ID (Back)" />
 
-                          <!--  <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/Theme.TextView.Medium"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
-                                android:onClick="@{() -> viewModel.showBackImage()}"
-                                android:text="@string/view"
-                                android:textColor="@color/colorBasePrimary"
-                                android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />-->
+                            <!--  <androidx.appcompat.widget.AppCompatTextView
+                                  style="@style/Theme.TextView.Medium"
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_alignParentEnd="true"
+                                  android:onClick="@{() -> viewModel.showBackImage()}"
+                                  android:text="@string/view"
+                                  android:textColor="@color/colorBasePrimary"
+                                  android:visibility="@{viewModel.showBackView ? View.VISIBLE:View.GONE}" />-->
 
                         </RelativeLayout>
 
@@ -266,6 +266,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSubmit"
+                style="@style/SmallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
@@ -275,7 +276,6 @@
                 android:onClick="@{()->viewModel.submitDocument()}"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/upload"
-                style="@style/SmallText"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_12sdp"

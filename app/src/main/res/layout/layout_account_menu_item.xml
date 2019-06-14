@@ -44,12 +44,12 @@
                 tools:srcCompat="@drawable/ic_user" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="@style/SmallText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
-                style="@style/SmallText"
                 android:text="@{accountViewModel.getAccountMenu(position).component1()}"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_12sdp"

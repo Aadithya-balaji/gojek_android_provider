@@ -9,4 +9,4 @@
     android:orientation="vertical"
     android:paddingTop="@dimen/_8sdp"
     android:paddingBottom="@dimen/_8sdp"
-    tools:text="boopathi"/>
+    tools:text="boopathi" />

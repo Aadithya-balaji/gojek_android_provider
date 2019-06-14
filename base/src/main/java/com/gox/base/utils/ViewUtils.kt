@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 object ViewUtils {
+
     private var dialog: Dialog? = null
 
     fun showSoftInputWindow(activity: Activity) {
@@ -118,19 +119,6 @@ object ViewUtils {
             dialog!!.dismiss()
     }
 
-/* @MainThread
- fun showRationaleAlert(context: Context, message: String, request: PermissionRequest) {
-     AlertDialog.Builder(context)
-             .setTitle(context.resources.getString(R.string.app_name))
-             .setMessage(message)
-             .setPositiveButton(context.resources.getString(R.string.action_allow)) { dialog, which ->
-                 request.proceed()
-             }
-             .setNegativeButton(context.resources.getString(R.string.action_deny)) { dialog, which ->
-                 request.cancel()
-             }.show()
- }*/
-
     fun bitmapDescriptorFromVector(context: Context, @DrawableRes vectorResId: Int): BitmapDescriptor {
         val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
         vectorDrawable!!.setBounds(0, 0, vectorDrawable.intrinsicWidth, vectorDrawable.intrinsicHeight)
@@ -206,28 +194,21 @@ object ViewUtils {
         return "0"
     }
 
-     fun showMessageOKCancel(context: Context, message: String, okListener: DialogInterface.OnClickListener) {
+    fun showMessageOKCancel(context: Context, message: String, okListener: DialogInterface.OnClickListener) {
         var dialog: android.app.AlertDialog? = null
         val dialogBuilder = android.app.AlertDialog.Builder(context)
         val li = LayoutInflater.from(context)
         val dialogView = li.inflate(R.layout.layout_permission_setting, null)
         dialogBuilder.setView(dialogView);
-        val tvMessage=dialogView.findViewById(R.id.tvMessage) as TextView
-        tvMessage.setText(message)
+        val tvMessage = dialogView.findViewById(R.id.tvMessage) as TextView
+        tvMessage.text = message
         val tvOk = dialogView.findViewById(R.id.tvOk) as TextView
-        tvOk.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                okListener.onClick(dialog, v!!.id)
-                dialog!!.dismiss()
-            }
-        })
+        tvOk.setOnClickListener { v ->
+            okListener.onClick(dialog, v!!.id)
+            dialog!!.dismiss()
+        }
         val tvCancel = dialogView.findViewById(R.id.tvCancel) as TextView
-        tvCancel.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                dialog!!.dismiss()
-            }
-
-        })
+        tvCancel.setOnClickListener { dialog!!.dismiss() }
 
         dialog = dialogBuilder.create()
         dialog.show()

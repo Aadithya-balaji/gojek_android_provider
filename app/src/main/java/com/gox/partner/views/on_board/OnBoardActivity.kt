@@ -11,27 +11,16 @@ import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
-import com.gox.app.ui.onboard.OnBoardViewModel
 import com.gox.base.base.BaseActivity
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityOnBoardBinding
-import com.gox.partner.views.sign_in.SignInActivity
-import com.gox.partner.views.signup.SignupActivity
+import com.gox.partner.views.sign_in.LoginActivity
+import com.gox.partner.views.signup.RegistrationActivity
 
 class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>()
-        , OnBoardNavigator, ViewPager.OnPageChangeListener {
+        , OnBoardNavigator {
 
-    override fun onPageScrollStateChanged(state: Int) {
-
-    }
-
-    override fun onPageScrolled(p: Int, offset: Float, pixel: Int) {
-    }
-
-    override fun onPageSelected(position: Int) {
-    }
-
-    private lateinit var mViewDataBinding: ActivityOnBoardBinding
+    private lateinit var mBinding: ActivityOnBoardBinding
     private lateinit var viewPager: ViewPager
 
     private val onBoardItems = java.util.ArrayList<OnBoardItem>()
@@ -41,7 +30,7 @@ class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>()
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
-        this.mViewDataBinding = mViewDataBinding as ActivityOnBoardBinding
+        this.mBinding = mViewDataBinding as ActivityOnBoardBinding
         val onBoardViewModel = OnBoardViewModel()
         onBoardViewModel.navigator = this
 
@@ -59,7 +48,6 @@ class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>()
 
         viewPager.adapter = MyViewPagerAdapter(this, list)
         viewPager.currentItem = 0
-        viewPager.addOnPageChangeListener(this)
         mIndicator = findViewById(R.id.indicator)
 
         loadAdapter()
@@ -82,15 +70,13 @@ class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>()
         }
 
         viewPager.adapter = IntroSliderAdapter(this, onBoardItems)
-//        viewPager.setPageTransformer(true, IntroSliderTransformation())
         mIndicator!!.setViewPager(viewPager)
         viewPager.currentItem = 0
     }
 
-    override fun goToSignIn() = launchNewActivity(SignInActivity::class.java, false)
+    override fun goToSignIn() = launchNewActivity(LoginActivity::class.java, false)
 
-    override fun goToSignUp() = launchNewActivity(SignupActivity::class.java, false)
-
+    override fun goToSignUp() = launchNewActivity(RegistrationActivity::class.java, false)
 }
 
 class MyViewPagerAdapter internal constructor(internal var context: Context, internal var list: List<WalkThrough>) : PagerAdapter() {

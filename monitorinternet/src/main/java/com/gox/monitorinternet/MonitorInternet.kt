@@ -181,10 +181,8 @@ class MonitorInternet private constructor(context: Context) : NetworkChangeRecei
         fun init(context: Context?): MonitorInternet? {
             if (context == null) throw NullPointerException("context can not be null")
 
-            if (sInstance == null) {
-                synchronized(LOCK) {
-                    if (sInstance == null) sInstance = MonitorInternet(context)
-                }
+            if (sInstance == null) synchronized(LOCK) {
+                if (sInstance == null) sInstance = MonitorInternet(context)
             }
             return sInstance
         }

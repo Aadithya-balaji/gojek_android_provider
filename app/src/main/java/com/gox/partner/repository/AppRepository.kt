@@ -1,11 +1,10 @@
 package com.gox.partner.repository
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.gox.base.chatmessage.ChatMainViewModel
 import com.gox.base.data.Constants
 import com.gox.base.repository.BaseRepository
-import com.gox.base.chatmessage.ChatMainViewModel
 import com.gox.partner.network.AppWebService
 import com.gox.partner.views.account_card.CardListViewModel
 import com.gox.partner.views.add_edit_document.AddEditDocumentViewModel
@@ -18,22 +17,22 @@ import com.gox.partner.views.forgot_password.ForgotPasswordViewModel
 import com.gox.partner.views.history_details.HistoryDetailViewModel
 import com.gox.partner.views.home.HomeViewModel
 import com.gox.partner.views.incoming_request_taxi.IncomingRequestViewModel
-import com.gox.partner.views.invitereferals.InviteReferalsViewModel
+import com.gox.partner.views.invitereferals.InviteReferralsViewModel
 import com.gox.partner.views.manage_bank_details.ManageBankDetailsViewModel
 import com.gox.partner.views.manage_services.ManageServicesViewModel
 import com.gox.partner.views.notification.NotificationViewModel
+import com.gox.partner.views.pastorder_fragment.PastOrderViewModel
 import com.gox.partner.views.profile.ProfileViewModel
 import com.gox.partner.views.reset_password.ResetPasswordViewModel
 import com.gox.partner.views.set_service.SetServiceViewModel
 import com.gox.partner.views.set_service_category_price.SetServicePriceViewModel
 import com.gox.partner.views.set_subservice.SetSubServiceViewModel
 import com.gox.partner.views.setup_vehicle.SetupVehicleViewModel
-import com.gox.partner.views.sign_in.SignInViewModel
-import com.gox.partner.views.signup.SignupViewModel
+import com.gox.partner.views.sign_in.LoginViewModel
+import com.gox.partner.views.signup.RegistrationViewModel
 import com.gox.partner.views.splash.SplashViewModel
 import com.gox.partner.views.transaction.TransactionViewModel
 import com.gox.partner.views.wallet.WalletViewModel
-import com.gox.partner.views.pastorder_fragment.PastOrderViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -47,7 +46,6 @@ class AppRepository : BaseRepository() {
     private val serviceId: String
         get() = Constants.BaseUrl.APP_BASE_URL
 
-    @SuppressLint("CheckResult")
     fun getConfig(viewModel: SplashViewModel, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(AppWebService::class.java)
                 .getConfig(params)
@@ -61,8 +59,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    @SuppressLint("CheckResult")
-    fun postLogin(viewModel: SignInViewModel, params: HashMap<String, String>): Disposable {
+    fun postLogin(viewModel: LoginViewModel, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postLogin(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -75,8 +72,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    @SuppressLint("CheckResult")
-    fun postSocialLogin(viewModel: SignInViewModel, params: HashMap<String, String>): Disposable {
+    fun postSocialLogin(viewModel: LoginViewModel, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postSocialLogin(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -89,9 +85,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    @SuppressLint("CheckResult")
-    fun postForgotPassword(viewModel: ForgotPasswordViewModel, params: HashMap<String, String>):
-            Disposable {
+    fun postForgotPassword(viewModel: ForgotPasswordViewModel, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postForgotPassword(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -104,9 +98,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    @SuppressLint("CheckResult")
-    fun postResetPassword(viewModel: ResetPasswordViewModel, params: HashMap<String, String>):
-            Disposable {
+    fun postResetPassword(viewModel: ResetPasswordViewModel, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postResetPassword(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -119,43 +111,38 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    @SuppressLint("CheckResult")
     fun getCountryList(viewModel: ViewModel, params: HashMap<String, Any?>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getCountries(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    if (viewModel is SignupViewModel)
+                    if (viewModel is RegistrationViewModel)
                         viewModel.getCountryLiveData().postValue(it)
                     else if (viewModel is ProfileViewModel)
                         viewModel.countryListResponse.postValue(it)
                 }, {
-                    if (viewModel is SignupViewModel)
-                        viewModel.gotoSignin()
+                    if (viewModel is RegistrationViewModel)
+                        viewModel.gotoLogin()
                     else if (viewModel is ProfileViewModel)
                         viewModel.errorResponse.value = getErrorMessage(it)
                 })
     }
 
-
-    @SuppressLint("CheckResult")
-    fun postSignup(viewModel: SignupViewModel, params: HashMap<String, RequestBody>,
-                   @Part filename: MultipartBody.Part?): Disposable {
+    fun postSignup(viewModel: RegistrationViewModel, params: HashMap<String, RequestBody>, @Part filename: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postSignUp(params, filename)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.getSignupLiveData().postValue(it)
+                    viewModel.getRegistrationLiveData().postValue(it)
                 }, {
 
-                    viewModel.signupNavigator.showError(getErrorMessage(it))
+                    viewModel.registrationNavigator.showError(getErrorMessage(it))
                 })
     }
 
-    fun postChangePassword(viewModel: ChangePasswordViewModel, token: String,
-                           params: HashMap<String, String>): Disposable {
+    fun postChangePassword(viewModel: ChangePasswordViewModel, token: String, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postChangePassword(token, params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -168,8 +155,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun ValidateUser(viewModel: SignupViewModel, params: HashMap<String, String>): Disposable {
-
+    fun ValidateUser(viewModel: RegistrationViewModel, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .verifyUser(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -198,7 +184,7 @@ class AppRepository : BaseRepository() {
                 })
     }*/
 
-    fun getReferal(viewModel: InviteReferalsViewModel, token: String): Disposable {
+    fun getReferal(viewModel: InviteReferralsViewModel, token: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getProfile(token)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -239,7 +225,7 @@ class AppRepository : BaseRepository() {
                     if (viewModel is ProfileViewModel) {
                         viewModel.errorResponse.value = getErrorMessage(it)
                         viewModel.loadingProgress.value = false
-                    } /*else if (viewModel is InviteReferalsViewModel) {
+                    } /*else if (viewModel is InviteReferralsViewModel) {
                         viewModel.errorResponse.value = getErrorMessage(it)
                         viewModel.loadingProgress.value = false
                     }*/
@@ -292,7 +278,7 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.transcationLiveResponse.postValue(it)
+                    viewModel.transactionLiveResponse.postValue(it)
                 }, {
                     viewModel.errorResponse.value = getErrorMessage(it)
                 })
@@ -304,7 +290,7 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.deleCardLivResponse.postValue(it)
+                    viewModel.deleteCardLivResponse.postValue(it)
                 }, {
                     viewModel.navigator.showErrorMsg(getErrorMessage(it))
                 })
@@ -317,7 +303,7 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    viewModel.addCardLiveResposne.postValue(it)
+                    viewModel.addCardLiveResponse.postValue(it)
                 }, {
                     viewModel.navigator.showErrorMsg(getErrorMessage(it))
                 })
@@ -355,7 +341,7 @@ class AppRepository : BaseRepository() {
                 .subscribe({
                     viewModel.acceptRequestLiveData.postValue(it)
                 }, {
-                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })
     }
 
@@ -367,7 +353,7 @@ class AppRepository : BaseRepository() {
                 .subscribe({
                     viewModel.rejectRequestLiveData.postValue(it)
                 }, {
-                    viewModel.navigator.showErrormessage(getErrorMessage(it))
+                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
                 })
     }
 
@@ -856,7 +842,6 @@ class AppRepository : BaseRepository() {
                         { viewModel.errorResponse.value = getErrorMessage(it) })
     }
 
-
     fun getMessage(viewModel: ChatMainViewModel, token: String, adminService: String, id: Int): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.TAXI_BASE_URL, AppWebService::class.java)
                 .getMessages(token, adminService, id)
@@ -866,16 +851,11 @@ class AppRepository : BaseRepository() {
                         { viewModel.errorResponse.value = getErrorMessage(it) })
     }
 
-
     companion object {
-        private val TAG = AppRepository::class.java.simpleName
         private var appRepository: AppRepository? = null
-
         fun instance(): AppRepository {
-            if (appRepository == null) {
-                synchronized(AppRepository) {
-                    appRepository = AppRepository()
-                }
+            if (appRepository == null) synchronized(AppRepository) {
+                appRepository = AppRepository()
             }
             return appRepository!!
         }

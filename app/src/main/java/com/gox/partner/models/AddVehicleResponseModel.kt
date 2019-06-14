@@ -4,8 +4,8 @@ import com.gox.base.models.CommonResponse
 
 data class AddVehicleResponseModel(
         val responseData: List<Any>,
-        override val statusCode: String,
-        override val title: String,
-        override val message: String,
+        override val statusCode: String = "",
+        override val title: String = "",
+        override val message: String = "",
         override val error: List<Any>
 ) : CommonResponse

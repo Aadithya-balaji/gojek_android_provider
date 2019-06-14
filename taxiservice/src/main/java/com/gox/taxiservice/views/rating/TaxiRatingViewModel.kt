@@ -2,8 +2,7 @@ package com.gox.taxiservice.views.rating
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.taxiservice.model.TaxiRatingResponse
 import com.gox.taxiservice.repositary.TaxiRepository
 
@@ -14,7 +13,16 @@ class TaxiRatingViewModel : BaseViewModel<TaxiRatingNavigator>() {
     var showLoading = MutableLiveData<Boolean>()
 
     fun submitRating(params: HashMap<String, String>) {
-        getCompositeDisposable().add(mRepository.submitRating
-        (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), params))
+        getCompositeDisposable().add(mRepository.submitRating(object : ApiListener {
+            override fun success(successData: Any) {
+                ratingLiveData.value = successData as TaxiRatingResponse
+                showLoading.value = false
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showErrorMessage(getErrorMessage(failData))
+                showLoading.value = false
+            }
+        }, params))
     }
 }

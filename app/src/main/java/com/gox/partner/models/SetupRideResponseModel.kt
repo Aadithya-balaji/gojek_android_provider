@@ -10,14 +10,14 @@ data class SetupRideResponseModel(
         override val title: String,
         override val message: String,
         override val error: List<Any>
-) : CommonResponse,Serializable {
+) : CommonResponse, Serializable {
     data class ResponseData(
             val id: Int,
             @SerializedName("ride_name") val rideName: String,
             val status: Int,
             @SerializedName("providerservice") val providerService: ProviderService?,
             @SerializedName("servicelist") val serviceList: List<ServiceList>
-    ):Serializable {
+    ) : Serializable {
         data class ProviderService(
                 val id: Int,
                 @SerializedName("provider_id") val providerId: Int,
@@ -33,7 +33,7 @@ data class SetupRideResponseModel(
                 @SerializedName("per_mins") val perMins: String,
                 val status: String,
                 @SerializedName("providervehicle") val providerVehicle: ProviderVehicleResponseModel
-        ):Serializable
+        ) : Serializable
 
         data class ServiceList(
                 val id: Int,
@@ -45,7 +45,7 @@ data class SetupRideResponseModel(
                 @SerializedName("vehicle_marker") val vehicleMarker: String,
                 val capacity: Int,
                 val status: Int
-        ):Serializable{
+        ) : Serializable {
             override fun toString(): String {
                 return vehicleName
             }

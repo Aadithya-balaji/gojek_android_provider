@@ -8,7 +8,6 @@ import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.createMultipartBody
 import com.gox.base.extensions.createRequestBody
-import com.gox.base.extensions.readPreferences
 import com.gox.partner.models.AddVehicleDataModel
 import com.gox.partner.models.AddVehicleResponseModel
 import com.gox.partner.models.ProviderVehicleResponseModel
@@ -19,12 +18,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
-
 class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     private val appRepository = AppRepository.instance()
-    private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID,1)
-    private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID,2)
+
+    private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID, 1)
+    private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID, 2)
     private val vehicleCategoryLiveData = MutableLiveData<VehicleCategoryResponseModel>()
     private val vehicleResponseLiveData = MutableLiveData<AddVehicleResponseModel>()
 
@@ -46,8 +45,6 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun getTransportId() = transportId
 
-    fun getOrderId() = orderId
-
     fun setServiceId(serviceId: Int) {
         this.serviceId = serviceId
     }
@@ -58,24 +55,21 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         this.categoryId = categoryId
     }
 
-    fun getCategoryId() = categoryId
-
     fun setIsEdit(isEdit: Boolean) {
         this.isEdit = isEdit
     }
 
     fun getIsEdit() = isEdit
 
-
     fun setVehicleLiveData(providerVehicle: ProviderVehicleResponseModel) {
-        addVehicleDataModel.vehicleImage = providerVehicle.vehicleImage
-        addVehicleDataModel.vehicleModel = providerVehicle.vehicleModel
+        addVehicleDataModel.vehicleImage = providerVehicle.vehicleImage!!
+        addVehicleDataModel.vehicleModel = providerVehicle.vehicleModel!!
         addVehicleDataModel.vehicleYear = providerVehicle.vehicleYear.toString()
-        addVehicleDataModel.vehicleColor = providerVehicle.vehicleColor
-        addVehicleDataModel.vehicleNumber = providerVehicle.vehicleNo
-        addVehicleDataModel.vehicleMake = providerVehicle.vehicleMake
-        addVehicleDataModel.vehicleRcBook = providerVehicle.picture
-        addVehicleDataModel.vehicleInsurance = providerVehicle.picture1
+        addVehicleDataModel.vehicleColor = providerVehicle.vehicleColor!!
+        addVehicleDataModel.vehicleNumber = providerVehicle.vehicleNo!!
+        addVehicleDataModel.vehicleMake = providerVehicle.vehicleMake!!
+        addVehicleDataModel.vehicleRcBook = providerVehicle.picture!!
+        addVehicleDataModel.vehicleInsurance = providerVehicle.picture1!!
         addVehicleDataModel.id = providerVehicle.id
         addVehicleDataModel.vehicleId = providerVehicle.vehicleServiceId
         vehicleLiveData.value = addVehicleDataModel
@@ -84,8 +78,6 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     fun setVehicleUri(vehicleUri: Uri) {
         this.vehicleUri = vehicleUri
     }
-
-    fun getVehicleUri() = vehicleUri
 
     fun setRcBookUri(rcBookUri: Uri) {
         this.rcBookUri = rcBookUri
@@ -99,33 +91,15 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun getInsuranceUri() = insuranceUri
 
-
-    fun isFieldMandatory(): Boolean {
-        return when (serviceId) {
-            transportId -> {
-                true
-            }
-            orderId -> {
-                false
-            }
-            else -> false
-        }
-    }
-
-
-    fun getVehicleCategories() {
-        val token = StringBuilder("Bearer ")
-                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
-                .toString()
-        getCompositeDisposable().add(appRepository.getVehicleCategories(this, token))
+    fun isFieldMandatory() = when (serviceId) {
+        transportId -> true
+        orderId -> false
+        else -> false
     }
 
     fun postVehicle() {
-
         loadingObservable.value = true
-
         val isTransport: Boolean = serviceId == transportId
-
         val params = HashMap<String, RequestBody>()
         if (isTransport) {
             params[WebApiConstants.AddService.VEHICLE_ID] = createRequestBody(getVehicleData()!!.vehicleId.toString())
@@ -146,32 +120,24 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         params[WebApiConstants.AddService.ADMIN_SERVICE_ID] = createRequestBody(serviceId.toString())
 
         var vehicleMultipart: MultipartBody.Part? = null
-        if (vehicleUri != null) {
-            vehicleMultipart = createMultipartBody(WebApiConstants.AddService.VEHICLE_IMAGE, "image/*",
-                    File(vehicleUri!!.path))
-        }
+        if (vehicleUri != null) vehicleMultipart =
+                createMultipartBody(WebApiConstants.AddService.VEHICLE_IMAGE, "image/*",
+                        File(vehicleUri!!.path))
 
         var rcBookMultipart: MultipartBody.Part? = null
-        if (rcBookUri != null) {
-            rcBookMultipart = createMultipartBody(WebApiConstants.AddService.PICTURE, "image/*",
-                    File(rcBookUri!!.path))
-        }
+        if (rcBookUri != null) rcBookMultipart =
+                createMultipartBody(WebApiConstants.AddService.PICTURE, "image/*",
+                        File(rcBookUri!!.path))
 
         var insuranceMultipart: MultipartBody.Part? = null
-        if (insuranceUri != null) {
-            insuranceMultipart = createMultipartBody(WebApiConstants.AddService.PICTURE1, "image/*",
-                    File(insuranceUri!!.path))
-        }
+        if (insuranceUri != null) insuranceMultipart =
+                createMultipartBody(WebApiConstants.AddService.PICTURE1, "image/*",
+                        File(insuranceUri!!.path))
 
-
-
-        if (!isEdit) {
-            getCompositeDisposable().add(appRepository.postVehicle(this, params,
-                    vehicleMultipart, rcBookMultipart, insuranceMultipart))
-        } else {
-            getCompositeDisposable().add(appRepository.editVehicle(this, params,
-                    vehicleMultipart, rcBookMultipart, insuranceMultipart))
-        }
+        if (!isEdit) getCompositeDisposable().add(appRepository.postVehicle(this, params,
+                vehicleMultipart, rcBookMultipart, insuranceMultipart))
+        else getCompositeDisposable().add(appRepository.editVehicle(this, params,
+                vehicleMultipart, rcBookMultipart, insuranceMultipart))
     }
 
     fun getVehicleData() = vehicleLiveData.value
@@ -182,21 +148,12 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun getVehicleResponseObservable() = vehicleResponseLiveData
 
-    fun onVehicleImageClick(view: View) {
-        navigator.onVehicleImageClicked()
-    }
+    fun onVehicleImageClick(view: View) = navigator.onVehicleImageClicked()
 
-    fun onRcBookClick(view: View) {
-        navigator.onRcBookClicked()
-    }
+    fun onRcBookClick(view: View) = navigator.onRcBookClicked()
 
-    fun onInsuranceClick(view: View) {
-        navigator.onInsuranceClicked()
-    }
+    fun onInsuranceClick(view: View) = navigator.onInsuranceClicked()
 
-    fun onVehicleSubmitClick(view: View) {
-        navigator.onVehicleSubmitClicked()
-    }
-
+    fun onVehicleSubmitClick(view: View) = navigator.onVehicleSubmitClicked()
 
 }

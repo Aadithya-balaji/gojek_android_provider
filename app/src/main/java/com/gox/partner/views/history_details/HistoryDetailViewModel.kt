@@ -12,16 +12,14 @@ import com.gox.partner.repository.AppRepository
 class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
 
     private val appRepository = AppRepository.instance()
-    val preferenceHelper = PreferencesHelper
+    private val preferenceHelper = PreferencesHelper
+
     var historyDetailResponse = MutableLiveData<HistoryDetailModel>()
     var historyUpcomingDetailResponse = MutableLiveData<HistoryDetailModel>()
     var transportDetail = MutableLiveData<HistoryDetailModel.ResponseData.Transport>()
-    var orderDetaIL = MutableLiveData<HistoryDetailModel.ResponseData.Order>()
+    var orderDetail = MutableLiveData<HistoryDetailModel.ResponseData.Order>()
     var serviceDetail = MutableLiveData<HistoryDetailModel.ResponseData.Service>()
     var disputeListData = MutableLiveData<DisputeListModel>()
-    var disputeStatusResponse = MutableLiveData<DisputeStatusModel>()
-    var addDisputeResponse = MutableLiveData<LoginResponseModel.ResponseData>()
-    var addLostItemResponse = MutableLiveData<LoginResponseModel.ResponseData>()
     var selectedDisputeName = MutableLiveData<String>()
     var loadingProgress = MutableLiveData<Boolean>()
     var errorResponse = MutableLiveData<String>()
@@ -33,15 +31,12 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     var providerID = MutableLiveData<String>()
     var storeID = MutableLiveData<String>()
     var requestID = MutableLiveData<String>()
-    var comments = MutableLiveData<String>()
     var selectedDisputeModel = MutableLiveData<DisputeListData>()
     var disputeID = MutableLiveData<String>()
     var postDisputeLiveData = MutableLiveData<DisputeStatus>()
     var disputeStatusLiveData = MutableLiveData<DisputeStatusModel>()
 
-    fun moveToMainActivity() {
-        navigator.goBack()
-    }
+    fun moveToMainActivity() = navigator.goBack()
 
     fun getTransportHistoryDetail(selectedID: String) {
         getCompositeDisposable().add(appRepository
@@ -59,10 +54,7 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
                 preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), selectedID))
     }
 
-
-    fun showDisputeList() {
-        navigator.showDisputeList()
-    }
+    fun showDisputeList() = navigator.showDisputeList()
 
     fun getDisputeList() {
         loadingProgress.value = true
@@ -76,13 +68,11 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
         }
     }
 
-
     fun postTaxiDispute(params: HashMap<String, String>) {
         loadingProgress.value = true
         getCompositeDisposable().add(appRepository.addTaxiDispute(this, Constants.M_TOKEN +
                 preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
     }
-
 
     fun postServiceDispute(params: HashMap<String, String>, requestID: String) {
         loadingProgress.value = true
@@ -96,7 +86,6 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
                 preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), params))
     }
 
-
     fun getTransPortDisputeStatus(requestID: String) {
         loadingProgress.value = true
         getCompositeDisposable().add(appRepository.getTransportDisputeStatus(this,
@@ -104,41 +93,18 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     }
 
     fun getOrderDisputeStatus(requestID: String) {
-        loadingProgress.value =true
-                getCompositeDisposable().add(appRepository.getOrderDisputeStatus(this,
-                        Constants.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
-
-    }
-
-    fun getServiceDisputeStatus(requestID: String) {
         loadingProgress.value = true
-        getCompositeDisposable().add(appRepository.getServicefDisputeStatus(this,
+        getCompositeDisposable().add(appRepository.getOrderDisputeStatus(this,
                 Constants.M_TOKEN + preferenceHelper.get(PreferencesKey.ACCESS_TOKEN, ""), requestID))
-
     }
 
-    fun setSelectedValue(Selecteddata: String) {
-        selectedDisputeName.value = Selecteddata
+    fun setSelectedValue(SelectedData: String) {
+        selectedDisputeName.value = SelectedData
     }
 
-    fun getSelectedValue(): MutableLiveData<String> {
-        return selectedDisputeName
-    }
+    fun viewReceipt() = navigator.onClickViewReceipt()
 
-    fun dispute() {
-        navigator.onClickDispute()
-    }
+    fun lossItem() = navigator.onClickLossItem()
 
-    fun viewRecepit() {
-        navigator.onClickViewRecepit()
-    }
-
-    fun lossItem() {
-        navigator.onClickLossItem()
-    }
-
-    fun cancel() {
-        navigator.onClickCancelBtn()
-
-    }
+    fun cancel() = navigator.onClickCancelBtn()
 }

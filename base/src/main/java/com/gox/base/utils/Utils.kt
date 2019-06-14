@@ -6,7 +6,6 @@ import java.util.*
 
 object Utils {
 
-
     fun parseDateToYYYYMMdd(time: String?): String? {
         if(time.isNullOrEmpty()) {
             return ""
@@ -28,7 +27,5 @@ object Utils {
 
         return str
     }
-
-
 
 }

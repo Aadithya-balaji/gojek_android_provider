@@ -6,9 +6,6 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
-/**
- * Created by Boopathi on 19/04/2019..
- */
 public abstract class CircularProgressDimensions {
 
     public float getTextHeight(String text, Paint paint) {

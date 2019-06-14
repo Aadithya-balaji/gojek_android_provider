@@ -12,7 +12,7 @@ interface SocketListener{
         fun onConnectionTimeOut()
     }
 
-    interface connectionRefreshCallBack{
+    interface ConnectionRefreshCallBack{
         fun onRefresh()
     }
 

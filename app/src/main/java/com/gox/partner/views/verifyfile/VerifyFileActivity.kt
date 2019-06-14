@@ -9,21 +9,17 @@ import com.gox.partner.views.dashboard.DashBoardActivity
 
 class VerifyFileActivity : BaseActivity<ActivityVerifyProofBinding>(), VerifyFileNavigator {
 
+    private var mBinding: ActivityVerifyProofBinding? = null
 
-    private var mVerifyProofBinding: ActivityVerifyProofBinding? = null
-    override fun getLayoutId(): Int {
-        return R.layout.activity_verify_proof
-    }
+    override fun getLayoutId() = R.layout.activity_verify_proof
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        mVerifyProofBinding = mViewDataBinding as ActivityVerifyProofBinding
-        val verfiyFileViewModel = VerifyFIleVIewModel()
-        mVerifyProofBinding!!.verifyFileModel = verfiyFileViewModel
+        mBinding = mViewDataBinding as ActivityVerifyProofBinding
+        val mViewModel = VerifyFileViewModel()
+        mBinding!!.verifyFileModel = mViewModel
     }
 
-    override fun gotoDashBoardPage() {
-        val intent = Intent(this@VerifyFileActivity, DashBoardActivity::class.java)
-        startActivity(intent)
-    }
+    override fun gotoDashBoardPage() =
+            startActivity(Intent(this@VerifyFileActivity, DashBoardActivity::class.java))
 
 }

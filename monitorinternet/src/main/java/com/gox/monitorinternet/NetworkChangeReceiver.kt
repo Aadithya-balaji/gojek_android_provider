@@ -25,7 +25,7 @@ internal class NetworkChangeReceiver : BroadcastReceiver() {
             mNetworkChangeListenerWeakReference!!.clear()
     }
 
-    fun isNetworkConnected(context: Context): Boolean {
+    private fun isNetworkConnected(context: Context): Boolean {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val netInfo = connectivityManager.activeNetworkInfo
 

@@ -1,7 +1,6 @@
 package com.gox.base.chatmessage
 
 import android.util.Base64
-import android.util.Log
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -78,15 +77,13 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         mBinding.chatAdapter = ChatAdapter(this, mChatSocketResponseList!!)
         mBinding.chatAdapter!!.notifyDataSetChanged()
         mBinding.messages.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-            if (bottom < oldBottom) {
-                mBinding.messages.postDelayed({
-                    mBinding.messages.smoothScrollToPosition(
-                            mBinding.messages.adapter!!.itemCount - 1)
-                }, 100)
-            }
+            if (bottom < oldBottom) mBinding.messages.postDelayed({
+                mBinding.messages.smoothScrollToPosition(
+                        mBinding.messages.adapter!!.itemCount - 1)
+            }, 100)
         }
 
-        SocketManager.emit(Constants.ROOM_NAME.JOIN_ROOM_NAME, roomName.toString())
+        SocketManager.emit(Constants.RoomName.JOIN_ROOM_NAME, roomName.toString())
 
         mBinding.sendButton.setOnClickListener {
             if (mBinding.messageInput.text.isNotEmpty()) {
@@ -100,14 +97,14 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
                 chatRequestModel.roomName = roomName
 
                 val chatObject = JSONObject(Gson().toJson(chatRequestModel))
-                SocketManager.emit(Constants.ROOM_NAME.CHATROOM, chatObject)
+                SocketManager.emit(Constants.RoomName.CHATROOM, chatObject)
                 mViewModel?.sendMessage(chatRequestModel)
             }
         }
 
         layoutManager.smoothScrollToPosition(mBinding.messages, null, mBinding.chatAdapter!!.itemCount)
 
-        SocketManager.onEvent(Constants.ROOM_NAME.ON_MESSAGE_RECEIVE, Emitter.Listener {
+        SocketManager.onEvent(Constants.RoomName.ON_MESSAGE_RECEIVE, Emitter.Listener {
             runOnUiThread {
                 val chatMessageModel = ChatSocketResponseModel()
                 val data1 = it[0] as JSONObject
@@ -120,7 +117,6 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
                     mBinding.chatAdapter!!.notifyDataSetChanged()
                 } catch (e: JSONException) {
                     e.printStackTrace()
-                    Log.e("ChatActivity ", e.message)
                 }
             }
         })

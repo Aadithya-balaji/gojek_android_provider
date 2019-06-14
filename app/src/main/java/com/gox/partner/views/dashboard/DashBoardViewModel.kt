@@ -12,7 +12,7 @@ import com.gox.partner.repository.AppRepository
 
 class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
 
-    val appRepository = AppRepository.instance()
+    val mRepository = AppRepository.instance()
 
     var checkRequestLiveData = MutableLiveData<CheckRequestModel>()
     var mProfileResponse = MutableLiveData<ProfileResponse>()
@@ -26,7 +26,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
         if (BaseApplication.isNetworkAvailable)
             if (latitude.value!!.toInt() > 0 && longitude.value!!.toInt() > 0) {
                 if (readPreferences<String>(PreferencesKey.ACCESS_TOKEN).length > 2)
-                    getCompositeDisposable().add(appRepository.checkRequest(this,
+                    getCompositeDisposable().add(mRepository.checkRequest(this,
                             "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
                             latitude.value.toString(),
                             longitude.value.toString())
@@ -36,7 +36,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
 
     fun getProfile() {
         if (BaseApplication.isNetworkAvailable)
-            getCompositeDisposable().add(appRepository.getProviderProfile(this,
+            getCompositeDisposable().add(mRepository.getProviderProfile(this,
                     Constants.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
     }
 }

@@ -2,7 +2,6 @@ package com.gox.partner.views.reset_password
 
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import com.gox.base.BuildConfig
 import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseViewModel
 import com.gox.partner.models.ResetPasswordResponseModel
@@ -24,13 +23,9 @@ class ResetPasswordViewModel : BaseViewModel<ResetPasswordViewModel.ResetPasswor
 
     fun getResetPasswordObservable() = resetPasswordLiveData
 
-    fun onOtpClick(view: View) {
-        navigator.onOtpClicked()
-    }
+    fun onOtpClick(view: View) = navigator.onOtpClicked()
 
-    fun onResetPasswordClick(view: View) {
-        navigator.onResetPasswordClicked()
-    }
+    fun onResetPasswordClick(view: View) = navigator.onResetPasswordClicked()
 
     internal fun postResetPassword() {
         val params = HashMap<String, String>()

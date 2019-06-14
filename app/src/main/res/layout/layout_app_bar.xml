@@ -7,10 +7,10 @@
         android:id="@+id/tb_app"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:titleTextAppearance="@style/MediumText"
         android:background="@color/colorWhite"
         android:elevation="4dp"
-        app:contentInsetStart="0dp">
+        app:contentInsetStart="0dp"
+        app:titleTextAppearance="@style/MediumText">
 
         <RelativeLayout
             android:layout_width="match_parent"

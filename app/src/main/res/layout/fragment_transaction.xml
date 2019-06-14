@@ -47,11 +47,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="start"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/transaction_id"
                             android:textColor="@color/black"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
@@ -59,11 +59,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/amount"
                             android:textColor="@color/black"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
 
@@ -71,11 +71,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="center"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/status"
                             android:textColor="@color/black"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:textSize="@dimen/_11sdp"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -107,11 +107,11 @@
                 app:srcCompat="@drawable/ic_no_transaction" />
 
             <TextView
+                style="@style/SmallText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/no_transction"
-                style="@style/SmallText"
                 android:textSize="@dimen/_12sdp" />
 
         </LinearLayout>

@@ -46,6 +46,7 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSubmit"
+                style="@style/SmallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_17sdp"
@@ -54,7 +55,6 @@
                 android:onClick="@{()->viewModel.submitDetails()}"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/submit"
-                style="@style/SmallText"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_12sdp"

@@ -12,44 +12,45 @@ import com.gox.partner.models.ServiceCategoriesResponse
 import com.gox.partner.views.set_subservice.SetSubServiceActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
-class SetServiceActivity : BaseActivity<ActivitySetServiceBinding>(), SetServiceNavigator, ServiceAdapter.ServiceItemClick {
+class SetServiceActivity : BaseActivity<ActivitySetServiceBinding>(),
+        SetServiceNavigator, ServiceAdapter.ServiceItemClick {
 
-    private lateinit var binding: ActivitySetServiceBinding
-    private lateinit var viewModel: SetServiceViewModel
+    private lateinit var mBinding: ActivitySetServiceBinding
+    private lateinit var mViewModel: SetServiceViewModel
 
     override fun getLayoutId() = R.layout.activity_set_service
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        binding = mViewDataBinding as ActivitySetServiceBinding
-        viewModel = provideViewModel {
+        mBinding = mViewDataBinding as ActivitySetServiceBinding
+        mViewModel = provideViewModel {
             SetServiceViewModel()
         }
-        setSupportActionBar(binding.toolbar.tbApp)
-        binding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        binding.toolbar.tbApp.tv_toolbar_title.text =
+        setSupportActionBar(mBinding.toolbar.tbApp)
+        mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
+        mBinding.toolbar.tbApp.tv_toolbar_title.text =
                 resources.getString(R.string.setup_your_service)
 
-        viewModel.navigator = this
-        binding.serviceViewModel = viewModel
-        viewModel.getCategories()
+        mViewModel.navigator = this
+        mBinding.serviceViewModel = mViewModel
+        mViewModel.getCategories()
         checkCategoryResponse()
         checkException()
         loadingObservable.value = true
     }
 
     private fun checkException() {
-        viewModel.errorResponse.observe(this, Observer {
+        mViewModel.errorResponse.observe(this, Observer {
             loadingObservable.value = false
             ViewUtils.showToast(this, it.toString(), false)
         })
     }
 
     private fun checkCategoryResponse() {
-        viewModel.serviceCategoriesResponse.observe(this, Observer {
+        mViewModel.serviceCategoriesResponse.observe(this, Observer {
             loadingObservable.value = false
             if (it?.responseData != null && it.responseData.isNotEmpty()) {
                 val adapter = ServiceAdapter(this, it)
-                binding.serviceRv.adapter = adapter
+                mBinding.serviceRv.adapter = adapter
                 adapter.serviceItemClick = this
             }
         })

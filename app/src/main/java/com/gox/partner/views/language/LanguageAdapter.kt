@@ -9,12 +9,12 @@ import com.gox.partner.BR
 import com.gox.partner.R
 import com.gox.partner.databinding.LanguageInflateBinding
 
-class LanguageAdapter(private val languageViewModel: LanguageViewModel) : RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
+class LanguageAdapter(private val languageViewModel: LanguageViewModel)
+    : RecyclerView.Adapter<LanguageAdapter.ViewHolder>() {
 
     companion object {
         lateinit var currentLanguage: String
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -32,13 +32,11 @@ class LanguageAdapter(private val languageViewModel: LanguageViewModel) : Recycl
         notifyDataSetChanged()
     }
 
-
     override fun getItemCount(): Int = languageViewModel.getLanguages().size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(languageViewModel, position)
     }
-
 
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(languageViewModel: LanguageViewModel, position: Int) {

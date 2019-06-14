@@ -21,11 +21,11 @@
 
         <TextView
             android:id="@+id/tv_request_label"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenirltstd_medium"
             android:text="@string/taxi_incoming_req"
-            style="@style/SmallText"
             android:textColor="@color/black"
             android:textSize="@dimen/_14sdp" />
 
@@ -49,10 +49,10 @@
 
             <TextView
                 android:id="@+id/tv_taxi_loc_label"
+                style="@style/SmallText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                style="@style/SmallText"
                 android:text="@string/taxi_location"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
@@ -70,13 +70,13 @@
 
             <TextView
                 android:id="@+id/tv_taxi_pickup_point"
+                style="@style/SmallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/SmallText"
                 android:text="@={requestmodel.pickupLocation}"
                 android:textColor="@color/light_grey"
-                tools:text="Chennai, India"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_12sdp"
+                tools:text="Chennai, India" />
 
             <View
                 android:layout_width="match_parent"
@@ -103,10 +103,10 @@
 
             <TextView
                 android:id="@+id/tv_service_type"
+                style="@style/SmallText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                style="@style/SmallText"
                 android:text="@string/taxi_service_type"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12sdp" />
@@ -123,13 +123,13 @@
 
             <TextView
                 android:id="@+id/tv_taxi_service"
+                style="@style/SmallText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/SmallText"
                 android:text="@={requestmodel.serviceType}"
                 android:textColor="@color/light_grey"
-                tools:text="Chennai, India"
-                android:textSize="@dimen/_12sdp" />
+                android:textSize="@dimen/_12sdp"
+                tools:text="Chennai, India" />
 
             <View
                 android:layout_width="match_parent"
@@ -145,21 +145,22 @@
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatButton
+                    style="@style/SmallText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_weight="1"
+                    android:background="@drawable/custom_full_round_corner"
                     android:onClick="@{() -> requestmodel.cancelReq()}"
                     android:padding="10dp"
-                    android:background="@drawable/custom_full_round_corner"
                     android:text="@string/taxi_rejcet"
                     android:textColor="@color/white"
-                    style="@style/SmallText"
                     android:textSize="@dimen/_10sdp"
                     app:backgroundTint="#ba160c"
                     app:cornerRadius="20dp" />
 
                 <androidx.appcompat.widget.AppCompatButton
+                    style="@style/SmallText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -169,7 +170,6 @@
                     android:padding="10dp"
                     android:text="@string/taxi_accept"
                     android:textColor="@color/white"
-                    style="@style/SmallText"
                     android:textSize="@dimen/_10sdp"
                     app:cornerRadius="20dp" />
 

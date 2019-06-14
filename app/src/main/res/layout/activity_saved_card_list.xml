@@ -21,15 +21,15 @@
 
         <TextView
             android:id="@+id/tvPaymentTypes"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-             android:textColor="@color/black"
-            android:text="@string/payment_modes"
-            style="@style/SmallText"
-            android:textSize="@dimen/_13sdp"
-            android:visibility="visible"
             android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"/>
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/payment_modes"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13sdp"
+            android:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_payment_modes"
@@ -45,12 +45,13 @@
             android:id="@+id/rl_payment_card"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_200sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="#FFFFFF"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_15sdp"
             android:visibility="visible">
+
             <RelativeLayout
                 android:id="@+id/rl_remove"
                 android:layout_width="match_parent"

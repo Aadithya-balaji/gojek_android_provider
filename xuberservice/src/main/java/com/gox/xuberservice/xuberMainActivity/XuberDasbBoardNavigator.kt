@@ -2,13 +2,8 @@ package com.gox.xuberservice.xuberMainActivity
 
 import android.view.View
 
-interface XuberDasbBoardNavigator {
-
-    fun goToLocationPick()
-    fun goBack()
-    fun moveStatusFlow()
+interface XUberDashBoardNavigator {
     fun showErrorMessage(error: String)
-    fun showPicturePreview(isFrontImage: Boolean)
     fun updateService(view: View)
     fun showInfoWindow(view: View)
 }

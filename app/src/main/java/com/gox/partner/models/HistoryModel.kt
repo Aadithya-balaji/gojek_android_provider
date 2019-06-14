@@ -106,7 +106,7 @@ data class HistoryModel(
             data class Payment(
                     val id: Int? = 0,
                     val service_request_id: Int? = 0,
-                    val total: Double? =0.0
+                    val total: Double? = 0.0
             )
         }
 

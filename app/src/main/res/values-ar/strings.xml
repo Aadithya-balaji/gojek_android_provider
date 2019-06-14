@@ -444,7 +444,6 @@
     <string name="dispute_status">Dispute Status</string>
 
 
-
     <!-- InVoice -->
     <string name="waiting_amount">Waiting Amount</string>
     <string name="toll_charge">Toll Charge</string>
@@ -505,4 +504,8 @@
     <string name="todays_completed_target">Today\'s completed target</string>
     <string name="completed">Completed</string>
     <string name="visa">Visa</string>
+    <string name="cropping_fail">Cropping failed</string>
+    <string name="upcoming_ride">Upcoming Ride</string>
+    <string name="desc_upcoming_ride">Are you want to cancel the request?</string>
+    <string name="yes">Yes</string>
 </resources>

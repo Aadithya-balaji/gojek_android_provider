@@ -13,7 +13,7 @@ import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityResetPasswordBinding
 import com.gox.partner.network.WebApiConstants
-import com.gox.partner.views.sign_in.SignInActivity
+import com.gox.partner.views.sign_in.LoginActivity
 
 class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
         ResetPasswordViewModel.ResetPasswordNavigator {
@@ -53,9 +53,9 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
     private fun observeViewModel() {
         observeLiveData(viewModel.getResetPasswordObservable()) {
             loadingObservable.value = false
-            message = if (!it.message.isNullOrBlank()) it.message else "Success"
+            message = if (!it.message.isBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)
-            val signInIntent = Intent(applicationContext, SignInActivity::class.java)
+            val signInIntent = Intent(applicationContext, LoginActivity::class.java)
             signInIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             launchNewActivity(signInIntent, false)
         }
@@ -92,16 +92,12 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
                 binding.ibOtp.visibility = View.GONE
                 binding.llPassword.visibility = View.VISIBLE
                 binding.mbReset.visibility = View.VISIBLE
-            } else {
-                ViewUtils.showToast(applicationContext, message, false)
-            }
+            } else ViewUtils.showToast(applicationContext, message, false)
         } else if (binding.mbReset.visibility == View.VISIBLE) {
             if (isPasswordDataValid()) {
                 loadingObservable.value = true
                 viewModel.postResetPassword()
-            } else {
-                ViewUtils.showToast(applicationContext, message, false)
-            }
+            } else ViewUtils.showToast(applicationContext, message, false)
         }
     }
 
@@ -133,13 +129,9 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
         }
     }
 
-    override fun onOtpClicked() {
-        performValidation()
-    }
+    override fun onOtpClicked() = performValidation()
 
-    override fun onResetPasswordClicked() {
-        performValidation()
-    }
+    override fun onResetPasswordClicked() = performValidation()
 
     override fun showError(error: String) {
         loadingObservable.value = false

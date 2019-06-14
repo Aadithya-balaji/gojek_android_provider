@@ -45,7 +45,7 @@
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_2sdp"/>
+                        android:layout_marginTop="@dimen/_2sdp" />
 
                 </LinearLayout>
 
@@ -66,13 +66,13 @@
                         android:layout_weight="1"
                         android:background="@drawable/custom_roundcorner_selectedorder"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:textColor="@color/white"
                         android:paddingLeft="@dimen/_25sdp"
-                        android:paddingRight="@dimen/_25sdp"
                         android:paddingTop="@dimen/_2sdp"
+                        android:paddingRight="@dimen/_25sdp"
                         android:paddingBottom="@dimen/_2sdp"
                         android:text="@string/past"
-                        android:textAllCaps="false" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/current_order_btn"

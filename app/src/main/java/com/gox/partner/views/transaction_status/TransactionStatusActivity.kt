@@ -7,25 +7,20 @@ import com.gox.partner.databinding.ActivtyTransactionStatusBinding
 import com.gox.partner.views.adapters.TransactionStatusListAdapter
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 
-
 class TransactionStatusActivity : BaseActivity<ActivtyTransactionStatusBinding>(), TransactionStatusNavigator {
 
-    lateinit var mViewDataBinding: ActivtyTransactionStatusBinding
+    lateinit var mBinding: ActivtyTransactionStatusBinding
 
-    override fun getLayoutId(): Int = R.layout.activty_transaction_status
+    override fun getLayoutId() = R.layout.activty_transaction_status
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
 
-        this.mViewDataBinding = mViewDataBinding as ActivtyTransactionStatusBinding
+        this.mBinding = mViewDataBinding as ActivtyTransactionStatusBinding
         mViewDataBinding.toolbarLayout.title_toolbar.setTitle(R.string.transaction)
         mViewDataBinding.toolbarLayout.toolbar_back_img.setOnClickListener { view ->
             finish()
         }
         mViewDataBinding.transactionStatusAdapter = TransactionStatusListAdapter(this)
-    }
-
-    override fun showStatus() {
-
     }
 
 }

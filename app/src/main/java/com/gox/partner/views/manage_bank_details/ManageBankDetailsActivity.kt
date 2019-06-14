@@ -14,8 +14,7 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
     private lateinit var mBinding: ActivityManageBankDetailsBinding
     private lateinit var viewModel: ManageBankDetailsViewModel
 
-
-    override fun getLayoutId(): Int = R.layout.activity_manage_bank_details
+    override fun getLayoutId() = R.layout.activity_manage_bank_details
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as ActivityManageBankDetailsBinding
@@ -50,7 +49,7 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
         }
 
         observeLiveData(viewModel.addEditBankResponse) {
-//            viewModel.getBankTemplate()
+            //            viewModel.getBankTemplate()
             ViewUtils.showToast(this, getString(R.string.add_bank_details_added), true)
             finish()
         }

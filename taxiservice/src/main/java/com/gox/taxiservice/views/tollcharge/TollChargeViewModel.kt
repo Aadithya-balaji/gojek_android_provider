@@ -2,20 +2,30 @@ package com.gox.taxiservice.views.tollcharge
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.taxiservice.model.CheckRequestModel
 import com.gox.taxiservice.model.DroppedStatusModel
 import com.gox.taxiservice.repositary.TaxiRepository
 
 class TollChargeViewModel : BaseViewModel<TollChargeNavigator>() {
 
-    val appRepository: TaxiRepository = TaxiRepository.instance()
-    var tollChargeLiveData = MutableLiveData<String>()
+    private val mRepository = TaxiRepository.instance()
+
     var mLiveData = MutableLiveData<CheckRequestModel>()
+    var tollChargeLiveData = MutableLiveData<String>()
     var showLoading = MutableLiveData<Boolean>()
 
     fun callUpdateRequestApi(model: DroppedStatusModel) {
-        appRepository.updateRequest(this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), model)
+        mRepository.updateRequest(object : ApiListener {
+            override fun success(successData: Any) {
+                mLiveData.value = successData as CheckRequestModel
+                showLoading.value = false
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showErrorMessage(getErrorMessage(failData))
+                showLoading.value = false
+            }
+        }, model)
     }
 }

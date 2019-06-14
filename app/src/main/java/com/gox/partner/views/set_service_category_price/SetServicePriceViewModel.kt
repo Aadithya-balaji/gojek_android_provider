@@ -2,6 +2,9 @@ package com.gox.partner.views.set_service_category_price
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants.FareType.DISTANCE_TIME
+import com.gox.base.data.Constants.FareType.FIXED
+import com.gox.base.data.Constants.FareType.HOURLY
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.partner.models.AddVehicleResponseModel
@@ -35,16 +38,15 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
         val params = HashMap<String, String>()
         params["category_id"] = (toString)
         params["sub_category_id"] = (id)
-        //TODO Need to add Proper Admin Service ID
         params["admin_service_id"] = ("3")
         if (selectedService.isNotEmpty()) {
             var i = 0
             selectedService.forEach {
                 params["service[$i][service_id]"] = (it.id)
                 when (it.fareType) {
-                    "FIXED" -> params["service[$i][base_fare]"] = (it.baseFare)
-                    "HOURLY" -> params["service[$i][per_mins]"] = (it.perMins)
-                    "DISTANCETIME" -> {
+                    FIXED -> params["service[$i][base_fare]"] = (it.baseFare)
+                    HOURLY -> params["service[$i][per_mins]"] = (it.perMins)
+                    DISTANCE_TIME -> {
                         params["service[$i][per_mins]"] = (it.perMins)
                         params["service[$i][per_miles]"] = (it.perMiles)
                     }

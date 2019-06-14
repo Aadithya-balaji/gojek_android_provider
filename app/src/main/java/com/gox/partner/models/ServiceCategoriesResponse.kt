@@ -19,6 +19,7 @@ data class ServiceCategoriesResponse(
             val service_category_order: Int? = 0,
             val service_category_status: Int? = 0
     ) : Serializable
+
     data class ProviderServiceCategory(
             val id: String = "",
             val provider_id: String = "",

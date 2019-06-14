@@ -13,8 +13,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
             android:text="@string/taxi_invoice_base_fare" />
 
         <TextView
@@ -37,8 +37,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
             android:text="@string/tax_fare" />
 
         <TextView
@@ -60,8 +60,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
             android:text="@string/hourly_fare" />
 
         <TextView
@@ -82,8 +82,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
             android:text="@string/wallet" />
 
         <TextView
@@ -105,8 +105,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
             android:text="@string/discount_applied" />
 
         <TextView
@@ -128,8 +128,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
             android:text="@string/tips" />
 
         <TextView
@@ -137,8 +137,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:padding="@dimen/_5sdp"
             android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
             android:textSize="@dimen/_10sdp" />
 
     </RelativeLayout>
@@ -172,8 +172,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
             android:text="@string/toll_charge" />
 
         <TextView

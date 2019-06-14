@@ -61,8 +61,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="@dimen/_5sdp"
-                    tools:text="fcfgvhbjnkm"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="fcfgvhbjnkm" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/per_mile_price_tv"
@@ -71,8 +71,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_marginTop="@dimen/_5sdp"
-                    tools:text="fcfgvhbjnkm"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="fcfgvhbjnkm" />
 
             </LinearLayout>
 

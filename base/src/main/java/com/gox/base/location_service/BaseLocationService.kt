@@ -11,7 +11,6 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.provider.Settings
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
@@ -24,19 +23,15 @@ import com.gox.base.data.PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY
 import com.gox.base.extensions.readPreferences
 import com.gox.base.persistence.AppDatabase
 import com.gox.base.persistence.LocationPointsEntity
-import java.io.Serializable
+import com.gox.base.utils.ViewUtils
 import java.text.DateFormat
 import java.util.*
 
 class BaseLocationService : Service() {
 
-    //      Guindy Location :: 12.998219, 80.205836
-    //      Tranxit         :: 13.058687, 80.253300
-
     private val channelId = "channel_01"
 
-    private val
-            checkInterval = 5000
+    private val checkInterval = 5000
 
     private var r: Runnable? = null
     private var h: Handler? = null
@@ -54,12 +49,12 @@ class BaseLocationService : Service() {
             intent.putExtra(NOTIFICATION, true)
 
             val builder = NotificationCompat.Builder(this, "123456")
-                    .addAction(R.drawable.star_blue, getString(R.string.app_name), null)
+                    .addAction(R.drawable.ic_push, getString(R.string.app_name), null)
                     .setContentText(mLocation!!.toString())
                     .setContentTitle(DateFormat.getDateTimeInstance().format(Date()))
                     .setOngoing(true)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .setSmallIcon(R.drawable.star_blue)
+                    .setSmallIcon(R.drawable.ic_push)
                     .setTicker(mLocation!!.toString())
                     .setWhen(System.currentTimeMillis())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -102,7 +97,7 @@ class BaseLocationService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Location permission missing...", Toast.LENGTH_SHORT).show()
+                ViewUtils.showNormalToast(this, getText(R.string.location_permissing_missing) as String)
                 return
             }
 
@@ -226,9 +221,3 @@ class BaseLocationService : Service() {
         const val NOTIFICATION = "NOTIFICATION"
     }
 }
-
-data class LocationModel(
-        var lat: Double? = 0.0,
-        var lng: Double? = 0.0,
-        var time: String = ""
-) : Serializable

@@ -16,7 +16,7 @@ class VerifyOtpDialog : BaseDialogFragment<FragmentVerifyOtpBinding>(), VerifyOT
     private var fragmentVerifyOtpBinding: FragmentVerifyOtpBinding? = null
     private lateinit var mTaxiMainDashboardViewModel: TaxiDashboardViewModel
 
-    override fun getLayout(): Int = R.layout.fragment_verify_otp
+    override fun getLayout() = R.layout.fragment_verify_otp
 
     companion object {
         var otp: String? = null

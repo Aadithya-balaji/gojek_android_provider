@@ -12,7 +12,8 @@ import com.gox.partner.databinding.RowSavedDetailBinding
 import com.gox.partner.models.CardResponseModel
 import com.gox.partner.views.account_card.CardListViewModel
 
-class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, cardListModel: CardListViewModel) : RecyclerView.Adapter<CardsAdapter.CardViewHolder>(), View.OnClickListener {
+class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, cardListModel: CardListViewModel)
+    : RecyclerView.Adapter<CardsAdapter.CardViewHolder>(), View.OnClickListener {
 
     private var context: Context? = null
     private var cardList: MutableList<CardResponseModel>? = null
@@ -25,48 +26,33 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, c
         this.cardListViewModel = cardListModel
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
-        val inflate = DataBindingUtil.inflate<RowSavedDetailBinding>(LayoutInflater.from(parent.context), R.layout.row_saved_detail, parent, false)
-        return CardViewHolder(inflate)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            CardViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.row_saved_detail, parent, false))
 
-    override fun getItemCount(): Int {
-        return cardList!!.size
-    }
+    override fun getItemCount() = cardList!!.size
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
-        holder.cardViewBinding.tvCardType.setText(cardList!!.get(position).getBrand())
-        holder.cardViewBinding.tvCardNumber.setText(String.format(context!!.resources.getString(R.string.row_card_number), cardList!!.get(position).getLastFour()))
-        holder.cardViewBinding.root
-        if (selectedPosition == position && cardList!!.get(position).isCardSelected == false) {
-            selectedPosition = -1
-        }
-        if (cardList!!.get(position).isCardSelected == false) {
-            holder.cardViewBinding.cvSavedCard.setCardBackgroundColor(ContextCompat.getColor(context!!, R.color.bg_dispute_closed))
-            holder.cardViewBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.black))
-            holder.cardViewBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.black))
+        holder.mBinding.tvCardType.text = cardList!!.get(position).getBrand()
+        holder.mBinding.tvCardNumber.text = String.format(context!!.resources.getString(R.string.row_card_number), cardList!![position].getLastFour())
+        if (selectedPosition == position && cardList!!.get(position).isCardSelected == false) selectedPosition = -1
+        if (cardList!![position].isCardSelected == false) {
+            holder.mBinding.cvSavedCard.setCardBackgroundColor(ContextCompat.getColor(context!!, R.color.bg_dispute_closed))
+            holder.mBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.black))
+            holder.mBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.black))
         } else {
-            holder.cardViewBinding.cvSavedCard.setCardBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
-            holder.cardViewBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.white))
-            holder.cardViewBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+            holder.mBinding.cvSavedCard.setCardBackgroundColor(ContextCompat.getColor(context!!, R.color.colorAccent))
+            holder.mBinding.tvCardNumber.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+            holder.mBinding.tvCardType.setTextColor(ContextCompat.getColor(context!!, R.color.white))
         }
-
-        holder.cardViewBinding.root.setOnClickListener(this)
-        holder.cardViewBinding.root.tag = holder
-        // holder.cardViewBinding.root.setOnLongClickListener(this)
-
+        holder.mBinding.root.setOnClickListener(this)
+        holder.mBinding.root.tag = holder
     }
 
-
-    inner class CardViewHolder(cardViewBinding: RowSavedDetailBinding) : RecyclerView.ViewHolder(cardViewBinding.root) {
-        val cardViewBinding = cardViewBinding
-    }
-
-
+    inner class CardViewHolder(val mBinding: RowSavedDetailBinding) : RecyclerView.ViewHolder(mBinding.root)
 
     override fun onClick(v: View?) {
-        var cardViewHolder = v!!.tag as CardViewHolder
-        var position = cardViewHolder.adapterPosition
+        val cardViewHolder = v!!.tag as CardViewHolder
+        val position = cardViewHolder.adapterPosition
         if (selectedPosition != position) {
             selectedPosition = position
             val cardResponseModel = cardList!!.get(selectedPosition!!)

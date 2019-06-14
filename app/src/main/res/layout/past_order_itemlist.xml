@@ -7,93 +7,95 @@
 
         <variable
             name="itemClickListener"
-            type="com.gox.partner.interfaces.CustomClickListner" />
+            type="com.gox.partner.interfaces.CustomClickListener" />
 
     </data>
 
-        <androidx.cardview.widget.CardView
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_8sdp"
+        android:onClick="@{()->itemClickListener.onListClickListener()}"
+        android:padding="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_8sdp">
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_8sdp"
-            android:onClick="@{()->itemClickListener.onListClickListner()}"
-            android:padding="@dimen/_5sdp"
-            app:cardCornerRadius="@dimen/_8sdp">
-
+            android:orientation="horizontal"
+            android:weightSum="1">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="1">
+                android:id="@+id/llPastTimeLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:background="@drawable/xuber_bg_round_corner"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
 
-                <LinearLayout
-                    android:id="@+id/llPastTimeLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/xuber_bg_round_corner"
-                    android:orientation="vertical"
-                    android:layout_weight="0.3"
-                    android:gravity="center"
-                    android:padding="@dimen/_8sdp">
-
-                    <TextView
-                        android:id="@+id/tvDatePastItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        tools:text="dfdf"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:textColor="@android:color/white" />
-
-                    <TextView
-                        android:id="@+id/tvTimePastItem"
-                        android:fontFamily="@font/avenirltstd_medium"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        tools:text="dfdf"
-                        android:textColor="@color/colorWhite" />
-                </LinearLayout>
-
-
-                <RelativeLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvDatePastItem"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.7">
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:textColor="@android:color/white"
+                    tools:text="dfdf" />
+
+                <TextView
+                    android:id="@+id/tvTimePastItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:textColor="@color/colorWhite"
+                    tools:text="dfdf" />
+            </LinearLayout>
+
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7">
+
                 <LinearLayout
                     android:id="@+id/ll_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
                     android:weightSum="1">
+
                     <TextView
                         android:id="@+id/tvTitlePastItem"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.55"
-                        android:layout_marginStart="@dimen/_5sdp"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_weight="0.55"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/dummy_title"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:textColor="@android:color/black" />
 
                     <TextView
                         android:id="@+id/tvStatusPastItem"
                         android:layout_width="0dp"
-                        android:layout_weight="0.45"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginRight="@dimen/_3sdp"
                         android:layout_toLeftOf="@+id/tvTitlePastItem"
+                        android:layout_weight="0.45"
                         android:background="@drawable/bg_past_item_completed"
                         android:fontFamily="@font/avenirltstd_medium"
-                        android:paddingTop="@dimen/_6sdp"
-                        android:paddingLeft="@dimen/_3sdp"
                         android:gravity="center"
+                        android:paddingLeft="@dimen/_3sdp"
+                        android:paddingTop="@dimen/_6sdp"
                         android:paddingRight="@dimen/_3sdp"
                         android:paddingBottom="@dimen/_6sdp"
-                        android:layout_marginRight="@dimen/_3sdp"
                         android:text="@string/completed"
                         android:textColor="@color/red"
                         android:textSize="@dimen/_9sdp" />
@@ -101,14 +103,13 @@
                 </LinearLayout>
 
 
-
                 <TextView
                     android:id="@+id/tvPastItem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ll_title"
-                    android:fontFamily="@font/avenirltstd_medium"
                     android:layout_marginStart="@dimen/_5sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/grey" />
 
@@ -118,8 +119,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvPastItem"
                     android:layout_marginStart="@dimen/_5sdp"
-                    android:padding="@dimen/_5sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_5sdp">
 
                     <TextView
                         android:id="@+id/tvRatingPastItem"
@@ -133,16 +134,16 @@
                         android:id="@+id/ivRatePastItem"
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_10sdp"
-                        android:src="@drawable/star"
                         android:layout_marginLeft="@dimen/_3sdp"
+                        android:src="@drawable/star"
                         android:tint="@color/chip_yellow_inner_color" />
                 </LinearLayout>
 
-                </RelativeLayout>
-            </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
 
 
-        </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 
 </layout>

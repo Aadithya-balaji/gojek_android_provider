@@ -20,21 +20,13 @@ class ManageServicesViewModel : BaseViewModel<ManageServicesNavigator>() {
         this.serviceData = serviceData
     }
 
-    fun getServiceData(): List<ManageServicesDataModel> {
-        return serviceData
-    }
+    fun getServiceData() = serviceData
 
-    fun setAdapter() {
-        adapter.notifyDataSetChanged()
-    }
+    fun setAdapter() = adapter.notifyDataSetChanged()
 
-    fun getAdapter(): ManageServicesAdapter {
-        return adapter
-    }
+    fun getAdapter() = adapter
 
-    fun getService(position: Int): ManageServicesDataModel {
-        return serviceData[position]
-    }
+    fun getService(position: Int) = serviceData[position]
 
     internal fun getServices() {
         val token = StringBuilder("Bearer ")
@@ -45,7 +37,5 @@ class ManageServicesViewModel : BaseViewModel<ManageServicesNavigator>() {
 
     fun getServicesObservable() = servicesLiveData
 
-    fun onItemClick(position: Int) {
-        navigator.onMenuItemClicked(position)
-    }
+    fun onItemClick(position: Int) = navigator.onMenuItemClicked(position)
 }

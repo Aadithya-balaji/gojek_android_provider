@@ -12,6 +12,7 @@ import com.gox.base.base.BaseApplication
 import javax.inject.Inject
 
 class RunTimePermission(context: Context) {
+
     @Inject
     lateinit var permissionList: ArrayList<String>
 

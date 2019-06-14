@@ -10,7 +10,8 @@ import com.gox.partner.R
 import com.gox.partner.databinding.TransactionListItemBinding
 import com.gox.partner.models.WalletTransaction
 
-class TransactionListAdapter(context: Context, transactionList: List<WalletTransaction.ResponseData.Data>) : RecyclerView.Adapter<TransactionListAdapter.MyViewHolder>() {
+class TransactionListAdapter(context: Context, transactionList: List<WalletTransaction.ResponseData.Data>)
+    : RecyclerView.Adapter<TransactionListAdapter.MyViewHolder>() {
 
     var context: Context? = null
     var transactionList: List<WalletTransaction.ResponseData.Data>? = null
@@ -21,9 +22,8 @@ class TransactionListAdapter(context: Context, transactionList: List<WalletTrans
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-
-        val inflate = DataBindingUtil.inflate<TransactionListItemBinding>(LayoutInflater.from(parent.context), R.layout.transaction_list_item, parent, false)
-        return MyViewHolder(inflate)
+        return MyViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                R.layout.transaction_list_item, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -32,25 +32,27 @@ class TransactionListAdapter(context: Context, transactionList: List<WalletTrans
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 //<<<<<<< HEAD
-//        holder.currentOderItemlistBinding.tvTransactionID.setText(transactionList!![position].getTransactionAlias().toString())
+//        holder.mBinding.tvTransactionID.setText(transactionList!![position].getTransactionAlias().toString())
 //        var strDate = CommonMethods.getLocalTimeStamp(transactionList!![position].getCreatedAt().toString())
-//        holder.currentOderItemlistBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount())
+//        holder.mBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount())
 //        if(transactionList!!.get(position).getType().equals("D"))
 //=======
-        holder.currentOderItemlistBinding.tvTransactionID.text = transactionList!![position].transaction_alias
+        holder.mBinding.tvTransactionID.text = transactionList!![position].transaction_alias
 //        var strDate = CommanMethods.getLocalTimeStamp(transactionList!![position].created_at)
-        holder.currentOderItemlistBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).amount)
+        holder.mBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).amount)
         if (transactionList!![position].type == "D") {
-            holder.currentOderItemlistBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.depited)
-            holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!, R.color.dispute_status_open))
+            holder.mBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.depited)
+            holder.mBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,
+                    R.color.dispute_status_open))
         } else {
-            holder.currentOderItemlistBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.credited)
-            holder.currentOderItemlistBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!, R.color.credit))
+            holder.mBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.credited)
+            holder.mBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,
+                    R.color.credit))
         }
     }
 
     inner class MyViewHolder(itemView: TransactionListItemBinding) : RecyclerView.ViewHolder(itemView.root) {
-        val currentOderItemlistBinding = itemView
+        val mBinding = itemView
     }
 
 }

@@ -30,6 +30,7 @@
                 <ImageView
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
+                    android:contentDescription="@string/app_name"
                     app:srcCompat="@drawable/provider_image_upload" />
             </LinearLayout>
 
@@ -74,6 +75,7 @@
                 <ImageView
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
+                    android:contentDescription="@string/app_name"
                     app:srcCompat="@drawable/provider_image_upload" />
             </LinearLayout>
 

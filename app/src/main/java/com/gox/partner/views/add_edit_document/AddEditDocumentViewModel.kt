@@ -2,6 +2,7 @@ package com.gox.partner.views.add_edit_document
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.repository.ApiListener
 import com.gox.base.utils.Utils
 import com.gox.partner.models.AddDocumentResponse
 import com.gox.partner.models.ListDocumentResponse
@@ -14,10 +15,10 @@ import java.io.File
 
 class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
-    private val appRepository = AppRepository.instance()
+    private val mRepository = AppRepository.instance()
     private lateinit var data: List<ListDocumentResponse.ResponseData>
 
-    var showLoading = MutableLiveData<Boolean>()
+    var loadingProgress = MutableLiveData<Boolean>()
     var documentResponse = MutableLiveData<ListDocumentResponse>()
     var addDocumentResponse = MutableLiveData<AddDocumentResponse>()
     var errorResponse = MutableLiveData<String>()
@@ -42,8 +43,18 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     var isPDF = MutableLiveData<Boolean>()
 
     fun getDocumentList(documentType: String) {
-        showLoading.value = true
-        getCompositeDisposable().add(appRepository.getDocumentList(this, documentType))
+        loadingProgress.value = true
+        getCompositeDisposable().add(mRepository.getDocumentList(object : ApiListener {
+            override fun success(successData: Any) {
+                documentResponse.value = successData as ListDocumentResponse
+                loadingProgress.value = false
+            }
+
+            override fun fail(failData: Throwable) {
+                errorResponse.value = getErrorMessage(failData)
+                loadingProgress.value = false
+            }
+        }, documentType))
     }
 
     fun setData(data: List<ListDocumentResponse.ResponseData>) {
@@ -100,7 +111,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     }
 
     fun updateDocument() {
-        showLoading.value = true
+        loadingProgress.value = true
 
         val hashMap: HashMap<String, RequestBody> = HashMap()
         if (!expiryDate.value.isNullOrEmpty()) hashMap["expires_at"] =
@@ -130,6 +141,16 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         if (backImageFile != null) fileBackImageBody = MultipartBody.Part.createFormData("file[1]",
                 data[currentPosition].name + "_back", backImageFile)
 
-        getCompositeDisposable().add(appRepository.postDocument(this, hashMap, fileFrontImageBody, fileBackImageBody))
+        getCompositeDisposable().add(mRepository.postDocument(object : ApiListener {
+            override fun success(successData: Any) {
+                addDocumentResponse.value = successData as AddDocumentResponse
+                loadingProgress.value = false
+            }
+
+            override fun fail(failData: Throwable) {
+                errorResponse.value = getErrorMessage(failData)
+                loadingProgress.value = false
+            }
+        }, hashMap, fileFrontImageBody, fileBackImageBody))
     }
 }

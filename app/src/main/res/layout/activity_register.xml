@@ -176,7 +176,8 @@
                                 android:layout_width="@dimen/_60sdp"
                                 android:layout_height="@dimen/_50sdp"
                                 android:layout_centerHorizontal="true"
-                                android:contentDescription="@string/app_name" />
+                                android:contentDescription="@string/app_name"
+                                android:src="@drawable/ic_profile_placeholder" />
 
                             <ImageView
                                 android:layout_width="@dimen/_15sdp"

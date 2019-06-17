@@ -5,8 +5,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.Constants
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.R
 import com.gox.partner.models.ProfileResponse
 import com.gox.partner.models.WalletResponse
@@ -21,7 +20,7 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
     var selectedStripeID = MutableLiveData<String>()
     var resources: Resources? = null
     var showLoading = MutableLiveData<Boolean>()
-    val appRepository = AppRepository.instance()
+    val mRepository = AppRepository.instance()
     var mProfileResponse = MutableLiveData<ProfileResponse>()
 
     fun amountAdd(view: View) = navigator.addAmount(view)
@@ -41,14 +40,28 @@ class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
             params[WebApiConstants.AddWallet.CARD_ID] = selectedStripeID.value.toString()
             params[WebApiConstants.AddWallet.USER_TYPE] = Constants.TYPE_PROVIDER
             params[WebApiConstants.AddWallet.PAYMENT_MODE] = "card"
-            getCompositeDisposable().add(appRepository.addWalletAmount(this, params,
-                    "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
+            getCompositeDisposable().add(mRepository.addWalletAmount(object : ApiListener {
+                override fun success(successData: Any) {
+                    walletLiveResponse.value = successData as WalletResponse
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMsg(getErrorMessage(failData))
+                }
+            }, params))
         }
     }
 
     fun getProfile() {
         showLoading.value = true
-        getCompositeDisposable().add(appRepository.getProfile(this,
-                "Bearer" + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
+        getCompositeDisposable().add(mRepository.getProfile(object : ApiListener {
+            override fun success(successData: Any) {
+                mProfileResponse.value = successData as ProfileResponse
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showErrorMsg(getErrorMessage(failData))
+            }
+        }))
     }
 }

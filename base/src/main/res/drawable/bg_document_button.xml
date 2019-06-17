@@ -2,14 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    // The width and color of the border
+    <solid android:color="@color/bg_doc_button" />
 
-    <solid android:color="@color/bg_doc_button"></solid>
-
-    // The desired corner radius. reduce it to keep it less rounded
     <corners android:radius="@dimen/_40sdp" />
-
-    // Add your desired padding
-
 
 </shape>

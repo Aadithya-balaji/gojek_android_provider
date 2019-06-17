@@ -24,12 +24,12 @@ class BaseModuleRepository : BaseRepository() {
     }
 
     companion object {
-        private var appRepository: BaseModuleRepository? = null
+        private var mRepository: BaseModuleRepository? = null
         fun instance(): BaseModuleRepository {
-            if (appRepository == null) synchronized(BaseModuleRepository) {
-                appRepository = BaseModuleRepository()
+            if (mRepository == null) synchronized(BaseModuleRepository) {
+                mRepository = BaseModuleRepository()
             }
-            return appRepository!!
+            return mRepository!!
         }
     }
 }

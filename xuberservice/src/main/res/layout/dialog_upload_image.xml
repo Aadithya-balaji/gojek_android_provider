@@ -51,6 +51,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/app_name"
                     app:srcCompat="@drawable/ic_file" />
 
                 <TextView
@@ -66,6 +67,7 @@
             <ImageView
                 android:id="@+id/iv_service_img"
                 android:layout_width="match_parent"
+                android:contentDescription="@string/app_name"
                 android:layout_height="match_parent"
                 android:visibility="gone"
                 android:src="@drawable/kittty"/>

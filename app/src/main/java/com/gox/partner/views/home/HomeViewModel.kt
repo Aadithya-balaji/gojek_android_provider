@@ -4,16 +4,15 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.StatusResponseModel
 import com.gox.partner.repository.AppRepository
 
 class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
-    val appRepository = AppRepository.instance()
+    val mRepository = AppRepository.instance()
 
-    var showLoading = MutableLiveData<Boolean>()
+    var loadingProgress = MutableLiveData<Boolean>()
 
     var onlineStatusLiveData = MutableLiveData<StatusResponseModel>()
 
@@ -23,7 +22,16 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
     fun changeOnlineStatus(status: String) {
         if (BaseApplication.isNetworkAvailable)
-            getCompositeDisposable().add(appRepository.changeOnlineStatus
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), status))
+            getCompositeDisposable().add(mRepository.changeOnlineStatus(object : ApiListener {
+                override fun success(successData: Any) {
+                    onlineStatusLiveData.value = successData as StatusResponseModel
+                    loadingProgress.value = false
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                    loadingProgress.value = false
+                }
+            }, status))
     }
 }

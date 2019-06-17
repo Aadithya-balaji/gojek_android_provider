@@ -12,6 +12,7 @@
         <ImageView
             android:layout_width="@dimen/_180sdp"
             android:layout_height="@dimen/_180sdp"
+            android:contentDescription="@string/app_name"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

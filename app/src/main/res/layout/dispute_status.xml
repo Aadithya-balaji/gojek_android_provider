@@ -141,6 +141,7 @@
                 android:layout_height="@dimen/_30sdp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginLeft="@dimen/_10sdp"
+                android:contentDescription="@string/app_name"
                 android:src="@mipmap/ic_launcher" />
         </RelativeLayout>
 

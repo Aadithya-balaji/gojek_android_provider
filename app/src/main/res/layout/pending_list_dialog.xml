@@ -89,7 +89,6 @@
                 android:layout_marginTop="@dimen/_11sdp"
                 android:background="@drawable/bg_transaprent_rounded_corner_rect"
                 android:drawableEnd="@drawable/ic_right_arrow"
-                android:drawableTint="@color/colorGray"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:onClick="@{(v) -> pendinglistModel.selectedPendingList(v)}"
@@ -120,6 +119,7 @@
                 android:id="@+id/iv_waiting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/waiting_for_approval" />
 
             <TextView

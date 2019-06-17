@@ -5,14 +5,17 @@ import android.widget.RadioGroup
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseViewModel
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.ForgotPasswordResponseModel
 import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
 
 class ForgotPasswordViewModel : BaseViewModel<ForgotPasswordViewModel.ForgotPasswordNavigator>() {
 
-    private val appRepository = AppRepository.instance()
-    private var forgotPasswordLiveData = MutableLiveData<ForgotPasswordResponseModel>()
+    private val mRepository = AppRepository.instance()
+    private var mLiveData = MutableLiveData<ForgotPasswordResponseModel>()
+
+    fun getForgotPasswordObservable() = mLiveData
 
     val countryCode = MutableLiveData<String>("+1")
     val phoneNumber = MutableLiveData<String>()
@@ -36,10 +39,16 @@ class ForgotPasswordViewModel : BaseViewModel<ForgotPasswordViewModel.ForgotPass
             params[WebApiConstants.ForgotPassword.COUNTRY_CODE] = countryCode.value!!.trim()
             params[WebApiConstants.ForgotPassword.MOBILE] = phoneNumber.value!!.trim()
         }
-        getCompositeDisposable().add(appRepository.postForgotPassword(this, params))
-    }
+        getCompositeDisposable().add(mRepository.postForgotPassword(object : ApiListener {
+            override fun success(successData: Any) {
+                getForgotPasswordObservable().value = successData as ForgotPasswordResponseModel
+            }
 
-    fun getForgotPasswordObservable() = forgotPasswordLiveData
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        }, params))
+    }
 
     interface ForgotPasswordNavigator {
         fun onCheckedChanged(group: RadioGroup, checkedId: Int)

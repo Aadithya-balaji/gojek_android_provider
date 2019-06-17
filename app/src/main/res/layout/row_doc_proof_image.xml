@@ -11,6 +11,7 @@
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
         android:background="@drawable/bg_square_image"
+        android:contentDescription="@string/app_name"
         android:visibility="visible" />
 
 
@@ -20,6 +21,7 @@
         android:layout_height="@dimen/_30sdp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:contentDescription="@string/app_name"
         android:src="@drawable/layerlist_remove_document" />
 
 </RelativeLayout>

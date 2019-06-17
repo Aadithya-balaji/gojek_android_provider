@@ -69,9 +69,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
         }
     }
 
-    private fun onBackClicked(view: View) {
-        super.onBackPressed()
-    }
+    private fun onBackClicked(view: View) = super.onBackPressed()
 
     private fun performValidation() {
         ViewUtils.hideSoftInputWindow(this)

@@ -36,11 +36,11 @@ class InviteReferralsActivity : BaseActivity<ActivityInviteFriendBinding>(), Inv
     private fun getApiResponse() {
         observeLiveData(mViewModel.profileResponse) {
             if (mViewModel.profileResponse.value != null)
-                mViewModel.mReferalObj.value = mViewModel.profileResponse.value!!.profileData.referral
+                mViewModel.mReferralObj.value = mViewModel.profileResponse.value!!.profileData.referral
             mBinding.tvInviteHeader.text = String.format(resources.getString(R.string.invite_referal_hint),
-                    mViewModel.mReferalObj.value!!.referral_amount, mViewModel.mReferalObj.value!!.referral_count)
-            mShareLink = mViewModel.mReferalObj.value!!.referral_code
-            mBinding.tvReferalCode.text = mViewModel.mReferalObj.value!!.referral_code
+                    mViewModel.mReferralObj.value!!.referral_amount, mViewModel.mReferralObj.value!!.referral_count)
+            mShareLink = mViewModel.mReferralObj.value!!.referral_code
+            mBinding.tvReferalCode.text = mViewModel.mReferralObj.value!!.referral_code
         }
     }
 

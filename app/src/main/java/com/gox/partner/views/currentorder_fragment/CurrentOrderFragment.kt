@@ -19,19 +19,19 @@ class CurrentOrderFragment : BaseFragment<FragmentCurrentOrdersBinding>(), Curre
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         this.mBinding = mViewDataBinding as FragmentCurrentOrdersBinding
-        val currentOrderViewModel = ViewModelProviders.of(this).get(CurrentOrderViewModel::class.java)
+        val mViewModel = ViewModelProviders.of(this).get(CurrentOrderViewModel::class.java)
         val userDashboardViewModel = ViewModelProviders.of(activity!!).get(DashBoardViewModel::class.java)
-        currentOrderViewModel.navigator = this
-        this.mBinding.currentorderviewmodel = currentOrderViewModel
+        mViewModel.navigator = this
+        this.mBinding.currentorderviewmodel = mViewModel
 
-        currentOrderViewModel.getTransportCurrentHistory(userDashboardViewModel
+        mViewModel.getTransportCurrentHistory(userDashboardViewModel
                 .selectedFilterService.value!!.toLowerCase())
 
         loadingObservable.value = true
 
-        currentOrderViewModel.transportCurrentHistoryResponse.observe(this@CurrentOrderFragment,
+        mViewModel.transportCurrentHistoryResponse.observe(this@CurrentOrderFragment,
                 Observer<TransportHistory> {
-                    currentOrderViewModel.loadingProgress.value = false
+                    mViewModel.loadingProgress.value = false
                     loadingObservable.value = false
 
                     if (it.responseData.transport.isNotEmpty())
@@ -43,7 +43,7 @@ class CurrentOrderFragment : BaseFragment<FragmentCurrentOrdersBinding>(), Curre
 
                 })
 
-        currentOrderViewModel.errorResponse.observe(this@CurrentOrderFragment, Observer<String> { error ->
+        mViewModel.errorResponse.observe(this@CurrentOrderFragment, Observer<String> { error ->
             loadingObservable.value = false
             this.mBinding.emptyViewLayout.visibility = View.VISIBLE
         })

@@ -135,6 +135,7 @@
                         android:layout_width="@dimen/_10sdp"
                         android:layout_height="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_3sdp"
+                        android:contentDescription="@string/app_name"
                         android:src="@drawable/star"
                         android:tint="@color/chip_yellow_inner_color" />
                 </LinearLayout>

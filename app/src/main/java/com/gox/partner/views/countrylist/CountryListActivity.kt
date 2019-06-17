@@ -20,8 +20,8 @@ class CountryListActivity : BaseActivity<ActivityCountryListBinding>(),
 
         this.mBinding = mViewDataBinding as ActivityCountryListBinding
         this.mBinding.lifecycleOwner = this
-        val countrylist = intent.getSerializableExtra("countrylistresponse") as CountryListResponse
-        mViewDataBinding.countrylistadapter = CountryListAdapter(this, countrylist.responseData)
+        val countryList = intent.getSerializableExtra("countrylistresponse") as CountryListResponse
+        mViewDataBinding.countrylistadapter = CountryListAdapter(this, countryList.responseData)
         val mViewModel = CountryViewModel()
         mViewModel.navigator = this
         mViewDataBinding.countrylistmodel = mViewModel

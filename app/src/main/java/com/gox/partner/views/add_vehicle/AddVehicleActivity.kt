@@ -76,7 +76,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             spinnerCarCategory.expand()
         }
 
-        observeLiveData(mViewModel.loadingObservable) {
+        observeLiveData(mViewModel.loadingProgress) {
             loadingObservable.value = it
         }
 

@@ -2,15 +2,14 @@ package com.gox.partner.views.incoming_request_taxi
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.AcceptRequestModel
 import com.gox.partner.models.RejectRequestModel
 import com.gox.partner.repository.AppRepository
 
 class IncomingRequestViewModel : BaseViewModel<IncomingNavigator>() {
 
-    val appRepository = AppRepository.instance()
+    val mRepository = AppRepository.instance()
 
     var pickupLocation = MutableLiveData<String>()
     var serviceType = MutableLiveData<String>()
@@ -23,21 +22,27 @@ class IncomingRequestViewModel : BaseViewModel<IncomingNavigator>() {
     fun cancelReq() = navigator.cancel()
 
     fun acceptRequest(param: HashMap<String, String>) {
-        getCompositeDisposable()
-                .add(appRepository.acceptIncomingRequest(
-                        this,
-                        "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
-                        param)
-                )
+        getCompositeDisposable().add(mRepository.acceptIncomingRequest(object : ApiListener {
+            override fun success(successData: Any) {
+                acceptRequestLiveData.value = successData as AcceptRequestModel
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showErrorMessage(getErrorMessage(failData))
+            }
+        }, param))
     }
 
     fun rejectRequest(param: HashMap<String, String>) {
-        getCompositeDisposable()
-                .add(appRepository.rejectIncomingRequest(
-                        this,
-                        "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
-                        param)
-                )
+        getCompositeDisposable().add(mRepository.rejectIncomingRequest(object : ApiListener {
+            override fun success(successData: Any) {
+                rejectRequestLiveData.value = successData as RejectRequestModel
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showErrorMessage(getErrorMessage(failData))
+            }
+        }, param))
     }
 
 }

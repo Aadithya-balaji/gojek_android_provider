@@ -5,6 +5,7 @@ import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.CountryListResponse
 import com.gox.partner.models.RegistrationResponseModel
 import com.gox.partner.network.WebApiConstants
@@ -17,7 +18,7 @@ import okhttp3.RequestBody
 class RegistrationViewModel(val registrationNavigator: RegistrationNavigator)
     : BaseViewModel<RegistrationViewModel.RegistrationNavigator>() {
 
-    private val appRepository = AppRepository.instance()
+    private val mRepository = AppRepository.instance()
 
     var firstName = MutableLiveData<String>()
     var lastName = MutableLiveData<String>()
@@ -82,13 +83,29 @@ class RegistrationViewModel(val registrationNavigator: RegistrationNavigator)
             signUpParams[WebApiConstants.SignUp.SOCIAL_ID] =
                     RequestBody.create(MediaType.parse("text/plain"), socialID.value.toString())
 
-        getCompositeDisposable().add(appRepository.postSignup(this, signUpParams, fileName.value))
+        getCompositeDisposable().add(mRepository.postSignUp(object : ApiListener {
+            override fun success(successData: Any) {
+                getRegistrationLiveData().value = successData as RegistrationResponseModel
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        }, signUpParams, fileName.value))
     }
 
     fun getCountryList() {
         val hashMap: HashMap<String, Any?> = HashMap()
         hashMap["salt_key"] = SALT_KEY
-        getCompositeDisposable().add(appRepository.getCountryList(this, hashMap))
+        getCompositeDisposable().add(mRepository.getCountryList(object : ApiListener {
+            override fun success(successData: Any) {
+                getCountryLiveData().value = successData as CountryListResponse
+            }
+
+            override fun fail(failData: Throwable) {
+                gotoLogin()
+            }
+        }, hashMap))
     }
 
     fun getCityList() = registrationNavigator.getCityList()
@@ -106,7 +123,14 @@ class RegistrationViewModel(val registrationNavigator: RegistrationNavigator)
     fun gotoLogin() = registrationNavigator.openSignIn()
 
     fun validateUser(params: HashMap<String, String>) {
-        getCompositeDisposable().add(appRepository.ValidateUser(this, params))
+        getCompositeDisposable().add(mRepository.validateUser(object : ApiListener {
+            override fun success(successData: Any) {
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        }, params))
     }
 
     interface RegistrationNavigator {

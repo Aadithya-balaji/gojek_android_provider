@@ -4,8 +4,7 @@ import android.content.res.Resources
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.AddCardModel
 import com.gox.partner.models.CardListModel
 import com.gox.partner.network.WebApiConstants
@@ -13,7 +12,7 @@ import com.gox.partner.repository.AppRepository
 
 class CardListViewModel : BaseViewModel<CardListNavigator>() {
 
-    var appRepository = AppRepository.instance()
+    var mRepository = AppRepository.instance()
 
     var loadingProgress = MutableLiveData<Boolean>()
     var selectedCardID = MutableLiveData<String>()
@@ -28,23 +27,24 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
         this.resources = resources
     }
 
-    fun saveCard() {
-        navigator.addCard()
-    }
+    fun saveCard() = navigator.addCard()
 
-    fun removeCard() {
-        navigator.removeCard()
-    }
+    fun removeCard() = navigator.removeCard()
 
-    fun cardDeselect() {
-        navigator.deselectCard()
-    }
+    fun cardDeselect() = navigator.deselectCard()
 
     fun getCardList() {
         if (BaseApplication.isNetworkAvailable) {
             loadingProgress.value = true
-            getCompositeDisposable().add(appRepository.getCardList
-            (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), "100", "1"))
+            getCompositeDisposable().add(mRepository.getCardList(object : ApiListener {
+                override fun success(successData: Any) {
+                    cardListLiveResponse.value = successData as CardListModel
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMsg(getErrorMessage(failData))
+                }
+            }, "100", "1"))
         }
     }
 
@@ -53,8 +53,15 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
             loadingProgress.value = true
             val params = HashMap<String, String>()
             params[WebApiConstants.addCard.STRIP_TOKEN] = stripeID
-            getCompositeDisposable().add(appRepository.addCard
-            (this, params, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
+            getCompositeDisposable().add(mRepository.addCard(object : ApiListener {
+                override fun success(successData: Any) {
+                    addCardLiveResponse.value = successData as AddCardModel
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMsg(getErrorMessage(failData))
+                }
+            }, params))
         }
     }
 
@@ -62,8 +69,15 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
         if (BaseApplication.isNetworkAvailable) {
             loadingProgress.value = true
             if (!selectedCardID.value.isNullOrEmpty())
-                getCompositeDisposable().add(appRepository.deleteCDard
-                (this, "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN), selectedCardID.value!!))
+                getCompositeDisposable().add(mRepository.deleteCard(object : ApiListener {
+                    override fun success(successData: Any) {
+                        deleteCardLivResponse.value = successData as AddCardModel
+                    }
+
+                    override fun fail(failData: Throwable) {
+                        navigator.showErrorMsg(getErrorMessage(failData))
+                    }
+                }, selectedCardID.value!!))
             else navigator.showErrorMsg(resources!!.getString(com.gox.partner.R.string.empty_card))
         }
     }

@@ -240,7 +240,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     private fun accountKitOtpVerified(data: Intent?) {
         val loginResult: AccountKitLoginResult = data!!.getParcelableExtra(AccountKitLoginResult.RESULT_KEY)
         if (loginResult.error != null) {
-            Log.d("_D_fbaccountkit", loginResult.getError().toString())
+            Log.d("_D_fbaccountkit", loginResult.error.toString())
         } else if (loginResult.wasCancelled()) {
             Log.d("_D_fbaccountkit", "Fb login cancelled")
         } else {

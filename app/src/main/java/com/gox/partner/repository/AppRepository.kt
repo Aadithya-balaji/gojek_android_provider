@@ -1,38 +1,9 @@
 package com.gox.partner.repository
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
-import com.gox.base.chatmessage.ChatMainViewModel
 import com.gox.base.data.Constants
+import com.gox.base.repository.ApiListener
 import com.gox.base.repository.BaseRepository
 import com.gox.partner.network.AppWebService
-import com.gox.partner.views.account_card.CardListViewModel
-import com.gox.partner.views.add_edit_document.AddEditDocumentViewModel
-import com.gox.partner.views.add_vehicle.AddVehicleViewModel
-import com.gox.partner.views.change_password.ChangePasswordViewModel
-import com.gox.partner.views.currentorder_fragment.CurrentOrderViewModel
-import com.gox.partner.views.dashboard.DashBoardViewModel
-import com.gox.partner.views.earnings.EarningsViewModel
-import com.gox.partner.views.forgot_password.ForgotPasswordViewModel
-import com.gox.partner.views.history_details.HistoryDetailViewModel
-import com.gox.partner.views.home.HomeViewModel
-import com.gox.partner.views.incoming_request_taxi.IncomingRequestViewModel
-import com.gox.partner.views.invitereferals.InviteReferralsViewModel
-import com.gox.partner.views.manage_bank_details.ManageBankDetailsViewModel
-import com.gox.partner.views.manage_services.ManageServicesViewModel
-import com.gox.partner.views.notification.NotificationViewModel
-import com.gox.partner.views.pastorder_fragment.PastOrderViewModel
-import com.gox.partner.views.profile.ProfileViewModel
-import com.gox.partner.views.reset_password.ResetPasswordViewModel
-import com.gox.partner.views.set_service.SetServiceViewModel
-import com.gox.partner.views.set_service_category_price.SetServicePriceViewModel
-import com.gox.partner.views.set_subservice.SetSubServiceViewModel
-import com.gox.partner.views.setup_vehicle.SetupVehicleViewModel
-import com.gox.partner.views.sign_in.LoginViewModel
-import com.gox.partner.views.signup.RegistrationViewModel
-import com.gox.partner.views.splash.SplashViewModel
-import com.gox.partner.views.transaction.TransactionViewModel
-import com.gox.partner.views.wallet.WalletViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -46,797 +17,442 @@ class AppRepository : BaseRepository() {
     private val serviceId: String
         get() = Constants.BaseUrl.APP_BASE_URL
 
-    fun getConfig(viewModel: SplashViewModel, params: HashMap<String, String>): Disposable {
+    fun getConfig(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(AppWebService::class.java)
                 .getConfig(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     if (it.statusCode == "200")
-                        viewModel.getConfigObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                        listener.success(it)
+                }, { listener.fail(it) })
     }
 
-    fun postLogin(viewModel: LoginViewModel, params: HashMap<String, String>): Disposable {
+    fun postLogin(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postLogin(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     if (it.statusCode == "200")
-                        viewModel.getLoginObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                        listener.success(it)
+                }, { listener.fail(it) })
     }
 
-    fun postSocialLogin(viewModel: LoginViewModel, params: HashMap<String, String>): Disposable {
+    fun postSocialLogin(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postSocialLogin(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
                     if (it.statusCode == "200")
-                        viewModel.getLoginObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showAlert(getErrorMessage(it))
-                })
+                        listener.success(it)
+                }, { listener.fail(it) })
     }
 
-    fun postForgotPassword(viewModel: ForgotPasswordViewModel, params: HashMap<String, String>): Disposable {
+    fun postForgotPassword(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postForgotPassword(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getForgotPasswordObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                    if (it.statusCode == "200") listener.success(it)
+                }, { listener.fail(it) })
     }
 
-    fun postResetPassword(viewModel: ResetPasswordViewModel, params: HashMap<String, String>): Disposable {
+    fun postResetPassword(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postResetPassword(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getResetPasswordObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getCountryList(viewModel: ViewModel, params: HashMap<String, Any?>): Disposable {
+    fun getCountryList(listener: ApiListener, params: HashMap<String, Any?>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getCountries(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (viewModel is RegistrationViewModel)
-                        viewModel.getCountryLiveData().postValue(it)
-                    else if (viewModel is ProfileViewModel)
-                        viewModel.countryListResponse.postValue(it)
-                }, {
-                    if (viewModel is RegistrationViewModel)
-                        viewModel.gotoLogin()
-                    else if (viewModel is ProfileViewModel)
-                        viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun postSignup(viewModel: RegistrationViewModel, params: HashMap<String, RequestBody>, @Part filename: MultipartBody.Part?): Disposable {
+    fun postSignUp(listener: ApiListener, params: HashMap<String, RequestBody>, @Part filename: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postSignUp(params, filename)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.getRegistrationLiveData().postValue(it)
-                }, {
-
-                    viewModel.registrationNavigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun postChangePassword(viewModel: ChangePasswordViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun postChangePassword(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postChangePassword(token, params)
+                .postChangePassword(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getChangePasswordObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                    if (it.statusCode == "200") listener.success(it)
+                }, { listener.fail(it) })
     }
 
-    fun ValidateUser(viewModel: RegistrationViewModel, params: HashMap<String, String>): Disposable {
+    fun validateUser(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .verifyUser(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200") {
-
-                    }
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({}, { listener.fail(it) })
 
     }
 
-    /*fun getProfile(viewModel: ProfileViewModel, token: String): Disposable {
+    fun getReferral(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getProfile(token)
+                .getProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200") {
-                        viewModel.getProfileRespose().postValue(it)
-                    }
-                }, {
-                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
-                })
-    }*/
-
-    fun getReferal(viewModel: InviteReferralsViewModel, token: String): Disposable {
-        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getProfile(token)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.getProfileLiveData().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
 
-    fun getProfile(viewModel: WalletViewModel, token: String): Disposable {
+    fun getProfile(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getProfile(token)
+                .getProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.mProfileResponse.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getProviderProfile(viewModel: ViewModel, token: String): Disposable {
+    fun getProviderProfile(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getProfile(token)
+                .getProfile()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (viewModel is ProfileViewModel) {
-                        viewModel.mProfileResponse.value = it
-                        viewModel.loadingProgress.value = false
-                    } else if (viewModel is DashBoardViewModel) {
-                        viewModel.mProfileResponse.value = it
-                    }
-                }, {
-                    if (viewModel is ProfileViewModel) {
-                        viewModel.errorResponse.value = getErrorMessage(it)
-                        viewModel.loadingProgress.value = false
-                    } /*else if (viewModel is InviteReferralsViewModel) {
-                        viewModel.errorResponse.value = getErrorMessage(it)
-                        viewModel.loadingProgress.value = false
-                    }*/
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
+    }
+
+    fun getProfileDetails(listener: ApiListener): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getProfile()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
 
-    fun profileUpdate(viewModel: ProfileViewModel, token: String, @PartMap params: HashMap<String, RequestBody>, @Part image: MultipartBody.Part?): Disposable {
+    fun profileUpdate(listener: ApiListener, @PartMap params: HashMap<String, RequestBody>, @Part image: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .profileUpdate(token, params, image)
+                .profileUpdate(params, image)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.mProfileUpdateResponse.value = it
-                    viewModel.loadingProgress.value = false
-                }, {
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                    viewModel.loadingProgress.value = false
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
 
-    fun getCardList(viewModel: CardListViewModel, token: String, limit: String, offset: String): Disposable {
+    fun getCardList(listener: ApiListener, limit: String, offset: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getCardList(token, limit, offset)
+                .getCardList(limit, offset)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.cardListLiveResponse.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun addWalletAmount(viewModel: WalletViewModel, params: HashMap<String, String>, token: String): Disposable {
+    fun addWalletAmount(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .addWalletMoney(token, params)
+                .addWalletMoney(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.walletLiveResponse.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getTransaction(viewModel: TransactionViewModel, token: String): Disposable {
+    fun getTransaction(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getWalletTransction(token)
+                .getWalletTransction()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.transactionLiveResponse.postValue(it)
-                }, {
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun deleteCDard(viewModel: CardListViewModel, token: String, cardId: String): Disposable {
+    fun deleteCard(listener: ApiListener, cardId: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .deleteCard(token, cardId)
+                .deleteCard(cardId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.deleteCardLivResponse.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
-                })
-
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun addCard(viewModel: CardListViewModel, params: HashMap<String, String>, token: String): Disposable {
+    fun addCard(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .addCard(token, params)
+                .addCard(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.addCardLiveResponse.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMsg(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun checkRequest(viewModel: DashBoardViewModel, token: String, lat: String, lon: String): Disposable {
+    fun checkRequest(listener: ApiListener, lat: String, lon: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getRequest(token, lat, lon)
+                .getRequest(lat, lon)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.checkRequestLiveData.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun acceptIncomingRequest(viewModel: IncomingRequestViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun acceptIncomingRequest(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .acceptIncomingRequest(token, params)
+                .acceptIncomingRequest(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.acceptRequestLiveData.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun rejectIncomingRequest(viewModel: IncomingRequestViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun rejectIncomingRequest(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .rejectIncomingRequest(token, params)
+                .rejectIncomingRequest(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.rejectRequestLiveData.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getNotification(viewModel: NotificationViewModel, token: String): Disposable {
+    fun getNotification(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getNotification(token)
+                .getNotification()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.notificationResponse.value = it
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
 
-    fun changeOnlineStatus(viewModel: HomeViewModel, token: String, status: String): Disposable {
+    fun changeOnlineStatus(listener: ApiListener, status: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .changeOnlineStatus(token, status)
+                .changeOnlineStatus(status)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.onlineStatusLiveData.postValue(it)
-                    viewModel.showLoading.value = false
-                }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
-                    viewModel.showLoading.value = false
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getServices(viewModel: ManageServicesViewModel, token: String): Disposable {
+    fun getServices(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getServices(token)
+                .getServices()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getServicesObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getServiceCategories(viewModel: SetServiceViewModel, token: String): Disposable {
+    fun getServiceCategories(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getServiceCategories(token)
+                .getServiceCategories()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.serviceCategoriesResponse.postValue(it)
-                }, {
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getSubServiceCategories(viewModel: SetSubServiceViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun getSubServiceCategories(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getSubServiceCategories(token, params)
+                .getSubServiceCategories(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.subServiceCategoriesResponse.postValue(it)
-                }, {
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getSubServicePriceCategories(viewModel: SetServicePriceViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun getSubServicePriceCategories(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getSubServicePriceCategories(token, params)
+                .getSubServicePriceCategories(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.subServiceCategoriesPriceResponse.postValue(it)
-                }, {
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getRides(viewModel: SetupVehicleViewModel, token: String): Disposable {
+    fun getRides(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getRides(token)
+                .getRides()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getVehicleDataObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getShops(viewModel: SetupVehicleViewModel, token: String): Disposable {
+    fun getShops(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getShops(token)
+                .getShops()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getVehicleDataObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getVehicleCategories(viewModel: AddVehicleViewModel, token: String): Disposable {
+    fun postVehicle(listener: ApiListener,
+                    params: HashMap<String, RequestBody>,
+                    vehicleMultiPart: MultipartBody.Part?,
+                    rcBookMultiPart: MultipartBody.Part?,
+                    insuranceMultipart: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getVehicleCategories(token)
+                .postVehicle(params, vehicleMultiPart, rcBookMultiPart, insuranceMultipart)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getVehicleCategoryObservable().postValue(it)
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
     }
 
-    fun postVehicle(viewModel: AddVehicleViewModel, params: HashMap<String, RequestBody>, vehicleMultitpart: MultipartBody.Part?, rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
-    ): Disposable {
+    fun editVehicle(listener: ApiListener,
+                    params: HashMap<String, RequestBody>,
+                    vehicleMultiPart: MultipartBody.Part?,
+                    rcBookMultiPart: MultipartBody.Part?,
+                    insuranceMultipart: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postVehicle(params, vehicleMultitpart, rcBookMultipart, insuranceMultipart)
+                .editVehicle(params, vehicleMultiPart, rcBookMultiPart, insuranceMultipart)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingObservable.value = false
-                    if (it.statusCode == "200")
-                        viewModel.getVehicleResponseObservable().postValue(it)
-                }, {
-                    viewModel.loadingObservable.value = false
-                    viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun editVehicle(viewModel: AddVehicleViewModel, params: HashMap<String, RequestBody>, vehicleMultitpart: MultipartBody.Part?, rcBookMultipart: MultipartBody.Part?, insuranceMultipart: MultipartBody.Part?
-    ): Disposable {
+    fun postVehicle(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .editVehicle(params, vehicleMultitpart, rcBookMultipart, insuranceMultipart)
+                .postVehicle(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200")
-                        viewModel.getVehicleResponseObservable().postValue(it)
-                    viewModel.loadingObservable.value = false
-                }, {
-                    viewModel.navigator.showError(getErrorMessage(it))
-                    viewModel.loadingObservable.value = false
-                })
+                .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
     }
 
-    fun postVehicle(viewModel: ViewModel, token: String,
-                    params: HashMap<String, String>): Disposable {
+    fun getBankTemplate(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postVehicle(token, params)
+                .getBankTemplate()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    if (it.statusCode == "200")
-                        if (viewModel is SetServicePriceViewModel)
-                            viewModel.addServiceResponseModel.postValue(it)
-                }, {
-                    if (viewModel is SetServicePriceViewModel)
-                        viewModel.navigator.showError(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-//    fun getServices(viewModel: SetupVehicleViewModel, token: String): Disposable {
-//        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-//                .getRides(token)
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribeOn(Schedulers.io())
-//                .subscribe({
-//                    if (it.statusCode == "200")
-//                        viewModel.getVehicleDataObservable().postValue(it)
-//                }, {
-//                    viewModel.navigator.showError(getErrorMessage(it))
-//                })
-//    }
-
-
-    fun getBankTemplate(viewModel: ManageBankDetailsViewModel, token: String): Disposable {
+    fun postAddBankDetails(listener: ApiListener, body: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .getBankTemplate(token)
+                .postAddBankDetails(body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.showLoading.value = false
-                    viewModel.bankResponse.postValue(it)
-                }, {
-                    viewModel.showLoading.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun postAddBankDetails(viewModel: ManageBankDetailsViewModel, token: String, body: String): Disposable {
+    fun postEditBankDetails(listener: ApiListener, body: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postAddBankDetails(token, body)
+                .postEditBankDetails(body)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.addEditBankResponse.postValue(it)
-                }, {
-                    viewModel.showLoading.value = false
-                    viewModel.addEditBankErrorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun postEditBankDetails(viewModel: ManageBankDetailsViewModel, token: String, body: String): Disposable {
-        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
-                .postEditBankDetails(token, body)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.addEditBankResponse.postValue(it)
-                }, {
-                    viewModel.showLoading.value = false
-                    viewModel.addEditBankErrorResponse.value = getErrorMessage(it)
-                })
-    }
-
-    fun getDocumentList(viewModel: AddEditDocumentViewModel, documentType: String): Disposable {
+    fun getDocumentList(listener: ApiListener, documentType: String): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getDocuments(documentType)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.showLoading.value = false
-                    viewModel.documentResponse.postValue(it)
-                }, {
-                    viewModel.showLoading.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun postDocument(viewModel: AddEditDocumentViewModel, @PartMap params: HashMap<String, RequestBody>, @Part frontImage: MultipartBody.Part?, @Part backImage: MultipartBody.Part?): Disposable {
+    fun postDocument(listener: ApiListener,
+                     @PartMap params: HashMap<String, RequestBody>,
+                     @Part frontImage: MultipartBody.Part?,
+                     @Part backImage: MultipartBody.Part?): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postDocument(params, frontImage, backImage)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.showLoading.value = false
-                    viewModel.addDocumentResponse.postValue(it)
-                }, {
-                    viewModel.showLoading.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun getTransaportCurrentHistory(viewModel: CurrentOrderViewModel, token: String, hashMap: HashMap<String, String>
-                                    , selectedservice: String): Disposable {
-
+    fun getTransportCurrentHistory(listener: ApiListener, hashMap: HashMap<String, String>, selectService: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getTransportHistory(token, selectedservice, hashMap)
+                .getTransportHistory(selectService, hashMap)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.transportCurrentHistoryResponse.value = it
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getPastORderHistory(viewModel: PastOrderViewModel, token: String, params: HashMap<String, String>
-                            , selectedservice: String): Disposable {
+    fun getPastOrderHistory(listener: ApiListener, params: HashMap<String, String>, selectService: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getPastHistory(token, selectedservice, params)
+                .getPastHistory(selectService, params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.historyResponseLiveData.postValue(it)
-                }, {
-                    // viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getServiceCurrentHistory(viewModel: CurrentOrderViewModel, token: String, hashMap: HashMap<String
-            , String>): Disposable {
-
+    fun getTransPortDetail(listener: ApiListener, selected_id: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getServiceHistory(token, hashMap)
+                .getHistoryDetail(selected_id)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.transportCurrentHistoryResponse.value = it
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun getTransPortDetail(viewModel: HistoryDetailViewModel, token: String, selected_id: String): Disposable {
+    fun getServiceDetail(listener: ApiListener, selectedID: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getHistoryDetail(token, selected_id)
+                .getServiceDetail(selectedID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.historyModelLiveData.postValue(it)
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun getServiceDetail(viewModel: HistoryDetailViewModel, token: String, selectedID: String): Disposable {
+    fun getOrderDetail(listener: ApiListener, selectedID: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getServiceDetail(token, selectedID)
+                .getOrderDetail(selectedID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.historyModelLiveData.postValue(it)
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun getOrderDetail(viewModel: HistoryDetailViewModel, token: String, selectedID: String): Disposable {
+    fun getDisputeList(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getOrderDetail(token, selectedID)
+                .getDisputeList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.historyModelLiveData.postValue(it)
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getUpcomingHistoryDetail(viewModel: HistoryDetailViewModel, token: String, selectedID: String): Disposable {
+    fun getDisputeList(listener: ApiListener, serviceType: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getUpcomingHistoryDetail(token, selectedID)
+                .getDisputeReasons(serviceType)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.historyUpcomingDetailResponse.value = it
-                }, {
-                    viewModel.loadingProgress.value = false
-                    Log.d("_D_ERROR", it.message)
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun getDisputeList(viewModel: HistoryDetailViewModel, token: String): Disposable {
+    fun getEarnings(listener: ApiListener, userId: Int): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getDisputeList(token)
+                .getEarnings(userId)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.disputeListData.postValue(it)
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun getDisputeList(viewModel: HistoryDetailViewModel, token: String, serviceType: String): Disposable {
+    fun addTaxiDispute(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getDisputeReasons(token, serviceType)
+                .postTaxiDispute(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.disputeListData.postValue(it)
-                }, {
-                    viewModel.loadingProgress.value = false
-                    viewModel.errorResponse.value = getErrorMessage(it)
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun getEarnings(viewModel: EarningsViewModel, token: String, userId: Int): Disposable {
-        viewModel.loadingProgress.value = true
+    fun addServiceDispute(listener: ApiListener, requestID: String, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getEarnings(token, userId)
+                .postServiceDispute(params, requestID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.loadingProgress.value = false
-                    viewModel.earnings.value = it
-                }, {
-                    viewModel.loadingProgress.value = false
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun addTaxiDispute(viewModel: HistoryDetailViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun addOrderDispute(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .postTaxiDispute(token, params)
+                .postOrderDispute(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.postDisputeLiveData.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-
-    fun addServiceDispute(viewModel: HistoryDetailViewModel, token: String, requestID: String, params: HashMap<String, String>): Disposable {
+    fun getTransportDisputeStatus(listener: ApiListener, requestID: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .postServiceDispute(token, params, requestID)
+                .getTransportDisputeStatus(requestID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.postDisputeLiveData.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
-                })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
 
-    fun addOrderDispute(viewModel: HistoryDetailViewModel, token: String, params: HashMap<String, String>): Disposable {
+    fun getOrderDisputeStatus(listener: ApiListener, requestID: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .postOrderDispute(token, params)
+                .getOrderDisputeStatus(requestID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.postDisputeLiveData.postValue(it)
-                }, {
-                    viewModel.navigator.showErrorMessage(getErrorMessage(it))
-                })
-    }
-
-    fun getTransportDisputeStatus(viewModel: HistoryDetailViewModel, token: String, requestID: String): Disposable {
-        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getTransportDisputeStatus(token, requestID)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.disputeStatusLiveData.postValue(it)
-                }, {
-                    viewModel.errorResponse.postValue(getErrorMessage(it))
-                })
-    }
-
-
-    fun getOrderDisputeStatus(viewModel: HistoryDetailViewModel, token: String, requestID: String): Disposable {
-        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getOrderDisputeStatus(token, requestID)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.disputeStatusLiveData.postValue(it)
-                }, {
-                    viewModel.errorResponse.postValue(getErrorMessage(it))
-                })
-    }
-
-
-    fun getServicefDisputeStatus(viewModel: HistoryDetailViewModel, token: String, requestID: String): Disposable {
-        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .getServiceDisputeStatus(token, requestID)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({
-                    viewModel.disputeStatusLiveData.postValue(it)
-                }, { viewModel.errorResponse.postValue(getErrorMessage(it)) })
-    }
-
-    fun sendMessage(viewModel: ChatMainViewModel, s: String, hashMap: HashMap<String, Any>): Disposable {
-        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .sendMessage(s, hashMap)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({ viewModel.singleMessageResponse.value = it },
-                        { viewModel.errorResponse.value = getErrorMessage(it) })
-    }
-
-    fun getMessage(viewModel: ChatMainViewModel, token: String, adminService: String, id: Int): Disposable {
-        return BaseRepository().createApiClient(Constants.BaseUrl.TAXI_BASE_URL, AppWebService::class.java)
-                .getMessages(token, adminService, id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe({ viewModel.getChatMessageList.value = it },
-                        { viewModel.errorResponse.value = getErrorMessage(it) })
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
     fun logoutApp(): Disposable {
@@ -848,12 +464,12 @@ class AppRepository : BaseRepository() {
     }
 
     companion object {
-        private var appRepository: AppRepository? = null
+        private var mRepository: AppRepository? = null
         fun instance(): AppRepository {
-            if (appRepository == null) synchronized(AppRepository) {
-                appRepository = AppRepository()
+            if (mRepository == null) synchronized(AppRepository) {
+                mRepository = AppRepository()
             }
-            return appRepository!!
+            return mRepository!!
         }
     }
 }

@@ -5,8 +5,7 @@ import com.gox.base.base.BaseViewModel
 import com.gox.base.data.Constants.FareType.DISTANCE_TIME
 import com.gox.base.data.Constants.FareType.FIXED
 import com.gox.base.data.Constants.FareType.HOURLY
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.AddVehicleResponseModel
 import com.gox.partner.models.SubServicePriceCategoriesResponse
 import com.gox.partner.repository.AppRepository
@@ -14,7 +13,7 @@ import com.gox.partner.views.set_service_category_price.SetServicePriceActivity.
 
 class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
 
-    private val appRepository = AppRepository.instance()
+    private val mRepository = AppRepository.instance()
     val subServiceCategoriesPriceResponse = MutableLiveData<SubServicePriceCategoriesResponse>()
     val errorResponse = MutableLiveData<String>()
     val listPrice = MutableLiveData<SelectedService>()
@@ -22,19 +21,21 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
     val addServiceResponseModel = MutableLiveData<AddVehicleResponseModel>()
 
     fun getSubCategory(serviceId: String, SubServiceId: String) {
-        val token = StringBuilder("Bearer ")
-                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
-                .toString()
         val service = HashMap<String, String>()
         service["service_category_id"] = serviceId
         service["service_subcategory_id"] = SubServiceId
-        getCompositeDisposable().add(appRepository.getSubServicePriceCategories(this, token, service))
+        getCompositeDisposable().add(mRepository.getSubServicePriceCategories(object : ApiListener {
+            override fun success(successData: Any) {
+                subServiceCategoriesPriceResponse.value = successData as SubServicePriceCategoriesResponse
+            }
+
+            override fun fail(failData: Throwable) {
+                errorResponse.value = getErrorMessage(failData)
+            }
+        }, service))
     }
 
     fun postSelection(toString: String, id: String, selectedService: MutableList<SelectedService>) {
-        val token = StringBuilder("Bearer ")
-                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
-                .toString()
         val params = HashMap<String, String>()
         params["category_id"] = (toString)
         params["sub_category_id"] = (id)
@@ -54,6 +55,14 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
                 i += 1
             }
         }
-        getCompositeDisposable().add(appRepository.postVehicle(this, token, params))
+        getCompositeDisposable().add(mRepository.postVehicle(object : ApiListener {
+            override fun success(successData: Any) {
+                addServiceResponseModel.value = successData as AddVehicleResponseModel
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        }, params))
     }
 }

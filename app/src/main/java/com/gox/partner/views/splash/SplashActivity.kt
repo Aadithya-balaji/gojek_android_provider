@@ -72,7 +72,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
     @SuppressLint("CommitPrefEdits")
     private fun observeViewModel() {
-        observeLiveData(mViewModel.getConfigObservable()) {
+        observeLiveData(mViewModel.configLiveData) {
             customPreference.edit().putString("0", it.responseData.base_url + "/").apply()
             customPreference.edit().putString(PreferencesKey.BASE_ID, "0").apply()
             customPreference.edit().putString(PreferencesKey.ALTERNATE_MAP_KEY, it.responseData.appsetting.android_key).apply()

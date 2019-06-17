@@ -3,9 +3,9 @@ package com.gox.partner.views.dashboard
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.CheckRequestModel
 import com.gox.partner.models.ProfileResponse
 import com.gox.partner.repository.AppRepository
@@ -26,8 +26,15 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
         if (BaseApplication.isNetworkAvailable)
             if (latitude.value!!.toInt() > 0 && longitude.value!!.toInt() > 0) {
                 if (readPreferences<String>(PreferencesKey.ACCESS_TOKEN).length > 2)
-                    getCompositeDisposable().add(mRepository.checkRequest(this,
-                            "Bearer " + readPreferences<String>(PreferencesKey.ACCESS_TOKEN),
+                    getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
+                        override fun success(successData: Any) {
+                            checkRequestLiveData.value = successData as CheckRequestModel
+                        }
+
+                        override fun fail(failData: Throwable) {
+                            navigator.showErrorMessage(getErrorMessage(failData))
+                        }
+                    },
                             latitude.value.toString(),
                             longitude.value.toString())
                     )
@@ -36,7 +43,13 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
 
     fun getProfile() {
         if (BaseApplication.isNetworkAvailable)
-            getCompositeDisposable().add(mRepository.getProviderProfile(this,
-                    Constants.M_TOKEN + readPreferences(PreferencesKey.ACCESS_TOKEN, "").toString()))
+            getCompositeDisposable().add(mRepository.getProviderProfile(object : ApiListener {
+                override fun success(successData: Any) {
+                    mProfileResponse.value = successData as ProfileResponse
+                }
+
+                override fun fail(failData: Throwable) {
+                }
+            }))
     }
 }

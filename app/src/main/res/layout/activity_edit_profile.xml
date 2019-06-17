@@ -231,7 +231,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:onClick="@{() -> profileviewmodel.changePassord()}"
+                            android:onClick="@{() -> profileviewmodel.changePassword()}"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/change_password"
                             android:textColor="@android:color/black"

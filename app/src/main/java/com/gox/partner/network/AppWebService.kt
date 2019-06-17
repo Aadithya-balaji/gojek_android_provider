@@ -1,12 +1,10 @@
 package com.gox.partner.network
 
 import com.gox.base.chatmessage.ChatMessageList
-import com.gox.base.chatmessage.SingleMessageResponse
 import com.gox.partner.models.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface AppWebService {
@@ -48,7 +46,6 @@ interface AppWebService {
     @FormUrlEncoded
     @POST("provider/password")
     fun postChangePassword(
-            @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<ChangePasswordResponseModel>
 
@@ -58,21 +55,17 @@ interface AppWebService {
             Observable<VerifyUser>
 
     @GET("provider/profile")
-    fun getProfile(@Header("Authorization") token: String):
-            Observable<ProfileResponse>
+    fun getProfile(): Observable<ProfileResponse>
 
     @Multipart
     @POST("provider/profile")
     fun profileUpdate(
-            @Header("Authorization") token: String,
             @PartMap params: java.util.HashMap<String, RequestBody>,
             @Part image: MultipartBody.Part?
     ): Observable<ResProfileUpdate>
 
-
     @GET("provider/card")
     fun getCardList(
-            @Header("Authorization") token: String,
             @Query("limit") limit: String,
             @Query("offset") offset: String
     ): Observable<CardListModel>
@@ -80,89 +73,70 @@ interface AppWebService {
     @FormUrlEncoded
     @POST("provider/add/money")
     fun addWalletMoney(
-            @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<WalletResponse>
 
     @GET("provider/wallet")
-    fun getWalletTransction(@Header("Authorization") token: String):
-            Observable<WalletTransaction>
+    fun getWalletTransction(): Observable<WalletTransaction>
 
     @FormUrlEncoded
     @POST("provider/card")
     fun addCard(
-            @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<AddCardModel>
 
     @DELETE("provider/card/{card_id}")
     fun deleteCard(
-            @Header("Authorization") token: String,
             @Path("card_id") cardid: String
     ): Observable<AddCardModel>
 
-    @FormUrlEncoded
-    @POST
-    fun changeAvailability(
-            @Header("Authorization") token: String,
-            @FieldMap params: HashMap<String, String>
-    ): Observable<ResponseBody>
-
     @GET("provider/check/request")
     fun getRequest(
-            @Header("Authorization") token: String,
             @Query("latitude") lat: String,
             @Query("longitude") lon: String
     ): Observable<CheckRequestModel>
 
     @GET("provider/notification")
-    fun getNotification(@Header("Authorization") token: String):
-            Observable<NotificationResponse>
+    fun getNotification(): Observable<NotificationResponse>
 
     @GET("provider/onlinestatus/{status_id}")
     fun changeOnlineStatus(
-            @Header("Authorization") token: String,
             @Path("status_id") statusID: String):
             Observable<StatusResponseModel>
 
     @FormUrlEncoded
     @POST("provider/accept/request")
     fun acceptIncomingRequest(
-            @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<AcceptRequestModel>
 
     @FormUrlEncoded
     @POST("provider/cancel/request")
     fun rejectIncomingRequest(
-            @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<RejectRequestModel>
 
     @GET("provider/adminservices")
-    fun getServices(@Header("Authorization") token: String):
-            Observable<ManageServicesResponseModel>
+    fun getServices(): Observable<ManageServicesResponseModel>
 
     @GET("provider/ridetype")
-    fun getRides(@Header("Authorization") token: String): Observable<SetupRideResponseModel>
+    fun getRides(): Observable<SetupRideResponseModel>
 
     @GET("provider/providerservice/categories")
-    fun getServiceCategories(@Header("Authorization") token: String): Observable<ServiceCategoriesResponse>
+    fun getServiceCategories(): Observable<ServiceCategoriesResponse>
 
     @FormUrlEncoded
     @POST("provider/providerservice/subcategories")
-    fun getSubServiceCategories(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<SubServiceCategoriesResponse>
+    fun getSubServiceCategories(@FieldMap params: HashMap<String, String>):
+            Observable<SubServiceCategoriesResponse>
 
     @FormUrlEncoded
     @POST("provider/providerservice/service")
-    fun getSubServicePriceCategories(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<SubServicePriceCategoriesResponse>
+    fun getSubServicePriceCategories(@FieldMap params: HashMap<String, String>):
+            Observable<SubServicePriceCategoriesResponse>
 
     @GET("provider/shoptype")
-    fun getShops(@Header("Authorization") token: String): Observable<SetupShopResponseModel>
-
-    @GET("provider/services/list")
-    fun getVehicleCategories(@Header("Authorization") token: String):
-            Observable<VehicleCategoryResponseModel>
+    fun getShops(): Observable<SetupShopResponseModel>
 
     @Multipart
     @POST("provider/vechile/add")
@@ -186,7 +160,6 @@ interface AppWebService {
     @FormUrlEncoded
     @POST("provider/vehicle/edit")
     fun postVehicle(
-            @Header("Authorization") token: String,
             @FieldMap params: HashMap<String, String>
     ): Observable<AddVehicleResponseModel>
 
@@ -195,107 +168,74 @@ interface AppWebService {
     fun getDocuments(@Field("type") documentType: String
     ): Observable<ListDocumentResponse>
 
-
     @GET("provider/bankdetails/template")
-    fun getBankTemplate(@Header("Authorization") token: String): Observable<BankTemplateModel>
-
-    @GET("provider/providerservice/categories")
-    fun getCategories(@Header("Authorization") token: String): Observable<CategoriesResponseModel>
+    fun getBankTemplate(): Observable<BankTemplateModel>
 
     @Headers("Content-Type: application/json")
     @POST("provider/addbankdetails")
-    fun postAddBankDetails(@Header("Authorization") token: String, @Body body: String): Observable<AddBankDetailsModel>
+    fun postAddBankDetails(@Body body: String): Observable<AddBankDetailsModel>
 
     @Headers("Content-Type: application/json")
     @POST("provider/editbankdetails")
-    fun postEditBankDetails(@Header("Authorization") token: String, @Body body: String): Observable<AddBankDetailsModel>
+    fun postEditBankDetails(@Body body: String): Observable<AddBankDetailsModel>
 
     @Multipart
     @POST("provider/documents")
     fun postDocument(@PartMap params: java.util.HashMap<String, RequestBody>,
-                     @Part frontImage: MultipartBody.Part?, @Part backImage: MultipartBody.Part?
+                     @Part frontImage: MultipartBody.Part?,
+                     @Part backImage: MultipartBody.Part?
     ): Observable<AddDocumentResponse>
 
     @GET("provider/history/{selcetedservice}")
-    fun getTransportHistory(@Header("Authorization") token: String,
-                            @Path("selcetedservice") selectedservice: String,
-                            @QueryMap params: HashMap<String, String>): Observable<TransportHistory>
+    fun getTransportHistory(
+            @Path("selcetedservice") selectedService: String,
+            @QueryMap params: HashMap<String, String>
+    ): Observable<TransportHistory>
 
     @GET("provider/history/{selcetedservice}")
-    fun getPastHistory(@Header("Authorization") token: String,
-                       @Path("selcetedservice") selectedservice: String,
-                       @QueryMap params: HashMap<String, String>): Observable<HistoryModel>
-
-    @GET("provider/upcoming/trips/transport")
-    fun getServiceHistory(@Header("Authorization") token: String,
-                          @QueryMap params: HashMap<String, String>): Observable<TransportHistory>
-
+    fun getPastHistory(
+            @Path("selcetedservice") selectedService: String,
+            @QueryMap params: HashMap<String, String>
+    ): Observable<HistoryModel>
 
     @GET("provider/history/transport/{id}")
-    fun getHistoryDetail(@Header("Authorization") token: String,
-                         @Path("id") id: String): Observable<HistoryDetailModel>
+    fun getHistoryDetail(@Path("id") id: String): Observable<HistoryDetailModel>
 
     @GET("provider/history/service/{id}")
-    fun getServiceDetail(@Header("Authorization") token: String, @Path("id") id: String): Observable<HistoryDetailModel>
+    fun getServiceDetail(@Path("id") id: String): Observable<HistoryDetailModel>
 
     @GET("provider/history/order/{id}")
-    fun getOrderDetail(@Header("Authorization") token: String, @Path("id") id: String): Observable<HistoryDetailModel>
-
-
-    @GET("provider/history/transport/{id}")
-    fun getUpcomingHistoryDetail(@Header("Authorization") token: String,
-                                 @Path("id") id: String): Observable<HistoryDetailModel>
+    fun getOrderDetail(@Path("id") id: String): Observable<HistoryDetailModel>
 
     @GET("provider/ride/dispute")
-    fun getDisputeList(@Header("Authorization") token: String): Observable<DisputeListModel>
-
-    @FormUrlEncoded
-    @POST("provider/ride/dispute")
-    abstract fun addDispute(@Header("Authorization") token: String,
-                            @FieldMap params: HashMap<String, String>): Observable<ResponseData>
-
-    @GET("provider/ride/dispute/{id}")
-    fun getDisputeStatus(@Header("Authorization") token: String,
-                         @Path("id") id: String): Observable<DisputeStatusModel>
+    fun getDisputeList(): Observable<DisputeListModel>
 
     @GET("provider/dispute/{service}")
-    fun getDisputeReasons(@Header("Authorization") token: String, @Path("service") servicetype: String): Observable<DisputeListModel>
+    fun getDisputeReasons(@Path("service") servicetype: String): Observable<DisputeListModel>
 
     @FormUrlEncoded
     @POST("provider/history-dispute/transport")
-    fun postTaxiDispute(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<DisputeStatus>
+    fun postTaxiDispute(@FieldMap params: HashMap<String, String>): Observable<DisputeStatus>
 
     @FormUrlEncoded
     @POST("provider/history-dispute/service/{requestID}")
-    fun postServiceDispute(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>, @Path("requestID") requestID: String): Observable<DisputeStatus>
+    fun postServiceDispute(
+            @FieldMap params: HashMap<String, String>,
+            @Path("requestID") requestID: String
+    ): Observable<DisputeStatus>
 
     @FormUrlEncoded
     @POST("provider/history-dispute/order")
-    fun postOrderDispute(@Header("Authorization") token: String, @FieldMap params: HashMap<String, String>): Observable<DisputeStatus>
+    fun postOrderDispute(@FieldMap params: HashMap<String, String>): Observable<DisputeStatus>
 
     @GET("provider/earnings/{id}")
-    fun getEarnings(@Header("Authorization") token: String, @Path("id") id: Int): Observable<EarningsResponse>
-
+    fun getEarnings(@Path("id") id: Int): Observable<EarningsResponse>
 
     @GET("provider/history-dispute/transport/{request_id}")
-    fun getTransportDisputeStatus(@Header("Authorization") token: String, @Path("request_id") id: String): Observable<DisputeStatusModel>
-
+    fun getTransportDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
     @GET("provider/history-dispute/order/{request_id}")
-    fun getOrderDisputeStatus(@Header("Authorization") token: String, @Path("request_id") id: String): Observable<DisputeStatusModel>
-
-
-    @GET("provider/history-dispute/service/{request_id}")
-    fun getServiceDisputeStatus(@Header("Authorization") token: String, @Path("request_id") id: String): Observable<DisputeStatusModel>
-
-    @FormUrlEncoded
-    @POST("user/chat")
-    fun sendMessage(@Header("Authorization") token: String,
-                    @FieldMap params: java.util.HashMap<String, Any>): Observable<SingleMessageResponse>
-
-    @GET("user/chat")
-    fun getMessages(@Header("Authorization") token: String,
-                    @Query("admin_service") adminService: String, @Query("id") id: Int): Observable<ChatMessageList>
+    fun getOrderDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
     @GET("provider/logout")
     fun logout(): Observable<ChatMessageList>

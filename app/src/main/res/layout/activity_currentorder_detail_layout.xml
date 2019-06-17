@@ -34,6 +34,7 @@
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
                     android:onClick="@{() -> currentOrderDetailModel.moveToMainActivity()}"
                     app:srcCompat="@drawable/ic_left_arrow" />
 
@@ -168,6 +169,7 @@
                                     android:layout_height="@dimen/_8sdp"
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="@dimen/_5sdp"
+                                    android:contentDescription="@string/app_name"
                                     android:src="@drawable/custom_circle"
                                     android:tint="@color/schedule_blue" />
 
@@ -210,6 +212,7 @@
                                     android:layout_height="@dimen/_8sdp"
                                     android:layout_centerVertical="true"
                                     android:layout_marginStart="@dimen/_5sdp"
+                                    android:contentDescription="@string/app_name"
                                     android:src="@drawable/custom_circle"
                                     android:tint="@color/red" />
 
@@ -260,6 +263,7 @@
                                 android:layout_height="@dimen/_8sdp"
                                 android:layout_centerVertical="true"
                                 android:layout_marginStart="@dimen/_5sdp"
+                                android:contentDescription="@string/app_name"
                                 android:src="@drawable/custom_circle"
                                 android:tint="@color/colorTaxiYellow" />
 
@@ -369,6 +373,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="@dimen/_5sdp"
+                                android:contentDescription="@string/app_name"
                                 android:tint="@color/dark_grey"
                                 app:srcCompat="@drawable/ic_cash" />
                         </RelativeLayout>
@@ -423,6 +428,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="@dimen/_5sdp"
+                                android:contentDescription="@string/app_name"
                                 android:onClick="@{() -> currentOrderDetailModel.lossItem()}"
                                 android:tint="@color/dark_grey" />
 

@@ -4,14 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.SetupRideResponseModel
 import com.gox.partner.models.SetupShopResponseModel
 import com.gox.partner.repository.AppRepository
 
 class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
 
-    private val appRepository = AppRepository.instance()
+    private val mRepository = AppRepository.instance()
     private val vehicleLiveData = MutableLiveData<Any>()
     private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID, 1)
     private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID, 2)
@@ -61,17 +61,27 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
     }
 
     fun getRides() {
-        val token = StringBuilder("Bearer ")
-                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
-                .toString()
-        getCompositeDisposable().add(appRepository.getRides(this, token))
+        getCompositeDisposable().add(mRepository.getRides(object : ApiListener {
+            override fun success(successData: Any) {
+                getVehicleDataObservable().value = successData
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        }))
     }
 
     fun getShops() {
-        val token = StringBuilder("Bearer ")
-                .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
-                .toString()
-        getCompositeDisposable().add(appRepository.getShops(this, token))
+        getCompositeDisposable().add(mRepository.getShops(object : ApiListener {
+            override fun success(successData: Any) {
+                getVehicleDataObservable().value = successData
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        }))
     }
 
     fun getVehicleDataObservable() = vehicleLiveData

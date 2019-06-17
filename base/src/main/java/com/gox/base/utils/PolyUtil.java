@@ -223,6 +223,7 @@ public class PolyUtil {
         if (size == 0) {
             return -1;
         }
+        double EARTH_RADIUS = 6371009;
         double tolerance = toleranceEarth / EARTH_RADIUS;
         double havTolerance = hav(tolerance);
         double lat3 = toRadians(point.latitude);
@@ -544,8 +545,6 @@ public class PolyUtil {
         }
         result.append(Character.toChars((int) (v + 63)));
     }
-
-    private final double EARTH_RADIUS = 6371009;
 
     double clamp(double x, double low, double high) {
         return x < low ? low : (x > high ? high : x);

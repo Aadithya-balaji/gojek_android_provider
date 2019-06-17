@@ -120,7 +120,7 @@
                         android:layout_below="@+id/lnrReferralCode"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/_minus15sdp"
-                        android:onClick="@{() -> invitemodel.shareMyReferalCode()}"
+                        android:onClick="@{() -> invitemodel.shareMyReferralCode()}"
                         app:srcCompat="@drawable/ic_share" />
 
                 </RelativeLayout>

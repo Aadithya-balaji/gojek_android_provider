@@ -67,7 +67,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mBinding.homemodel = mViewModel
         mBinding.btnChangeStatus.bringToFront()
         initializeMap()
-        observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
+        observeLiveData(mViewModel.loadingProgress) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {

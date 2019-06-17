@@ -8,6 +8,7 @@ import com.gox.base.base.BaseViewModel
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.createMultipartBody
 import com.gox.base.extensions.createRequestBody
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.AddVehicleDataModel
 import com.gox.partner.models.AddVehicleResponseModel
 import com.gox.partner.models.ProviderVehicleResponseModel
@@ -20,7 +21,7 @@ import java.io.File
 
 class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
-    private val appRepository = AppRepository.instance()
+    private val mRepository = AppRepository.instance()
 
     private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID, 1)
     private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID, 2)
@@ -37,7 +38,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     private var rcBookUri: Uri? = null
     private var insuranceUri: Uri? = null
 
-    var loadingObservable = MutableLiveData<Boolean>()
+    var loadingProgress = MutableLiveData<Boolean>()
 
     init {
         vehicleLiveData.value = AddVehicleDataModel()
@@ -98,21 +99,21 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     }
 
     fun postVehicle() {
-        loadingObservable.value = true
+        loadingProgress.value = true
         val isTransport: Boolean = serviceId == transportId
         val params = HashMap<String, RequestBody>()
         if (isTransport) {
             params[WebApiConstants.AddService.VEHICLE_ID] = createRequestBody(getVehicleData()!!.vehicleId.toString())
             params[WebApiConstants.AddService.VEHICLE_YEAR] =
-                    createRequestBody(getVehicleData()!!.vehicleYear.toString())
+                    createRequestBody(getVehicleData()!!.vehicleYear)
             params[WebApiConstants.AddService.VEHICLE_MODEL] =
-                    createRequestBody(getVehicleData()!!.vehicleModel.toString())
+                    createRequestBody(getVehicleData()!!.vehicleModel)
             params[WebApiConstants.AddService.VEHICLE_COLOR] =
-                    createRequestBody(getVehicleData()!!.vehicleColor.toString())
+                    createRequestBody(getVehicleData()!!.vehicleColor)
         }
 
-        params[WebApiConstants.AddService.VEHICLE_NO] = createRequestBody(getVehicleData()!!.vehicleNumber.toString())
-        params[WebApiConstants.AddService.VEHICLE_MAKE] = createRequestBody(getVehicleData()!!.vehicleMake.toString())
+        params[WebApiConstants.AddService.VEHICLE_NO] = createRequestBody(getVehicleData()!!.vehicleNumber)
+        params[WebApiConstants.AddService.VEHICLE_MAKE] = createRequestBody(getVehicleData()!!.vehicleMake)
 
         if (isEdit)
             params[WebApiConstants.AddService.ID] = createRequestBody(getVehicleData()!!.id.toString())
@@ -134,10 +135,28 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
                 createMultipartBody(WebApiConstants.AddService.PICTURE1, "image/*",
                         File(insuranceUri!!.path))
 
-        if (!isEdit) getCompositeDisposable().add(appRepository.postVehicle(this, params,
-                vehicleMultipart, rcBookMultipart, insuranceMultipart))
-        else getCompositeDisposable().add(appRepository.editVehicle(this, params,
-                vehicleMultipart, rcBookMultipart, insuranceMultipart))
+        if (!isEdit) getCompositeDisposable().add(mRepository.postVehicle(object : ApiListener {
+            override fun success(successData: Any) {
+                loadingProgress.value = false
+                getVehicleResponseObservable().value = successData as AddVehicleResponseModel
+            }
+
+            override fun fail(failData: Throwable) {
+                loadingProgress.value = false
+                navigator.showError(getErrorMessage(failData))
+            }
+        }, params, vehicleMultipart, rcBookMultipart, insuranceMultipart))
+        else getCompositeDisposable().add(mRepository.editVehicle(object : ApiListener {
+            override fun success(successData: Any) {
+                getVehicleResponseObservable().value = successData as AddVehicleResponseModel
+                loadingProgress.value = false
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+                loadingProgress.value = false
+            }
+        }, params, vehicleMultipart, rcBookMultipart, insuranceMultipart))
     }
 
     fun getVehicleData() = vehicleLiveData.value

@@ -66,7 +66,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
         calendar = Calendar.getInstance(Locale.getDefault())
 
-        observeLiveData(mViewModel.showLoading) {
+        observeLiveData(mViewModel.loadingProgress) {
             loadingObservable.value = it
         }
 

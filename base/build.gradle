@@ -18,7 +18,7 @@ android {
         resValue("string", "google_map_key", "AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY")
 //        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
-      //  buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
+//        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
         buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
         buildConfigField("String", "SALT_KEY", '"MQ=="')
     }

@@ -2,8 +2,7 @@ package com.gox.partner.views.manage_bank_details
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.AddBankDetailsModel
 import com.gox.partner.models.BankTemplateModel
 import com.gox.partner.repository.AppRepository
@@ -12,12 +11,9 @@ import org.json.JSONObject
 
 class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
 
-    private val appRepository = AppRepository.instance()
-    private val token = StringBuilder("Bearer ")
-            .append(readPreferences<String>(PreferencesKey.ACCESS_TOKEN))
-            .toString()
+    private val mRepository = AppRepository.instance()
 
-    var showLoading = MutableLiveData<Boolean>()
+    var loadingProgress = MutableLiveData<Boolean>()
     var bankResponse = MutableLiveData<BankTemplateModel>()
     var addEditBankResponse = MutableLiveData<AddBankDetailsModel>()
     var errorResponse = MutableLiveData<String>()
@@ -26,15 +22,22 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
 
     private val adapter: SetupBankTemplateAdapter = SetupBankTemplateAdapter(this)
 
-
     fun getBankTemplate() {
-        showLoading.value = true
-        getCompositeDisposable().add(appRepository.getBankTemplate(this, token))
+        loadingProgress.value = true
+        getCompositeDisposable().add(mRepository.getBankTemplate(object : ApiListener {
+            override fun success(successData: Any) {
+                loadingProgress.value = false
+                bankResponse.value = successData as BankTemplateModel
+            }
+
+            override fun fail(failData: Throwable) {
+                loadingProgress.value = false
+                errorResponse.value = getErrorMessage(failData)
+            }
+        }))
     }
 
-    fun setAdapter() {
-        adapter.notifyDataSetChanged()
-    }
+    fun setAdapter() = adapter.notifyDataSetChanged()
 
     fun preSetValues() {
         bankResponse.value!!.responseData.forEach { data ->
@@ -63,8 +66,7 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
 
     fun getInputTypeIsNumber(position: Int): Boolean {
         val response = bankResponse.value!!.responseData
-        return if (response.isNotEmpty())
-            response[position].type == "INT"
+        return if (response.isNotEmpty()) response[position].type == "INT"
         else false
     }
 
@@ -74,7 +76,7 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
 
     fun submitDetails() {
         if (navigator.validateDetails()) {
-            showLoading.value = true
+            loadingProgress.value = true
             val data = bankResponse.value!!.responseData
             val isEdit: Boolean = data[0].bankdetails != null
             val rootObject = JSONObject()
@@ -93,8 +95,28 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
             if (isEdit)
                 rootObject.put("id", id)
 
-            if (isEdit) getCompositeDisposable().add(appRepository.postEditBankDetails(this, token, rootObject.toString()))
-            else getCompositeDisposable().add(appRepository.postAddBankDetails(this, token, rootObject.toString()))
+            if (isEdit) getCompositeDisposable().add(mRepository.postEditBankDetails(object : ApiListener {
+                override fun success(successData: Any) {
+                    addEditBankResponse.value = successData as AddBankDetailsModel
+                    loadingProgress.value = false
+                }
+
+                override fun fail(failData: Throwable) {
+                    loadingProgress.value = false
+                    errorResponse.value = getErrorMessage(failData)
+                }
+            }, rootObject.toString()))
+            else getCompositeDisposable().add(mRepository.postAddBankDetails(object : ApiListener {
+                override fun success(successData: Any) {
+                    addEditBankResponse.value = successData as AddBankDetailsModel
+                    loadingProgress.value = false
+                }
+
+                override fun fail(failData: Throwable) {
+                    loadingProgress.value = false
+                    errorResponse.value = getErrorMessage(failData)
+                }
+            }, rootObject.toString()))
         }
     }
 }

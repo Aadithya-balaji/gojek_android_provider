@@ -68,7 +68,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
     }
 
     private fun observeViewModel() {
-        observeLiveData(mViewModel.getLoginObservable()) {
+        observeLiveData(mViewModel.loginLiveData) {
             loadingObservable.value = false
             message = if (!it.message.isBlank()) it.message else "Success"
             ViewUtils.showToast(applicationContext, message, true)

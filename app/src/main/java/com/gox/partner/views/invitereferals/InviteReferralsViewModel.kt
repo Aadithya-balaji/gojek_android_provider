@@ -2,32 +2,31 @@ package com.gox.partner.views.invitereferals
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.ProfileResponse
 import com.gox.partner.models.Referral
 import com.gox.partner.repository.AppRepository
 
-public class InviteReferralsViewModel : BaseViewModel<InviteReferralsNavigator>() {
+class InviteReferralsViewModel : BaseViewModel<InviteReferralsNavigator>() {
 
-    var appRepository = AppRepository.instance()
-    var mReferalAmount = MutableLiveData<String>()
-    var mReferalCount = MutableLiveData<String>()
-    var mUserReferalAmount = MutableLiveData<String>()
-    var mUserReferalCount = MutableLiveData<String>()
-    var mReferalObj = MutableLiveData<Referral>()
+    var mRepository = AppRepository.instance()
+    var mReferralObj = MutableLiveData<Referral>()
     var profileResponse = MutableLiveData<ProfileResponse>()
     var loadingProgress = MutableLiveData<Boolean>()
 
+    fun getProfileLiveData() = profileResponse
 
-    fun shareMyReferalCode() {
-        navigator.goToInviteOption()
-    }
+    fun shareMyReferralCode() = navigator.goToInviteOption()
 
     fun getProfileDetail() {
-        getCompositeDisposable().add(appRepository.getReferal(this, "Bearer" + " " +
-                readPreferences<String>(PreferencesKey.ACCESS_TOKEN)))
-    }
+        getCompositeDisposable().add(mRepository.getReferral(object : ApiListener {
+            override fun success(successData: Any) {
+                getProfileLiveData().value = successData as ProfileResponse
+            }
 
-    fun getProfileLiveData() = profileResponse
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        }))
+    }
 }

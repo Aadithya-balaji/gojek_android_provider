@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
@@ -76,7 +75,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             spinnerCarCategory.expand()
         }
 
-        observeLiveData(mViewModel.loadingProgress) {
+        observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
 
@@ -95,29 +94,26 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         observeLiveData(mViewModel.getVehicleResponseObservable()) {
             loadingObservable.value = false
             if (!mViewModel.getIsEdit())
-                ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.vehicle_added_success), true)
-            else ViewUtils.showToast(this@AddVehicleActivity, getString(R.string.vehicle_update_success), true)
+                ViewUtils.showToast(this, getString(R.string.vehicle_added_success), true)
+            else ViewUtils.showToast(this, getString(R.string.vehicle_update_success), true)
             finish()
         }
 
         observeLiveData(mViewModel.getVehicleDataObservable()) { vehicleData ->
             run {
-
-                Glide.with(this@AddVehicleActivity)
+                Glide.with(this)
                         .load(vehicleData.vehicleImage)
-                        .placeholder(R.drawable.vehicle_place_holder)
+                        .placeholder(R.drawable.ic_car_placeholder)
+                        .circleCrop()
                         .into(iv_vehicle)
 
-                Glide.with(this@AddVehicleActivity)
+                Glide.with(this)
                         .load(vehicleData.vehicleRcBook)
                         .into(iv_rc_book)
 
-                Glide.with(this@AddVehicleActivity)
+                Glide.with(this)
                         .load(vehicleData.vehicleInsurance)
                         .into(iv_insurance)
-
-                Log.v("SK_TEST", "SK_TEST VEHICLE ${vehicleData.vehicleMake}")
-
             }
         }
     }
@@ -144,42 +140,42 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         if (!isTransport) {
             when {
                 data?.vehicleMake.isNullOrEmpty() ->
-                    ViewUtils.showToast(this@AddVehicleActivity,
+                    ViewUtils.showToast(this,
                             getString(R.string.please_enter_vehicle_name), false)
                 data?.vehicleNumber.isNullOrEmpty() ->
-                    ViewUtils.showToast(this@AddVehicleActivity,
+                    ViewUtils.showToast(this,
                             getString(R.string.please_enter_vehicle_number), false)
                 (!mViewModel.getIsEdit() && mViewModel.getRcBookUri() == null) ->
-                    ViewUtils.showToast(this@AddVehicleActivity,
+                    ViewUtils.showToast(this,
                             getString(R.string.please_select_rc_book_document), false)
                 (!mViewModel.getIsEdit() && mViewModel.getInsuranceUri() == null) ->
-                    ViewUtils.showToast(this@AddVehicleActivity,
+                    ViewUtils.showToast(this,
                             getString(R.string.please_select_insurance_document), false)
                 else -> mViewModel.postVehicle()
             }
         } else when {
             /*(data?.vehicleId==0) -> {
-                ViewUtils.showLog(this@AddVehicleActivity, getString(R.string.please_enter_vehicle_name), false)
+                ViewUtils.showLog(this, getString(R.string.please_enter_vehicle_name), false)
             }*/
-            data?.vehicleModel.isNullOrEmpty() -> ViewUtils.showToast(this@AddVehicleActivity,
+            data?.vehicleModel.isNullOrEmpty() -> ViewUtils.showToast(this,
                     getString(R.string.please_enter_vehicle_model), false)
 
-            data?.vehicleYear.isNullOrEmpty() -> ViewUtils.showToast(this@AddVehicleActivity,
+            data?.vehicleYear.isNullOrEmpty() -> ViewUtils.showToast(this,
                     getString(R.string.please_enter_vehicle_year), false)
 
-            data?.vehicleColor.isNullOrEmpty() -> ViewUtils.showToast(this@AddVehicleActivity,
+            data?.vehicleColor.isNullOrEmpty() -> ViewUtils.showToast(this,
                     getString(R.string.please_enter_vehicle_color), false)
 
-            data?.vehicleNumber.isNullOrEmpty() -> ViewUtils.showToast(this@AddVehicleActivity,
+            data?.vehicleNumber.isNullOrEmpty() -> ViewUtils.showToast(this,
                     getString(R.string.please_enter_vehicle_plate_number), false)
 
-            data?.vehicleMake.isNullOrEmpty() -> ViewUtils.showToast(this@AddVehicleActivity,
+            data?.vehicleMake.isNullOrEmpty() -> ViewUtils.showToast(this,
                     getString(R.string.please_enter_vehicle_make), false)
 
-            (!mViewModel.getIsEdit() && mViewModel.getRcBookUri() == null) -> ViewUtils.showToast(this@AddVehicleActivity,
+            (!mViewModel.getIsEdit() && mViewModel.getRcBookUri() == null) -> ViewUtils.showToast(this,
                     getString(R.string.please_select_rc_book_document), false)
 
-            (!mViewModel.getIsEdit() && mViewModel.getInsuranceUri() == null) -> ViewUtils.showToast(this@AddVehicleActivity,
+            (!mViewModel.getIsEdit() && mViewModel.getInsuranceUri() == null) -> ViewUtils.showToast(this,
                     getString(R.string.please_select_insurance_document), false)
 
             else -> mViewModel.postVehicle()
@@ -191,36 +187,24 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         when (requestCode) {
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 val result = CropImage.getActivityResult(data)
-                if (resultCode == Activity.RESULT_OK) {
-                    when (this.requestCode) {
-                        Enums.RC_VEHICLE_IMAGE -> {
-                            mViewModel.setVehicleUri(result.uri)
-
-                            Glide.with(this@AddVehicleActivity)
-                                    .load(File(result.uri.path))
-                                    .placeholder(R.drawable.vehicle_place_holder)
-                                    .into(iv_vehicle)
-                            // mBinding.ivVehicle.setImageBitmap(result.bitmap)
-
-                        }
-                        Enums.RC_RC_BOOK_IMAGE -> {
-                            mViewModel.setRcBookUri(result.uri)
-                            //mBinding.ivRcBook.setImageURI(result.uri)
-                            //  mBinding.ivRcBook.setImageBitmap(result.bitmap)
-                            Glide.with(this@AddVehicleActivity)
-                                    .load(File(result.uri.path))
-                                    .into(iv_rc_book)
-                            tvRcBook.visibility = View.GONE
-                        }
-                        Enums.RC_INSURANCE_IMAGE -> {
-                            mViewModel.setInsuranceUri(result.uri)
-//                            mBinding.ivInsurance.setImageURI(result.uri)
-                            //mBinding.ivInsurance.setImageBitmap(result.bitmap)
-                            Glide.with(this@AddVehicleActivity)
-                                    .load(File(result.uri.path))
-                                    .into(iv_insurance)
-                            tvInsurance.visibility = View.GONE
-                        }
+                if (resultCode == Activity.RESULT_OK) when (this.requestCode) {
+                    Enums.RC_VEHICLE_IMAGE -> {
+                        mViewModel.setVehicleUri(result.uri)
+                        Glide.with(this).load(File(result.uri.path))
+                                .placeholder(R.drawable.ic_car_placeholder)
+                                .circleCrop().into(iv_vehicle)
+                    }
+                    Enums.RC_RC_BOOK_IMAGE -> {
+                        mViewModel.setRcBookUri(result.uri)
+                        Glide.with(this).load(File(result.uri.path))
+                                .into(iv_rc_book)
+                        tvRcBook.visibility = View.GONE
+                    }
+                    Enums.RC_INSURANCE_IMAGE -> {
+                        mViewModel.setInsuranceUri(result.uri)
+                        Glide.with(this).load(File(result.uri.path))
+                                .into(iv_insurance)
+                        tvInsurance.visibility = View.GONE
                     }
                 }
             }

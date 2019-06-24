@@ -6,7 +6,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_service_type"
-        style="@style/Edittext_OutlinedTheme"
+        style="@style/Edit_Text_Outlined_Theme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/_8sdp"

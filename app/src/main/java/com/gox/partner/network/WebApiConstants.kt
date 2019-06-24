@@ -42,7 +42,7 @@ object WebApiConstants {
     object ValidateUser {
         const val EMAIL = "email"
         const val PHONE = "mobile"
-        const val COUNTRYCODE = "country_code"
+        const val COUNTRY_CODE = "country_code"
     }
 
     object SignUp {

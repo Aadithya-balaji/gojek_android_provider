@@ -18,7 +18,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     private val mRepository = AppRepository.instance()
     private lateinit var data: List<ListDocumentResponse.ResponseData>
 
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
     var documentResponse = MutableLiveData<ListDocumentResponse>()
     var addDocumentResponse = MutableLiveData<AddDocumentResponse>()
     var errorResponse = MutableLiveData<String>()
@@ -31,6 +31,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     var documentBackName = MutableLiveData<String>()
     var documentFrontImageURL = MutableLiveData<String>()
     var documentBackImageURL = MutableLiveData<String>()
+    var pageIndicator = MutableLiveData<String>()
     var documentFrontImageFile = MutableLiveData<File>()
     var documentBackImageFile = MutableLiveData<File>()
     var expiryDate = MutableLiveData<String>()
@@ -43,16 +44,16 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     var isPDF = MutableLiveData<Boolean>()
 
     fun getDocumentList(documentType: String) {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.getDocumentList(object : ApiListener {
             override fun success(successData: Any) {
                 documentResponse.value = successData as ListDocumentResponse
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, documentType))
     }
@@ -86,18 +87,19 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
             documentFrontImageURL.value = ""
             documentBackImageURL.value = ""
         }
-
         documentFrontFileName.value = ""
         documentBackFileName.value = ""
-    }
 
-    fun selectFrontImage() = navigator.selectFrontImage()
+        pageIndicator.value = "${currentPosition + 1}/${data.size}"
+    }
 
     fun getFileType(): String {
         var fileType = Enums.IMAGE_TYPE
         if (data.isNotEmpty() && data[currentPosition].file_type.equals("pdf", true)) fileType = Enums.PDF_TYPE
         return fileType
     }
+
+    fun selectFrontImage() = navigator.selectFrontImage()
 
     fun selectBackImage() = navigator.selectBackImage()
 
@@ -111,7 +113,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     }
 
     fun updateDocument() {
-        loadingProgress.value = true
+        showLoading.value = true
 
         val hashMap: HashMap<String, RequestBody> = HashMap()
         if (!expiryDate.value.isNullOrEmpty()) hashMap["expires_at"] =
@@ -144,12 +146,12 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         getCompositeDisposable().add(mRepository.postDocument(object : ApiListener {
             override fun success(successData: Any) {
                 addDocumentResponse.value = successData as AddDocumentResponse
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, hashMap, fileFrontImageBody, fileBackImageBody))
     }

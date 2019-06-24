@@ -143,51 +143,52 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     fun getApiResponse() {
-        mViewModel.xUberCheckRequest.observe(this, Observer<XuperCheckRequest> { xuberCheckRequest ->
+        mViewModel.xUberCheckRequest.observe(this, Observer<XuperCheckRequest> { xUberCheckRequest ->
             try {
-                if (xuberCheckRequest!!.responseData!!.requests != null) {
-                    val status = xuberCheckRequest.let { it.responseData!!.requests!!.status }
+                if (xUberCheckRequest!!.responseData!!.requests != null) {
+                    val status = xUberCheckRequest.let { it.responseData!!.requests!!.status }
                     if (status != mViewModel.currentStatus.value) {
-                        mViewModel.currentStatus.value = xuberCheckRequest.let { it.responseData!!.requests!!.status }
-                        mBinding.tvXuberPickupLocation.text = xuberCheckRequest.let { it.responseData!!.requests!!.s_address }
-                        mViewModel.userName.value = xuberCheckRequest.responseData!!.requests!!.user!!.first_name +
-                                " " + xuberCheckRequest.responseData.requests!!.user!!.last_name!!
-                        mViewModel.serviceType.value = xuberCheckRequest.responseData.requests.service!!.service_name
-                        mViewModel.descImage.value = xuberCheckRequest.responseData.requests.allow_image.toString()
-                        mViewModel.strDesc.value = xuberCheckRequest.responseData.requests.allow_description.toString()
-                        mViewModel.userRating.value = String.format(resources.getString(R.string.xuper_rating_user), xuberCheckRequest.responseData.requests.
-                                user!!.rating!!.toDouble())
+                        mViewModel.currentStatus.value = xUberCheckRequest.let { it.responseData!!.requests!!.status }
+                        mBinding.tvXuberPickupLocation.text = xUberCheckRequest.let { it.responseData!!.requests!!.s_address }
+                        mViewModel.userName.value = xUberCheckRequest.responseData!!.requests!!.user!!.first_name +
+                                " " + xUberCheckRequest.responseData.requests!!.user!!.last_name!!
+                        mViewModel.serviceType.value = xUberCheckRequest.responseData.requests.service!!.service_name
+                        mViewModel.descImage.value = xUberCheckRequest.responseData.requests.allow_image.toString()
+                        mViewModel.strDesc.value = xUberCheckRequest.responseData.requests.allow_description.toString()
+                        mViewModel.userRating.value = String.format(resources.getString(R.string.xuper_rating_user),
+                                xUberCheckRequest.responseData.requests.user!!.rating!!.toDouble())
 
-                        if (xuberCheckRequest.responseData.requests.user.picture != null) {
-                            setUserImage(xuberCheckRequest.responseData.requests.user.picture.toString())
-                        } else setUserImage("")
+                        if (xUberCheckRequest.responseData.requests.user.picture != null)
+                            setUserImage(xUberCheckRequest.responseData.requests.user.picture.toString())
+                        else setUserImage("")
 
-                        mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude!!,
-                                xuberCheckRequest.responseData.requests.s_longitude!!)
+                        mViewModel.polyLineSrc.value = LatLng(xUberCheckRequest.responseData.requests.s_latitude!!,
+                                xUberCheckRequest.responseData.requests.s_longitude!!)
 
                         if (!roomConnected) {
                             roomConnected = true
-                            val reqID = xuberCheckRequest.responseData.requests.id
+                            val reqID = xUberCheckRequest.responseData.requests.id
                             PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
-                            SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
+                            SocketManager.emit(Constants.RoomName.SERVICE_ROOM_NAME, Constants.RoomId.SERVICE_ROOM)
                         }
 
-                        mViewModel.polyLineSrc.value = LatLng(xuberCheckRequest.responseData.requests.s_latitude,
-                                xuberCheckRequest.responseData.requests.s_longitude)
+                        mViewModel.polyLineSrc.value = LatLng(xUberCheckRequest.responseData.requests.s_latitude,
+                                xUberCheckRequest.responseData.requests.s_longitude)
 
                         fab_xuber_menu_call.setOnClickListener {
                             val intent = Intent(Intent.ACTION_DIAL)
-                            intent.data = Uri.parse("tel:${xuberCheckRequest.responseData.requests.user.mobile}")
+                            intent.data = Uri.parse("tel:${xUberCheckRequest.responseData.requests.user.mobile}")
                             startActivity(intent)
                         }
 
-                        writePreferences("RequestId", xuberCheckRequest.responseData.requests.id)
-                        writePreferences("userId", xuberCheckRequest.responseData.requests.user_id)
-                        writePreferences("providerId", xuberCheckRequest.responseData.requests.provider_id)
-                        writePreferences("adminServiceId", xuberCheckRequest.responseData.provider_details!!.service!!.admin_service_id)
-                        writePreferences("userFirstName", xuberCheckRequest.responseData.requests.user.first_name)
-                        writePreferences("providerFirstName", xuberCheckRequest.responseData.provider_details.first_name)
-                        writePreferences("serviceType", SERVICE)
+                        writePreferences(Constants.Chat.ADMIN_SERVICE, SERVICE)
+                        writePreferences(Constants.Chat.USER_ID, xUberCheckRequest.responseData.requests.user_id)
+                        writePreferences(Constants.Chat.REQUEST_ID, xUberCheckRequest.responseData.requests.id)
+                        writePreferences(Constants.Chat.PROVIDER_ID, xUberCheckRequest.responseData.requests.provider_id)
+                        writePreferences(Constants.Chat.USER_NAME, xUberCheckRequest.responseData.requests.user.first_name
+                                + " " + xUberCheckRequest.responseData.requests.user.last_name)
+                        writePreferences(Constants.Chat.PROVIDER_NAME, xUberCheckRequest.responseData.provider_details?.first_name
+                                + " " + xUberCheckRequest.responseData.provider_details?.last_name)
 
                         when (status) {
                             ACCEPTED -> whenAccepted()

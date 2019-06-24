@@ -5,9 +5,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.util.Log
 import android.widget.DatePicker
-import androidx.core.content.FileProvider
 import androidx.databinding.ViewDataBinding
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -33,7 +31,6 @@ import com.theartofdev.edmodo.cropper.CropImage
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
 import kotlinx.android.synthetic.main.activity_add_edit_document.*
-import kotlinx.android.synthetic.main.layout_app_bar.view.*
 import java.io.File
 import java.util.*
 
@@ -59,20 +56,23 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         }
         mViewModel.navigator = this
 
-        setSupportActionBar(mBinding.toolbar.tbApp)
-        mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
-        mBinding.toolbar.tbApp.tv_toolbar_title.text = intent.getStringExtra(Constants.DOCUMENT_NAME)
+        setSupportActionBar(mBinding.tbApp)
+        iv_toolbar_back.setOnClickListener { onBackPressed() }
+        tv_toolbar_title.text = intent.getStringExtra(Constants.DOCUMENT_NAME)
         mBinding.viewModel = mViewModel
 
         calendar = Calendar.getInstance(Locale.getDefault())
 
-        observeLiveData(mViewModel.loadingProgress) {
+        observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
 
         mViewModel.getDocumentList(intent.getStringExtra(Constants.DOCUMENT_TYPE))
 
         observeResponses()
+
+        mViewModel.expiryDate.value = DateTimeUtil().constructDateString(calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), "-")
     }
 
     private fun observeResponses() {
@@ -98,7 +98,6 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
         observeLiveData(mViewModel.documentFrontImageURL) { url ->
             run {
-
                 if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true)) {
                     val circularProgressDrawable = getCircularProgressDrawable()
                     if (!url.isNullOrEmpty()) {
@@ -115,7 +114,6 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     mViewModel.isPDF.value = true
                     mViewModel.showFrontView.value = !url.isNullOrEmpty()
                 }
-
                 if (!url.isNullOrEmpty()) downloadFrontSideFile(url)
             }
         }
@@ -138,7 +136,6 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     mViewModel.isPDF.value = true
                     mViewModel.showBackView.value = !url.isNullOrEmpty()
                 }
-
                 if (!url.isNullOrEmpty()) downloadBackSideFile(url)
             }
         }
@@ -150,11 +147,9 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     override fun onDownloadComplete() {
                         mViewModel.documentBackImageFile.value =
                                 File(cacheDir.path + File.separator + "back_image")
-                        Log.e("SK", "SKDOCUMENT Back image downloaded")
                     }
 
                     override fun onError(error: Error?) {
-                        Log.e("SK", "SKDOCUMENT Back Image Download Failed")
                     }
                 })
     }
@@ -165,11 +160,9 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     override fun onDownloadComplete() {
                         mViewModel.documentFrontImageFile.value =
                                 File(cacheDir.path + File.separator + "front_image")
-                        Log.e("SK", "SKDOCUMENT Front image downloaded")
                     }
 
                     override fun onError(error: Error?) {
-                        Log.e("SK", "SKDOCUMENT Front Image Download Failed")
                     }
                 })
     }
@@ -187,8 +180,11 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     }
 
     override fun onDateChanged() {
-        val datePickerDialog = DatePickerDialog(this, this, calendar.time.year,
-                calendar.time.month, calendar.time.date)
+        val datePickerDialog = /*DatePickerDialog(this, this, calendar.time.year,
+                calendar.time.month, calendar.time.date)*/
+
+                DatePickerDialog(this, this, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
         datePickerDialog.datePicker.minDate = calendar.timeInMillis
         datePickerDialog.show()
     }
@@ -213,8 +209,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     }
                 }
 
-                override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?,
-                                                                token: PermissionToken?) {
+                override fun onPermissionRationaleShouldBeShown(
+                        permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
                     token?.continuePermissionRequest()
                 }
             }).check()
@@ -237,7 +233,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     }
                 }
 
-                override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                override fun onPermissionRationaleShouldBeShown(
+                        permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
                     token?.continuePermissionRequest()
                 }
             }).check()
@@ -304,12 +301,6 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
             } else if (mViewModel.showExpiry.value!! && mViewModel.expiryDate.value.isNullOrEmpty())
                 ViewUtils.showToast(this, getString(R.string.please_select_expiry_date), false)
             else mViewModel.updateDocument()
-
-    private fun showFile(file: File) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = FileProvider.getUriForFile(this, applicationContext.packageName + ".provider", file)
-        startActivity(Intent.createChooser(intent, getString(R.string.choose_application_to_open_with)))
-    }
 
     override fun onDestroy() {
         super.onDestroy()

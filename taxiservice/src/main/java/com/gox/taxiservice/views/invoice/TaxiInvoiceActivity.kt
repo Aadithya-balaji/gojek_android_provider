@@ -92,7 +92,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
             }
 
             if (mViewModel.dropLocation.value != null && mViewModel.dropLocation.value!!.length > 2)
-                mViewModel.dropLocation.value = requestModel!!.request.s_address
+                mViewModel.dropLocation.value = requestModel!!.request.d_address
             else {
                 val lat = requestModel!!.request.d_latitude
                 val lon = requestModel!!.request.d_longitude

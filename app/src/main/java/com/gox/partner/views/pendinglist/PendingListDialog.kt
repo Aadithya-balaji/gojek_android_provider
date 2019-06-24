@@ -11,12 +11,14 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProviders
 import com.gox.base.base.BaseDialogFragment
+import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
 import com.gox.partner.R
 import com.gox.partner.databinding.PendingListDialogBinding
 import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.manage_bank_details.ManageBankDetailsActivity
 import com.gox.partner.views.manage_documents.ManageDocumentsActivity
+import com.gox.partner.views.manage_payment.ManagePaymentActivity
 import com.gox.partner.views.manage_services.ManageServicesActivity
 
 class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
@@ -28,7 +30,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     private var isDocumentNeed: Int? = 0
     private var isServiceNeed: Int? = 0
     private var isBankDetailNeed: Int? = 0
-    private var dialogType: Int? = 0
+    private var dialogType: String? = ""
     private var shown: Boolean? = false
 
     override fun getLayout() = R.layout.pending_list_dialog
@@ -61,26 +63,25 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
 
     private fun updateView() {
         when (dialogType) {
-
-            0 -> dismiss()
-
-            1 -> {
+            Constants.ProviderStatus.PENDING -> {
                 mBinding.llDocPending.visibility = View.VISIBLE
                 mBinding.llLowBalance.visibility = View.GONE
                 mBinding.llWaiting.visibility = View.GONE
             }
 
-            2 -> {
+            Constants.ProviderStatus.WAITING -> {
                 mBinding.llDocPending.visibility = View.GONE
-                mBinding.llWaiting.visibility = View.VISIBLE
                 mBinding.llLowBalance.visibility = View.GONE
+                mBinding.llWaiting.visibility = View.VISIBLE
             }
 
-            3 -> {
+            Constants.ProviderStatus.LOW_BALANCE -> {
                 mBinding.llDocPending.visibility = View.GONE
                 mBinding.llLowBalance.visibility = View.VISIBLE
                 mBinding.llWaiting.visibility = View.GONE
             }
+
+            else -> dismiss()
         }
 
 
@@ -99,9 +100,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
 
             R.id.tv_add_service -> startActivity(Intent(dashBoardActivity, ManageServicesActivity::class.java))
 
-            R.id.btn_call_admin -> {
-
-            }
+            R.id.btn_call_admin -> startActivity(Intent(dashBoardActivity, ManagePaymentActivity::class.java))
         }
     }
 

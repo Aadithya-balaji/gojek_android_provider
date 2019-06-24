@@ -120,7 +120,7 @@
 
                             <!--TextInputLayout country code -->
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Edittext_OutlinedTheme"
+                                style="@style/Edit_Text_Outlined_Theme"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
@@ -150,11 +150,12 @@
                                     android:textColor="@color/et_text_color"
                                     android:textSize="@dimen/_12sdp"
                                     tools:text="+91" />
+
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <!--TextInputLayout Phonenume-->
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Edittext_OutlinedTheme"
+                                style="@style/Edit_Text_Outlined_Theme"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="8dp"
@@ -186,7 +187,7 @@
                         <!--TextInputLayout EmailID-->
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/til_email_"
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="8dp"
@@ -213,7 +214,7 @@
 
                         <!--TextInputLayout Password-->
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"

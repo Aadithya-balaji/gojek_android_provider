@@ -36,6 +36,7 @@ object ViewUtils {
     }
 
     fun hideSoftInputWindow(activity: Activity) {
+        println("RRR :: ViewUtils.hideSoftInputWindow")
         val manager = activity
                 .getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         val view = activity.currentFocus ?: View(activity)

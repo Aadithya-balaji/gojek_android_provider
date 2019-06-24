@@ -131,14 +131,14 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="Edittext_OutlinedTheme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="Edit_Text_Outlined_Theme" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/et_stroke_color</item>
         <item name="boxBackgroundMode">outline</item>
         <item name="boxCornerRadiusBottomEnd">@dimen/boxCornerRadius</item>
         <item name="boxCornerRadiusBottomStart">@dimen/boxCornerRadius</item>
         <item name="boxCornerRadiusTopEnd">@dimen/boxCornerRadius</item>
         <item name="boxCornerRadiusTopStart">@dimen/boxCornerRadius</item>
-        <item name="android:textSize">@dimen/_10sdp</item>
+        <item name="android:textSize">@dimen/_11sdp</item>
         <item name="hintTextAppearance">@style/TextInputLayoutHintText</item>
         <item name="helperTextTextAppearance">@style/TextInputLayoutHelperText</item>
         <item name="errorTextAppearance">@style/TextInputLayoutErrorText</item>

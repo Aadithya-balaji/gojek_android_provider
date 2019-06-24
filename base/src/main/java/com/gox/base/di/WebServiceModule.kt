@@ -58,6 +58,8 @@ class WebServiceModule {
                                 .getString(PreferencesKey.ACCESS_TOKEN, ""))
                 .method(original.method(), original.body())
                 .build()
+        println("RRR :: token = ${PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext)
+                .getString(PreferencesKey.ACCESS_TOKEN, "")}")
         it.proceed(request)
     }
 }

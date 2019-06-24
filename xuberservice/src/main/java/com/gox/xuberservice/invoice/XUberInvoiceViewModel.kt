@@ -38,12 +38,12 @@ class XUberInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
         getCompositeDisposable().add(mRepository.confirmPayment(object : ApiListener {
             override fun success(successData: Any) {
                 invoiceLiveData.value = successData as UpdateRequest
-                showLoading.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 navigator.showErrorMessage(getErrorMessage(failData))
-                showLoading.value = false
+                showLoading.postValue(false)
             }
         }, params))
     }

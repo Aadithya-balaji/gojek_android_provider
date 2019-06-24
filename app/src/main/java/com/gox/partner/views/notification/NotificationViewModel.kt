@@ -13,19 +13,19 @@ class NotificationViewModel : BaseViewModel<NotificationNavigator>() {
     var showEmptyView: MutableLiveData<Boolean> = MutableLiveData(false)
 
     var notificationResponse = MutableLiveData<NotificationResponse>()
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
     var errorResponse = MutableLiveData<String>()
 
     fun getNotificationList() {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.getNotification(object : ApiListener {
             override fun success(successData: Any) {
                 notificationResponse.value = successData as NotificationResponse
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
-                loadingProgress.value = false
+                showLoading.postValue(false)
                 errorResponse.value = getErrorMessage(failData)
             }
         }))

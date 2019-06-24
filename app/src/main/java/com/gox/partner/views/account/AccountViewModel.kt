@@ -1,6 +1,7 @@
 package com.gox.partner.views.account
 
 import com.gox.base.base.BaseViewModel
+import com.gox.base.repository.ApiListener
 import com.gox.partner.models.AccountMenuModel
 import com.gox.partner.repository.AppRepository
 

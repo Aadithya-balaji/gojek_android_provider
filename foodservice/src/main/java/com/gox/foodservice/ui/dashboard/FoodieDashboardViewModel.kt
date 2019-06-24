@@ -27,12 +27,12 @@ class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
             (object : ApiListener {
                 override fun success(successData: Any) {
                     foodieCheckRequestModel.value = successData as FoodieCheckRequestModel
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }))
     }
@@ -45,12 +45,12 @@ class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
         update["_method"] = "PATCH"
         getCompositeDisposable().add(FoodieRepoInstance().foodieUpdateRequest(object : ApiListener {
             override fun success(successData: Any) {
-                showLoading.value = false
+                showLoading.postValue(false)
                 foodieUpdateRequestModel.value = successData as FoodieCheckRequestModel
             }
 
             override fun fail(failData: Throwable) {
-                showLoading.value = false
+                showLoading.postValue(false)
                 navigator.showErrorMessage(getErrorMessage(failData))
             }
         }, update))
@@ -66,12 +66,12 @@ class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
             update["otp"] = foodieCheckRequestModel.value!!.responseData.requests.order_otp
             getCompositeDisposable().add(FoodieRepoInstance().foodieUpdateRequest(object : ApiListener {
                 override fun success(successData: Any) {
-                    showLoading.value = false
+                    showLoading.postValue(false)
                     foodieUpdateRequestModel.value = successData as FoodieCheckRequestModel
                 }
 
                 override fun fail(failData: Throwable) {
-                    showLoading.value = false
+                    showLoading.postValue(false)
                     navigator.showErrorMessage(getErrorMessage(failData))
                 }
             }, update))
@@ -90,12 +90,12 @@ class FoodieDashboardViewModel : BaseViewModel<FoodLiveTaskServiceNavigator>() {
             getCompositeDisposable().add(FoodieRepoInstance().foodieRatingRequest
             (object : ApiListener {
                 override fun success(successData: Any) {
-                    showLoading.value = false
+                    showLoading.postValue(false)
                     foodieRatingRequestModel.value = successData as FoodieRatingRequestModel
                 }
 
                 override fun fail(failData: Throwable) {
-                    showLoading.value = false
+                    showLoading.postValue(false)
                     navigator.showErrorMessage(getErrorMessage(failData))
                 }
             }, update))

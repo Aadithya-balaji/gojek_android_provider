@@ -9,22 +9,21 @@ import com.gox.partner.BR
 import com.gox.partner.R
 import com.gox.partner.databinding.LayoutAccountMenuItemBinding
 
-class AccountMenuAdapter(private val accountViewModel: AccountViewModel) :
+class AccountMenuAdapter(private val mViewModel: AccountViewModel) :
         RecyclerView.Adapter<AccountMenuAdapter.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(DataBindingUtil.inflate<LayoutAccountMenuItemBinding>(
-                LayoutInflater.from(parent.context),
-                R.layout.layout_account_menu_item,
-                parent,
-                false)
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            ViewHolder(DataBindingUtil.inflate<LayoutAccountMenuItemBinding>(
+                    LayoutInflater.from(parent.context),
+                    R.layout.layout_account_menu_item,
+                    parent,
+                    false)
+            )
 
-    override fun getItemCount() = accountViewModel.getAccountMenus().size
+    override fun getItemCount() = mViewModel.getAccountMenus().size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) =
-            holder.bind(accountViewModel, position)
+            holder.bind(mViewModel, position)
 
     class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(accountViewModel: AccountViewModel, position: Int) {

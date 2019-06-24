@@ -12,7 +12,7 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
 
     val mRepository = AppRepository.instance()
 
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
 
     var onlineStatusLiveData = MutableLiveData<StatusResponseModel>()
 
@@ -25,12 +25,12 @@ class HomeViewModel : BaseViewModel<HomeNavigator>() {
             getCompositeDisposable().add(mRepository.changeOnlineStatus(object : ApiListener {
                 override fun success(successData: Any) {
                     onlineStatusLiveData.value = successData as StatusResponseModel
-                    loadingProgress.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    loadingProgress.value = false
+                    showLoading.postValue(false)
                 }
             }, status))
     }

@@ -13,7 +13,7 @@ class ManageServicesViewModel : BaseViewModel<ManageServicesNavigator>() {
     private val servicesLiveData = MutableLiveData<ManageServicesResponseModel>()
 
     private var serviceData: List<ManageServicesDataModel> = emptyList()
-    private val adapter: ManageServicesAdapter = ManageServicesAdapter(this)
+    private val mAdapter: ManageServicesAdapter = ManageServicesAdapter(this)
 
     fun setServiceData(serviceData: List<ManageServicesDataModel>) {
         this.serviceData = serviceData
@@ -21,13 +21,13 @@ class ManageServicesViewModel : BaseViewModel<ManageServicesNavigator>() {
 
     fun getServiceData() = serviceData
 
-    fun setAdapter() = adapter.notifyDataSetChanged()
+    fun setAdapter() = mAdapter.notifyDataSetChanged()
 
-    fun getAdapter() = adapter
+    fun getAdapter() = mAdapter
 
     fun getService(position: Int) = serviceData[position]
 
-    internal fun getServices() {
+    fun getServices() {
         getCompositeDisposable().add(mRepository.getServices(object : ApiListener {
             override fun success(successData: Any) {
                 getServicesObservable().value = successData as ManageServicesResponseModel

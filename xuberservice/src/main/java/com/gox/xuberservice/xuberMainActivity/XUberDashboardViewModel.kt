@@ -51,12 +51,12 @@ class XUberDashboardViewModel : BaseViewModel<XUberDashBoardNavigator>() {
             (object : ApiListener {
                 override fun success(successData: Any) {
                     xUberCheckRequest.value = successData as XuperCheckRequest
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, latitude.value.toString(), longitude.value.toString()))
         }
@@ -74,23 +74,23 @@ class XUberDashboardViewModel : BaseViewModel<XUberDashBoardNavigator>() {
             if (isFrontImage) getCompositeDisposable().add(mRepository.xUberUpdateRequest(object : ApiListener {
                 override fun success(successData: Any) {
                     xUberUpdateRequest.value = successData as UpdateRequest
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, params, file, null))
             else getCompositeDisposable().add(mRepository.xUberUpdateRequest(object : ApiListener {
                 override fun success(successData: Any) {
                     xUberUpdateRequest.value = successData as UpdateRequest
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, params, null, file))
         }
@@ -102,12 +102,12 @@ class XUberDashboardViewModel : BaseViewModel<XUberDashBoardNavigator>() {
             getCompositeDisposable().add(mRepository.xUberCancelRequest(object : ApiListener {
                 override fun success(successData: Any) {
                     xUberCancelRequest.value = successData as CancelRequestModel
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, params))
         }

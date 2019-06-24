@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.AttributeSet
 import android.util.Log
@@ -113,22 +114,19 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    private fun hideLoading() {
-        mCustomLoaderDialog.cancel()
-    }
+    private fun hideLoading() = mCustomLoaderDialog.cancel()
 
-    protected fun launchNewActivity(cls: Class<*>, shouldCloseActivity: Boolean) {
+    protected fun openActivity(cls: Class<*>, shouldCloseActivity: Boolean) {
         startActivity(Intent(context, cls))
         if (shouldCloseActivity) finish()
     }
 
-    protected fun launchNewActivity(intent: Intent, shouldCloseActivity: Boolean) {
+    protected fun openActivity(intent: Intent, shouldCloseActivity: Boolean) {
         startActivity(intent)
         if (shouldCloseActivity) finish()
     }
 
-    protected fun replaceExistingFragment(@IdRes id: Int, fragment: Fragment,
-                                          tag: String?, addToBackStack: Boolean) {
+    protected fun replaceFragment(@IdRes id: Int, fragment: Fragment, tag: String?, addToBackStack: Boolean) {
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(id, fragment, tag)
         if (addToBackStack) transaction.addToBackStack(tag)
@@ -155,6 +153,18 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                         .circleCrop()
                         .error(placeholder))
                 .load(image)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imageView)
+    }
+
+    fun glideSetImageView(imageView: ImageView, uri: Uri, placeholder: Int) {
+        Glide.with(this)
+                .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                        .placeholder(placeholder)
+                        .circleCrop()
+                        .error(placeholder))
+                .load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(imageView)

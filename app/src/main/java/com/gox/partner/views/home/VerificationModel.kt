@@ -1,5 +1,7 @@
 package com.gox.partner.views.home
 
+import com.gox.base.data.Constants
+
 class VerificationModel {
 
     var isService: Int = -1
@@ -15,10 +17,10 @@ class VerificationModel {
         return false
     }
 
-    fun getDialogType(): Int {
-        if (isService <= 0 || isDocument <= 0 || isBankDetail <= 0) return 1
-        else if (!providerStatus.equals("APPROVED", true)) return 2
-        else if (providerWalletBalance < 0) return 3
-        return 0
+    fun getDialogType(): String {
+        if (isService <= 0 || isDocument <= 0 || isBankDetail <= 0) return Constants.ProviderStatus.PENDING
+        else if (!providerStatus.equals("APPROVED", true)) return Constants.ProviderStatus.WAITING
+        else if (providerWalletBalance < 0) return Constants.ProviderStatus.LOW_BALANCE
+        return ""
     }
 }

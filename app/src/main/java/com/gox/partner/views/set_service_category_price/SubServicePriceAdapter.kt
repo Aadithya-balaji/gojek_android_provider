@@ -20,17 +20,15 @@ class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subServi
 
     var serviceItemClick: ServiceItemClick? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        return MyViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
-                R.layout.layout_set_services_with_price_item, parent, false)
-        )
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            MyViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+                    R.layout.layout_set_services_with_price_item, parent, false))
 
     interface ServiceItemClick {
         fun onItemClick(service: ResponseData, isPriceEdit: Boolean)
     }
 
-    override fun getItemCount(): Int = subServiceData.responseData.size
+    override fun getItemCount() = subServiceData.responseData.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
@@ -39,11 +37,13 @@ class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subServi
         holder.mBinding.priceEditImg.setOnClickListener {
             serviceItemClick?.onItemClick(subServiceData.responseData[position], true)
         }
+
         holder.mBinding.serviceCard.setOnClickListener {
             serviceItemClick?.onItemClick(subServiceData.responseData[position], false)
         }
 
-        when (subServiceData.responseData[position].selected == "1" || subServiceData.responseData[position].providerservices.isNotEmpty()) {
+        when (subServiceData.responseData[position].selected == "1"
+                || subServiceData.responseData[position].providerservices.isNotEmpty()) {
             true -> holder.mBinding.selectImg.setImageResource(R.drawable.ic_check_box_selected)
             false -> holder.mBinding.selectImg.setImageResource(R.drawable.ic_check_box)
         }
@@ -70,12 +70,12 @@ class SubServicePriceAdapter(val activity: SetServicePriceActivity, var subServi
                         else -> holder.mBinding.perMilePriceTv.visibility = GONE
                     }
 
-                    price += CommonMethods.getFare(activity, subServiceData.responseData[position].servicescityprice, subServiceData.responseData[position].providerservices)
+                    price += CommonMethods.getFare(activity, subServiceData.responseData[position].servicescityprice,
+                            subServiceData.responseData[position].providerservices)
                 } else {
-                    if (subServiceData.responseData[position].providerservices.isNotEmpty())
-                        price += subServiceData.responseData[position].providerservices[0].base_fare
-                    else
-                        price += "0.0"
+                    price += if (subServiceData.responseData[position].providerservices.isNotEmpty())
+                        subServiceData.responseData[position].providerservices[0].base_fare
+                    else "0.0"
                     holder.mBinding.perMilePriceTv.visibility = GONE
                 }
                 holder.mBinding.priceTv.text = price

@@ -58,5 +58,5 @@ class VehicleDetailActivity : BaseActivity<ActivityVechileDetailPageBinding>(), 
     }
 
     override fun gotoVerificationPage() =
-            startActivity(Intent(this@VehicleDetailActivity, VerifyFileActivity::class.java))
+            startActivity(Intent(this, VerifyFileActivity::class.java))
 }

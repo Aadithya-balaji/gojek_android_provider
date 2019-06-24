@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="profileviewmodel"
             type="com.gox.partner.views.profile.ProfileViewModel" />
@@ -30,7 +29,6 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginTop="@dimen/_25sdp"
                 android:layout_marginRight="@dimen/_15sdp"
@@ -57,9 +55,8 @@
                             android:visibility="invisible" />
 
                         <!--TextInputLayout username-->
-
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
@@ -81,7 +78,6 @@
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <!--Layout countrycode & phonenumber-->
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -91,7 +87,7 @@
 
                             <!--TextInputLayout country code -->
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Edittext_OutlinedTheme"
+                                style="@style/Edit_Text_Outlined_Theme"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_8sdp"
@@ -120,7 +116,7 @@
 
                             <!--TextInputLayout Phonenume-->
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Edittext_OutlinedTheme"
+                                style="@style/Edit_Text_Outlined_Theme"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_marginStart="@dimen/_2sdp"
@@ -137,6 +133,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:paddingStart="10dp"
+                                    android:inputType="phone"
                                     android:paddingEnd="30dp"
                                     android:text="@={profileviewmodel.MMobileNumber}"
                                     android:textColor="@color/et_text_color"
@@ -148,7 +145,7 @@
 
                         <!--TextInputLayout EmailID-->
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
@@ -172,7 +169,7 @@
 
                         <!--TextInputLayout Country-->
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
@@ -199,7 +196,7 @@
                         </com.google.android.material.textfield.TextInputLayout>
                         <!--TextInputLayout City-->
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
@@ -274,7 +271,8 @@
                 android:layout_width="@dimen/_60sdp"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_centerHorizontal="true"
-                android:contentDescription="@string/app_name" />
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_profile_placeholder" />
 
             <ImageView
                 android:layout_width="@dimen/_20sdp"

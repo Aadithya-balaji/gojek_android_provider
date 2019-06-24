@@ -31,7 +31,7 @@ class CurrentOrderFragment : BaseFragment<FragmentCurrentOrdersBinding>(), Curre
 
         mViewModel.transportCurrentHistoryResponse.observe(this@CurrentOrderFragment,
                 Observer<TransportHistory> {
-                    mViewModel.loadingProgress.value = false
+                    mViewModel.showLoading.value = false
                     loadingObservable.value = false
 
                     if (it.responseData.transport.isNotEmpty())

@@ -460,7 +460,7 @@ class AppRepository : BaseRepository() {
                 .logout()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({ }, { })
+                .subscribe({}, {})
     }
 
     companion object {

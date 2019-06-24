@@ -40,14 +40,14 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
                 DISTANCE_TIME -> {
                     miles_lt.visibility = VISIBLE
                     price_miles_edt.text = Editable.Factory.getInstance().newEditable(it.perMiles)
-                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMins)
+                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMin)
                 }
                 FIXED -> {
                     price_edt.text = Editable.Factory.getInstance().newEditable(it.baseFare)
                     label.text = getString(R.string.fixed)
                 }
                 HOURLY -> {
-                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMins)
+                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMin)
                 }
             }
         })
@@ -68,7 +68,7 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
                 if (fareType == FIXED)
                     service.baseFare = price_edt.text.toString()
                 else
-                    service.perMins = price_edt.text.toString()
+                    service.perMin = price_edt.text.toString()
                 service.fareType = fareType
                 setServicePriceViewModel.listPrice.value = service
                 dismiss()

@@ -23,7 +23,8 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -63,7 +64,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/_5sdp"
-                                android:visibility="invisible"
+                                android:visibility="gone"
                                 app:cardCornerRadius="25dp">
 
                                 <com.jaredrummler.materialspinner.MaterialSpinner
@@ -76,9 +77,10 @@
                             </androidx.cardview.widget.CardView>
 
                             <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Edittext_OutlinedTheme"
+                                style="@style/Edit_Text_Outlined_Theme"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/_15sdp"
                                 android:hint="@string/hint_car_category"
                                 app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
@@ -89,7 +91,6 @@
                                     android:layout_height="wrap_content"
                                     android:drawableEnd="@drawable/ic_drop_down_arrow"
                                     android:drawablePadding="@dimen/_5sdp"
-                                    android:editable="false"
                                     android:imeOptions="actionNext"
                                     android:maxLines="1"
                                     android:scrollHorizontally="true"
@@ -97,14 +98,13 @@
 
                             </com.google.android.material.textfield.TextInputLayout>
 
-
                         </FrameLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_model"
                             app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
@@ -117,14 +117,14 @@
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
                                 android:text="@={addVehicleViewModel.vehicleData.vehicleModel}" />
+
                         </com.google.android.material.textfield.TextInputLayout>
 
-
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_model"
                             app:setVisibility="@{!addVehicleViewModel.fieldMandatory}">
 
@@ -137,13 +137,14 @@
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
                                 android:text="@={addVehicleViewModel.vehicleData.vehicleMake}" />
+
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
+                            android:layout_marginBottom="@dimen/_15sdp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_year"
                             app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
@@ -159,13 +160,14 @@
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
                                 android:text="@={addVehicleViewModel.vehicleData.vehicleYear}" />
+
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_color"
                             app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
@@ -178,13 +180,14 @@
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
                                 android:text="@={addVehicleViewModel.vehicleData.vehicleColor}" />
+
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp"
+                            android:layout_marginBottom="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_plate">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -196,13 +199,13 @@
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
                                 android:text="@={addVehicleViewModel.vehicleData.vehicleNumber}" />
+
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_15sdp"
                             android:hint="@string/hint_vehicle_make"
                             app:setVisibility="@{addVehicleViewModel.fieldMandatory}">
 
@@ -215,8 +218,11 @@
                                 android:scrollHorizontally="true"
                                 android:singleLine="true"
                                 android:text="@={addVehicleViewModel.vehicleData.vehicleMake}" />
+
                         </com.google.android.material.textfield.TextInputLayout>
+
                     </androidx.appcompat.widget.LinearLayoutCompat>
+
                 </androidx.cardview.widget.CardView>
 
                 <ImageView
@@ -227,7 +233,8 @@
                     android:contentDescription="@string/app_name"
                     android:elevation="4dp"
                     android:onClick="@{addVehicleViewModel::onVehicleImageClick}"
-                    android:src="@drawable/vehicle_place_holder"
+                    android:src="@drawable/ic_car_placeholder"
+                    app:layout_constraintCircleRadius="45dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -235,16 +242,16 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@drawable/drawable_circle"
                     android:elevation="4dp"
                     android:onClick="@{addVehicleViewModel::onVehicleImageClick}"
                     android:padding="7dp"
-                    app:layout_constraintCircle="@id/iv_vehicle"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_vehicle"
                     app:layout_constraintCircleAngle="90"
                     app:layout_constraintCircleRadius="45dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_vehicle"
                     app:srcCompat="@drawable/ic_pencil_edit_button"
                     app:tint="@color/colorWhite" />
 
@@ -292,6 +299,7 @@
                         android:contentDescription="@null"
                         android:scaleType="centerCrop"
                         app:setImageResource="@{addVehicleViewModel.vehicleData.vehicleRcBook}" />
+
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
                 <com.google.android.material.circularreveal.CircularRevealRelativeLayout
@@ -325,6 +333,7 @@
                         android:contentDescription="@null"
                         android:scaleType="centerCrop"
                         app:setImageResource="@{addVehicleViewModel.vehicleData.vehicleInsurance}" />
+
                 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -347,7 +356,11 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/rl_rc_book" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </ScrollView>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
+
 </layout>

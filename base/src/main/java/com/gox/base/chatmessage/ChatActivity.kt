@@ -6,6 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.gox.base.BuildConfig.BASE_URL
 import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.R
 import com.gox.base.base.BaseActivity
@@ -30,10 +31,11 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     private val userId = readPreferences("userId", 0)
     private val requestId = readPreferences("RequestId", 0)
     private val providerId = readPreferences("providerId", 0)
-    private val adminServiceId = readPreferences("adminServiceId", 0)
+
+    private val userName = readPreferences("userName", "")
     private val serviceType = readPreferences("serviceType", "")
-    private val userFirstName = readPreferences("userFirstName", "")
-    private val providerFirstName = readPreferences("providerFirstName", "")
+    private val providerName = readPreferences("providerName", "")
+    private val adminService = readPreferences("adminService", "")
 
     override fun getLayoutId() = R.layout.activity_chat_main
 
@@ -62,8 +64,8 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
             if (it != null) if (it.statusCode == "200") {
 //                val chatMessageModel = ChatSocketResponseModel()
 //                chatMessageModel.type = chatRequestModel.type
-//                chatMessageModel.user = chatRequestModel.userFirstName
-//                chatMessageModel.provider = chatRequestModel.providerFirstName
+//                chatMessageModel.user = chatRequestModel.userName
+//                chatMessageModel.provider = chatRequestModel.providerName
 //                chatMessageModel.message = message.toString()
 //                mChatSocketResponseList!!.add(chatMessageModel)
 //                mBinding.chatAdapter!!.notifyDataSetChanged()
@@ -88,17 +90,19 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         mBinding.sendButton.setOnClickListener {
             if (mBinding.messageInput.text.isNotEmpty()) {
                 message = mBinding.messageInput.text.toString()
-                chatRequestModel.requestId = requestId
+                chatRequestModel.roomName = roomName!!
+                chatRequestModel.url = "$BASE_URL/chat"
+                chatRequestModel.saltKey = SALT_KEY
+                chatRequestModel.requestId = requestId!!
+                chatRequestModel.adminService = adminService!!
                 chatRequestModel.type = "provider"
-                chatRequestModel.userFirstName = userFirstName
-                chatRequestModel.providerFirstName = providerFirstName
-                chatRequestModel.adminServiceId = adminServiceId
+                chatRequestModel.userName = userName!!
+                chatRequestModel.providerName = providerName!!
                 chatRequestModel.message = message.toString()
-                chatRequestModel.roomName = roomName
 
                 val chatObject = JSONObject(Gson().toJson(chatRequestModel))
                 SocketManager.emit(Constants.RoomName.CHATROOM, chatObject)
-                mViewModel?.sendMessage(chatRequestModel)
+//                mViewModel?.sendMessage(chatRequestModel)
             }
         }
 
@@ -123,9 +127,11 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     }
 
     private fun createRoomName() {
+
+//        room_1_R159_U39_P7_TRANSPORT
         val roomPrefix = "room"
-        roomName = roomPrefix + "_" + decodeString + "_" + requestId +
-                "_" + userId + "_" + providerId + "_" + adminServiceId
+        roomName = roomPrefix + "_" + decodeString + "_R" + requestId +
+                "_U" + userId + "_P" + providerId + "_" + adminService
         println("RRR :: roomName = $roomName")
     }
 }

@@ -9,20 +9,20 @@ import com.gox.partner.repository.AppRepository
 class EarningsViewModel : BaseViewModel<EarningsNavigator>() {
 
     val mRepository = AppRepository.instance()
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
 
     val earnings = MutableLiveData<EarningsResponse>()
 
     fun earnings(userId: Int) {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.getEarnings(object : ApiListener {
             override fun success(successData: Any) {
                 earnings.value = successData as EarningsResponse
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, userId))
     }

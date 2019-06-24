@@ -38,7 +38,8 @@
         <activity
             android:name="com.gox.partner.views.manage_bank_details.ManageBankDetailsActivity"
             android:configChanges="keyboardHidden"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity
             android:name="com.gox.partner.views.set_service.SetServiceActivity"
             android:screenOrientation="portrait" />

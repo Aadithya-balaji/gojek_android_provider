@@ -340,17 +340,12 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                                 ViewUtils.dismissGpsDialog()
                                 updateCurrentLocation()
                             }
-
                         }
                     }
                 }
-
             FLOATING_OVERLAY_PERMISSION -> showFloatingView(this, false)
-
         }
-
         super.onActivityResult(requestCode, resultCode, data)
-
     }
 
     private fun showFloatingView(context: Context, isShowOverlayPermission: Boolean) {

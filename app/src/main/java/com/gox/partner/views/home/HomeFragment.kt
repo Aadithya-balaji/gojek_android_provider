@@ -56,7 +56,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private var isOnline: Boolean? = true
     private var pendingListDialog: PendingListDialog? = null
 
-    override fun getLayoutId(): Int = R.layout.fragment_home_page
+    override fun getLayoutId() = R.layout.fragment_home_page
 
     @SuppressLint("MissingPermission")
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
@@ -67,7 +67,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mBinding.homemodel = mViewModel
         mBinding.btnChangeStatus.bringToFront()
         initializeMap()
-        observeLiveData(mViewModel.loadingProgress) { loadingObservable.value = it }
+        observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()
 
         if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
@@ -225,7 +225,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 updateMapLocation(LatLng(location.latitude, location.longitude))
             }
 
-            override fun onFailure(messsage: String) {
+            override fun onFailure(message: String) {
 
             }
         })

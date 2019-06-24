@@ -37,7 +37,7 @@ interface AppWebService {
             Observable<CountryListResponse>
 
     @Multipart
-    @POST("provider/signUp")
+    @POST("provider/signup")
     fun postSignUp(
             @PartMap params: HashMap<String, RequestBody>,
             @Part fileName: MultipartBody.Part?
@@ -237,7 +237,7 @@ interface AppWebService {
     @GET("provider/history-dispute/order/{request_id}")
     fun getOrderDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
-    @GET("provider/logout")
-    fun logout(): Observable<ChatMessageList>
+    @POST("provider/logout")
+    fun logout(): Observable<ResponseData>
 
 }

@@ -72,8 +72,9 @@
                     android:id="@+id/iv_delete"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:layout_toLeftOf="@+id/iv_remove"
+                    android:layout_toStartOf="@+id/iv_remove"
                     android:background="@color/bg_button_delete"
+                    android:contentDescription="@string/app_name"
                     android:elevation="@dimen/_2sdp"
                     android:onClick="@{() -> cardListModel.removeCard()}"
                     android:visibility="gone"
@@ -84,14 +85,15 @@
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginStart="@dimen/_20sdp"
                     android:background="@color/bg_button_delete"
+                    android:contentDescription="@string/app_name"
                     android:elevation="@dimen/_2sdp"
                     android:onClick="@{() -> cardListModel.cardDeselect()}"
                     android:visibility="gone"
                     app:srcCompat="@drawable/ic_payment_cross" />
-            </RelativeLayout>
 
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_card"
@@ -107,6 +109,7 @@
                     android:layout_width="@dimen/_40sdp"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_centerInParent="true"
+                    android:contentDescription="@string/app_name"
                     app:srcCompat="@drawable/ic_empty_state_card" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -136,7 +139,9 @@
                 android:textColor="@color/bg_card_selected"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
+
         </RelativeLayout>
+
     </LinearLayout>
 
 </layout>

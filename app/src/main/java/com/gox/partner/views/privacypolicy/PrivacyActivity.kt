@@ -20,7 +20,7 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivacyNav
     private lateinit var mViewModel: PrivacyViewModel
 
     companion object {
-        var loadingProgress: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { false }
+        var showLoading: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { false }
     }
 
     override fun getLayoutId() = R.layout.activity_privacy_policy
@@ -43,7 +43,7 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivacyNav
             mBinding.wvPrivacy.loadUrl(Constants.privacyPolicyUrl)
         }
 
-        observeLiveData(loadingProgress) {
+        observeLiveData(showLoading) {
             loadingObservable.value = it
         }
 
@@ -65,12 +65,12 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivacyNav
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-            loadingProgress.value = false
+            showLoading.value = false
         }
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-            loadingProgress.value = true
+            showLoading.value = true
         }
 
     }

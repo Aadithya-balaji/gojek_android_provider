@@ -15,13 +15,13 @@ class TaxiRatingViewModel : BaseViewModel<TaxiRatingNavigator>() {
     fun submitRating(params: HashMap<String, String>) {
         getCompositeDisposable().add(mRepository.submitRating(object : ApiListener {
             override fun success(successData: Any) {
-                ratingLiveData.value = successData as TaxiRatingResponse
-                showLoading.value = false
+                ratingLiveData.postValue(successData as TaxiRatingResponse)
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 navigator.showErrorMessage(getErrorMessage(failData))
-                showLoading.value = false
+                showLoading.postValue(false)
             }
         }, params))
     }

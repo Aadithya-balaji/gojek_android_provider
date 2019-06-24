@@ -14,12 +14,15 @@ class ChatMainViewModel : BaseViewModel<ChatNavigator>() {
 
     fun sendMessage(chatRequestModel: ChatRequestModel) {
         val hashMap: HashMap<String, Any> = HashMap()
-        hashMap["admin_service_id"] = chatRequestModel.adminServiceId!!
+        hashMap["room"] = chatRequestModel.adminService
+        hashMap["url"] = chatRequestModel.adminService
+        hashMap["salt_key"] = chatRequestModel.adminService
         hashMap["id"] = chatRequestModel.requestId.toString()
-        hashMap["provider_name"] = chatRequestModel.providerFirstName.toString()
-        hashMap["user_name"] = chatRequestModel.userFirstName.toString()
-        hashMap["message"] = chatRequestModel.message.toString()
-        hashMap["type"] = chatRequestModel.type.toString()
+        hashMap["admin_service"] = chatRequestModel.providerName
+        hashMap["type"] = chatRequestModel.type
+        hashMap["user"] = chatRequestModel.userName
+        hashMap["provider"] = chatRequestModel.message
+        hashMap["message"] = chatRequestModel.message
 
         getCompositeDisposable().add(mRepository.sendMessage(object : ApiListener {
             override fun success(successData: Any) {

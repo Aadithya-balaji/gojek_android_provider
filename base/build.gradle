@@ -20,6 +20,8 @@ android {
         buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
         //      Staging
 //        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
+        //      Staging
+//        buildConfigField("String", "BASE_URL", '"https://api.gojekclone.co/"')
         buildConfigField("String", "SALT_KEY", '"MQ=="')
     }
 

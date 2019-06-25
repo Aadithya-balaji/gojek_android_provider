@@ -16,6 +16,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Chronometer
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -131,6 +132,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var tempPointForDistanceCal: LatLng? = null
     private var iteratePointsForApi = 50.0
     private var iteratePointsForDistanceCal = 500.0
+    private var sosCall = ""
 
     override fun getLayoutId() = R.layout.activity_taxi_main
 
@@ -162,7 +164,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         tvSos.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:911")))
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(sosCall)))
         }
 
         fab_taxi_menu_chat.setOnClickListener {
@@ -264,6 +266,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
                         writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
 
+                        sosCall = checkStatusResponse.responseData.sos
                         fab_taxi_menu_call.setOnClickListener {
                             val intent = Intent(Intent.ACTION_DIAL)
                             intent.data = Uri.parse("tel:${checkStatusResponse.responseData.request.user.mobile}")
@@ -319,18 +322,22 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                                 finish()
                             }
                         }
-                        ViewUtils.hideSoftInputWindow(this)
                     }
                 } else {
                     BROADCAST = BASE_BROADCAST
                     finish()
                     println("RRR :: inside else = ${checkStatusResponse.responseData.request.status}")
                 }
+
+                val inputManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.SHOW_FORCED)
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 BROADCAST = BASE_BROADCAST
                 finish()
             }
+
         })
 
         mViewModel.distanceApiProcessing.observe(this, Observer {
@@ -705,7 +712,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         values.add(distanceProcessing)
         mViewModel.distanceApiProcessing.postValue(values)
-        ViewUtils.hideSoftInputWindow(this)
     }
 
     override fun whenDone(output: PolylineOptions) {
@@ -735,7 +741,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
         }
-        ViewUtils.hideSoftInputWindow(this)
     }
 
     override fun whenDirectionFail(statusCode: String) {
@@ -762,7 +767,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             "UNKNOWN_ERROR" -> showLog("Server Error...")
             else -> showLog(statusCode)
         }
-        ViewUtils.hideSoftInputWindow(this)
     }
 
     override fun whenFail(statusCode: String) {
@@ -788,7 +792,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             "UNKNOWN_ERROR" -> showLog("Server Error...")
             else -> showLog(statusCode)
         }
-        ViewUtils.hideSoftInputWindow(this)
     }
 
     private fun showLog(msg: String) = ViewUtils.showNormalToast(this, msg)

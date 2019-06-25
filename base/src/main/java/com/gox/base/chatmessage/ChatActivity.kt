@@ -28,14 +28,14 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     private var roomName: String? = null
     private var decodeString: String? = null
 
-    private val userId = readPreferences("userId", 0)
-    private val requestId = readPreferences("RequestId", 0)
-    private val providerId = readPreferences("providerId", 0)
+    private val userId = readPreferences(Constants.Chat.USER_ID, 0)
+    private val requestId = readPreferences(Constants.Chat.REQUEST_ID, 0)
+    private val providerId = readPreferences(Constants.Chat.PROVIDER_ID, 0)
 
-    private val userName = readPreferences("userName", "")
-    private val serviceType = readPreferences("serviceType", "")
-    private val providerName = readPreferences("providerName", "")
-    private val adminService = readPreferences("adminService", "")
+    private val userName = readPreferences(Constants.Chat.USER_NAME, "")
+    private val serviceType = readPreferences(Constants.Chat.ADMIN_SERVICE, "")
+    private val providerName = readPreferences(Constants.Chat.PROVIDER_NAME, "")
+    private val adminService = readPreferences(Constants.Chat.ADMIN_SERVICE, "")
 
     override fun getLayoutId() = R.layout.activity_chat_main
 
@@ -45,7 +45,6 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         mBinding.ivBack.setOnClickListener { finish() }
 
         decodeString = String(Base64.decode(SALT_KEY, Base64.DEFAULT), charset("UTF-8"))
-        createRoomName()
         mChatSocketResponseList = ArrayList()
         mChatSocketResponseList!!.clear()
         mViewModel = ViewModelProviders.of(this).get(ChatMainViewModel::class.java)
@@ -102,6 +101,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
 
                 val chatObject = JSONObject(Gson().toJson(chatRequestModel))
                 SocketManager.emit(Constants.RoomName.CHATROOM, chatObject)
+                mBinding.messageInput.text.clear()
 //                mViewModel?.sendMessage(chatRequestModel)
             }
         }
@@ -128,7 +128,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
 
     private fun createRoomName() {
 
-//        room_1_R159_U39_P7_TRANSPORT
+//        room_1_R<RideId>_U<UserId>_P<ProviderId>_TRANSPORT
         val roomPrefix = "room"
         roomName = roomPrefix + "_" + decodeString + "_R" + requestId +
                 "_U" + userId + "_P" + providerId + "_" + adminService

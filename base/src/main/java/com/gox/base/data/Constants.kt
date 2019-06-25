@@ -171,7 +171,7 @@ object Constants {
         const val REQUEST_ID = "REQUEST_ID"
         const val PROVIDER_ID = "PROVIDER_ID"
         const val USER_NAME = "USER_NAME"
-        const val ADMIN_SERVICE = "admin_service"
+        const val ADMIN_SERVICE = "ADMIN_SERVICE"
         const val PROVIDER_NAME = "PROVIDER_NAME"
     }
 }

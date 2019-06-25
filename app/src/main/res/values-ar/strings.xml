@@ -400,7 +400,7 @@
 
     <!-- Approval -->
     <string name="waiting_for_approval">Pleae wait for Admin Apporval</string>
-    <string name="low_balance">your wallet is at low balance, \n call admin to get clarfied</string>
+    <string name="low_balance">your wallet is at low balance, \n recharge your wallet</string>
     <string name="call_admin">Call Admin</string>
     <string name="alert">Alert</string>
     <string name="something_went_wrong">Something went wrong</string>
@@ -505,6 +505,6 @@
     <string name="upcoming_ride">Upcoming Ride</string>
     <string name="desc_upcoming_ride">Are you want to cancel the request?</string>
     <string name="yes">Yes</string>
-    <string name="open_wallet">Open Wallet</string>
+    <string name="open_wallet">Topup Wallet</string>
     <string name="name_as_in_card">Name As per in your card</string>
 </resources>

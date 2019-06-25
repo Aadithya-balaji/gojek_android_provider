@@ -17,9 +17,9 @@ android {
 //        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
         //      Development
-        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
+//        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
         //      Staging
-//        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
+        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
         //      Staging
 //        buildConfigField("String", "BASE_URL", '"https://api.gojekclone.co/"')
         buildConfigField("String", "SALT_KEY", '"MQ=="')
@@ -141,3 +141,18 @@ dependencies {
     api 'com.google.firebase:firebase-analytics:17.0.0'
     api 'com.google.firebase:firebase-database:18.0.0'
     api 'com.google.firebase:firebase-messaging:19.0.0'
+
+    //      Multidex
+    api 'com.android.support:multidex:1.0.3'
+
+    //      Floating Action Bar Button
+    api 'com.github.clans:fab:1.6.4'
+
+    //implementation 'testfairy:testfairy-android-sdk:1.+@aar'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+//apply plugin: 'com.google.gms.google-services'

@@ -100,7 +100,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
             timerToTakeOrder.start()
 
-            when (request.service.display_name) {
+            when (request.service.admin_service_name) {
 
                 Constants.ModuleTypes.TRANSPORT -> {
                     mViewModel.pickupLocation.value = request.request.s_address

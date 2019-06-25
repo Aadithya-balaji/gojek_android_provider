@@ -142,8 +142,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             Constants.termsUrl = it.responseData.appsetting.cmspage.terms
 
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
-                launchNewActivity(OnBoardActivity::class.java, true)
-            else launchNewActivity(DashBoardActivity::class.java, true)
+                openActivity(OnBoardActivity::class.java, true)
+            else openActivity(DashBoardActivity::class.java, true)
         }
     }
 

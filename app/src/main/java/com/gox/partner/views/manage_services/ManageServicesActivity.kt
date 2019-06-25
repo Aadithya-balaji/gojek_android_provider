@@ -73,7 +73,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
         if (!response.isNullOrEmpty() && response.size > position) {
             intent.putExtra(Constants.SERVICE_ID,
                     mViewModel.getServicesObservable().value!!.responseData[position].id)
-            launchNewActivity(intent, false)
+            openActivity(intent, false)
         } else ViewUtils.showToast(this, "Service not configured. Please contact admin", false)
     }
 

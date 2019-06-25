@@ -62,7 +62,7 @@
                     android:layout_gravity="start"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textStyle="bold"
-                    tools:text="fcfgvhbjnkm" />
+                    tools:text="Rate : 0" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/per_mile_price_tv"
@@ -72,7 +72,7 @@
                     android:layout_gravity="start"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:textStyle="bold"
-                    tools:text="fcfgvhbjnkm" />
+                    tools:text="Km / $" />
 
             </LinearLayout>
 
@@ -87,5 +87,7 @@
                 app:srcCompat="@drawable/ic_edit" />
 
         </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
 </layout>

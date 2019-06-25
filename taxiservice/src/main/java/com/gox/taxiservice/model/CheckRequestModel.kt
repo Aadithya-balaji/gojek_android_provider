@@ -21,6 +21,7 @@ data class ResponseData(
         var request: Request = Request(),
         var ride_otp: String = "",
         var service_status: String = "",
+        var sos: String = "",
         var waitingStatus: Int? = 0,
         var waitingTime: Long = 0
 ) : Serializable

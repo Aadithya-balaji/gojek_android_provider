@@ -71,7 +71,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         mBinding.rvPaymentModes.layoutManager = linearLayoutManager
         paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, mViewModel, isFromWallet)
         mBinding.rvPaymentModes.adapter = paymentModeAdapter
-        mViewModel.loadingProgress = loadingObservable
+        mViewModel.showLoading = loadingObservable
         mViewModel.getCardList()
     }
 
@@ -83,13 +83,13 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     private fun getApiResponse() {
         mViewModel.addCardLiveResponse.observe(this, Observer<AddCardModel> { addCardModel ->
             if (addCardModel.getStatusCode().equals("200")) {
-                mViewModel.loadingProgress.value = false
+                mViewModel.showLoading.value = false
                 mViewModel.getCardList()
             }
         })
 
         mViewModel.cardListLiveResponse.observe(this, Observer<CardListModel> { cardListModel ->
-            mViewModel.loadingProgress.value = false
+            mViewModel.showLoading.value = false
             if (mViewModel.cardListLiveResponse != null
                     && mViewModel.cardListLiveResponse.value!!.getResponseData() != null
                     && mViewModel.cardListLiveResponse.value!!.getResponseData()!!.size > 0) {
@@ -107,7 +107,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         })
 
         mViewModel.deleteCardLivResponse.observe(this, Observer<AddCardModel> { addCardModel ->
-            mViewModel.loadingProgress.value = false
+            mViewModel.showLoading.value = false
             if (mViewModel.deleteCardLivResponse != null) {
                 if (mViewModel.deleteCardLivResponse.value!!.getStatusCode().equals("200")) {
                     cardList?.let { selectedPosition?.let { it1 -> it.removeAt(it1) } }
@@ -126,21 +126,9 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         })
     }
 
-//    override fun addAmount(view: View) {
-//        when (view.id) {
-//            R.id.bt_fifty -> strAmount = "50"
-//
-//            R.id.bt_hundred -> strAmount = "100"
-//
-//            R.id.bt_thousand -> strAmount = "1000"
-//        }
-//        mViewModel.amount.value = strAmount
-//
-//    }
-
     override fun addCard() {
         val intent = Intent(this, CardEditActivity::class.java)
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, "Name As per in your card")
+        intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, getString(R.string.name_as_in_card))
         startActivityForResult(intent, Constants.RequestCode.ADD_CARD)
     }
 
@@ -167,23 +155,22 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
             card.name = mCardHolderName
             if (card.validateNumber() && card.validateCVC()) {
-                mViewModel.loadingProgress.value = true
+                mViewModel.showLoading.value = true
                 val stripe = Stripe(this, BaseApplication.getCustomPreference!!.getString(PreferencesKey.STRIPE_KEY, ""))
                 stripe.createToken(card,
                         object : TokenCallback {
                             override fun onSuccess(token: Token) {
-                                WalletFragment.loadingProgress.value = false
+                                WalletFragment.showLoading.value = false
                                 if (!TextUtils.isEmpty(token.id))
                                     mViewModel.callAddCardApi(token.id)
-
                             }
 
                             override fun onError(error: Exception) {
-                                mViewModel.loadingProgress.value = false
+                                mViewModel.showLoading.value = false
                             }
                         }
                 )
-            } else WalletFragment.loadingProgress.value = false
+            } else WalletFragment.showLoading.value = false
         }
     }
 
@@ -193,11 +180,11 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         mViewModel.selectedStripeID.value = stripeID
         mViewModel.selectedCardID.value = cardID
         if (selectedPosition != -1) {
-            selectedPosition?.let { cardList!!.get(it).isCardSelected = false }
+            selectedPosition?.let { cardList!![it].isCardSelected = false }
             cardsAdapter.notifyItemChanged(selectedPosition!!)
         }
         this.selectedPosition = position
-        selectedPosition?.let { cardList!!.get(it).isCardSelected = true }
+        selectedPosition?.let { cardList!![it].isCardSelected = true }
         cardsAdapter.notifyItemChanged(selectedPosition!!)
 
         if (isFromWallet) {
@@ -213,7 +200,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
                     DialogInterface.OnClickListener { dialog, which -> mViewModel.callCardDeleteCardAPi() })
 
     override fun deselectCard() {
-        selectedPosition?.let { cardList!!.get(it).isCardSelected = false }
+        selectedPosition?.let { cardList!![it].isCardSelected = false }
         cardsAdapter.notifyItemChanged(selectedPosition!!)
         mBinding.ivRemove.visibility = View.GONE
         mBinding.ivDelete.visibility = View.GONE
@@ -221,7 +208,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     }
 
     override fun showErrorMsg(error: String) {
-        mViewModel.loadingProgress.value = false
+        mViewModel.showLoading.value = false
         ViewUtils.showToast(context, error, false)
     }
 }

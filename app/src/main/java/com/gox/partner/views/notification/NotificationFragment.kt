@@ -31,7 +31,7 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         mViewDataBinding.notificationviewmodel = mViewModel
         mViewDataBinding.setLifecycleOwner(this)
 
-        observeLiveData(mViewModel.loadingProgress) {
+        observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
 
@@ -42,14 +42,14 @@ class NotificationFragment : BaseFragment<FragmentNotificationBinding>(), Notifi
         mNavigator.showLogo(false)
 
         observeLiveData(mViewModel.notificationResponse) {
-            mViewModel.loadingProgress.value = false
+            mViewModel.showLoading.value = false
             mViewModel.showEmptyView.value = it.responseData.notification.data.isNullOrEmpty()
             setNotificationAdapter(it.responseData.notification)
         }
 
         observeLiveData(mViewModel.errorResponse) { errorMessage ->
             run {
-                mViewModel.loadingProgress.value = false
+                mViewModel.showLoading.value = false
                 mViewModel.showEmptyView.value = true
                 ViewUtils.showToast(activity!!, errorMessage, false)
             }

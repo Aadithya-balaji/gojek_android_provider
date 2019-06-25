@@ -20,7 +20,6 @@ object Constants {
     const val DOCUMENT_NAME = "document_name"
     const val DOCUMENT_TYPE = "document_type"
 
-    const val M_TOKEN = "Bearer "
     const val APP_REQUEST_CODE = 99
     const val COUNTRY_LIST_REQUEST_CODE = 100
     const val CITY_LIST_REQUEST_CODE = 102
@@ -108,6 +107,12 @@ object Constants {
         const val ORDER = "ORDER"
     }
 
+    object ProviderStatus {
+        const val PENDING = "pending"
+        const val WAITING = "waiting"
+        const val LOW_BALANCE = "low_balance"
+    }
+
     object FareType {
         const val DISTANCE_TIME = "DISTANCETIME"
         const val FIXED = "FIXED"
@@ -159,5 +164,14 @@ object Constants {
         const val PROVIDER_ID = "provider_id"
         const val REQUEST_ID = "id"
         const val STORE_ID = "store_id"
+    }
+
+    object Chat {
+        const val USER_ID = "USER_ID"
+        const val REQUEST_ID = "REQUEST_ID"
+        const val PROVIDER_ID = "PROVIDER_ID"
+        const val USER_NAME = "USER_NAME"
+        const val ADMIN_SERVICE = "ADMIN_SERVICE"
+        const val PROVIDER_NAME = "PROVIDER_NAME"
     }
 }

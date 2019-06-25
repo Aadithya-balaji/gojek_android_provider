@@ -45,7 +45,7 @@
                     <!--TextInputLayout username-->
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Edittext_OutlinedTheme"
+                        style="@style/Edit_Text_Outlined_Theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
@@ -73,7 +73,7 @@
 
                         <!--TextInputLayout country code -->
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_8sdp"
@@ -99,7 +99,7 @@
 
                         <!--TextInputLayout Phonenume-->
                         <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Edittext_OutlinedTheme"
+                            style="@style/Edit_Text_Outlined_Theme"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_2sdp"
@@ -124,7 +124,7 @@
 
                     <!--TextInputLayout EmailID-->
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Edittext_OutlinedTheme"
+                        style="@style/Edit_Text_Outlined_Theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
@@ -144,7 +144,7 @@
 
                     <!--TextInputLayout City-->
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Edittext_OutlinedTheme"
+                        style="@style/Edit_Text_Outlined_Theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
@@ -164,7 +164,7 @@
 
                     <!--TextInputLayout Country-->
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Edittext_OutlinedTheme"
+                        style="@style/Edit_Text_Outlined_Theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"
@@ -186,7 +186,7 @@
                     <!--service type-->
 
                     <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Edittext_OutlinedTheme"
+                        style="@style/Edit_Text_Outlined_Theme"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_8sdp"

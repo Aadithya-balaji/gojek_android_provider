@@ -75,19 +75,21 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         else if (providerService is SetupShopResponseModel)
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
 
-        if (providerService is SetupRideResponseModel && providerService.responseData[position].serviceList.isNotEmpty()) {
+        if (providerService is SetupRideResponseModel
+                && providerService.responseData[position].serviceList.isNotEmpty())
             intent.putExtra(Constants.TRANSPORT_VEHICLES,
-                    ArrayList(providerService.responseData[position].serviceList))
-        }
+                ArrayList(providerService.responseData[position].serviceList))
 
-        if (providerService is SetupRideResponseModel && providerService.responseData[position].providerService != null) {
+        if (providerService is SetupRideResponseModel
+                && providerService.responseData[position].providerService != null)
             intent.putExtra(Constants.PROVIDER_TRANSPORT_VEHICLE,
-                    providerService.responseData[position].providerService!!.providerVehicle)
-        } else if (providerService is SetupShopResponseModel && providerService.responseData[position].providerService != null) {
+                        providerService.responseData[position].providerService!!.providerVehicle)
+        else if (providerService is SetupShopResponseModel
+                && providerService.responseData[position].providerService != null) {
             intent.putExtra(Constants.PROVIDER_ORDER_VEHICLE,
                     providerService.responseData[position].providerService!!.providerVehicle)
         }
-        launchNewActivity(intent, false)
+        openActivity(intent, false)
     }
 
     override fun showError(error: String) {

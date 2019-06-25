@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.telephony.TelephonyManager
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
@@ -19,6 +20,7 @@ import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityForgotPasswordBinding
 import com.gox.partner.network.WebApiConstants
+import com.gox.partner.utils.Country
 import com.gox.partner.utils.Enums
 import com.gox.partner.views.countrypicker.CountryCodeActivity
 import com.gox.partner.views.reset_password.ResetPasswordActivity
@@ -49,6 +51,23 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
         mBinding.tietEmail.setOnEditorActionListener(this::onEditorAction)
 
         observeViewModel()
+
+        val tm = this.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        val countryModel = Country.getCountryByISO(tm.networkCountryIso)
+
+        val resultIntent = Intent()
+
+        if (countryModel == null) {
+            resultIntent.putExtra("countryName", "India")
+            resultIntent.putExtra("countryCode", "+91")
+            resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+        } else {
+            resultIntent.putExtra("countryName", countryModel.name)
+            resultIntent.putExtra("countryCode", countryModel.dialCode)
+            resultIntent.putExtra("countryFlag", countryModel.flag)
+        }
+        handleCountryCodePickerResult(resultIntent)
+
     }
 
     private fun observeViewModel() {
@@ -65,7 +84,7 @@ class ForgotPasswordActivity : BaseActivity<ActivityForgotPasswordBinding>(),
                     .responseData.username)
             resetPasswordIntent.putExtra(WebApiConstants.ResetPassword.OTP, it
                     .responseData.otp)
-            launchNewActivity(resetPasswordIntent, false)
+            openActivity(resetPasswordIntent, false)
         }
     }
 

@@ -28,12 +28,12 @@ class XUberRatingViewModel : BaseViewModel<XUberRatingNavigator>() {
         getCompositeDisposable().add(mRepository.xUberRatingUser(object : ApiListener {
             override fun success(successData: Any) {
                 ratingLiveData.value = successData as XuperRatingModel
-                showLoading.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 navigator.showErrorMessage(getErrorMessage(failData))
-                showLoading.value = false
+                showLoading.postValue(false)
             }
         }, params))
     }

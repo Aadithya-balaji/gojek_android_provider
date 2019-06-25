@@ -11,7 +11,7 @@ class CurrentOrderViewModel : BaseViewModel<CurrentOrderNavigator>() {
     private val mRepository = AppRepository.instance()
 
     var transportCurrentHistoryResponse = MutableLiveData<TransportHistory>()
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
     var errorResponse = MutableLiveData<String>()
 
     fun getTransportCurrentHistory(s: String) {
@@ -22,12 +22,12 @@ class CurrentOrderViewModel : BaseViewModel<CurrentOrderNavigator>() {
         getCompositeDisposable().add(mRepository.getTransportCurrentHistory(object : ApiListener {
             override fun success(successData: Any) {
                 transportCurrentHistoryResponse.value = successData as TransportHistory
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, hashMap, s))
     }

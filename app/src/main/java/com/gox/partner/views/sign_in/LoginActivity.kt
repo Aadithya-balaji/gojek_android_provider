@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.telephony.TelephonyManager
 import android.util.Patterns
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -28,8 +29,10 @@ import com.gox.base.extensions.provideViewModel
 import com.gox.base.extensions.writePreferences
 import com.gox.base.utils.Logger
 import com.gox.base.utils.ViewUtils
+import com.gox.partner.BuildConfig
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityLoginBinding
+import com.gox.partner.utils.Country
 import com.gox.partner.utils.Enums
 import com.gox.partner.views.countrypicker.CountryCodeActivity
 import com.gox.partner.views.dashboard.DashBoardActivity
@@ -60,11 +63,26 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
 
         observeViewModel()
 
+        val tm = this.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        val countryModel = Country.getCountryByISO(tm.networkCountryIso)
+
         val resultIntent = Intent()
-        resultIntent.putExtra("countryName", "India")
-        resultIntent.putExtra("countryCode", "+91")
-        resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+
+        if (countryModel == null) {
+            resultIntent.putExtra("countryName", "India")
+            resultIntent.putExtra("countryCode", "+91")
+            resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+        } else {
+            resultIntent.putExtra("countryName", countryModel.name)
+            resultIntent.putExtra("countryCode", countryModel.dialCode)
+            resultIntent.putExtra("countryFlag", countryModel.flag)
+        }
         handleCountryCodePickerResult(resultIntent)
+
+        if (BuildConfig.DEBUG) {
+            mViewModel.email.value = "toni@yopmail.com"
+            mViewModel.password.value = "112233"
+        }
     }
 
     private fun observeViewModel() {
@@ -76,7 +94,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
             writePreferences(PreferencesKey.IS_ONLINE, it.responseData.user.isOnline)
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            launchNewActivity(dashBoardIntent, false)
+            openActivity(dashBoardIntent, false)
         }
     }
 
@@ -177,10 +195,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
     override fun onCountryCodeClicked() = startActivityForResult(Intent(applicationContext,
             CountryCodeActivity::class.java), Enums.RC_COUNTRY_CODE_PICKER)
 
-    override fun onForgotPasswordClicked() = launchNewActivity(ForgotPasswordActivity::class.java,
-            false)
+    override fun onForgotPasswordClicked() = openActivity(ForgotPasswordActivity::class.java, false)
 
-    override fun onRegistrationClicked() = launchNewActivity(RegistrationActivity::class.java, false)
+    override fun onRegistrationClicked() = openActivity(RegistrationActivity::class.java, false)
 
     override fun onLoginClicked() = performValidation()
 

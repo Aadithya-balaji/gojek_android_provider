@@ -16,6 +16,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.Chronometer
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -98,26 +99,27 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         GoogleMap.OnCameraIdleListener,
         View.OnClickListener {
 
+    private lateinit var mSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var mBinding: ActivityTaxiMainBinding
     private lateinit var mViewModel: TaxiDashboardViewModel
-    private lateinit var fragmentMap: SupportMapFragment
-    private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
+    private lateinit var mMapFragment: SupportMapFragment
+    private lateinit var context: Context
 
-    private var isWaitingTime: Boolean? = false
-    private var lastWaitingTime: Long? = 0
-    private var mGoogleMap: GoogleMap? = null
+    private var polyLine: ArrayList<LatLng> = ArrayList()
     private var mLastKnownLocation: Location? = null
     private var canDrawPolyLine: Boolean = true
+    private var mGoogleMap: GoogleMap? = null
     private var mPolyline: Polyline? = null
+    private var polyUtil = PolyUtil()
+
+    private var srcMarker: Marker? = null
+    private var isWaitingTime: Boolean? = false
+    private var lastWaitingTime: Long? = 0
     private var isNeedToUpdateWaiting: Boolean = false
     private var isLocationDialogShown: Boolean = false
-    private lateinit var context: Context
     private var isGPSEnabled: Boolean = false
     private var startLatLng = LatLng(0.0, 0.0)
     private var endLatLng = LatLng(0.0, 0.0)
-    private var srcMarker: Marker? = null
-    private var polyUtil = PolyUtil()
-    private var polyLine: ArrayList<LatLng> = ArrayList()
     private var checkStatusApiCounter = 0
     private var roomConnected: Boolean = false
     private var doubleBackToExit: Boolean = false
@@ -125,12 +127,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private var points = ArrayList<LocationPointsEntity>()
     private var tempPoints = ArrayList<LatLng>()
-    //    private var iteratePointsForApi = ArrayList<LatLng>()
     private var iteratePointsForDistanceCalc = ArrayList<LatLng>()
     private var tempPoint: LatLng? = null
     private var tempPointForDistanceCal: LatLng? = null
-    private var iterationDistForApi = 50.0
-    private var iterationDistForDistanceCal = 500.0
+    private var iteratePointsForApi = 50.0
+    private var iteratePointsForDistanceCal = 500.0
+    private var sosCall = ""
 
     override fun getLayoutId() = R.layout.activity_taxi_main
 
@@ -143,11 +145,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mBinding.lifecycleOwner = this
         mBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
-        sheetBehavior = BottomSheetBehavior.from<LinearLayout>(bsContainer)
-        sheetBehavior.peekHeight = resources.getDimension(R.dimen._280sdp).toInt()
+        mSheetBehavior = BottomSheetBehavior.from(bsContainer)
+        mSheetBehavior.peekHeight = resources.getDimension(R.dimen._280sdp).toInt()
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
-        if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+
+        if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
         fab_taxi_menu.isIconAnimated = false
         fab_taxi_menu.setPadding(50, 50, 50, 50)
@@ -161,7 +164,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         tvSos.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:911")))
+            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse(sosCall)))
         }
 
         fab_taxi_menu_chat.setOnClickListener {
@@ -179,8 +182,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun initializeMap() {
-        fragmentMap = supportFragmentManager.findFragmentById(R.id.taxi_map_fragment) as SupportMapFragment
-        fragmentMap.getMapAsync(this)
+        mMapFragment = supportFragmentManager.findFragmentById(R.id.taxi_map_fragment) as SupportMapFragment
+        mMapFragment.getMapAsync(this)
     }
 
     @SuppressLint("MissingPermission")
@@ -198,12 +201,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun onCameraMove() {
-        if (sheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
-            sheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        if (mSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+            mSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     override fun onCameraIdle() {
-        sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     @SuppressLint("MissingPermission")
@@ -254,28 +257,30 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mViewModel.checkStatusTaxiLiveData.observe(this, Observer { checkStatusResponse ->
             if (checkStatusResponse?.statusCode.equals("200")) try {
                 mViewModel.showLoading.value = false
-                if (checkStatusResponse.responseData.request.status.isNotEmpty()) {
+                if (!checkStatusResponse.responseData.request.status.isNullOrEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-                    //if (sheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) sheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    //if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
                         writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY,
                                 checkStatusResponse.responseData.provider_details.id)
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
                         writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
 
+                        sosCall = checkStatusResponse.responseData.sos
                         fab_taxi_menu_call.setOnClickListener {
                             val intent = Intent(Intent.ACTION_DIAL)
                             intent.data = Uri.parse("tel:${checkStatusResponse.responseData.request.user.mobile}")
                             startActivity(intent)
                         }
 
-                        writePreferences("RequestId", checkStatusResponse.responseData.request.id)
-                        writePreferences("userId", checkStatusResponse.responseData.request.user_id)
-                        writePreferences("providerId", checkStatusResponse.responseData.request.provider_id)
-                        writePreferences("adminServiceId", checkStatusResponse.responseData.request.admin_service_id)
-                        writePreferences("userFirstName", checkStatusResponse.responseData.request.user.first_name)
-                        writePreferences("providerFirstName", checkStatusResponse.responseData.provider_details.first_name)
-                        writePreferences("serviceType", TRANSPORT)
+                        writePreferences(Constants.Chat.ADMIN_SERVICE, TRANSPORT)
+                        writePreferences(Constants.Chat.USER_ID, checkStatusResponse.responseData.request.user_id)
+                        writePreferences(Constants.Chat.REQUEST_ID, checkStatusResponse.responseData.request.id)
+                        writePreferences(Constants.Chat.PROVIDER_ID, checkStatusResponse.responseData.request.provider_id)
+                        writePreferences(Constants.Chat.USER_NAME, checkStatusResponse.responseData.request.user.first_name +
+                                checkStatusResponse.responseData.request.user.last_name)
+                        writePreferences(Constants.Chat.PROVIDER_NAME, checkStatusResponse.responseData.provider_details.first_name +
+                                checkStatusResponse.responseData.provider_details.last_name)
 
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 
@@ -309,9 +314,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             }
 
                             COMPLETED -> {
+                                println("RRR :: inside COMPLETED = ")
                                 writePreferences(CAN_SEND_LOCATION, false)
                                 writePreferences(CAN_SAVE_LOCATION, false)
-                                println("RRR :: inside COMPLETED = ")
                                 startActivityForResult(Intent(this, TaxiInvoiceActivity::class.java)
                                         .putExtra("ResponseData", Gson().toJson(checkStatusResponse.responseData)), 100)
                                 finish()
@@ -323,11 +328,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     finish()
                     println("RRR :: inside else = ${checkStatusResponse.responseData.request.status}")
                 }
+
+                val inputManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.SHOW_FORCED)
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 BROADCAST = BASE_BROADCAST
                 finish()
             }
+
         })
 
         mViewModel.distanceApiProcessing.observe(this, Observer {
@@ -601,11 +611,13 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
-            val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
-            if (isGpsEnabled) updateMap(location)
-            else if (!isLocationDialogShown) {
-                isLocationDialogShown = true
-                CommonMethods.checkGps(context)
+            if (location != null) {
+                val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
+                if (isGpsEnabled) updateMap(location)
+                else if (!isLocationDialogShown) {
+                    isLocationDialogShown = true
+                    CommonMethods.checkGps(context)
+                }
             }
         }
     }
@@ -942,12 +954,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun iteratePointsApi(s: LatLng, e: LatLng) {
         var dist = distBt(s, e)
-        if (dist >= iterationDistForApi) {
+        if (dist >= iteratePointsForApi) {
             mViewModel.iteratePointsForApi.add(e)
             tempPoint = null
         } else if (tempPoint != null) {
             dist = distBt(tempPoint!!, e)
-            if (dist >= iterationDistForApi) {
+            if (dist >= iteratePointsForApi) {
                 mViewModel.iteratePointsForApi.add(e)
                 tempPoint = null
             }
@@ -956,12 +968,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun iteratePointsForDistanceCal(s: LatLng, e: LatLng) {
         var dist = distBt(s, e)
-        if (dist >= iterationDistForDistanceCal) {
+        if (dist >= iteratePointsForDistanceCal) {
             iteratePointsForDistanceCalc.add(e)
             tempPointForDistanceCal = null
         } else if (tempPointForDistanceCal != null) {
             dist = distBt(tempPointForDistanceCal!!, e)
-            if (dist >= iterationDistForDistanceCal) {
+            if (dist >= iteratePointsForDistanceCal) {
                 iteratePointsForDistanceCalc.add(e)
                 tempPointForDistanceCal = null
             }

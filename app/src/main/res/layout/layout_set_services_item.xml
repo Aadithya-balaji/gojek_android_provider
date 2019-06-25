@@ -47,4 +47,5 @@
             android:background="@color/app_background_color" />
 
     </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+
 </layout>

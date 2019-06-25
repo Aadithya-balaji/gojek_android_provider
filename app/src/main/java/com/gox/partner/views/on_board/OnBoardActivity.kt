@@ -74,9 +74,9 @@ class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>()
         viewPager.currentItem = 0
     }
 
-    override fun goToSignIn() = launchNewActivity(LoginActivity::class.java, false)
+    override fun goToSignIn() = openActivity(LoginActivity::class.java, false)
 
-    override fun goToSignUp() = launchNewActivity(RegistrationActivity::class.java, false)
+    override fun goToSignUp() = openActivity(RegistrationActivity::class.java, false)
 }
 
 class MyViewPagerAdapter internal constructor(internal var context: Context, internal var list: List<WalkThrough>) : PagerAdapter() {

@@ -24,7 +24,7 @@ class EarningsActivity : BaseActivity<ActivityEarningsBinding>(), EarningsNaviga
         mBinding = mViewDataBinding as ActivityEarningsBinding
         mViewModel = ViewModelProviders.of(this).get(EarningsViewModel::class.java)
         mViewModel.navigator = this
-        mViewModel.loadingProgress = loadingObservable
+        mViewModel.showLoading = loadingObservable
 
         mBinding.viewModel = mViewModel
 

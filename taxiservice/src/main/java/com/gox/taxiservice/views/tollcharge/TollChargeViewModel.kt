@@ -18,13 +18,13 @@ class TollChargeViewModel : BaseViewModel<TollChargeNavigator>() {
     fun callUpdateRequestApi(model: DroppedStatusModel) {
         mRepository.updateRequest(object : ApiListener {
             override fun success(successData: Any) {
-                mLiveData.value = successData as CheckRequestModel
-                showLoading.value = false
+                mLiveData.postValue(successData as CheckRequestModel)
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 navigator.showErrorMessage(getErrorMessage(failData))
-                showLoading.value = false
+                showLoading.postValue(false)
             }
         }, model)
     }

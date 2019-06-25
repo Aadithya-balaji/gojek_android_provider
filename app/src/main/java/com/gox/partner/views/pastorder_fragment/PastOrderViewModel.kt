@@ -14,7 +14,7 @@ class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
     var serviceList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Service>>(ArrayList())
     var orderList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Order>>(ArrayList())
     var taxiList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Transport>>(ArrayList())
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
     var selectedServiceType = MutableLiveData<String>()
     var errorResponse = MutableLiveData<String>()
 
@@ -23,7 +23,7 @@ class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
         hashMap["limit"] = "100"
         hashMap["offset"] = "0"
         hashMap["type"] = "past"
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.getPastOrderHistory(object : ApiListener {
             override fun success(successData: Any) {
                 historyResponseLiveData.value = successData as HistoryModel

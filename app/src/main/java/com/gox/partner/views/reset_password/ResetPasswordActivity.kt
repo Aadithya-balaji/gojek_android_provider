@@ -57,7 +57,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
             ViewUtils.showToast(applicationContext, message, true)
             val signInIntent = Intent(applicationContext, LoginActivity::class.java)
             signInIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-            launchNewActivity(signInIntent, false)
+            openActivity(signInIntent, false)
         }
     }
 

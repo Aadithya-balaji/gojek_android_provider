@@ -13,8 +13,8 @@
 
     <!--Sign Up Screen-->
     <string name="social_sign_up">Social Signup</string>
-    <string name="hint_first_name">FirstName</string>
-    <string name="hint_last_name">LastName</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
     <string name="hint_code">Code</string>
     <string name="hint_phone_number">Phone Number</string>
     <string name="label_gender">Gender</string>
@@ -402,12 +402,12 @@
 
 
     <!-- Approval -->
-    <string name="waiting_for_approval">Pleae wait for Admin Apporval</string>
-    <string name="low_balance">your wallet is at low balance, \n call admin to get clarfied</string>
+    <string name="waiting_for_approval">Please wait for Admin Approval</string>
+    <string name="low_balance">your wallet is at low balance, \n call admin to get clarified</string>
     <string name="call_admin">Call Admin</string>
     <string name="alert">Alert</string>
     <string name="something_went_wrong">Something went wrong</string>
-    <string name="bank_detais_not_found">Bank detais not found</string>
+    <string name="bank_detais_not_found">Bank details not found</string>
     <string name="common_documents">Common Documents</string>
     <string name="transport_documents">Transport Documents</string>
     <string name="delievery_documents">Delivery Documents</string>
@@ -510,4 +510,6 @@
     <string name="upcoming_ride">Upcoming Ride</string>
     <string name="desc_upcoming_ride">Are you want to cancel the request?</string>
     <string name="yes">Yes</string>
+    <string name="open_wallet">Open Wallet</string>
+    <string name="name_as_in_card">Name As per in your card</string>
 </resources>

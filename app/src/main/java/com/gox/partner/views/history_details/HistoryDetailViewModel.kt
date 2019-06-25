@@ -17,7 +17,7 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     var serviceDetail = MutableLiveData<HistoryDetailModel.ResponseData.Service>()
     var disputeListData = MutableLiveData<DisputeListModel>()
     var selectedDisputeName = MutableLiveData<String>()
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
     var errorResponse = MutableLiveData<String>()
     var historyModelLiveData = MutableLiveData<HistoryDetailModel>()
     var serviceType = MutableLiveData<String>()
@@ -38,12 +38,12 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
         getCompositeDisposable().add(mRepository.getTransPortDetail(object : ApiListener {
             override fun success(successData: Any) {
                 historyModelLiveData.value = successData as HistoryDetailModel
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, selectedID))
     }
@@ -52,12 +52,12 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
         getCompositeDisposable().addAll(mRepository.getServiceDetail(object : ApiListener {
             override fun success(successData: Any) {
                 historyModelLiveData.value = successData as HistoryDetailModel
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, selectedID))
     }
@@ -66,12 +66,12 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
         getCompositeDisposable().addAll(mRepository.getOrderDetail(object : ApiListener {
             override fun success(successData: Any) {
                 historyModelLiveData.value = successData as HistoryDetailModel
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, selectedID))
     }
@@ -79,104 +79,104 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     fun showDisputeList() = navigator.showDisputeList()
 
     fun getDisputeList() {
-        loadingProgress.value = true
+        showLoading.value = true
         Log.e("servicetype", "----------" + serviceType.value)
         if (serviceType.value.equals("transport"))
             getCompositeDisposable().add(mRepository.getDisputeList(object : ApiListener {
                 override fun success(successData: Any) {
                     disputeListData.value = successData as DisputeListModel
-                    loadingProgress.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     errorResponse.value = getErrorMessage(failData)
-                    loadingProgress.value = false
+                    showLoading.postValue(false)
                 }
             }))
         else getCompositeDisposable().add(mRepository.getDisputeList(object : ApiListener {
             override fun success(successData: Any) {
                 disputeListData.value = successData as DisputeListModel
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, serviceType.value!!))
     }
 
     fun postTaxiDispute(params: HashMap<String, String>) {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.addTaxiDispute(object : ApiListener {
             override fun success(successData: Any) {
                 postDisputeLiveData.value = successData as DisputeStatus
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, params))
     }
 
     fun postServiceDispute(params: HashMap<String, String>, requestID: String) {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.addServiceDispute(object : ApiListener {
             override fun success(successData: Any) {
                 postDisputeLiveData.value = successData as DisputeStatus
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, requestID, params))
     }
 
     fun postOrderDispute(params: HashMap<String, String>) {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.addOrderDispute(object : ApiListener {
             override fun success(successData: Any) {
                 postDisputeLiveData.value = successData as DisputeStatus
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, params))
     }
 
     fun getTransPortDisputeStatus(requestID: String) {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.getTransportDisputeStatus(object : ApiListener {
             override fun success(successData: Any) {
                 disputeStatusLiveData.value = successData as DisputeStatusModel
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, requestID))
     }
 
     fun getOrderDisputeStatus(requestID: String) {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.getOrderDisputeStatus(object : ApiListener {
             override fun success(successData: Any) {
                 disputeStatusLiveData.value = successData as DisputeStatusModel
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, requestID))
     }

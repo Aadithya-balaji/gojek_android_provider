@@ -55,7 +55,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         this.mBinding.currentOrderDetailModel = mViewModel
         mViewModel.navigator = this
         loadingObservable.value = true
-        mViewModel.loadingProgress = loadingObservable as MutableLiveData<Boolean>
+        mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         mViewDataBinding.upcmngCancelBtn.visibility = View.GONE
         getIntentValues()
         mViewModel.serviceType.value = serviceType

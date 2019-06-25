@@ -41,5 +41,7 @@
                 tools:listitem="@layout/layout_set_services_item" />
 
         </androidx.cardview.widget.CardView>
+
     </LinearLayout>
+
 </layout>

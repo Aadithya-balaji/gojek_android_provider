@@ -12,14 +12,13 @@ import com.gox.partner.models.WalletResponse
 import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
 
-class WalletViewModel(res: Resources) : BaseViewModel<WalletNavigator>() {
+class WalletViewModel : BaseViewModel<WalletNavigator>() {
 
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
     var walletAmount = MutableLiveData<String>()
     var walletLiveResponse = MutableLiveData<WalletResponse>()
     var selectedStripeID = MutableLiveData<String>()
     var resources: Resources? = null
-    var showLoading = MutableLiveData<Boolean>()
     val mRepository = AppRepository.instance()
     var mProfileResponse = MutableLiveData<ProfileResponse>()
 

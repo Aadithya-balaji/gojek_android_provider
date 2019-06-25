@@ -21,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.gox.base.base.BaseActivity
 import com.gox.base.chatmessage.ChatActivity
 import com.gox.base.data.Constants
+import com.gox.base.data.Constants.ModuleTypes.ORDER
 import com.gox.base.data.Constants.RideStatus.COMPLETED
 import com.gox.base.data.Constants.RideStatus.PICKED_UP
 import com.gox.base.data.Constants.RideStatus.PROCESSING
@@ -131,13 +132,14 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                     mViewModel.orderId.value = it.responseData.requests.id
                     currentStatus = it.responseData.requests.status
 
-                    writePreferences("RequestId", it.responseData.requests.id)
-                    writePreferences("userId", it.responseData.requests.user_id)
-                    writePreferences("providerId", it.responseData.requests.provider_id)
-                    writePreferences("adminServiceId", it.responseData.requests.admin_service_id)
-                    writePreferences("userFirstName", it.responseData.requests.user.first_name)
-                    writePreferences("providerFirstName", it.responseData.provider_details.first_name)
-                    writePreferences("serviceType", Constants.ModuleTypes.ORDER)
+                    writePreferences(Constants.Chat.ADMIN_SERVICE, ORDER)
+                    writePreferences(Constants.Chat.REQUEST_ID, it.responseData.requests.id)
+                    writePreferences(Constants.Chat.USER_ID, it.responseData.requests.user_id)
+                    writePreferences(Constants.Chat.PROVIDER_ID, it.responseData.requests.provider_id)
+                    writePreferences(Constants.Chat.USER_NAME, it.responseData.requests.user.first_name
+                            + " " + it.responseData.requests.user.first_name)
+                    writePreferences(Constants.Chat.PROVIDER_NAME, it.responseData.provider_details.first_name
+                            + " " + it.responseData.provider_details.last_name)
 
                     when (it.responseData.requests.status) {
                         PROCESSING -> whenProcessing()
@@ -350,7 +352,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                 writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
                 val bundle = Bundle()
                 bundle.putString("id", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toString())
-                if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture!=null)
+                if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture != null)
                     bundle.putString("profileImg", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
                 bundle.putString("name", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name)

@@ -12,7 +12,7 @@ class InviteReferralsViewModel : BaseViewModel<InviteReferralsNavigator>() {
     var mRepository = AppRepository.instance()
     var mReferralObj = MutableLiveData<Referral>()
     var profileResponse = MutableLiveData<ProfileResponse>()
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
 
     fun getProfileLiveData() = profileResponse
 

@@ -15,7 +15,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class RegistrationViewModel(val registrationNavigator: RegistrationNavigator)
+class RegistrationViewModel(private val registrationNavigator: RegistrationNavigator)
     : BaseViewModel<RegistrationViewModel.RegistrationNavigator>() {
 
     private val mRepository = AppRepository.instance()

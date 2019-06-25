@@ -34,13 +34,13 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
             params["id"] = requestLiveData.value!!.request.id.toString()
             getCompositeDisposable().add(mRepository.confirmPayment(object : ApiListener {
                 override fun success(successData: Any) {
-                    paymentLiveData.value = successData as PaymentModel
-                    showLoading.value = false
+                    paymentLiveData.postValue(successData as PaymentModel)
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, params))
         }

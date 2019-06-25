@@ -10,11 +10,10 @@
     <string name="walk_2">Service Ongoing</string>
     <string name="walk_3">Rate Service</string>
 
-
     <!--Sign Up Screen-->
     <string name="social_sign_up">Social Signup</string>
-    <string name="hint_first_name">FirstName</string>
-    <string name="hint_last_name">LastName</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_last_name">Last Name</string>
     <string name="hint_code">Code</string>
     <string name="hint_phone_number">Phone Number</string>
     <string name="label_gender">Gender</string>
@@ -27,7 +26,6 @@
     <string name="hint_city">City</string>
     <string name="terms_condition">I accept the following terms and conditions</string>
     <string name="already_have_account">Already have an account</string>
-
 
     <!-- Sign In Screen-->
     <string name="do_not_have_account">Don\'t have an account</string>
@@ -109,7 +107,6 @@
     <string name="gender">Gender</string>
     <string name="social_signup">Sign up via</string>
     <string name="i_accept_the_following_terms_and_conditions">I accept the following &lt;font color="#364bea"&gt;&lt;u&gt;Terms and Conditions&lt;/u&gt;&lt;/font&gt;</string>
-
 
     <!-- Sign in -->
     <string name="login_via">Login Via</string>
@@ -508,4 +505,6 @@
     <string name="upcoming_ride">Upcoming Ride</string>
     <string name="desc_upcoming_ride">Are you want to cancel the request?</string>
     <string name="yes">Yes</string>
+    <string name="open_wallet">Open Wallet</string>
+    <string name="name_as_in_card">Name As per in your card</string>
 </resources>

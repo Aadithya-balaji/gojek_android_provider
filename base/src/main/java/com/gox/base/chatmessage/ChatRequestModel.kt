@@ -5,19 +5,22 @@ import java.io.Serializable
 
 class ChatRequestModel : Serializable {
     @SerializedName("room")
-    var roomName: String? = null
-    @SerializedName("type")
-    var type: String? = null
-    @SerializedName("user")
-    var userFirstName: String? = null
-    @SerializedName("provider")
-    var providerFirstName: String? = null
-    @SerializedName("message")
-    var message: String? = null
-    @SerializedName("admin_service_id")
-    var adminServiceId: Int? = null
+    var roomName: String = ""
+    @SerializedName("url")
+    var url: String = ""
+    @SerializedName("salt_key")
+    var saltKey: String = ""
+    @SerializedName("id")
+    var requestId: Int = 0
     @SerializedName("admin_service")
-    var adminService: String? = null
-    @SerializedName("request_id")
-    var requestId: Int? = null
+    var adminService: String = ""
+
+    @SerializedName("type")
+    var type: String = ""
+    @SerializedName("user")
+    var userName: String = ""
+    @SerializedName("provider")
+    var providerName: String = ""
+    @SerializedName("message")
+    var message: String = ""
 }

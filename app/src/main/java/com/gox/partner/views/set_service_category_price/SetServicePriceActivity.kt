@@ -71,8 +71,8 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                                         }
                                     }
                                     HOURLY -> when {
-                                        it.providerservices.isNotEmpty() -> newService.perMins = it.providerservices[0].per_mins
-                                        it.servicescityprice.per_mins.isNotEmpty() -> newService.perMins = it.servicescityprice.per_mins
+                                        it.providerservices.isNotEmpty() -> newService.perMin = it.providerservices[0].per_mins
+                                        it.servicescityprice.per_mins.isNotEmpty() -> newService.perMin = it.servicescityprice.per_mins
                                         else -> {
                                             ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
                                             return@setOnClickListener
@@ -80,12 +80,12 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                                     }
                                     DISTANCE_TIME -> when {
                                         it.providerservices.isNotEmpty() -> {
-                                            newService.perMins = it.providerservices[0].per_mins
+                                            newService.perMin = it.providerservices[0].per_mins
                                             newService.perMiles = it.providerservices[0].per_miles
                                         }
                                         it.servicescityprice.per_miles.isNotEmpty() -> {
                                             if (it.servicescityprice.per_mins.isNotEmpty()) {
-                                                newService.perMins = it.servicescityprice.per_mins
+                                                newService.perMin = it.servicescityprice.per_mins
                                             } else {
                                                 ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
                                                 return@setOnClickListener
@@ -138,9 +138,9 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
     private fun checkPrice() {
         mViewModel.listPrice.observe(this, Observer {
             if (selectedService.servicescityprice != null) {
-            } else {
-                selectedService.servicescityprice = SubServicePriceCategoriesResponse.Servicescityprice()
-            }
+            } else selectedService.servicescityprice =
+                    SubServicePriceCategoriesResponse.Servicescityprice()
+
             selectedService.servicescityprice.fare_type = it.fareType
             when (it.fareType) {
                 FIXED -> {
@@ -152,18 +152,18 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                 }
                 DISTANCE_TIME -> {
                     selectedService.providerservices = mutableListOf()
-                    selectedService.servicescityprice.per_mins = it.perMins
+                    selectedService.servicescityprice.per_mins = it.perMin
                     selectedService.servicescityprice.per_miles = it.perMiles
                     val providerService = SubServicePriceCategoriesResponse.ProviderServices()
-                    providerService.per_mins = it.perMins
+                    providerService.per_mins = it.perMin
                     providerService.per_miles = it.perMiles
                     selectedService.providerservices.add(providerService)
                 }
                 HOURLY -> {
                     val providerService = SubServicePriceCategoriesResponse.ProviderServices()
                     selectedService.providerservices = mutableListOf()
-                    selectedService.servicescityprice.per_mins = it.perMins
-                    providerService.per_mins = it.perMins
+                    selectedService.servicescityprice.per_mins = it.perMin
+                    providerService.per_mins = it.perMin
                     selectedService.providerservices.add(providerService)
                 }
             }
@@ -202,7 +202,7 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                                 service.servicescityprice.base_fare != null) {
                             selected.fareType = service.servicescityprice.fare_type
                             selected.baseFare = service.servicescityprice.base_fare
-                            selected.perMins = service.servicescityprice.per_mins
+                            selected.perMin = service.servicescityprice.per_mins
                             selected.perMiles = service.servicescityprice.per_miles
 
                         } else {
@@ -211,7 +211,7 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                         }
                         if (service.providerservices.isNotEmpty()) {
                             selected.baseFare = service.providerservices[0].base_fare
-                            selected.perMins = service.providerservices[0].per_mins
+                            selected.perMin = service.providerservices[0].per_mins
                             selected.perMiles = service.providerservices[0].per_miles
                         }
                         val editServicePriceDialog = EditServicePriceDialogFragment()
@@ -239,8 +239,7 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
             var id: String = "",
             var fareType: String = "",
             var baseFare: String = "",
-            var perMins: String = "",
-            var selected: String = "",
+            var perMin: String = "",
             var perMiles: String = ""
     )
 

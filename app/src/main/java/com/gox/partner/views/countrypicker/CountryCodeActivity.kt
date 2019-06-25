@@ -12,6 +12,7 @@ import com.gox.base.base.BaseActivity
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityCountryCodeBinding
 import com.gox.partner.models.CountryModel
+import com.gox.partner.utils.Country
 import com.gox.partner.views.adapters.CountryAdapter
 
 class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(),
@@ -24,9 +25,6 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(),
     private lateinit var listCountry: List<CountryModel>
 
     private var countryAdapter: CountryAdapter? = null
-    private var countryName: String? = ""
-    private var countryCode: String? = ""
-    private var countryFlag: Int? = -1
 
     override fun getLayoutId() = R.layout.activity_country_code
 
@@ -41,7 +39,7 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(),
         llPlaces = findViewById(R.id.ll_country)
 
 
-        listCountry = com.gox.partner.utils.Country.getAllCountries()
+        listCountry = Country.getAllCountries()
         countryAdapter = CountryAdapter(this@CountryCodeActivity, listCountry)
         llPlaces.adapter = countryAdapter
         svCountry.setOnQueryTextListener(this)
@@ -62,14 +60,12 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(),
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val countryModel = parent!!.adapter.getItem(position) as CountryModel
-        countryName = countryModel.name
-        countryCode = countryModel.dialCode
-        countryFlag = countryModel.flag
 
         val resultIntent = Intent()
-        resultIntent.putExtra("countryName", countryName)
-        resultIntent.putExtra("countryCode", countryCode)
-        resultIntent.putExtra("countryFlag", countryFlag!!)
+        resultIntent.putExtra("countryName", countryModel.name)
+        resultIntent.putExtra("countryCode", countryModel.dialCode)
+        resultIntent.putExtra("countryFlag", countryModel.flag)
+        resultIntent.putExtra("countryIsoCode", countryModel.code)
         setResult(Activity.RESULT_OK, resultIntent)
         finish()
     }

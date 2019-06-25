@@ -123,34 +123,34 @@
 
                         <TextView
                             android:id="@+id/tv_pickup_location"
+                            style="@style/SmallText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
-                            style="@style/SmallText"
                             android:gravity="center_vertical"
                             android:maxLines="2"
                             android:minLines="2"
                             android:padding="3dp"
-                            tools:text="Chennai,India"
                             android:text="@={invoicemodel.pickuplocation}"
                             android:textColor="@color/light_grey"
-                            android:textSize="@dimen/_10sdp" />
+                            android:textSize="@dimen/_10sdp"
+                            tools:text="Chennai,India" />
 
                         <TextView
                             android:id="@+id/tv_drop_location"
+                            style="@style/SmallText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
                             android:ellipsize="end"
-                            style="@style/SmallText"
                             android:gravity="center_vertical"
                             android:maxLines="2"
                             android:minLines="2"
                             android:padding="3dp"
-                            tools:text="Guindy,In"
                             android:text="@={invoicemodel.dropLocation}"
                             android:textColor="@color/light_grey"
-                            android:textSize="12sp" />
+                            android:textSize="12sp"
+                            tools:text="Guindy,In" />
 
                     </LinearLayout>
 
@@ -458,10 +458,10 @@
 
                     <TextView
                         android:id="@+id/tv_invoice_label_total"
+                        style="@style/SmallText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.60"
-                        style="@style/SmallText"
                         android:text="@string/taxi_invoice_total"
                         android:textAllCaps="true"
                         android:textColor="@color/black"

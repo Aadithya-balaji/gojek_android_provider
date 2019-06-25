@@ -14,7 +14,7 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
 
     var mRepository = AppRepository.instance()
 
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
     var selectedCardID = MutableLiveData<String>()
     var selectedStripeID = MutableLiveData<String>()
     var addCardLiveResponse = MutableLiveData<AddCardModel>()
@@ -35,7 +35,7 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
 
     fun getCardList() {
         if (BaseApplication.isNetworkAvailable) {
-            loadingProgress.value = true
+            showLoading.value = true
             getCompositeDisposable().add(mRepository.getCardList(object : ApiListener {
                 override fun success(successData: Any) {
                     cardListLiveResponse.value = successData as CardListModel
@@ -50,7 +50,7 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
 
     fun callAddCardApi(stripeID: String) {
         if (BaseApplication.isNetworkAvailable) {
-            loadingProgress.value = true
+            showLoading.value = true
             val params = HashMap<String, String>()
             params[WebApiConstants.addCard.STRIP_TOKEN] = stripeID
             getCompositeDisposable().add(mRepository.addCard(object : ApiListener {
@@ -67,7 +67,7 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
 
     fun callCardDeleteCardAPi() {
         if (BaseApplication.isNetworkAvailable) {
-            loadingProgress.value = true
+            showLoading.value = true
             if (!selectedCardID.value.isNullOrEmpty())
                 getCompositeDisposable().add(mRepository.deleteCard(object : ApiListener {
                     override fun success(successData: Any) {

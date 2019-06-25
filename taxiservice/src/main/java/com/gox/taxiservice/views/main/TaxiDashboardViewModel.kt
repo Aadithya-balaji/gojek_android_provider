@@ -41,12 +41,12 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
                 getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
                     override fun success(successData: Any) {
                         checkStatusTaxiLiveData.value = successData as CheckRequestModel
-                        showLoading.value = false
+                        showLoading.postValue(false)
                     }
 
                     override fun fail(failData: Throwable) {
                         navigator.showErrorMessage(getErrorMessage(failData))
-                        showLoading.value = false
+                        showLoading.postValue(false)
                     }
                 }))
             else navigator.updateCurrentLocation()
@@ -58,12 +58,12 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
             getCompositeDisposable().add(mRepository.taxiStatusUpdate(object : ApiListener {
                 override fun success(successData: Any) {
                     callTaxiCheckStatusAPI()
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, params))
         }
@@ -93,12 +93,12 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
             getCompositeDisposable().add(mRepository.taxiDroppingStatus(object : ApiListener {
                 override fun success(successData: Any) {
                     callTaxiCheckStatusAPI()
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, model))
         }
@@ -109,12 +109,12 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
             getCompositeDisposable().add(mRepository.waitingTime(object : ApiListener {
                 override fun success(successData: Any) {
                     waitingTimeLiveData.value = successData as WaitingTime
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, params))
     }
@@ -124,12 +124,12 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
             getCompositeDisposable().add(mRepository.taxiCancelReason(object : ApiListener {
                 override fun success(successData: Any) {
                     taxiCancelRequest.value = successData as CancelRequestModel
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
 
                 override fun fail(failData: Throwable) {
                     navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.value = false
+                    showLoading.postValue(false)
                 }
             }, params))
     }

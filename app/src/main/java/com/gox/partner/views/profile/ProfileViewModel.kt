@@ -28,51 +28,50 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     var mCountryId: ObservableField<String> = ObservableField("")
     var mCountryCode: ObservableField<String> = ObservableField("")
     var mMobileNumber: ObservableField<String> = ObservableField("")
-    var mProfileImage: ObservableField<String> = ObservableField("")
 
-    var loadingProgress = MutableLiveData<Boolean>()
+    var showLoading = MutableLiveData<Boolean>()
     var countryListResponse = MutableLiveData<CountryListResponse>()
 
     val mRepository = AppRepository.instance()
 
     fun getProfile() {
-        loadingProgress.value = true
+        showLoading.value = true
         getCompositeDisposable().add(mRepository.getProfileDetails(object : ApiListener {
             override fun success(successData: Any) {
                 mProfileResponse.value = successData as ProfileResponse
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }))
     }
 
     fun updateProfile(file: MultipartBody.Part?) {
-        loadingProgress.value = true
+        showLoading.value = true
         val hashMap: HashMap<String, RequestBody> = HashMap()
         hashMap["first_name"] = RequestBody.create(MediaType.parse("text/plain"), mUserName.get().toString())
-        //hashMap.put("mobile", RequestBody.create(MediaType.parse("text/plain"), mMobileNumber.get().toString()))
+        hashMap["mobile"] = RequestBody.create(MediaType.parse("text/plain"), mMobileNumber.get().toString())
         hashMap["country_code"] = RequestBody.create(MediaType.parse("text/plain"), mCountryCode.get().toString())
         hashMap["city_id"] = RequestBody.create(MediaType.parse("text/plain"), mCityId.get().toString())
         // hashMap.put("country_id", RequestBody.create(MediaType.parse("text/plain"), mCountryId.get().toString()))
         getCompositeDisposable().add(mRepository.profileUpdate(object : ApiListener {
             override fun success(successData: Any) {
                 mProfileUpdateResponse.value = successData as ResProfileUpdate
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
 
             override fun fail(failData: Throwable) {
                 errorResponse.value = getErrorMessage(failData)
-                loadingProgress.value = false
+                showLoading.postValue(false)
             }
         }, hashMap, file))
     }
 
     fun getProfileCountryList(view: View) {
-        loadingProgress.value = true
+        showLoading.value = true
 
         val hashMap: HashMap<String, Any?> = HashMap()
         hashMap["salt_key"] = BuildConfig.SALT_KEY

@@ -32,14 +32,14 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     private var paymentList: List<ConfigPayment>? = null
 
     companion object {
-        var loadingProgress: MutableLiveData<Boolean> = MutableLiveData()
+        var showLoading: MutableLiveData<Boolean> = MutableLiveData()
     }
 
     override fun getLayoutId() = R.layout.fragment_wallet
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as FragmentWalletBinding
-        mViewModel = WalletViewModel(resources)
+        mViewModel = WalletViewModel()
         mViewModel.navigator = this
         mBinding.walletmodel = mViewModel
         mBinding.lifecycleOwner = this
@@ -49,12 +49,12 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), payTypes)
         mBinding.edtAmount.addTextChangedListener(EditListener())
 
-        observeLiveData(loadingProgress) {
+        observeLiveData(showLoading) {
             loadingObservable.value = it
         }
 
         observeLiveData(mViewModel.showLoading) {
-            loadingProgress.value = it
+            showLoading.value = it
         }
 
         getApiResponse()
@@ -65,7 +65,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     private fun getApiResponse() {
 
         observeLiveData(mViewModel.walletLiveResponse) {
-            loadingProgress.value = false
+            showLoading.value = false
             if (mViewModel.walletLiveResponse.value!!.getStatusCode().equals("200")) {
                 if (mViewModel.walletLiveResponse.value!!.getResponseData() != null) {
                     val balance = mViewModel.walletLiveResponse.value!!.getResponseData()!!.getWalletBalance()
@@ -75,7 +75,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         }
 
         mViewModel.mProfileResponse.observe(this, Observer<ProfileResponse> { profileResposne ->
-            loadingProgress.value = false
+            showLoading.value = false
             if (profileResposne.statusCode.equals("200")) {
                 val walletBanlance = profileResposne.profileData.wallet_balance
                 mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), walletBanlance)
@@ -86,7 +86,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     }
 
     override fun showErrorMsg(error: String) {
-        loadingProgress.value = false
+        showLoading.value = false
         ViewUtils.showToast(activity!!, error, false)
     }
 

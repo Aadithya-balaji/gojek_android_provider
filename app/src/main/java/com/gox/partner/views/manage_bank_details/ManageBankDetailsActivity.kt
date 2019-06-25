@@ -30,7 +30,7 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
         mBinding.lifecycleOwner = this
         mBinding.executePendingBindings()
 
-        observeLiveData(viewModel.loadingProgress) {
+        observeLiveData(viewModel.showLoading) {
             loadingObservable.value = it
         }
 
@@ -42,7 +42,7 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
     private fun observeResponses() {
 
         observeLiveData(viewModel.bankResponse) {
-            viewModel.loadingProgress.value = false
+            viewModel.showLoading.value = false
             viewModel.setAdapter()
             viewModel.preSetValues()
             viewModel.showEmpty.value = it.responseData.isEmpty()
@@ -56,7 +56,7 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
 
         observeLiveData(viewModel.errorResponse) { errorMessage ->
             run {
-                viewModel.loadingProgress.value = false
+                viewModel.showLoading.value = false
                 viewModel.showEmpty.value = true
                 ViewUtils.showToast(this, errorMessage, false)
             }
@@ -64,7 +64,7 @@ class ManageBankDetailsActivity : BaseActivity<ActivityManageBankDetailsBinding>
 
         observeLiveData(viewModel.addEditBankErrorResponse) { errorMessage ->
             run {
-                viewModel.loadingProgress.value = false
+                viewModel.showLoading.value = false
                 ViewUtils.showToast(this, errorMessage, false)
             }
         }

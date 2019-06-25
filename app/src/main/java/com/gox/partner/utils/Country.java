@@ -267,7 +267,7 @@ public class Country {
     public Country() {
     }
 
-    private static CountryModel getCountryByISO(String countryIsoCode) {
+    public static CountryModel getCountryByISO(String countryIsoCode) {
         countryIsoCode = countryIsoCode.toUpperCase();
         CountryModel c = new CountryModel(countryIsoCode, "", "", -1);
         int i = Arrays.binarySearch(COUNTRIES, c, new ISOCodeComparator());

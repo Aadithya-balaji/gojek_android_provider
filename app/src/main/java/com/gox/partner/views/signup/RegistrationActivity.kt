@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.telephony.TelephonyManager
 import android.text.Html
 import android.text.TextUtils
 import android.util.Log
@@ -22,6 +23,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.facebook.*
+import com.facebook.accountkit.PhoneNumber
 import com.facebook.accountkit.ui.AccountKitActivity
 import com.facebook.accountkit.ui.AccountKitConfiguration
 import com.facebook.accountkit.ui.LoginType
@@ -48,6 +50,7 @@ import com.gox.partner.models.City
 import com.gox.partner.models.CountryResponseData
 import com.gox.partner.network.WebApiConstants
 import com.gox.partner.utils.CommonMethods
+import com.gox.partner.utils.Country
 import com.gox.partner.utils.Enums
 import com.gox.partner.utils.Enums.Companion.CITYLIST_REQUEST_CODE
 import com.gox.partner.utils.Enums.Companion.COUNTRYLIST_REQUEST_CODE
@@ -108,10 +111,13 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
     private var mGoogleApiClient: GoogleApiClient? = null
     private var imageUrl: String? = null
+    private var countryCode: String? = null
+    private var isoCode: String? = null
 
     override fun getLayoutId() = R.layout.activity_register
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
+        profile_image
         this.mBinding = mViewDataBinding as ActivityRegisterBinding
         mViewModel = RegistrationViewModel(this)
         this.mBinding.registermodel = mViewModel
@@ -129,7 +135,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         edtPassword = findViewById(R.id.edt_signup_password)
         ivProfile = findViewById(R.id.profile_image)
         tlPassword = findViewById(R.id.til_signup_pwd)
-        rbMale = findViewById(R.id.rbMale)
+        rbMale = this.findViewById(R.id.rbMale)
         rbFemale = findViewById(R.id.rbFemale)
         callbackManager = CallbackManager.Factory.create()
         edtCountry.isFocusableInTouchMode = false
@@ -139,10 +145,20 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         initFacebook()
         initGoogle()
 
+        val tm = this.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        val countryModel = Country.getCountryByISO(tm.networkCountryIso)
+
         val resultIntent = Intent()
-        resultIntent.putExtra("countryName", "India")
-        resultIntent.putExtra("countryCode", "+91")
-        resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+
+        if (countryModel == null) {
+            resultIntent.putExtra("countryName", "India")
+            resultIntent.putExtra("countryCode", "+91")
+            resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+        } else {
+            resultIntent.putExtra("countryName", countryModel.name)
+            resultIntent.putExtra("countryCode", countryModel.dialCode)
+            resultIntent.putExtra("countryFlag", countryModel.flag)
+        }
         handleCountryCodePickerResult(resultIntent)
 
         getApiResponse()
@@ -152,9 +168,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     val params = HashMap<String, String>()
                     params["salt_key"] = SALT_KEY
                     params[WebApiConstants.ValidateUser.PHONE] = mViewModel.phoneNumber.value.toString()
-                    params[WebApiConstants.ValidateUser.COUNTRYCODE] = mViewModel.countryCode.toString()
-                    Log.e("phone ", "-------observe" + mViewModel.countryCode.value
-                            + "--" + mViewModel.phoneNumber.value)
+                    params[WebApiConstants.ValidateUser.COUNTRY_CODE] = mViewModel.countryCode.toString()
                     println("phone ${mViewModel.phoneNumber.value}")
                     mViewModel.validateUser(params)
                 }
@@ -183,12 +197,21 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == GOOGLE_REQ_CODE) {
+            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            Log.e("status code ", result.status.toString())
+            if (result.isSuccess) {
+                val acct = result.signInAccount
+                if (acct != null) handleGPlusSignInResult(acct)
+            } else Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+                    .setResultCallback { status -> Log.e("status", "logout $status") }
+        }
+
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 COUNTRYLIST_REQUEST_CODE -> {
                     val selectedCountry = data?.extras?.get("selected_list") as? CountryResponseData
                     cityList.clear()
-                    Log.d("countrylist", selectedCountry?.country_name + "")
                     mBinding.edtSignupCountry.setText(selectedCountry?.country_name)
                     mViewModel.countryName.value = selectedCountry?.country_name
                     mViewModel.countryID.value = selectedCountry?.id.toString()
@@ -200,27 +223,27 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
                 CITYLIST_REQUEST_CODE -> {
                     val selectedCity = data?.extras?.get("selected_list") as? City
-                    Log.d("statelist", selectedCity?.city_name + "")
                     mBinding.edtSignupCity.setText(selectedCity?.city_name)
                     mViewModel.cityName.value = selectedCity?.city_name
                     mViewModel.cityID.value = selectedCity?.id.toString()
                 }
 
                 FB_ACCOUNT_KIT_CODE -> {
-                    writePreferences(PreferencesKey.ACCESS_TOKEN, mViewModel.getRegistrationLiveData().value!!.responseData!!.accessToken)
+                    writePreferences(PreferencesKey.ACCESS_TOKEN, mViewModel.getRegistrationLiveData()
+                            .value!!.responseData!!.accessToken)
                     val dashBoardIntent = Intent(this, DashBoardActivity::class.java)
                     dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    launchNewActivity(dashBoardIntent, true)
+                    openActivity(dashBoardIntent, true)
                 }
 
                 GOOGLE_REQ_CODE -> {
                     val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-                    Log.e("status code ", result.status.toString())
                     if (result.isSuccess) {
                         // Signed in successfully, show authenticated UI.
                         val acct = result.signInAccount
-                        if (acct != null) handleGplusSignInResult(acct)
-                    } else Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback { status -> Log.e("status", "logout $status") }
+                        if (acct != null) handleGPlusSignInResult(acct)
+                    } else Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+                            .setResultCallback { status -> Log.e("status", "logout $status") }
                 }
 
                 CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode() -> {
@@ -233,7 +256,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
-                    ivProfile.setImageURI(result.uri)
+                    glideSetImageView(ivProfile, result.uri, R.drawable.ic_profile_placeholder)
                     val profileFile = File(result.uri.toString())
                     if (profileFile.exists()) {
                         filePart = MultipartBody.Part.createFormData("picture", profileFile.name,
@@ -259,7 +282,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun openSignIn() {
-        launchNewActivity(LoginActivity::class.java, false)
+        openActivity(LoginActivity::class.java, false)
     }
 
     override fun onClick(v: View?) {
@@ -276,7 +299,6 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                 .requestIdToken(resources.getString(R.string.google_signin_server_client_id))
                 .requestEmail()
                 .build()
-
         mGoogleApiClient = GoogleApiClient.Builder(this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build()
@@ -292,7 +314,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         } else if (TextUtils.isEmpty(mViewModel.countryCode.value)) {
             message = resources.getString(R.string.empty_country_code)
             return false
-        } else if (rbFemale.isChecked == false && rbMale.isChecked == false) {
+        } else if (!rbFemale.isChecked && !rbMale.isChecked) {
             message = resources.getString(R.string.empty_gender_type)
             return false
         } else if (TextUtils.isEmpty(mViewModel.phoneNumber.value)) {
@@ -310,10 +332,10 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         } else if (TextUtils.isEmpty(mViewModel.cityName.value)) {
             message = resources.getString(R.string.empty_city)
             return false
-        } else if (mBinding.cbTermsCondition.isChecked == false) {
+        } else if (!mBinding.cbTermsCondition.isChecked) {
             message = resources.getString(R.string.unchecked_terms)
             return false
-        } else if (rbFemale.isChecked == false && rbMale.isChecked == false) {
+        } else if (!rbFemale.isChecked && !rbMale.isChecked) {
             message = resources.getString(R.string.empty_gender_type)
             return false
         }
@@ -327,10 +349,12 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun verifyPhoneNumber() {
+        val phoneNumber = PhoneNumber(countryCode!!, mViewModel.phoneNumber.value!!, isoCode)
         val intent = Intent(this, AccountKitActivity::class.java)
         val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
                 LoginType.PHONE,
                 AccountKitActivity.ResponseType.CODE)
+        configurationBuilder.setInitialPhoneNumber(phoneNumber)
         intent.putExtra(
                 AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build())
@@ -370,7 +394,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                 val socialId = jsonObject.getString("id")
                 val socialEmail = jsonObject.getString("email")
                 val imgValue = "http://graph.facebook.com/" + jsonObject.getString("id") + "/picture?type=large"
-                Glide.with(this).load(imgValue).into(mBinding.profileImage)
+                glideSetImageView(ivProfile, imgValue, R.drawable.ic_profile_placeholder)
                 Log.e("FB_ID", "-----$socialId")
                 mViewModel.firstName.value = socialFirstName
                 mViewModel.lastName.value = socialLastName
@@ -395,15 +419,14 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         request.executeAsync()
     }
 
-    private fun handleGplusSignInResult(result: GoogleSignInAccount) {
+    private fun handleGPlusSignInResult(result: GoogleSignInAccount) {
         val socialFirstName = result.givenName
         val socialLastName = result.familyName
         val socialId = result.id
         val email = result.email
-        var token = result.idToken
         val profileImage = result.photoUrl
 
-        glideSetImageView(ivProfile, profileImage.toString(), R.drawable.dummy_profile_pic)
+        glideSetImageView(ivProfile, profileImage.toString(), R.drawable.ic_profile_placeholder)
 
         mViewModel.firstName.value = socialFirstName.toString()
         mViewModel.lastName.value = socialLastName.toString()
@@ -418,10 +441,6 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         tlPassword.visibility = View.GONE
 
         DownloadImage(this).execute(URL(profileImage.toString()).toString())
-
-        Log.e("firstName", "==$socialFirstName")
-        Log.e("email", "===$email")
-        Log.e("photo", "----$profileImage")
     }
 
     override fun getCityList() = if (TextUtils.isEmpty(mViewModel.countryName.value))
@@ -434,7 +453,11 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     private fun handleCountryCodePickerResult(data: Intent) {
-        val countryCode = data.getStringExtra("countryCode")
+
+        countryCode = data.getStringExtra("countryCode")
+        isoCode = data.getStringExtra("countryIsoCode")
+        countryCode = countryCode!!.removePrefix("+")
+
         mViewModel.countryCode.value = countryCode
         val countryFlag = data.getIntExtra("countryFlag", -1)
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
@@ -442,11 +465,8 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
             val width: Int = resources.getDimension(R.dimen.flag_width).toInt()
             val height: Int = resources.getDimension(R.dimen.flag_height).toInt()
-            val drawable = BitmapDrawable(resources,
-                    Bitmap.createScaledBitmap(bitmap, width, height, true))
-            mBinding.edtSignupCode
-                    .setCompoundDrawablesWithIntrinsicBounds(drawable, null,
-                            null, null)
+            val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
+            mBinding.edtSignupCode.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }
     }
 
@@ -476,7 +496,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun facebookSignUp() {
-//        getFacebookprofileWithPermissionCheck()
+        getFacebookProfileWithPermissionCheck()
     }
 
     override fun getImage() {
@@ -490,7 +510,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getFacebookProfile() {
         LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY)
-                .logInWithReadPermissions(this, Arrays.asList("public_profile", "email"))
+                .logInWithReadPermissions(this, listOf("public_profile", "email"))
     }
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -569,7 +589,6 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             R.id.edt_signup_phone -> {
                 isPhoneFocus = true
                 isEmailFocus = false
-
             }
         }
     }

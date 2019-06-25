@@ -12,6 +12,7 @@ import com.gox.partner.R
 import com.gox.partner.databinding.FragmentAccountBinding
 import com.gox.partner.models.AccountMenuModel
 import com.gox.partner.views.account_card.ActivityCardList
+import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.dashboard.DashBoardNavigator
 import com.gox.partner.views.earnings.EarningsActivity
 import com.gox.partner.views.invitereferals.InviteReferralsActivity
@@ -54,6 +55,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         dashBoardNavigator.getInstance().iv_right.setOnClickListener {
             ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
+                    dashBoardNavigator.updateLocation(false)
                     clearPreferences<String>()
                     mViewModel.logoutApp()
                     launchNewActivity(OnBoardActivity::class.java, false)

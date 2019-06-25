@@ -17,11 +17,12 @@ android {
 //        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
         //      Development
-//        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
+        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
         //      Staging
-        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
+//        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
         //      Staging
 //        buildConfigField("String", "BASE_URL", '"https://api.gojekclone.co/"')
+
         buildConfigField("String", "SALT_KEY", '"MQ=="')
     }
 

@@ -204,23 +204,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     mViewModel.longitude.value = location.longitude
                     mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
                     mViewModel.callCheckStatusAPI()
-                    when {
-                        mViewModel.currentStatus.value == TRANSPORT -> {
-                            val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            startActivity(intent)
-                        }
-                        mViewModel.currentStatus.value == SERVICE -> {
-                            val intent = Intent(this@DashBoardActivity, XUberDashBoardActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            startActivity(intent)
-                        }
-                        mViewModel.currentStatus.value == ORDER -> {
-                            val intent = Intent(this@DashBoardActivity, TaxiDashboardActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                            startActivity(intent)
-                        }
-                    }
                 }
 
                 override fun onFailure(message: String) {

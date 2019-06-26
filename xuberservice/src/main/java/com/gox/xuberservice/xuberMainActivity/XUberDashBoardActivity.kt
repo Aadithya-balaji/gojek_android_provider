@@ -563,13 +563,15 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     mViewModel.updateRequest(ARRIVED, null, false)
                 }
 
-                START -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
+                START -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)
+                        && mViewModel.otp.value.isNullOrEmpty()) {
                     ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
                 } else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)
                         && mViewModel.otp.value != mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.otp) {
                     ViewUtils.showToast(this, resources.getString(R.string.invalid_otp), false)
                 } else {
-                    if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1 && frontImgFile == null) {
+                    if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1
+                            && frontImgFile == null) {
                         ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
                     } else {
                         if (frontImgFile != null)

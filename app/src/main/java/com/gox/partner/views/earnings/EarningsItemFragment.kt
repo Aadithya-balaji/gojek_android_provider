@@ -7,21 +7,22 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.gox.partner.R
+import com.gox.partner.databinding.ItemEarningsBinding
 
 class EarningsItemFragment : Fragment() {
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?): View? {
         if (c == null) return null
 
-        val binding: com.gox.partner.databinding.ItemEarningsBinding =
+        val binding: ItemEarningsBinding =
                 DataBindingUtil.inflate(i, R.layout.item_earnings, c, false)
         val myView: View = binding.root
 
         binding.earningsAmt = this.arguments!!.getString("earnings")
         binding.itemText.text = this.arguments!!.getString("earningsTitle")
         binding.itemRoot.setScaleBoth(this.arguments!!.getFloat("scale"))
-
         return myView
+
     }
 
     companion object {

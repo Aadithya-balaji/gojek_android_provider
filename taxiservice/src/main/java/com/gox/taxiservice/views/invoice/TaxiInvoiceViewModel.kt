@@ -1,8 +1,10 @@
 package com.gox.taxiservice.views.invoice
 
 import androidx.lifecycle.MutableLiveData
+import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.repository.ApiListener
+import com.gox.taxiservice.model.CheckRequestModel
 import com.gox.taxiservice.model.PaymentModel
 import com.gox.taxiservice.model.ResponseData
 import com.gox.taxiservice.repositary.TaxiRepository
@@ -26,12 +28,14 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
     var requestLiveData = MutableLiveData<ResponseData>()
     var paymentLiveData = MutableLiveData<PaymentModel>()
     var showLoading = MutableLiveData<Boolean>()
+    var checkStatusTaxiLiveData = MutableLiveData<CheckRequestModel>()
+
 
     fun confirmPayment() {
         val params = HashMap<String, String>()
-        if (requestLiveData.value != null && requestLiveData.value != null) {
+        if (checkStatusTaxiLiveData.value != null) {
             showLoading.value = true
-            params["id"] = requestLiveData.value!!.request.id.toString()
+            params["id"] = checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
             getCompositeDisposable().add(mRepository.confirmPayment(object : ApiListener {
                 override fun success(successData: Any) {
                     paymentLiveData.postValue(successData as PaymentModel)
@@ -43,8 +47,24 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
                     showLoading.postValue(false)
                 }
             }, params))
+
         }
     }
 
-    fun closeActivity() = navigator.closeInvoiceActivity()
-}
+        fun callTaxiCheckStatusAPI() {
+            if (BaseApplication.isNetworkAvailable)
+                getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
+                    override fun success(successData: Any) {
+                        checkStatusTaxiLiveData.value = successData as CheckRequestModel
+                        showLoading.postValue(false)
+                    }
+
+                    override fun fail(failData: Throwable) {
+                        navigator.showErrorMessage(getErrorMessage(failData))
+                        showLoading.postValue(false)
+                    }
+                }))
+        }
+
+        fun closeActivity() = navigator.closeInvoiceActivity()
+    }

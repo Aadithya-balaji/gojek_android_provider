@@ -69,5 +69,8 @@
     <string name="reason">Reason</string>
     <string name="dummy_num">1234</string>
     <string name="start_timer">00:00:00</string>
+    <string name="toll_charge_desc">Do you have any Toll charge</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>

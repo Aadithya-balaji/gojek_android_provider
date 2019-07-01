@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -21,7 +20,7 @@ import com.gox.partner.R
 import com.gox.partner.databinding.FragmentWalletBinding
 import com.gox.partner.models.ConfigPayment
 import com.gox.partner.models.ProfileResponse
-import com.gox.partner.views.account_card.ActivityCardList
+import com.gox.partner.views.account_card.PaymentTypesActivity
 
 class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
@@ -30,10 +29,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
     private var strAmount: String? = null
     private var paymentList: List<ConfigPayment>? = null
-
-    companion object {
-        var showLoading: MutableLiveData<Boolean> = MutableLiveData()
-    }
 
     override fun getLayoutId() = R.layout.fragment_wallet
 
@@ -49,12 +44,8 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), payTypes)
         mBinding.edtAmount.addTextChangedListener(EditListener())
 
-        observeLiveData(showLoading) {
-            loadingObservable.value = it
-        }
-
         observeLiveData(mViewModel.showLoading) {
-            showLoading.value = it
+            loadingObservable.value = it
         }
 
         getApiResponse()
@@ -63,30 +54,28 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     }
 
     private fun getApiResponse() {
-
         observeLiveData(mViewModel.walletLiveResponse) {
-            showLoading.value = false
+            mViewModel.showLoading.value = false
             if (mViewModel.walletLiveResponse.value!!.getStatusCode().equals("200")) {
                 if (mViewModel.walletLiveResponse.value!!.getResponseData() != null) {
                     val balance = mViewModel.walletLiveResponse.value!!.getResponseData()!!.getWalletBalance()
                     mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), balance)
+                    mViewModel.walletAmount.value = ""
                 }
             }
         }
 
         mViewModel.mProfileResponse.observe(this, Observer<ProfileResponse> { profileResposne ->
-            showLoading.value = false
-            if (profileResposne.statusCode.equals("200")) {
-                val walletBanlance = profileResposne.profileData.wallet_balance
-                mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), walletBanlance)
+            mViewModel.showLoading.value = false
+            if (profileResposne.statusCode == "200") {
+                val walletBalance = profileResposne.profileData.wallet_balance
+                mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), walletBalance)
             }
-
         })
-
     }
 
     override fun showErrorMsg(error: String) {
-        showLoading.value = false
+        mViewModel.showLoading.value = false
         ViewUtils.showToast(activity!!, error, false)
     }
 
@@ -101,7 +90,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
         mViewModel.walletAmount.value = strAmount
     }
-
 
     override fun validate(): Boolean {
         return when {
@@ -132,7 +120,6 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         when (requestCode) {
             Constants.RequestCode.SELECTED_CARD -> if (resultCode == Activity.RESULT_OK) {
                 val stripeID = if (data != null && data.hasExtra("cardStripeID"))
@@ -149,7 +136,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
     }
 
     override fun getCard() {
-        val intent = Intent(activity!!, ActivityCardList::class.java)
+        val intent = Intent(activity!!, PaymentTypesActivity::class.java)
         intent.putExtra("isFromWallet", true)
         startActivityForResult(intent, Constants.RequestCode.SELECTED_CARD)
     }

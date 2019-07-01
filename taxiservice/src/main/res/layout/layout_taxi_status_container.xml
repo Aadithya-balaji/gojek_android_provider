@@ -139,7 +139,6 @@
                             android:maxLines="1"
                             android:minLines="1"
                             android:padding="5dp"
-                            android:text="@string/placeholder_string"
                             android:textColor="@color/taxi_bg_yellow" />
 
                         <RatingBar
@@ -213,8 +212,7 @@
                         android:layout_below="@+id/tv_pickup_location"
                         android:layout_toStartOf="@id/cvNavigationContainer"
                         android:padding="3dp"
-                        android:textColor="@color/light_grey"
-                        tools:text="Chennai,India" />
+                        android:textColor="@color/light_grey" />
 
                     <TextView
                         android:id="@+id/tv_user_address_two"

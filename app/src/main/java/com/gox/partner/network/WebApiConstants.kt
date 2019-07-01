@@ -37,6 +37,7 @@ object WebApiConstants {
     object ChangePassword {
         const val OLD_PASSWORD = "old_password"
         const val PASSWORD = "password"
+        const val CONFIRM_PASSWORD = "password_confirmation"
     }
 
     object ValidateUser {

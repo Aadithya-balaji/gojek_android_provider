@@ -17,25 +17,25 @@ import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
 import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
+import com.gox.base.extensions.observeLiveData
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
-import com.gox.partner.databinding.ActivitySavedCardListBinding
+import com.gox.partner.databinding.ActivityPaymentTypesBinding
 import com.gox.partner.models.AddCardModel
 import com.gox.partner.models.CardListModel
 import com.gox.partner.models.CardResponseModel
 import com.gox.partner.models.ConfigPayment
 import com.gox.partner.views.adapters.CardsAdapter
 import com.gox.partner.views.adapters.PaymentModeAdapter
-import com.gox.partner.views.wallet.WalletFragment
 import com.stripe.android.Stripe
 import com.stripe.android.TokenCallback
 import com.stripe.android.model.Card
 import com.stripe.android.model.Token
 
-class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListNavigator {
+class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardListNavigator {
 
     private lateinit var mViewModel: CardListViewModel
-    private lateinit var mBinding: ActivitySavedCardListBinding
+    private lateinit var mBinding: ActivityPaymentTypesBinding
     private lateinit var context: Context
     private lateinit var cardsAdapter: CardsAdapter
 
@@ -50,11 +50,11 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
     private var isFromWallet: Boolean = false
     private var paymentModeAdapter: PaymentModeAdapter? = null
 
-    override fun getLayoutId() = R.layout.activity_saved_card_list
+    override fun getLayoutId() = R.layout.activity_payment_types
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         context = this
-        mBinding = mViewDataBinding as ActivitySavedCardListBinding
+        mBinding = mViewDataBinding as ActivityPaymentTypesBinding
         mViewModel = CardListViewModel()
         mViewModel.navigator = this
         mBinding.cardListModel = mViewModel
@@ -64,6 +64,11 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         mBinding.toolbarLayout.ivToolbarBack.setOnClickListener {
             finish()
         }
+
+        observeLiveData(mViewModel.showLoading) {
+            loadingObservable.value = it
+        }
+
         getIntentValues()
         val payTypes = object : TypeToken<List<ConfigPayment>>() {}.type
         paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), payTypes)
@@ -71,7 +76,6 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         mBinding.rvPaymentModes.layoutManager = linearLayoutManager
         paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, mViewModel, isFromWallet)
         mBinding.rvPaymentModes.adapter = paymentModeAdapter
-        mViewModel.showLoading = loadingObservable
         mViewModel.getCardList()
     }
 
@@ -108,7 +112,7 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
         mViewModel.deleteCardLivResponse.observe(this, Observer<AddCardModel> { addCardModel ->
             mViewModel.showLoading.value = false
-            if (mViewModel.deleteCardLivResponse != null) {
+            if (mViewModel.deleteCardLivResponse != null)
                 if (mViewModel.deleteCardLivResponse.value!!.getStatusCode().equals("200")) {
                     cardList?.let { selectedPosition?.let { it1 -> it.removeAt(it1) } }
                     selectedCardID = ""
@@ -118,11 +122,9 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
                     if (cardList!!.size == 0) {
                         mBinding.rvCards.visibility = View.GONE
                         mBinding.ivEmptyCard.visibility = View.VISIBLE
-
                     }
                     cardsAdapter.notifyDataSetChanged()
                 }
-            }
         })
     }
 
@@ -134,7 +136,6 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (resultCode == Activity.RESULT_OK) {
             mCardNumber = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER)
             mCardExpiryDate = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY)
@@ -146,31 +147,28 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
             val month = Integer.parseInt(temp[0])
             val year = Integer.parseInt(temp[1])
 
-            val card = Card(
-                    mCardNumber,
-                    month,
-                    year,
-                    mCardCVV
-            )
+            val card = Card(mCardNumber, month, year, mCardCVV)
 
             card.name = mCardHolderName
             if (card.validateNumber() && card.validateCVC()) {
                 mViewModel.showLoading.value = true
                 val stripe = Stripe(this, BaseApplication.getCustomPreference!!.getString(PreferencesKey.STRIPE_KEY, ""))
-                stripe.createToken(card,
-                        object : TokenCallback {
-                            override fun onSuccess(token: Token) {
-                                WalletFragment.showLoading.value = false
-                                if (!TextUtils.isEmpty(token.id))
-                                    mViewModel.callAddCardApi(token.id)
-                            }
+                println("RRR :: PaymentTypesActivity.stripe = $stripe")
+                stripe.createToken(card, object : TokenCallback {
+                    override fun onSuccess(token: Token) {
+                        println("RRR :: PaymentTypesActivity.onSuccess")
+                        mViewModel.showLoading.value = false
+                        if (!TextUtils.isEmpty(token.id))
+                            mViewModel.callAddCardApi(token.id)
+                    }
 
-                            override fun onError(error: Exception) {
-                                mViewModel.showLoading.value = false
-                            }
-                        }
-                )
-            } else WalletFragment.showLoading.value = false
+                    override fun onError(error: Exception) {
+                        println("RRR :: PaymentTypesActivity.onError")
+                        mViewModel.showLoading.value = false
+                        error.printStackTrace()
+                    }
+                })
+            } else mViewModel.showLoading.value = false
         }
     }
 
@@ -195,9 +193,8 @@ class ActivityCardList : BaseActivity<ActivitySavedCardListBinding>(), CardListN
         }
     }
 
-    override fun removeCard() =
-            ViewUtils.showMessageOKCancel(context, resources.getString(R.string.delete_card),
-                    DialogInterface.OnClickListener { dialog, which -> mViewModel.callCardDeleteCardAPi() })
+    override fun removeCard() = ViewUtils.showMessageOKCancel(context, resources.getString(R.string.delete_card),
+            DialogInterface.OnClickListener { dialog, which -> mViewModel.callCardDeleteCardAPi() })
 
     override fun deselectCard() {
         selectedPosition?.let { cardList!![it].isCardSelected = false }

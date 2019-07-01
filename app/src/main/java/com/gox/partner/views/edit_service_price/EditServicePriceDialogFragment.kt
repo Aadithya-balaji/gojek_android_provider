@@ -35,40 +35,40 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
         val setServicePriceViewModel =
                 ViewModelProviders.of(activity!!).get(SetServicePriceViewModel::class.java)
         setServicePriceViewModel.dialogPrice.observe(this, Observer {
-            fareType = it.fareType
+            fareType = it.fareType.toString()
             when (it.fareType) {
                 DISTANCE_TIME -> {
                     miles_lt.visibility = VISIBLE
-                    price_miles_edt.text = Editable.Factory.getInstance().newEditable(it.perMiles)
-                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMin)
+                    price_miles_edt.text = Editable.Factory.getInstance().newEditable(it.perMiles.toString())
+                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMin.toString())
                 }
                 FIXED -> {
-                    price_edt.text = Editable.Factory.getInstance().newEditable(it.baseFare)
+                    price_edt.text = Editable.Factory.getInstance().newEditable(it.baseFare.toString())
                     label.text = getString(R.string.fixed)
                 }
                 HOURLY -> {
-                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMin)
+                    price_edt.text = Editable.Factory.getInstance().newEditable(it.perMin.toString())
                 }
             }
         })
+
         cancel_txt.setOnClickListener { dismiss() }
+
         submit_txt.setOnClickListener {
             val service = SetServicePriceActivity.SelectedService()
             if (price_edt.text.isNotEmpty() && price_edt.text.toString().toDouble() > 0) {
-                if (miles_lt.visibility == VISIBLE) {
-                    if (price_miles_edt.text.isNotEmpty() && price_miles_edt.text.toString().toDouble() > 0) {
-                        service.perMiles = price_miles_edt.text.toString()
-                        price_miles_edt.setText(service.perMiles)
-                        service.perMiles = price_miles_edt.text.toString()
-                    } else {
-                        ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)
-                        return@setOnClickListener
-                    }
+                if (miles_lt.visibility == VISIBLE) if (price_miles_edt.text.isNotEmpty()
+                        && price_miles_edt.text.toString().toDouble() > 0) {
+                    service.perMiles = Integer.parseInt(price_miles_edt.text.toString())
+                    price_miles_edt.setText(service.perMiles.toString())
+                    service.perMiles = Integer.parseInt(price_miles_edt.text.toString())
+                } else {
+                    ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)
+                    return@setOnClickListener
                 }
                 if (fareType == FIXED)
-                    service.baseFare = price_edt.text.toString()
-                else
-                    service.perMin = price_edt.text.toString()
+                    service.baseFare = Integer.parseInt(price_edt.text.toString())
+                else service.perMin = Integer.parseInt(price_edt.text.toString())
                 service.fareType = fareType
                 setServicePriceViewModel.listPrice.value = service
                 dismiss()
@@ -78,6 +78,6 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
 
     override fun onStart() {
         super.onStart()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 }

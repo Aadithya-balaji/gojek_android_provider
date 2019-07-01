@@ -146,7 +146,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
         mSheetBehavior = BottomSheetBehavior.from(bsContainer)
-        mSheetBehavior.peekHeight = resources.getDimension(R.dimen._280sdp).toInt()
+//        mSheetBehavior.peekHeight = resources.getDimension(R.dimen._280sdp).toInt()
+        mSheetBehavior.peekHeight = 850
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
 
@@ -266,7 +267,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
                         writePreferences(CURRENT_TRANXIT_STATUS, mViewModel.currentStatus.value)
 
-                        sosCall = checkStatusResponse.responseData.sos
+                        sosCall = "tel:${checkStatusResponse.responseData.sos}"
+
                         fab_taxi_menu_call.setOnClickListener {
                             val intent = Intent(Intent.ACTION_DIAL)
                             intent.data = Uri.parse("tel:${checkStatusResponse.responseData.request.user.mobile}")
@@ -330,7 +332,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 }
 
                 val inputManager: InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.SHOW_FORCED)
+                inputManager.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_IMPLICIT_ONLY)
 
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -355,8 +357,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 }
             }
 
-            if (canShowTollChargeDialog) ViewUtils.showAlert(this, "Do you have any Toll charge",
-                    "Yes", "No", object : ViewUtils.ViewCallBack {
+            if (canShowTollChargeDialog) ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
+                    getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
                     val tollChargeDialog = TollChargeDialog()
                     val bundle = Bundle()
@@ -462,8 +464,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
                 LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!))
-
-        ViewUtils.showSoftInputWindow(this)
     }
 
     private fun whenStatusArrived(responseData: ResponseData) {
@@ -519,8 +519,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
                 LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!))
-
-        ViewUtils.showSoftInputWindow(this)
     }
 
     private fun whenStatusPickedUp(responseData: ResponseData) {
@@ -583,14 +581,31 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         if (latLng.latitude > 0 && latLng.longitude > 0) tempPoints.add(latLng)
                     }
                     if (tempPoints.size > 2) locationProcessing(tempPoints)
-                }
+                } else ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
+                        getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
+                    override fun onPositiveButtonClick(dialog: DialogInterface) {
+                        val tollChargeDialog = TollChargeDialog()
+                        val bundle = Bundle()
+                        bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
+                        tollChargeDialog.arguments = bundle
+                        tollChargeDialog.show(supportFragmentManager, "tollCharge")
+                    }
+
+                    override fun onNegativeButtonClick(dialog: DialogInterface) {
+                        val params: HashMap<String, String> = HashMap()
+                        params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                        params["status"] = DROPPED
+                        params["_method"] = "PATCH"
+                        params["toll_price"] = "0"
+                        mViewModel.taxiDroppingStatus(params)
+                        dialog.dismiss()
+                    }
+                })
             }
         }
 
         drawRoute(LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!),
                 LatLng(responseData.request.d_latitude!!, responseData.request.d_longitude!!))
-
-        ViewUtils.showSoftInputWindow(this)
     }
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {

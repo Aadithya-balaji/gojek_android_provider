@@ -68,7 +68,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
 //                chatMessageModel.message = message.toString()
 //                mChatSocketResponseList!!.add(chatMessageModel)
 //                mBinding.chatAdapter!!.notifyDataSetChanged()
-                mBinding.messageInput.text.clear()
+                mBinding.messageInput.text?.clear()
             }
         })
 
@@ -87,7 +87,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         SocketManager.emit(Constants.RoomName.JOIN_ROOM_NAME, roomName.toString())
 
         mBinding.sendButton.setOnClickListener {
-            if (mBinding.messageInput.text.isNotEmpty()) {
+            if (mBinding.messageInput.text!!.isNotEmpty()) {
                 message = mBinding.messageInput.text.toString()
                 chatRequestModel.roomName = roomName!!
                 chatRequestModel.url = "$BASE_URL/chat"
@@ -101,7 +101,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
 
                 val chatObject = JSONObject(Gson().toJson(chatRequestModel))
                 SocketManager.emit(Constants.RoomName.CHATROOM, chatObject)
-                mBinding.messageInput.text.clear()
+                mBinding.messageInput.text?.clear()
 //                mViewModel?.sendMessage(chatRequestModel)
             }
         }
@@ -127,7 +127,6 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     }
 
     private fun createRoomName() {
-
 //        room_1_R<RideId>_U<UserId>_P<ProviderId>_TRANSPORT
         val roomPrefix = "room"
         roomName = roomPrefix + "_" + decodeString + "_R" + requestId +

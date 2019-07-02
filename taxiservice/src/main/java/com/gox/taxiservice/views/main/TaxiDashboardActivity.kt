@@ -125,13 +125,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var doubleBackToExit: Boolean = false
     private var distanceApiCallCount = 0
 
+    private var iteratePointsForDistanceCalc = ArrayList<LatLng>()
+    private var tempPointForDistanceCal: LatLng? = null
+    private var iteratePointsForDistanceCal = 500.0
+    private var iteratePointsForApi = 50.0
     private var points = ArrayList<LocationPointsEntity>()
     private var tempPoints = ArrayList<LatLng>()
-    private var iteratePointsForDistanceCalc = ArrayList<LatLng>()
     private var tempPoint: LatLng? = null
-    private var tempPointForDistanceCal: LatLng? = null
-    private var iteratePointsForApi = 50.0
-    private var iteratePointsForDistanceCal = 500.0
+    private var polylineKey = ""
     private var sosCall = ""
 
     override fun getLayoutId() = R.layout.activity_taxi_main
@@ -150,6 +151,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mSheetBehavior.peekHeight = 850
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
+        polylineKey = getText(R.string.google_map_key).toString()
 
         if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
 
@@ -202,12 +204,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun onCameraMove() {
-        if (mSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
-            mSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//        if (mSheetBehavior.state == BottomSheetBehavior.STATE_EXPANDED)
+//            mSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     override fun onCameraIdle() {
-        mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+//        mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     @SuppressLint("MissingPermission")
@@ -339,7 +341,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 BROADCAST = BASE_BROADCAST
                 finish()
             }
-
         })
 
         mViewModel.distanceApiProcessing.observe(this, Observer {
@@ -357,26 +358,26 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 }
             }
 
-            if (canShowTollChargeDialog) ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
-                    getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
-                override fun onPositiveButtonClick(dialog: DialogInterface) {
-                    val tollChargeDialog = TollChargeDialog()
-                    val bundle = Bundle()
-                    bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
-                    tollChargeDialog.arguments = bundle
-                    tollChargeDialog.show(supportFragmentManager, "tollCharge")
-                }
-
-                override fun onNegativeButtonClick(dialog: DialogInterface) {
-                    val params: HashMap<String, String> = HashMap()
-                    params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-                    params["status"] = DROPPED
-                    params["_method"] = "PATCH"
-                    params["toll_price"] = "0"
-                    mViewModel.taxiDroppingStatus(params)
-                    dialog.dismiss()
-                }
-            })
+//            if (canShowTollChargeDialog) ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
+//                    getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
+//                override fun onPositiveButtonClick(dialog: DialogInterface) {
+//                    val tollChargeDialog = TollChargeDialog()
+//                    val bundle = Bundle()
+//                    bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
+//                    tollChargeDialog.arguments = bundle
+//                    tollChargeDialog.show(supportFragmentManager, "tollCharge")
+//                }
+//
+//                override fun onNegativeButtonClick(dialog: DialogInterface) {
+//                    val params: HashMap<String, String> = HashMap()
+//                    params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+//                    params["status"] = DROPPED
+//                    params["_method"] = "PATCH"
+//                    params["toll_price"] = "0"
+//                    mViewModel.taxiDroppingStatus(params)
+//                    dialog.dismiss()
+//                }
+//            })
         })
 
         mViewModel.taxiCancelRequest.observe(this, Observer<CancelRequestModel> {
@@ -578,7 +579,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 if (points.size > 2) {
                     for (point in points) {
                         val latLng = LatLng(point.lat, point.lng)
-                        if (latLng.latitude > 0 && latLng.longitude > 0) tempPoints.add(latLng)
+                        if (latLng.latitude != 0.0 && latLng.longitude != 0.0) tempPoints.add(latLng)
                     }
                     if (tempPoints.size > 2) locationProcessing(tempPoints)
                 } else ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
@@ -655,20 +656,20 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
 
-        if (startLatLng.latitude > 0) endLatLng = startLatLng
+        if (startLatLng.latitude != 0.0) endLatLng = startLatLng
         startLatLng = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
 
         println("RRRR :: TaxiDashboardActivity LatLng(location = " +
                 "${LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)}")
 
-        if (mViewModel.latitude.value!! > 0 && endLatLng.latitude > 0 && polyLine.size > 0) {
+        if (mViewModel.latitude.value!! != 0.0 && endLatLng.latitude != 0.0 && polyLine.size > 0) {
             try {
                 CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, endLatLng, startLatLng)
                 polyLineRerouting(endLatLng, polyLine)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        } else if (mViewModel.latitude.value!! > 0 && polyLine.size == 0) try {
+        } else if (mViewModel.latitude.value!! != 0.0 && polyLine.size == 0) try {
             drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
                     mViewModel.polyLineDest.value!!)
         } catch (e: Exception) {
@@ -709,7 +710,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             canDrawPolyLine = false
             Handler().postDelayed({ canDrawPolyLine = true }, 10000)
             PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
-            (src, dest, getText(R.string.google_map_key).toString()))
+            (src, dest, polylineKey))
         }
         mViewModel.polyLineSrc.value = src
         mViewModel.polyLineDest.value = dest
@@ -771,40 +772,37 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         println("RRR whenDirectionFail = $statusCode")
         when (statusCode) {
-            "NOT_FOUND" -> showLog("No road map available...")
-            "ZERO_RESULTS" -> showLog("No road map available...")
-            "MAX_WAYPOINTS_EXCEEDED" -> showLog("Way point limit exceeded...")
-            "MAX_ROUTE_LENGTH_EXCEEDED" -> showLog("Road map limit exceeded...")
-            "INVALID_REQUEST" -> showLog("Invalid inputs...")
-            "OVER_DAILY_LIMIT" -> showLog("MayBe invalid API/Billing pending/Method Deprecated...")
-            "OVER_QUERY_LIMIT" -> showLog("Too many request, limit exceeded...")
-            "REQUEST_DENIED" -> showLog("Directions service not enabled...")
-            "UNKNOWN_ERROR" -> showLog("Server Error...")
+            "NOT_FOUND" -> showLog(getString(R.string.NoRoadMapAvailable))
+            "ZERO_RESULTS" -> showLog(getString(R.string.NoRoadMapAvailable))
+            "MAX_WAYPOINTS_EXCEEDED" -> showLog(getString(R.string.WayPointLlimitExceeded))
+            "MAX_ROUTE_LENGTH_EXCEEDED" -> showLog(getString(R.string.RoadMapLimitExceeded))
+            "INVALID_REQUEST" -> showLog(getString(R.string.InvalidInputs))
+            "OVER_DAILY_LIMIT" -> showLog(getString(R.string.MayBeInvalidAPIBillingPendingMethodDeprecated))
+            "OVER_QUERY_LIMIT" -> showLog(getString(R.string.TooManyRequestlimitExceeded))
+            "REQUEST_DENIED" -> showLog(getString(R.string.DirectionsServiceNotEnabled))
+            "UNKNOWN_ERROR" -> showLog(getString(R.string.ServerError))
             else -> showLog(statusCode)
         }
     }
 
     override fun whenFail(statusCode: String) {
-
-        if (canDrawPolyLine) {
-            canDrawPolyLine = false
-            Handler().postDelayed({ canDrawPolyLine = true }, 20000)
-            val key = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
+        if (statusCode == "OVER_DAILY_LIMIT" || statusCode.contains("You have exceeded your daily request quota for this API")) {
+            polylineKey = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
             PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
-            (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
+            (mViewModel.tempSrc.value, mViewModel.tempDest.value, polylineKey))
         }
 
         println("RRR whenFail = $statusCode")
         when (statusCode) {
-            "NOT_FOUND" -> showLog("No road map available...")
-            "ZERO_RESULTS" -> showLog("No road map available...")
-            "MAX_WAYPOINTS_EXCEEDED" -> showLog("Way point limit exceeded...")
-            "MAX_ROUTE_LENGTH_EXCEEDED" -> showLog("Road map limit exceeded...")
-            "INVALID_REQUEST" -> showLog("Invalid inputs...")
-            "OVER_DAILY_LIMIT" -> showLog("MayBe invalid API/Billing pending/Method Deprecated...")
-            "OVER_QUERY_LIMIT" -> showLog("Too many request, limit exceeded...")
-            "REQUEST_DENIED" -> showLog("Directions service not enabled...")
-            "UNKNOWN_ERROR" -> showLog("Server Error...")
+            "NOT_FOUND" -> showLog(getString(R.string.NoRoadMapAvailable))
+            "ZERO_RESULTS" -> showLog(getString(R.string.NoRoadMapAvailable))
+            "MAX_WAYPOINTS_EXCEEDED" -> showLog(getString(R.string.WayPointLlimitExceeded))
+            "MAX_ROUTE_LENGTH_EXCEEDED" -> showLog(getString(R.string.RoadMapLimitExceeded))
+            "INVALID_REQUEST" -> showLog(getString(R.string.InvalidInputs))
+            "OVER_DAILY_LIMIT" -> showLog(getString(R.string.MayBeInvalidAPIBillingPendingMethodDeprecated))
+            "OVER_QUERY_LIMIT" -> showLog(getString(R.string.TooManyRequestlimitExceeded))
+            "REQUEST_DENIED" -> showLog(getString(R.string.DirectionsServiceNotEnabled))
+            "UNKNOWN_ERROR" -> showLog(getString(R.string.ServerError))
             else -> showLog(statusCode)
         }
     }

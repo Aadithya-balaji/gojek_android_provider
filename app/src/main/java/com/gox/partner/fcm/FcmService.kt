@@ -12,6 +12,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.Gson
 import com.gox.base.BuildConfig
 import com.gox.base.R
 import com.gox.base.base.BaseApplication
@@ -20,8 +21,8 @@ import com.gox.partner.views.splash.SplashActivity
 
 class FcmService : FirebaseMessagingService() {
 
-    private val tagName = "FCMService"
-    private var notificationId = 0
+    private val tagName = "RRR :: FCMService"
+    private var notificationId = 100
 
     private lateinit var mUrlPersistence: SharedPreferences
 
@@ -38,26 +39,27 @@ class FcmService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-        println("RRR push notification:: ${remoteMessage!!.data!!}")
-        val message = remoteMessage.data!!["message"]
+        val notificationData = Gson().fromJson(remoteMessage!!.data!!["custom"], NotificationDataModel::class.java)
 
         println(tagName
-                + " message = " + message
-                + " status = Background-> " + isBackground(applicationContext)
+                + " notificationData = " + remoteMessage.data!!["custom"]
+                + " status = Background->" + isBackground(applicationContext)
                 + " isLocked ->" + isLocked(applicationContext)
                 + " is CallActive -> " + isCallActive(applicationContext))
 
-        if (message != null && message.contains("New Incoming Ride")) sendProlongedNotification(message.toString())
-        else sendNotification(message.toString())
+        if (notificationData.message!!.topic!!.contains("incoming_request"))
+            sendProlongedNotification(notificationData)
+        else sendNotification(notificationData)
 
-        if (message != null && (message.contains("New Incoming Ride") || message.contains("RRRR"))
+        if (notificationData.message!!.topic!!.contains("incoming_request")
+                || notificationData.message!!.topic!!.contains("RRRR")
                 && isBackground(applicationContext)
                 && !isLocked(applicationContext)
                 && !isCallActive(applicationContext)) restartApp()
     }
 
-    private fun sendNotification(messageBody: String) {
-        println("RRR push messageBody = $messageBody")
+    private fun sendNotification(notificationData: NotificationDataModel) {
+        println("RRR push notificationData = $notificationData")
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -67,37 +69,34 @@ class FcmService : FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_push)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(messageBody)
+                .setContentTitle(notificationData.message!!.notification!!.title)
+                .setContentText(notificationData.message!!.notification!!.body)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notificationManager.createNotificationChannel(
+                NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT))
 
-        notificationManager.notify(notificationId++, notificationBuilder.build())
+        notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
-    private fun sendProlongedNotification(messageBody: String) {
-        println("RRR push messageBody = $messageBody")
+    private fun sendProlongedNotification(notificationData: NotificationDataModel) {
+        println("RRR push notificationData = $notificationData")
+
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT)
 
         val channelId = getString(com.gox.partner.R.string.app_name)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(messageBody)
+                .setContentTitle(notificationData.message!!.notification!!.title)
+                .setContentText(notificationData.message!!.notification!!.body)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
@@ -107,14 +106,10 @@ class FcmService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
-                    "Channel human readable title",
-                    NotificationManager.IMPORTANCE_DEFAULT)
-            notificationManager.createNotificationChannel(channel)
-        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notificationManager.createNotificationChannel(
+                NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT))
 
-        notificationManager.notify(notificationId++, mNotification)
+        notificationManager.notify(notificationId, mNotification)
     }
 
     private fun isBackground(context: Context): Boolean {

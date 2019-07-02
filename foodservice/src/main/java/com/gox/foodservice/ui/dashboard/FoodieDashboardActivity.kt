@@ -46,9 +46,8 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     private lateinit var mViewModel: FoodieDashboardViewModel
     private var checkStatusApiCounter = 0
 
-    var i = 0
-    var currentStatus = ""
-    var showingStoreDetail = true
+    private var currentStatus = ""
+    private var showingStoreDetail = true
 
     override fun getLayoutId() = R.layout.activty_foodie_dashboard
 
@@ -158,6 +157,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     }
 
     private fun whenPaid() {
+        chat_img.visibility = VISIBLE
         changeToFlowIconView(true)
         writePreferences(PreferencesKey.CAN_SEND_LOCATION, true)
         setOrderId()
@@ -187,6 +187,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     }
 
     private fun whenPickedUp() {
+        chat_img.visibility = VISIBLE
         changeToFlowIconView(true)
         writePreferences(PreferencesKey.CAN_SEND_LOCATION, true)
         setOrderId()
@@ -207,6 +208,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     }
 
     private fun whenReached() {
+        chat_img.visibility = VISIBLE
         writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
         changeToFlowIconView(true)
         setOrderId()
@@ -230,6 +232,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     }
 
     private fun whenProcessing() {
+        chat_img.visibility = GONE
         changeToFlowIconView(false)
         writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
         setOrderId()
@@ -240,6 +243,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     }
 
     private fun whenStared() {
+        chat_img.visibility = VISIBLE
         changeToFlowIconView(true)
         writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
         setOrderId()

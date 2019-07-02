@@ -1,6 +1,5 @@
 package com.gox.partner.views.change_password
 
-import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
 import com.gox.base.repository.ApiListener
@@ -17,12 +16,11 @@ class ChangePasswordViewModel : BaseViewModel<ChangePasswordViewModel.ChangePass
     val newPassword = MutableLiveData<String>()
     val confirmPassword = MutableLiveData<String>()
 
-    fun onChangePasswordClick(view: View) = navigator.onChangePasswordClicked()
-
     internal fun postChangePassword() {
         val params = HashMap<String, String>()
         params[WebApiConstants.ChangePassword.OLD_PASSWORD] = oldPassword.value!!.trim()
         params[WebApiConstants.ChangePassword.PASSWORD] = newPassword.value!!.trim()
+        params[WebApiConstants.ChangePassword.CONFIRM_PASSWORD] = newPassword.value!!.trim()
         getCompositeDisposable().add(mRepository.postChangePassword(object : ApiListener {
             override fun success(successData: Any) {
                 getChangePasswordObservable().value = successData as ChangePasswordResponseModel
@@ -37,7 +35,6 @@ class ChangePasswordViewModel : BaseViewModel<ChangePasswordViewModel.ChangePass
     fun getChangePasswordObservable() = changePasswordLiveData
 
     interface ChangePasswordNavigator {
-        fun onChangePasswordClicked()
         fun showError(error: String)
     }
 }

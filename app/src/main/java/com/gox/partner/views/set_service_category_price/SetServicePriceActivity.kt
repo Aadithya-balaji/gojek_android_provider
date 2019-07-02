@@ -10,9 +10,7 @@ import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivitySetServiceCategoryPriceBinding
-import com.gox.partner.models.ServiceCategoriesResponse
-import com.gox.partner.models.SubServiceCategoriesResponse
-import com.gox.partner.models.SubServicePriceCategoriesResponse
+import com.gox.partner.models.*
 import com.gox.partner.views.edit_service_price.EditServicePriceDialogFragment
 import kotlinx.android.synthetic.main.activity_set_service_category_price.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
@@ -25,7 +23,7 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
     private lateinit var mViewModel: SetServicePriceViewModel
 
     private lateinit var service: ServiceCategoriesResponse.ResponseData
-    private lateinit var selectedService: SubServicePriceCategoriesResponse.ResponseData
+    private lateinit var selectedService: SubServicePriceResponseData
     private lateinit var subServicePriceCategoriesResponse: SubServicePriceCategoriesResponse
 
     override fun getLayoutId() = R.layout.activity_set_service_category_price
@@ -50,20 +48,19 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
 
         service_save_btn.setOnClickListener {
             val selectedService = mutableListOf<SelectedService>()
-            subServicePriceCategoriesResponse.responseData.forEach {
-                if (it.selected == "1" || it.providerservices.isNotEmpty()) {
+            subServicePriceCategoriesResponse.responseData!!.forEach {
+                if (it!!.selected == "1" || it.providerservices!!.isNotEmpty()) {
                     val newService = SelectedService()
                     newService.id = it.id
                     if (service.price_choose == "provider_price") {
-                        if (it.servicescityprice != null || it.providerservices.isNotEmpty()) {
+                        if (it.providerservices!!.isNotEmpty()) {
                             newService.fareType = FIXED
-                            if (it.servicescityprice != null)
-                                newService.fareType = it.servicescityprice.fare_type
-                            if (it.servicescityprice != null)
-                                when (it.servicescityprice.fare_type) {
+                            newService.fareType = it.service_city?.fare_type
+                            if (it.service_city != null)
+                                when (it.service_city?.fare_type) {
                                     FIXED -> when {
-                                        it.providerservices.isNotEmpty() -> newService.baseFare = it.providerservices[0].base_fare
-                                        it.servicescityprice.base_fare.isNotEmpty() -> newService.baseFare = it.servicescityprice.base_fare
+                                        it.providerservices!!.isNotEmpty() -> newService.baseFare = it.providerservices!![0]!!.base_fare
+                                        it.service_city?.base_fare!! > 0 -> newService.baseFare = it.service_city?.base_fare
                                         else -> {
                                             ViewUtils.showToast(this,
                                                     getString(R.string.enter_amount_selected_service), false)
@@ -71,26 +68,26 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                                         }
                                     }
                                     HOURLY -> when {
-                                        it.providerservices.isNotEmpty() -> newService.perMin = it.providerservices[0].per_mins
-                                        it.servicescityprice.per_mins.isNotEmpty() -> newService.perMin = it.servicescityprice.per_mins
+                                        it.providerservices!!.isNotEmpty() -> newService.perMin = it.providerservices!![0]!!.per_mins
+                                        it.service_city?.per_mins!! > 0 -> newService.perMin = it.service_city?.per_mins
                                         else -> {
                                             ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
                                             return@setOnClickListener
                                         }
                                     }
                                     DISTANCE_TIME -> when {
-                                        it.providerservices.isNotEmpty() -> {
-                                            newService.perMin = it.providerservices[0].per_mins
-                                            newService.perMiles = it.providerservices[0].per_miles
+                                        it.providerservices!!.isNotEmpty() -> {
+                                            newService.perMin = it.providerservices!![0]!!.per_mins
+                                            newService.perMiles = it.providerservices!![0]!!.per_miles
                                         }
-                                        it.servicescityprice.per_miles.isNotEmpty() -> {
-                                            if (it.servicescityprice.per_mins.isNotEmpty()) {
-                                                newService.perMin = it.servicescityprice.per_mins
+                                        it.service_city?.per_miles!! > 0 -> {
+                                            if (it.service_city?.per_mins!! > 0) {
+                                                newService.perMin = it.service_city?.per_mins
                                             } else {
                                                 ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
                                                 return@setOnClickListener
                                             }
-                                            newService.perMiles = it.servicescityprice.per_miles
+                                            newService.perMiles = it.service_city?.per_miles
                                         }
                                         else -> {
                                             ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
@@ -99,8 +96,8 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                                     }
                                 }
                             else {
-                                if (it.providerservices[0].base_fare != null)
-                                    newService.baseFare = it.providerservices[0].base_fare
+                                if (it.providerservices!![0]!!.base_fare != null)
+                                    newService.baseFare = it.providerservices!![0]!!.base_fare
                                 else {
                                     ViewUtils.showToast(this, getString(R.string.enter_amount_selected_service), false)
                                     return@setOnClickListener
@@ -137,34 +134,31 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
 
     private fun checkPrice() {
         mViewModel.listPrice.observe(this, Observer {
-            if (selectedService.servicescityprice != null) {
-            } else selectedService.servicescityprice =
-                    SubServicePriceCategoriesResponse.Servicescityprice()
-
-            selectedService.servicescityprice.fare_type = it.fareType
+            selectedService.service_city = ServiceCity()
+            selectedService.service_city?.fare_type = it.fareType!!
             when (it.fareType) {
                 FIXED -> {
                     selectedService.providerservices = mutableListOf()
-                    val providerService = SubServicePriceCategoriesResponse.ProviderServices()
-                    selectedService.servicescityprice.base_fare = it.baseFare
+                    val providerService = ProviderService()
+                    selectedService.service_city?.base_fare = it.baseFare
                     providerService.base_fare = it.baseFare
-                    selectedService.providerservices.add(providerService)
+                    selectedService.providerservices!!.add(providerService)
                 }
                 DISTANCE_TIME -> {
                     selectedService.providerservices = mutableListOf()
-                    selectedService.servicescityprice.per_mins = it.perMin
-                    selectedService.servicescityprice.per_miles = it.perMiles
-                    val providerService = SubServicePriceCategoriesResponse.ProviderServices()
+                    selectedService.service_city?.per_mins = it.perMin
+                    selectedService.service_city?.per_miles = it.perMiles
+                    val providerService = ProviderService()
                     providerService.per_mins = it.perMin
                     providerService.per_miles = it.perMiles
-                    selectedService.providerservices.add(providerService)
+                    selectedService.providerservices!!.add(providerService)
                 }
                 HOURLY -> {
-                    val providerService = SubServicePriceCategoriesResponse.ProviderServices()
+                    val providerService = ProviderService()
                     selectedService.providerservices = mutableListOf()
-                    selectedService.servicescityprice.per_mins = it.perMin
+                    selectedService.service_city?.per_mins = it.perMin
                     providerService.per_mins = it.perMin
-                    selectedService.providerservices.add(providerService)
+                    selectedService.providerservices!!.add(providerService)
                 }
             }
             mBinding.subServiceRv.adapter!!.notifyDataSetChanged()
@@ -181,49 +175,54 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
     private fun checkResponse() {
         mViewModel.subServiceCategoriesPriceResponse.observe(this, Observer {
             loadingObservable.value = false
-            if (it?.responseData != null && it.responseData.isNotEmpty()) {
-                subServicePriceCategoriesResponse = it
-                val adapter = SubServicePriceAdapter(this, subServicePriceCategoriesResponse,
-                        service.price_choose == "provider_price")
-                mBinding.subServiceRv.adapter = adapter
-                adapter.serviceItemClick = this
+            subServicePriceCategoriesResponse = SubServicePriceCategoriesResponse()
+            if (it?.responseData != null && it.responseData!!.isNotEmpty()) {
+                subServicePriceCategoriesResponse.responseData = mutableListOf()
+
+                for (i in it.responseData!!.indices)
+                    if (it.responseData!![i]!!.service_city != null)
+                        subServicePriceCategoriesResponse.responseData!!.add(it.responseData!![i]!!)
+
+                if (!subServicePriceCategoriesResponse.responseData.isNullOrEmpty()
+                        && subServicePriceCategoriesResponse.responseData?.size!! > 0){
+                    val adapter = SubServicePriceAdapter(this, subServicePriceCategoriesResponse,
+                            service.price_choose == "provider_price")
+                    mBinding.subServiceRv.adapter = adapter
+                    adapter.serviceItemClick = this
+                }
             }
         })
     }
 
-    override fun onItemClick(service: SubServicePriceCategoriesResponse.ResponseData, isPriceEdit: Boolean) {
+    override fun onItemClick(service: SubServicePriceResponseData, isPriceEdit: Boolean) {
         selectedService = service
         when {
-            isPriceEdit -> {
-                when (service.selected == "1" || service.providerservices.isNotEmpty()) {
-                    true -> {
-                        val selected = SelectedService()
-                        if (service.servicescityprice != null &&
-                                service.servicescityprice.base_fare != null) {
-                            selected.fareType = service.servicescityprice.fare_type
-                            selected.baseFare = service.servicescityprice.base_fare
-                            selected.perMin = service.servicescityprice.per_mins
-                            selected.perMiles = service.servicescityprice.per_miles
-
-                        } else {
-                            selected.fareType = FIXED
-                            selected.baseFare = ""
-                        }
-                        if (service.providerservices.isNotEmpty()) {
-                            selected.baseFare = service.providerservices[0].base_fare
-                            selected.perMin = service.providerservices[0].per_mins
-                            selected.perMiles = service.providerservices[0].per_miles
-                        }
-                        val editServicePriceDialog = EditServicePriceDialogFragment()
-                        mViewModel.dialogPrice.value = selected
-                        editServicePriceDialog.show(supportFragmentManager, "")
-                        editServicePriceDialog.isCancelable = false
+            isPriceEdit -> when (service.selected == "1" || service.providerservices!!.isNotEmpty()) {
+                true -> {
+                    val selected = SelectedService()
+                    if (service.service_city?.base_fare != null) {
+                        selected.fareType = service.service_city?.fare_type
+                        selected.baseFare = service.service_city?.base_fare
+                        selected.perMin = service.service_city?.per_mins
+                        selected.perMiles = service.service_city?.per_miles
+                    } else {
+                        selected.fareType = FIXED
+                        selected.baseFare = 0
                     }
-                    else -> ViewUtils.showToast(this, getString(R.string.select_service), false)
+                    if (service.providerservices!!.isNotEmpty()) {
+                        selected.baseFare = service.providerservices!![0]!!.base_fare
+                        selected.perMin = service.providerservices!![0]!!.per_mins
+                        selected.perMiles = service.providerservices!![0]!!.per_miles
+                    }
+                    val editServicePriceDialog = EditServicePriceDialogFragment()
+                    mViewModel.dialogPrice.value = selected
+                    editServicePriceDialog.show(supportFragmentManager, "")
+                    editServicePriceDialog.isCancelable = false
                 }
+                else -> ViewUtils.showToast(this, getString(R.string.select_service), false)
             }
             else -> {
-                when (service.selected == "1" || service.providerservices.isNotEmpty()) {
+                when (service.selected == "1" || service.providerservices!!.isNotEmpty()) {
                     true -> {
                         service.selected = "0"
                         service.providerservices = mutableListOf()
@@ -236,11 +235,11 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
     }
 
     class SelectedService(
-            var id: String = "",
-            var fareType: String = "",
-            var baseFare: String = "",
-            var perMin: String = "",
-            var perMiles: String = ""
+            var id: Int? = 0,
+            var fareType: String? = "",
+            var baseFare: Int? = 0,
+            var perMin: Int? = 0,
+            var perMiles: Int? = 0
     )
 
     override fun showError(error: String) {

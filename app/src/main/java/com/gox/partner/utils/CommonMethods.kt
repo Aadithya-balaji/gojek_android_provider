@@ -1,15 +1,9 @@
 package com.gox.partner.utils
 
-import android.app.Activity
 import android.content.Context
 import android.os.Environment
 import android.util.Log
 import com.gox.base.data.Constants
-import com.gox.base.data.Constants.FareType.DISTANCE_TIME
-import com.gox.base.data.Constants.FareType.FIXED
-import com.gox.base.data.Constants.FareType.HOURLY
-import com.gox.partner.R
-import com.gox.partner.models.SubServicePriceCategoriesResponse
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -18,6 +12,7 @@ import java.util.*
 class CommonMethods {
 
     companion object {
+
         fun getDefaultFileName(context: Context): File {
             val imageFile: File?
             val isSDPresent = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
@@ -75,29 +70,5 @@ class CommonMethods {
             return strDate
 
         }
-
-        fun getFare(activity: Activity, servicePrices: SubServicePriceCategoriesResponse.Servicescityprice,
-                    providerService: List<SubServicePriceCategoriesResponse.ProviderServices>): String =
-                when (servicePrices.fare_type) {
-                    HOURLY -> {
-                        if (providerService.isNotEmpty())
-                            providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
-                        else
-                            servicePrices.per_mins + " " + activity.getString(R.string.per_hour)
-                    }
-                    FIXED -> {
-                        if (providerService.isNotEmpty())
-                            providerService[0].base_fare + " " + activity.getString(R.string.fixed)
-                        else
-                            servicePrices.base_fare + " " + activity.getString(R.string.fixed)
-                    }
-                    DISTANCE_TIME -> {
-                        if (providerService.isNotEmpty())
-                            providerService[0].per_mins + " " + activity.getString(R.string.per_hour)
-                        else
-                            servicePrices.per_mins + " " + activity.getString(R.string.per_min)
-                    }
-                    else -> ""
-                }
     }
 }

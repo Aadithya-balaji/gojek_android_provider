@@ -20,7 +20,6 @@ class CardListViewModel : BaseViewModel<CardListNavigator>() {
     var addCardLiveResponse = MutableLiveData<AddCardModel>()
     var deleteCardLivResponse = MutableLiveData<AddCardModel>()
     var cardListLiveResponse = MutableLiveData<CardListModel>()
-    var amount = MutableLiveData<String>()
     var resources: Resources? = null
 
     init {

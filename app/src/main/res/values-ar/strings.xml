@@ -506,5 +506,5 @@
     <string name="desc_upcoming_ride">Are you want to cancel the request?</string>
     <string name="yes">Yes</string>
     <string name="open_wallet">Topup Wallet</string>
-    <string name="name_as_in_card">Name As per in your card</string>
+    <string name="name_as_in_card">Cardholder Name</string>
 </resources>

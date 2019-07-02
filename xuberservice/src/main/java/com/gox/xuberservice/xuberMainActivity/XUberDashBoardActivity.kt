@@ -459,15 +459,15 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
         println("RRR whenFail = $statusCode")
         when (statusCode) {
-            "NOT_FOUND" -> showLog("No road map available...")
-            "ZERO_RESULTS" -> showLog("No road map available...")
-            "MAX_WAYPOINTS_EXCEEDED" -> showLog("Way point limit exceeded...")
-            "MAX_ROUTE_LENGTH_EXCEEDED" -> showLog("Road map limit exceeded...")
-            "INVALID_REQUEST" -> showLog("Invalid inputs...")
-            "OVER_DAILY_LIMIT" -> showLog("MayBe invalid API/Billing pending/Method Deprecated...")
-            "OVER_QUERY_LIMIT" -> showLog("Too many request, limit exceeded...")
-            "REQUEST_DENIED" -> showLog("Directions service not enabled...")
-            "UNKNOWN_ERROR" -> showLog("Server Error...")
+            "NOT_FOUND" -> showLog(getString(R.string.NoRoadMapAvailable))
+            "ZERO_RESULTS" -> showLog(getString(R.string.NoRoadMapAvailable))
+            "MAX_WAYPOINTS_EXCEEDED" -> showLog(getString(R.string.WayPointLlimitExceeded))
+            "MAX_ROUTE_LENGTH_EXCEEDED" -> showLog(getString(R.string.RoadMapLimitExceeded))
+            "INVALID_REQUEST" -> showLog(getString(R.string.InvalidInputs))
+            "OVER_DAILY_LIMIT" -> showLog(getString(R.string.MayBeInvalidAPIBillingPendingMethodDeprecated))
+            "OVER_QUERY_LIMIT" -> showLog(getString(R.string.TooManyRequestlimitExceeded))
+            "REQUEST_DENIED" -> showLog(getString(R.string.DirectionsServiceNotEnabled))
+            "UNKNOWN_ERROR" -> showLog(getString(R.string.ServerError))
             else -> showLog(statusCode)
         }
     }
@@ -670,14 +670,12 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         val tvDescription = popupView!!.tv_description
         ivClose.setOnClickListener { popupWindow!!.dismiss() }
 
-        if (!allowImage.isNullOrEmpty()) {
-            Glide.with(this)
-                    .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
-                            .placeholder(R.drawable.ic_profile_placeholder)
-                            .error(R.drawable.ic_profile_placeholder))
-                    .load(allowImage)
-                    .into(ivDesImage)
-        }
+        if (!allowImage.isNullOrEmpty()) Glide.with(this)
+                .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
+                        .placeholder(R.drawable.ic_profile_placeholder)
+                        .error(R.drawable.ic_profile_placeholder))
+                .load(allowImage)
+                .into(ivDesImage)
 
         tvDescription.text = allowDescription
         val displayFrame = Rect()

@@ -65,9 +65,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                         return@OnCompleteListener
                     }
 
-                    println("RRR :: token = ${task.result?.token}")
+                    println("RRR :: FCMtoken = ${task.result?.token}")
                     customPreference.edit().putString(PreferencesKey.DEVICE_TOKEN, task.result?.token).apply()
                 })
+        println("RRR :: FCMtoken = ${BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")}")
     }
 
     @SuppressLint("CommitPrefEdits")

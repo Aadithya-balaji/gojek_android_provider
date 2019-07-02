@@ -31,7 +31,7 @@ class BaseLocationService : Service() {
 
     private val channelId = "channel_01"
 
-    private val checkInterval = 5000
+    private val checkInterval = 10000
 
     private var r: Runnable? = null
     private var h: Handler? = null
@@ -85,15 +85,15 @@ class BaseLocationService : Service() {
             }
         }
 
-        val displacement: Long = 10
-        val updateInterval: Long = 3000
+        val displacement: Long = 50
+        val updateInterval: Long = 7000
         val fastestUpdateInterval = updateInterval / 2
 
         mLocationRequest = LocationRequest()
         mLocationRequest!!.interval = updateInterval
         mLocationRequest!!.fastestInterval = fastestUpdateInterval
         mLocationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        //  mLocationRequest!!.smallestDisplacement = displacement.toFloat()
+        mLocationRequest!!.smallestDisplacement = displacement.toFloat()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                     checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -140,8 +140,8 @@ class BaseLocationService : Service() {
                     onNewLocation(mLocation!!)
                 } else println("RRRR:: Failed to get location.")
                 val location = Location("setting")
-                location.setLatitude(0.0)
-                location.setLongitude(0.0)
+                location.latitude = 0.0
+                location.longitude = 0.0
                 onNewLocation(location)
                 println("RRRR:: streamLocation::task = $task")
             }

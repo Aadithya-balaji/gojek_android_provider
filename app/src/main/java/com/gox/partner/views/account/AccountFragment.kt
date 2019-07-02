@@ -11,8 +11,7 @@ import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.FragmentAccountBinding
 import com.gox.partner.models.AccountMenuModel
-import com.gox.partner.views.account_card.ActivityCardList
-import com.gox.partner.views.dashboard.DashBoardActivity
+import com.gox.partner.views.account_card.PaymentTypesActivity
 import com.gox.partner.views.dashboard.DashBoardNavigator
 import com.gox.partner.views.earnings.EarningsActivity
 import com.gox.partner.views.invitereferals.InviteReferralsActivity
@@ -89,7 +88,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
 
         3 -> launchNewActivity(ManageBankDetailsActivity::class.java, false)
 
-        4 -> launchNewActivity(ActivityCardList::class.java, false)
+        4 -> launchNewActivity(PaymentTypesActivity::class.java, false)
 
         5 -> launchNewActivity(ManagePaymentActivity::class.java, false)
 

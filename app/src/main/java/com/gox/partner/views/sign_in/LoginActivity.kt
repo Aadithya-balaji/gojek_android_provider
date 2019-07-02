@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.gox.base.base.BaseActivity
+import com.gox.base.base.BaseApplication
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
@@ -67,6 +68,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         val countryModel = Country.getCountryByISO(tm.networkCountryIso)
 
         val resultIntent = Intent()
+
+        println("RRR ::  FCMToken = ${BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")}")
 
         if (countryModel == null) {
             resultIntent.putExtra("countryName", "India")

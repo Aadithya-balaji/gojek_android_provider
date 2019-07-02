@@ -5,12 +5,14 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProviders
 import com.gox.base.base.BaseActivity
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityChangePasswordBinding
+import kotlinx.android.synthetic.main.activity_change_password.*
 
 class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
         ChangePasswordViewModel.ChangePasswordNavigator {
@@ -24,15 +26,19 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as ActivityChangePasswordBinding
         mBinding.lifecycleOwner = this
+        mViewModel = ViewModelProviders.of(this).get(ChangePasswordViewModel::class.java)
+        mViewModel.navigator = this
+        mViewDataBinding.changePasswordViewModel = mViewModel
+
         mViewModel = provideViewModel {
             ChangePasswordViewModel()
         }
-        // mBinding.changePasswordViewModel=mViewModel
-        mBinding.toolbar.tvToolbarTitle.text =
-                resources.getString(R.string.title_change_password)
+        mBinding.toolbar.tvToolbarTitle.text = resources.getString(R.string.title_change_password)
         mBinding.toolbar.ivToolbarBack.setOnClickListener(this::onBackClicked)
         mBinding.tietConfirmPassword.setOnEditorActionListener(this::onEditorAction)
         observeViewModel()
+
+        btProceed.setOnClickListener { performValidation() }
     }
 
     private fun observeViewModel() {
@@ -81,8 +87,6 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>(),
         }
         else -> true
     }
-
-    override fun onChangePasswordClicked() = performValidation()
 
     override fun showError(error: String) {
         loadingObservable.value = false

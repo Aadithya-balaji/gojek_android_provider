@@ -42,7 +42,7 @@ data class HistoryModel(
                     val id: Int? = 0,
                     val last_name: String? = "",
                     val picture: String? = "",
-                    val rating: String? = ""
+                    val rating: Double? = 0.0
             )
 
             data class Payment(

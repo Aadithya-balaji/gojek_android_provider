@@ -161,9 +161,9 @@
                         <TextView
                             android:id="@+id/loc_name_tv"
                             style="@style/MediumText"
-                            android:fontFamily="@font/avenirltstd_medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:paddingStart="@dimen/_3sdp"
                             android:paddingEnd="@dimen/_3sdp"
                             android:text="@string/dummy_resturant_name"
@@ -171,10 +171,10 @@
 
                         <TextView
                             android:id="@+id/loc_address_tv"
-                            android:fontFamily="@font/avenirltstd_medium"
                             style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/avenirltstd_medium"
                             android:padding="@dimen/_3sdp"
                             android:text="@string/dummy_address" />
 
@@ -233,10 +233,10 @@
                         style="@style/MediumText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/delivered_time_tv"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:paddingStart="@dimen/_2sdp"
                         android:paddingEnd="@dimen/_2sdp"
                         android:text="@string/dummy_order_id"
@@ -249,10 +249,10 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:visibility="invisible"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/dummy_time"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:visibility="invisible" />
 
                 </RelativeLayout>
 
@@ -266,8 +266,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_5sdp"
-                    android:overScrollMode="never"
                     android:adapter="@{orderItemListAdpter}"
+                    android:overScrollMode="never"
                     android:padding="@dimen/_5sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -289,21 +289,21 @@
                     <TextView
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/item_total_tv"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/item_total"/>
+                        android:text="@string/item_total" />
 
                     <TextView
                         android:id="@+id/item_total_tv"
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total" />
                 </RelativeLayout>
@@ -317,11 +317,11 @@
 
                     <TextView
                         style="@style/SmallText"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/servicetax_tv"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/service_tax" />
 
@@ -329,10 +329,10 @@
                         android:id="@+id/servicetax_tv"
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total" />
                 </RelativeLayout>
@@ -346,22 +346,22 @@
 
                     <TextView
                         style="@style/SmallText"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/delivery_charge_tv"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/delivery_charge_tv"/>
+                        android:text="@string/delivery_charge_tv" />
 
                     <TextView
                         android:id="@+id/delivery_charge_tv"
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total" />
                 </RelativeLayout>
@@ -377,22 +377,22 @@
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/package_amount_tv"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/package_amount"/>
+                        android:text="@string/package_amount" />
 
                     <TextView
                         android:id="@+id/package_amount_tv"
                         style="@style/SmallText"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/dummy_item_total"/>
+                        android:text="@string/dummy_item_total" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -407,19 +407,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_toStartOf="@+id/wallet_amount_tv"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/wallet_amount"/>
+                        android:text="@string/wallet_amount" />
 
                     <TextView
                         android:id="@+id/wallet_amount_tv"
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total" />
                 </RelativeLayout>
@@ -436,8 +436,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_toStartOf="@+id/promocode_deduction_tv"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/promocode_deduction" />
 
@@ -445,12 +445,12 @@
                         android:id="@+id/promocode_deduction_tv"
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/dummy_item_total"/>
+                        android:text="@string/dummy_item_total" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -464,20 +464,20 @@
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_alignParentStart="true"
                         android:layout_toStartOf="@+id/discount_amount_tv"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
-                        android:text="@string/discount_amount"/>
+                        android:text="@string/discount_amount" />
 
                     <TextView
                         android:id="@+id/discount_amount_tv"
                         style="@style/SmallText"
                         android:layout_width="wrap_content"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total" />
                 </RelativeLayout>
@@ -502,8 +502,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_toStartOf="@+id/total_value_tv"
-                        android:padding="@dimen/_3sdp"
                         android:fontFamily="@font/avenirltstd_medium"
+                        android:padding="@dimen/_3sdp"
                         android:text="@string/total"
                         android:textColor="@color/black" />
 
@@ -513,8 +513,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:fontFamily="@font/avenirltstd_medium"
                         android:layout_marginEnd="@dimen/_15sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total"
                         android:textColor="@color/black" />
@@ -535,13 +535,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/order_status_btn"
+            style="@style/SmallText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            style="@style/SmallText"
-            android:fontFamily="@font/avenirltstd_medium"
             android:layout_margin="@dimen/_10sdp"
             android:backgroundTint="@color/food_red"
+            android:fontFamily="@font/avenirltstd_medium"
             android:onClick="@{() -> foodLiveTaskviewModel.updateFoodDeliverStatus()}"
             android:padding="@dimen/_11sdp"
             android:text="@string/started_towards_restaturant"

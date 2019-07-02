@@ -43,13 +43,13 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
         if (selectedService.isNotEmpty()) {
             var i = 0
             selectedService.forEach {
-                params["service[$i][service_id]"] = (it.id)
+                params["service[$i][service_id]"] = (it.id.toString())
                 when (it.fareType) {
-                    FIXED -> params["service[$i][base_fare]"] = (it.baseFare)
-                    HOURLY -> params["service[$i][per_mins]"] = (it.perMin)
+                    FIXED -> params["service[$i][base_fare]"] = (it.baseFare.toString())
+                    HOURLY -> params["service[$i][per_mins]"] = (it.perMin.toString())
                     DISTANCE_TIME -> {
-                        params["service[$i][per_mins]"] = (it.perMin)
-                        params["service[$i][per_miles]"] = (it.perMiles)
+                        params["service[$i][per_mins]"] = (it.perMin.toString())
+                        params["service[$i][per_miles]"] = (it.perMiles.toString())
                     }
                 }
                 i += 1

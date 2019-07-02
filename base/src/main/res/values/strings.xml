@@ -14,5 +14,15 @@
     <string name="low_battery">Your battery is low</string>
     <string name="chat">Chat</string>
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
-    <string name="location_permissing_missing">Location permission missing...</string>
+    <string name="location_permissing_missing">Location permission missing…</string>
+
+    <!--Map Error Strings-->
+    <string name="NoRoadMapAvailable">No road map available…</string>
+    <string name="WayPointLlimitExceeded">Way point limit exceeded…</string>
+    <string name="RoadMapLimitExceeded">Road map limit exceeded…</string>
+    <string name="InvalidInputs">Invalid inputs…</string>
+    <string name="MayBeInvalidAPIBillingPendingMethodDeprecated">MayBe invalid API/Billing pending/Method Deprecated…</string>
+    <string name="TooManyRequestlimitExceeded">Too many request, limit exceeded…</string>
+    <string name="DirectionsServiceNotEnabled">Directions service not enabled…</string>
+    <string name="ServerError">Server Error…</string>
 </resources>

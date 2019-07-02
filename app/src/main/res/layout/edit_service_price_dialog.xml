@@ -117,6 +117,9 @@
                 android:textColor="@color/card_left_bg"
                 android:textSize="@dimen/_14sdp"
                 tools:ignore="RelativeOverlap" />
+
         </RelativeLayout>
+
     </LinearLayout>
+
 </layout>

@@ -40,7 +40,7 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     fun callTaxiCheckStatusAPI() {
         if (BaseApplication.isNetworkAvailable)
-            if (latitude.value!! > 0 && longitude.value!! > 0)
+            if (latitude.value!! != 0.0 && longitude.value!! != 0.0 )
                 getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
                     override fun success(successData: Any) {
                         checkStatusTaxiLiveData.value = successData as CheckRequestModel

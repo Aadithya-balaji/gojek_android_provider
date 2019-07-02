@@ -14,6 +14,8 @@ android {
         vectorDrawables.useSupportLibrary = true
 
         resValue("string", "google_map_key", "AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY")
+        buildConfigField "boolean", "ENABLE_TIMER_CALL", "true"
+
 //        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
         //      Development

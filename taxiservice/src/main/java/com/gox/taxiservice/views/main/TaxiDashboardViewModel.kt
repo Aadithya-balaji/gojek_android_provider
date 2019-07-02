@@ -35,6 +35,9 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     var showLoading = MutableLiveData<Boolean>()
 
+    fun showCurrentLocation() = navigator.showCurrentLocation()
+
+
     fun callTaxiCheckStatusAPI() {
         if (BaseApplication.isNetworkAvailable)
             if (latitude.value!! > 0 && longitude.value!! > 0)

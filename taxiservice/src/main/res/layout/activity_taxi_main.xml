@@ -7,6 +7,8 @@
         <variable
             name="taximainmodule"
             type="com.gox.taxiservice.views.main.TaxiDashboardViewModel" />
+
+
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -14,11 +16,31 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/taxi_map_fragment"
-            class="com.google.android.gms.maps.SupportMapFragment"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/taxi_map_fragment"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabCurrentLocation"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:onClick="@{() -> taximainmodule.showCurrentLocation()}"
+                android:scaleType="center"
+                app:backgroundTint="@color/colorWhite"
+                app:fabCustomSize="50dp"
+                app:srcCompat="@drawable/ic_current_location" />
+        </RelativeLayout>
+
 
         <include
             layout="@layout/layout_taxi_status_container"
@@ -37,7 +59,6 @@
         <!--app:behavior_hideable="false"-->
         <!--app:behavior_peekHeight="100dp"-->
         <!--app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />-->
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

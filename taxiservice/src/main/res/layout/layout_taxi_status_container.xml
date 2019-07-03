@@ -36,6 +36,7 @@
                 android:background="@drawable/bg_black_circle"
                 android:gravity="center"
                 android:text="@string/taxi_sos"
+                android:visibility="gone"
                 android:textColor="@color/taxi_bg_yellow"
                 android:textSize="@dimen/_10sdp" />
 

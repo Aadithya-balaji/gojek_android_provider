@@ -4,5 +4,7 @@ interface TaxiDashboardNavigator{
 
     fun showErrorMessage(error: String)
     fun updateCurrentLocation()
+    fun showCurrentLocation()
+
 
 }

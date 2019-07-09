@@ -1,5 +1,6 @@
 package com.gox.taxiservice.views.main
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
@@ -80,6 +81,11 @@ import com.gox.taxiservice.views.invoice.TaxiInvoiceActivity
 import com.gox.taxiservice.views.reasons.TaxiCancelReasonFragment
 import com.gox.taxiservice.views.tollcharge.TollChargeDialog
 import com.gox.taxiservice.views.verifyotp.VerifyOtpDialog
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import kotlinx.android.synthetic.main.layout_taxi_status_container.*
@@ -100,6 +106,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         GoogleMap.OnCameraIdleListener,
         View.OnClickListener {
 
+
+    private var curretntLat: Double = 0.0
+    private var currentlong: Double = 0.0
     private lateinit var mSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var mBinding: ActivityTaxiMainBinding
     private lateinit var mViewModel: TaxiDashboardViewModel
@@ -112,6 +121,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var mGoogleMap: GoogleMap? = null
     private var mPolyline: Polyline? = null
     private var polyUtil = PolyUtil()
+    private var providerMarker: Marker? = null
+
 
     private var srcMarker: Marker? = null
     private var isWaitingTime: Boolean? = false
@@ -247,6 +258,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
+        providerMarker?.remove()
+        try {
+            providerMarker = mGoogleMap?.addMarker(MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap
+            (bitmapFromVector(BaseApplication.getBaseApplicationContext, R.drawable.ic_marker_provider))))
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
         if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
     }
@@ -261,10 +280,26 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mViewModel.checkStatusTaxiLiveData.observe(this, Observer { checkStatusResponse ->
             if (checkStatusResponse?.statusCode.equals("200")) try {
                 mViewModel.showLoading.value = false
+
+
                 if (!checkStatusResponse.responseData.request.status.isNullOrEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
+
+
+                    if (curretntLat != 0.0 || curretntLat != checkStatusResponse.responseData.request.s_latitude &&
+                            currentlong != 0.0 || currentlong != checkStatusResponse.responseData.request.s_longitude) {
+
+                        mViewModel.currentStatus.value = ""
+
+                    }
+
+
                     //if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
+
+                        curretntLat = checkStatusResponse.responseData.request.s_latitude!!
+                        currentlong = checkStatusResponse.responseData.request.s_longitude!!
+
                         writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY,
                                 checkStatusResponse.responseData.provider_details.id)
                         mViewModel.currentStatus.value = checkStatusResponse.responseData.request.status
@@ -307,7 +342,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                             ARRIVED -> whenStatusArrived(checkStatusResponse.responseData)
 
-                            PICKED_UP -> whenStatusPickedUp(checkStatusResponse.responseData)
+                            PICKED_UP -> {
+                                tvSos.visibility = View.VISIBLE
+                                whenStatusPickedUp(checkStatusResponse.responseData)
+                            }
 
                             DROPPED -> {
                                 println("RRR :: inside DROPPED = ")
@@ -433,8 +471,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btn_picked_up.visibility = View.GONE
         llWaitingTimeContainer.visibility = View.GONE
 
-        Glide
-                .with(this)
+        Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
                         .placeholder(R.drawable.ic_profile_placeholder)
@@ -476,10 +513,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btn_cancel.visibility = View.VISIBLE
         btn_arrived.visibility = View.GONE
         btn_picked_up.visibility = View.VISIBLE
-        llWaitingTimeContainer.visibility = View.VISIBLE
+        llWaitingTimeContainer.visibility = View.GONE
 
-        Glide
-                .with(this)
+        Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
                         .placeholder(R.drawable.ic_profile_placeholder)
@@ -1023,5 +1059,20 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             DistanceProcessing(this).execute(DistanceUtils().getUrl(list.subList(0, 24), key))
             googleApiCall(list.subList(25, list.size - 1), key)
         } else DistanceProcessing(this).execute(DistanceUtils().getUrl(list, key))
+    }
+
+    override fun showCurrentLocation() {
+
+        Dexter.withActivity(this)
+                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        updateCurrentLocation()
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                        token?.continuePermissionRequest()
+                    }
+                }).check()
     }
 }

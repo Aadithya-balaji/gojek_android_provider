@@ -39,7 +39,6 @@ import com.gox.partner.views.countrypicker.CountryCodeActivity
 import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.forgot_password.ForgotPasswordActivity
 import com.gox.partner.views.signup.RegistrationActivity
-import java.util.*
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.LoginNavigator, ViewUtils.ViewCallBack {
 
@@ -80,6 +79,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
             resultIntent.putExtra("countryCode", countryModel.dialCode)
             resultIntent.putExtra("countryFlag", countryModel.flag)
         }
+
         handleCountryCodePickerResult(resultIntent)
 
         if (BuildConfig.DEBUG) {
@@ -178,8 +178,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         mBinding.passwordRegisterEt.setText("")
         mBinding.tilEmail.visibility = View.GONE
         mBinding.llPhoneNumber.visibility = View.VISIBLE
-        mBinding.phoneSigninImgview.setColorFilter(ContextCompat.getColor(this@LoginActivity, R.color.colorAccent))
-        mBinding.mailSinginImgview.setColorFilter(ContextCompat.getColor(this@LoginActivity, R.color.dark_grey))
+        mBinding.phoneSigninImgview.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
+        mBinding.mailSinginImgview.setColorFilter(ContextCompat.getColor(this, R.color.dark_grey))
         mBinding.phoneSigninImgview.setBackgroundResource((R.drawable.login_icon_selected_bg))
         mBinding.mailSinginImgview.setBackgroundResource((R.drawable.login_icon_normal_bg))
     }
@@ -189,8 +189,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         mBinding.passwordRegisterEt.setText("")
         mBinding.llPhoneNumber.visibility = View.GONE
         mBinding.tilEmail.visibility = View.VISIBLE
-        mBinding.phoneSigninImgview.setColorFilter(ContextCompat.getColor(this@LoginActivity, R.color.dark_grey))
-        mBinding.mailSinginImgview.setColorFilter(ContextCompat.getColor(this@LoginActivity, R.color.colorAccent))
+        mBinding.phoneSigninImgview.setColorFilter(ContextCompat.getColor(this, R.color.dark_grey))
+        mBinding.mailSinginImgview.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
         mBinding.phoneSigninImgview.setBackgroundResource((R.drawable.login_icon_normal_bg))
         mBinding.mailSinginImgview.setBackgroundResource((R.drawable.login_icon_selected_bg))
     }
@@ -219,29 +219,27 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         } else {
             isFacebookLoginClicked = true
             callbackManager = CallbackManager.Factory.create()
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email"))
-            LoginManager.getInstance().registerCallback(callbackManager,
-                    object : FacebookCallback<LoginResult> {
-                        override fun onSuccess(loginResult: LoginResult) {
-                            Logger.i(TAG, loginResult.accessToken.token)
-                            mViewModel.postSocialLogin(false, loginResult.accessToken.userId)
-                        }
+            LoginManager.getInstance().logInWithReadPermissions(this, listOf("email"))
+            LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+                override fun onSuccess(loginResult: LoginResult) {
+                    Logger.i(TAG, loginResult.accessToken.token)
+                    mViewModel.postSocialLogin(false, loginResult.accessToken.userId)
+                }
 
-                        override fun onCancel() {
-                            Logger.i(TAG, "FacebookLoginResult:Cancelled")
-                        }
+                override fun onCancel() {
+                    Logger.i(TAG, "FacebookLoginResult:Cancelled")
+                }
 
-                        override fun onError(exception: FacebookException) {
-                            Logger.e(TAG, "FacebookLoginResult:Error=" + exception.message)
-                        }
-                    })
+                override fun onError(exception: FacebookException) {
+                    Logger.e(TAG, "FacebookLoginResult:Error=" + exception.message)
+                }
+            })
         }
     }
 
     override fun showAlert(message: String) {
         loadingObservable.value = false
-        ViewUtils.showAlert(this, message, resources.getString(R.string.action_sign_up),
-                resources.getString(R.string.action_cancel), this)
+        ViewUtils.showAlert(this, message, resources.getString(R.string.action_sign_up), resources.getString(R.string.action_cancel), this)
     }
 
     override fun showError(error: String) {

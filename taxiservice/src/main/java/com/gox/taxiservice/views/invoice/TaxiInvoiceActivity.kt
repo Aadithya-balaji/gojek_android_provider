@@ -25,9 +25,10 @@ import java.util.*
 
 class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvoiceNavigator {
 
+    private lateinit var mViewModel: TaxiInvoiceViewModel
+
     private var isRatingShown: Boolean = false
     private var mBinding: ActivityInvoiceTaxiBinding? = null
-    private lateinit var mViewModel: TaxiInvoiceViewModel
     private var requestModel: ResponseData? = null
     //    private var strCheckRequestModel: String? = null
     private var checkRequestTimer: Timer? = null
@@ -49,11 +50,8 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         checkRequestTimer = Timer()
 
         checkRequestTimer!!.schedule(object : TimerTask() {
-            override fun run() {
-                mViewModel.callTaxiCheckStatusAPI()
-            }
+            override fun run() = mViewModel.callTaxiCheckStatusAPI()
         }, 0, 5000)
-
 
         getApiResponse()
     }
@@ -68,8 +66,6 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
             if (it?.statusCode.equals("200")) {
                 getIntentValues(it.responseData)
                 when (it.responseData.request.status) {
-
-
                     Constants.RideStatus.COMPLETED -> {
                         println("RRR :: inside COMPLETED = ")
                         if (it.responseData.request.paid == 1 && !isRatingShown) {
@@ -78,12 +74,8 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                         }
                     }
                 }
-
-
             }
-
         }
-
 
         /*  mViewModel.checkStatusTaxiLiveData.observe(this, androidx.lifecycle.Observer {
               if (it?.statusCode.equals("200"))
@@ -110,11 +102,9 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         requestModel = strCheckRequestModel
         if (requestModel != null) {
 
-            if (requestModel!!.request.payment_mode.equals("CASH")) {
+            if (requestModel!!.request.payment_mode == "CASH") {
                 tv_confirm_payment.visibility = View.VISIBLE
-            } else {
-                tv_confirm_payment.visibility = View.GONE
-            }
+            } else tv_confirm_payment.visibility = View.GONE
 
             mViewModel.pickuplocation.value = requestModel!!.request.s_address
             mViewModel.dropLocation.value = requestModel!!.request.d_address

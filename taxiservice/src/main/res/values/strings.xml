@@ -74,5 +74,6 @@
     <string name="toll_charge_desc">Do you have any Toll charge</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="click_back_exit">Please click back again to exit</string>
 
 </resources>

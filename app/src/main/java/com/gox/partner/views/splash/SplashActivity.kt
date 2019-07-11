@@ -24,6 +24,7 @@ import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.extensions.readPreferences
 import com.gox.base.extensions.writePreferences
+import com.gox.base.locationTest.MainActivity
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivitySplashBinding
 import com.gox.partner.models.ConfigResponseModel
@@ -64,7 +65,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                         Log.w("Tag", "getInstanceId failed", task.exception)
                         return@OnCompleteListener
                     }
-
                     println("RRR :: FCMtoken = ${task.result?.token}")
                     customPreference.edit().putString(PreferencesKey.DEVICE_TOKEN, task.result?.token).apply()
                 })
@@ -145,6 +145,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             if (readPreferences(PreferencesKey.ACCESS_TOKEN, "")!! == "")
                 openActivity(OnBoardActivity::class.java, true)
             else openActivity(DashBoardActivity::class.java, true)
+
+//            openActivity(MainActivity::class.java, true)
         }
     }
 

@@ -71,6 +71,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
         observeViewModel()
 
+
         txt_category_selection.setOnClickListener {
             spinnerCarCategory.expand()
         }

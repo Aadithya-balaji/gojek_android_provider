@@ -183,7 +183,10 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     private fun getApiResponse() {
         loadingObservable.value = false
         observeLiveData(mViewModel.getRegistrationLiveData()) {
-            if (mViewModel.getRegistrationObserverValue()!!.statusCode.equals("200")) verifyPhoneNumber()
+//            if (mViewModel.getRegistrationObserverValue()!!.statusCode.equals("200")) verifyPhoneNumber()
+            if (mViewModel.getRegistrationObserverValue()!!.statusCode.equals("200")){
+                redirectToHome()
+            }
         }
 
         observeLiveData(mViewModel.getCountryLiveData()) {
@@ -192,6 +195,14 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             intent.putExtra("countrylistresponse", it as Serializable)
             startActivityForResult(intent, COUNTRYLIST_REQUEST_CODE)
         }
+    }
+
+    private fun redirectToHome() {
+        writePreferences(PreferencesKey.ACCESS_TOKEN, mViewModel.getRegistrationLiveData()
+                .value!!.responseData!!.accessToken)
+        val dashBoardIntent = Intent(this, DashBoardActivity::class.java)
+        dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        openActivity(dashBoardIntent, true)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -229,11 +240,12 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                 }
 
                 FB_ACCOUNT_KIT_CODE -> {
-                    writePreferences(PreferencesKey.ACCESS_TOKEN, mViewModel.getRegistrationLiveData()
+                    /*writePreferences(PreferencesKey.ACCESS_TOKEN, mViewModel.getRegistrationLiveData()
                             .value!!.responseData!!.accessToken)
                     val dashBoardIntent = Intent(this, DashBoardActivity::class.java)
                     dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                    openActivity(dashBoardIntent, true)
+                    openActivity(dashBoardIntent, true)*/
+                    mViewModel.postSignUp()
                 }
 
                 GOOGLE_REQ_CODE -> {
@@ -491,7 +503,8 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                         profileFile.name, RequestBody.create(MediaType.parse("image*//*"), profileFile))
                 mViewModel.fileName.value = filePart
             }
-            mViewModel.postSignUp()
+//            mViewModel.postSignUp()
+            verifyPhoneNumber()
         } else ViewUtils.showToast(this, message, false)
     }
 

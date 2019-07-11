@@ -11,6 +11,7 @@ import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.R
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
+import com.gox.base.data.PreferencesKey
 import com.gox.base.databinding.ActivityChatMainBinding
 import com.gox.base.extensions.readPreferences
 import com.gox.base.socket.SocketManager
@@ -36,6 +37,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     private val serviceType = readPreferences(Constants.Chat.ADMIN_SERVICE, "")
     private val providerName = readPreferences(Constants.Chat.PROVIDER_NAME, "")
     private val adminService = readPreferences(Constants.Chat.ADMIN_SERVICE, "")
+    private val baseUrl = readPreferences(PreferencesKey.TRANSPORT_URL, "")
 
     override fun getLayoutId() = R.layout.activity_chat_main
 
@@ -80,7 +82,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         mBinding.messages.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
             if (bottom < oldBottom) mBinding.messages.postDelayed({
                 mBinding.messages.smoothScrollToPosition(
-                        mBinding.messages.adapter!!.itemCount - 1)
+                        mBinding.mbuildConfigFieldessages.adapter!!.itemCount - 1)
             }, 100)
         }
 
@@ -90,7 +92,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
             if (mBinding.messageInput.text!!.isNotEmpty()) {
                 message = mBinding.messageInput.text.toString()
                 chatRequestModel.roomName = roomName!!
-                chatRequestModel.url = "$BASE_URL/chat"
+                chatRequestModel.url = "$baseUrl/chat"
                 chatRequestModel.saltKey = SALT_KEY
                 chatRequestModel.requestId = requestId!!
                 chatRequestModel.adminService = adminService!!

@@ -61,7 +61,8 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     private fun getApiResponse() {
         observeLiveData(mViewModel.paymentLiveData) {
             if (mViewModel.paymentLiveData.value != null)
-                if (mViewModel.paymentLiveData.value!!.statusCode == "200") openRatingDialog(requestModel)
+                if (mViewModel.paymentLiveData.value!!.statusCode == "200")
+                    openRatingDialog(requestModel)
         }
         observeLiveData(mViewModel.checkStatusTaxiLiveData) {
             if (it?.statusCode.equals("200")) {
@@ -153,9 +154,10 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
             if (address.isNotEmpty()) mViewModel.dropLocation.value = address[0].getAddressLine(0)
         }
 
-        if (requestModel!!.request.paid == 1 && !isRatingShown){
+        if (requestModel!!.request.paid == 1 && !isRatingShown) {
             isRatingShown = true
-            openRatingDialog(requestModel)}
+            openRatingDialog(requestModel)
+        }
 
     }
 
@@ -182,7 +184,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         val bundle = Bundle()
         bundle.putString("id", data!!.request.id.toString())
         bundle.putString("admin_service_id", data.provider_details.service.admin_service_id.toString())
-        bundle.putString("profileImg", data.request.user.picture.toString())
+        bundle.putString("profileImg", data.request.user.picture)
         bundle.putString("name", data.request.user.first_name + " " + data.request.user.last_name)
         bundle.putString("bookingID", data.request.booking_id)
         val ratingFragment = TaxiRatingFragment(bundle)

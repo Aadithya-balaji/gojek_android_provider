@@ -339,7 +339,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN)
     override fun checkOrderDeliverStatus() {
-        when (order_status_btn.text) {
+        when (order_status_btn.text.toString()) {
             getString(R.string.started_towards_restaturant) -> mViewModel.callFoodieUpdateRequest("STARTED")
             getString(R.string.reached_restaurant) -> mViewModel.callFoodieUpdateRequest("REACHED")
             getString(R.string.order_picked_up) -> mViewModel.callFoodieUpdateRequest("PICKEDUP")

@@ -717,7 +717,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         println("----->     RRR ~.polyLineRerouting     <-----")
         println("RRR containsLocation = " + polyUtil.containsLocation(point, polyLine, true))
         println("RRR isLocationOnEdge = " + polyUtil.isLocationOnEdge(point, polyLine, true, 50.0))
-        println("RRR locationIndexOnPath = " + polyUtil.locationIndexOnPath(point, polyLine, true, 50.0))
+        println("RRR locationIndexOnPath = " +polyUtil.locationIndexOnPath(point, polyLine, true, 50.0))
         println("RRR locationIndexOnEdgeOrPath = " + polyUtil.locationIndexOnEdgeOrPath
         (point, polyLine, false, true, 50.0))
 
@@ -917,12 +917,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val h = (time / 3600000).toInt()
             val m = (time - h * 3600000).toInt() / 60000
             val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
+
             val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" +
                     (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
             cmWaiting.text = formattedTime
             if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingStatus == 1) cmWaiting.start()
             isWaitingTime = true
-            changeWaitingTimeBackground(true)
         } else {
             isWaitingTime = false
             changeWaitingTimeBackground(false)
@@ -930,7 +930,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun changeWaitingTimeBackground(isWaitingTime: Boolean) {
-        if (isWaitingTime) {
+        if (!isWaitingTime) {
             btnWaiting.backgroundTintList = ContextCompat.getColorStateList(this, R.color.taxi_bg_yellow)
             btnWaiting.setTextColor(ContextCompat.getColor(this, R.color.white))
         } else {

@@ -363,4 +363,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     override fun getInstance(): DashBoardActivity = this@DashBoardActivity
 
+
+    override fun onPause() {
+        super.onPause()
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
+
+
+    }
 }

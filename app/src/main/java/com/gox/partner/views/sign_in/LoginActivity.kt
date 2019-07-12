@@ -205,7 +205,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
     override fun onLoginClicked() = performValidation()
 
     override fun onGoogleLoginClicked() {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.google_signin_server_client_id)).requestEmail().build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
         startActivityForResult(mGoogleSignInClient!!.signInIntent, Enums.RC_GOOGLE_SIGN_IN)
     }

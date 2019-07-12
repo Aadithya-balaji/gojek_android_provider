@@ -27,7 +27,7 @@ android {
         multiDexEnabled true
 
         resValue("string", "app_name", "GoX Provider")
-        resValue("string", "google_signin_server_client_id", "602657530672-otdsmtkdip8bvf3miqhcfcdpn2mp6qr2.apps.googleusercontent.com")
+        resValue("string", "google_signin_server_client_id", "708455232400-n8p5omqpqoi0f2j4ncbfhmk21vntl8ct.apps.googleusercontent.com")
         resValue("string", "facebook_app_id", "394261008038577")
         resValue("string", "facebook_accountkit_id", "86a614c0d50f8e010c15b3b92a26dfb4")
         resValue("string", "fb_login_protocol_scheme", "fb394261008038577")

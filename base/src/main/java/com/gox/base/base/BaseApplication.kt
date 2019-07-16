@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.multidex.MultiDex
 import com.facebook.stetho.Stetho
 import com.gox.base.BatteryChargeReceiver
+import com.gox.base.BuildConfig
 import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesHelper
 import com.gox.base.di.BaseComponent
@@ -45,6 +46,7 @@ open class BaseApplication : Application(), InternetConnectivityListener {
         MonitorInternet.init(this)
         mMonitorInternet = MonitorInternet.instance!!
         mMonitorInternet!!.addInternetConnectivityListener(this)
+        if(BuildConfig.DEBUG)
         Stetho.initializeWithDefaults(this)
         PreferencesHelper.setDefaultPreferences(this)
         preferences = getSharedPreferences(Constants.CUSTOM_PREFERENCE, Context.MODE_PRIVATE)

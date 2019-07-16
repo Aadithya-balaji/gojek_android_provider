@@ -82,7 +82,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
         mBinding.messages.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
             if (bottom < oldBottom) mBinding.messages.postDelayed({
                 mBinding.messages.smoothScrollToPosition(
-                        mBinding.mbuildConfigFieldessages.adapter!!.itemCount - 1)
+                        mBinding.messages.adapter!!.itemCount - 1)
             }, 100)
         }
 

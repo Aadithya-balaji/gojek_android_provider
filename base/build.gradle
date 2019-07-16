@@ -26,6 +26,9 @@ android {
 //        buildConfigField("String", "BASE_URL", '"https://api.gojekclone.co/"')
 
         buildConfigField("String", "SALT_KEY", '"MQ=="')
+
+        buildConfigField "String", "google_signin_server_client_id", '"708455232400-n8p5omqpqoi0f2j4ncbfhmk21vntl8ct.apps.googleusercontent.com"'
+
     }
 
     buildTypes {

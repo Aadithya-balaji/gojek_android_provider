@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.text.TextUtils
 import android.util.Log
+import android.util.TypedValue
 import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableField
 import androidx.databinding.ViewDataBinding
@@ -29,6 +30,7 @@ import com.gox.partner.R
 import com.gox.partner.databinding.ActivityEditProfileBinding
 import com.gox.partner.models.City
 import com.gox.partner.models.CountryListResponse
+import com.gox.partner.models.CountryModel
 import com.gox.partner.models.CountryResponseData
 import com.gox.partner.utils.Country
 import com.gox.partner.views.change_password.ChangePasswordActivity
@@ -59,6 +61,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     private var mCropImageUri: Uri? = null
     private var localPath: Uri? = null
     private var mMobileNumberFlag = 0
+    private lateinit var countryDetail: List<CountryModel>
 
     override fun getLayoutId() = R.layout.activity_edit_profile
 
@@ -95,6 +98,11 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
 
         mViewModel.mProfileResponse.observe(this, Observer { response ->
+
+            countryDetail = Country.getAllCountries().filter { countryModel ->
+                countryModel.code == response.profileData.country.country_code
+            }
+
             mViewModel.mUserName.set(response.profileData.first_name)
             mViewModel.mMobileNumber.set(response.profileData.mobile)
             mViewModel.mEmail.set(response.profileData.email)
@@ -102,32 +110,39 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             mViewModel.mCountry.set(response.profileData.country.country_name)
             mViewModel.mCountryId.set(response.profileData.country.id.toString())
             mViewModel.mCityId.set(response.profileData.city.id.toString())
+            mViewModel.mCountryCode.set(" +" + response.profileData.country.country_phonecode)
+
+            val drawableId = countryDetail[0].flag
+            val dr = ContextCompat.getDrawable(this, drawableId)
+            val bitmap = (dr as BitmapDrawable).bitmap
+
+            var width: Int = 0
+            var height: Int = 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                width = dpsToPixels(this@ProfileActivity, 5)
+                height = dpsToPixels(this@ProfileActivity, 5)
+            } else {
+                width = dpsToPixels(this@ProfileActivity, 15)
+                height = dpsToPixels(this@ProfileActivity, 15)
+            }
+
+            val d = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
+            countrycode_register_et.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null)
 
             if (!response.profileData.picture.isNullOrEmpty())
                 glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture, R.drawable.ic_user_place_holder)
 
-            handleCountryCodePickerResult(response.profileData.country.country_name)
         })
 
         setOnclickListeners()
     }
 
-    private fun handleCountryCodePickerResult(country: String?) {
-        var countryFlag = 0
-
-        for (countryList in Country.getAllCountries())
-            if (country!!.contains(countryList.name)) {
-                countryFlag = countryList.flag
-                mViewModel.mCountryCode.set(countryList.dialCode)
-            }
-
-        val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
-        if (leftDrawable != null) {
-            val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 50, 50, true))
-            countrycode_register_et.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
-        }
+    private fun dpsToPixels(activity: Activity, dps: Int): Int {
+        val r = activity.resources
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dps.toFloat(), r.displayMetrics).toInt()
     }
+
 
     override fun goToChangePasswordActivity() =
             openActivity(ChangePasswordActivity::class.java, true)

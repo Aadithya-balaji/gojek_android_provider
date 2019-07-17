@@ -184,11 +184,17 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         xUberInvoiceModel.extraCharge.value = extraCharge.replace("$", "")
         if (!xUberInvoiceModel.extraCharge.value.isNullOrEmpty()) {
             var totalAmount = xUberInvoiceModel.totalAmount.value!!.toDouble()
-            val extAmount = xUberInvoiceModel.extraCharge.value!!.toDouble()
+            var extAmount: Double = 0.0
+            if (!xUberInvoiceModel.extraCharge.value!!.equals("null",true) && !xUberInvoiceModel.extraCharge.value!!.isEmpty()) {
+                extAmount = xUberInvoiceModel.extraCharge.value!!.toDouble()
+            } else {
+                extAmount = 0.0
+
+            }
             totalAmount -= extraAmount!!
             extraAmount = extAmount
             val total = totalAmount + extAmount
-            xUberInvoiceModel.totalAmount.value = total.toString()
+            xUberInvoiceModel.totalAmount.value = String.format("%.2f",total).toString()
         }
         if (!extraAmtNotes.isEmpty()) xUberInvoiceModel.extraChargeNotes.value = extraAmtNotes
     }

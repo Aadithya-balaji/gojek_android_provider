@@ -394,26 +394,26 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 }
             }
 
-//            if (canShowTollChargeDialog) ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
-//                    getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
-//                override fun onPositiveButtonClick(dialog: DialogInterface) {
-//                    val tollChargeDialog = TollChargeDialog()
-//                    val bundle = Bundle()
-//                    bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
-//                    tollChargeDialog.arguments = bundle
-//                    tollChargeDialog.show(supportFragmentManager, "tollCharge")
-//                }
-//
-//                override fun onNegativeButtonClick(dialog: DialogInterface) {
-//                    val params: HashMap<String, String> = HashMap()
-//                    params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-//                    params["status"] = DROPPED
-//                    params["_method"] = "PATCH"
-//                    params["toll_price"] = "0"
-//                    mViewModel.taxiDroppingStatus(params)
-//                    dialog.dismiss()
-//                }
-//            })
+            if (canShowTollChargeDialog) ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
+                    getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
+                override fun onPositiveButtonClick(dialog: DialogInterface) {
+                    val tollChargeDialog = TollChargeDialog()
+                    val bundle = Bundle()
+                    bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
+                    tollChargeDialog.arguments = bundle
+                    tollChargeDialog.show(supportFragmentManager, "tollCharge")
+                }
+
+                override fun onNegativeButtonClick(dialog: DialogInterface) {
+                    val params: HashMap<String, String> = HashMap()
+                    params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                    params["status"] = DROPPED
+                    params["_method"] = "PATCH"
+                    params["toll_price"] = "0"
+                    mViewModel.taxiDroppingStatus(params)
+                    dialog.dismiss()
+                }
+            })
         })
 
         mViewModel.taxiCancelRequest.observe(this, Observer<CancelRequestModel> {
@@ -1054,7 +1054,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun googleApiCall(list: MutableList<LatLng>, key: String) {
         mViewModel.showLoading.value = true
         distanceApiCallCount++
-
         if (list.size > 25) {
             DistanceProcessing(this).execute(DistanceUtils().getUrl(list.subList(0, 24), key))
             googleApiCall(list.subList(25, list.size - 1), key)

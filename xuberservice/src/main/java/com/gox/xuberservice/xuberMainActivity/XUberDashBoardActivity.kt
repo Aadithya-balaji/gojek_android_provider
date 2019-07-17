@@ -560,14 +560,18 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     override fun updateService(view: View) {
         when (view.id) {
             R.id.tvAllow -> when (currentStatus) {
-                ARRIVED -> {
+
+                // Update Status As Arrived while the request is in accepted status
+                ACCEPTED -> {
                     if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
                         edtXuperOtp.visibility = View.VISIBLE
                     else edtXuperOtp.visibility = View.GONE
                     mViewModel.updateRequest(ARRIVED, null, false)
                 }
 
-                START -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
+
+                // To Start the Service while the request is in Arrived state
+                ARRIVED -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
                     ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
                 } else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)
                         && mViewModel.otp.value != mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.otp) {
@@ -582,7 +586,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     }
                 }
 
-                COMPLETED -> if (backImgFile == null) {
+                // Complete the service while request is in Started state
+                PICKED_UP -> if (backImgFile == null) {
                     if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_after_image == 1)
                         ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false)
                     else mViewModel.updateRequest(DROPPED, null, false)

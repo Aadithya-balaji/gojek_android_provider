@@ -764,8 +764,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         values.add(distanceProcessing)
-        startActivity(Intent(this, MainActivity::class.java)
-                .putExtra("ResponseData", Gson().toJson(output)))
+        /*startActivity(Intent(this, MainActivity::class.java)
+                .putExtra("ResponseData", Gson().toJson(output)))*/
 
         mViewModel.distanceApiProcessing.postValue(values)
     }

@@ -97,9 +97,24 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
             it.responseData.services.forEach { service ->
                 when (service.admin_service_name) {
-                    TRANSPORT -> customPreference.edit().putString(PreferencesKey.TRANSPORT_URL, service.base_url).apply()
-                    ORDER -> customPreference.edit().putString(PreferencesKey.ORDER_URL, service.base_url).apply()
-                    SERVICE -> customPreference.edit().putString(PreferencesKey.SERVICE_URL, service.base_url).apply()
+                    TRANSPORT -> {
+                        customPreference.edit().putInt(PreferencesKey.TRANSPORT_ID, service.id).apply()
+                        customPreference.edit().putString(PreferencesKey.TRANSPORT_URL, service.base_url).apply()
+                        customPreference.edit().putString(service.id.toString(),
+                                service.base_url + "/").apply()
+                    }
+                    ORDER -> {
+                        customPreference.edit().putInt(PreferencesKey.ORDER_ID, service.id).apply()
+                        customPreference.edit().putString(PreferencesKey.ORDER_URL, service.base_url).apply()
+                        customPreference.edit().putString(service.id.toString(),
+                                service.base_url + "/").apply()
+                    }
+                    SERVICE -> {
+                        customPreference.edit().putInt(PreferencesKey.SERVICE_ID, service.id).apply()
+                        customPreference.edit().putString(PreferencesKey.SERVICE_URL, service.base_url).apply()
+                        customPreference.edit().putString(service.id.toString(),
+                                service.base_url + "/").apply()
+                    }
                 }
             }
 
@@ -114,16 +129,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                 }
             }
 
-            customPreference.edit().putString("0", it.responseData.base_url + "/").apply()
-            customPreference.edit().putInt(PreferencesKey.TRANSPORT_ID, it.responseData.services[0].id).apply()
-            customPreference.edit().putString(it.responseData.services[0].id.toString(),
-                    it.responseData.services[0].base_url + "/").apply()
-            customPreference.edit().putInt(PreferencesKey.ORDER_ID, it.responseData.services[1].id).apply()
-            customPreference.edit().putString(it.responseData.services[1].id.toString(),
-                    it.responseData.services[1].base_url + "/").apply()
-            customPreference.edit().putInt(PreferencesKey.SERVICE_ID, it.responseData.services[2].id).apply()
-            customPreference.edit().putString(it.responseData.services[2].id.toString(),
-                    it.responseData.services[2].base_url + "/").apply()
+
             customPreference.edit().putString(PreferencesKey.PRIVACY_POLICY,
                     it.responseData.appsetting.cmspage.privacypolicy).apply()
             customPreference.edit().putString(PreferencesKey.HELP, it.responseData.appsetting.cmspage.help).apply()

@@ -177,7 +177,7 @@
                             android:layout_height="80dp"
                             android:layout_centerHorizontal="true"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_profile_placeholder" />
+                            android:src="@drawable/ic_user_place_holder" />
 
                         <ImageView
                             android:layout_width="20dp"

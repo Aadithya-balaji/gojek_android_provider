@@ -225,7 +225,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
 
     private fun setUserLocDetails() {
         Glide.with(baseContext).load(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
-                .placeholder(R.drawable.foodie_profile_placeholder).into(resturant_image)
+                .placeholder(R.drawable.ic_user_place_holder).into(resturant_image)
         loc_name_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
                 mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name
         loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address
@@ -262,7 +262,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
         Glide
                 .with(baseContext)
                 .load(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.picture)
-                .placeholder(R.drawable.foodie_profile_placeholder)
+                .placeholder(R.drawable.ic_user_place_holder)
                 .into(resturant_image)
 
         loc_name_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_name

@@ -5,8 +5,10 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.os.Build
 import android.telephony.TelephonyManager
 import android.util.Patterns
+import android.util.TypedValue
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
@@ -82,6 +84,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
 
         handleCountryCodePickerResult(resultIntent)
 
+    //    setDefaultCountry()
+
         if (BuildConfig.DEBUG) {
             mViewModel.email.value = "toni@yopmail.com"
             mViewModel.password.value = "112233"
@@ -109,6 +113,29 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         } else ViewUtils.showToast(applicationContext, message, false)
     }
 
+
+    fun setDefaultCountry(){
+        val dr = ContextCompat.getDrawable(this, R.drawable.flag_india as Int)
+        val bitmap = (dr as BitmapDrawable).bitmap
+        var width:Int=0
+        var height:Int=0
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            width = dpsToPixels(this@LoginActivity, 28)
+            height = dpsToPixels(this@LoginActivity, 8)
+        }else{
+            width = dpsToPixels(this@LoginActivity, 15)
+            height = dpsToPixels(this@LoginActivity, 15)
+        }
+        val d = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
+        mBinding.countrycodeRegisterEt.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null)
+    }
+
+
+    private fun dpsToPixels(activity: Activity, dps: Int): Int    {
+        val r = activity.resources
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dps.toFloat(), r.displayMetrics).toInt()
+    }
     private fun isSignInDataValid(): Boolean {
         if (isEmailLogin) {
             if (mViewModel.email.value.isNullOrBlank()) {
@@ -154,8 +181,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val width: Int = resources.getDimension(R.dimen.flag_width).toInt()
-            val height: Int = resources.getDimension(R.dimen.flag_height).toInt()
+            var width:Int=0
+            var height:Int=0
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                width = dpsToPixels(this@LoginActivity, 8)
+                height = dpsToPixels(this@LoginActivity, 8)
+            }else{
+                width = dpsToPixels(this@LoginActivity, 15)
+                height = dpsToPixels(this@LoginActivity, 15)
+            }
             val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
             mBinding.countrycodeRegisterEt.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }

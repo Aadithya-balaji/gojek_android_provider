@@ -133,8 +133,8 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
                         .centerCrop()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(xUberInvoiceModel.userImage.value)
                 .into(mBinding.ivUserImg)
 

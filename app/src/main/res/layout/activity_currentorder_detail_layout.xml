@@ -118,7 +118,7 @@
                             android:layout_height="@dimen/_50sdp"
                             android:layout_gravity="center"
                             android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_profile_placeholder" />
+                            android:src="@drawable/ic_user_place_holder" />
 
                         <TextView
                             android:id="@+id/provider_name_tv"

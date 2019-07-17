@@ -127,7 +127,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var srcMarker: Marker? = null
     private var isWaitingTime: Boolean? = false
     private var lastWaitingTime: Long? = 0
-    private var isNeedToUpdateWaiting: Boolean = false
+    private var isNeedToUpdateWaiting: Boolean = true
     private var isLocationDialogShown: Boolean = false
     private var isGPSEnabled: Boolean = false
     private var startLatLng = LatLng(0.0, 0.0)
@@ -164,12 +164,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btnWaiting.setOnClickListener(this)
         cmWaiting.onChronometerTickListener = this
         polylineKey = getText(R.string.google_map_key).toString()
-
         if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-
         fab_taxi_menu.isIconAnimated = false
         fab_taxi_menu.setPadding(50, 50, 50, 50)
-
         observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
@@ -193,7 +190,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         initializeMap()
 
         observeLiveDataVariables()
-        isNeedToUpdateWaiting = true
     }
 
     private fun initializeMap() {
@@ -474,8 +470,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(responseData.request.user.picture)
                 .into(civProfile)
 
@@ -518,8 +514,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(responseData.request.user.picture)
                 .into(civProfile)
 
@@ -575,15 +571,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btn_picked_up.visibility = View.GONE
         btn_drop.visibility = View.VISIBLE
         tv_pickup_location.text = getText(R.string.taxi_drop_location)
-
         vl_trip_started.visibility = View.VISIBLE
 
         Glide
                 .with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(responseData.request.user.picture)
                 .into(civProfile)
 
@@ -904,7 +899,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                     val temp: Long = 0
                     if (lastWaitingTime != temp)
                         cmWaiting.base = (cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
-                    else cmWaiting.base = SystemClock.elapsedRealtime()
+
                     if (mViewModel.checkStatusTaxiLiveData.value != null) {
                         val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                         val params = HashMap<String, String>()
@@ -920,26 +915,31 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun setWaitingTime() {
         val time = mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingTime
-
         if (isNeedToUpdateWaiting && time > 0) {
+            isNeedToUpdateWaiting = false
             cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
-            val h = (time / 3600000).toInt()
-            val m = (time - h * 3600000).toInt() / 60000
-            val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-
-            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" +
-                    (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+            val h = ((time * 1000) / 3600000).toInt()
+            val m = ((time * 1000) - h * 3600000).toInt() / 60000
+            val s = ((time * 1000) - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
+            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
             cmWaiting.text = formattedTime
-            if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingStatus == 1) cmWaiting.start()
-            isWaitingTime = true
+            if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingStatus == 1) {
+                cmWaiting.start()
+                isWaitingTime = true
+                changeWaitingTimeBackground(true)
+            }
         } else {
-            isWaitingTime = false
-            changeWaitingTimeBackground(false)
+            if (isWaitingTime == true) {
+                cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
+                changeWaitingTimeBackground(true)
+            } else {
+                changeWaitingTimeBackground(false)
+            }
         }
     }
 
     private fun changeWaitingTimeBackground(isWaitingTime: Boolean) {
-        if (!isWaitingTime) {
+        if (isWaitingTime) {
             btnWaiting.backgroundTintList = ContextCompat.getColorStateList(this, R.color.taxi_bg_yellow)
             btnWaiting.setTextColor(ContextCompat.getColor(this, R.color.white))
         } else {
@@ -1054,7 +1054,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun googleApiCall(list: MutableList<LatLng>, key: String) {
         mViewModel.showLoading.value = true
         distanceApiCallCount++
-
         if (list.size > 25) {
             DistanceProcessing(this).execute(DistanceUtils().getUrl(list.subList(0, 24), key))
             googleApiCall(list.subList(25, list.size - 1), key)

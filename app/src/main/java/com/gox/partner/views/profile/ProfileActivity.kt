@@ -130,7 +130,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             countrycode_register_et.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null)
 
             if (!response.profileData.picture.isNullOrEmpty())
-                glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture, R.drawable.ic_profile_placeholder)
+                glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture, R.drawable.ic_user_place_holder)
 
         })
 
@@ -212,7 +212,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == Activity.RESULT_OK) {
-                    glideSetImageView(mBinding.profileImage, result.uri, R.drawable.ic_profile_placeholder)
+                    glideSetImageView(mBinding.profileImage, result.uri, R.drawable.ic_user_place_holder)
 //                    mBinding.profileImage.setImageURI(result.uri)
                     localPath = result.uri
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)

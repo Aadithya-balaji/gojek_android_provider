@@ -64,8 +64,8 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
                     .with(context!!)
                     .applyDefaultRequestOptions(RequestOptions()
                             .circleCrop()
-                            .placeholder(R.drawable.ic_profile_placeholder)
-                            .error(R.drawable.ic_profile_placeholder))
+                            .placeholder(R.drawable.ic_user_place_holder)
+                            .error(R.drawable.ic_user_place_holder))
                     .load(b.getString("profileImg")!!)
                     .into(civProfileImg)
         } catch (e: Exception) {

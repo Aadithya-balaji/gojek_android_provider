@@ -547,8 +547,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
                         .circleCrop()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(strUrl)
                 .into(mBinding.llBottomService.ivXuperUSer)
     }
@@ -670,8 +670,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
         if (!allowImage.isNullOrEmpty()) Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(allowImage)
                 .into(ivDesImage)
 

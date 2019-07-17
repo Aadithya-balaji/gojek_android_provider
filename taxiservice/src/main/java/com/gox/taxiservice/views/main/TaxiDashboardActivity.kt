@@ -474,8 +474,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(responseData.request.user.picture)
                 .into(civProfile)
 
@@ -518,8 +518,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(responseData.request.user.picture)
                 .into(civProfile)
 
@@ -582,8 +582,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 .with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
-                        .placeholder(R.drawable.ic_profile_placeholder)
-                        .error(R.drawable.ic_profile_placeholder))
+                        .placeholder(R.drawable.ic_user_place_holder)
+                        .error(R.drawable.ic_user_place_holder))
                 .load(responseData.request.user.picture)
                 .into(civProfile)
 

@@ -268,7 +268,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
-                    glideSetImageView(ivProfile, result.uri, R.drawable.ic_profile_placeholder)
+                    glideSetImageView(ivProfile, result.uri, R.drawable.ic_user_place_holder)
                     val profileFile = File(result.uri.toString())
                     if (profileFile.exists()) {
                         filePart = MultipartBody.Part.createFormData("picture", profileFile.name,
@@ -406,7 +406,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                 val socialId = jsonObject.getString("id")
                 val socialEmail = jsonObject.getString("email")
                 val imgValue = "http://graph.facebook.com/" + jsonObject.getString("id") + "/picture?type=large"
-                glideSetImageView(ivProfile, imgValue, R.drawable.ic_profile_placeholder)
+                glideSetImageView(ivProfile, imgValue, R.drawable.ic_user_place_holder)
                 Log.e("FB_ID", "-----$socialId")
                 mViewModel.firstName.value = socialFirstName
                 mViewModel.lastName.value = socialLastName
@@ -438,7 +438,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         val email = result.email
         val profileImage = result.photoUrl
 
-        glideSetImageView(ivProfile, profileImage.toString(), R.drawable.ic_profile_placeholder)
+        glideSetImageView(ivProfile, profileImage.toString(), R.drawable.ic_user_place_holder)
 
         mViewModel.firstName.value = socialFirstName.toString()
         mViewModel.lastName.value = socialLastName.toString()

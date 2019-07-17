@@ -73,6 +73,8 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         addVehicleDataModel.vehicleInsurance = providerVehicle.picture1
         addVehicleDataModel.id = providerVehicle.id
         addVehicleDataModel.vehicleId = providerVehicle.vehicleServiceId
+        addVehicleDataModel.wheelChair = providerVehicle.wheelChair
+        addVehicleDataModel.childSeat = providerVehicle.childSeat
         vehicleLiveData.value = addVehicleDataModel
     }
 

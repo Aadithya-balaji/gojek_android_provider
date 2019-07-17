@@ -52,16 +52,18 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
             mViewModel.setIsEdit(true) else mViewModel.setIsEdit(false)
 
+        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
+            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
+        else if (intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
+            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_ORDER_VEHICLE))
+
+
         if (intent.hasExtra(Constants.TRANSPORT_VEHICLES)) {
             vehicleData = intent.getSerializableExtra(Constants.TRANSPORT_VEHICLES)
                     as ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
             setVehicle(vehicleData)
         }
 
-        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
-            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
-        else if (intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
-            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_ORDER_VEHICLE))
 
         mBinding.addVehicleViewModel = mViewModel
 

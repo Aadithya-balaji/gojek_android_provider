@@ -99,8 +99,6 @@ dependencies {
     //      Added dependent library modules into the Android app module.
     implementation 'com.github.recruit-lifestyle:FloatingView:2.4.4'
 
-//    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.3.0"
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"
 

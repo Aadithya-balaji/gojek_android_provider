@@ -47,7 +47,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     private lateinit var mBinding: FragmentHomePageBinding
     private lateinit var mViewModel: HomeViewModel
-
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private lateinit var fragmentMap: SupportMapFragment
     private lateinit var mDashboardViewModel: DashBoardViewModel

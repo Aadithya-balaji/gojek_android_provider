@@ -13,6 +13,7 @@ import android.telephony.TelephonyManager
 import android.text.Html
 import android.text.TextUtils
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.ImageView
@@ -183,8 +184,8 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     private fun getApiResponse() {
         loadingObservable.value = false
         observeLiveData(mViewModel.getRegistrationLiveData()) {
-//            if (mViewModel.getRegistrationObserverValue()!!.statusCode.equals("200")) verifyPhoneNumber()
-            if (mViewModel.getRegistrationObserverValue()!!.statusCode.equals("200")){
+            //            if (mViewModel.getRegistrationObserverValue()!!.statusCode.equals("200")) verifyPhoneNumber()
+            if (mViewModel.getRegistrationObserverValue()!!.statusCode.equals("200")) {
                 redirectToHome()
             }
         }
@@ -291,6 +292,12 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         edtEmail.onFocusChangeListener = this
         edtPhoneNumber.onFocusChangeListener = this
         terms_conditions_tv.setOnClickListener(this)
+    }
+
+    private fun dpsToPixels(activity: Activity, dps: Int): Int {
+        val r = activity.resources
+        return TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, dps.toFloat(), r.displayMetrics).toInt()
     }
 
     override fun openSignIn() {
@@ -475,8 +482,15 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            val width: Int = resources.getDimension(R.dimen.flag_width).toInt()
-            val height: Int = resources.getDimension(R.dimen.flag_height).toInt()
+            var width: Int = 0
+            var height: Int = 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                width = dpsToPixels(this@RegistrationActivity, 8)
+                height = dpsToPixels(this@RegistrationActivity, 8)
+            } else {
+                width = dpsToPixels(this@RegistrationActivity, 15)
+                height = dpsToPixels(this@RegistrationActivity, 15)
+            }
             val drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
             mBinding.edtSignupCode.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
         }

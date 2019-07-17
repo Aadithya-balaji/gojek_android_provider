@@ -41,7 +41,6 @@
                 app:srcCompat="@drawable/ic_current_location" />
         </RelativeLayout>
 
-
         <include
             layout="@layout/layout_taxi_status_container"
             android:clickable="true"
@@ -49,16 +48,6 @@
             app:behavior_hideable="false"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
-        <!--<FrameLayout-->
-        <!--android:id="@+id/flTaxiContainer"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:background="#E6FF0909"-->
-        <!--android:visibility="gone"-->
-        <!--app:behavior_hideable="false"-->
-        <!--app:behavior_peekHeight="100dp"-->
-        <!--app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />-->
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

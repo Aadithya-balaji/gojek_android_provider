@@ -11,6 +11,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.downloader.Error
 import com.downloader.OnDownloadListener
+import com.downloader.OnProgressListener
 import com.downloader.PRDownloader
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants

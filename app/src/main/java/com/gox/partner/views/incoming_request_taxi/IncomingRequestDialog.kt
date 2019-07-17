@@ -232,8 +232,12 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     inner class MyCountDownTimer(startTime: Long, interval: Long) : CountDownTimer(startTime, interval) {
 
         override fun onFinish() {
-            mPlayer.stop()
-            dismiss()
+            try {
+                mPlayer.stop()
+                dismiss()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         override fun onTick(millisUntilFinished: Long) {

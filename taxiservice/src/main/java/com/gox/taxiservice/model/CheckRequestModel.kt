@@ -176,7 +176,7 @@ data class User(
         var longitude: Any = Any(),
         var mobile: String = "",
         var payment_mode: String = "",
-        var picture: Any = Any(),
+        var picture: String = "",
         var rating: String = "",
         var state_id: Int? = 0,
         var status: Int? = 0,

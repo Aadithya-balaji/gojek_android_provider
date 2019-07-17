@@ -64,7 +64,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="@dimen/_5sdp"
-                                android:visibility="gone"
+                                android:visibility="invisible"
                                 app:cardCornerRadius="25dp">
 
                                 <com.jaredrummler.materialspinner.MaterialSpinner
@@ -93,6 +93,8 @@
                                     android:drawablePadding="@dimen/_5sdp"
                                     android:imeOptions="actionNext"
                                     android:maxLines="1"
+                                    android:inputType="none"
+                                    android:focusable="false"
                                     android:scrollHorizontally="true"
                                     android:singleLine="true" />
 

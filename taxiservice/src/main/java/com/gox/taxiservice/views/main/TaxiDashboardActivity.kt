@@ -56,6 +56,7 @@ import com.gox.base.data.PreferencesKey.CAN_SEND_LOCATION
 import com.gox.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
+import com.gox.base.locationTest.MainActivity
 import com.gox.base.location_service.BaseLocationService
 import com.gox.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.gox.base.persistence.AppDatabase
@@ -386,11 +387,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             println("RRR::distanceApiProcessing = ${it.size}")
             println("RRR::distanceApiProcessing:distanceApiCallCount = $distanceApiCallCount")
             println("RRR::distanceApiProcessing = ${Gson().toJson(it)}")
+            println("RRR::distanceMeter.value ::1:: = ${mViewModel.distanceMeter.value}")
             if (it.isNotEmpty() && it.size > 0 && it.size == distanceApiCallCount) {
                 println("RRR::distanceApiProcessing::inside if = ${it.size}")
                 for (items in it) {
                     mViewModel.distanceMeter.value = mViewModel.distanceMeter.value!! + items.distance
-                    println("RRR::distanceMeter.value = ${mViewModel.distanceMeter.value}")
+                    println("RRR::distanceMeter.value ::2:: = ${mViewModel.distanceMeter.value}")
                     mViewModel.showLoading.value = false
                     canShowTollChargeDialog = true
                 }
@@ -601,6 +603,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_drop.setOnClickListener {
+            mViewModel.distanceMeter.value = 0.0
             if (isWaitingTime!!) ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
             else {
                 mViewModel.distanceApiProcessing.value = arrayListOf()
@@ -753,16 +756,22 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun whenDone(output: DistanceCalcModel) {
-        println("RRR::TaxiDashboardActivity.whenDone")
+        println("RRR :: TaxiDashboardActivity.whenDone")
         val distanceProcessing = DistanceApiProcessing()
         distanceProcessing.id = distanceApiCallCount
         distanceProcessing.apiResponseStatus = "success"
 
         val values = mViewModel.distanceApiProcessing.value!!
-        for (leg in output.routes[0].legs)
+        for (leg in output.routes[0].legs) {
             distanceProcessing.distance = distanceProcessing.distance + leg.distance.value
+            println("distanceProcessing.distance  = ${leg.distance.value}")
+            println("distanceProcessing.distance  = ${distanceProcessing.distance}")
+        }
 
         values.add(distanceProcessing)
+        /*startActivity(Intent(this, MainActivity::class.java)
+                .putExtra("ResponseData", Gson().toJson(output)))*/
+
         mViewModel.distanceApiProcessing.postValue(values)
     }
 
@@ -917,12 +926,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val h = (time / 3600000).toInt()
             val m = (time - h * 3600000).toInt() / 60000
             val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
+
             val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" +
                     (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
             cmWaiting.text = formattedTime
             if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingStatus == 1) cmWaiting.start()
             isWaitingTime = true
-            changeWaitingTimeBackground(true)
         } else {
             isWaitingTime = false
             changeWaitingTimeBackground(false)
@@ -930,7 +939,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     private fun changeWaitingTimeBackground(isWaitingTime: Boolean) {
-        if (isWaitingTime) {
+        if (!isWaitingTime) {
             btnWaiting.backgroundTintList = ContextCompat.getColorStateList(this, R.color.taxi_bg_yellow)
             btnWaiting.setTextColor(ContextCompat.getColor(this, R.color.white))
         } else {
@@ -946,7 +955,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         doubleBackToExit = true
-        ViewUtils.showToast(this@TaxiDashboardActivity, "Please click back again to exit", true)
+        ViewUtils.showToast(this, getString(R.string.click_back_exit), true)
         Handler().postDelayed({ doubleBackToExit = false }, 2000)
     }
 
@@ -980,6 +989,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mViewModel.iteratePointsForApi.add(latLng[0])
         for (i in latLng.indices) if (i < latLng.size - 1)
             iteratePointsApi(latLng[i], latLng[i + 1])
+
         mViewModel.iteratePointsForApi.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(mViewModel.iteratePointsForApi), "BBB")
         println("GGGG :: locationProcessing::iteratePointsApi = " + mViewModel.iteratePointsForApi.size)
@@ -987,6 +997,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         iteratePointsForDistanceCalc.add(latLng[0])
         for (i in mViewModel.iteratePointsForApi.indices) if (i < mViewModel.iteratePointsForApi.size - 1)
             iteratePointsForDistanceCal(mViewModel.iteratePointsForApi[i], mViewModel.iteratePointsForApi[i + 1])
+
         iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
         println("GGGG :: locationProcessing::iteratePointsForDistanceCalc = " + iteratePointsForDistanceCalc.size)

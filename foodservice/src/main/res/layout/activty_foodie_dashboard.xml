@@ -545,6 +545,7 @@
             android:onClick="@{() -> foodLiveTaskviewModel.updateFoodDeliverStatus()}"
             android:padding="@dimen/_11sdp"
             android:text="@string/started_towards_restaturant"
+            android:textAllCaps="false"
             android:textColor="@color/white" />
 
     </RelativeLayout>

@@ -265,6 +265,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
 
     override fun showErrorMessage(error: String) {
         loadingObservable.value = false
+        if(!error.isNullOrEmpty() && error.equals("null",true))
         ViewUtils.showToast(activity!!, error, false)
     }
 }

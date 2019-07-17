@@ -119,10 +119,12 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var isGPSEnabled: Boolean = false
     private var isLocationDialogShown: Boolean = false
     private var roomConnected: Boolean = false
+    private  var currentStatus:String=""
 
     override fun getLayoutId() = R.layout.activity_xuber_main
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
+        currentStatus=""
         mBinding = mViewDataBinding as ActivityXuberMainBinding
         mViewModel = XUberDashboardViewModel()
         context = this
@@ -131,9 +133,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         mBinding.lifecycleOwner = this
         mViewModel.showLoading = loadingObservable
         mBinding.llBottomService.fbCamera.setOnClickListener(this)
-
         fab_xuber_menu.isIconAnimated = false
-
         fab_xuber_menu_chat.setOnClickListener {
             startActivity(Intent(this, ChatActivity::class.java))
         }
@@ -190,18 +190,23 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         writePreferences(Constants.Chat.PROVIDER_NAME, xUberCheckRequest.responseData.provider_details?.first_name
                                 + " " + xUberCheckRequest.responseData.provider_details?.last_name)
 
+                        currentStatus=status!!.toUpperCase()
+
                         when (status) {
                             ACCEPTED -> whenAccepted()
 
                             ARRIVED -> whenArrived()
 
+                            // Start Service
                             PICKED_UP -> {
                                 whenStarted()
                                 startTheTimer()
                             }
 
+                            // Complete the Service
                             DROPPED -> whenDropped(true)
 
+                            // Confirm Payment when cash flow
                             COMPLETED -> whenPayment()
                         }
                     }
@@ -297,7 +302,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         }
 
         this.mGoogleMap = mGoogleMap
-
         updateCurrentLocation()
     }
 
@@ -555,15 +559,19 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     override fun updateService(view: View) {
         when (view.id) {
-            R.id.tvAllow -> when (mBinding.llBottomService.llConfirm.tvAllow.text) {
-                ARRIVED -> {
+            R.id.tvAllow -> when (currentStatus) {
+
+                // Update Status As Arrived while the request is in accepted status
+                ACCEPTED -> {
                     if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
                         edtXuperOtp.visibility = View.VISIBLE
                     else edtXuperOtp.visibility = View.GONE
                     mViewModel.updateRequest(ARRIVED, null, false)
                 }
 
-                START -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
+
+                // To Start the Service while the request is in Arrived state
+                ARRIVED -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
                     ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
                 } else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)
                         && mViewModel.otp.value != mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.otp) {
@@ -578,7 +586,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     }
                 }
 
-                COMPLETED -> if (backImgFile == null) {
+                // Complete the service while request is in Started state
+                PICKED_UP -> if (backImgFile == null) {
                     if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_after_image == 1)
                         ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false)
                     else mViewModel.updateRequest(DROPPED, null, false)

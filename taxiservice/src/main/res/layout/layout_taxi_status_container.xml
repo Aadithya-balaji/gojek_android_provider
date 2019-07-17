@@ -1,12 +1,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
-
         <variable
             name="taximainmodule"
             type="com.gox.taxiservice.views.main.TaxiDashboardViewModel" />
-
     </data>
 
     <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"

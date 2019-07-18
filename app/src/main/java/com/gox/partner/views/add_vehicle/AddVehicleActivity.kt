@@ -86,6 +86,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             run {
                 txt_category_selection.setText(item.toString())
                 mViewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
+                println("AddVehicleActivity Vehicle capacity ${vehicleData[position].capacity}")
             }
         }
     }
@@ -128,6 +129,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
                 spinnerCarCategory.selectedIndex = vehiclePosition
                 txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
+                println("AddVehicleActivity Vehicle capacity ${vehicleData[vehiclePosition].capacity}")
             } else {
                 spinnerCarCategory.selectedIndex = 0
                 txt_category_selection.setText(vehicleData[0].vehicleName)

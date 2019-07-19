@@ -60,12 +60,10 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         tvBookingId.text = b.getString("bookingID")!!
 
         try {
-            Glide
-                    .with(context!!)
-                    .applyDefaultRequestOptions(RequestOptions()
-                            .circleCrop()
-                            .placeholder(R.drawable.ic_user_place_holder)
-                            .error(R.drawable.ic_user_place_holder))
+            Glide.with(context!!).applyDefaultRequestOptions(RequestOptions()
+                    .circleCrop()
+                    .placeholder(R.drawable.ic_user_place_holder)
+                    .error(R.drawable.ic_user_place_holder))
                     .load(b.getString("profileImg")!!)
                     .into(civProfileImg)
         } catch (e: Exception) {

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">FoodProviderModule</string>
     <string name="live_task">LiveTasks</string>
     <string name="time_left">Time Left</string>
     <string name="dummy_time_left">100 secs</string>

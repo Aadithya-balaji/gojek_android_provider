@@ -22,7 +22,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
     var documentResponse = MutableLiveData<ListDocumentResponse>()
     var addDocumentResponse = MutableLiveData<AddDocumentResponse>()
     var errorResponse = MutableLiveData<String>()
-    var showEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+    var showEmpty: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { false }
     var currentPosition: Int = 0
 
     var documentFrontFileName = MutableLiveData<String>()
@@ -38,8 +38,8 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
     var showBackSide = MutableLiveData<Boolean>()
     var showExpiry = MutableLiveData<Boolean>()
-    var showFrontView = MutableLiveData(false)
-    var showBackView = MutableLiveData(false)
+    var showFrontView = MutableLiveData<Boolean>().apply { false }
+    var showBackView = MutableLiveData<Boolean>().apply { false }
 
     var isPDF = MutableLiveData<Boolean>()
 

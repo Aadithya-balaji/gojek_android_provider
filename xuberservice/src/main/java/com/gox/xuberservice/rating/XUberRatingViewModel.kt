@@ -17,7 +17,7 @@ class XUberRatingViewModel : BaseViewModel<XUberRatingNavigator>() {
     val firstName = MutableLiveData<String>()
     val lastName = MutableLiveData<String>()
     var showLoading = MutableLiveData<Boolean>()
-    var userRating = MutableLiveData<String>("1")
+    var userRating = MutableLiveData<String>()
 
     fun callRateApi() {
         showLoading.value = true

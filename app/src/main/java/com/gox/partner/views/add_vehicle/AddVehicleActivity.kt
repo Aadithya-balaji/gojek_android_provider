@@ -110,7 +110,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
                 Glide.with(this)
                         .load(vehicleData.vehicleRcBook)
-                        .into(iv_rc_book)
+                        .into(this.iv_rc_book)
 
                 Glide.with(this)
                         .load(vehicleData.vehicleInsurance)

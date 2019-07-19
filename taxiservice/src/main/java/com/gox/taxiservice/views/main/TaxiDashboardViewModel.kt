@@ -21,7 +21,7 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
-    var distanceMeter = MutableLiveData(0.0)
+    var distanceMeter = MutableLiveData<Double>()
     var locationPoint: ArrayList<LocationPoint> = arrayListOf()
     var distanceApiProcessing = MutableLiveData<ArrayList<DistanceApiProcessing>>()
     var iteratePointsForApi = ArrayList<LatLng>()

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources tools:ignore="MissingTranslation"
     xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">xubermodule</string>
     <string name="location_permission_denied">Location permission denied</string>
     <string name="location_permission_rationale">    Location Permission is needed to get current location</string>
     <string name="chat">Chat</string>

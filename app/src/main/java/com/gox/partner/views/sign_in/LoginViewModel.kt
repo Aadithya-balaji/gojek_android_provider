@@ -17,7 +17,7 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
     private val mRepository = AppRepository.instance()
     var loginLiveData = MutableLiveData<LoginResponseModel>()
 
-    val countryCode = MutableLiveData<String>("+1")
+    val countryCode = MutableLiveData<String>().apply { "+1" }
     val phoneNumber = MutableLiveData<String>()
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()

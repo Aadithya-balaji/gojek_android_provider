@@ -13,11 +13,16 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
+        resValue("string", "app_name", "GoX Provider")
+        resValue("string", "facebook_app_id", "394261008038577")
+        resValue("string", "facebook_accountkit_id", "86a614c0d50f8e010c15b3b92a26dfb4")
+        resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
         resValue("string", "google_map_key", "AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY")
-        buildConfigField "boolean", "ENABLE_TIMER_CALL", "true"
-
-//        buildConfigField("String", "BASE_URL", '"https://xjekapi.xtikr.com/"')
+        resValue("string", "google_signin_server_client_id", "708455232400-n8p5omqpqoi0f2j4ncbfhmk21vntl8ct.apps.googleusercontent.com")
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
+
+
+        buildConfigField "boolean", "ENABLE_TIMER_CALL", "true"
         //      Development
         buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
         //      Staging
@@ -26,8 +31,6 @@ android {
 //        buildConfigField("String", "BASE_URL", '"https://api.gojekclone.co/"')
 
         buildConfigField("String", "SALT_KEY", '"MQ=="')
-
-        buildConfigField "String", "google_signin_server_client_id", '"708455232400-n8p5omqpqoi0f2j4ncbfhmk21vntl8ct.apps.googleusercontent.com"'
 
     }
 
@@ -52,8 +55,12 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
+    //      Design Support
     api 'androidx.cardview:cardview:1.0.0'
     api 'com.google.android.material:material:1.0.0'
+    api 'androidx.appcompat:appcompat:1.0.2'
+    api 'androidx.recyclerview:recyclerview:1.0.0'
+    api 'androidx.constraintlayout:constraintlayout:1.1.3'
 
     //      Google Sign-In Integration
     api 'com.google.android.gms:play-services-auth:17.0.0'
@@ -73,8 +80,14 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     //      LiveData
-    api 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha01'
-    kapt 'androidx.lifecycle:lifecycle-compiler:2.2.0-alpha01'
+    api 'androidx.lifecycle:lifecycle-extensions:2.0.0'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0'
+
+    //      Permission
+    kapt "com.github.hotchemi:permissionsdispatcher-processor:4.1.0"
+
+
 
     //      Rx java dependency
     api 'io.reactivex.rxjava2:rxjava:2.2.3' // please add current version of dependencies.
@@ -105,7 +118,7 @@ dependencies {
     api 'com.github.GrenderG:Toasty:1.3.1'
 
     //      Permission check(need to remove after implment the manual permssion check)
-    api 'com.karumi:dexter:4.2.0'
+    api 'com.karumi:dexter:5.0.0'
 
     //      Creditcard widget
     api 'com.github.sharish:CreditCardView:v1.0.4'
@@ -143,8 +156,8 @@ dependencies {
 
     //      Firebase Crash Reporting
     api 'com.google.firebase:firebase-crash:16.2.1'
-    api 'com.google.firebase:firebase-auth:18.0.0'
-    api 'com.google.firebase:firebase-analytics:17.0.0'
+    api 'com.google.firebase:firebase-auth:18.1.0'
+    api 'com.google.firebase:firebase-analytics:17.0.1'
     api 'com.google.firebase:firebase-database:18.0.0'
     api 'com.google.firebase:firebase-messaging:19.0.1'
     api('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {

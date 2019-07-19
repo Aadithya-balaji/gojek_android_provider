@@ -17,7 +17,7 @@ class ForgotPasswordViewModel : BaseViewModel<ForgotPasswordViewModel.ForgotPass
 
     fun getForgotPasswordObservable() = mLiveData
 
-    val countryCode = MutableLiveData<String>("+1")
+    val countryCode = MutableLiveData<String>().apply { "+1" }
     val phoneNumber = MutableLiveData<String>()
     val email = MutableLiveData<String>()
 

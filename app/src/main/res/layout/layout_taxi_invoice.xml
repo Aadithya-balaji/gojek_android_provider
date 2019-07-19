@@ -4,9 +4,12 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/base_Fare_layout"
         android:layout_marginTop="@dimen/_5sdp"
         android:padding="@dimen/_1sdp">
 
@@ -52,9 +55,12 @@
 
     </RelativeLayout>
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/hourlyfare_layout"
         android:padding="@dimen/_1sdp">
 
         <TextView
@@ -73,6 +79,51 @@
 
 
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/distancefare_layout"
+        android:padding="@dimen/_1sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/taxi_invoice_distance_fare" />
+
+        <TextView
+            android:id="@+id/tvTaxiDistanceFare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_5sdp" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/providerpay_layout"
+        android:padding="@dimen/_1sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/taxiprovider_pay" />
+
+        <TextView
+            android:id="@+id/tvTaxiProviderFare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_5sdp" />
+
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -84,7 +135,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenirltstd_medium"
             android:padding="@dimen/_5sdp"
-            android:text="@string/wallet" />
+            android:text="@string/wallet_detection" />
 
         <TextView
             android:id="@+id/tvTaxiWalletAmount"

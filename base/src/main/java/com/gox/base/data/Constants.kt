@@ -164,6 +164,7 @@ object Constants {
         const val PROVIDER_ID = "provider_id"
         const val REQUEST_ID = "id"
         const val STORE_ID = "store_id"
+        const val DISPUTE_ID = "dispute_id"
     }
 
     object Chat {

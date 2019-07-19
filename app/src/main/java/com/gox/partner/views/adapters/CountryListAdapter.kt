@@ -33,7 +33,7 @@ class CountryListAdapter(val activity: FragmentActivity?, val countryList: List<
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
-        holder.mBinding.countyName.setText(countrySearchList!!.get(position).country_name)
+        holder.mBinding.countyName.text = countrySearchList!!.get(position).country_name
 
         holder.bind()
         holder.mBinding.itemClickListener = object : CustomClickListener {

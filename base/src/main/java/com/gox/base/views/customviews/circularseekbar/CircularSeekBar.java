@@ -397,7 +397,7 @@ public class CircularSeekBar extends View {
 		 * @param newProgress
 		 *            the new progress
 		 */
-		public void onProgressChange(CircularSeekBar view, int newProgress);
+        void onProgressChange(CircularSeekBar view, int newProgress);
 	}
 
 	/**

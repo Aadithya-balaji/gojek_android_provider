@@ -986,13 +986,13 @@ public final class CropImage {
     protected ActivityResult(Parcel in) {
       super(
           null,
-          (Uri) in.readParcelable(Uri.class.getClassLoader()),
+              in.readParcelable(Uri.class.getClassLoader()),
           null,
-          (Uri) in.readParcelable(Uri.class.getClassLoader()),
+              in.readParcelable(Uri.class.getClassLoader()),
           (Exception) in.readSerializable(),
           in.createFloatArray(),
-          (Rect) in.readParcelable(Rect.class.getClassLoader()),
-          (Rect) in.readParcelable(Rect.class.getClassLoader()),
+              in.readParcelable(Rect.class.getClassLoader()),
+              in.readParcelable(Rect.class.getClassLoader()),
           in.readInt(),
           in.readInt());
     }

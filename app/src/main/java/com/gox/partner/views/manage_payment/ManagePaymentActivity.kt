@@ -25,7 +25,7 @@ class ManagePaymentActivity : BaseActivity<ActivityManagePaymentBinding>(), Mana
         mViewModel = ManagePaymentViewModel()
         mViewModel.navigator = this
         tbManagePayment = findViewById(R.id.tb_payment)
-        mBinding.toolbarLayout.tvToolbarTitle.setText(resources.getString(com.gox.partner.R.string.header_label_payment))
+        mBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(com.gox.partner.R.string.header_label_payment)
         mBinding.toolbarLayout.ivToolbarBack.setOnClickListener {
             finish()
         }

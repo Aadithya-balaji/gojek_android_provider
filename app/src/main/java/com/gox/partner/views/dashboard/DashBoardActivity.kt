@@ -312,20 +312,19 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         Log.e("Location", "------Result $requestCode")
         when (requestCode) {
-            500 ->
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        isGPSEnabled = true
-                        isLocationDialogShown = false
-                        if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                            ViewUtils.showGpsDialog(context)
-                            Timer().schedule(10000) {
-                                ViewUtils.dismissGpsDialog()
-                                updateCurrentLocation()
-                            }
+            500 -> when (resultCode) {
+                Activity.RESULT_OK -> {
+                    isGPSEnabled = true
+                    isLocationDialogShown = false
+                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                        ViewUtils.showGpsDialog(context)
+                        Timer().schedule(10000) {
+                            ViewUtils.dismissGpsDialog()
+                            updateCurrentLocation()
                         }
                     }
                 }
+            }
             FLOATING_OVERLAY_PERMISSION -> showFloatingView(this, false)
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -361,13 +360,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
     }
 
-    override fun getInstance(): DashBoardActivity = this@DashBoardActivity
-
+    override fun getInstance() = this@DashBoardActivity
 
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
-
-
     }
 }

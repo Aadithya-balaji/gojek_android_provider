@@ -263,6 +263,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 mViewModel.requestID.value = mViewModel.historyDetailResponse.value!!.responseData.service.id.toString()
                 params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
+
                 mViewModel.postServiceDispute(params, mViewModel.requestID.value!!)
 
             }
@@ -271,6 +272,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 mViewModel.providerID.value = mViewModel.orderDetail.value!!.provider_id.toString()
                 mViewModel.requestID.value = mViewModel.orderDetail.value!!.id.toString()
                 mViewModel.storeID.value = mViewModel.orderDetail.value!!.order_invoice!!.items!![0]!!.store_id.toString()
+                mViewModel.disputeID.value = mViewModel.orderDetail.value!!.id.toString()
+
 
                 params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()

@@ -10,6 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.gox.base.base.BaseDialogFragment
@@ -70,23 +71,20 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
     }
 
     fun getApiResponse() {
-        xUberInvoiceModel.invoiceLiveData.observe(this, object : androidx.lifecycle.Observer<UpdateRequest> {
-            override fun onChanged(updateRequest: UpdateRequest?) {
-                xUberInvoiceModel.showLoading.value = false
-                if (updateRequest!!.statusCode.equals("200")) {
-                    Log.e("Dialog", "------------")
-                    val ratingDialog = DialogXuberRating()
-                    val strUpdateRequest = Gson().toJson(updateRequest)
-                    val bundle = Bundle()
-                    bundle.putBoolean("isFromCheckRequest", false)
-                    bundle.putString("updateRequestModel", strUpdateRequest)
-                    ratingDialog.arguments = bundle
-                    ratingDialog.show(activity!!.supportFragmentManager, "ratingDialog")
-                    ratingDialog.isCancelable = true
-                    if (invoiceDialog != null) invoiceDialog!!.dismiss()
-                }
+        xUberInvoiceModel.invoiceLiveData.observe(this, Observer<UpdateRequest> { updateRequest ->
+            xUberInvoiceModel.showLoading.value = false
+            if (updateRequest!!.statusCode.equals("200")) {
+                Log.e("Dialog", "------------")
+                val ratingDialog = DialogXuberRating()
+                val strUpdateRequest = Gson().toJson(updateRequest)
+                val bundle = Bundle()
+                bundle.putBoolean("isFromCheckRequest", false)
+                bundle.putString("updateRequestModel", strUpdateRequest)
+                ratingDialog.arguments = bundle
+                ratingDialog.show(activity!!.supportFragmentManager, "ratingDialog")
+                ratingDialog.isCancelable = true
+                if (invoiceDialog != null) invoiceDialog!!.dismiss()
             }
-
         })
     }
 
@@ -184,19 +182,15 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         xUberInvoiceModel.extraCharge.value = extraCharge.replace("$", "")
         if (!xUberInvoiceModel.extraCharge.value.isNullOrEmpty()) {
             var totalAmount = xUberInvoiceModel.totalAmount.value!!.toDouble()
-            var extAmount: Double = 0.0
-            if (!xUberInvoiceModel.extraCharge.value!!.equals("null",true) && !xUberInvoiceModel.extraCharge.value!!.isEmpty()) {
-                extAmount = xUberInvoiceModel.extraCharge.value!!.toDouble()
-            } else {
-                extAmount = 0.0
-
-            }
+            val extAmount = if (!xUberInvoiceModel.extraCharge.value!!.equals("null", true) &&
+                    xUberInvoiceModel.extraCharge.value!!.isNotEmpty())
+                xUberInvoiceModel.extraCharge.value!!.toDouble() else 0.0
             totalAmount -= extraAmount!!
             extraAmount = extAmount
             val total = totalAmount + extAmount
-            xUberInvoiceModel.totalAmount.value = String.format("%.2f",total).toString()
+            xUberInvoiceModel.totalAmount.value = String.format("%.2f", total)
         }
-        if (!extraAmtNotes.isEmpty()) xUberInvoiceModel.extraChargeNotes.value = extraAmtNotes
+        if (extraAmtNotes.isNotEmpty()) xUberInvoiceModel.extraChargeNotes.value = extraAmtNotes
     }
 
     override fun showExtraChargePage() {
@@ -208,5 +202,4 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
     override fun hideDialog(isNeedToHide: Boolean) {
         if (!isNeedToHide) invoiceDialog!!.show()
     }
-
 }

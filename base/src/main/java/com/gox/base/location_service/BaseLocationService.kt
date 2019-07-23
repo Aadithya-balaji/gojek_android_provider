@@ -139,11 +139,11 @@ class BaseLocationService : Service() {
                     println("RRRR:: mFusedLocationClient received $mLocation")
                     onNewLocation(mLocation!!)
                 } else println("RRRR:: Failed to get location.")
-                val location = Location("setting")
-                location.latitude = 0.0
-                location.longitude = 0.0
-                onNewLocation(location)
-                println("RRRR:: streamLocation::task = $task")
+//                val location = Location("setting")
+//                location.latitude = 0.0
+//                location.longitude = 0.0
+//                onNewLocation(location)
+//                println("RRRR:: streamLocation::task = $task")
             }
         } catch (unlikely: SecurityException) {
             println("RRRR:: Lost location permission.$unlikely")

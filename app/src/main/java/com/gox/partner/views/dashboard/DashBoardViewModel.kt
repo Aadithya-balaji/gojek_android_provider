@@ -24,7 +24,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
 
     fun callCheckStatusAPI() {
         if (BaseApplication.isNetworkAvailable)
-            if (latitude.value!!.toInt() > 0 && longitude.value!!.toInt() > 0) {
+            if (latitude.value!! != 0.0 && longitude.value!! != 0.0) {
                 if (readPreferences<String>(PreferencesKey.ACCESS_TOKEN).length > 2)
                     getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
                         override fun success(successData: Any) {
@@ -34,10 +34,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
                         override fun fail(failData: Throwable) {
                             navigator.showErrorMessage(getErrorMessage(failData))
                         }
-                    },
-                            latitude.value.toString(),
-                            longitude.value.toString())
-                    )
+                    }, latitude.value.toString(), longitude.value.toString()))
             } else navigator.updateCurrentLocation()
     }
 

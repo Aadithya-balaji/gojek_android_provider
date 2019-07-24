@@ -56,7 +56,6 @@ import com.gox.base.data.PreferencesKey.CAN_SEND_LOCATION
 import com.gox.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
-import com.gox.base.locationTest.MainActivity
 import com.gox.base.location_service.BaseLocationService
 import com.gox.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.gox.base.persistence.AppDatabase
@@ -921,21 +920,18 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val h = ((time * 1000) / 3600000).toInt()
             val m = ((time * 1000) - h * 3600000).toInt() / 60000
             val s = ((time * 1000) - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m"
+            else m) + ":" + if (s < 10) "0$s" else s
             cmWaiting.text = formattedTime
             if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingStatus == 1) {
                 cmWaiting.start()
                 isWaitingTime = true
                 changeWaitingTimeBackground(true)
             }
-        } else {
-            if (isWaitingTime == true) {
-                cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
-                changeWaitingTimeBackground(true)
-            } else {
-                changeWaitingTimeBackground(false)
-            }
-        }
+        } else if (isWaitingTime == true) {
+            cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
+            changeWaitingTimeBackground(true)
+        } else changeWaitingTimeBackground(false)
     }
 
     private fun changeWaitingTimeBackground(isWaitingTime: Boolean) {

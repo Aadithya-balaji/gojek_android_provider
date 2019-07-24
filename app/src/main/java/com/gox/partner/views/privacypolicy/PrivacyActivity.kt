@@ -34,13 +34,14 @@ class PrivacyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), PrivacyNav
             finish()
         }
         if (Constants.privacyPolicyUrl.isNotEmpty()) mBinding.wvPrivacy.webViewClient = WebClient()
+        else if (Constants.termsUrl.isNotEmpty()) mBinding.wvPrivacy.webViewClient = WebClient()
 
         if (intent.extras == null) {
             mBinding.toolbarLayout.tvToolbarTitle.text = resources.getString(R.string.header_label_privacy)
             mBinding.wvPrivacy.loadUrl(Constants.privacyPolicyUrl)
         } else {
             mBinding.toolbarLayout.tvToolbarTitle.text = getString(R.string.terms_conditions)
-            mBinding.wvPrivacy.loadUrl(Constants.privacyPolicyUrl)
+            mBinding.wvPrivacy.loadUrl(Constants.termsUrl)
         }
 
         observeLiveData(showLoading) {

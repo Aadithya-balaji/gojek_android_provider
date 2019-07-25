@@ -383,10 +383,10 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         }
 
         if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
-            if (startLatLng.latitude > 0) endLatLng = startLatLng
+            if (startLatLng.latitude != 0.0) endLatLng = startLatLng
             startLatLng = LatLng(location.latitude, location.longitude)
 
-            if (endLatLng.latitude > 0 && polyLine.size > 0) try {
+            if (endLatLng.latitude != 0.0 && polyLine.size > 0) try {
                 CarMarkerAnimUtil().carAnim(srcMarker!!, endLatLng, startLatLng)
                 polyLineRerouting(endLatLng, polyLine)
             } catch (e: Exception) {

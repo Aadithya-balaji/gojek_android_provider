@@ -21,15 +21,8 @@ android {
         resValue("string", "google_signin_server_client_id", "708455232400-n8p5omqpqoi0f2j4ncbfhmk21vntl8ct.apps.googleusercontent.com")
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
 
-
         buildConfigField "boolean", "ENABLE_TIMER_CALL", "true"
-        //      Development
-        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
-        //      Staging
-//        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
-        //      Staging
-//        buildConfigField("String", "BASE_URL", '"https://api.gojekclone.co/"')
-
+        buildConfigField("String", "BASE_URL", '"https://api.oluari.com/"')
         buildConfigField("String", "SALT_KEY", '"MQ=="')
 
     }
@@ -66,7 +59,7 @@ dependencies {
     api 'com.google.android.gms:play-services-auth:17.0.0'
 
     //      Facebook Login Integration
-    api 'com.facebook.android:facebook-login:4.39.0'
+    api 'com.facebook.android:facebook-login:5.1.1'
 
     //      Dimension
     api 'com.intuit.sdp:sdp-android:1.0.6'
@@ -158,7 +151,7 @@ dependencies {
     api 'com.google.firebase:firebase-crash:16.2.1'
     api 'com.google.firebase:firebase-auth:18.1.0'
     api 'com.google.firebase:firebase-analytics:17.0.1'
-    api 'com.google.firebase:firebase-database:18.0.0'
+    api 'com.google.firebase:firebase-database:18.0.1'
     api 'com.google.firebase:firebase-messaging:19.0.1'
     api('com.crashlytics.sdk.android:crashlytics:2.10.1@aar') {
         transitive = true

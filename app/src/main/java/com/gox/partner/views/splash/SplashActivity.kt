@@ -96,21 +96,21 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             customPreference.edit().putString(PreferencesKey.BASE_CONFIG_RESPONSE, Gson().toJson(it.responseData)).apply()
 
             it.responseData.services.forEach { service ->
-                when (service.admin_service_name) {
+                when (service.admin_service) {
                     TRANSPORT -> {
-                        customPreference.edit().putInt(PreferencesKey.TRANSPORT_ID, service.id).apply()
+                        customPreference.edit().putString(PreferencesKey.TRANSPORT_ID, service.admin_service).apply()
                         customPreference.edit().putString(PreferencesKey.TRANSPORT_URL, service.base_url).apply()
                         customPreference.edit().putString(service.id.toString(),
                                 service.base_url + "/").apply()
                     }
                     ORDER -> {
-                        customPreference.edit().putInt(PreferencesKey.ORDER_ID, service.id).apply()
+                        customPreference.edit().putString(PreferencesKey.ORDER_ID, service.admin_service).apply()
                         customPreference.edit().putString(PreferencesKey.ORDER_URL, service.base_url).apply()
                         customPreference.edit().putString(service.id.toString(),
                                 service.base_url + "/").apply()
                     }
                     SERVICE -> {
-                        customPreference.edit().putInt(PreferencesKey.SERVICE_ID, service.id).apply()
+                        customPreference.edit().putString(PreferencesKey.SERVICE_ID, service.admin_service).apply()
                         customPreference.edit().putString(PreferencesKey.SERVICE_URL, service.base_url).apply()
                         customPreference.edit().putString(service.id.toString(),
                                 service.base_url + "/").apply()

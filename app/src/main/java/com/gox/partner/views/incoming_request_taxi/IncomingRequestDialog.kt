@@ -100,7 +100,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             timerToTakeOrder = MyCountDownTimer(totalTimeInLong, 1000L)
             timerToTakeOrder.start()
 
-            when (request.service.admin_service_name) {
+            when (request.service.admin_service) {
 
                 Constants.ModuleTypes.TRANSPORT -> {
                     mViewModel.pickupLocation.value = request.request.s_address
@@ -160,7 +160,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         loadingObservable.value = true
         val params: HashMap<String, String> = HashMap()
         params["id"] = request.request.id.toString()
-        params["service_id"] = request.service.id.toString()
+        params["admin_service"] = request.service.admin_service
         mViewModel.acceptRequest(params)
     }
 
@@ -168,7 +168,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         loadingObservable.value = true
         val params: HashMap<String, String> = HashMap()
         params["id"] = request.request.id.toString()
-        params["service_id"] = request.service.id.toString()
+        params["admin_service"] = request.service.admin_service
         mViewModel.rejectRequest(params)
     }
 

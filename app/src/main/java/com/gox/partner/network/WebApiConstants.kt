@@ -84,7 +84,7 @@ object WebApiConstants {
         const val VEHICLE_MODEL = "vehicle_model"
         const val VEHICLE_NO = "vehicle_no"
         const val VEHICLE_COLOR = "vehicle_color"
-        const val ADMIN_SERVICE_ID = "admin_service_id"
+        const val ADMIN_SERVICE = "admin_service"
         const val CATEGORY_ID = "category_id"
         const val SUB_CATEGORY_ID = "sub_category_id"
         const val VEHICLE_IMAGE = "vechile_image"

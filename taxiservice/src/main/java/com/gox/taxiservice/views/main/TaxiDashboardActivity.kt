@@ -56,7 +56,6 @@ import com.gox.base.data.PreferencesKey.CAN_SEND_LOCATION
 import com.gox.base.data.PreferencesKey.CURRENT_TRANXIT_STATUS
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
-import com.gox.base.locationTest.MainActivity
 import com.gox.base.location_service.BaseLocationService
 import com.gox.base.location_service.BaseLocationService.Companion.BROADCAST
 import com.gox.base.persistence.AppDatabase
@@ -442,7 +441,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val params = java.util.HashMap<String, String>()
             params[Constants.Common.ID] = mViewModel.checkStatusTaxiLiveData
                     .value!!.responseData.request.id.toString()
-            params[Constants.Common.SERVICE_ID] = "1"
+            params[Constants.Common.ADMIN_SERVICE] = "TRANSPORT"
             params[Constants.XUberProvider.REASON] = reason
             mViewModel.cancelRequest(params)
         }

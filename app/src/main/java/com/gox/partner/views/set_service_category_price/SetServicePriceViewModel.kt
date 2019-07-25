@@ -2,6 +2,7 @@ package com.gox.partner.views.set_service_category_price
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.Constants.FareType.DISTANCE_TIME
 import com.gox.base.data.Constants.FareType.FIXED
 import com.gox.base.data.Constants.FareType.HOURLY
@@ -39,7 +40,7 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
         val params = HashMap<String, String>()
         params["category_id"] = (toString)
         params["sub_category_id"] = (id)
-        params["admin_service_id"] = ("3")
+        params["admin_service"] = Constants.ModuleTypes.SERVICE
         if (selectedService.isNotEmpty()) {
             var i = 0
             selectedService.forEach {

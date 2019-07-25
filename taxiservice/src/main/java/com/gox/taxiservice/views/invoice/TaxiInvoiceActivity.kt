@@ -173,7 +173,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         mViewModel.showLoading.value = false
         val bundle = Bundle()
         bundle.putString("id", data!!.request.id.toString())
-        bundle.putString("admin_service_id", data.provider_details.service.admin_service_id.toString())
+        bundle.putString("admin_service", data.provider_details.service.admin_service.toString())
         if(!data.request?.user?.picture.isNullOrEmpty())
             bundle.putString("profileImg", data.request.user?.picture)
         else

@@ -39,7 +39,7 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
         val params = HashMap<String, String>()
         params["category_id"] = (toString)
         params["sub_category_id"] = (id)
-        params["admin_service_id"] = ("3")
+        params["admin_service"] = ("3")
         if (selectedService.isNotEmpty()) {
             var i = 0
             selectedService.forEach {

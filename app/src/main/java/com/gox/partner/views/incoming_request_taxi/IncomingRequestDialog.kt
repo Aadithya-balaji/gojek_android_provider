@@ -135,9 +135,9 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             if (mViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
                 when {
-                    request.admin_service_id == 3 ->
+                    request.admin_service == 3 ->
                         activity!!.startActivity(Intent(activity, XUberDashBoardActivity::class.java))
-                    request.admin_service_id == 2 ->
+                    request.admin_service == 2 ->
                         activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
                     else -> activity!!.startActivity(Intent(activity, TaxiDashboardActivity::class.java))
                 }
@@ -265,7 +265,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
 
     override fun showErrorMessage(error: String) {
         loadingObservable.value = false
-        if(!error.isNullOrEmpty() && error.equals("null",true))
-        ViewUtils.showToast(activity!!, error, false)
+        if (!error.isNullOrEmpty() && error.equals("null", true))
+            ViewUtils.showToast(activity!!, error, false)
     }
 }

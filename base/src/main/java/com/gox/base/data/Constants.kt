@@ -142,7 +142,7 @@ object Constants {
 
     object Common {
         const val ID = "id"
-        const val ADMIN_SERVICE_ID = "admin_service_id"
+        const val ADMIN_SERVICE_ID = "admin_service"
         const val OTP = "otp"
         const val METHOD = "_method"
         const val SERVICE_ID = "service_id"

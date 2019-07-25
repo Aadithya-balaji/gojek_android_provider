@@ -80,7 +80,7 @@ data class ProviderDetails(
 ) : Serializable
 
 data class Request(
-        var admin_service_id: Int? = 0,
+        var admin_service: Int? = 0,
         var company_id: Int? = 0,
         var created_at: String = "",
         var id: Int? = 0,

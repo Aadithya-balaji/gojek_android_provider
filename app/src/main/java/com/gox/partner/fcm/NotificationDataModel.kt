@@ -1,11 +1,11 @@
 package com.gox.partner.fcm
 
-data class NotificationDataModel(
+data class  NotificationDataModel(
         var message: Message? = Message()
 )
 
 data class Message(
-        var data: List<Data?>? = listOf(),
+        var data: Data? = Data(),
         var notification: NotificationData? = NotificationData(),
         var topic: String? = ""
 )

@@ -209,16 +209,17 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == GOOGLE_REQ_CODE) {
-            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-            Log.e("status code ", result.status.toString())
-            if (result.isSuccess) {
-                val acct = result.signInAccount
-                if (acct != null) handleGPlusSignInResult(acct)
-            } else Auth.GoogleSignInApi.signOut(mGoogleApiClient)
-                    .setResultCallback { status -> Log.e("status", "logout $status") }
+        if (resultCode != RESULT_CANCELED) {
+            if (requestCode == GOOGLE_REQ_CODE) {
+                val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+                Log.e("status code ", result.status.toString())
+                if (result.isSuccess) {
+                    val acct = result.signInAccount
+                    if (acct != null) handleGPlusSignInResult(acct)
+                } else Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+                        .setResultCallback { status -> Log.e("status", "logout $status") }
+            }
         }
-
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 COUNTRYLIST_REQUEST_CODE -> {

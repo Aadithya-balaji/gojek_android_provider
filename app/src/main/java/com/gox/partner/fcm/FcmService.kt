@@ -39,7 +39,10 @@ class FcmService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
+        Log.d("_D", remoteMessage!!.data!!["custom"])
         val notificationData = Gson().fromJson(remoteMessage!!.data!!["custom"], NotificationDataModel::class.java)
+
+
 
         println(tagName
                 + " notificationData = " + remoteMessage.data!!["custom"]

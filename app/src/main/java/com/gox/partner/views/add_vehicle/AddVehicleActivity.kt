@@ -64,7 +64,6 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             setVehicle(vehicleData)
         }
 
-
         mBinding.addVehicleViewModel = mViewModel
 
         setSupportActionBar(mBinding.toolbar.tbApp)
@@ -87,6 +86,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 txt_category_selection.setText(item.toString())
                 mViewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
                 println("AddVehicleActivity Vehicle capacity ${vehicleData[position].capacity}")
+                val capacity:Int? = vehicleData[position].capacity
+                mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
             }
         }
     }
@@ -130,6 +131,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 spinnerCarCategory.selectedIndex = vehiclePosition
                 txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
                 println("AddVehicleActivity Vehicle capacity ${vehicleData[vehiclePosition].capacity}")
+                val capacity:Int? = vehicleData[vehiclePosition].capacity
+                mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
             } else {
                 spinnerCarCategory.selectedIndex = 0
                 txt_category_selection.setText(vehicleData[0].vehicleName)

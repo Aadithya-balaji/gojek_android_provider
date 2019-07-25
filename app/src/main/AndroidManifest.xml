@@ -31,6 +31,10 @@
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">
 
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
+
         <activity
             android:name="com.gox.partner.views.earnings.EarningsActivity"
             android:configChanges="keyboardHidden"

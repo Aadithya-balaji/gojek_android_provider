@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="addVehicleViewModel"
             type="com.gox.partner.views.add_vehicle.AddVehicleViewModel" />
@@ -222,6 +224,35 @@
                                 android:text="@={addVehicleViewModel.vehicleData.vehicleMake}" />
 
                         </com.google.android.material.textfield.TextInputLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/rLSpecialSeat"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="@{(addVehicleViewModel.fieldMandatory &amp;&amp;  addVehicleViewModel.specialSeatLiveData) ? View.VISIBLE:View.GONE}"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_10sdp">
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_alignParentStart="true"
+                                android:gravity="center"
+                                style="@style/MediumText"
+                                android:textSize="14sp"
+                                android:text="@string/child_seat"/>
+
+                            <com.google.android.material.checkbox.MaterialCheckBox
+                                android:layout_width="wrap_content"
+                                android:layout_height="@dimen/_40sdp"
+                                style="@style/MediumText"
+                                android:textSize="14sp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:text="@string/wheel_chair"
+                                tools:ignore="RelativeOverlap" />
+
+                        </RelativeLayout>
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -23,6 +23,7 @@ import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityAddEditDocumentBinding
 import com.gox.partner.utils.Enums
+import com.gox.partner.utils.Enums.Companion.PDF_EXTENSION
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -111,6 +112,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                         ivFrontImage.setImageDrawable(null)
                         mViewModel.showFrontView.value = false
                     }
+                    mViewModel.isPDF.value = false
                 } else {
                     mViewModel.isPDF.value = true
                     mViewModel.showFrontView.value = !url.isNullOrEmpty()
@@ -133,6 +135,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                         ivBackImage.setImageDrawable(null)
                         mViewModel.showBackView.value = false
                     }
+                    mViewModel.isPDF.value = false
                 } else {
                     mViewModel.isPDF.value = true
                     mViewModel.showBackView.value = !url.isNullOrEmpty()
@@ -201,7 +204,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     else {
                         FilePickerBuilder.instance
                                 .setMaxCount(1)
-                                .addFileSupport("Select Front Page", arrayOf(".pdf"), R.drawable.ic_pdf)
+                                .addFileSupport(getString(R.string.select_front_page), arrayOf(PDF_EXTENSION), R.drawable.ic_pdf)
                                 .setActivityTheme(R.style.LibAppTheme)
                                 .enableDocSupport(false)
                                 .enableSelectAll(false)
@@ -225,7 +228,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                         ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity) else {
                         FilePickerBuilder.instance
                                 .setMaxCount(1)
-                                .addFileSupport("Select Back Page", arrayOf(".pdf"), R.drawable.ic_pdf)
+                                .addFileSupport(getString(R.string.select_back_page), arrayOf(PDF_EXTENSION), R.drawable.ic_pdf)
                                 .setActivityTheme(R.style.LibAppTheme)
                                 .enableDocSupport(false)
                                 .enableSelectAll(false)

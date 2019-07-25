@@ -12,6 +12,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.sql.Timestamp
 
 class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
@@ -86,6 +87,8 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
             showBackView.value = false
             documentFrontImageURL.value = ""
             documentBackImageURL.value = ""
+            documentFrontImageFile.value = null
+            documentBackImageFile.value = null
         }
         documentFrontFileName.value = ""
         documentBackFileName.value = ""
@@ -137,11 +140,11 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
         var fileFrontImageBody: MultipartBody.Part? = null
         if (frontImageRequestBody != null) fileFrontImageBody = MultipartBody.Part.createFormData("file[0]",
-                data[currentPosition].name + "_front", frontImageRequestBody)
+                "${Timestamp(System.currentTimeMillis())}_front", frontImageRequestBody)
 
         var fileBackImageBody: MultipartBody.Part? = null
         if (backImageFile != null) fileBackImageBody = MultipartBody.Part.createFormData("file[1]",
-                data[currentPosition].name + "_back", backImageFile)
+                "${Timestamp(System.currentTimeMillis())}_back", backImageFile)
 
         getCompositeDisposable().add(mRepository.postDocument(object : ApiListener {
             override fun success(successData: Any) {

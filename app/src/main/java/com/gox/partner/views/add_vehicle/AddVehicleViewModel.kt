@@ -27,6 +27,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID, 2)
     private val vehicleCategoryLiveData = MutableLiveData<VehicleCategoryResponseModel>()
     private val vehicleResponseLiveData = MutableLiveData<AddVehicleResponseModel>()
+    var specialSeatLiveData = MutableLiveData<Boolean>()
 
     private var serviceId: Int = -1
     private var categoryId: Int = -1
@@ -93,6 +94,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     }
 
     fun getInsuranceUri() = insuranceUri
+
 
     fun isFieldMandatory() = when (serviceId) {
         transportId -> true

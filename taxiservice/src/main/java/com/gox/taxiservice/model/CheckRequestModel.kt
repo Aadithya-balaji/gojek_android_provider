@@ -82,6 +82,7 @@ data class Service(
         var ride_delivery_id: Int? = 0,
         var service_id: Int? = 0,
         var status: String = "",
+        var admin_service: String = "",
         var sub_category_id: Int? = 0
 ) : Serializable
 

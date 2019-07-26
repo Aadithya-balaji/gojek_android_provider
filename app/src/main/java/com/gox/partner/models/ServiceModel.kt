@@ -22,6 +22,9 @@ class ServiceModel {
     @SerializedName("service_id")
     @Expose
     private var serviceId: Any? = null
+    @SerializedName("admin_service")
+    @Expose
+    private var admin_service: Any? = null
     @SerializedName("category_id")
     @Expose
     private var categoryId: Int? = null

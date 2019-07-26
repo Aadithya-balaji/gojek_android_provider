@@ -45,7 +45,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         }
         mViewModel.navigator = this
 
-        mViewModel.setServiceId(intent.getIntExtra(Constants.SERVICE_ID, -1))
+        mViewModel.setServiceName(intent.getStringExtra(Constants.SERVICE_ID))
         mViewModel.setCategoryId(intent.getIntExtra(Constants.CATEGORY_ID, -1))
 
 
@@ -144,7 +144,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     private fun performValidation() {
         ViewUtils.hideSoftInputWindow(this)
         val data = mViewModel.getVehicleData()
-        val isTransport = mViewModel.getServiceId() == mViewModel.getTransportId()
+        val isTransport = mViewModel.getServiceName() == mViewModel.getTransportServiceName()
         if (!isTransport) {
             when {
                 data?.vehicleMake.isNullOrEmpty() ->

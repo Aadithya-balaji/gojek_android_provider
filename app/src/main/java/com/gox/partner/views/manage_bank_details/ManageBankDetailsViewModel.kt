@@ -18,7 +18,7 @@ class ManageBankDetailsViewModel : BaseViewModel<ManageBankDetailsNavigator>() {
     var addEditBankResponse = MutableLiveData<AddBankDetailsModel>()
     var errorResponse = MutableLiveData<String>()
     var addEditBankErrorResponse = MutableLiveData<String>()
-    var showEmpty: MutableLiveData<Boolean> = MutableLiveData(false)
+    var showEmpty: MutableLiveData<Boolean> = MutableLiveData<Boolean>().apply { false }
 
     private val adapter: SetupBankTemplateAdapter = SetupBankTemplateAdapter(this)
 

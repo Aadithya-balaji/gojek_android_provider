@@ -28,7 +28,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             SetupVehicleViewModel()
         }
         mViewModel.navigator = this
-        mViewModel.setServiceId(intent.getIntExtra(Constants.SERVICE_ID, -1))
+        mViewModel.setServiceId(intent.getStringExtra(Constants.SERVICE_ID))
         mBinding.setupVehicleViewModel = mViewModel
 
         setSupportActionBar(mBinding.toolbar.tbApp)
@@ -53,7 +53,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
 
     private fun setupVehicle() {
         loadingObservable.value = true
-        when (mViewModel.getServiceId()) {
+        when (mViewModel.getServiceName()) {
             mViewModel.getTransportId() -> {
                 mViewModel.getRides()
             }
@@ -68,7 +68,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         val providerService = mViewModel.getVehicleDataObservable().value
 
         val intent = Intent(applicationContext, AddVehicleActivity::class.java)
-        intent.putExtra(Constants.SERVICE_ID, mViewModel.getServiceId())
+        intent.putExtra(Constants.SERVICE_ID, mViewModel.getServiceName())
 
         if (providerService is SetupRideResponseModel)
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
@@ -81,10 +81,13 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
                 ArrayList(providerService.responseData[position].serviceList))
 
         if (providerService is SetupRideResponseModel
-                && providerService.responseData[position].providerService != null)
+                && providerService.responseData[position].providerService != null) {
+            //Need to compare ride delievery id
+            val vehicleData = providerService.responseData[position].providerService!!.providerVehicle
+            vehicleData.vehicleServiceId = providerService.responseData[position].providerService?.rideDeliveryId ?:0
             intent.putExtra(Constants.PROVIDER_TRANSPORT_VEHICLE,
-                        providerService.responseData[position].providerService!!.providerVehicle)
-        else if (providerService is SetupShopResponseModel
+                    vehicleData)
+        } else if (providerService is SetupShopResponseModel
                 && providerService.responseData[position].providerService != null) {
             intent.putExtra(Constants.PROVIDER_ORDER_VEHICLE,
                     providerService.responseData[position].providerService!!.providerVehicle)

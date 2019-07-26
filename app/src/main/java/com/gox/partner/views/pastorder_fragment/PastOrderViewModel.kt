@@ -11,9 +11,9 @@ class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
     private val mRepository = AppRepository.instance()
 
     var historyResponseLiveData = MutableLiveData<HistoryModel>()
-    var serviceList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Service>>(ArrayList())
-    var orderList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Order>>(ArrayList())
-    var taxiList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Transport>>(ArrayList())
+    var serviceList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Service>>()
+    var orderList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Order>>()
+    var taxiList = MutableLiveData<ArrayList<HistoryModel.ResponseData.Transport>>()
     var showLoading = MutableLiveData<Boolean>()
     var selectedServiceType = MutableLiveData<String>()
     var errorResponse = MutableLiveData<String>()

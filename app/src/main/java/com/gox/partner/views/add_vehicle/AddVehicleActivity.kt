@@ -45,12 +45,18 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         }
         mViewModel.navigator = this
 
-        mViewModel.setServiceId(intent.getIntExtra(Constants.SERVICE_ID, -1))
+        mViewModel.setServiceName(intent.getStringExtra(Constants.SERVICE_ID))
         mViewModel.setCategoryId(intent.getIntExtra(Constants.CATEGORY_ID, -1))
 
 
         if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
             mViewModel.setIsEdit(true) else mViewModel.setIsEdit(false)
+
+        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
+            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
+        else if (intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
+            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_ORDER_VEHICLE))
+
 
         if (intent.hasExtra(Constants.TRANSPORT_VEHICLES)) {
             vehicleData = intent.getSerializableExtra(Constants.TRANSPORT_VEHICLES)
@@ -58,10 +64,6 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             setVehicle(vehicleData)
         }
 
-        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
-            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
-        else if (intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
-            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_ORDER_VEHICLE))
 
         mBinding.addVehicleViewModel = mViewModel
 
@@ -84,6 +86,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             run {
                 txt_category_selection.setText(item.toString())
                 mViewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
+                println("AddVehicleActivity Vehicle capacity ${vehicleData[position].capacity}")
             }
         }
     }
@@ -110,7 +113,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
                 Glide.with(this)
                         .load(vehicleData.vehicleRcBook)
-                        .into(iv_rc_book)
+                        .into(this.iv_rc_book)
 
                 Glide.with(this)
                         .load(vehicleData.vehicleInsurance)
@@ -126,6 +129,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
                 spinnerCarCategory.selectedIndex = vehiclePosition
                 txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
+                println("AddVehicleActivity Vehicle capacity ${vehicleData[vehiclePosition].capacity}")
             } else {
                 spinnerCarCategory.selectedIndex = 0
                 txt_category_selection.setText(vehicleData[0].vehicleName)
@@ -137,7 +141,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     private fun performValidation() {
         ViewUtils.hideSoftInputWindow(this)
         val data = mViewModel.getVehicleData()
-        val isTransport = mViewModel.getServiceId() == mViewModel.getTransportId()
+        val isTransport = mViewModel.getServiceName() == mViewModel.getTransportServiceName()
         if (!isTransport) {
             when {
                 data?.vehicleMake.isNullOrEmpty() ->

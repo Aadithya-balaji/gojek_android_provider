@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenirltstd_medium"
             android:padding="@dimen/_5sdp"
-            android:text="@string/taxi_invoice_base_fare" />
+            android:text="@string/cart_Subtotal" />
 
         <TextView
             android:id="@+id/tvOrderBaseFare"

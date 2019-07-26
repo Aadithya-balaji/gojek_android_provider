@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.createMultipartBody
 import com.gox.base.extensions.createRequestBody
@@ -23,12 +24,12 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     private val mRepository = AppRepository.instance()
 
-    private val transportId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.TRANSPORT_ID, 1)
-    private val orderId: Int = BaseApplication.getCustomPreference!!.getInt(PreferencesKey.ORDER_ID, 2)
+    private val transportServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.TRANSPORT_ID, Constants.ModuleTypes.TRANSPORT)
+    private val orderServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ORDER_ID, Constants.ModuleTypes.ORDER)
     private val vehicleCategoryLiveData = MutableLiveData<VehicleCategoryResponseModel>()
     private val vehicleResponseLiveData = MutableLiveData<AddVehicleResponseModel>()
 
-    private var serviceId: Int = -1
+    private var serviceName: String = Constants.ModuleTypes.TRANSPORT
     private var categoryId: Int = -1
     private var isEdit: Boolean = false
     private val addVehicleDataModel = AddVehicleDataModel()
@@ -44,13 +45,13 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         vehicleLiveData.value = AddVehicleDataModel()
     }
 
-    fun getTransportId() = transportId
+    fun getTransportServiceName() = transportServiceName
 
-    fun setServiceId(serviceId: Int) {
-        this.serviceId = serviceId
+    fun setServiceName(serviceName: String) {
+        this.serviceName = serviceName
     }
 
-    fun getServiceId() = serviceId
+    fun getServiceName() = serviceName
 
     fun setCategoryId(categoryId: Int) {
         this.categoryId = categoryId
@@ -73,6 +74,8 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         addVehicleDataModel.vehicleInsurance = providerVehicle.picture1
         addVehicleDataModel.id = providerVehicle.id
         addVehicleDataModel.vehicleId = providerVehicle.vehicleServiceId
+        addVehicleDataModel.wheelChair = providerVehicle.wheelChair
+        addVehicleDataModel.childSeat = providerVehicle.childSeat
         vehicleLiveData.value = addVehicleDataModel
     }
 
@@ -92,15 +95,15 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun getInsuranceUri() = insuranceUri
 
-    fun isFieldMandatory() = when (serviceId) {
-        transportId -> true
-        orderId -> false
+    fun isFieldMandatory() = when (serviceName) {
+        transportServiceName -> true
+        orderServiceName -> false
         else -> false
     }
 
     fun postVehicle() {
         showLoading.value = true
-        val isTransport: Boolean = serviceId == transportId
+        val isTransport: Boolean = serviceName == transportServiceName
         val params = HashMap<String, RequestBody>()
         if (isTransport) {
             params[WebApiConstants.AddService.VEHICLE_ID] = createRequestBody(getVehicleData()!!.vehicleId.toString())
@@ -118,7 +121,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         if (isEdit)
             params[WebApiConstants.AddService.ID] = createRequestBody(getVehicleData()!!.id.toString())
         params[WebApiConstants.AddService.CATEGORY_ID] = createRequestBody(categoryId.toString())
-        params[WebApiConstants.AddService.ADMIN_SERVICE_ID] = createRequestBody(serviceId.toString())
+        params[WebApiConstants.AddService.ADMIN_SERVICE] = createRequestBody(serviceName.toString())
 
         var vehicleMultipart: MultipartBody.Part? = null
         if (vehicleUri != null) vehicleMultipart =

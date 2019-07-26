@@ -363,6 +363,7 @@
     <!-- Manage Payments -->
     <string name="saved_card">Saved Cards</string>
     <string name="wallet">Wallet</string>
+    <string name="wallet_detection">Wallet Detection</string>
     <string name="transaction">Transaction</string>
     <string name="add_card">Add Cards</string>
     <string name="row_card_number">XXXX XXXX XXXX XXXX %s</string>
@@ -507,4 +508,7 @@
     <string name="yes">Yes</string>
     <string name="open_wallet">Topup Wallet</string>
     <string name="name_as_in_card">Cardholder Name</string>
+    <string name="cart_Subtotal">Cart Subtotal</string>
+    <string name="packing_charge">Packing Charges</string>
+    <string name="taxiprovider_pay">Provider Pay</string>
 </resources>

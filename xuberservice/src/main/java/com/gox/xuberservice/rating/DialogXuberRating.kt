@@ -98,7 +98,7 @@ class DialogXuberRating : BaseDialogFragment<DialogXuperRatingBinding>(),
         val params = HashMap<String, String>()
         params[Constants.Common.ID] = mViewModel.id.value.toString()
         params[Constants.Common.METHOD] = "POST"
-        params[Constants.Common.ADMIN_SERVICE_ID] = "3"
+        params[Constants.Common.ADMIN_SERVICE] = "SERVICE"
         params[Constants.XUberProvider.RATING] = mViewModel.userRating.value.toString()
         params[Constants.XUberProvider.COMMENT] = mViewModel.comment.value.toString()
         mViewModel.callRatingApi(params)

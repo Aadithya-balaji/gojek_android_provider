@@ -45,32 +45,49 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(),
                     mViewModel.taxiList.value?.clear()
                     mViewModel.serviceList.value?.clear()
                     mViewModel.orderList.value?.clear()
+                    this.mBinding.pastOrdersfrgRv.visibility = View.VISIBLE
+
 
                     if (it.responseData!!.type.equals("transport", true)
                             && it.responseData.transport!!.isNotEmpty()) {
                         if (!it.responseData.transport.isNullOrEmpty()) {
                             this.mBinding.emptyViewLayout.visibility = View.GONE
-                            mViewModel.taxiList.value!!.addAll(it.responseData.transport)
-                            settHistoryAdapter(activity!! as DashBoardActivity, mViewModel.taxiList.value!!,
+
+//                            settHistoryAdapter(activity!! as DashBoardActivity, mViewModel.taxiList.value!!,
+//                                    ArrayList(), ArrayList())
+
+                            settHistoryAdapter(activity!! as DashBoardActivity, it.responseData.transport,
                                     ArrayList(), ArrayList())
+
                         } else this.mBinding.emptyViewLayout.visibility = View.VISIBLE
                     } else if (it.responseData.type.equals("service", true)
                             && it.responseData.service!!.isNotEmpty()) {
                         if (!it.responseData.service.isNullOrEmpty()) {
                             this.mBinding.emptyViewLayout.visibility = View.GONE
-                            mViewModel.serviceList.value!!.addAll(it.responseData.service)
+//                            mViewModel.serviceList.value!!.addAll(it.responseData.service)
+
                             settHistoryAdapter(activity!! as DashBoardActivity, ArrayList(),
-                                    mViewModel.serviceList.value!!, ArrayList())
+                                    it.responseData.service, ArrayList())
+
                         } else this.mBinding.emptyViewLayout.visibility = View.VISIBLE
                     } else if (!it.responseData.order!!.isEmpty()) {
                         if (!it.responseData.order.isNullOrEmpty()) {
                             this.mBinding.emptyViewLayout.visibility = View.GONE
                             mViewModel.orderList.value!!.addAll(it.responseData.order)
-                            settHistoryAdapter(activity!! as DashBoardActivity, ArrayList(),
-                                    ArrayList(), mViewModel.orderList.value!!)
-                        } else this.mBinding.emptyViewLayout.visibility = View.VISIBLE
 
-                    } else this.mBinding.emptyViewLayout.visibility = View.VISIBLE
+
+                            settHistoryAdapter(activity!! as DashBoardActivity, ArrayList(),
+                                    ArrayList(), it.responseData.order)
+
+                        } else {
+                            this.mBinding.pastOrdersfrgRv.visibility = View.GONE
+                            this.mBinding.emptyViewLayout.visibility = View.VISIBLE
+                        }
+
+                    } else {
+                        this.mBinding.pastOrdersfrgRv.visibility = View.GONE
+                        this.mBinding.emptyViewLayout.visibility = View.VISIBLE
+                    }
 
                 })
     }

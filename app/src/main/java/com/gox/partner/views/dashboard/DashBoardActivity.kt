@@ -234,7 +234,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                             AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
                         }
 
-                        else -> when (checkStatusData.responseData.requests[0].service.admin_service_name) {
+                        else -> when (checkStatusData.responseData.requests[0].service.admin_service) {
                             TRANSPORT -> {
                                 BROADCAST = TRANSPORT_BROADCAST
                                 if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {

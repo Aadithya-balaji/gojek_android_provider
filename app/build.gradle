@@ -6,7 +6,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
-
+    //Test
     signingConfigs {
         release {
             keyAlias 'gox_android_provider'
@@ -25,12 +25,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
-
-        resValue("string", "app_name", "GoX Provider")
-        resValue("string", "google_signin_server_client_id", "708455232400-n8p5omqpqoi0f2j4ncbfhmk21vntl8ct.apps.googleusercontent.com")
-        resValue("string", "facebook_app_id", "394261008038577")
-        resValue("string", "facebook_accountkit_id", "86a614c0d50f8e010c15b3b92a26dfb4")
-        resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
     }
 
     buildTypes {
@@ -65,7 +59,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.31'
-
     kapt 'com.android.databinding:compiler:3.1.4'
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0-alpha02'
@@ -98,8 +91,6 @@ dependencies {
 
     //      Added dependent library modules into the Android app module.
     implementation 'com.github.recruit-lifestyle:FloatingView:2.4.4'
-
-//    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
 
     implementation "org.permissionsdispatcher:permissionsdispatcher:4.3.0"
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.3.0"

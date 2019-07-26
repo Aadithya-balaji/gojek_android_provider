@@ -156,7 +156,7 @@ data class HistoryDetailModel(
             data class Payment(
                     val card: Int? = 0,
                     val cash: Double? = 0.0,
-                    val commision: Int? = 0,
+                    val commision: Double? = 0.0,
                     val commision_percent: Double? = 0.0,
                     val company_id: Int? = 0,
                     val discount: Double? = 0.0,

@@ -173,8 +173,11 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         mViewModel.showLoading.value = false
         val bundle = Bundle()
         bundle.putString("id", data!!.request.id.toString())
-        bundle.putString("admin_service_id", data.provider_details.service.admin_service_id.toString())
-        bundle.putString("profileImg", data.request.user.picture)
+        bundle.putString("admin_service", data.provider_details.service.admin_service.toString())
+        if(!data.request?.user?.picture.isNullOrEmpty())
+            bundle.putString("profileImg", data.request.user?.picture)
+        else
+            bundle.putString("profileImg", "")
         bundle.putString("name", data.request.user.first_name + " " + data.request.user.last_name)
         bundle.putString("bookingID", data.request.booking_id)
         val ratingFragment = TaxiRatingFragment(bundle)

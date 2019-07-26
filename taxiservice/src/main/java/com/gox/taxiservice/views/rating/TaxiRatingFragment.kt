@@ -60,12 +60,10 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         tvBookingId.text = b.getString("bookingID")!!
 
         try {
-            Glide
-                    .with(context!!)
-                    .applyDefaultRequestOptions(RequestOptions()
-                            .circleCrop()
-                            .placeholder(R.drawable.ic_user_place_holder)
-                            .error(R.drawable.ic_user_place_holder))
+            Glide.with(context!!).applyDefaultRequestOptions(RequestOptions()
+                    .circleCrop()
+                    .placeholder(R.drawable.ic_user_place_holder)
+                    .error(R.drawable.ic_user_place_holder))
                     .load(b.getString("profileImg")!!)
                     .into(civProfileImg)
         } catch (e: Exception) {
@@ -74,7 +72,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
 
         val params: HashMap<String, String> = HashMap()
         params["id"] = b.getString("id")!!
-        params["admin_service_id"] = b.getString("admin_service_id")!!
+        params["admin_service"] = b.getString("admin_service")!!
 
         tv_rating_submit.setOnClickListener {
             mViewModel.showLoading.value = true

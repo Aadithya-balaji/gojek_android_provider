@@ -21,7 +21,7 @@ class XUberInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
     var invoiceLiveData = MutableLiveData<UpdateRequest>()
     var requestID = MutableLiveData<String>()
     var showLoading = MutableLiveData<Boolean>()
-    var extraCharge = MutableLiveData<String>()
+    var  extraCharge = MutableLiveData<String>()
     var extraChargeNotes = MutableLiveData<String>()
 
     fun confirmPayment() = navigator.submit()

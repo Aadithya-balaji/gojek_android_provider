@@ -437,7 +437,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val params = java.util.HashMap<String, String>()
             params[Constants.Common.ID] = mViewModel.checkStatusTaxiLiveData
                     .value!!.responseData.request.id.toString()
-            params[Constants.Common.SERVICE_ID] = "1"
+            params[Constants.Common.ADMIN_SERVICE] = "TRANSPORT"
             params[Constants.XUberProvider.REASON] = reason
             mViewModel.cancelRequest(params)
         }

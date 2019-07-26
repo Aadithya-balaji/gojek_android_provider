@@ -72,8 +72,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
 
         val params: HashMap<String, String> = HashMap()
         params["id"] = b.getString("id")!!
-        params["admin_service"] =
-
+        params["admin_service_id"] = b.getString("admin_service_id")!!
 
         tv_rating_submit.setOnClickListener {
             mViewModel.showLoading.value = true

@@ -22,7 +22,7 @@ android {
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
 
         buildConfigField "boolean", "ENABLE_TIMER_CALL", "true"
-        buildConfigField("String", "BASE_URL", '"https://api.oluari.com/"')
+        buildConfigField "String", "BASE_URL", '"https://api.gox.services/"'
         buildConfigField("String", "SALT_KEY", '"MQ=="')
 
     }
@@ -79,8 +79,6 @@ dependencies {
 
     //      Permission
     kapt "com.github.hotchemi:permissionsdispatcher-processor:4.1.0"
-
-
 
     //      Rx java dependency
     api 'io.reactivex.rxjava2:rxjava:2.2.3' // please add current version of dependencies.
@@ -163,11 +161,9 @@ dependencies {
     //      Floating Action Bar Button
     api 'com.github.clans:fab:1.6.4'
 
-    //implementation 'testfairy:testfairy-android-sdk:1.+@aar'
+    //      implementation 'testfairy:testfairy-android-sdk:1.+@aar'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
-
-//apply plugin: 'com.google.gms.google-services'

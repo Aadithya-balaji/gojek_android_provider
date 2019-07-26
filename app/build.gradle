@@ -6,7 +6,7 @@ apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
-
+    //Test
     signingConfigs {
         release {
             keyAlias 'gox_android_provider'

@@ -43,14 +43,14 @@ class FilterServiceListAdapter(val filterServiceListName: List<ConfigService>,
         else holder.mBinding.filterserviceNameTv.background =
                 ContextCompat.getDrawable(context, R.drawable.custom_roundcorner_unselectedorder)
         holder.mBinding.filterserviceNameTv.text =
-                (filterServiceListName[position].admin_service_name).toLowerCase().capitalize()
+                (filterServiceListName[position].admin_service).toLowerCase().capitalize()
         holder.mBinding.itemClickListener = object : CustomClickListener {
             override fun onListClickListener() {
                 selectedPosition = holder.adapterPosition
                 selectedServiceType = -1
                 holder.mBinding.filterserviceNameTv.background =
                         ContextCompat.getDrawable(context, R.drawable.custom_roundcorner_selectedorder)
-                serviceTypeListener.getServiceType(filterServiceListName[position].admin_service_name.toLowerCase(), filterServiceListName[position].id)
+                serviceTypeListener.getServiceType(filterServiceListName[position].admin_service.toLowerCase(), filterServiceListName[position].id)
                 notifyDataSetChanged()
             }
         }

@@ -393,7 +393,7 @@ data class Payment(
 ) : Serializable
 
 data class Service(
-        var admin_service_name: String = "",
+        var admin_service: String = "",
         var base_url: String = "",
         var display_name: String = "",
         var id: Int = 0,

@@ -12,7 +12,7 @@ data class ManageServicesResponseModel(
 ) : CommonResponse {
     data class ResponseData(
             val id: Int,
-            @SerializedName("admin_service_name") val adminServiceName: String,
+            @SerializedName("admin_service") val adminServiceName: String,
             @SerializedName("display_name") val displayName: String,
             @SerializedName("base_url") val baseUrl: String,
             val status: Int,

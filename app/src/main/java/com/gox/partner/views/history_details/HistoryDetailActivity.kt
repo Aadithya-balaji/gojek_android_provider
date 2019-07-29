@@ -318,7 +318,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
     private fun setupServiceDetail(serviceDetail: HistoryDetailModel.ResponseData.Service) {
-        mViewModel.serviceDetail.value = serviceDetail
+        /*mViewModel.serviceDetail.value = serviceDetail
         mBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
         mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!,
                 "Req_Date_Month") + "")
@@ -328,12 +328,26 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.historydetailStatusValueTv.text = serviceDetail.status
         mBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
         Glide.with(this).load(serviceDetail.user!!.picture).into(mBinding.providerCimgv)
-        mBinding.providerNameTv.text = (serviceDetail.user.first_name + " " + serviceDetail.user.last_name)
-        mBinding.rvUser.rating = serviceDetail.user.rating!!.toFloat()
+        mBinding.providerNameTv.text = (serviceDetail.user.first_name + " " + serviceDetail.user.last_name)*/
+
+
+        mBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
+        mBinding.historydetailSrcValueTv.text = serviceDetail.s_address + ""
+        mBinding.historydetailDestValueTv.visibility = View.GONE
+        mBinding.vechileTypeTv.text = (serviceDetail.service!!.service_name)
+        mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.assigned_at!!, "Req_time") + "")
+        mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.assigned_at!!,
+                "Req_Date_Month") + "")
+        mBinding.rvUser.rating = serviceDetail.user!!.rating!!.toFloat()
+        mBinding.lossSomething.visibility = View.GONE
+        mBinding.destLayout.visibility = View.GONE
+        mBinding.locationView.visibility = View.GONE
         if (serviceDetail.dispute != null) {
             mBinding.disputeBtn.text = getString(R.string.dispute_status)
             isShowDisputeStatus = true
         }
+
+
     }
 
     private fun setupOrderHistoryDetail(orderDetail: HistoryDetailModel.ResponseData.Order) {

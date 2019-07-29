@@ -135,9 +135,9 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             if (mViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
                 when {
-                    request.admin_service == 3 ->
+                    request.admin_service.equals("SERVICE",true)  ->
                         activity!!.startActivity(Intent(activity, XUberDashBoardActivity::class.java))
-                    request.admin_service == 2 ->
+                    request.admin_service.equals("ORDER",true)  ->
                         activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
                     else -> activity!!.startActivity(Intent(activity, TaxiDashboardActivity::class.java))
                 }

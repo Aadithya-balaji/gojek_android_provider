@@ -199,12 +199,14 @@
                             <View
                                 android:layout_width="@dimen/_1sdp"
                                 android:layout_height="@dimen/_30sdp"
+                                android:id="@+id/location_view"
                                 android:layout_marginStart="@dimen/_10sdp"
                                 android:background="@color/dark_grey" />
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:id="@+id/destLayout">
 
                                 <ImageView
                                     android:id="@+id/destination_dot_view"
@@ -236,6 +238,50 @@
                                     android:layout_marginStart="@dimen/_15sdp"
                                     android:layout_toEndOf="@+id/destination_dot_view"
                                     android:padding="@dimen/_1sdp" />
+
+                            </RelativeLayout>
+
+
+                            <View
+                                android:id="@+id/scheduletime_view"
+                                android:layout_width="@dimen/_1sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@color/dark_grey" />
+
+
+                            <RelativeLayout
+                                android:id="@+id/schedule_time_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/scheduletime_dot_view"
+                                    android:layout_width="@dimen/_8sdp"
+                                    android:layout_height="@dimen/_8sdp"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="@dimen/_5sdp"
+                                    android:src="@drawable/custom_circle"
+                                    android:tint="@color/colorPrimary" />
+
+                                <TextView
+                                    android:id="@+id/scheduletime_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_15sdp"                                       android:layout_toEndOf="@+id/scheduletime_dot_view"                                  android:padding="@dimen/_1sdp"
+                                    android:text="@string/schedule_time"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/scheduletime_value_tv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@+id/scheduletime_tv"
+                                    android:layout_marginStart="@dimen/_15sdp"                                       android:layout_toEndOf="@+id/scheduletime_dot_view"
+                                    android:padding="@dimen/_1sdp"
+                                    android:text="@string/dummy_text" />
 
                             </RelativeLayout>
 

@@ -239,6 +239,8 @@
                                 android:layout_alignParentStart="true"
                                 android:gravity="center"
                                 style="@style/MediumText"
+                                android:checked="@{(addVehicleViewModel.vehicleData.childSeat == 1)}"
+                                android:onCheckedChanged="@{(view,isChecked) -> addVehicleViewModel.onChildSeatCheckChanged(isChecked)}"
                                 android:textSize="14sp"
                                 android:text="@string/child_seat"/>
 
@@ -247,6 +249,8 @@
                                 android:layout_height="@dimen/_40sdp"
                                 style="@style/MediumText"
                                 android:textSize="14sp"
+                                android:checked="@{(addVehicleViewModel.vehicleData.wheelChair == 1)}"
+                                android:onCheckedChanged="@{(view,isChecked) -> addVehicleViewModel.onWheelChairCheckChanged(isChecked)}"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="@dimen/_10sdp"
                                 android:text="@string/wheel_chair"

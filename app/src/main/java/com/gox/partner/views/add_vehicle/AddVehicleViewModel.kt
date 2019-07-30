@@ -116,6 +116,14 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
                     createRequestBody(getVehicleData()!!.vehicleColor!!)
         }
 
+        if(specialSeatLiveData.value!! && getVehicleData()!!.childSeat ==1){
+            params[WebApiConstants.AddService.CHILD_SEAT] = createRequestBody(getVehicleData()!!.childSeat.toString())
+        }
+        if(specialSeatLiveData.value!! && getVehicleData()!!.wheelChair ==1){
+            params[WebApiConstants.AddService.WHEEL_CHAIR] = createRequestBody(getVehicleData()!!.wheelChair.toString())
+        }
+
+
         params[WebApiConstants.AddService.VEHICLE_NO] = createRequestBody(getVehicleData()!!.vehicleNumber!!)
         params[WebApiConstants.AddService.VEHICLE_MAKE] = createRequestBody(getVehicleData()!!.vehicleMake!!)
 
@@ -178,5 +186,21 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     fun onInsuranceClick(view: View) = navigator.onInsuranceClicked()
 
     fun onVehicleSubmitClick(view: View) = navigator.onVehicleSubmitClicked()
+
+    fun onChildSeatCheckChanged(isChecked:Boolean){
+        if(isChecked){
+            getVehicleData()?.childSeat = 1
+        }else{
+            getVehicleData()?.childSeat = 0
+        }
+    }
+
+    fun onWheelChairCheckChanged(isChecked:Boolean){
+        if(isChecked){
+            getVehicleData()?.wheelChair = 1
+        }else{
+            getVehicleData()?.wheelChair = 0
+        }
+    }
 
 }

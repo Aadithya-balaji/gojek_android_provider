@@ -62,6 +62,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             vehicleData = intent.getSerializableExtra(Constants.TRANSPORT_VEHICLES)
                     as ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
             setVehicle(vehicleData)
+        }else{
+            mViewModel.specialSeatLiveData.value = false
         }
 
         mBinding.addVehicleViewModel = mViewModel
@@ -85,7 +87,6 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             run {
                 txt_category_selection.setText(item.toString())
                 mViewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
-                println("AddVehicleActivity Vehicle capacity ${vehicleData[position].capacity}")
                 val capacity:Int? = vehicleData[position].capacity
                 mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
             }
@@ -130,13 +131,13 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
                 spinnerCarCategory.selectedIndex = vehiclePosition
                 txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
-                println("AddVehicleActivity Vehicle capacity ${vehicleData[vehiclePosition].capacity}")
                 val capacity:Int? = vehicleData[vehiclePosition].capacity
                 mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
             } else {
                 spinnerCarCategory.selectedIndex = 0
                 txt_category_selection.setText(vehicleData[0].vehicleName)
                 mViewModel.getVehicleData()!!.vehicleId = vehicleData[0].id
+                mViewModel.specialSeatLiveData.value = false
             }
         }
     }

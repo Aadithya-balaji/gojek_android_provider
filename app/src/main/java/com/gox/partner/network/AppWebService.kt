@@ -231,10 +231,10 @@ interface AppWebService {
     @GET("provider/earnings/{id}")
     fun getEarnings(@Path("id") id: Int): Observable<EarningsResponse>
 
-    @GET("provider/history-dispute/transport/{request_id}")
+    @GET("provider/ride/disputestatus/{request_id}")
     fun getTransportDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
-    @GET("provider/history-dispute/order/{request_id}")
+    @GET("provider/order/disputestatus/{request_id}")
     fun getOrderDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
     @POST("provider/logout")

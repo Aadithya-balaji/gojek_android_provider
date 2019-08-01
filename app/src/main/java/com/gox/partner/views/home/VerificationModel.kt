@@ -1,6 +1,8 @@
 package com.gox.partner.views.home
 
+import com.gox.base.base.BaseApplication
 import com.gox.base.data.Constants
+import com.gox.base.data.PreferencesKey
 
 class VerificationModel {
 
@@ -20,7 +22,7 @@ class VerificationModel {
     fun getDialogType(): String {
         if (isService <= 0 || isDocument <= 0 || isBankDetail <= 0) return Constants.ProviderStatus.PENDING
         else if (!providerStatus.equals("APPROVED", true)) return Constants.ProviderStatus.WAITING
-        else if (providerWalletBalance < 0) return Constants.ProviderStatus.LOW_BALANCE
+        else if (providerWalletBalance < BaseApplication.getCustomPreference!!.getLong(PreferencesKey.PROVIDER_NEGATIVE_BALANCE,0)) return Constants.ProviderStatus.LOW_BALANCE
         return ""
     }
 }

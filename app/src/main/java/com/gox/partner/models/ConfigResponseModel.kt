@@ -24,10 +24,15 @@ data class ConfigService(
 
 data class Appsetting(
         var android_key: String = "",
+        var demo_mode: Int = 0,
+        var provider_negative_balance: Long = 0,
         var cmspage: Cmspage = Cmspage(),
         var ios_key: String = "",
         var languages: List<Language> = listOf(),
         var otp_verify: Int = 0,
+        var ride_otp: Int = 0,
+        var order_otp: Int = 0,
+        var service_otp: Int = 0,
         var payments: List<ConfigPayment> = listOf(),
         var referral: Int = 0,
         var social_login: Int = 0,

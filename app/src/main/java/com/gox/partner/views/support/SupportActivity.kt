@@ -19,6 +19,7 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
 
     lateinit var mBinding: ActivitySupportBinding
     private lateinit var supportDetails: Supportdetails
+    private lateinit var supportURL:String
 
     override fun getLayoutId() = R.layout.activity_support
 
@@ -36,8 +37,10 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
 
         if (!supportDetails.contact_number.isEmpty())
             phonenumber_support_tv.text = supportDetails.contact_number[0].number
+
         mail_support_tv.text = supportDetails.contact_email
-        website_support_tv.text = BuildConfig.BASE_URL
+        supportURL = baseApiResponseData.appsetting.cmspage.help
+        website_support_tv.text = supportURL
 
         call_support_ll.setOnClickListener {
             goToPhoneCall()
@@ -71,7 +74,7 @@ class SupportActivity : BaseActivity<ActivitySupportBinding>(), SupportNavigator
 
     override fun goToWebsite() {
         val i = Intent(Intent.ACTION_VIEW)
-        i.data = Uri.parse(BuildConfig.BASE_URL)
+        i.data = Uri.parse(supportURL)
         startActivity(i)
     }
 

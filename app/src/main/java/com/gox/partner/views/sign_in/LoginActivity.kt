@@ -115,7 +115,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
 
 
     fun setDefaultCountry(){
-        val dr = ContextCompat.getDrawable(this, R.drawable.flag_india as Int)
+        val dr = ContextCompat.getDrawable(this, R.drawable.flag_india)
         val bitmap = (dr as BitmapDrawable).bitmap
         var width:Int=0
         var height:Int=0

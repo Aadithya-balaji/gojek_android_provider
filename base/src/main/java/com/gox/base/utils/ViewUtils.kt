@@ -111,7 +111,7 @@ object ViewUtils {
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog!!.setCancelable(false)
         dialog!!.setContentView(R.layout.layout_enable_gbs)
-        dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog!!.show()
     }
 
@@ -200,7 +200,7 @@ object ViewUtils {
         val dialogBuilder = android.app.AlertDialog.Builder(context)
         val li = LayoutInflater.from(context)
         val dialogView = li.inflate(R.layout.layout_permission_setting, null)
-        dialogBuilder.setView(dialogView);
+        dialogBuilder.setView(dialogView)
         val tvMessage = dialogView.findViewById(R.id.tvMessage) as TextView
         tvMessage.text = message
         val tvOk = dialogView.findViewById(R.id.tvOk) as TextView

@@ -451,6 +451,10 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         }
     }
 
+    override fun getDistanceTime(meters: Double, seconds: Double) {
+
+    }
+
     override fun whenFail(statusCode: String) {
 
         if (canDrawPolyLine) {

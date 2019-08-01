@@ -32,8 +32,8 @@ internal class DirectionsJSONParser {
 
                         for (l in list.indices) {
                             val hm = HashMap<String, String>()
-                            hm["lat"] = java.lang.Double.toString((list[l] as LatLng).latitude)
-                            hm["lng"] = java.lang.Double.toString((list[l] as LatLng).longitude)
+                            hm["lat"] = (list[l] as LatLng).latitude.toString()
+                            hm["lng"] = (list[l] as LatLng).longitude.toString()
                             path.add(hm)
                         }
                     }

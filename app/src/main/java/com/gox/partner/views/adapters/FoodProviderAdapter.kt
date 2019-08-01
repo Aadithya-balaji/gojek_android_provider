@@ -19,7 +19,7 @@ class FoodProviderAdapter(val activity: FragmentActivity?) : RecyclerView.Adapte
 
     override fun getItemCount(): Int = 1
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.mBinding.tvApprove.setOnClickListener() {
+        holder.mBinding.tvApprove.setOnClickListener {
             activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
         }
     }

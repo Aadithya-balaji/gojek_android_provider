@@ -39,16 +39,14 @@ class FcmService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-        Log.d("_D", remoteMessage!!.data!!["custom"])
-        val notificationData = Gson().fromJson(remoteMessage!!.data!!["custom"], NotificationDataModel::class.java)
-
-
 
         println(tagName
-                + " notificationData = " + remoteMessage.data!!["custom"]
+                + " notificationData = " + remoteMessage!!.data!!["custom"]
                 + " status = Background->" + isBackground(applicationContext)
                 + " isLocked ->" + isLocked(applicationContext)
                 + " is CallActive -> " + isCallActive(applicationContext))
+
+        val notificationData = Gson().fromJson(remoteMessage.data!!["custom"], NotificationDataModel::class.java)
 
         if (notificationData.message!!.topic!!.contains("incoming_request"))
             sendProlongedNotification(notificationData)
@@ -56,7 +54,7 @@ class FcmService : FirebaseMessagingService() {
 
         if (notificationData.message!!.topic!!.contains("incoming_request")
                 || notificationData.message!!.topic!!.contains("RRRR")
-                && isBackground(applicationContext)
+                && !isBackground(applicationContext)
                 && !isLocked(applicationContext)
                 && !isCallActive(applicationContext)) restartApp()
     }

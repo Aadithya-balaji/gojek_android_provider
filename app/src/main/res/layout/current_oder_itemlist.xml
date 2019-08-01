@@ -64,7 +64,7 @@
                     android:text="@string/dummy_title_text"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_14sdp"
-                    tools:ignore="RelativeOverlap" />
+                     />
 
                 <TextView
                     android:id="@+id/ordered_item_tv"

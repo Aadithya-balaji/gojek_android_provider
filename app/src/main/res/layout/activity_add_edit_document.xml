@@ -314,7 +314,7 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_12sdp"
-                tools:ignore="UnusedAttribute" />
+                 />
 
         </LinearLayout>
 

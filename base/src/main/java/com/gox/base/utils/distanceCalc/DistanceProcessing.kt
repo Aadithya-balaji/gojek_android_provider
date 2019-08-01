@@ -15,7 +15,6 @@ class DistanceProcessing(private val mListener: DistanceListener) :
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         return data
     }
 
@@ -24,9 +23,9 @@ class DistanceProcessing(private val mListener: DistanceListener) :
         try {
             val jsonObject = JSONObject(result)
             println("RRR :: jsonObject = $jsonObject")
-
             when {
-                jsonObject.has("error_message") -> mListener.whenDirectionFail(jsonObject.optString("error_message"))
+                jsonObject.has("error_message") ->
+                    mListener.whenDirectionFail(jsonObject.optString("error_message"))
                 jsonObject.optString("status") == "OK" ->
                     mListener.whenDone(Gson().fromJson(result, DistanceCalcModel::class.java))
                 else -> mListener.whenDirectionFail(jsonObject.optString("status"))

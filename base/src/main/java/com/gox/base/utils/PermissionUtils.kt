@@ -74,7 +74,7 @@ class PermissionUtils {
         val intent = Intent()
         intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        val uri = Uri.fromParts("package", context.getPackageName(), null)
+        val uri = Uri.fromParts("package", context.packageName, null)
         intent.data = uri
         val appCompatActivity = context as AppCompatActivity
         appCompatActivity.startActivityForResult(intent, 300)
@@ -88,7 +88,7 @@ class PermissionUtils {
         var isPermissionNeed = false
         val blockedPermission = checkHasPermission(context as AppCompatActivity, permission)
         if (blockedPermission.size > 0) {
-            val isBlocked = isPermissionBlocked(context!!, blockedPermission)
+            val isBlocked = isPermissionBlocked(context, blockedPermission)
             if (isBlocked) {
                 showMessageOKCancel(context, DialogInterface.OnClickListener { dialog, which -> callPermissionSettings(context) })
             } else ActivityCompat.requestPermissions(context, permission, requestCode)
@@ -127,7 +127,7 @@ class PermissionUtils {
         val dialogBuilder = AlertDialog.Builder(context)
         val li = LayoutInflater.from(context)
         val dialogView = li.inflate(R.layout.layout_permission_setting, null)
-        dialogBuilder.setView(dialogView);
+        dialogBuilder.setView(dialogView)
         val tvOk = dialogView.findViewById(R.id.tvOk) as TextView
         tvOk.setOnClickListener { v ->
             okListener.onClick(dialog, v!!.id)

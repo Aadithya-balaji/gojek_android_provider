@@ -4,9 +4,9 @@ import android.graphics.Color
 import android.os.AsyncTask
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.PolylineOptions
+import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
-import kotlin.Exception as Exception1
 
 class ParserTask internal constructor(private val mPolyLineListener: PolyLineListener)
     : AsyncTask<String, Int, List<List<HashMap<String, String>>>>() {
@@ -23,6 +23,7 @@ class ParserTask internal constructor(private val mPolyLineListener: PolyLineLis
             val parser = DirectionsJSONParser()
             routes = parser.parse(jObject)
             if (routes.isEmpty()) error = jObject.toString()
+            else getDistance(jObject)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -58,6 +59,38 @@ class ParserTask internal constructor(private val mPolyLineListener: PolyLineLis
 
         if (lineOptions != null) mPolyLineListener.whenDone(lineOptions)
         else mPolyLineListener.whenFail(error!!)
+    }
+
+    private fun getDistance(jObject: JSONObject){
+        val jRoutes: JSONArray
+        var jLegs: JSONArray
+        var jDistance: JSONObject
+        var distance: Double
+        var jDuration: JSONObject
+        var duration: Double
+
+        try {
+
+            jRoutes = jObject.getJSONArray("routes")
+
+            for (i in 0 until jRoutes.length()) {
+                jLegs = (jRoutes.get(i) as JSONObject).getJSONArray("legs")
+                for (j in 0 until jLegs.length()) {
+                    jDistance = (jLegs.get(j) as JSONObject).getJSONObject("distance")
+                    distance = jDistance.getDouble("value")
+                    println("RRR :: distance = $distance")
+
+                    jDuration = (jLegs.get(j) as JSONObject).getJSONObject("duration")
+                    duration = jDuration.getDouble("value")
+                    println("RRR :: duration = $duration")
+
+                    mPolyLineListener.getDistanceTime(distance, duration)
+                }
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }

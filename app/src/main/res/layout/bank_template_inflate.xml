@@ -27,8 +27,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_lt_std_medium"
-            android:layout_marginStart="@dimen/_15sdp"
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
             android:text="@{bankViewModel.getBankLabelName(position)}"
             android:textColor="@color/black"
             tools:text="Bank Name" />
@@ -36,12 +36,12 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
-            android:layout_margin="@dimen/_15sdp"
+            android:padding="15dp"
+            android:layout_margin="15dp"
             android:descendantFocusability="beforeDescendants"
             app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="@dimen/_5sdp"
-            app:cardElevation="@dimen/_5sdp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="false">
 

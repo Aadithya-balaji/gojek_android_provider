@@ -11,7 +11,6 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -25,6 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
+import com.gox.base.BuildConfig.isSocketEnabled
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.BroadCastTypes.BASE_BROADCAST
@@ -82,7 +82,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     private var isLocationDialogShown: Boolean = false
     private var googleApiClient: GoogleApiClient? = null
     private val FLOATING_OVERLAY_PERMISSION = 104
-    private var canDrawPolyLine: Boolean = true
 
     override fun getLayoutId() = R.layout.activity_dashboard
 
@@ -177,7 +176,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     }
 
     override fun updateLocation(isTrue: Boolean) {
-        println("RRRR :: DashBoardActivity.updateLocation")
+        println("RRRR :: DashBoardActivity.updateLocation :: $isTrue")
         if (isTrue) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
             startService(locationServiceIntent)
@@ -294,11 +293,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
-                    if (checkStatusApiCounter++ % 2 == 0) if (canDrawPolyLine) {
-                        canDrawPolyLine = false
+                    if (!isSocketEnabled) if (checkStatusApiCounter++ % 2 == 0)
                         mViewModel.callCheckStatusAPI()
-                        Handler().postDelayed({ canDrawPolyLine = true }, 1000)
-                    }
                 }
             } else if (!isLocationDialogShown) {
                 isLocationDialogShown = true
@@ -310,22 +306,20 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     override fun showErrorMessage(s: String) = ViewUtils.showNormalToast(this, s)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Log.e("Location", "------Result $requestCode")
         when (requestCode) {
-            500 ->
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        isGPSEnabled = true
-                        isLocationDialogShown = false
-                        if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                            ViewUtils.showGpsDialog(context)
-                            Timer().schedule(10000) {
-                                ViewUtils.dismissGpsDialog()
-                                updateCurrentLocation()
-                            }
+            500 -> when (resultCode) {
+                Activity.RESULT_OK -> {
+                    isGPSEnabled = true
+                    isLocationDialogShown = false
+                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                        ViewUtils.showGpsDialog(context)
+                        Timer().schedule(10000) {
+                            ViewUtils.dismissGpsDialog()
+                            updateCurrentLocation()
                         }
                     }
                 }
+            }
             FLOATING_OVERLAY_PERMISSION -> showFloatingView(this, false)
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -348,7 +342,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     private fun startFloatingViewService(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            if (activity.window.attributes.layoutInDisplayCutoutMode == WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER)
+            if (activity.window.attributes.layoutInDisplayCutoutMode
+                    == WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER)
                 throw RuntimeException("'windowLayoutInDisplayCutoutMode' do not be set to " + "'never'")
             if (activity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
                 throw RuntimeException("Do not set Activity to landscape")
@@ -361,13 +356,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
     }
 
-    override fun getInstance(): DashBoardActivity = this@DashBoardActivity
-
+    override fun getInstance() = this@DashBoardActivity
 
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
-
-
     }
 }

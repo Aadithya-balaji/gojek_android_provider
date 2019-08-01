@@ -32,6 +32,6 @@ publishing {
 }
 
 dependencies {
-    api 'com.google.android.material:material:1.1.0-alpha07'
-    implementation "androidx.exifinterface:exifinterface:$androidx_version"
+    api 'com.google.android.material:material:1.1.0-alpha08'
+    implementation "androidx.exifinterface:exifinterface:1.1.0-beta01"
 }

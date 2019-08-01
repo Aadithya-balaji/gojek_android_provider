@@ -22,6 +22,7 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     var latitude = MutableLiveData<Double>()
     var longitude = MutableLiveData<Double>()
     var distanceMeter = MutableLiveData<Double>()
+    var driverSpeed = MutableLiveData<Double>()
     var locationPoint: ArrayList<LocationPoint> = arrayListOf()
     var distanceApiProcessing = MutableLiveData<ArrayList<DistanceApiProcessing>>()
     var iteratePointsForApi = ArrayList<LatLng>()
@@ -37,7 +38,6 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     var showLoading = MutableLiveData<Boolean>()
 
     fun showCurrentLocation() = navigator.showCurrentLocation()
-
 
     fun callTaxiCheckStatusAPI() {
         if (BaseApplication.isNetworkAvailable)

@@ -35,8 +35,6 @@
                 android:id="@+id/rcvBankForm"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_20sdp"
                 android:layout_weight="1"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -58,7 +56,7 @@
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_12sdp"
-                tools:ignore="UnusedAttribute" />
+                 />
 
         </LinearLayout>
 
@@ -69,7 +67,6 @@
             android:gravity="center"
             android:orientation="vertical"
             android:visibility="@{viewModel.showEmpty ? View.VISIBLE:View.GONE}"
-            tools:ignore="UseCompoundDrawables"
             tools:visibility="gone">
 
             <ImageView

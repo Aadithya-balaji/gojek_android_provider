@@ -528,7 +528,7 @@
                     android:padding="@dimen/_3sdp"
                     android:text="@string/already_have_account"
                     android:textSize="@dimen/_12sdp"
-                    tools:ignore="RelativeOverlap" />
+                     />
 
                 <!--Signin textview-->
                 <TextView
@@ -556,7 +556,7 @@
                     app:fabSize="mini"
                     app:srcCompat="@drawable/ic_forward_arrow"
                     app:tint="@android:color/white"
-                    tools:ignore="RelativeOverlap" />
+                     />
 
             </RelativeLayout>
 

@@ -176,7 +176,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     }
 
     override fun updateLocation(isTrue: Boolean) {
-        println("RRRR :: DashBoardActivity.updateLocation")
+        println("RRRR :: DashBoardActivity.updateLocation :: $isTrue")
         if (isTrue) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
             startService(locationServiceIntent)

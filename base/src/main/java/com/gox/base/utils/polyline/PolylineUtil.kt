@@ -1,6 +1,7 @@
 package com.gox.base.utils.polyline
 
 import android.os.AsyncTask
+import android.util.Log
 import org.json.JSONException
 import org.json.JSONObject
 
@@ -23,7 +24,7 @@ class PolylineUtil(private val mPolyLineListener: PolyLineListener) :
 
         try {
             val jsonObject = JSONObject(result)
-            println("RRR :: jsonObject = $jsonObject")
+            longLog(jsonObject.toString(), "RRR :: jsonObject = ")
             when {
                 jsonObject.has("error_message") -> mPolyLineListener.whenFail(jsonObject.optString("error_message"))
                 jsonObject.optString("status") == "OK" -> ParserTask(mPolyLineListener).execute(result)
@@ -32,5 +33,12 @@ class PolylineUtil(private val mPolyLineListener: PolyLineListener) :
         } catch (e: JSONException) {
             e.printStackTrace()
         }
+    }
+
+    private fun longLog(str: String, s: String) {
+        if (str.length > 4000) {
+            Log.d(s, str.substring(0, 4000))
+            longLog(str.substring(4000), s)
+        } else Log.d(s, str)
     }
 }

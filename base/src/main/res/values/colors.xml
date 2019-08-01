@@ -46,10 +46,6 @@
     <color name="text_on_ride">#d13b00</color>
     <color name="past_item_cancelled">#0F9A6C</color>
     <color name="grey_100">#f5f5f5</color>
-    <color name="bg_notification_read"></color>
-    <color name="txt_notication_read"></color>
-    <color name="bg_notification_unread"></color>
-    <color name="txt_notification_unread"></color>
     <color name="button_textcolor">#ffffff</color>
     <color name="bg_vechile_profile">#F2F2F2</color>
     <color name="bg_vechile_edittext">#F8F7F6</color>

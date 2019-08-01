@@ -5,7 +5,7 @@ data class NotificationDataModel(
 )
 
 data class Message(
-        var data: List<Data?>? = listOf(),
+        var data: Data? = Data(),
         var notification: NotificationData? = NotificationData(),
         var topic: String? = ""
 )

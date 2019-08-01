@@ -233,7 +233,7 @@
                             android:text="@string/change_password"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_12sdp"
-                            tools:ignore="RtlHardcoded" />
+                             />
 
                     </LinearLayout>
 

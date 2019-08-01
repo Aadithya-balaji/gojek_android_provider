@@ -87,9 +87,12 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import io.socket.emitter.Emitter
+import kotlinx.android.synthetic.main.activity_taxi_main.*
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import kotlinx.android.synthetic.main.layout_taxi_status_container.*
 import org.json.JSONObject
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -724,7 +727,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             options.addAll(polyLine)
             mPolyline = mGoogleMap!!.addPolyline(options.width(5f).color
             (ContextCompat.getColor(baseContext, R.color.colorBlack)))
-            println("RRR mPolyline = " + polyLine.size)
         } else if (index < 0) {
             canDrawPolyLine = true
             drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
@@ -789,8 +791,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
+        }
+    }
+
+    override fun getDistanceTime(meters: Double, seconds: Double) {
+        runOnUiThread {
+            mViewModel.driverSpeed.value = meters / seconds
+            println("RRR :::: speed = ${mViewModel.driverSpeed.value}")
         }
     }
 

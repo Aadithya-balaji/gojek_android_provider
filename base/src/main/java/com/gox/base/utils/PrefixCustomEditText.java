@@ -7,8 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.widget.EditText;
 import android.util.AttributeSet;
+import android.widget.EditText;
 
 public class PrefixCustomEditText extends EditText {
 

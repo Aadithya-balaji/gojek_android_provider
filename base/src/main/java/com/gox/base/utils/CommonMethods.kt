@@ -120,7 +120,6 @@ class CommonMethods {
                     e.printStackTrace()
                     Log.e("error", ":------" + e.message)
                 }
-                val hoursFormat = SimpleDateFormat("HH:mm:ss")
                 val formateDate = Date()
                 formateDate.time = calendar!!.timeInMillis
                 timeDiff = formateDate.time
@@ -153,7 +152,7 @@ class CommonMethods {
                         TimeUnit.MILLISECONDS.toMinutes(diffTime) - TimeUnit.HOURS
                                 .toMinutes(TimeUnit.MILLISECONDS.toHours(diffTime)),
                         TimeUnit.MILLISECONDS.toSeconds(diffTime) - TimeUnit.MINUTES
-                                .toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffTime)));
+                                .toSeconds(TimeUnit.MILLISECONDS.toMinutes(diffTime)))
             } catch (e: java.lang.Exception) {
                 e.printStackTrace()
             }

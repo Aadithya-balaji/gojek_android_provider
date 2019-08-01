@@ -16,16 +16,10 @@
             type="com.gox.partner.views.manage_bank_details.ManageBankDetailsViewModel" />
     </data>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_20sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:orientation="vertical"
-        tools:ignore="UseCompoundDrawables">
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvLabelName"
@@ -33,18 +27,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_lt_std_medium"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
             android:text="@{bankViewModel.getBankLabelName(position)}"
             android:textColor="@color/black"
             tools:text="Bank Name" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:layout_margin="15dp"
             android:descendantFocusability="beforeDescendants"
             app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="@dimen/_8sdp"
-            app:cardElevation="@dimen/_20sdp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="5dp"
             app:cardPreventCornerOverlap="true"
             app:cardUseCompatPadding="false">
 
@@ -57,14 +54,12 @@
                 android:background="@null"
                 android:fontFamily="@font/avenir_lt_std_medium"
                 android:inputType="@{bankViewModel.getInputTypeIsNumber(position)?InputType.TYPE_CLASS_NUMBER:InputType.TYPE_CLASS_TEXT}"
-                android:paddingStart="@dimen/_15sdp"
-                android:paddingEnd="@dimen/_15sdp"
+                android:padding="15dp"
                 android:text="@{bankViewModel.getBankLabelValue(position)}"
                 tools:text="HDFC Bank Ltd" />
+
         </com.google.android.material.card.MaterialCardView>
 
-
     </LinearLayout>
-
 
 </layout>

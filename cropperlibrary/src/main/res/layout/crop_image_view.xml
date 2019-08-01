@@ -7,8 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
-        android:scaleType="centerInside"
-        tools:ignore="contentDescription"/>
+        android:scaleType="centerInside"/>
 
     <com.theartofdev.edmodo.cropper.CropOverlayView
         android:id="@+id/CropOverlayView"

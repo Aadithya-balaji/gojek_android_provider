@@ -155,6 +155,8 @@ object Constants {
         const val RATING = "rating"
         const val COMMENT = "comment"
         const val REASON = "reason"
+        const val EXTRA_CHARGE = "extra_charge"
+        const val EXTRA_CHARGE_NOTES = "extra_charge_notes"
     }
 
     object Dispute {

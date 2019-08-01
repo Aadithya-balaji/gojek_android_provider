@@ -11,6 +11,6 @@ class AddVehicleDataModel {
     var vehicleMake: String? = ""
     var vehicleRcBook: String? = ""
     var vehicleInsurance: String? = ""
-    var wheelChair: Int? = 0
-    var childSeat: Int? = 0
+    var wheelChair: Int = 0
+    var childSeat: Int = 0
 }

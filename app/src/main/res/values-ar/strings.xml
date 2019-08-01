@@ -514,5 +514,9 @@
     <string name="packing_charge">Packing Charges</string>
     <string name="taxiprovider_pay">Provider Pay</string>
     <string name="schedule_time">Schedule Time</string>
+    <string name="select_front_page">Select Front Page</string>
+    <string name="select_back_page">Select Back Page</string>
+    <string name="child_seat">Child Seat</string>
+    <string name="wheel_chair">Wheel Chair</string>
     <string name="send">send</string>
 </resources>

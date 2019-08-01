@@ -42,8 +42,7 @@
                 android:inputType="numberDecimal"
                 android:padding="@dimen/_7sdp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_18sdp"
-                tools:ignore="Autofill,LabelFor" />
+                android:textSize="@dimen/_18sdp"/>
 
             <TextView
                 android:id="@+id/label"
@@ -76,8 +75,7 @@
                 android:inputType="numberDecimal"
                 android:padding="@dimen/_7sdp"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_18sdp"
-                tools:ignore="Autofill,LabelFor" />
+                android:textSize="@dimen/_18sdp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,7 +114,7 @@
                 android:text="@string/submit"
                 android:textColor="@color/card_left_bg"
                 android:textSize="@dimen/_14sdp"
-                tools:ignore="RelativeOverlap" />
+                 />
 
         </RelativeLayout>
 

@@ -261,6 +261,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     private fun showPendingListDialog() {
+        dashBoardNavigator.updateLocation(true)
         pendingListDialog?.show(activity!!.supportFragmentManager, "pendinglist")
         pendingListDialog?.isCancelable = false
     }

@@ -30,8 +30,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="20dp"
-            tools:ignore="UseCompoundDrawables">
+            android:padding="20dp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="50dp"

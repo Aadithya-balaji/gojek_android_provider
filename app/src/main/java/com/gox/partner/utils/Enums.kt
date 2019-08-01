@@ -42,6 +42,8 @@ class Enums {
         const val IMAGE_TYPE = "image"
         const val PDF_TYPE = "pdf"
 
+        const val PDF_EXTENSION = ".pdf"
+
         //PaymentType
         const val PAYMENT_CASH = 1
         const val PAYMENT_CARD = 2

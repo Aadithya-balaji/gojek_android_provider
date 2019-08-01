@@ -34,6 +34,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
+import com.gox.base.BuildConfig
 import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
 import com.gox.base.chatmessage.ChatActivity
@@ -86,9 +87,12 @@ import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import io.socket.emitter.Emitter
+import kotlinx.android.synthetic.main.activity_taxi_main.*
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import kotlinx.android.synthetic.main.layout_taxi_status_container.*
 import org.json.JSONObject
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -105,9 +109,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         GoogleMap.OnCameraIdleListener,
         View.OnClickListener {
 
+    private var currentLat: Double = 0.0
+    private var currentlng: Double = 0.0
 
-    private var curretntLat: Double = 0.0
-    private var currentlong: Double = 0.0
     private lateinit var mSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var mBinding: ActivityTaxiMainBinding
     private lateinit var mViewModel: TaxiDashboardViewModel
@@ -121,7 +125,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var mPolyline: Polyline? = null
     private var polyUtil = PolyUtil()
     private var providerMarker: Marker? = null
-
 
     private var srcMarker: Marker? = null
     private var isWaitingTime: Boolean? = false
@@ -166,6 +169,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         fab_taxi_menu.isIconAnimated = false
         fab_taxi_menu.setPadding(50, 50, 50, 50)
+
         observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
         }
@@ -276,24 +280,19 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             if (checkStatusResponse?.statusCode.equals("200")) try {
                 mViewModel.showLoading.value = false
 
-
                 if (!checkStatusResponse.responseData.request.status.isNullOrEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-
-
-                    if (curretntLat != 0.0 || curretntLat != checkStatusResponse.responseData.request.s_latitude &&
-                            currentlong != 0.0 || currentlong != checkStatusResponse.responseData.request.s_longitude) {
+                    if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
+                            currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
 
                         mViewModel.currentStatus.value = ""
-
                     }
-
 
                     //if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
 
-                        curretntLat = checkStatusResponse.responseData.request.s_latitude!!
-                        currentlong = checkStatusResponse.responseData.request.s_longitude!!
+                        currentLat = checkStatusResponse.responseData.request.s_latitude!!
+                        currentlng = checkStatusResponse.responseData.request.s_longitude!!
 
                         writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY,
                                 checkStatusResponse.responseData.provider_details.id)
@@ -687,7 +686,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             Log.e("SOCKET", "SOCKET_SK Location update called")
         }
 
-        if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
+        if (!BuildConfig.isSocketEnabled) if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
 
         if (startLatLng.latitude != 0.0) endLatLng = startLatLng
         startLatLng = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
@@ -728,7 +727,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             options.addAll(polyLine)
             mPolyline = mGoogleMap!!.addPolyline(options.width(5f).color
             (ContextCompat.getColor(baseContext, R.color.colorBlack)))
-            println("RRR mPolyline = " + polyLine.size)
         } else if (index < 0) {
             canDrawPolyLine = true
             drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
@@ -770,7 +768,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun whenDone(output: PolylineOptions) {
-
         try {
             mGoogleMap!!.clear()
 
@@ -793,8 +790,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
+        }
+    }
+
+    override fun getDistanceTime(meters: Double, seconds: Double) {
+        runOnUiThread {
+            mViewModel.driverSpeed.value = meters / seconds
+            println("RRR :::: speed = ${mViewModel.driverSpeed.value}")
         }
     }
 
@@ -825,8 +830,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun whenFail(statusCode: String) {
-        if (statusCode == "OVER_DAILY_LIMIT" || statusCode.contains("You have exceeded your daily request quota for this API")) {
-            polylineKey = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")
+        if (statusCode == "OVER_DAILY_LIMIT" || statusCode.contains(
+                        "You have exceeded your daily request quota for this API")) {
+            polylineKey = BaseApplication.getCustomPreference!!.getString(
+                    PreferencesKey.ALTERNATE_MAP_KEY, "")
             PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
             (mViewModel.tempSrc.value, mViewModel.tempDest.value, polylineKey))
         }
@@ -875,39 +882,48 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         val h = (time / 3600000).toInt()
         val m = (time - h * 3600000).toInt() / 60000
         val s = (time - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-        val t = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+        val t = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) +
+                ":" + if (s < 10) "0$s" else s
         chronometer.text = t
     }
 
     override fun onClick(view: View?) {
         when (view!!.id) {
-            R.id.btnWaiting -> {
-                if (isWaitingTime!!) {
-                    changeWaitingTimeBackground(false)
-                    isWaitingTime = false
-                    lastWaitingTime = SystemClock.elapsedRealtime()
+//<<<<<<< HEAD
+            R.id.btnWaiting -> if (isWaitingTime!!) {
+                changeWaitingTimeBackground(false)
+                isWaitingTime = false
+                lastWaitingTime = SystemClock.elapsedRealtime()
+                val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                val params = HashMap<String, String>()
+                params[Constants.Common.ID] = requestID
+                params["status"] = "1"
+                mViewModel.taxiWaitingTime(params)
+                cmWaiting.stop()
+            } else {
+                changeWaitingTimeBackground(true)
+                isWaitingTime = true
+                val temp: Long = 0
+                if (lastWaitingTime != temp)
+                    cmWaiting.base = (cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
+
+                if (mViewModel.checkStatusTaxiLiveData.value != null) {
                     val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+//=======
+//            R.id.btnWaiting -> {
+//                if (isWaitingTime!!) {
+//                    changeWaitingTimeBackground(false)
+//                    isWaitingTime = false
+//                    lastWaitingTime = SystemClock.elapsedRealtime()
+//                    val requestID = mViewModel.checkStatusTaxiLiveData.value!!
+//                            .responseData.request.id.toString()
+//>>>>>>> SocketTesting
                     val params = HashMap<String, String>()
                     params[Constants.Common.ID] = requestID
                     params["status"] = "1"
                     mViewModel.taxiWaitingTime(params)
-                    cmWaiting.stop()
-                } else {
-                    changeWaitingTimeBackground(true)
-                    isWaitingTime = true
-                    val temp: Long = 0
-                    if (lastWaitingTime != temp)
-                        cmWaiting.base = (cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
-
-                    if (mViewModel.checkStatusTaxiLiveData.value != null) {
-                        val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-                        val params = HashMap<String, String>()
-                        params[Constants.Common.ID] = requestID
-                        params["status"] = "1"
-                        mViewModel.taxiWaitingTime(params)
-                    }
-                    cmWaiting.start()
                 }
+                cmWaiting.start()
             }
         }
     }
@@ -920,21 +936,19 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val h = ((time * 1000) / 3600000).toInt()
             val m = ((time * 1000) - h * 3600000).toInt() / 60000
             val s = ((time * 1000) - (h * 3600000).toLong() - (m * 60000).toLong()).toInt() / 1000
-            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" + (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
+
+            val formattedTime = (if (h < 10) "0$h" else h).toString() + ":" +
+                    (if (m < 10) "0$m" else m) + ":" + if (s < 10) "0$s" else s
             cmWaiting.text = formattedTime
             if (mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingStatus == 1) {
                 cmWaiting.start()
                 isWaitingTime = true
                 changeWaitingTimeBackground(true)
             }
-        } else {
-            if (isWaitingTime == true) {
-                cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
-                changeWaitingTimeBackground(true)
-            } else {
-                changeWaitingTimeBackground(false)
-            }
-        }
+        } else if (isWaitingTime == true) {
+            //      cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
+            changeWaitingTimeBackground(true)
+        } else changeWaitingTimeBackground(false)
     }
 
     private fun changeWaitingTimeBackground(isWaitingTime: Boolean) {
@@ -959,24 +973,20 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-            500 ->
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        isGPSEnabled = true
-                        isLocationDialogShown = false
-                        if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                            ViewUtils.showGpsDialog(context)
-                            Timer().schedule(10000) {
-                                ViewUtils.dismissGpsDialog()
-                                updateCurrentLocation()
-                            }
+            500 -> when (resultCode) {
+                Activity.RESULT_OK -> {
+                    isGPSEnabled = true
+                    isLocationDialogShown = false
+                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                        ViewUtils.showGpsDialog(context)
+                        Timer().schedule(10000) {
+                            ViewUtils.dismissGpsDialog()
+                            updateCurrentLocation()
                         }
                     }
-                    Activity.RESULT_CANCELED -> {
-                    }
                 }
+            }
             100 -> finish()
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -1059,18 +1069,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         } else DistanceProcessing(this).execute(DistanceUtils().getUrl(list, key))
     }
 
-    override fun showCurrentLocation() {
+    override fun showCurrentLocation() = Dexter.withActivity(this)
+            .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                    updateCurrentLocation()
+                }
 
-        Dexter.withActivity(this)
-                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-                .withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        updateCurrentLocation()
-                    }
-
-                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                        token?.continuePermissionRequest()
-                    }
-                }).check()
-    }
+                override fun onPermissionRationaleShouldBeShown(
+                        permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                    token?.continuePermissionRequest()
+                }
+            }).check()
 }

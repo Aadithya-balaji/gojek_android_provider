@@ -77,6 +77,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             customPreference.edit().putString("0", it.responseData.base_url + "/").apply()
             customPreference.edit().putString(PreferencesKey.BASE_ID, "0").apply()
             customPreference.edit().putString(PreferencesKey.ALTERNATE_MAP_KEY, it.responseData.appsetting.android_key).apply()
+            customPreference.edit().putLong(PreferencesKey.PROVIDER_NEGATIVE_BALANCE, it.responseData.appsetting.provider_negative_balance).apply()
 
             try {
                 customPreference.edit().putString(PreferencesKey.SOS_NUMBER,

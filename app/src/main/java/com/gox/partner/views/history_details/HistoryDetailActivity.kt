@@ -66,7 +66,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 serviceType.equals("order") -> mViewModel.getOrderHistoryDetail(selectedId.toString())
             }
         }
-
         apiResponse()
     }
 
@@ -263,7 +262,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 mViewModel.requestID.value = mViewModel.historyDetailResponse.value!!.responseData.service.id.toString()
                 params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
-
                 mViewModel.postServiceDispute(params, mViewModel.requestID.value!!)
 
             }
@@ -273,7 +271,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 mViewModel.requestID.value = mViewModel.orderDetail.value!!.id.toString()
                 mViewModel.storeID.value = mViewModel.orderDetail.value!!.order_invoice!!.items!![0]!!.store_id.toString()
                 mViewModel.disputeID.value = mViewModel.orderDetail.value!!.id.toString()
-
 
                 params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
@@ -330,8 +327,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
         Glide.with(this).load(serviceDetail.user!!.picture).into(mBinding.providerCimgv)
         mBinding.providerNameTv.text = (serviceDetail.user.first_name + " " + serviceDetail.user.last_name)*/
-
-
         mBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
         mBinding.historydetailSrcValueTv.text = serviceDetail.s_address + ""
         mBinding.historydetailDestValueTv.visibility = View.GONE

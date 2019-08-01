@@ -93,6 +93,7 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
                     showLoading.postValue(false)
                 }
             }))
+
         else getCompositeDisposable().add(mRepository.getDisputeList(object : ApiListener {
             override fun success(successData: Any) {
                 disputeListData.value = successData as DisputeListModel

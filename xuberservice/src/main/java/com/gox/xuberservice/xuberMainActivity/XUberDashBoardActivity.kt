@@ -2,10 +2,7 @@ package com.gox.xuberservice.xuberMainActivity
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -61,6 +58,8 @@ import com.gox.base.utils.polyline.PolyLineListener
 import com.gox.base.utils.polyline.PolylineUtil
 import com.gox.xuberservice.R
 import com.gox.xuberservice.databinding.ActivityXuberMainBinding
+import com.gox.xuberservice.extracharge.XUberExtraChargeDialog
+import com.gox.xuberservice.interfaces.GetExtraChargeInterface
 import com.gox.xuberservice.interfaces.GetFilePathInterface
 import com.gox.xuberservice.interfaces.GetReasonsInterface
 import com.gox.xuberservice.invoice.XUberInvoiceDialog
@@ -89,7 +88,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         Chronometer.OnChronometerTickListener,
         GetFilePathInterface,
         GetReasonsInterface,
-        PolyLineListener, View.OnClickListener {
+        PolyLineListener,
+        View.OnClickListener {
 
     private lateinit var mViewModel: XUberDashboardViewModel
     private lateinit var fragmentMap: SupportMapFragment
@@ -119,12 +119,12 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var isGPSEnabled: Boolean = false
     private var isLocationDialogShown: Boolean = false
     private var roomConnected: Boolean = false
-    private  var currentStatus:String=""
+    private var currentStatus: String = ""
 
     override fun getLayoutId() = R.layout.activity_xuber_main
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
-        currentStatus=""
+        currentStatus = ""
         mBinding = mViewDataBinding as ActivityXuberMainBinding
         mViewModel = XUberDashboardViewModel()
         context = this
@@ -190,7 +190,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         writePreferences(Constants.Chat.PROVIDER_NAME, xUberCheckRequest.responseData.provider_details?.first_name
                                 + " " + xUberCheckRequest.responseData.provider_details?.last_name)
 
-                        currentStatus=status!!.toUpperCase()
+                        currentStatus = status!!.toUpperCase()
 
                         when (status) {
                             ACCEPTED -> whenAccepted()
@@ -445,10 +445,15 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
+
         } catch (e: Exception) {
             e.printStackTrace()
             Log.e("Map", "------------" + e.message.toString())
         }
+    }
+
+    override fun getDistanceTime(meters: Double, seconds: Double) {
+
     }
 
     override fun whenFail(statusCode: String) {
@@ -566,9 +571,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
                         edtXuperOtp.visibility = View.VISIBLE
                     else edtXuperOtp.visibility = View.GONE
-                    mViewModel.updateRequest(ARRIVED, null, false)
+                    mViewModel.updateRequest(ARRIVED, null, false, "", "")
                 }
-
 
                 // To Start the Service while the request is in Arrived state
                 ARRIVED -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
@@ -582,7 +586,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     } else {
                         if (frontImgFile != null)
                             frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
-                        mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true)
+                        mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true, "", "")
                     }
                 }
 
@@ -590,15 +594,35 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 PICKED_UP -> if (backImgFile == null) {
                     if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_after_image == 1)
                         ViewUtils.showToast(this, resources.getString(R.string.empty_back_image), false)
-                    else mViewModel.updateRequest(DROPPED, null, false)
+                    else showAdditionalChargeConfirm(DROPPED, null, false)
                 } else {
                     backImgMultiPart = getImageMultiPart(backImgFile!!, false)
-                    mViewModel.updateRequest(DROPPED, backImgMultiPart, false)
+                    showAdditionalChargeConfirm(DROPPED, backImgMultiPart, false)
                 }
             }
 
             R.id.tvCancel -> XUberCancelReasonFragment().show(supportFragmentManager, "XUberCancelReasonFragment")
         }
+    }
+
+    private fun showAdditionalChargeConfirm(status: String, file: MultipartBody.Part?, isFrontImage: Boolean) {
+        ViewUtils.showAlert(this, getString(R.string.additional_charge_desc),
+                getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
+            override fun onPositiveButtonClick(dialog: DialogInterface) {
+                XUberExtraChargeDialog.newInstance(object : GetExtraChargeInterface {
+                    override fun getExtraCharge(extraCharge: String, extraNotes: String) {
+                        println("RRR :: extraCharge = [${extraCharge}], extraNotes = [${extraNotes}]")
+                        mViewModel.updateRequest(status, file, isFrontImage, extraNotes, extraCharge)
+                    }
+                }).show(supportFragmentManager, "extraRate")
+                dialog.dismiss()
+            }
+
+            override fun onNegativeButtonClick(dialog: DialogInterface) {
+                mViewModel.updateRequest(status, file, isFrontImage, "", "")
+                dialog.dismiss()
+            }
+        })
     }
 
     override fun onChronometerTick(chronometer: Chronometer?) {

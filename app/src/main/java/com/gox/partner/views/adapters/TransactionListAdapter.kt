@@ -31,12 +31,6 @@ class TransactionListAdapter(context: Context, transactionList: List<WalletTrans
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-//<<<<<<< HEAD
-//        holder.mBinding.tvTransactionID.setText(transactionList!![position].getTransactionAlias().toString())
-//        var strDate = CommonMethods.getLocalTimeStamp(transactionList!![position].getCreatedAt().toString())
-//        holder.mBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).getAmount())
-//        if(transactionList!!.get(position).getType().equals("D"))
-//=======
         holder.mBinding.tvTransactionID.text = transactionList!![position].transaction_alias
 //        var strDate = CommanMethods.getLocalTimeStamp(transactionList!![position].created_at)
         holder.mBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).amount)

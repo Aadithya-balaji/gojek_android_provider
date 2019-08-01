@@ -1,6 +1,5 @@
 package com.gox.partner.network
 
-import com.gox.base.chatmessage.ChatMessageList
 import com.gox.partner.models.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -231,7 +230,7 @@ interface AppWebService {
     @GET("provider/earnings/{id}")
     fun getEarnings(@Path("id") id: Int): Observable<EarningsResponse>
 
-    @GET("provider/history-dispute/transport/{request_id}")
+    @GET("provider/{servicename}/disputestatus/{request_id}")
     fun getTransportDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
     @GET("provider/history-dispute/order/{request_id}")

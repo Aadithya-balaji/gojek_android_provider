@@ -19,7 +19,6 @@ import com.gox.partner.interfaces.ServiceTypeListener
 import com.gox.partner.models.ConfigResponseData
 import com.gox.partner.models.ConfigService
 import com.gox.partner.views.adapters.FilterServiceListAdapter
-import com.gox.partner.views.currentorder_fragment.CurrentOrderFragment
 import com.gox.partner.views.dashboard.DashBoardNavigator
 import com.gox.partner.views.dashboard.DashBoardViewModel
 import com.gox.partner.views.pastorder_fragment.PastOrderFragment
@@ -52,6 +51,8 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
             selectedServiceTypeID = baseApiResponseData.services.get(0).id
             filterServiceListName = baseApiResponseData.services
         }
+        dashboardViewModel.selectedFilterService.value = filterServiceListName[0].admin_service
+
     }
 
     override fun onAttach(context: Context) {
@@ -67,7 +68,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
             ContextCompat.getDrawable(it
                     , R.drawable.custom_roundcorner_unselectedorder)
         }
-        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container_order, CurrentOrderFragment())?.commit()
+//        activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.container_order, CurrentOrderFragment())?.commit()
     }
 
     override fun goToPastOrder() {
@@ -93,9 +94,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
             dialog.setContentView(view.root)
             dialog.show()
             view.applyFilter.setOnClickListener {
-                mBinding.serviceNameToolbarTv.text = dashboardViewModel.selectedFilterService.value
                 dashboardViewModel.selectedFilterService.value = selectedService
+                mBinding.serviceNameToolbarTv.text = dashboardViewModel.selectedFilterService.value
                 dialog.dismiss()
+                goToPastOrder()
+
             }
         }
     }

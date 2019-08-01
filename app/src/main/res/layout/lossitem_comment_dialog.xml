@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_background_color"
+        android:orientation="vertical"
+        android:padding="@dimen/_10sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_8sdp">
+
+            <TextView
+                android:id="@+id/dispute_title"
+                style="@style/MediumText.Black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/listout_lossitem" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/lossitem_et"
+                style="@style/SmallText.Grey"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_100sdp"
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@drawable/bg_white"
+                android:gravity="left"
+                android:padding="@dimen/_5sdp"
+                android:hint="@string/dummy_enter_your_loss_item" />
+
+        </LinearLayout>
+
+        <Button
+            style="@style/SmallText.colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/send_btn"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@drawable/bg_round_corner"
+            android:text="@string/send" />
+
+        <!--
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dispute_reason_frghome_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:adapter="@{disputeReasonListAdapter}"
+                    android:padding="@dimen/_8sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:spanCount="3" />
+        -->
+
+
+    </LinearLayout>
+
+</layout>

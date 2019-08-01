@@ -1,3 +1,4 @@
+/*
 package com.gox.partner.views.currentorder_fragment
 
 import androidx.lifecycle.MutableLiveData
@@ -31,4 +32,4 @@ class CurrentOrderViewModel : BaseViewModel<CurrentOrderNavigator>() {
             }
         }, hashMap, s))
     }
-}
+}*/

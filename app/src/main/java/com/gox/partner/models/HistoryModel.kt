@@ -3,7 +3,7 @@ package com.gox.partner.models
 data class HistoryModel(
         val error: List<Any?>? = listOf(),
         val message: String? = "",
-        val responseData: ResponseData? = ResponseData(),
+        val responseData: TransportResponseData,
         val statusCode: String? = "",
         val title: String? = ""
 ) {

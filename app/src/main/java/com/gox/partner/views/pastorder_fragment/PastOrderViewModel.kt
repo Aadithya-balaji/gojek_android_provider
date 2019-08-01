@@ -18,10 +18,10 @@ class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
     var selectedServiceType = MutableLiveData<String>()
     var errorResponse = MutableLiveData<String>()
 
-    fun getTransportPastHistory(selectedService: String) {
+    fun getTransportPastHistory(selectedService: String,offset: String) {
         val hashMap: HashMap<String, String> = HashMap()
         hashMap["limit"] = "100"
-        hashMap["offset"] = "0"
+        hashMap["offset"] = offset
         hashMap["type"] = "past"
         showLoading.value = true
         getCompositeDisposable().add(mRepository.getPastOrderHistory(object : ApiListener {

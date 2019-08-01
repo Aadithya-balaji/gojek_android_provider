@@ -1,3 +1,4 @@
+/*
 package com.gox.partner.views.adapters
 
 import android.content.Intent
@@ -50,4 +51,4 @@ class CurrentOrdersAdapter(val activity: FragmentActivity?, private val transpor
 
     }
 
-}
+}*/

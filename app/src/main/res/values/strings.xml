@@ -519,4 +519,9 @@
     <string name="packing_charge">Packing Charges</string>
     <string name="taxiprovider_pay">Provider Pay</string>
     <string name="schedule_time">Schedule Time</string>
+    <string name="dummy_dispute_created_comments">Dispute created comments</string>
+    <string name="dummy_accepted">accepted</string>
+    <string name="listout_lossitem">List Your loss item</string>
+    <string name="dummy_enter_your_loss_item">Enter your Loss Item</string>
+    <string name="dummy_openstatus">open</string>
 </resources>

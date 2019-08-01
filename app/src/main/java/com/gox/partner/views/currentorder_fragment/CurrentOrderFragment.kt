@@ -1,3 +1,4 @@
+/*
 package com.gox.partner.views.currentorder_fragment
 
 import android.view.View
@@ -53,4 +54,4 @@ class CurrentOrderFragment : BaseFragment<FragmentCurrentOrdersBinding>(), Curre
         this.mBinding.currrentOrdersAdapter = CurrentOrdersAdapter(activity,
                 responseData.transport)
     }
-}
+}*/

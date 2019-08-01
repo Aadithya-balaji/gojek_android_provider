@@ -7,7 +7,7 @@ data class DisputeStatusModel(
         val statusCode: String? = "",
         val title: String? = ""
 ) {
-    data class ResponseData(
+    data class DisputeStatusData(
             val comments: String? = "",
             val comments_by: String? = "",
             val company_id: Int? = 0,

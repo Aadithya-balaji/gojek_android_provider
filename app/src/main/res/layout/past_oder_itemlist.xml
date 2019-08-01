@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="itemClickListener"
+            type="com.gox.partner.views.adapters.CustomClickListner" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/itemCardview"
+            android:layout_margin="@dimen/_8sdp"
+            android:onClick="@{()->itemClickListener.onListClickListner()}"
+            app:cardCornerRadius="@dimen/_10sdp">
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+                <LinearLayout
+                    android:id="@+id/date_time_laoyut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/xuber_bg_half_round_corner"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_18sdp">
+
+                    <TextView
+                        android:id="@+id/date_past_list_tv"
+                        style="@style/VerySmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/dummy_date"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/time_past_list_tv"
+                        style="@style/VerySmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/dummy_time"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/title_past_list_tv"
+                    style="@style/VerySmallText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_toEndOf="@+id/date_time_laoyut"
+                    android:layout_toStartOf="@+id/status_past_tv"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/dummy_title"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/ordered_item_tv"
+                    style="@style/VerySmallText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/title_past_list_tv"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_toEndOf="@+id/date_time_laoyut"
+                    android:padding="@dimen/_3sdp"
+                    android:textColor="@color/grey" />
+
+                <TextView
+                    android:id="@+id/rating_past_tv"
+                    style="@style/VerySmallText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ordered_item_tv"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_toEndOf="@+id/date_time_laoyut"
+                    android:drawableStart="@drawable/ic_star"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:drawableTint="@color/dark_grey"
+                    android:padding="@dimen/_3sdp"
+                    android:text="@string/dummy_rating"
+                    android:textColor="@color/dark_grey" />
+
+                <Button
+                    android:id="@+id/status_past_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@drawable/custom_round_corner_cancled"
+                    android:padding="@dimen/_3sdp"
+                    android:text="@string/cancelled"
+                    android:textColor="@color/red"
+                    style="@style/VerySmallText" />
+
+
+            </RelativeLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+</layout>

@@ -318,6 +318,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
     private fun setupServiceDetail(serviceDetail: HistoryDetailModel.ResponseData.Service) {
+
         /*mViewModel.serviceDetail.value = serviceDetail
         mBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
         mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!,

@@ -5,118 +5,104 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.gox.base.base.BaseFragment
 import com.gox.partner.R
 import com.gox.partner.databinding.FragmentPastOrdersBinding
-import com.gox.partner.interfaces.ServiceTypeListener
 import com.gox.partner.models.HistoryModel
+import com.gox.partner.models.TransportResponseData
 import com.gox.partner.views.adapters.PastOrdersAdapter
-import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.dashboard.DashBoardViewModel
 
-class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(),
-        PastOrderNavigator, ServiceTypeListener {
+class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNavigator {
 
-    private lateinit var mBinding: FragmentPastOrdersBinding
-    private lateinit var mViewModel: PastOrderViewModel
 
-    private lateinit var dashBoardViewModel: DashBoardViewModel
-
-    override fun getLayoutId(): Int = R.layout.fragment_past_orders
+    lateinit var mViewDataBinding: FragmentPastOrdersBinding
+    override fun getLayoutId(): Int = R.layout.fragment_past_orders;
+    var transportResponseData: TransportResponseData = TransportResponseData(0, mutableListOf(), mutableListOf(), mutableListOf(), "")
+    private var offset = 0
+    private var loadMore = true
 
     override fun initView(mRootView: View?, mViewDataBinding: ViewDataBinding?) {
-        this.mBinding = mViewDataBinding as FragmentPastOrdersBinding
-        mViewModel = PastOrderViewModel()
-        mViewModel.navigator = this
-        mViewDataBinding.pastfragmentviewmodel = mViewModel
-        dashBoardViewModel = ViewModelProviders.of(activity!!).get(DashBoardViewModel::class.java)
-        if (mViewModel.selectedServiceType.value.isNullOrEmpty()) {
-            dashBoardViewModel.selectedFilterService.value = "transport"
-        }
-        dashBoardViewModel.selectedFilterService.observe(activity!!, Observer<String> {
-            loadingObservable.value = true
-            mViewModel.getTransportPastHistory(it.toLowerCase())
-            mViewModel.selectedServiceType.value = it.toLowerCase()
+
+        this.mViewDataBinding = mViewDataBinding as FragmentPastOrdersBinding
+        val pastOrderViewModel = PastOrderViewModel()
+        val userDashboardViewModel = ViewModelProviders.of(activity!!).get(DashBoardViewModel::class.java)
+        pastOrderViewModel.navigator = this
+        mViewDataBinding.pastfragmentviewmodel = pastOrderViewModel
+
+        pastOrderViewModel.getTransportPastHistory(userDashboardViewModel.selectedFilterService.value!!.toLowerCase()
+                , offset.toString())
+        loadingObservable.value = true
+
+
+        pastOrderViewModel.historyResponseLiveData.observe(this@PastOrderFragment, Observer<HistoryModel> {
+
         })
 
-        mViewModel.historyResponseLiveData.observe(this@PastOrderFragment,
+
+
+        pastOrderViewModel.historyResponseLiveData.observe(this@PastOrderFragment,
                 Observer<HistoryModel> {
                     loadingObservable.value = false
-                    mViewModel.taxiList.value?.clear()
-                    mViewModel.serviceList.value?.clear()
-                    mViewModel.orderList.value?.clear()
-                    this.mBinding.pastOrdersfrgRv.visibility = View.VISIBLE
-
-
                     if (it.responseData!!.type.equals("transport", true)
-                            && it.responseData.transport!!.isNotEmpty()) {
-                        if (!it.responseData.transport.isNullOrEmpty()) {
-                            this.mBinding.emptyViewLayout.visibility = View.GONE
-
-//                            settHistoryAdapter(activity!! as DashBoardActivity, mViewModel.taxiList.value!!,
-//                                    ArrayList(), ArrayList())
-
-                            settHistoryAdapter(activity!! as DashBoardActivity, it.responseData.transport,
-                                    ArrayList(), ArrayList())
-
-                        } else this.mBinding.emptyViewLayout.visibility = View.VISIBLE
+                            && !it.responseData.transport!!.isEmpty()) {
+                        loadMore = true
+                        offset += 10
+                        transportResponseData.transport.addAll(it.responseData.transport)
+                        setTransportHistoryAdapter("transport")
                     } else if (it.responseData.type.equals("service", true)
-                            && it.responseData.service!!.isNotEmpty()) {
-                        if (!it.responseData.service.isNullOrEmpty()) {
-                            this.mBinding.emptyViewLayout.visibility = View.GONE
-//                            mViewModel.serviceList.value!!.addAll(it.responseData.service)
-
-                            settHistoryAdapter(activity!! as DashBoardActivity, ArrayList(),
-                                    it.responseData.service, ArrayList())
-
-                        } else this.mBinding.emptyViewLayout.visibility = View.VISIBLE
-                    } else if (!it.responseData.order!!.isEmpty()) {
-                        if (!it.responseData.order.isNullOrEmpty()) {
-                            this.mBinding.emptyViewLayout.visibility = View.GONE
-                            mViewModel.orderList.value!!.addAll(it.responseData.order)
-
-
-                            settHistoryAdapter(activity!! as DashBoardActivity, ArrayList(),
-                                    ArrayList(), it.responseData.order)
-
-                        } else {
-                            this.mBinding.pastOrdersfrgRv.visibility = View.GONE
-                            this.mBinding.emptyViewLayout.visibility = View.VISIBLE
-                        }
-
-                    } else {
-                        this.mBinding.pastOrdersfrgRv.visibility = View.GONE
-                        this.mBinding.emptyViewLayout.visibility = View.VISIBLE
+                            && !it.responseData.service.isEmpty()) {
+                        loadMore = true
+                        offset += 10
+                        transportResponseData.service.addAll(it.responseData.service)
+                        setTransportHistoryAdapter("service")
+                    } else if (!it.responseData.order.isEmpty()) {
+                        loadMore = true
+                        offset += 10
+                        transportResponseData.order.addAll(it.responseData.order)
+                        setTransportHistoryAdapter("order")
                     }
-
+                    when (transportResponseData.order.size + transportResponseData.service.size + transportResponseData.transport.size > 0) {
+                        false -> {
+                            this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
+                            this.mViewDataBinding.pastOrdersfrgRv.visibility = View.GONE
+                        }
+                    }
                 })
+
+        pastOrderViewModel.errorResponse.observe(this@PastOrderFragment, Observer<String> { error ->
+            loadingObservable.value = false
+            when (transportResponseData.order.size + transportResponseData.service.size + transportResponseData.transport.size > 0) {
+                false -> {
+                    this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
+                    this.mViewDataBinding.pastOrdersfrgRv.visibility = View.GONE
+                }
+            }
+            Log.d("_D", error + "")
+//            ViewUtils.showToast(activity as Context, error, false)
+        })
+
+        mViewDataBinding.pastOrdersfrgRv.addOnScrollListener(object : PaginationScrollListener(mViewDataBinding.pastOrdersfrgRv.layoutManager as LinearLayoutManager) {
+            override fun isLastPage() = false
+            override fun isLoading() = false
+            override fun loadMoreItems() {
+                when (loadMore) {
+                    true -> {
+                        pastOrderViewModel.getTransportPastHistory(userDashboardViewModel.selectedFilterService.value!!.toLowerCase(), offset.toString())
+                        loadMore = false
+                    }
+                }
+            }
+        })
     }
 
-    private fun settHistoryAdapter(activity: DashBoardActivity,
-                                   transportList: ArrayList<HistoryModel.ResponseData.Transport>,
-                                   serviceList: ArrayList<HistoryModel.ResponseData.Service>,
-                                   orderList: ArrayList<HistoryModel.ResponseData.Order>) {
-        mBinding.pastOrdersAdapter = PastOrdersAdapter(activity, transportList, orderList,
-                serviceList, mViewModel.selectedServiceType.value!!)
-        mBinding.pastOrdersAdapter!!.notifyDataSetChanged()
-    }
-
-    override fun getServiceType(serviceType: String, serviceTypeID: Int) {
-
+    private fun setTransportHistoryAdapter(servicetype: String) {
+        this.mViewDataBinding.pastOrdersAdapter = PastOrdersAdapter(activity,
+                transportResponseData, servicetype)
     }
 
     override fun gotoDetailPage() {
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        Log.e("Past", "-----$isVisibleToUser")
-        super.setUserVisibleHint(isVisibleToUser)
-    }
-
-    override fun setMenuVisibility(menuVisible: Boolean) {
-        Log.e("Past", "----- Foodie$menuVisible")
-        super.setMenuVisibility(menuVisible)
 
     }
-
 }

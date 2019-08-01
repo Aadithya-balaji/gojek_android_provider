@@ -146,7 +146,7 @@ data class XuperCheckRequest(
             )
 
             data class Payment(
-                    val card: Int? = 0,
+                    val card: Double? = 0.0,
                     val cash: Double? = 0.0,
                     val commision: Double? = 0.0,
                     val commision_percent: Double? = 0.0,

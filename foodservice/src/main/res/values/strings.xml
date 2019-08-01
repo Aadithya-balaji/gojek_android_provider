@@ -3,9 +3,9 @@
     <string name="time_left">Time Left</string>
     <string name="dummy_time_left">100 secs</string>
     <string name="reached_restaurant">Reached Shop</string>
-    <string name="order_picked_up">order picked up</string>
-    <string name="order_delivered">order delivered</string>
-    <string name="payment_received">payment received</string>
+    <string name="order_picked_up">Order Picked Up</string>
+    <string name="order_delivered">Order Delivered</string>
+    <string name="payment_received">Done</string>
     <string name="dummy_resturant_name">SUBWAY</string>
     <string name="dummy_address">Tarc Colony,Megberg winsond road,United States-10002</string>
     <string name="dummy_order_id">#1888</string>

@@ -67,8 +67,7 @@ object ViewUtils {
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes) { dialog, which ->
                     callBack.onPositiveButtonClick(dialog)
-                }
-                .setNegativeButton(android.R.string.no) { dialog, which ->
+                }.setNegativeButton(android.R.string.no) { dialog, which ->
                     callBack.onNegativeButtonClick(dialog)
                 }.show()
     }

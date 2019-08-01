@@ -945,19 +945,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 isWaitingTime = true
                 changeWaitingTimeBackground(true)
             }
-//<<<<<<< HEAD
-//        } else if (isWaitingTime == true) {
-//            //      cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
-//            changeWaitingTimeBackground(true)
-//        } else changeWaitingTimeBackground(false)
-//=======
-        } else {
-            if (isWaitingTime == true) {
-                cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
-                changeWaitingTimeBackground(true)
-            } else changeWaitingTimeBackground(false)
-        }
-//>>>>>>> SocketTesting
+        } else if (isWaitingTime == true) {
+            //      cmWaiting.base = SystemClock.elapsedRealtime() - (time * 1000)
+            changeWaitingTimeBackground(true)
+        } else changeWaitingTimeBackground(false)
     }
 
     private fun changeWaitingTimeBackground(isWaitingTime: Boolean) {

@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
 
 class XUberExtraChargeViwModel : BaseViewModel<XUberExtraChargeNavigator>() {
-    var extraAmount = MutableLiveData<String>()
-    var extraAmountNotes = MutableLiveData<String>()
+    var extraAmount = MutableLiveData("")
+    var extraAmountNotes = MutableLiveData("")
 
     fun submitExtraCharge() = navigator.submit()
 }

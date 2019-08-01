@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="extraChargeModel"
             type="com.gox.xuberservice.extracharge.XUberExtraChargeViwModel" />
@@ -12,109 +13,109 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_25sdp"
-        android:layout_marginRight="@dimen/_25sdp"
-        android:background="@drawable/bg_dash_square"
-        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvXuperAdditionCharge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_20sdp"
-            style="@style/SmallText"
-            android:text="@string/xuper_additional_charge"
-            android:textColor="@color/xuber_black"
-            android:textSize="@dimen/_13sdp" />
-
-
-        <TextView
-            android:id="@+id/tvXuperLabelDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_25sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            style="@style/SmallText"
-            android:text="@string/xuper_label_description"
-            android:textColor="@color/xuper_light_black"
-            android:textSize="@dimen/_11sdp" />
-
-
-        <EditText
-            android:id="@+id/XuperDescription"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_70sdp"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@drawable/bg_extra_charge"
-            style="@style/SmallText"
-            android:lineSpacingExtra="3dp"
-            android:paddingLeft="@dimen/_10sdp"
-            android:paddingTop="@dimen/_10sdp"
-            android:paddingRight="@dimen/_10sdp"
-            android:paddingBottom="@dimen/_15sdp"
-            android:gravity="start"
-            android:text="@={extraChargeModel.extraAmountNotes}"
-            android:textColor="@color/xuber_grey"
-            android:textSize="@dimen/_10sdp" />
-
-        <TextView
-            android:id="@+id/tvXuperLabelAmount"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:fontFamily="@font/avenirltstd_medium"
-            android:text="@string/xuper_label_amount"
-            android:textColor="@color/xuper_light_black" />
+            android:layout_marginLeft="@dimen/_25sdp"
+            android:layout_marginRight="@dimen/_25sdp"
+            android:background="@drawable/bg_dash_square"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvXuperAdditionCharge"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:text="@string/xuper_additional_charge"
+                android:textColor="@color/xuber_black"
+                android:textSize="@dimen/_13sdp" />
+
+            <TextView
+                android:id="@+id/tvXuperLabelDescription"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_25sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:text="@string/xuper_label_description"
+                android:textColor="@color/xuper_light_black"
+                android:textSize="@dimen/_11sdp" />
+
+            <EditText
+                android:id="@+id/XuperDescription"
+                style="@style/SmallText"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_70sdp"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@drawable/bg_extra_charge"
+                android:gravity="start"
+                android:lineSpacingExtra="3dp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingTop="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingBottom="@dimen/_15sdp"
+                android:text="@={extraChargeModel.extraAmountNotes}"
+                android:textColor="@color/xuber_black"
+                android:textSize="@dimen/_10sdp" />
+
+            <TextView
+                android:id="@+id/tvXuperLabelAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:fontFamily="@font/avenirltstd_medium"
+                android:text="@string/xuper_label_amount"
+                android:textColor="@color/xuper_light_black" />
 
 
-        <com.gox.base.utils.PrefixCustomEditText
-            android:id="@+id/edtExtraAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:background="@drawable/bg_extra_charge"
-            android:maxWidth="@dimen/_120sdp"
-            android:textSize="@dimen/_9sdp"
-            android:minWidth="@dimen/_90sdp"
-            android:minHeight="@dimen/_35sdp"
-            style="@style/SmallText"
-            android:text="@={extraChargeModel.extraAmount}"
-            android:inputType="numberDecimal"
-            android:paddingTop="@dimen/_5sdp"
-            android:paddingLeft="@dimen/_3sdp"
-            android:paddingBottom="@dimen/_5sdp" />
+            <com.gox.base.utils.PrefixCustomEditText
+                android:id="@+id/edtExtraAmount"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:background="@drawable/bg_extra_charge"
+                android:inputType="numberDecimal"
+                android:maxWidth="@dimen/_120sdp"
+                android:minWidth="@dimen/_90sdp"
+                android:minHeight="@dimen/_35sdp"
+                android:padding="10dp"
+                android:text="@={extraChargeModel.extraAmount}"
+                android:textColor="@color/xuber_black"
+                android:textSize="@dimen/_9sdp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:background="@color/xuber_grey" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:background="@color/xuber_grey" />
 
-        <TextView
-            android:id="@+id/tvXuperSubmit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_8sdp"
-            style="@style/SmallText"
-            android:text="@string/submit"
-            android:onClick="@{() -> extraChargeModel.submitExtraCharge()}"
-            android:textAllCaps="true"
-            android:textColor="@color/xuper_blue"
-            android:textSize="@dimen/_13sdp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvXuperSubmit"
+                style="@style/SmallText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:onClick="@{() -> extraChargeModel.submitExtraCharge()}"
+                android:text="@string/submit"
+                android:textAllCaps="true"
+                android:textColor="@color/xuper_blue"
+                android:textSize="@dimen/_13sdp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </layout>

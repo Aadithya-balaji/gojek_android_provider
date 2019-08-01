@@ -65,7 +65,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         mBinding.invoicemodel = xUberInvoiceModel
         mBinding.lifecycleOwner = this
         xUberInvoiceModel.showLoading = loadingObservable as MutableLiveData<Boolean>
-        updateUi()
+        updateViews()
         getApiResponse()
         invoiceDialog = dialog
     }
@@ -103,7 +103,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         }
     }
 
-    private fun updateUi() {
+    private fun updateViews() {
         val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
         if (isFromCheckRequest == false) {
             xUberInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user), updateRequestModel!!.responseData!!.user!!.rating!!.toDouble())
@@ -111,16 +111,25 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
             xUberInvoiceModel.userImage.value = updateRequestModel!!.responseData!!.user!!.picture.toString()
             xUberInvoiceModel.totalAmount.value = updateRequestModel!!.responseData!!.payment!!.payable.toString()
             xUberInvoiceModel.requestID.value = updateRequestModel!!.responseData!!.id.toString()
+            try {
+                xUberInvoiceModel.tvAdditionalCharge.value = updateRequestModel!!.responseData!!.payment!!.extra_charges.toString()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             xUberInvoiceModel.userName.value = updateRequestModel!!.responseData!!.user!!.first_name +
                     " " + updateRequestModel!!.responseData!!.user!!.last_name
             timeTaken = CommonMethods.getTimeDifference(updateRequestModel!!.responseData!!.started_at!!,
                     updateRequestModel!!.responseData!!.finished_at!!, "")
-
         } else {
             xUberInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user), xUberCheckRequest!!.responseData!!.requests!!.user!!.rating!!.toDouble())
             xUberInvoiceModel.serviceName.value = xUberCheckRequest!!.responseData!!.requests!!.service!!.service_name
             xUberInvoiceModel.userImage.value = xUberCheckRequest!!.responseData!!.requests!!.user!!.picture.toString()
             xUberInvoiceModel.totalAmount.value = xUberCheckRequest!!.responseData!!.requests!!.payment!!.payable.toString()
+            try {
+                xUberInvoiceModel.tvAdditionalCharge.value = updateRequestModel!!.responseData!!.payment!!.extra_charges.toString()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             xUberInvoiceModel.requestID.value = xUberCheckRequest!!.responseData!!.requests!!.id.toString()
             xUberInvoiceModel.userName.value = xUberCheckRequest!!.responseData!!.requests!!.user!!.first_name +
                     " " + xUberCheckRequest!!.responseData!!.requests!!.user!!.last_name
@@ -138,6 +147,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
 
         mBinding.tvAmountToBePaid.text = "$currency ${xUberInvoiceModel.totalAmount.value}"
         mBinding.tvXuperService.text = "$currency ${xUberInvoiceModel.serviceName.value}"
+        mBinding.tvAdditionalCharge.text = "${getText(R.string.xuper_label_additional_charge)} $currency ${xUberInvoiceModel.tvAdditionalCharge.value}"
     }
 
     override fun showErrorMessage(error: String) {
@@ -195,7 +205,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
 
     override fun showExtraChargePage() {
         invoiceDialog!!.hide()
-        extraChargeDialogDialog = XUberExtraChargeDialog.newInstance(this, this)
+        extraChargeDialogDialog = XUberExtraChargeDialog.newInstance(this)
         extraChargeDialogDialog!!.show(childFragmentManager, "extraRate")
     }
 

@@ -46,7 +46,7 @@
 
     <!-- Invoice -->
     <string name="xuper_label_time">Time Taken</string>
-    <string name="xuper_label_additional_charge">+ Additional Charge</string>
+    <string name="xuper_label_additional_charge">Additional Charge</string>
     <string name="xuper_amount_to_be_paid">Amount to be paid</string>
     <string name="xuper_confirm_payment">Confirm Payment</string>
     <string name="xuper_invoice">Invoice</string>
@@ -73,5 +73,9 @@
     <string name="reason">Reason</string>
     <string name="instruction">Instruction</string>
     <string name="crop_failed">Cropping failed</string>
+
+    <string name="additional_charge_desc">Do you have any Additional charge</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 </resources>

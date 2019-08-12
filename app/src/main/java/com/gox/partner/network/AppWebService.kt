@@ -218,10 +218,9 @@ interface AppWebService {
     fun postTaxiDispute(@FieldMap params: HashMap<String, String>): Observable<DisputeStatus>
 
     @FormUrlEncoded
-    @POST("provider/history-dispute/service/{requestID}")
+    @POST("provider/history-dispute/service")
     fun postServiceDispute(
-            @FieldMap params: HashMap<String, String>,
-            @Path("requestID") requestID: String
+            @FieldMap params: HashMap<String, String>
     ): Observable<DisputeStatus>
 
     @FormUrlEncoded
@@ -236,6 +235,9 @@ interface AppWebService {
 
     @GET("provider/order/disputestatus/{request_id}")
     fun getOrderDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
+
+    @GET("provider/service/disputestatus/{request_id}")
+    fun getServiceDisputeStatus(@Path("request_id") id:String):Observable<DisputeStatusModel>
 
     @POST("provider/logout")
     fun logout(): Observable<ResponseData>

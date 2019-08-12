@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,125 +11,138 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background_color"
+        android:background="@color/white"
         android:orientation="vertical"
         android:padding="@dimen/_5sdp">
 
-        <RelativeLayout
+        <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_8sdp">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/usr_picture"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/ic_profile_place_holder"
-                app:civ_border_color="@android:color/white"
-                app:civ_border_width="4dp" />
+            android:layout_height="@dimen/_30sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@color/xuber_white"
+            android:elevation="5dp"
+            app:contentInsetEnd="0dp"
+            app:contentInsetLeft="0dp"
+            app:contentInsetRight="0dp"
+            app:contentInsetStart="0dp"
+            app:titleTextAppearance="@style/MediumText">
 
             <TextView
-                android:id="@+id/user_dispute_title"
+                android:id="@+id/dispute_title"
                 style="@style/MediumText.Black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_toEndOf="@+id/usr_picture"
-                android:padding="@dimen/_5sdp"
-                android:text="@string/dispute" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/user_dispute_title"
-                android:layout_toEndOf="@+id/usr_picture"
-                android:orientation="horizontal"
-                android:padding="@dimen/_5sdp"
-                android:weightSum="2">
-
-                <TextView
-                    android:id="@+id/user_dispute_comment"
-                    style="@style/SmallText.colorGrey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_dispute_created_comments" />
-
-                <TextView
-                    android:id="@+id/user_dispute_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:background="@drawable/custom_roundcorner_selectedorder"
-                    android:gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_accepted"
-                    android:textColor="@color/colorAccent" />
-            </LinearLayout>
-        </RelativeLayout>
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/dispute_status" />
+        </androidx.appcompat.widget.Toolbar>
 
 
-        <RelativeLayout
-            android:id="@+id/provider_dispute_layout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:padding="@dimen/_8sdp">
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/provider_picture"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_profile_place_holder"
-                app:civ_border_color="@android:color/white"
-                app:civ_border_width="4dp" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/ivDisPuteUser"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_user_place_holder" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvYou"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:text="@string/you"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10sdp" />
+
+                    <TextView
+                        android:id="@+id/disputeComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/provider_dispute_title"
-                style="@style/MediumText.Black"
+                android:id="@+id/dispute_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_toStartOf="@+id/provider_picture"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:background="@drawable/bg_dispute_open"
+                android:gravity="center"
                 android:padding="@dimen/_5sdp"
-                android:right="@dimen/_5sdp"
-                android:text="@string/dispute" />
+                android:text="@string/open"
+                android:textColor="@color/dispute_status_closed" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/provider_dispute_title"
-                android:layout_toStartOf="@+id/provider_picture"
-                android:orientation="horizontal"
-                android:padding="@dimen/_2sdp"
-                android:weightSum="2">
-
-
-                <!--<TextView
-                    android:id="@+id/dispute_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:background="@drawable/custom_roundcorner_selectedorder"
-                    android:gravity="center"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_accepted"
-                    android:textColor="@color/colorAccent" />-->
+                android:layout_toLeftOf="@+id/ivlogo"
+                android:gravity="end"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/dispute_comment"
-                    style="@style/SmallText.colorGrey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1.5"
-                    android:gravity="right"
-                    android:padding="@dimen/_5sdp"
-                    android:text="@string/dummy_dispute_created_comments" />
+                    android:fontFamily="@font/avenirltstd_medium"
+                    android:text="@string/admin"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_8sdp" />
 
+                <TextView
+                    android:id="@+id/tvAdminComment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/avenirltstd_medium"
+                    tools:text="@string/dummyyyy_describtion" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivlogo"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:contentDescription="@string/app_name"
+                android:src="@mipmap/ic_launcher" />
         </RelativeLayout>
 
 

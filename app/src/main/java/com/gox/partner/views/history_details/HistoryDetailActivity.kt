@@ -52,6 +52,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mViewModel = HistoryDetailViewModel()
         dashboardViewModel = ViewModelProviders.of(this).get(DashBoardViewModel::class.java)
         this.mBinding.currentOrderDetailModel = mViewModel
+        this.mBinding.setLifecycleOwner(this)
         mViewModel.navigator = this
         loadingObservable.value = true
         mViewModel.showLoading = loadingObservable
@@ -61,9 +62,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         if (historyType.equals("past")) {
             println("BBBB" + "   " + serviceType.toString())
             when {
-                serviceType.equals("transport") -> mViewModel.getTransportHistoryDetail(selectedId.toString())
-                serviceType.equals("service") -> mViewModel.getServiceHistoryDetail(selectedId.toString())
-                serviceType.equals("order") -> mViewModel.getOrderHistoryDetail(selectedId.toString())
+                serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> mViewModel.getTransportHistoryDetail(selectedId.toString())
+                serviceType.equals(Constants.ModuleTypes.SERVICE,true) -> mViewModel.getServiceHistoryDetail(selectedId.toString())
+                serviceType.equals(Constants.ModuleTypes.ORDER,true) -> mViewModel.getOrderHistoryDetail(selectedId.toString())
             }
         }
         apiResponse()
@@ -74,8 +75,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             intent.getStringExtra("history_type") else ""
         selectedId = if (intent != null && intent.hasExtra("selected_trip_id"))
             intent.getStringExtra("selected_trip_id") else ""
-        serviceType = if (intent != null && intent.hasExtra("serviceType"))
-            intent.getStringExtra("serviceType") else ""
+        serviceType = if (intent != null && intent.hasExtra("servicetype"))
+            intent.getStringExtra("servicetype") else ""
     }
 
     private fun apiResponse() {
@@ -119,6 +120,12 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                     ViewUtils.showToast(this, message, false)
                 })
 
+        mViewModel.selectedDisputeModel.observe(this, Observer {
+            bottomSheetDialog!!.dismiss()
+            selectedDisputeData = it
+            createDisputeRequest()
+        })
+
     }
 
 
@@ -128,8 +135,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
     private fun showDisputeStatus(disputeStatusResponseData: DisputeStatusModel) {
         disputeStatusBinding = DataBindingUtil.inflate<DisputeStatusBinding>(LayoutInflater.from(baseContext), R.layout.dispute_status, null, false)
-        disputeStatusBinding!!.disputeComment.text = (disputeStatusResponseData.responseData!!.dispute_name)
-        disputeStatusBinding!!.disputeStatus.text = (disputeStatusResponseData.responseData.status)
+        disputeStatusBinding!!.disputeComment.text = (disputeStatusResponseData.responseData!!.dispute_name).toString()
+        disputeStatusBinding!!.disputeStatus.text = (disputeStatusResponseData.responseData.status).toString()
 
         if (disputeStatusResponseData.responseData.status.equals("open")) {
             disputeStatusBinding!!.disputeStatus.background =
@@ -205,11 +212,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         disputeListBinding!!.applyFilter.isEnabled = true
         disputeListBinding!!.disputeReasonListAdapter = DisputeReasonListAdapter(mViewModel, disputeListData)
         disputeListBinding!!.disputeReasonListAdapter!!.setOnClickListener(mOnAdapterClickListener)
-        mViewModel.selectedDisputeModel.observe(this, Observer {
-            bottomSheetDialog!!.dismiss()
-            selectedDisputeData = it
-            createDisputeRequest()
-        })
+
     }
 
     override fun showDisputeList() {
@@ -223,12 +226,12 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             mViewModel.getDisputeList()
         } else {
             when {
-                serviceType.equals("transport") -> mViewModel.getTransPortDisputeStatus(
+                serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> mViewModel.getTransPortDisputeStatus(
                         mViewModel.transportDetail.value!!.id.toString())
-                serviceType.equals("order") -> mViewModel.getServiceHistoryDetail(
-                        mViewModel.serviceDetail.value!!.id.toString())
-                else -> mViewModel.getOrderDisputeStatus(
+                serviceType.equals(Constants.ModuleTypes.ORDER,true) -> mViewModel.getOrderDisputeStatus(
                         mViewModel.orderDetail.value!!.id.toString())
+                else -> mViewModel.getServiceDisputeStatus(
+                        mViewModel.serviceDetail.value!!.id.toString())
             }
         }
     }
@@ -252,30 +255,29 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
                 params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
-
                 mViewModel.postTaxiDispute(params)
-
             }
             serviceType.equals("service") -> {
-                mViewModel.userID.value = mViewModel.historyDetailResponse.value!!.responseData.service.user!!.id.toString()
-                mViewModel.providerID.value = mViewModel.historyDetailResponse.value!!.responseData.service.provider_id.toString()
-                mViewModel.requestID.value = mViewModel.historyDetailResponse.value!!.responseData.service.id.toString()
+                mViewModel.userID.value = mViewModel.historyModelLiveData.value!!.responseData.service.user!!.id.toString()
+                mViewModel.providerID.value = mViewModel.historyModelLiveData.value!!.responseData.service.provider_id.toString()
+                mViewModel.requestID.value = mViewModel.historyModelLiveData.value!!.responseData.service.id.toString()
                 params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
-                mViewModel.postServiceDispute(params, mViewModel.requestID.value!!)
-
+                params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
+                mViewModel.postServiceDispute(params)
             }
             else -> {
-                mViewModel.userID.value = mViewModel.orderDetail.value!!.user!!.id.toString()
+                mViewModel.userID.value = mViewModel.orderDetail.value!!.user_id.toString()
                 mViewModel.providerID.value = mViewModel.orderDetail.value!!.provider_id.toString()
-                mViewModel.requestID.value = mViewModel.orderDetail.value!!.id.toString()
-                mViewModel.storeID.value = mViewModel.orderDetail.value!!.order_invoice!!.items!![0]!!.store_id.toString()
+                mViewModel.requestID.value = mViewModel.orderDetail.value!!.order_invoice!!.store_order_id.toString()
+                mViewModel.storeID.value = mViewModel.orderDetail.value!!.pickup!!.id.toString()
                 mViewModel.disputeID.value = mViewModel.orderDetail.value!!.id.toString()
-
                 params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
                 params[Constants.Dispute.STORE_ID] = mViewModel.storeID.value.toString()
                 params[Constants.Dispute.DISPUTE_ID] = mViewModel.disputeID.value.toString()
+                params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
+
                 mViewModel.postOrderDispute(params)
             }
         }
@@ -290,20 +292,17 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     private fun setupTransportDetail(transPastDetail: HistoryDetailModel.ResponseData.Transport) {
         mViewModel.transportDetail.value = transPastDetail
         mBinding.currentorderdetailTitleTv.text = transPastDetail.booking_id
-        mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(transPastDetail.assigned_at!!
-                , "Req_Date_Month") + "")
-        mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(transPastDetail.assigned_at,
-                "Req_time") + "")
+        mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(transPastDetail.assigned_at!!, "Req_Date_Month") + "")
+        mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(transPastDetail.assigned_at, "Req_time") + "")
         mBinding.historydetailSrcValueTv.text = transPastDetail.s_address
         mBinding.historydetailDestValueTv.text = transPastDetail.d_address
-        mBinding.historydetailStatusValueTv.text = transPastDetail.status
+        mBinding.scheduletimeView.visibility=View.GONE
+        mBinding.scheduleTimeLayout.visibility=View.GONE
+        mBinding.tvStatusValue.text = transPastDetail.status
         mBinding.historydetailPaymentmodeValTv.text = transPastDetail.payment_mode
         mBinding.vechileTypeTv.text = (transPastDetail.ride!!.vehicle_name)
-
         Glide.with(this).load(transPastDetail.user!!.picture).error(R.drawable.ic_user_place_holder)
                 .into(mBinding.providerCimgv)
-
-
         mBinding.providerNameTv.text = (transPastDetail.user.first_name + " " +
                 transPastDetail.user.last_name)
         mBinding.rvUser.rating = transPastDetail.provider_rated!!.toFloat()
@@ -315,7 +314,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
     private fun setupServiceDetail(serviceDetail: HistoryDetailModel.ResponseData.Service) {
-
         /*mViewModel.serviceDetail.value = serviceDetail
         mBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
         mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!,
@@ -327,13 +325,22 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
         Glide.with(this).load(serviceDetail.user!!.picture).into(mBinding.providerCimgv)
         mBinding.providerNameTv.text = (serviceDetail.user.first_name + " " + serviceDetail.user.last_name)*/
+        mViewModel.serviceDetail.value = serviceDetail
         mBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
         mBinding.historydetailSrcValueTv.text = serviceDetail.s_address + ""
         mBinding.historydetailDestValueTv.visibility = View.GONE
         mBinding.vechileTypeTv.text = (serviceDetail.service!!.service_name)
-        mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.assigned_at!!, "Req_time") + "")
-        mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.assigned_at!!,
-                "Req_Date_Month") + "")
+        mBinding.scheduletimeView.visibility=View.GONE
+        mBinding.scheduleTimeLayout.visibility=View.GONE
+        mBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
+        Glide.with(this).load(serviceDetail.user!!.picture).error(R.drawable.ic_user_place_holder)
+                .into(mBinding.providerCimgv)
+        if(serviceDetail.started_at!=null)
+            mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!, "Req_time") + "")
+        if(serviceDetail.started_at!=null)
+            mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!, "Req_Date_Month") + "")
+        mBinding.providerNameTv.text = (serviceDetail.user!!.first_name + " " + serviceDetail.user.last_name)
+        mBinding.tvStatusValue.text=serviceDetail.status
         mBinding.rvUser.rating = serviceDetail.user!!.rating!!.toFloat()
         mBinding.lossSomething.visibility = View.GONE
         mBinding.destLayout.visibility = View.GONE
@@ -342,29 +349,30 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             mBinding.disputeBtn.text = getString(R.string.dispute_status)
             isShowDisputeStatus = true
         }
-
-
     }
 
     private fun setupOrderHistoryDetail(orderDetail: HistoryDetailModel.ResponseData.Order) {
         mViewModel.orderDetail.value = orderDetail
         mBinding.currentorderdetailTitleTv.text = orderDetail.store_order_invoice_id
-        mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(orderDetail.created_at!!,
-                "Req_Date_Month") + "")
+        mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(orderDetail.created_at!!, "Req_Date_Month") + "")
         mBinding.vechileTypeTv.text = orderDetail.pickup!!.store_name
         mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(orderDetail.created_at, "Req_time") + "")
         mBinding.historydetailSrcValueTv.text = orderDetail.pickup!!.store_location
         mBinding.historydetailDestValueTv.text = orderDetail.delivery!!.flat_no + " " + orderDetail.delivery.street
-        mBinding.historydetailStatusValueTv.text = orderDetail.status
+        mBinding.scheduletimeView.visibility=View.GONE
+        mBinding.scheduleTimeLayout.visibility=View.GONE
+        mBinding.tvStatusValue.text = orderDetail.status
         mBinding.historydetailPaymentmodeValTv.text = orderDetail.order_invoice!!.payment_mode
-        Glide.with(this).load(orderDetail.user!!.picture).into(mBinding.providerCimgv)
-        mBinding.providerNameTv.text = (orderDetail.user.first_name + " " + orderDetail.user.last_name)
+        mBinding.providerNameTv.text = (orderDetail.user!!.first_name + " " + orderDetail.user.last_name)
+        Glide.with(this).load(orderDetail.user!!.picture).error(R.drawable.ic_user_place_holder)
+                .into(mBinding.providerCimgv)
         mBinding.rvUser.rating = orderDetail.user.rating!!.toFloat()
         if (orderDetail.dispute != null) {
             mBinding.disputeBtn.text = getString(R.string.dispute_status)
             isShowDisputeStatus = true
         }
     }
+
 
     private fun setUpTransportInvoice(alertDialog: AlertDialog) {
         alertDialog.findViewById<TextView>(R.id.tvTaxiFare)!!.text = (Constants.currency
@@ -422,7 +430,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         alertDialog.findViewById<TextView>(R.id.tvOrderPrmocode)!!.text = (Constants.currency +
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.promocode_amount)
         alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (Constants.currency +
-                mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.payable)
+                mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.total_amount.toString())
     }
 
     override fun showErrorMessage(error: String) {

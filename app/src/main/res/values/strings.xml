@@ -528,4 +528,6 @@
     <string name="listout_lossitem">List Your loss item</string>
     <string name="dummy_enter_your_loss_item">Enter your Loss Item</string>
     <string name="dummy_openstatus">open</string>
+    <string name="send">send</string>
+
 </resources>

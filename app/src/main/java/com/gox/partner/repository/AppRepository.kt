@@ -422,9 +422,9 @@ class AppRepository : BaseRepository() {
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun addServiceDispute(listener: ApiListener, requestID: String, params: HashMap<String, String>): Disposable {
+    fun addServiceDispute(listener: ApiListener,  params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
-                .postServiceDispute(params, requestID)
+                .postServiceDispute(params)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
@@ -453,6 +453,14 @@ class AppRepository : BaseRepository() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
+    }
+
+    fun getServiceDisputeStatus(listener: ApiListener,requestID: String):Disposable {
+        return  BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL,AppWebService::class.java)
+                .getServiceDisputeStatus(requestID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({listener.success(it)},{listener.fail(it)})
     }
 
     fun logoutApp(): Disposable {

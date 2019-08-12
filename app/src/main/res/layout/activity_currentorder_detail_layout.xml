@@ -314,7 +314,7 @@
                                 android:tint="@color/colorTaxiYellow" />
 
                             <TextView
-                                android:id="@+id/currentorderetail_status_tv"
+                                android:id="@+id/tvStatusLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_15sdp"
@@ -326,10 +326,10 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/historydetail_status_value_tv"
+                                android:id="@+id/tvStatusValue"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/currentorderetail_status_tv"
+                                android:layout_below="@+id/tvStatusLabel"
                                 android:layout_marginStart="@dimen/_15sdp"
                                 android:layout_toRightOf="@+id/status_dot_view"
                                 android:padding="@dimen/_1sdp" />

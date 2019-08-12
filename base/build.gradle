@@ -115,6 +115,9 @@ dependencies {
 
     //      Creditcard widget
     api 'com.github.sharish:CreditCardView:v1.0.4'
+    api ('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
+        transitive = true;
+    }
 
     //      Stripe payment
     api 'com.stripe:stripe-android:8.6.0'
@@ -163,6 +166,8 @@ dependencies {
 
     //      Floating Action Bar Button
     api 'com.github.clans:fab:1.6.4'
+
+    api 'de.hdodenhof:circleimageview:3.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

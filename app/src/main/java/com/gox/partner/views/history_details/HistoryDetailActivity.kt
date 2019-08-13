@@ -84,8 +84,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 Observer<HistoryDetailModel> {
                     loadingObservable.value = false
                     when {
-                        serviceType.equals("transport") -> setupTransportDetail(it.responseData.transport)
-                        serviceType.equals("order") -> setupOrderHistoryDetail(it.responseData.order)
+                        serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> setupTransportDetail(it.responseData.transport)
+                        serviceType.equals(Constants.ModuleTypes.ORDER,true) -> setupOrderHistoryDetail(it.responseData.order)
                         else -> setupServiceDetail(it.responseData.service)
                     }
                 })
@@ -165,21 +165,21 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         alertDialog.show()
         alertDialog.findViewById<ImageView>(R.id.cancel_dialog_img)!!.setOnClickListener { alertDialog.dismiss() }
         when {
-            serviceType.equals("transport") -> {
+            serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> {
                 alertDialog.llServiceInvoice.visibility = View.GONE
                 alertDialog.llOrderInvoice.visibility = View.GONE
                 alertDialog.llTaxiInvoice.visibility = View.VISIBLE
                 setUpTransportInvoice(alertDialog)
 
             }
-            serviceType.equals("order") -> {
+            serviceType.equals(Constants.ModuleTypes.ORDER,true) -> {
                 alertDialog.llServiceInvoice.visibility = View.GONE
                 alertDialog.llOrderInvoice.visibility = View.VISIBLE
                 alertDialog.llTaxiInvoice.visibility = View.GONE
                 setUpOrderInvoice(alertDialog)
 
             }
-            serviceType.equals("service") -> {
+            serviceType.equals(Constants.ModuleTypes.SERVICE,true) -> {
                 alertDialog.llServiceInvoice.visibility = View.VISIBLE
                 alertDialog.llOrderInvoice.visibility = View.GONE
                 alertDialog.llTaxiInvoice.visibility = View.GONE
@@ -248,7 +248,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         params[Constants.Dispute.DISPUTE_NAME] = mViewModel.disputeName.value!!
 
         when {
-            serviceType.equals("transport") -> {
+            serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> {
                 mViewModel.userID.value = mViewModel.transportDetail.value!!.user!!.id.toString()
                 mViewModel.providerID.value = mViewModel.transportDetail.value!!.provider_id.toString()
                 mViewModel.requestID.value = mViewModel.transportDetail.value!!.id.toString()
@@ -257,7 +257,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
                 mViewModel.postTaxiDispute(params)
             }
-            serviceType.equals("service") -> {
+            serviceType.equals(Constants.ModuleTypes.SERVICE,true) -> {
                 mViewModel.userID.value = mViewModel.historyModelLiveData.value!!.responseData.service.user!!.id.toString()
                 mViewModel.providerID.value = mViewModel.historyModelLiveData.value!!.responseData.service.provider_id.toString()
                 mViewModel.requestID.value = mViewModel.historyModelLiveData.value!!.responseData.service.id.toString()

@@ -41,7 +41,7 @@ Rename package in project structure
 **Debugging Notes:**
 
 To debug databinding issues setup
- **–stacktrace** in studio settings
+ **--stacktrace** in studio settings
 
 
 To Run Debugging, Select CompileDebugResources from Gradle tree

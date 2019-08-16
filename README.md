@@ -1,17 +1,10 @@
 **Gox Installation Document**
 
 Gox is a multi module project, need to configure two gradle files app gradle and base gradle
+
 **Step 1:**
 In app.gradle
-`	applicationId "com.gox.app"`
-
-
-
-
- 
-
-
-
+`applicationId "com.gox.app"`
 
 **Step2:**
 Configure Project in Google Developer Console and Facebook Developer console
@@ -48,7 +41,7 @@ Rename package in project structure
 **Debugging Notes:**
 
 To debug databinding issues setup
- **â€“stacktrace** in studio settings
+ **–stacktrace** in studio settings
 
 
 To Run Debugging, Select CompileDebugResources from Gradle tree

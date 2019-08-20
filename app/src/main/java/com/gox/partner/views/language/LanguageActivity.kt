@@ -1,5 +1,6 @@
 package com.gox.partner.views.language
 
+import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.gox.base.base.BaseActivity
 import com.gox.base.extensions.provideViewModel
@@ -7,6 +8,7 @@ import com.gox.base.utils.LocaleUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityLanguageBinding
+import com.gox.partner.views.splash.SplashActivity
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
 class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), LanguageNavigator {
@@ -39,9 +41,14 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(), LanguageNaviga
     }
 
     override fun onLanguageChanged() {
-        if (mViewModel.getCurrentLanguage() != selectedLanguage) if (mViewModel.getCurrentLanguage() != "en") {
-            ViewUtils.showToast(this@LanguageActivity, "For future purpose", false)
-            return
+        if (mViewModel.getCurrentLanguage() != selectedLanguage) {
+            LocaleUtils.setNewLocale(this, mViewModel.getCurrentLanguage())
+            val intent = Intent(this, SplashActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+            finish()
+//            ViewUtils.showToast(this@LanguageActivity, "For future purpose", false)
+//            return
         }
         ViewUtils.showToast(this@LanguageActivity, getString(R.string.language_change_success), true)
     }

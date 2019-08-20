@@ -24,7 +24,7 @@ import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.extensions.readPreferences
 import com.gox.base.extensions.writePreferences
-import com.gox.base.locationTest.MainActivity
+import com.gox.base.utils.LocaleUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivitySplashBinding
 import com.gox.partner.models.ConfigResponseModel
@@ -49,6 +49,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         mBinding.lifecycleOwner = this
         mViewModel = provideViewModel { SplashViewModel() }
         mViewModel.navigator = this
+
+        LocaleUtils.setNewLocale(this,LocaleUtils.getLanguagePref(this)!!)
 
         observeViewModel()
         generateHash()

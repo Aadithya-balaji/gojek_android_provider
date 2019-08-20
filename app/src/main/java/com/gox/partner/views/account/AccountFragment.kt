@@ -6,6 +6,7 @@ import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.gox.base.base.BaseFragment
 import com.gox.base.extensions.clearPreferences
+import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
@@ -51,14 +52,17 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         dashBoardNavigator.hideRightIcon(false)
         dashBoardNavigator.showLogo(false)
 
+        observeLiveData(mViewModel.successResponse){
+            dashBoardNavigator.updateLocation(false)
+            clearPreferences<String>()
+            launchNewActivity(OnBoardActivity::class.java, false)
+            activity!!.finishAffinity()
+        }
+
         dashBoardNavigator.getInstance().iv_right.setOnClickListener {
             ViewUtils.showAlert(activity!!, getString(R.string.xjek_logout_alert), object : ViewUtils.ViewCallBack {
                 override fun onPositiveButtonClick(dialog: DialogInterface) {
-                    dashBoardNavigator.updateLocation(false)
-                    clearPreferences<String>()
                     mViewModel.logoutApp()
-                    launchNewActivity(OnBoardActivity::class.java, false)
-                    activity!!.finishAffinity()
                     dialog.dismiss()
                 }
 

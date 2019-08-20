@@ -463,12 +463,12 @@ class AppRepository : BaseRepository() {
                 .subscribe({listener.success(it)},{listener.fail(it)})
     }
 
-    fun logoutApp(): Disposable {
+    fun logoutApp(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.TAXI_BASE_URL, AppWebService::class.java)
                 .logout()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({}, {})
+                .subscribe({listener.success(it)}, {listener.fail(it)})
     }
 
     companion object {

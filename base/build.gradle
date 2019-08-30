@@ -24,7 +24,8 @@ android {
         buildConfigField "boolean", "isSocketEnabled", "false"
         buildConfigField "boolean", "isSocketLocationUpdate", "false"
         buildConfigField("String", "SALT_KEY", '"MQ=="')
-        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
+//        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
+        buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
         //      Staging
         //      buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
     }

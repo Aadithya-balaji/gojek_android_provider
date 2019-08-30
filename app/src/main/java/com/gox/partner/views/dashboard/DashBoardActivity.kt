@@ -96,7 +96,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         setSupportActionBar(mBinding.tbrHome.app_bar)
         mViewModel.latitude.value = 0.0
         mViewModel.longitude.value = 0.0
-        supportFragmentManager.beginTransaction().add(R.id.frame_home_container, mHomeFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, mHomeFragment).commit()
         mBinding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.action_home -> {

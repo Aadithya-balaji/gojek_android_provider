@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import com.gox.base.BuildConfig
 import com.gox.base.R
 import com.gox.base.base.BaseApplication
+import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.partner.views.splash.SplashActivity
 
@@ -56,7 +57,9 @@ class FcmService : FirebaseMessagingService() {
                 || notificationData.message!!.topic!!.contains("RRRR")
                 && !isBackground(applicationContext)
                 && !isLocked(applicationContext)
-                && !isCallActive(applicationContext)) restartApp()
+                && !isCallActive(applicationContext) && !PreferencesHelper
+                        .get(PreferencesKey.ACCESS_TOKEN, "")
+                        .equals("")) restartApp()
     }
 
     private fun sendNotification(notificationData: NotificationDataModel) {

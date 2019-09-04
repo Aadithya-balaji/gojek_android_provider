@@ -9,9 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:layout_marginTop="@dimen/_5sdp"
         android:background="@drawable/bg_message_user"
-        android:padding="10dp"
+        android:padding="@dimen/_10sdp"
+        android:layout_margin="@dimen/_5sdp"
         android:text="@string/placeholder_string"
         android:textColor="@color/white" />
 

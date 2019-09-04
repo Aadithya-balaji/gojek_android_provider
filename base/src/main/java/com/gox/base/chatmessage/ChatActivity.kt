@@ -44,6 +44,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         mBinding = mViewDataBinding as ActivityChatMainBinding
         mBinding.tvtoolBarText.text = getText(R.string.chat)
+
         mBinding.ivBack.setOnClickListener { finish() }
 
         decodeString = String(Base64.decode(SALT_KEY, Base64.DEFAULT), charset("UTF-8"))

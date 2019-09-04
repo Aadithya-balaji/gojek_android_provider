@@ -11,8 +11,8 @@
         android:layout_gravity="start"
         android:background="@drawable/bg_message_provider"
         android:elevation="2dp"
-        android:padding="10dp"
-        android:layout_marginTop="@dimen/_5sdp"
+        android:padding="@dimen/_10sdp"
+        android:layout_margin="@dimen/_5sdp"
         android:text="@string/placeholder_string"
         android:textColor="@color/black" />
 

@@ -65,13 +65,24 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
 
         observeViewModel()
 
-        val tm = this.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
-        val countryModel = Country.getCountryByISO(tm.networkCountryIso)
 
         val resultIntent = Intent()
 
         println("RRR ::  FCMToken = ${BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")}")
 
+        detectDefaultCountry(resultIntent)
+
+        //    setDefaultCountry()
+
+        if (BuildConfig.DEBUG) {
+            mViewModel.email.value = "toni@yopmail.com"
+            mViewModel.password.value = "112233"
+        }
+    }
+
+    private fun detectDefaultCountry(resultIntent: Intent) {
+        val tm = this.getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+        val countryModel = Country.getCountryByISO(tm.networkCountryIso)
         if (countryModel == null) {
             resultIntent.putExtra("countryName", "India")
             resultIntent.putExtra("countryCode", "+91")
@@ -83,13 +94,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         }
 
         handleCountryCodePickerResult(resultIntent)
-
-    //    setDefaultCountry()
-
-        if (BuildConfig.DEBUG) {
-            mViewModel.email.value = "toni@yopmail.com"
-            mViewModel.password.value = "112233"
-        }
     }
 
     private fun observeViewModel() {

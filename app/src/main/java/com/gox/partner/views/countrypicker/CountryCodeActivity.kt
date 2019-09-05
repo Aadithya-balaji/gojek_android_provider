@@ -36,7 +36,7 @@ class CountryCodeActivity : BaseActivity<ActivityCountryCodeBinding>(),
         mBinding.placesModel = mViewModel
         ivBack = findViewById(R.id.iv_back)
         svCountry = findViewById(R.id.sv_country)
-        llPlaces = findViewById(R.id.ll_country)
+        llPlaces = this.findViewById(R.id.ll_country)
 
 
         listCountry = Country.getAllCountries()

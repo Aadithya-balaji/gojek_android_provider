@@ -15,7 +15,7 @@ data class SubServiceCategoriesResponse(
             val company_id: String = "",
             val service_subcategory_name: String = "",
             val picture: String = "",
-            val providerservicecategory: List<ProviderServiceCategory> = listOf(),
+            val providerservicesubcategory: List<ProviderServiceCategory> = listOf(),
             val service_subcategory_order: String = "",
             val service_subcategory_status: String = ""
     ) : Serializable

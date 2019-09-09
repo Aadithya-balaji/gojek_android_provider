@@ -34,10 +34,15 @@ class SetSubServiceActivity : BaseActivity<ActivitySetSubServiceBinding>(),
         mBinding.toolbar.tbApp.tv_toolbar_title.text = (service.service_category_name)
         mViewModel.navigator = this
         mBinding.subServiceViewModel = mViewModel
-        mViewModel.getSubCategories(service.id.toString())
-        loadingObservable.value = true
+
         checkResponse()
         checkErrorResponse()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadingObservable.value = true
+        mViewModel.getSubCategories(service.id.toString())
     }
 
     private fun checkErrorResponse() {

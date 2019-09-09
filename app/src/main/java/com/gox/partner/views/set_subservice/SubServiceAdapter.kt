@@ -30,6 +30,10 @@ class SubServiceAdapter(val activity: SetSubServiceActivity, var subserviceData:
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.bind()
         holder.mBinding.serviceNameTv.text = subserviceData.responseData[position].service_subcategory_name
+        if (subserviceData.responseData[position].providerservicesubcategory.isNotEmpty())
+            holder.mBinding.ivSelection.visibility = VISIBLE
+        else
+            holder.mBinding.ivSelection.visibility = View.GONE
         holder.mBinding.serviceCard.setOnClickListener {
             serviceItemClick?.onItemClick(subserviceData.responseData[position])
         }

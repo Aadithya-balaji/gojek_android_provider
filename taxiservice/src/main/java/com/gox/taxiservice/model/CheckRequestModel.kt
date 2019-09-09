@@ -186,7 +186,7 @@ data class User(
 ) : Serializable
 
 data class Payment(
-        var card: Int? = 0,
+        var card: Double? = 0.0,
         var cash: Double? = 0.0,
         var commision: Double? = 0.0,
         var commision_percent: Double? = 0.0,

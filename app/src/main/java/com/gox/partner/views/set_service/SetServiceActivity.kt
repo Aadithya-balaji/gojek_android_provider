@@ -32,10 +32,14 @@ class SetServiceActivity : BaseActivity<ActivitySetServiceBinding>(),
 
         mViewModel.navigator = this
         mBinding.serviceViewModel = mViewModel
-        mViewModel.getCategories()
         checkCategoryResponse()
         checkException()
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadingObservable.value = true
+        mViewModel.getCategories()
     }
 
     private fun checkException() {

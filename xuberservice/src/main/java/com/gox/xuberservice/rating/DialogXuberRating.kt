@@ -11,6 +11,8 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.data.Constants
@@ -20,6 +22,7 @@ import com.gox.xuberservice.databinding.DialogXuperRatingBinding
 import com.gox.xuberservice.model.UpdateRequest
 import com.gox.xuberservice.model.XuperCheckRequest
 import com.gox.xuberservice.model.XuperRatingModel
+import kotlinx.android.synthetic.main.dialog_xuper_rating.*
 
 class DialogXuberRating : BaseDialogFragment<DialogXuperRatingBinding>(),
         XUberRatingNavigator, RatingBar.OnRatingBarChangeListener {
@@ -82,6 +85,21 @@ class DialogXuberRating : BaseDialogFragment<DialogXuperRatingBinding>(),
                 mViewModel.firstName.value = xuberCheckRequest!!.responseData!!.requests!!.user!!.first_name.toString()
                 mViewModel.lastName.value = xuberCheckRequest!!.responseData!!.requests!!.user!!.last_name.toString()
             } else Log.e("Request", "----$xuberCheckRequest")
+        }
+
+        loadProfile()
+    }
+
+    private fun loadProfile() {
+        try {
+            Glide.with(context!!).applyDefaultRequestOptions(RequestOptions()
+                    .circleCrop()
+                    .placeholder(R.drawable.ic_user_place_holder)
+                    .error(R.drawable.ic_user_place_holder))
+                    .load(updateRequestModel!!.responseData!!.user!!.picture)
+                    .into(ivXuperRatingUser)
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 

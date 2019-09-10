@@ -703,12 +703,16 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
         if (!allowImage.isNullOrEmpty()) Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()
-                        .placeholder(R.drawable.ic_user_place_holder)
-                        .error(R.drawable.ic_user_place_holder))
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder))
                 .load(allowImage)
                 .into(ivDesImage)
 
-        tvDescription.text = allowDescription
+        if (allowDescription != null && !allowDescription.equals("null", true))
+            tvDescription.text = allowDescription
+        else
+            tvDescription.text = getString(R.string.no_instruction_found)
+
         val displayFrame = Rect()
         v.getWindowVisibleDisplayFrame(displayFrame)
         val displayFrameWidth = displayFrame.right - displayFrame.left

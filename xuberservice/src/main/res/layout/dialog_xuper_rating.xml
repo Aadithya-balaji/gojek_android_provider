@@ -30,6 +30,7 @@
             android:layout_width="@dimen/_35sdp"
             android:layout_height="@dimen/_35sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:src="@drawable/ic_user_place_holder"
             android:contentDescription="@string/app_name" />
 
         <TextView

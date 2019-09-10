@@ -126,7 +126,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
             xUberInvoiceModel.userImage.value = xUberCheckRequest!!.responseData!!.requests!!.user!!.picture.toString()
             xUberInvoiceModel.totalAmount.value = xUberCheckRequest!!.responseData!!.requests!!.payment!!.payable.toString()
             try {
-                xUberInvoiceModel.tvAdditionalCharge.value = updateRequestModel!!.responseData!!.payment!!.extra_charges.toString()
+                xUberInvoiceModel.tvAdditionalCharge.value = xUberCheckRequest!!.responseData!!.requests!!.payment!!.extra_charges.toString()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -136,6 +136,16 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
             timeTaken = CommonMethods.getTimeDifference(xUberCheckRequest!!.responseData!!.requests!!.started_at!!,
                     xUberCheckRequest!!.responseData!!.requests!!.finished_at!!, "")
         }
+
+        val paymentType = xUberCheckRequest!!.responseData!!.requests!!.payment_mode
+        if(paymentType.equals("card",true) || paymentType.equals("")){
+            tvXuperConfirmPayment.visibility = View.GONE
+            tvWaitingForPayment.visibility = View.VISIBLE
+        }else {
+            tvXuperConfirmPayment.visibility = View.VISIBLE
+            tvWaitingForPayment.visibility = View.GONE
+        }
+
         tvXuperTime.text = timeTaken
         Glide.with(this)
                 .applyDefaultRequestOptions(com.bumptech.glide.request.RequestOptions()

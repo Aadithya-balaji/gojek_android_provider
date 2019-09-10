@@ -47,5 +47,6 @@ class XUberInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
             }
         }, params))
     }
+
 }
 

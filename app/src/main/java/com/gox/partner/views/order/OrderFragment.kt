@@ -60,7 +60,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
         dashBoardNavigator = context as DashBoardNavigator
         dashBoardNavigator.hideRightIcon(true)
         dashBoardNavigator.showLogo(true)
-        dashBoardNavigator.getInstance().tbr_home.visibility = View.GONE
+        dashBoardNavigator.getInstance()?.tbr_home?.visibility = View.GONE
     }
 
     override fun goToCurrentOrder() {

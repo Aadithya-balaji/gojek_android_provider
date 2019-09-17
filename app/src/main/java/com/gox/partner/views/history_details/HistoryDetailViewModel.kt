@@ -3,6 +3,7 @@ package com.gox.partner.views.history_details
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.repository.ApiListener
 import com.gox.partner.models.*
 import com.gox.partner.repository.AppRepository
@@ -80,13 +81,13 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
     fun getDisputeList() {
         showLoading.value = true
         Log.e("servicetype", "----------" + serviceType.value)
-        if(serviceType.value.equals("service")){
+        if(serviceType.value.equals(Constants.ModuleTypes.SERVICE,true)){
             serviceName=serviceType.value!!.replace("service","services")
         }else{
-            serviceName=serviceType.value
+            serviceName=serviceType.value!!.toLowerCase()
         }
 
-        if (serviceName.equals("transport"))
+        if (serviceName.equals(Constants.ModuleTypes.TRANSPORT,true))
             getCompositeDisposable().add(mRepository.getDisputeList(object : ApiListener {
                 override fun success(successData: Any) {
                     disputeListData.value = successData as DisputeListModel

@@ -15,6 +15,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
+import com.gox.base.data.PreferencesKey
+import com.gox.base.extensions.readPreferences
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityCurrentorderDetailLayoutBinding
@@ -62,9 +64,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         if (historyType.equals("past")) {
             println("BBBB" + "   " + serviceType.toString())
             when {
-                serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> mViewModel.getTransportHistoryDetail(selectedId.toString())
-                serviceType.equals(Constants.ModuleTypes.SERVICE,true) -> mViewModel.getServiceHistoryDetail(selectedId.toString())
-                serviceType.equals(Constants.ModuleTypes.ORDER,true) -> mViewModel.getOrderHistoryDetail(selectedId.toString())
+                serviceType.equals(Constants.ModuleTypes.TRANSPORT) -> mViewModel.getTransportHistoryDetail(selectedId.toString())
+                serviceType.equals(Constants.ModuleTypes.SERVICE) -> mViewModel.getServiceHistoryDetail(selectedId.toString())
+                serviceType.equals(Constants.ModuleTypes.ORDER) -> mViewModel.getOrderHistoryDetail(selectedId.toString())
             }
         }
         apiResponse()
@@ -296,8 +298,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(transPastDetail.assigned_at, "Req_time") + "")
         mBinding.historydetailSrcValueTv.text = transPastDetail.s_address
         mBinding.historydetailDestValueTv.text = transPastDetail.d_address
-        mBinding.scheduletimeView.visibility=View.GONE
-        mBinding.scheduleTimeLayout.visibility=View.GONE
+        mBinding.scheduletimeView.visibility = View.GONE
+        mBinding.scheduleTimeLayout.visibility = View.GONE
         mBinding.tvStatusValue.text = transPastDetail.status
         mBinding.historydetailPaymentmodeValTv.text = transPastDetail.payment_mode
         mBinding.vechileTypeTv.text = (transPastDetail.ride!!.vehicle_name)
@@ -330,17 +332,17 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.historydetailSrcValueTv.text = serviceDetail.s_address + ""
         mBinding.historydetailDestValueTv.visibility = View.GONE
         mBinding.vechileTypeTv.text = (serviceDetail.service!!.service_name)
-        mBinding.scheduletimeView.visibility=View.GONE
-        mBinding.scheduleTimeLayout.visibility=View.GONE
+        mBinding.scheduletimeView.visibility = View.GONE
+        mBinding.scheduleTimeLayout.visibility = View.GONE
         mBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
         Glide.with(this).load(serviceDetail.user!!.picture).error(R.drawable.ic_user_place_holder)
                 .into(mBinding.providerCimgv)
-        if(serviceDetail.started_at!=null)
+        if (serviceDetail.started_at != null)
             mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!, "Req_time") + "")
-        if(serviceDetail.started_at!=null)
+        if (serviceDetail.started_at != null)
             mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!, "Req_Date_Month") + "")
         mBinding.providerNameTv.text = (serviceDetail.user!!.first_name + " " + serviceDetail.user.last_name)
-        mBinding.tvStatusValue.text=serviceDetail.status
+        mBinding.tvStatusValue.text = serviceDetail.status
         mBinding.rvUser.rating = serviceDetail.user!!.rating!!.toFloat()
         mBinding.lossSomething.visibility = View.GONE
         mBinding.destLayout.visibility = View.GONE
@@ -359,8 +361,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(orderDetail.created_at, "Req_time") + "")
         mBinding.historydetailSrcValueTv.text = orderDetail.pickup!!.store_location
         mBinding.historydetailDestValueTv.text = orderDetail.delivery!!.flat_no + " " + orderDetail.delivery.street
-        mBinding.scheduletimeView.visibility=View.GONE
-        mBinding.scheduleTimeLayout.visibility=View.GONE
+        mBinding.scheduletimeView.visibility = View.GONE
+        mBinding.scheduleTimeLayout.visibility = View.GONE
         mBinding.tvStatusValue.text = orderDetail.status
         mBinding.historydetailPaymentmodeValTv.text = orderDetail.order_invoice!!.payment_mode
         mBinding.providerNameTv.text = (orderDetail.user!!.first_name + " " + orderDetail.user.last_name)
@@ -375,61 +377,64 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
 
     private fun setUpTransportInvoice(alertDialog: AlertDialog) {
-        alertDialog.findViewById<TextView>(R.id.tvTaxiFare)!!.text = (Constants.currency
+        val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
+        alertDialog.findViewById<TextView>(R.id.tvTaxiFare)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.tax)
 
-        alertDialog.findViewById<TextView>(R.id.tvBaseFare)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvBaseFare)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.fixed)
 
-        alertDialog.findViewById<TextView>(R.id.tvTaxiWalletAmount)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvTaxiWalletAmount)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.waiting_amount)
 
-        alertDialog.findViewById<TextView>(R.id.tvTaxiHourlyFare)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvTaxiHourlyFare)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.hour)
 
-        alertDialog.findViewById<TextView>(R.id.tvTaxiDistanceFare)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvTaxiDistanceFare)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.distance)
 
-        alertDialog.findViewById<TextView>(R.id.tvTaxiProviderFare)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvTaxiProviderFare)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.provider_pay)
 
-        alertDialog.findViewById<TextView>(R.id.tvTaxiDiscount)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvTaxiDiscount)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.discount)
-        alertDialog.findViewById<TextView>(R.id.tvTaxiTips)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvTaxiTips)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.tips)
-        alertDialog.findViewById<TextView>(R.id.tvTaxiWaitingTime)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvTaxiWaitingTime)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.waiting_amount)
-        alertDialog.findViewById<TextView>(R.id.tvTaxiTollCharge)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvTaxiTollCharge)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.toll_charge)
-        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (Constants.currency
+        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.payable)
     }
 
     private fun setUpServiceInvoice(alertDialog: AlertDialog) {
-        alertDialog.findViewById<TextView>(R.id.tvServiceFare)!!.text = (Constants.currency +
+        val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
+        alertDialog.findViewById<TextView>(R.id.tvServiceFare)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.service.payment!!.fixed)
-        alertDialog.findViewById<TextView>(R.id.tvServiceTax)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvServiceTax)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.service.payment!!.tax)
-        alertDialog.findViewById<TextView>(R.id.tvServiceTime)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvServiceTime)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.service.payment!!.minute)
-        alertDialog.findViewById<TextView>(R.id.tvServiceExtraCharge)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvServiceExtraCharge)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.service.payment!!.extra_charges)
-        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.service.payment!!.payable)
     }
 
     private fun setUpOrderInvoice(alertDialog: AlertDialog) {
-        alertDialog.findViewById<TextView>(R.id.tvOrderBaseFare)!!.text = (Constants.currency +
+        val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
+        alertDialog.findViewById<TextView>(R.id.tvOrderBaseFare)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.gross)
-        alertDialog.findViewById<TextView>(R.id.tvOrderTaxFare)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvOrderTaxFare)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.tax_amount)
-        alertDialog.findViewById<TextView>(R.id.tvOrderDeliveryCharge)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvOrderDeliveryCharge)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.delivery_amount)
-        alertDialog.findViewById<TextView>(R.id.tvOrderPackCharge)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvOrderPackCharge)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.store_package_amount)
-        alertDialog.findViewById<TextView>(R.id.tvOrderPrmocode)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvOrderPrmocode)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.promocode_amount)
-        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (Constants.currency +
+        alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.total_amount.toString())
     }
 

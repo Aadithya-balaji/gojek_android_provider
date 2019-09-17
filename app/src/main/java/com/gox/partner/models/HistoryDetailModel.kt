@@ -154,18 +154,18 @@ data class HistoryDetailModel(
             )
 
             data class Payment(
-                    val card: Int? = 0,
-                    val cash: Double? = 0.0,
-                    val commision: Double? = 0.0,
-                    val commision_percent: Double? = 0.0,
+                    val card: Double = 0.0,
+                    val cash: Double = 0.0,
+                    val commision: Double = 0.0,
+                    val commision_percent: Double = 0.0,
                     val company_id: Int? = 0,
-                    val discount: Double? = 0.0,
-                    val discount_percent: Int? = 0,
-                    val distance: Double? = 0.0,
-                    val fixed: Double? = 0.0,
+                    val discount: Double = 0.0,
+                    val discount_percent: Double = 0.0,
+                    val distance: Double = 0.0,
+                    val fixed: Double = 0.0,
                     val fleet: Int? = 0,
-                    val fleet_id: Any? = Any(),
-                    val fleet_percent: Int? = 0,
+                    val fleet_id: Int? = 0,
+                    val fleet_percent: Double = 0.0,
                     val hour: Double? = 0.0,
                     val id: Int? = 0,
                     val is_partial: Any? = Any(),
@@ -244,7 +244,7 @@ data class HistoryDetailModel(
             )
 
             data class Payment(
-                    val extra_charges: Int? = 0,
+                    val extra_charges: Double = 0.0,
                     val fixed: Double? = 0.0,
                     val id: Int? = 0,
                     val minute: Double? = 0.0,
@@ -297,7 +297,7 @@ data class HistoryDetailModel(
                     val id: Int? = 0,
                     val is_admin: Int? = 0,
                     val provider_id: Int? = 0,
-                    val refund_amount: Int? = 0,
+                    val refund_amount: Double = 0.0,
                     val service_request_id: Int? = 0,
                     val status: String? = "",
                     val user_id: Int? = 0
@@ -359,9 +359,9 @@ data class HistoryDetailModel(
                             val free_delivery: Int? = 0,
                             val id: Int? = 0,
                             val offer_min_amount: String? = "",
-                            val offer_percent: Int? = 0,
+                            val offer_percent: Double = 0.0,
                             val store_cusinie: List<StoreCusinie?>? = listOf(),
-                            val store_gst: Int? = 0,
+                            val store_gst: Double = 0.0,
                             val store_name: String? = "",
                             val store_packing_charges: String? = "",
                             val store_type_id: Int? = 0,
@@ -429,10 +429,10 @@ data class HistoryDetailModel(
             data class Rating(
                     val id: Int? = 0,
                     val provider_comment: String? = "",
-                    val provider_rating: Int? = 0,
-                    val store_rating: Int? = 0,
+                    val provider_rating: Double = 0.0,
+                    val store_rating: Double = 0.0,
                     val user_comment: String? = "",
-                    val user_rating: Int? = 0
+                    val user_rating: Double = 0.0
             )
         }
 

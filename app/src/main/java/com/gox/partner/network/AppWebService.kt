@@ -210,7 +210,7 @@ interface AppWebService {
     @GET("provider/ride/dispute")
     fun getDisputeList(): Observable<DisputeListModel>
 
-    @GET("provider/dispute/{service}")
+    @GET("provider/{service}/dispute")
     fun getDisputeReasons(@Path("service") servicetype: String): Observable<DisputeListModel>
 
     @FormUrlEncoded

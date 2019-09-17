@@ -5,5 +5,5 @@
     <padding
         android:left="@dimen/_20sdp"
         android:right="@dimen/_20sdp" />
-    <solid android:color="@color/schedule_blue" />
+    <solid android:color="@color/history_completed_bg" />
 </shape>

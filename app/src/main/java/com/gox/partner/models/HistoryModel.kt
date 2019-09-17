@@ -47,7 +47,8 @@ data class HistoryModel(
 
             data class Payment(
                     val ride_request_id: Int? = 0,
-                    val total: Double? = 0.0
+                    val total: Double = 0.0,
+                    val card: Double = 0.0
             )
 
             data class ProviderVehicle(
@@ -106,7 +107,8 @@ data class HistoryModel(
             data class Payment(
                     val id: Int? = 0,
                     val service_request_id: Int? = 0,
-                    val total: Double? = 0.0
+                    val total: Double = 0.0,
+                    val card: Double = 0.0
             )
         }
 

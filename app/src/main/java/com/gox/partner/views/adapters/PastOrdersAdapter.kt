@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.gox.base.data.Constants
 import com.gox.partner.R
 import com.gox.partner.databinding.PastOderItemlistBinding
 import com.gox.partner.models.TransportResponseData
@@ -28,9 +29,9 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
 
     override fun getItemCount(): Int =
             when (servicetype) {
-                "transport" -> transportHistory.transport.size
-                "service" -> transportHistory.service.size
-                "order" -> transportHistory.order.size
+                Constants.ModuleTypes.TRANSPORT -> transportHistory.transport.size
+                Constants.ModuleTypes.SERVICE -> transportHistory.service.size
+                Constants.ModuleTypes.ORDER -> transportHistory.order.size
                 else -> 0
             }
 
@@ -38,7 +39,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
         holder.bind()
 
         when (servicetype) {
-            "transport" -> {
+            Constants.ModuleTypes.TRANSPORT -> {
                 updateHistoryUi(holder, transportHistory.transport[position].ride?.vehicle_name!!
                         , transportHistory.transport[position].status.equals("Completed", true)
                         , transportHistory.transport[position].booking_id
@@ -58,7 +59,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                     }
                 }
             }
-            "service" -> {
+            Constants.ModuleTypes.SERVICE -> {
                 updateHistoryUi(holder, transportHistory.service[position].service?.service_name.toString()!!
                         , transportHistory.service[position].status.equals("Completed", true)
                         , transportHistory.service[position].booking_id!!
@@ -79,7 +80,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                 }
             }
 
-            "order" -> {
+            Constants.ModuleTypes.ORDER -> {
                 updateHistoryUi(holder, transportHistory.order[position].pickup?.store_name.toString()!!
                         , transportHistory.order[position].status.equals("Completed", true)
                         , transportHistory.order[position].store_order_invoice_id!!
@@ -116,7 +117,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
             holder.pastOderItemlistBinding.statusPastTv.background = ContextCompat.getDrawable(activity as Context,
                     R.drawable.custom_round_corner_completd)
             holder.pastOderItemlistBinding.statusPastTv.setTextColor(ContextCompat.getColor(activity as Context,
-                    R.color.schedule_blue_txt))
+                    R.color.completed_text))
             holder.pastOderItemlistBinding.statusPastTv.text = activity.getString(R.string.completed)
         } else {
             holder.pastOderItemlistBinding.statusPastTv.background = ContextCompat.getDrawable(activity as Context,

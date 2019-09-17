@@ -9,7 +9,7 @@
     <string name="cancel" tools:ignore="MissingTranslation">Cancel</string>
     <string name="status">Status</string>
     <string name="no_internet_connection">No Internet Connection :( </string>
-    <string name="floating_app">Floating app icon</string>
+    <string name="floating_app">Tracking Location</string>
     <string name="low_battery">Your battery is low</string>
     <string name="chat">Chat</string>
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>

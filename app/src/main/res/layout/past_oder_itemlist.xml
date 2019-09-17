@@ -87,6 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ordered_item_tv"
                     android:layout_marginStart="@dimen/_5sdp"
+                    android:gravity="center"
                     android:layout_toEndOf="@+id/date_time_laoyut"
                     android:drawableStart="@drawable/ic_star"
                     android:drawablePadding="@dimen/_5sdp"
@@ -95,7 +96,7 @@
                     android:text="@string/dummy_rating"
                     android:textColor="@color/dark_grey" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/status_past_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_20sdp"
@@ -103,10 +104,12 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:background="@drawable/custom_round_corner_cancled"
-                    android:padding="@dimen/_3sdp"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/cancelled"
                     android:textColor="@color/red"
+                    android:textSize="@dimen/_8sdp"
                     style="@style/VerySmallText" />
+
 
 
             </RelativeLayout>

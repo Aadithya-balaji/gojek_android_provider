@@ -29,7 +29,7 @@ data class UpdateRequest(
             val otp: String? = "",
             val paid: Any? = Any(),
             val payment: Payment? = Payment(),
-            val payment_mode: String? = "",
+            val payment_mode: String = "",
             val price: Double? = 0.0,
             val promocode_id: Double? = 0.0,
             val provider_id: Int? = 0,

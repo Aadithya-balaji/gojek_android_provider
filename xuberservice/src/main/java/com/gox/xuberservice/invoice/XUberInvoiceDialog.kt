@@ -137,7 +137,13 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
                     xUberCheckRequest!!.responseData!!.requests!!.finished_at!!, "")
         }
 
-        val paymentType = xUberCheckRequest!!.responseData!!.requests!!.payment_mode
+        var paymentType = ""
+        if (isFromCheckRequest == false) {
+            paymentType = updateRequestModel!!.responseData!!.payment_mode
+        }else{
+            paymentType = xUberCheckRequest!!.responseData!!.requests!!.payment_mode
+        }
+
         if(paymentType.equals("card",true) || paymentType.equals("")){
             tvXuperConfirmPayment.visibility = View.GONE
             tvWaitingForPayment.visibility = View.VISIBLE

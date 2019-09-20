@@ -904,8 +904,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 changeWaitingTimeBackground(true)
                 isWaitingTime = true
                 val temp: Long = 0
+
                 if (lastWaitingTime != temp)
                     cmWaiting.base = (cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
+                else
+                    cmWaiting.base = SystemClock.elapsedRealtime()
 
                 if (mViewModel.checkStatusTaxiLiveData.value != null) {
                     val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()

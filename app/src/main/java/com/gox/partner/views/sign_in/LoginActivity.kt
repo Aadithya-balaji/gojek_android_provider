@@ -74,10 +74,6 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
 
         //    setDefaultCountry()
 
-        if (BuildConfig.DEBUG) {
-            mViewModel.email.value = "toni@yopmail.com"
-            mViewModel.password.value = "112233"
-        }
     }
 
     private fun detectDefaultCountry(resultIntent: Intent) {

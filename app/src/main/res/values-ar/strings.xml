@@ -519,4 +519,10 @@
     <string name="child_seat">Child Seat</string>
     <string name="wheel_chair">Wheel Chair</string>
     <string name="send">send</string>
+    <string name="otp_verify_description">Enter the OTP received on the registered  mobile number</string>
+    <string name="otp_success">OTP Send Successfully</string>
+    <string name="verify">Verify</string>
+    <string name="error_enter_otp">Please enter OTP</string>
+    <string name="error_enter_valid_otp">Please enter valid OTP</string>
+    <string name="otp_verification">OTP Verification</string>
 </resources>

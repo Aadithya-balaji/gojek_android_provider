@@ -9,6 +9,7 @@ import com.gox.base.repository.ApiListener
 import com.gox.partner.models.CountryListResponse
 import com.gox.partner.models.ProfileResponse
 import com.gox.partner.models.ResProfileUpdate
+import com.gox.partner.models.SendOTPResponse
 import com.gox.partner.repository.AppRepository
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -31,6 +32,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
 
     var showLoading = MutableLiveData<Boolean>()
     var countryListResponse = MutableLiveData<CountryListResponse>()
+    var sendOTPResponse = MutableLiveData<SendOTPResponse>()
 
     val mRepository = AppRepository.instance()
 
@@ -54,7 +56,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
         val hashMap: HashMap<String, RequestBody> = HashMap()
         hashMap["first_name"] = RequestBody.create(MediaType.parse("text/plain"), mUserName.get().toString())
         hashMap["mobile"] = RequestBody.create(MediaType.parse("text/plain"), mMobileNumber.get().toString())
-        hashMap["country_code"] = RequestBody.create(MediaType.parse("text/plain"), mCountryCode.get().toString())
+        hashMap["country_code"] = RequestBody.create(MediaType.parse("text/plain"), mCountryCode.get().toString().replace("+",""))
         hashMap["city_id"] = RequestBody.create(MediaType.parse("text/plain"), mCityId.get().toString())
         // hashMap.put("country_id", RequestBody.create(MediaType.parse("text/plain"), mCountryId.get().toString()))
         getCompositeDisposable().add(mRepository.profileUpdate(object : ApiListener {
@@ -92,5 +94,21 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
     fun getCityList() = navigator.goToCityListActivity(mCountryId)
 
     fun changePassword() = navigator.goToChangePasswordActivity()
+
+    fun sendOTP() {
+        val hashMap: HashMap<String, RequestBody> = HashMap()
+        hashMap.put("country_code", RequestBody.create(MediaType.parse("text/plain"), mCountryCode.get().toString().replace("+","")))
+        hashMap.put("mobile", RequestBody.create(MediaType.parse("text/plain"), mMobileNumber.get().toString()))
+        hashMap.put("salt_key", RequestBody.create(MediaType.parse("text/plain"), BuildConfig.SALT_KEY))
+        getCompositeDisposable().add(mRepository.sendOTP(object : ApiListener {
+            override fun success(successData: Any) {
+                sendOTPResponse.postValue(successData as SendOTPResponse)
+            }
+
+            override fun fail(error: Throwable) {
+                errorResponse.postValue(getErrorMessage(error))
+            }
+        }, hashMap))
+    }
 
 }

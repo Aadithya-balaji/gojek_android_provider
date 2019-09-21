@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.verifyotp.VerifyOTPActivity">
+
+    <data>
+
+        <variable
+            name="verifyOTPModel"
+            type="com.gox.app.ui.verifyotp.VerifyOTPViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/title_toolbar"
+            style="@style/CustomToolBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/light_gray"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextAppearance="@style/MediumText"
+            tools:targetApi="honeycomb" />
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:src="@drawable/app_logo"
+            app:layout_constraintBottom_toTopOf="@+id/tvDescription"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDescription"
+            style="@style/BoldText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/otp_verify_description"
+            android:textSize="@dimen/_12sdp"
+            app:layout_constraintBottom_toTopOf="@+id/pvOTP"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.goodiebag.pinview.Pinview
+            android:id="@+id/pvOTP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cursorVisible="false"
+            app:forceKeyboard="true"
+            app:hint=" "
+            app:inputType="number"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:password="false"
+            app:pinBackground="@drawable/bg_rectangle"
+            app:pinHeight="40dp"
+            app:pinLength="4"
+            app:pinWidth="40dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:text="@string/verify"
+            android:onClick="@{()->verifyOTPModel.actionVerifyOTP()}"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/rounded_corner_blue_bg"
+            android:backgroundTint="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pvOTP"
+            app:layout_constraintVertical_bias="0.25" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

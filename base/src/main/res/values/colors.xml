@@ -8,8 +8,11 @@
     <color name="schedule_blue_txt">#11aba9</color>
     <color name="dark_grey">#666772</color>
     <color name="grey">#9f9f9f</color>
+    <color name="light_gray">#F3F3F3</color>
     <color name="notification_grey">#989fcb</color>
     <color name="colorBlack">#000000</color>
+    <color name="blue">#2196F3</color>
+
 
     <!--App Module-->
 

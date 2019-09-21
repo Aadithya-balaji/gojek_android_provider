@@ -529,5 +529,11 @@
     <string name="dummy_enter_your_loss_item">Enter your Loss Item</string>
     <string name="dummy_openstatus">open</string>
     <string name="send">send</string>
+    <string name="otp_verify_description">Enter the OTP received on the registered  mobile number</string>
+    <string name="otp_success">OTP Send Successfully</string>
+    <string name="verify">Verify</string>
+    <string name="error_enter_otp">Please enter OTP</string>
+    <string name="error_enter_valid_otp">Please enter valid OTP</string>
+    <string name="otp_verification">OTP Verification</string>
 
 </resources>

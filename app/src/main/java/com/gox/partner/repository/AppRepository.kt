@@ -1,9 +1,11 @@
 package com.gox.partner.repository
 
+import com.gox.app.ui.verifyotp.VerifyOTPViewModel
 import com.gox.base.data.Constants
 import com.gox.base.repository.ApiListener
 import com.gox.base.repository.BaseRepository
 import com.gox.partner.network.AppWebService
+import com.gox.partner.utils.Constant
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -37,6 +39,30 @@ class AppRepository : BaseRepository() {
                     if (it.statusCode == "200")
                         listener.success(it)
                 }, { listener.fail(it) })
+    }
+
+    fun sendOTP(listener: ApiListener, @PartMap params: HashMap<String, RequestBody>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .sendOTP(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    listener.success(it)
+                }, {
+                    listener.fail(it)
+                })
+    }
+
+    fun verifyOTP(viewModel: VerifyOTPViewModel, @PartMap params: HashMap<String, RequestBody>): Disposable{
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .verifyOTP(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    viewModel.verifyOTPResponse.value = it
+                }, {
+                    viewModel.errorResponse.value = getErrorMessage(it)
+                })
     }
 
     fun postSocialLogin(listener: ApiListener, params: HashMap<String, String>): Disposable {
@@ -83,6 +109,8 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
+
+
 
     fun postChangePassword(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)

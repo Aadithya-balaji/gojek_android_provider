@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.telephony.TelephonyManager
 import android.text.Html
 import android.text.TextUtils
@@ -24,10 +25,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.facebook.*
-import com.facebook.accountkit.PhoneNumber
-import com.facebook.accountkit.ui.AccountKitActivity
-import com.facebook.accountkit.ui.AccountKitConfiguration
-import com.facebook.accountkit.ui.LoginType
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
@@ -39,6 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.gox.partner.views.verifyotp.VerifyOTPActivity
 import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.PreferencesKey
@@ -196,6 +194,22 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             intent.putExtra("countrylistresponse", it as Serializable)
             startActivityForResult(intent, COUNTRYLIST_REQUEST_CODE)
         }
+
+        mViewModel.loadingProgress.observe(this,androidx.lifecycle.Observer {
+            loadingObservable.value = it
+        })
+
+
+        mViewModel.sendOTPResponse.observe(this, androidx.lifecycle.Observer {
+            mViewModel.loadingProgress.value = false
+            ViewUtils.showToast(this, getString(R.string.otp_success), true)
+            Handler().postDelayed({
+                val intent = Intent(this, VerifyOTPActivity::class.java)
+                intent.putExtra("country_code",mViewModel.countryCode.value!!.replace("+",""))
+                intent.putExtra("mobile",mViewModel.phoneNumber.value!!.toString())
+                startActivityForResult(intent,FB_ACCOUNT_KIT_CODE)
+            },1000)
+        });
     }
 
     private fun redirectToHome() {
@@ -369,7 +383,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun verifyPhoneNumber() {
-        val phoneNumber = PhoneNumber(countryCode!!, mViewModel.phoneNumber.value!!, isoCode)
+       /* val phoneNumber = PhoneNumber(countryCode!!, mViewModel.phoneNumber.value!!, isoCode)
         val intent = Intent(this, AccountKitActivity::class.java)
         val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
                 LoginType.PHONE,
@@ -378,7 +392,10 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         intent.putExtra(
                 AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build())
-        startActivityForResult(intent, FB_ACCOUNT_KIT_CODE)
+        startActivityForResult(intent, FB_ACCOUNT_KIT_CODE)*/
+
+        mViewModel.loadingProgress.value = true
+        mViewModel.sendOTP()
     }
 
     private fun initFacebook() {

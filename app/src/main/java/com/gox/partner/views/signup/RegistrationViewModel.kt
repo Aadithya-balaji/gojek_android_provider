@@ -1,6 +1,7 @@
 package com.gox.partner.views.signup
 
 import androidx.lifecycle.MutableLiveData
+import com.gox.base.BuildConfig
 import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
@@ -8,6 +9,7 @@ import com.gox.base.data.PreferencesKey
 import com.gox.base.repository.ApiListener
 import com.gox.partner.models.CountryListResponse
 import com.gox.partner.models.RegistrationResponseModel
+import com.gox.partner.models.SendOTPResponse
 import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
 import com.gox.partner.utils.Enums
@@ -35,6 +37,11 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
     var socialID = MutableLiveData<String>()
     var fileName = MutableLiveData<MultipartBody.Part>()
     var loginby = MutableLiveData<String>()
+
+    var loadingProgress = MutableLiveData<Boolean>()
+    var sendOTPResponse = MutableLiveData<SendOTPResponse>()
+    var errorResponse = MutableLiveData<String>()
+
 
     private var countryListResponse = MutableLiveData<CountryListResponse>()
     private var mRegistrationResponse = MutableLiveData<RegistrationResponseModel>()
@@ -66,7 +73,7 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
         signUpParams[WebApiConstants.SignUp.GENDER] =
                 RequestBody.create(MediaType.parse("text/plain"), gender.value.toString())
         signUpParams[WebApiConstants.SignUp.COUNTRY_CODE] =
-                RequestBody.create(MediaType.parse("text/plain"), countryCode.value.toString())
+                RequestBody.create(MediaType.parse("text/plain"), countryCode.value.toString().replace("+",""))
         signUpParams[WebApiConstants.SignUp.MOBILE] =
                 RequestBody.create(MediaType.parse("text/plain"), phoneNumber.value.toString())
         signUpParams[WebApiConstants.SignUp.PASSWORD] =
@@ -131,6 +138,22 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
                 navigator.showError(getErrorMessage(failData))
             }
         }, params))
+    }
+
+    fun sendOTP() {
+        val hashMap: HashMap<String, RequestBody> = HashMap()
+        hashMap.put("country_code", RequestBody.create(MediaType.parse("text/plain"), countryCode.value!!.replace("+", "")))
+        hashMap.put("mobile", RequestBody.create(MediaType.parse("text/plain"), phoneNumber.value!!.toString()))
+        hashMap.put("salt_key", RequestBody.create(MediaType.parse("text/plain"), BuildConfig.SALT_KEY))
+        getCompositeDisposable().add(mRepository.sendOTP(object : ApiListener {
+            override fun success(successData: Any) {
+                sendOTPResponse.postValue(successData as SendOTPResponse)
+            }
+
+            override fun fail(error: Throwable) {
+                errorResponse.postValue(getErrorMessage(error))
+            }
+        }, hashMap))
     }
 
     interface RegistrationNavigator {

@@ -17,6 +17,15 @@ interface AppWebService {
     @POST("provider/login")
     fun postLogin(@FieldMap params: HashMap<String, String>): Observable<LoginResponseModel>
 
+    @Multipart
+    @POST("user/send-otp")
+    fun sendOTP(@PartMap params: HashMap<String, RequestBody>): Observable<SendOTPResponse>
+
+
+    @Multipart
+    @POST("user/verify-otp")
+    fun verifyOTP(@PartMap params: HashMap<String, RequestBody>): Observable<VerifyOTPResponse>
+
     @FormUrlEncoded
     @POST("provider/social/login")
     fun postSocialLogin(@FieldMap params: HashMap<String, String>): Observable<LoginResponseModel>
@@ -42,6 +51,7 @@ interface AppWebService {
             @PartMap params: HashMap<String, RequestBody>,
             @Part fileName: MultipartBody.Part?
     ): Observable<RegistrationResponseModel>
+
 
     @FormUrlEncoded
     @POST("provider/password")

@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
@@ -32,10 +33,12 @@ import com.gox.partner.models.City
 import com.gox.partner.models.CountryListResponse
 import com.gox.partner.models.CountryModel
 import com.gox.partner.models.CountryResponseData
+import com.gox.partner.utils.Constant
 import com.gox.partner.utils.Country
 import com.gox.partner.views.change_password.ChangePasswordActivity
 import com.gox.partner.views.citylist.CityListActivity
 import com.gox.partner.views.countrylist.CountryListActivity
+import com.gox.partner.views.verifyotp.VerifyOTPActivity
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
@@ -134,6 +137,19 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
         })
 
+
+        mViewModel.sendOTPResponse.observe(this, Observer {
+            mViewModel.showLoading.value = false
+            ViewUtils.showToast(this, getString(R.string.otp_success), true)
+            Handler().postDelayed({
+                val intent = Intent(this, VerifyOTPActivity::class.java)
+                intent.putExtra("country_code",mViewModel.mCountryCode.get().toString().replace("+",""))
+                intent.putExtra("mobile",mViewModel.mMobileNumber.get().toString())
+                startActivityForResult(intent, APP_REQUEST_CODE)
+            },1000)
+
+        })
+
         setOnclickListeners()
     }
 
@@ -169,7 +185,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     }
 
     private fun verifyMobileNumber() {
-        val phoneNumber = PhoneNumber(mViewModel.mProfileResponse.value!!.profileData.country_code,
+       /* val phoneNumber = PhoneNumber(mViewModel.mProfileResponse.value!!.profileData.country_code,
                 mViewModel.mMobileNumber.get().toString(), "")
         val intent = Intent(this, AccountKitActivity::class.java)
         val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
@@ -177,7 +193,9 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         configurationBuilder.setInitialPhoneNumber(phoneNumber)
         intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build())
-        startActivityForResult(intent, APP_REQUEST_CODE)
+        startActivityForResult(intent, APP_REQUEST_CODE)*/
+        mViewModel.showLoading.value = true
+        mViewModel.sendOTP()
     }
 
     private fun checkPermission() = Dexter.withActivity(this)
@@ -245,23 +263,25 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     }
 
     private fun accountKitOtpVerified(data: Intent?) {
-        val loginResult: AccountKitLoginResult = data!!.getParcelableExtra(AccountKitLoginResult.RESULT_KEY)
+       /* val loginResult: AccountKitLoginResult = data!!.getParcelableExtra(AccountKitLoginResult.RESULT_KEY)
         if (loginResult.error != null) {
             Log.d("_D_fbaccountkit", loginResult.error.toString())
         } else if (loginResult.wasCancelled()) {
             Log.d("_D_fbaccountkit", "Fb login cancelled")
         } else {
-            mMobileNumberFlag = 1
-            if (localPath?.path != null) {
-                val pictureFile = File(localPath?.path)
-                val requestFile = RequestBody.create(
-                        MediaType.parse("*/*"),
-                        pictureFile)
 
-                val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
-                mViewModel.updateProfile(fileBody)
-            } else mViewModel.updateProfile(null)
-        }
+        }*/
+
+        mMobileNumberFlag = 1
+        if (localPath?.path != null) {
+            val pictureFile = File(localPath?.path)
+            val requestFile = RequestBody.create(
+                    MediaType.parse("*/*"),
+                    pictureFile)
+
+            val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
+            mViewModel.updateProfile(fileBody)
+        } else mViewModel.updateProfile(null)
     }
 
     private fun setCity(data: Intent?) {

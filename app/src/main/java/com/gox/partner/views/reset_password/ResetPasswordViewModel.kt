@@ -37,10 +37,10 @@ class ResetPasswordViewModel : BaseViewModel<ResetPasswordViewModel.ResetPasswor
         params[WebApiConstants.ResetPassword.USERNAME] = username
         if (countryCode.isBlank()) {
             params[WebApiConstants.ResetPassword.ACCOUNT_TYPE] =
-                    ResetPasswordViewModel.AccountType.EMAIL.value()
+                    AccountType.EMAIL.value()
         } else {
             params[WebApiConstants.ResetPassword.ACCOUNT_TYPE] =
-                    ResetPasswordViewModel.AccountType.MOBILE.value()
+                    AccountType.MOBILE.value()
             params[WebApiConstants.ResetPassword.COUNTRY_CODE] = countryCode.replace("+", "")
         }
         getCompositeDisposable().add(mRepository.postResetPassword(object : ApiListener {

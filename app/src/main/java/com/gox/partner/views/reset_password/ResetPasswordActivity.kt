@@ -66,9 +66,12 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>(),
         val countryCode = intent.getStringExtra(WebApiConstants.ResetPassword.COUNTRY_CODE)
         if (countryCode != null)
             viewModel.countryCode = countryCode
+        else
+            viewModel.countryCode = ""
+
         viewModel.username = intent.getStringExtra(WebApiConstants.ResetPassword.USERNAME)
         viewModel.receivedOtp = intent.getStringExtra(WebApiConstants.ResetPassword.OTP)
-        viewModel.otp.value = intent.getStringExtra(WebApiConstants.ResetPassword.OTP)
+        //viewModel.otp.value = intent.getStringExtra(WebApiConstants.ResetPassword.OTP)
     }
 
     private fun onBackClicked(view: View) {

@@ -57,8 +57,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
         if (isNetworkConnected(this)) mViewModel.getConfig()
 
-        if (BaseApplication.isNetworkAvailable) mViewModel.getConfig()
-
         customPreference = BaseApplication.getCustomPreference!!
 
         FirebaseInstanceId.getInstance().instanceId

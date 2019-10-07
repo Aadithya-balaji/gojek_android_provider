@@ -35,7 +35,9 @@ object Constants {
         @JvmField
         var COMPANY_ID: String = String(Base64.decode(BuildConfig.SALT_KEY, Base64.DEFAULT), Charset.defaultCharset())
         var CITY_ID: Int? = PreferencesHelper.get(PreferencesKey.CITY_ID, 0)
-        var REQ_ID: Int? = PreferencesHelper.get(PreferencesKey.REQ_ID, 0)
+        var TRANSPORT_REQ_ID: Int? = PreferencesHelper.get(PreferencesKey.TRANSPORT_REQ_ID, 0)
+        var SERVICE_REQ_ID: Int? = PreferencesHelper.get(PreferencesKey.SERVICE_REQ_ID, 0)
+        var ORDER_REQ_ID: Int? = PreferencesHelper.get(PreferencesKey.ORDER_REQ_ID, 0)
     }
 
     object RequestCode {
@@ -96,9 +98,9 @@ object Constants {
     object RoomId {
         @JvmField
         var COMMON_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.CITY_ID}"
-        var TRANSPORT_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_TRANSPORT"
-        var SERVICE_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_SERVICE"
-        var ORDER_ROOM: String = "room_${RoomConstants.COMPANY_ID}_${RoomConstants.REQ_ID}_ORDER"
+        var TRANSPORT_ROOM: String = "room_${RoomConstants.COMPANY_ID}_R${RoomConstants.TRANSPORT_REQ_ID}_TRANSPORT"
+        var SERVICE_ROOM: String = "room_${RoomConstants.COMPANY_ID}_R${RoomConstants.SERVICE_REQ_ID}_SERVICE"
+        var ORDER_ROOM: String = "room_${RoomConstants.COMPANY_ID}_R${RoomConstants.ORDER_REQ_ID}_ORDER"
     }
 
     object ModuleTypes {
@@ -138,6 +140,11 @@ object Constants {
         const val COMPLETED = "COMPLETED"
         const val PROCESSING = "PROCESSING"
         const val REACHED = "REACHED"
+    }
+
+    object PaymentMode {
+        val CASH = "CASH"
+        val CARD = "CARD"
     }
 
     object Common {

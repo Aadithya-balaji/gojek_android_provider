@@ -25,7 +25,7 @@
                 android:id="@+id/tb_payment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:tabBackground="@color/grey"
+                app:tabBackground="@color/colorWhite"
                 app:tabIndicatorColor="@color/colorBasePrimary"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="@color/colorBasePrimary"

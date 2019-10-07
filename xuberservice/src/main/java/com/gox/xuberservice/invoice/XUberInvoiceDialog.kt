@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.gox.base.base.BaseDialogFragment
+import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.base.utils.CommonMethods
@@ -144,7 +145,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
             paymentType = xUberCheckRequest!!.responseData!!.requests!!.payment_mode
         }
 
-        if(paymentType.equals("card",true) || paymentType.equals("")){
+        if(paymentType.equals(Constants.PaymentMode.CARD,true) || paymentType.equals("")){
             tvXuperConfirmPayment.visibility = View.GONE
             tvWaitingForPayment.visibility = View.VISIBLE
         }else {

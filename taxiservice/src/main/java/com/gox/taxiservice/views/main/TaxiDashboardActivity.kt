@@ -321,7 +321,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         if (!roomConnected) {
                             roomConnected = true
                             val reqID = checkStatusResponse.responseData.request.id
-                            PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
+                            PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
                             SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
                         }
 
@@ -449,6 +449,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
+        mViewModel.callTaxiCheckStatusAPI()
     }
 
     override fun onPause() {
@@ -533,7 +534,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_picked_up.setOnClickListener {
-            if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
+            if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.RIDE_OTP, false)) {
                 if (!isWaitingTime!!) {
                     val otpDialogFragment = VerifyOtpDialog.newInstance(
                             responseData.request.otp,

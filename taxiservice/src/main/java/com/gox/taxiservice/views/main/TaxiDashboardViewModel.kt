@@ -19,8 +19,8 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     var polyLineDest = MutableLiveData<LatLng>()
     var currentStatus = MutableLiveData<String>()
 
-    var latitude = MutableLiveData<Double>()
-    var longitude = MutableLiveData<Double>()
+    var latitude = MutableLiveData<Double>().apply { 0.0 }
+    var longitude = MutableLiveData<Double>().apply { 0.0 }
     var distanceMeter = MutableLiveData<Double>()
     var driverSpeed = MutableLiveData<Double>()
     var locationPoint: ArrayList<LocationPoint> = arrayListOf()
@@ -41,7 +41,6 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
     fun callTaxiCheckStatusAPI() {
         if (BaseApplication.isNetworkAvailable)
-            if (latitude.value!! != 0.0 && longitude.value!! != 0.0 )
                 getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
                     override fun success(successData: Any) {
                         checkStatusTaxiLiveData.value = successData as CheckRequestModel

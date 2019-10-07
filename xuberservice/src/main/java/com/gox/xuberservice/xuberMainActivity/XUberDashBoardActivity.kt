@@ -120,6 +120,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private var isLocationDialogShown: Boolean = false
     private var roomConnected: Boolean = false
     private var currentStatus: String = ""
+    private var paymentMode: String = ""
 
     override fun getLayoutId() = R.layout.activity_xuber_main
 
@@ -168,7 +169,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         if (!roomConnected) {
                             roomConnected = true
                             val reqID = xUberCheckRequest.responseData.requests.id
-                            PreferencesHelper.put(PreferencesKey.REQ_ID, reqID)
+                            PreferencesHelper.put(PreferencesKey.SERVICE_REQ_ID, reqID)
                             SocketManager.emit(Constants.RoomName.SERVICE_ROOM_NAME, Constants.RoomId.SERVICE_ROOM)
                         }
 
@@ -271,6 +272,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     private fun whenDropped(isCheckRequest: Boolean) {
         fab_xuber_menu.visibility = View.GONE
         val bundle = Bundle()
+        var currentPaymentMode = ""
 
         if (isCheckRequest) {
             mBinding.llBottomService.llServiceTime.visibility = View.GONE
@@ -278,16 +280,30 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             bundle.putString("strCheckReq", strCheckRequest)
             bundle.putBoolean("fromCheckReq", true)
             cmXuberServiceTime.stop()
+            currentPaymentMode = mViewModel.xUberCheckRequest.value?.responseData?.requests?.payment_mode!!
+            if (paymentMode.equals(""))
+                paymentMode = currentPaymentMode
         } else {
             mBinding.llBottomService.llServiceTime.visibility = View.GONE
             val strUpdateRequest = Gson().toJson(mViewModel.xUberUpdateRequest.value!!)
             bundle.putString("strUpdateReq", strUpdateRequest)
             bundle.putBoolean("fromCheckReq", false)
             cmXuberServiceTime.stop()
+            currentPaymentMode = mViewModel.xUberCheckRequest.value?.responseData?.requests?.payment_mode!!
+            if (paymentMode.equals(""))
+                paymentMode = currentPaymentMode
         }
 
+        if (!paymentMode.equals(currentPaymentMode))
+            showInvoice(bundle, true)
+        else showInvoice(bundle, false)
+    }
+
+    private fun showInvoice(bundle: Bundle,update:Boolean) {
         llBottomService.visibility = View.GONE
         invoicePage.arguments = bundle
+        if (update)
+            invoicePage.dismiss()
         if (!invoicePage.isShown()) invoicePage.show(supportFragmentManager, "xuperinvoice")
         invoicePage.isCancelable = false
     }
@@ -346,6 +362,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     override fun onResume() {
         super.onResume()
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
+        mViewModel.callXUberCheckRequest()
     }
 
     override fun onPause() {
@@ -382,7 +399,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 //                      Log.e("SOCKET", "SOCKET_SK Location update service called")
         }
 
-        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)) {
+        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false)) {
             if (startLatLng.latitude != 0.0) endLatLng = startLatLng
             startLatLng = LatLng(location.latitude, location.longitude)
 
@@ -499,6 +516,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun whenAccepted() {
+        if(mViewModel.xUberUpdateRequest.value!=null)
+            mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
         mBinding.llBottomService.fbCamera.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.VISIBLE
@@ -509,11 +528,13 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun whenArrived() {
+        if(mViewModel.xUberUpdateRequest.value!=null)
+            mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
         fab_xuber_menu.visibility = View.GONE
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
-        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
+        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false))
             edtXuperOtp.visibility = View.VISIBLE
-        else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
+        else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false))
             edtXuperOtp.visibility = View.GONE
         if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1)
             mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
@@ -524,6 +545,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun whenStarted() {
+        if(mViewModel.xUberUpdateRequest.value!=null)
+            mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
         fab_xuber_menu.visibility = View.GONE
         mGoogleMap!!.clear()
         if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_after_image == 1)
@@ -537,6 +560,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun whenPayment() {
+        if(mViewModel.xUberUpdateRequest.value!=null)
+            mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
         fab_xuber_menu.visibility = View.GONE
         mGoogleMap!!.clear()
         mBinding.llBottomService.fbCamera.visibility = View.GONE
@@ -564,20 +589,20 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     override fun updateService(view: View) {
         when (view.id) {
-            R.id.tvAllow -> when (currentStatus) {
+            R.id.tvAllow -> when (mViewModel.currentStatus.value) {
 
                 // Update Status As Arrived while the request is in accepted status
                 ACCEPTED -> {
-                    if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false))
+                    if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false))
                         edtXuperOtp.visibility = View.VISIBLE
                     else edtXuperOtp.visibility = View.GONE
                     mViewModel.updateRequest(ARRIVED, null, false, "", "")
                 }
 
                 // To Start the Service while the request is in Arrived state
-                ARRIVED -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
+                ARRIVED -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
                     ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
-                } else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SHOW_OTP, false)
+                } else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false)
                         && mViewModel.otp.value != mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.otp) {
                     ViewUtils.showToast(this, resources.getString(R.string.invalid_otp), false)
                 } else {

@@ -10,15 +10,19 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
+import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
 import com.gox.base.persistence.AppDatabase
+import com.gox.base.socket.SocketListener
+import com.gox.base.socket.SocketManager
 import com.gox.base.utils.ViewUtils
 import com.gox.taxiservice.R
 import com.gox.taxiservice.databinding.ActivityInvoiceTaxiBinding
 import com.gox.taxiservice.model.ResponseData
 import com.gox.taxiservice.views.rating.TaxiRatingFragment
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_invoice_taxi.*
 import kotlinx.android.synthetic.main.layout_status_indicators.*
 import java.util.*
@@ -54,6 +58,25 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         }, 0, 5000)
 
         getApiResponse()
+
+        SocketManager.onEvent(Constants.RoomName.RIDE_REQ, Emitter.Listener {
+            Log.e("SOCKET", "SOCKET_SK transport request " + it[0])
+            mViewModel.callTaxiCheckStatusAPI()
+        })
+
+        SocketManager.setOnSocketRefreshListener(object : SocketListener.ConnectionRefreshCallBack {
+            override fun onRefresh() {
+                if (PreferencesHelper.get(PreferencesKey.TRANSPORT_REQ_ID, 0) != 0)
+                    SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
+            }
+        })
+
+        SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mViewModel.callTaxiCheckStatusAPI()
     }
 
     private fun getApiResponse() {

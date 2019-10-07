@@ -18,7 +18,9 @@ object PreferencesKey {
     const val FIRE_BASE_PROVIDER_IDENTITY = "FIRE_BASE_PROVIDER_IDENTITY"
     const val CURRENT_TRANXIT_STATUS = "CURRENT_TRANXIT_STATUS"
     const val CITY_ID = "city_id"
-    const val REQ_ID = "req_id"
+    const val TRANSPORT_REQ_ID = "transport_req_id"
+    const val SERVICE_REQ_ID = "service_req_id"
+    const val ORDER_REQ_ID = "order_req_id"
     const val CAN_SEND_LOCATION = "CAN_SEND_LOCATION"
     const val CAN_SAVE_LOCATION = "CAN_SAVE_LOCATION"
     const val CURRENCY_SYMBOL = "CURRENCY_SYMBOL"
@@ -33,6 +35,9 @@ object PreferencesKey {
 
     const val SOS_NUMBER = "SOS_NUMBER"
     const val SHOW_OTP = "SHOW_OTP"
+    const val RIDE_OTP = "RIDE_OTP"
+    const val SERVICE_OTP = "SERVICE_OTP"
+    const val ORDER_OTP = "ORDER_OTP"
     const val PROVIDER_ID = "PROVIDER_ID"
 
     const val PROVIDER_NEGATIVE_BALANCE = "PROVIDER_NEGATIVE_BALANCE"

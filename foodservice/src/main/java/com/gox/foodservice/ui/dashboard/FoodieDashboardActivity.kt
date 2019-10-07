@@ -9,6 +9,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.annotation.RequiresApi
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.gox.base.base.BaseActivity
+import com.gox.base.base.BaseApplication
 import com.gox.base.chatmessage.ChatActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.ModuleTypes.ORDER
@@ -27,10 +29,13 @@ import com.gox.base.data.Constants.RideStatus.PICKED_UP
 import com.gox.base.data.Constants.RideStatus.PROCESSING
 import com.gox.base.data.Constants.RideStatus.REACHED
 import com.gox.base.data.Constants.RideStatus.STARTED
+import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.base.extensions.writePreferences
 import com.gox.base.location_service.BaseLocationService
+import com.gox.base.socket.SocketListener
+import com.gox.base.socket.SocketManager
 import com.gox.base.utils.ViewUtils
 import com.gox.foodservice.R
 import com.gox.foodservice.adapter.OrderItemListAdapter
@@ -38,6 +43,7 @@ import com.gox.foodservice.databinding.ActivtyFoodieDashboardBinding
 import com.gox.foodservice.model.OrderInvoice
 import com.gox.foodservice.ui.rating.FoodieRatingFragment
 import com.gox.foodservice.ui.verifyotp.FoodieVerifyOtpDialog
+import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activty_foodie_dashboard.*
 
 class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), FoodLiveTaskServiceNavigator {
@@ -48,6 +54,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
 
     private var currentStatus = ""
     private var showingStoreDetail = true
+    private var roomConnected: Boolean = false
 
     override fun getLayoutId() = R.layout.activty_foodie_dashboard
 
@@ -64,6 +71,20 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
         mViewModel.showLoading = loadingObservable
         mViewModel.showLoading.value = true
         mViewModel.callFoodieCheckRequest()
+
+        SocketManager.onEvent(Constants.RoomName.ORDER_REQ, Emitter.Listener {
+            Log.e("SOCKET", "SOCKET_SK ORDER request " + it[0])
+            mViewModel.callFoodieCheckRequest()
+        })
+
+        SocketManager.setOnSocketRefreshListener(object : SocketListener.ConnectionRefreshCallBack {
+            override fun onRefresh() {
+                if (roomConnected) {
+                    roomConnected = false
+                    SocketManager.emit(Constants.RoomName.ORDER_ROOM_NAME, Constants.RoomId.ORDER_ROOM)
+                }
+            }
+        })
 
         checkRequestResponse()
         checkRatingReq()
@@ -103,6 +124,11 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        mViewModel.callFoodieCheckRequest()
+    }
+
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
@@ -130,6 +156,13 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                 if (currentStatus != it.responseData.requests.status) {
                     mViewModel.orderId.value = it.responseData.requests.id
                     currentStatus = it.responseData.requests.status
+
+                    if (!roomConnected) {
+                        roomConnected = true
+                        val reqID = it.responseData.requests.id
+                        PreferencesHelper.put(PreferencesKey.ORDER_REQ_ID, reqID)
+                        SocketManager.emit(Constants.RoomName.ORDER_ROOM_NAME, Constants.RoomId.ORDER_ROOM)
+                    }
 
                     writePreferences(Constants.Chat.ADMIN_SERVICE, ORDER)
                     writePreferences(Constants.Chat.REQUEST_ID, it.responseData.requests.id)
@@ -344,13 +377,10 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
             getString(R.string.reached_restaurant) -> mViewModel.callFoodieUpdateRequest("REACHED")
             getString(R.string.order_picked_up) -> mViewModel.callFoodieUpdateRequest("PICKEDUP")
             getString(R.string.order_delivered) -> {
-                val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
-                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
-                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id,
-                        mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable
-                )
-                otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
-                otpDialogFragment.isCancelable = false
+                if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.ORDER_OTP, false))
+                    showOTPDialog()
+                else
+                    mViewModel.callFoodieDeliveryRequest()
             }
             getString(R.string.payment_received) -> {
                 writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
@@ -366,6 +396,16 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                 ratingFragment.isCancelable = false
             }
         }
+    }
+
+    private fun showOTPDialog() {
+        val otpDialogFragment = FoodieVerifyOtpDialog.newInstance(
+                mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_otp,
+                mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id,
+                mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice.payable
+        )
+        otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
+        otpDialogFragment.isCancelable = false
     }
 
     override fun showErrorMessage(error: String) {

@@ -246,6 +246,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
         SocketManager.onEvent(Constants.RoomName.SERVICE_REQ, Emitter.Listener {
             Log.e("SOCKET", "SOCKET_SK service request " + it[0])
+            mViewModel.currentStatus.value = ""
             mViewModel.callXUberCheckRequest()
         })
 

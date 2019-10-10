@@ -157,9 +157,10 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                     mViewModel.orderId.value = it.responseData.requests.id
                     currentStatus = it.responseData.requests.status
 
-                    if (!roomConnected) {
+                    val reqID = mViewModel.orderId.value
+
+                    if (!roomConnected && reqID!=0) {
                         roomConnected = true
-                        val reqID = it.responseData.requests.id
                         PreferencesHelper.put(PreferencesKey.ORDER_REQ_ID, reqID)
                         SocketManager.emit(Constants.RoomName.ORDER_ROOM_NAME, Constants.RoomId.ORDER_ROOM)
                     }

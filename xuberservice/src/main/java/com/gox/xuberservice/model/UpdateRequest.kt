@@ -66,7 +66,7 @@ data class UpdateRequest(
                 val discount: Double? = 0.0,
                 val discount_percent: Int? = 0,
                 val distance: Double? = 0.0,
-                val extra_charges: Int = 0,
+                val extra_charges: Double = 0.0,
                 val extra_charges_notes: String? = "",
                 val fixed: Double? = 0.0,
                 val fleet: Double? = 0.0,

@@ -13,7 +13,8 @@
     <string name="start_service">Start service</string>
     <string name="enter_otp_here">Enter OTP here</string>
     <string name="end_service">End service</string>
-    <string name="confrim_payment">Confrim Payment</string>
+    <string name="confrim_payment">Confirm Payment</string>
+    <string name="xuber_done">Done</string>
     <string name="invoice">INVOICE</string>
     <string name="amount_to_be_paid">Amount to be paid</string>
     <string name="dummy_price">$35</string>

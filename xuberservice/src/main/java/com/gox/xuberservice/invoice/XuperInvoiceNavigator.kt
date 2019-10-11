@@ -4,4 +4,5 @@ interface  XuperInvoiceNavigator{
      fun showErrorMessage(error:String)
      fun submit()
      fun showExtraChargePage()
+     fun showRating()
 }

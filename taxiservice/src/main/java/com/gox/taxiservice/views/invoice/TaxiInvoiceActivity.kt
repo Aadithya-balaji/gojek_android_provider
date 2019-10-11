@@ -125,9 +125,9 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         requestModel = strCheckRequestModel
         if (requestModel != null) {
 
-            if (requestModel!!.request.payment_mode == "CASH") {
-                tv_confirm_payment.visibility = View.VISIBLE
-            } else tv_confirm_payment.visibility = View.GONE
+            if (requestModel!!.request.payment_mode.equals(Constants.PaymentMode.CASH, true))
+                tv_confirm_payment.text = resources.getString(R.string.taxi_confirm_payment)
+            else tv_confirm_payment.text = resources.getString(R.string.taxi_confirm_done)
 
             mViewModel.pickuplocation.value = requestModel!!.request.s_address
             mViewModel.dropLocation.value = requestModel!!.request.d_address

@@ -76,18 +76,27 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
             xUberInvoiceModel.showLoading.value = false
             if (updateRequest!!.statusCode.equals("200")) {
                 Log.e("Dialog", "------------")
-                val ratingDialog = DialogXuberRating()
-                val strUpdateRequest = Gson().toJson(updateRequest)
-                val bundle = Bundle()
-                bundle.putBoolean("isFromCheckRequest", false)
-                bundle.putString("updateRequestModel", strUpdateRequest)
-                ratingDialog.arguments = bundle
-                ratingDialog.show(activity!!.supportFragmentManager, "ratingDialog")
-                ratingDialog.isCancelable = true
-                if (invoiceDialog != null) invoiceDialog!!.dismiss()
+                showRating()
             }
         })
     }
+
+    override fun showRating() {
+        val ratingDialog = DialogXuberRating()
+        val bundle = Bundle()
+        bundle.putBoolean("isFromCheckRequest", isFromCheckRequest!!)
+        if(isFromCheckRequest!!){
+            bundle.putString("strCheckReq", strXUberCheckRequestModel)
+        }else{
+            bundle.putString("updateRequestModel", strUpdateRequest)
+        }
+        ratingDialog.arguments = bundle
+        ratingDialog.show(activity!!.supportFragmentManager, "ratingDialog")
+        ratingDialog.isCancelable = true
+        if (invoiceDialog != null) invoiceDialog!!.dismiss()
+    }
+
+
 
     private fun getBundleValues() {
         isFromCheckRequest = if (arguments!!.containsKey("fromCheckReq")) arguments!!.getBoolean("fromCheckReq") else false
@@ -145,12 +154,16 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
             paymentType = xUberCheckRequest!!.responseData!!.requests!!.payment_mode
         }
 
+        xUberInvoiceModel.paymentType = paymentType
+
         if(paymentType.equals(Constants.PaymentMode.CARD,true) || paymentType.equals("")){
-            tvXuperConfirmPayment.visibility = View.GONE
-            tvWaitingForPayment.visibility = View.VISIBLE
+            /*tvXuperConfirmPayment.visibility = View.GONE
+            tvWaitingForPayment.visibility = View.VISIBLE*/
+            tvXuperConfirmPayment.text = activity!!.resources.getString(R.string.xuber_done)
         }else {
-            tvXuperConfirmPayment.visibility = View.VISIBLE
-            tvWaitingForPayment.visibility = View.GONE
+            tvXuperConfirmPayment.text = activity!!.resources.getString(R.string.confrim_payment)
+            /*tvXuperConfirmPayment.visibility = View.VISIBLE
+            tvWaitingForPayment.visibility = View.GONE*/
         }
 
         tvXuperTime.text = timeTaken

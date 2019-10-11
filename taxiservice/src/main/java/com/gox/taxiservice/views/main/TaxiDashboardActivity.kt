@@ -27,10 +27,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.gson.Gson
@@ -190,6 +187,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             TaxiCancelReasonFragment().show(supportFragmentManager, "TaxiCancelReasonFragment")
         }
 
+        MapsInitializer.initialize(this)
         initializeMap()
 
         observeLiveDataVariables()
@@ -558,7 +556,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun whenStatusPickedUp(responseData: ResponseData) {
         writePreferences(CAN_SEND_LOCATION, true)
         writePreferences(CAN_SAVE_LOCATION, true)
-        setWaitingTime()
+            setWaitingTime()
         llWaitingTimeContainer.visibility = View.VISIBLE
 
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)

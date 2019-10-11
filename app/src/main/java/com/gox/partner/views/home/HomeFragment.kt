@@ -11,10 +11,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseFragment
@@ -65,6 +62,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mViewModel.navigator = this
         mBinding.homemodel = mViewModel
         mBinding.btnChangeStatus.bringToFront()
+        MapsInitializer.initialize(activity!!)
         initializeMap()
         observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()

@@ -3,6 +3,7 @@ package com.gox.taxiservice.views.invoice
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.Constants
 import com.gox.base.repository.ApiListener
 import com.gox.taxiservice.model.CheckRequestModel
 import com.gox.taxiservice.model.PaymentModel
@@ -32,23 +33,29 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
 
 
     fun confirmPayment() {
-        val params = HashMap<String, String>()
-        if (checkStatusTaxiLiveData.value != null) {
-            showLoading.value = true
-            params["id"] = checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-            getCompositeDisposable().add(mRepository.confirmPayment(object : ApiListener {
-                override fun success(successData: Any) {
-                    paymentLiveData.postValue(successData as PaymentModel)
-                    showLoading.postValue(false)
-                }
+        val response = checkStatusTaxiLiveData.value
+        if(response!!.responseData.request.payment.payment_mode.equals(Constants.PaymentMode.CASH,true)){
+            val params = HashMap<String, String>()
+            if (checkStatusTaxiLiveData.value != null) {
+                showLoading.value = true
+                params["id"] = checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                getCompositeDisposable().add(mRepository.confirmPayment(object : ApiListener {
+                    override fun success(successData: Any) {
+                        paymentLiveData.postValue(successData as PaymentModel)
+                        showLoading.postValue(false)
+                    }
 
-                override fun fail(failData: Throwable) {
-                    navigator.showErrorMessage(getErrorMessage(failData))
-                    showLoading.postValue(false)
-                }
-            }, params))
+                    override fun fail(failData: Throwable) {
+                        navigator.showErrorMessage(getErrorMessage(failData))
+                        showLoading.postValue(false)
+                    }
+                }, params))
 
+            }
+        }else{
+            navigator.openRatingDialog(response.responseData)
         }
+
     }
 
         fun callTaxiCheckStatusAPI() {

@@ -208,7 +208,12 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                             DROPPED -> whenDropped(true)
 
                             // Confirm Payment when cash flow
-                            COMPLETED -> whenPayment()
+                            COMPLETED -> {
+                                if (mViewModel.xUberCheckRequest.value?.responseData?.requests!!.paid!! == 0)
+                                    whenDropped(true)
+                                else
+                                    showRating()
+                            }
                         }
                     }
                 } else {
@@ -560,7 +565,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
     }
 
-    private fun whenPayment() {
+    private fun showRating() {
         if(mViewModel.xUberUpdateRequest.value!=null)
             mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
         fab_xuber_menu.visibility = View.GONE

@@ -16,6 +16,7 @@
     <string name="taxi_source_destination">Source and Destination</string>
     <string name="taxi_invoice_total">Total</string>
     <string name="taxi_confirm_payment">Confirm Payment</string>
+    <string name="taxi_confirm_done">Done</string>
     <string name="taxi_invoice_booking_id">Booking ID</string>
     <string name="taxi_distance_travelled">Distance Travelled</string>
     <string name="taxi_invoice_time_taken">Time Taken</string>

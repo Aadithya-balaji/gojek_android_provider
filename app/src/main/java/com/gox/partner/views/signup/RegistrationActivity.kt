@@ -189,6 +189,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         }
 
         observeLiveData(mViewModel.getCountryLiveData()) {
+            mViewModel.loadingProgress.value = false
             val intent = Intent(this, CountryListActivity::class.java)
             intent.putExtra("selectedfrom", "country")
             intent.putExtra("countrylistresponse", it as Serializable)

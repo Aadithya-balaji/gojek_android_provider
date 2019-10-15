@@ -268,6 +268,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
         observeLiveData(mViewModel.mProfileResponse) {
             val cityID = it.profileData.city.id
+            writePreferences(PreferencesKey.IS_ONLINE, it.profileData.is_online)
             PreferencesHelper.put(PreferencesKey.CITY_ID, cityID)
             SocketManager.emit(Constants.RoomName.COMMON_ROOM_NAME, Constants.RoomId.COMMON_ROOM)
         }

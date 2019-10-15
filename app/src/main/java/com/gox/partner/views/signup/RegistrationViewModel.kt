@@ -102,14 +102,16 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
     }
 
     fun getCountryList() {
+        loadingProgress.value = true
         val hashMap: HashMap<String, Any?> = HashMap()
         hashMap["salt_key"] = SALT_KEY
         getCompositeDisposable().add(mRepository.getCountryList(object : ApiListener {
             override fun success(successData: Any) {
-                getCountryLiveData().value = successData as CountryListResponse
+                countryListResponse.value = successData as CountryListResponse
             }
 
             override fun fail(failData: Throwable) {
+                loadingProgress.value = false
                 gotoLogin()
             }
         }, hashMap))

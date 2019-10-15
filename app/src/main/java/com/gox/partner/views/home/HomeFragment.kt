@@ -15,13 +15,17 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseFragment
+import com.gox.base.data.Constants
 import com.gox.base.data.Constants.DEFAULT_ZOOM
+import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
+import com.gox.base.data.PreferencesKey.IS_ONLINE
 import com.gox.base.data.PreferencesKey.PROVIDER_ID
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.readPreferences
 import com.gox.base.extensions.writePreferences
 import com.gox.base.persistence.AppDatabase
+import com.gox.base.socket.SocketManager
 import com.gox.base.utils.LocationCallBack
 import com.gox.base.utils.LocationUtils
 import com.gox.base.utils.ViewUtils
@@ -67,26 +71,20 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         observeLiveData(mViewModel.showLoading) { loadingObservable.value = it }
         pendingListDialog = PendingListDialog()
 
-        if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
-            mBinding.llOffline.visibility = View.GONE
-            rlOnline.visibility = View.VISIBLE
-        } else {
-            mBinding.llOffline.visibility = View.VISIBLE
-            rlOnline.visibility = View.GONE
-        }
-
-        if (readPreferences<Int>(PreferencesKey.IS_ONLINE) == 1) {
-            mBinding.llOffline.visibility = View.GONE
-            rlOnline.visibility = View.VISIBLE
-        } else {
-            mBinding.llOffline.visibility = View.VISIBLE
-            rlOnline.visibility = View.GONE
-        }
-
         getApiResponse()
 
         clearDatabase.setOnClickListener {
             AppDatabase.getAppDataBase(context!!)!!.locationPointsDao().deleteAllPoint()
+        }
+    }
+
+    private fun updateOnlineStatus() {
+        if (readPreferences<Int>(IS_ONLINE) == 1) {
+            mBinding.llOffline.visibility = View.GONE
+            rlOnline.visibility = View.VISIBLE
+        } else {
+            mBinding.llOffline.visibility = View.VISIBLE
+            rlOnline.visibility = View.GONE
         }
     }
 
@@ -106,17 +104,6 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 verificationModel.providerWalletBalance = checkStatusData.responseData.provider_details.wallet_balance!!
                 Constant.verificationObservable.value = verificationModel
 
-                if (providerDetailsModel.is_online == 1) {
-                    isOnline = true
-                    writePreferences(PreferencesKey.IS_ONLINE, 1)
-                    changeView(true)
-                } else {
-                    isOnline = false
-                    writePreferences(PreferencesKey.IS_ONLINE, 0)
-                    dashBoardNavigator.updateLocation(false)
-                    changeView(false)
-                }
-
                 val verificationData = Constant.verificationObservable.value!!
                 if (verificationData.isNeedToShowPendingDialog() && pendingListDialog != null
                         && !pendingListDialog!!.isShown()) showPendingListDialog()
@@ -129,9 +116,11 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 if (mViewModel.onlineStatusLiveData.value != null) {
                     val isOnline = mViewModel.onlineStatusLiveData.value!!.responseData?.providerStatus
                     if (isOnline.equals("1")) {
+                        writePreferences(PreferencesKey.IS_ONLINE, 1)
                         dashBoardNavigator.updateLocation(true)
                         changeView(true)
                     } else {
+                        writePreferences(PreferencesKey.IS_ONLINE, 0)
                         dashBoardNavigator.updateLocation(false)
                         changeView(false)
                     }
@@ -139,6 +128,11 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+
+        observeLiveData(mViewModel.mProfileResponse) {
+            writePreferences(PreferencesKey.IS_ONLINE, it.profileData.is_online)
+            updateOnlineStatus()
         }
     }
 
@@ -208,6 +202,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     override fun onResume() {
         super.onResume()
         fragmentMap.onResume()
+        mViewModel.getProfile()
     }
 
     override fun onPause() {
@@ -243,7 +238,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     override fun changeStatus(view: View) {
         when (view.id) {
             R.id.btn_change_status -> {
-                if (mBinding.btnChangeStatus.text.toString() == activity!!.resources.getString(R.string.offline)) {
+                if (readPreferences<Int>(IS_ONLINE) == 1) {
                     loadingObservable.value = true
                     mViewModel.changeOnlineStatus("0")
                 } else {

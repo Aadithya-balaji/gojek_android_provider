@@ -14,48 +14,54 @@
             type="com.gox.partner.views.account.AccountViewModel" />
     </data>
 
-    <com.google.android.material.card.MaterialCardView
+    <com.gox.base.views.customviews.SquareLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:onClick="@{() -> accountViewModel.onItemClick(position)}"
-        app:cardBackgroundColor="@color/colorWhite"
-        app:cardCornerRadius="5dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="false">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+        >
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:onClick="@{() -> accountViewModel.onItemClick(position)}"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="@dimen/_5sdp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="false">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/drawable_circle"
-                android:contentDescription="@null"
-                android:padding="14dp"
-                android:src="@{accountViewModel.getAccountMenu(position).component2()}"
-                android:tint="@color/colorWhite"
-                tools:srcCompat="@drawable/ic_user" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/SmallText"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:gravity="center"
-                android:text="@{accountViewModel.getAccountMenu(position).component1()}"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_12sdp"
-                tools:text="@string/title_profile" />
+                android:orientation="vertical"
+                android:padding="20dp">
 
-        </LinearLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:background="@drawable/drawable_circle"
+                    android:contentDescription="@null"
+                    android:padding="14dp"
+                    android:src="@{accountViewModel.getAccountMenu(position).component2()}"
+                    android:tint="@color/colorWhite"
+                    tools:srcCompat="@drawable/ic_user" />
 
-    </com.google.android.material.card.MaterialCardView>
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/SmallText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:text="@{accountViewModel.getAccountMenu(position).component1()}"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_12sdp"
+                    tools:text="@string/title_profile" />
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+    </com.gox.base.views.customviews.SquareLayout>
 
 </layout>

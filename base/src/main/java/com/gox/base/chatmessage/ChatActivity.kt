@@ -37,7 +37,6 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
     private val serviceType = readPreferences(Constants.Chat.ADMIN_SERVICE, "")
     private val providerName = readPreferences(Constants.Chat.PROVIDER_NAME, "")
     private val adminService = readPreferences(Constants.Chat.ADMIN_SERVICE, "")
-    private val baseUrl = readPreferences(PreferencesKey.TRANSPORT_URL, "")
 
     override fun getLayoutId() = R.layout.activity_chat_main
 
@@ -93,7 +92,7 @@ class ChatActivity : BaseActivity<ActivityChatMainBinding>() {
             if (mBinding.messageInput.text!!.isNotEmpty()) {
                 message = mBinding.messageInput.text.toString()
                 chatRequestModel.roomName = roomName!!
-                chatRequestModel.url = "$baseUrl/chat"
+                chatRequestModel.url = "${Constants.BaseUrl.APP_BASE_URL}/chat"
                 chatRequestModel.saltKey = SALT_KEY
                 chatRequestModel.requestId = requestId!!
                 chatRequestModel.adminService = adminService!!

@@ -17,6 +17,8 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@color/app_background_color</item>
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:windowEnableSplitTouch">false</item>
     </style>
 
     <style name="CustomToolBarStyle" parent="@style/Widget.AppCompat.Toolbar">

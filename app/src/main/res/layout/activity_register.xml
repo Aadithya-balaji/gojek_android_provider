@@ -421,6 +421,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/_5sdp"
+                            android:editable="false"
+                            android:focusable="false"
                             android:onClick="@{() ->registermodel.getCountryList()}"
                             android:paddingStart="25dp"
                             android:paddingEnd="25dp"

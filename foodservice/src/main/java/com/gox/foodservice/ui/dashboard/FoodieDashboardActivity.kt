@@ -362,8 +362,8 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
             else -> package_amount_lt.visibility = GONE
         }
         when {
-            order_invoice.total_amount.toDouble() > 0 -> {
-                total_value_tv.text = currency + order_invoice.total_amount
+            order_invoice.payable > 0 -> {
+                total_value_tv.text = currency + order_invoice.payable
                 total_value_lt.visibility = VISIBLE
             }
             else -> total_value_lt.visibility = GONE

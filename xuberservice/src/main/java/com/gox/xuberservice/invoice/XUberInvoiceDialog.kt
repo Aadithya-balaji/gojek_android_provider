@@ -45,6 +45,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
     private var invoiceDialog: Dialog? = null
     private var timeTaken: String? = ""
     private var extraAmount: Double? = 0.0
+    var paymentType = ""
 
     override fun getLayout() = R.layout.dialog_invoice
 
@@ -92,7 +93,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         }
         ratingDialog.arguments = bundle
         ratingDialog.show(activity!!.supportFragmentManager, "ratingDialog")
-        ratingDialog.isCancelable = true
+        ratingDialog.isCancelable = false
         if (invoiceDialog != null) invoiceDialog!!.dismiss()
     }
 
@@ -147,7 +148,6 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
                     xUberCheckRequest!!.responseData!!.requests!!.finished_at!!, "")
         }
 
-        var paymentType = ""
         if (isFromCheckRequest == false) {
             paymentType = updateRequestModel!!.responseData!!.payment_mode
         }else{
@@ -187,7 +187,13 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
 
     fun isShown() = shown!!
 
-    override fun submit() = xUberInvoiceModel.callConfirmPaymentApi()
+    override fun submit() {
+        if(paymentType.equals(Constants.PaymentMode.CARD,true) || paymentType.equals("")){
+            showRating()
+        }else{
+            xUberInvoiceModel.callConfirmPaymentApi()
+        }
+    }
 
     override fun show(manager: FragmentManager, tag: String?) {
         try {

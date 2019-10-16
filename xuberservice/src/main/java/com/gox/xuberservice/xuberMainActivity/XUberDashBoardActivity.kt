@@ -208,12 +208,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                             DROPPED -> whenDropped(true)
 
                             // Confirm Payment when cash flow
-                            COMPLETED -> {
-                                if (mViewModel.xUberCheckRequest.value?.responseData?.requests!!.paid!! == 0)
-                                    whenDropped(true)
-                                else
-                                    showRating()
-                            }
+                            COMPLETED -> whenDropped(true)
+
                         }
                     }
                 } else {
@@ -251,8 +247,10 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
         SocketManager.onEvent(Constants.RoomName.SERVICE_REQ, Emitter.Listener {
             Log.e("SOCKET", "SOCKET_SK service request " + it[0])
-            mViewModel.currentStatus.value = ""
-            mViewModel.callXUberCheckRequest()
+          runOnUiThread {
+              mViewModel.currentStatus.value = ""
+              mViewModel.callXUberCheckRequest()
+          }
         })
 
         SocketManager.setOnSocketRefreshListener(object : SocketListener.ConnectionRefreshCallBack {
@@ -579,6 +577,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         if (ratingDialog != null && ratingDialog.isVisible) {
         } else if (!ratingPage.isShown()) {
             ratingPage.arguments = bundle
+            ratingPage.isCancelable = false
             ratingPage.show(supportFragmentManager, "ratingDialog")
         }
     }

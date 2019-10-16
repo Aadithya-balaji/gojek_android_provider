@@ -81,7 +81,8 @@
             android:hint="@string/write_your_review"
             android:maxHeight="@dimen/_100sdp"
             android:minHeight="@dimen/_80sdp"
-            android:padding="@dimen/_5sdp"
+            android:padding="@dimen/_8sdp"
+            style="@style/SmallText"
             android:text="@={ratingmodel.comment}"
             android:textSize="@dimen/_10sdp" />
 

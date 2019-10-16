@@ -125,7 +125,7 @@ data class Request(
         var is_scheduled: String = "",
         var is_track: String = "",
         var otp: String = "",
-        var paid: Int = 0,
+        var paid: Int? = 0,
         var payment: Payment = Payment(),
         var payment_mode: String = "",
         var peak_hour_id: Any = Any(),

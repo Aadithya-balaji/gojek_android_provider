@@ -277,6 +277,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         fab_xuber_menu.visibility = View.GONE
         val bundle = Bundle()
         var currentPaymentMode = ""
+        var paid:Int? = 0
 
         if (isCheckRequest) {
             mBinding.llBottomService.llServiceTime.visibility = View.GONE
@@ -285,6 +286,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             bundle.putBoolean("fromCheckReq", true)
             cmXuberServiceTime.stop()
             currentPaymentMode = mViewModel.xUberCheckRequest.value?.responseData?.requests?.payment_mode!!
+            paid = mViewModel.xUberCheckRequest.value?.responseData?.requests?.paid
             if (paymentMode.equals(""))
                 paymentMode = currentPaymentMode
         } else {
@@ -294,13 +296,20 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             bundle.putBoolean("fromCheckReq", false)
             cmXuberServiceTime.stop()
             currentPaymentMode = mViewModel.xUberCheckRequest.value?.responseData?.requests?.payment_mode!!
+            paid = mViewModel.xUberCheckRequest.value?.responseData?.requests?.paid!!
             if (paymentMode.equals(""))
                 paymentMode = currentPaymentMode
         }
 
-        if (!paymentMode.equals(currentPaymentMode))
-            showInvoice(bundle, true)
-        else showInvoice(bundle, false)
+        if(paid==null || paid == 0) {
+            if (!paymentMode.equals(currentPaymentMode))
+                showInvoice(bundle, true)
+            else showInvoice(bundle, false)
+        }else{
+            if (invoicePage.isShown())
+                invoicePage.dismiss()
+            showRating()
+        }
     }
 
     private fun showInvoice(bundle: Bundle,update:Boolean) {

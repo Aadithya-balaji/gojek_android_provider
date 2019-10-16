@@ -27,7 +27,7 @@ data class UpdateRequest(
             val id: Int? = 0,
             val is_scheduled: String? = "",
             val otp: String? = "",
-            val paid: Any? = Any(),
+            val paid: Int? = 0,
             val payment: Payment? = Payment(),
             val payment_mode: String = "",
             val price: Double? = 0.0,

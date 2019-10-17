@@ -296,7 +296,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             bundle.putBoolean("fromCheckReq", false)
             cmXuberServiceTime.stop()
             currentPaymentMode = mViewModel.xUberCheckRequest.value?.responseData?.requests?.payment_mode!!
-            paid = mViewModel.xUberCheckRequest.value?.responseData?.requests?.paid!!
+            paid = mViewModel.xUberCheckRequest.value?.responseData?.requests?.paid
             if (paymentMode.equals(""))
                 paymentMode = currentPaymentMode
         }

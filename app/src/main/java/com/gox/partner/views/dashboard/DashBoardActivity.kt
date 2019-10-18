@@ -76,12 +76,13 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     private var mIncomingRequestDialog = IncomingRequestDialog()
     private var locationServiceIntent: Intent? = null
-    private var checkStatusApiCounter = 0
     private var mHomeFragment = HomeFragment()
     private var isGPSEnabled: Boolean = false
     private var isLocationDialogShown: Boolean = false
     private var googleApiClient: GoogleApiClient? = null
     private val FLOATING_OVERLAY_PERMISSION = 104
+    private var checkRequestTimer: Timer? = null
+
 
     override fun getLayoutId() = R.layout.activity_dashboard
 
@@ -96,6 +97,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         setSupportActionBar(mBinding.tbrHome.app_bar)
         mViewModel.latitude.value = 0.0
         mViewModel.longitude.value = 0.0
+
+        checkRequestTimer = Timer()
+        checkRequestTimer!!.schedule(object : TimerTask() {
+            override fun run() {
+                mViewModel.callCheckStatusAPI()
+            }
+        }, 0, 5000)
+
         supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, mHomeFragment).commit()
         mBinding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
@@ -294,8 +303,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
-                    if (!isSocketEnabled) if (checkStatusApiCounter++ % 2 == 0)
-                        mViewModel.callCheckStatusAPI()
+                    /*if (!isSocketEnabled) if (checkStatusApiCounter++ % 2 == 0)
+                        mViewModel.callCheckStatusAPI()*/
                 }
             } else if (!isLocationDialogShown) {
                 isLocationDialogShown = true
@@ -362,5 +371,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     override fun onPause() {
         super.onPause()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        checkRequestTimer?.cancel()
     }
 }

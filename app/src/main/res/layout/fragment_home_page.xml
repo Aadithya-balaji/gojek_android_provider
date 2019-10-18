@@ -78,7 +78,7 @@
             android:layout_marginBottom="@dimen/_15sdp"
             android:fontFamily="@font/avenirltstd_medium"
             android:onClick="@{(v) -> homemodel.changeStatus(v)}"
-            android:text="@string/online"
+            android:text="@string/offline"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:cornerRadius="@dimen/_15sdp" />

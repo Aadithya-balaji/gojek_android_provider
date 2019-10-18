@@ -3,6 +3,8 @@ package com.gox.partner.views.invitereferals
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import com.gox.base.base.BaseActivity
+import com.gox.base.data.PreferencesHelper
+import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
@@ -38,7 +40,7 @@ class InviteReferralsActivity : BaseActivity<ActivityInviteFriendBinding>(), Inv
             if (mViewModel.profileResponse.value != null)
                 mViewModel.mReferralObj.value = mViewModel.profileResponse.value!!.profileData.referral
             mBinding.tvInviteHeader.text = String.format(resources.getString(R.string.invite_referal_hint),
-                    mViewModel.mReferralObj.value!!.referral_amount, mViewModel.mReferralObj.value!!.referral_count)
+                    PreferencesHelper.get(PreferencesKey.CURRENCY_SYMBOL, "₹") + mViewModel.mReferralObj.value!!.referral_amount, mViewModel.mReferralObj.value!!.referral_count)
             mShareLink = mViewModel.mReferralObj.value!!.referral_code
             mBinding.tvReferalCode.text = mViewModel.mReferralObj.value!!.referral_code
         }

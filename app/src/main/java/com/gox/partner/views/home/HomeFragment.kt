@@ -107,6 +107,10 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 val verificationData = Constant.verificationObservable.value!!
                 if (verificationData.isNeedToShowPendingDialog() && pendingListDialog != null
                         && !pendingListDialog!!.isShown()) showPendingListDialog()
+                val onlineStatus = providerDetailsModel.is_online
+                writePreferences(PreferencesKey.IS_ONLINE, onlineStatus)
+                changeView(onlineStatus == 1)
+                dashBoardNavigator.updateLocation(onlineStatus == 1)
             }
         }
 

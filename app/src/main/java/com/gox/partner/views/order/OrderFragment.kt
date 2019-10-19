@@ -33,6 +33,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
     private lateinit var dashBoardNavigator: DashBoardNavigator
     private var selectedService: String? = ""
     private var selectedServiceTypeID: Int? = -1
+    private var selectedPosition: Int = 0
 
     override fun getLayoutId(): Int = R.layout.fragment_order
 
@@ -87,12 +88,16 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
         if (!filterServiceListName.isNullOrEmpty()) {
             val view = DataBindingUtil.inflate<FilterDialogBinding>(LayoutInflater.from(context),
                     R.layout.filter_dialog, null, false)
-            val filterServiceAdapter = FilterServiceListAdapter(filterServiceListName, this,
-                    selectedServiceTypeID!!)
+            val filterServiceAdapter = FilterServiceListAdapter(filterServiceListName, this)
+            filterServiceAdapter.setSelectedPosition(selectedPosition)
             view.filterServiceListAdapter = filterServiceAdapter
             val dialog = BottomSheetDialog(activity!!)
             dialog.setContentView(view.root)
             dialog.show()
+            view.tvReset.setOnClickListener {
+                filterServiceAdapter.setSelectedPosition(0)
+                filterServiceAdapter.notifyDataSetChanged()
+            }
             view.applyFilter.setOnClickListener {
                 dashboardViewModel.selectedFilterService.value = selectedService
                 mBinding.serviceNameToolbarTv.text = dashboardViewModel.selectedFilterService.value
@@ -103,9 +108,12 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
         }
     }
 
-    override fun getServiceType(serviceType: String, serviceTypeID: Int) {
+
+
+    override fun getServiceType(serviceType: String, serviceTypeID: Int, position: Int) {
         selectedService = serviceType
         selectedServiceTypeID = serviceTypeID
+        selectedPosition = position
     }
 }
 

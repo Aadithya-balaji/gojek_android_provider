@@ -19,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/bottom_layout"
+            android:layout_alignParentTop="true"
             android:background="@color/app_background_color"
             android:orientation="vertical">
 
@@ -46,6 +46,8 @@
                     android:layout_toStartOf="@+id/date_time_laoyut"
                     android:layout_toEndOf="@+id/currentorderdetail_back_img"
                     android:padding="@dimen/_2sdp"
+                    tools:text="Test"
+                    style="@style/MediumText"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_13sdp"
                     android:textStyle="bold" />
@@ -56,6 +58,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/currentorderdetail_title_tv"
                     android:layout_marginStart="@dimen/_5sdp"
+                    tools:text="Test"
+                    style="@style/MediumText"
                     android:layout_toStartOf="@+id/date_time_laoyut"
                     android:layout_toEndOf="@+id/currentorderdetail_back_img"
                     android:padding="@dimen/_2sdp"
@@ -76,6 +80,8 @@
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/_5sdp"
                         android:padding="@dimen/_3sdp"
+                        tools:text="Test"
+                        style="@style/MediumText"
                         android:textColor="@color/colorBasePrimary" />
 
                     <TextView
@@ -83,6 +89,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        tools:text="Test"
+                        style="@style/MediumText"
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/colorBasePrimary"
                         android:textSize="@dimen/_10sdp" />
@@ -122,10 +130,12 @@
 
                         <TextView
                             android:id="@+id/provider_name_tv"
-                            style="@style/MediumText.Black"
+                            style="@style/BoldText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            tools:text="Test"
+                            android:textColor="@color/colorBlack"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:padding="@dimen/_5sdp" />
 
@@ -157,7 +167,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="@dimen/_5sdp">
+                            android:padding="@dimen/_10sdp">
 
                             <RelativeLayout
                                 android:layout_width="wrap_content"
@@ -181,6 +191,7 @@
                                     android:layout_toEndOf="@+id/dot_view"
                                     android:padding="@dimen/_1sdp"
                                     android:text="@string/source"
+                                    style="@style/BoldText"
                                     android:textColor="@color/colorBlack"
                                     android:textSize="@dimen/_10sdp"
                                     android:textStyle="bold" />
@@ -189,6 +200,9 @@
                                     android:id="@+id/historydetail_src_value_tv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    tools:text="Test"
+                                    style="@style/SmallText"
+                                    android:textSize="@dimen/_10sdp"
                                     android:layout_below="@+id/currentorderetail_source_tv"
                                     android:layout_marginStart="@dimen/_15sdp"
                                     android:layout_toEndOf="@+id/dot_view"
@@ -226,6 +240,7 @@
                                     android:layout_toEndOf="@+id/destination_dot_view"
                                     android:padding="@dimen/_1sdp"
                                     android:text="@string/destination"
+                                    style="@style/BoldText"
                                     android:textColor="@color/colorBlack"
                                     android:textSize="@dimen/_10sdp"
                                     android:textStyle="bold" />
@@ -236,6 +251,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/currentorderetail_destination_tv"
                                     android:layout_marginStart="@dimen/_15sdp"
+                                    tools:text="Test"
+                                    style="@style/SmallText"
+                                    android:textSize="@dimen/_10sdp"
                                     android:layout_toEndOf="@+id/destination_dot_view"
                                     android:padding="@dimen/_1sdp" />
 
@@ -270,6 +288,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_15sdp"                                       android:layout_toEndOf="@+id/scheduletime_dot_view"                                  android:padding="@dimen/_1sdp"
                                     android:text="@string/schedule_time"
+                                    style="@style/BoldText"
                                     android:textColor="@color/black"
                                     android:textSize="@dimen/_10sdp"
                                     android:textStyle="bold" />
@@ -280,7 +299,9 @@
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/scheduletime_tv"
                                     android:layout_marginStart="@dimen/_15sdp"                                       android:layout_toEndOf="@+id/scheduletime_dot_view"
+                                    style="@style/SmallText"
                                     android:padding="@dimen/_1sdp"
+                                    android:textSize="@dimen/_10sdp"
                                     android:text="@string/dummy_text" />
 
                             </RelativeLayout>
@@ -300,8 +321,9 @@
                         android:background="@drawable/bg_white">
 
                         <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/_10sdp">
 
                             <ImageView
                                 android:id="@+id/status_dot_view"
@@ -318,6 +340,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_15sdp"
+                                style="@style/BoldText"
                                 android:layout_toRightOf="@+id/status_dot_view"
                                 android:padding="@dimen/_1sdp"
                                 android:text="@string/status"
@@ -331,6 +354,9 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/tvStatusLabel"
                                 android:layout_marginStart="@dimen/_15sdp"
+                                style="@style/SmallText"
+                                tools:text="SSS"
+                                android:textSize="@dimen/_12sdp"
                                 android:layout_toRightOf="@+id/status_dot_view"
                                 android:padding="@dimen/_1sdp" />
 
@@ -351,22 +377,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="@dimen/_5sdp">
+                            android:padding="@dimen/_10sdp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:padding="@dimen/_5sdp"
                                 android:text="@string/comments_for_trip"
                                 android:textColor="@color/colorBlack"
                                 android:textSize="@dimen/_12sdp"
+                                style="@style/BoldText"
                                 android:textStyle="bold" />
 
                             <TextView
                                 android:id="@+id/id_histrydetail_comment_val_tv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:padding="@dimen/_5sdp"
+                                style="@style/MediumText"
+                                android:layout_marginTop="@dimen/_3sdp"
                                 android:text="@string/no_comments"
                                 android:textSize="@dimen/_10sdp" />
 
@@ -390,16 +417,17 @@
                             android:layout_height="wrap_content">
 
                             <LinearLayout
+                                android:id="@+id/llPayment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                android:padding="@dimen/_5sdp">
+                                android:padding="@dimen/_10sdp">
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:padding="@dimen/_5sdp"
                                     android:text="@string/payment_via"
+                                    style="@style/BoldText"
                                     android:textColor="@color/colorBlack"
                                     android:textSize="@dimen/_12sdp"
                                     android:textStyle="bold" />
@@ -408,7 +436,9 @@
                                     android:id="@+id/historydetail_paymentmode_val_tv"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:padding="@dimen/_5sdp"
+                                    android:layout_marginTop="@dimen/_3sdp"
+                                    style="@style/MediumText"
+                                    tools:text="CASH"
                                     android:textSize="@dimen/_10sdp" />
 
                             </LinearLayout>
@@ -416,7 +446,7 @@
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignParentEnd="true"
+                                android:layout_alignEnd="@+id/llPayment"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="@dimen/_5sdp"
                                 android:contentDescription="@string/app_name"

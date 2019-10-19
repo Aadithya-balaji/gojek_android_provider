@@ -20,6 +20,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/past_ordersfrg_rv"
             android:layout_width="match_parent"
+            android:visibility="visible"
             android:layout_height="wrap_content"
             android:adapter="@{pastOrdersAdapter}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -37,14 +38,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/app_name"
+                android:tint="@color/colorBlack"
                 app:srcCompat="@drawable/ic_no_history" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
+                style="@style/MediumText"
                 android:text="@string/you_have_no_past_records"
-                android:textColor="@color/darkgrey" />
+                android:textColor="@color/colorBlack" />
         </LinearLayout>
 
 

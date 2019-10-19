@@ -13,16 +13,15 @@ import com.gox.partner.interfaces.ServiceTypeListener
 import com.gox.partner.models.ConfigService
 
 class FilterServiceListAdapter(val filterServiceListName: List<ConfigService>,
-                               private var serviceTypeListener: ServiceTypeListener,
-                               selectedService: Int
-) : RecyclerView.Adapter<FilterServiceListAdapter.MyViewHolder>() {
+                               private var serviceTypeListener: ServiceTypeListener) : RecyclerView.Adapter<FilterServiceListAdapter.MyViewHolder>() {
 
     lateinit var context: Context
     private var selectedPosition: Int = -1
-    private var selectedServiceType: Int? = -1
 
-    init {
-        this.selectedServiceType = selectedService
+
+
+    fun setSelectedPosition(selectedPosition:Int){
+        this.selectedPosition = selectedPosition
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -37,9 +36,6 @@ class FilterServiceListAdapter(val filterServiceListName: List<ConfigService>,
         if (selectedPosition == position && selectedPosition != -1)
             holder.mBinding.filterserviceNameTv.background =
                     ContextCompat.getDrawable(context, R.drawable.custom_roundcorner_selectedorder)
-        else if (filterServiceListName.get(position).id == selectedServiceType)
-            holder.mBinding.filterserviceNameTv.background =
-                    ContextCompat.getDrawable(context, R.drawable.custom_roundcorner_selectedorder)
         else holder.mBinding.filterserviceNameTv.background =
                 ContextCompat.getDrawable(context, R.drawable.custom_roundcorner_unselectedorder)
         holder.mBinding.filterserviceNameTv.text =
@@ -47,10 +43,9 @@ class FilterServiceListAdapter(val filterServiceListName: List<ConfigService>,
         holder.mBinding.itemClickListener = object : CustomClickListener {
             override fun onListClickListener() {
                 selectedPosition = holder.adapterPosition
-                selectedServiceType = -1
                 holder.mBinding.filterserviceNameTv.background =
                         ContextCompat.getDrawable(context, R.drawable.custom_roundcorner_selectedorder)
-                serviceTypeListener.getServiceType(filterServiceListName[position].admin_service.toLowerCase(), filterServiceListName[position].id)
+                serviceTypeListener.getServiceType(filterServiceListName[position].admin_service.toLowerCase(), filterServiceListName[position].id,position)
                 notifyDataSetChanged()
             }
         }

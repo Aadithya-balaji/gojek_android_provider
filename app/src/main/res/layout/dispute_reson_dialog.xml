@@ -93,6 +93,7 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/submit"
             android:textAllCaps="false"
+            style="@style/BoldText"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp"
             app:backgroundTint="@color/colorPrimary"

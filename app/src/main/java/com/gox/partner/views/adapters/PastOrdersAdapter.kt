@@ -108,7 +108,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
     private fun updateHistoryUi(holder: MyViewHolder, order: String, status: Boolean, booking_id: String, rating: String
                                 , req_time: String, req_month: String) {
         holder.pastOderItemlistBinding.titlePastListTv.text = booking_id
-        holder.pastOderItemlistBinding.ratingPastTv.text = rating
+        holder.pastOderItemlistBinding.ratingPastTv.text = String.format("%.2f", rating.toDouble())
         holder.pastOderItemlistBinding.datePastListTv.text = req_month
         holder.pastOderItemlistBinding.timePastListTv.text = req_time
         holder.pastOderItemlistBinding.orderedItemTv.text = order

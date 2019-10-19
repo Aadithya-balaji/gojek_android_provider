@@ -82,12 +82,12 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
         showLoading.value = true
         Log.e("servicetype", "----------" + serviceType.value)
         if(serviceType.value.equals(Constants.ModuleTypes.SERVICE,true)){
-            serviceName=serviceType.value!!.replace("service","services")
+            serviceName="services"
         }else{
             serviceName=serviceType.value!!.toLowerCase()
         }
 
-        if (serviceName.equals(Constants.ModuleTypes.TRANSPORT,true))
+        if (serviceName.equals(Constants.ModuleTypes.TRANSPORT, true)) {
             getCompositeDisposable().add(mRepository.getDisputeList(object : ApiListener {
                 override fun success(successData: Any) {
                     disputeListData.value = successData as DisputeListModel
@@ -99,16 +99,19 @@ class HistoryDetailViewModel : BaseViewModel<CurrentOrderDetailsNavigator>() {
                     showLoading.postValue(false)
                 }
             }))
-        else getCompositeDisposable().add(mRepository.getDisputeList(object : ApiListener {
-            override fun success(successData: Any) {
-                disputeListData.value = successData as DisputeListModel
-                showLoading.postValue(false)
-            }
-            override fun fail(failData: Throwable) {
-                errorResponse.value = getErrorMessage(failData)
-                showLoading.postValue(false)
-            }
-        },serviceName!!))
+        } else {
+            getCompositeDisposable().add(mRepository.getDisputeList(object : ApiListener {
+                override fun success(successData: Any) {
+                    disputeListData.value = successData as DisputeListModel
+                    showLoading.postValue(false)
+                }
+
+                override fun fail(failData: Throwable) {
+                    errorResponse.value = getErrorMessage(failData)
+                    showLoading.postValue(false)
+                }
+            }, serviceName!!))
+        }
     }
 
     fun postTaxiDispute(params: HashMap<String, String>) {

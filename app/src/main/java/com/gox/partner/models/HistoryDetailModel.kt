@@ -99,7 +99,7 @@ data class HistoryDetailModel(
                     val id: Int? = 0,
                     val is_admin: Int? = 0,
                     val provider_id: Int? = 0,
-                    val refund_amount: Int? = 0,
+                    val refund_amount: Double? = 0.0,
                     val ride_request_id: Any? = Any(),
                     val status: String? = "",
                     val user_id: Int? = 0
@@ -252,7 +252,7 @@ data class HistoryDetailModel(
                     val payment_mode: String? = "",
                     val service_request_id: Int? = 0,
                     val tax: Double? = 0.0,
-                    val total: Int? = 0,
+                    val total: Double? = 0.0,
                     val wallet: Double? = 0.0
             )
         }

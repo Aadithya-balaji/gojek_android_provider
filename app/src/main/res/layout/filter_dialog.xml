@@ -28,12 +28,14 @@
             android:padding="@dimen/_8sdp">
 
             <TextView
-                style="@style/MediumText.Black"
+                style="@style/BoldText"
+                android:textColor="@color/colorBlack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_by" />
 
             <TextView
+                android:id="@+id/tvReset"
                 style="@style/MediumText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -63,6 +65,7 @@
             android:backgroundTint="@color/colorBasePrimary"
             android:padding="@dimen/_5sdp"
             android:text="@string/apply"
+            style="@style/MediumText"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp"

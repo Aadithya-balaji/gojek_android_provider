@@ -232,7 +232,6 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
                     mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
                     writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
-                    writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
                     when (checkStatusData.responseData.requests[0].request.status) {
                         SEARCHING -> if (!mIncomingRequestDialog.isShown()) {
                             val bundle = Bundle()

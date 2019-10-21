@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseFragment
 import com.gox.base.data.Constants
+import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.utils.PrefixCustomEditText
@@ -29,6 +30,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
     private var strAmount: String? = null
     private var paymentList: List<ConfigPayment>? = null
+    private var currencySymbol:String? = PreferencesHelper.get(PreferencesKey.CURRENCY_SYMBOL, "₹")
 
     override fun getLayoutId() = R.layout.fragment_wallet
 
@@ -53,13 +55,15 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         mViewModel.getProfile()
     }
 
+
+
     private fun getApiResponse() {
         observeLiveData(mViewModel.walletLiveResponse) {
             mViewModel.showLoading.value = false
             if (mViewModel.walletLiveResponse.value!!.getStatusCode().equals("200")) {
                 if (mViewModel.walletLiveResponse.value!!.getResponseData() != null) {
                     val balance = mViewModel.walletLiveResponse.value!!.getResponseData()!!.getWalletBalance()
-                    mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), balance)
+                    mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), balance, PreferencesHelper.get(PreferencesKey.CURRENCY_SYMBOL, "₹"))
                     mViewModel.walletAmount.value = ""
                 }
             }
@@ -69,7 +73,10 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
             mViewModel.showLoading.value = false
             if (profileResposne.statusCode == "200") {
                 val walletBalance = profileResposne.profileData.wallet_balance
-                mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), walletBalance)
+                mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), walletBalance, currencySymbol)
+                mBinding.btFifty.text = "${currencySymbol}$AMOUNT_1"
+                mBinding.btHundred.text = "${currencySymbol}$AMOUNT_2"
+                mBinding.btThousand.text = "${currencySymbol}$AMOUNT_3"
             }
         })
     }
@@ -81,11 +88,11 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
     override fun addAmount(view: View) {
         when (view.id) {
-            R.id.bt_fifty -> strAmount = "50"
+            R.id.bt_fifty -> strAmount = AMOUNT_1
 
-            R.id.bt_hundred -> strAmount = "100"
+            R.id.bt_hundred -> strAmount = AMOUNT_2
 
-            R.id.bt_thousand -> strAmount = "1000"
+            R.id.bt_thousand -> strAmount = AMOUNT_3
         }
 
         mViewModel.walletAmount.value = strAmount
@@ -139,6 +146,12 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
         val intent = Intent(activity!!, PaymentTypesActivity::class.java)
         intent.putExtra("isFromWallet", true)
         startActivityForResult(intent, Constants.RequestCode.SELECTED_CARD)
+    }
+
+    companion object {
+        private const val AMOUNT_1:String = "50"
+        private const val AMOUNT_2:String = "100"
+        private const val AMOUNT_3:String = "1000"
     }
 
 }

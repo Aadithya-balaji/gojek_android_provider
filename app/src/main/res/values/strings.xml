@@ -329,7 +329,7 @@
 
 
     <!-- Invite Referal -->
-    <string name="invite_referal_hint">Invite your friends and earn %s for every %s new Users.</string>
+    <string name="invite_referal_hint"><![CDATA[Invite your friends and earn <font color=#11ABA9>%s</font> for every <font color=#11ABA9>%s</font> new users]]></string>
     <string name="invite_referal_count">%d</string>
     <string name="invite_referal_amount">%.2f</string>
 
@@ -373,7 +373,7 @@
     <string name="add_card">Add Cards</string>
     <string name="row_card_number">XXXX XXXX XXXX %s</string>
     <string name="transaction_amount">%.2f</string>
-    <string name="wallet_balance">( %.2f $ )</string>
+    <string name="wallet_balance">( %.2f %s )</string>
     <string name="please_complete_below_steps">Please Complete below steps</string>
     <string name="add_services">Add Services</string>
     <string name="add_document">Add Document</string>
@@ -495,8 +495,8 @@
     <string name="terms_conditions">Terms and Conditions</string>
     <string name="delete_card">Are you Sure you want Delete this Card</string>
     <string name="payment_modes">Available Payment Types</string>
-    <string name="referral_count">Referral Count:</string>
-    <string name="referral_amount">Referral Amount:</string>
+    <string name="referral_count">Referral Count</string>
+    <string name="referral_amount">Referral Amount</string>
     <string name="or">OR</string>
     <string name="you">You</string>
     <string name="open">open</string>

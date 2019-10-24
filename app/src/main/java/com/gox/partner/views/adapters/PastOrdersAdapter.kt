@@ -43,7 +43,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                 updateHistoryUi(holder, transportHistory.transport[position].ride?.vehicle_name!!
                         , transportHistory.transport[position].status.equals("Completed", true)
                         , transportHistory.transport[position].booking_id
-                        , transportHistory.transport[position].user.rating
+                        , transportHistory.transport[position].rating?.user_rating?:0.0
                         , (CommonMethods.getLocalTimeStamp(transportHistory.transport[position].assigned_at, "Req_time") + "")
                         , (CommonMethods.getLocalTimeStamp(transportHistory.transport[position].assigned_at, "Req_Date_Month") + ""))
 
@@ -63,7 +63,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                 updateHistoryUi(holder, transportHistory.service[position].service?.service_name.toString()!!
                         , transportHistory.service[position].status.equals("Completed", true)
                         , transportHistory.service[position].booking_id!!
-                        , transportHistory.service[position].user!!.rating
+                        , transportHistory.service[position].rating?.user_rating?:0.0
                         , (CommonMethods.getLocalTimeStamp(transportHistory.service[position].assigned_at!!, "Req_time") + "")
                         , (CommonMethods.getLocalTimeStamp(transportHistory.service[position].assigned_at!!, "Req_Date_Month") + ""))
 
@@ -84,7 +84,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                 updateHistoryUi(holder, transportHistory.order[position].pickup?.store_name.toString()!!
                         , transportHistory.order[position].status.equals("Completed", true)
                         , transportHistory.order[position].store_order_invoice_id!!
-                        , transportHistory.order[position].rating!!.user_rating.toString()
+                        , transportHistory.order[position].rating?.user_rating?:0.0
                         , (CommonMethods.getLocalTimeStamp(transportHistory.order[position].created_at!!, "Req_time") + "")
                         , (CommonMethods.getLocalTimeStamp(transportHistory.order[position].created_at!!, "Req_Date_Month") + ""))
 
@@ -105,10 +105,10 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
         }
     }
 
-    private fun updateHistoryUi(holder: MyViewHolder, order: String, status: Boolean, booking_id: String, rating: String
+    private fun updateHistoryUi(holder: MyViewHolder, order: String, status: Boolean, booking_id: String, rating: Double
                                 , req_time: String, req_month: String) {
         holder.pastOderItemlistBinding.titlePastListTv.text = booking_id
-        holder.pastOderItemlistBinding.ratingPastTv.text = String.format("%.2f", rating.toDouble())
+        holder.pastOderItemlistBinding.ratingPastTv.text = String.format("%.2f", rating)
         holder.pastOderItemlistBinding.datePastListTv.text = req_month
         holder.pastOderItemlistBinding.timePastListTv.text = req_time
         holder.pastOderItemlistBinding.orderedItemTv.text = order

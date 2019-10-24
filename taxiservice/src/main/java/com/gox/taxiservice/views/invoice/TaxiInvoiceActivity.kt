@@ -96,6 +96,10 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                             openRatingDialog(it.responseData)
                         }
                     }
+
+                    "" ->{
+                        finish()
+                    }
                 }
             }
         }

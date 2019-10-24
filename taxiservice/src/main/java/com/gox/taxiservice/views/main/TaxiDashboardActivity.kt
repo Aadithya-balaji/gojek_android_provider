@@ -280,11 +280,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                 if (!checkStatusResponse.responseData.request.status.isNullOrEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-                    if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
+                   /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
                             currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
 
                         mViewModel.currentStatus.value = ""
-                    }
+                    }*/
 
                     //if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {

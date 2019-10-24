@@ -6,17 +6,20 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.gox.base.R
@@ -99,10 +102,23 @@ object ViewUtils {
                         callBack.onNegativeButtonClick(dialog)
                     }
                 }
+
         val dialog = builder.create()
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
+
+        val tvTitle:TextView = dialog.findViewById(R.id.alertTitle)!!
+        val tvMessage:TextView = dialog.findViewById(android.R.id.message)!!
+        val positiveText:Button = dialog.findViewById(android.R.id.button1)!!
+        val negativeText:Button = dialog.findViewById(android.R.id.button2)!!
+
+        val typeface = ResourcesCompat.getFont(context, R.font.avenir_lt_std_medium);
+
+        tvTitle.typeface = typeface
+        tvMessage.typeface = typeface
+        positiveText.typeface = typeface
+        negativeText.typeface = typeface
     }
 
     fun showGpsDialog(context: Context) {

@@ -39,8 +39,10 @@ data class Transport(
         val status: String,
         val timezone: String,
         val user: TransportHistoryUser,
-        val user_id: Int
-) : Serializable
+        val user_id: Int,
+        val rating: Order.Rating? = Order.Rating()
+
+        ) : Serializable
 
 data class Provider(
         val first_name: String,
@@ -78,6 +80,7 @@ data class ServiceHistory(
         val static_map: String? = "",
         val status: String? = "",
         val user: User? = null,
+        val rating: Order.Rating? = Order.Rating(),
         val user_id: Int? = 0
 )
 

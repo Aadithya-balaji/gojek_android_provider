@@ -46,6 +46,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
     private var timeTaken: String? = ""
     private var extraAmount: Double? = 0.0
     var paymentType = ""
+    var paid = 0
 
     override fun getLayout() = R.layout.dialog_invoice
 
@@ -150,8 +151,10 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
 
         if (isFromCheckRequest == false) {
             paymentType = updateRequestModel!!.responseData!!.payment_mode
+            paid = updateRequestModel!!.responseData!!.paid?:0
         }else{
             paymentType = xUberCheckRequest!!.responseData!!.requests!!.payment_mode
+            paid = xUberCheckRequest!!.responseData!!.requests!!.paid?:0
         }
 
         xUberInvoiceModel.paymentType = paymentType
@@ -191,7 +194,10 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         if(paymentType.equals(Constants.PaymentMode.CARD,true) || paymentType.equals("")){
             showRating()
         }else{
-            xUberInvoiceModel.callConfirmPaymentApi()
+            if (paid == 0)
+                xUberInvoiceModel.callConfirmPaymentApi()
+            else
+                showRating()
         }
     }
 

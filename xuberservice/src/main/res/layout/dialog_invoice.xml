@@ -218,6 +218,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="38dp"
                     android:text="@={invoicemodel.totalAmount}"
                     android:textColor="@color/xuper_blue"
                     android:textSize="@dimen/_12sdp" />

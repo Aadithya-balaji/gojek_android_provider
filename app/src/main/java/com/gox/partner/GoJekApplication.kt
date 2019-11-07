@@ -59,8 +59,7 @@ class GoJekApplication : BaseApplication() {
     private fun logoutApp() {
         PreferencesHelper.removeAll()
         val newIntent = Intent(applicationContext, OnBoardActivity::class.java)
-        newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        newIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(newIntent)
     }
 

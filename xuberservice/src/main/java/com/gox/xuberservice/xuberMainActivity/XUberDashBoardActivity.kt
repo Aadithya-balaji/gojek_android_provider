@@ -301,9 +301,16 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 paymentMode = currentPaymentMode
         }
 
-        if (!paymentMode.equals(currentPaymentMode))
-            showInvoice(bundle, true)
-        else showInvoice(bundle, false)
+        if(paid == 0){
+            if (!paymentMode.equals(currentPaymentMode,true)) {
+                paymentMode = currentPaymentMode
+                showInvoice(bundle, true)
+            }
+            else showInvoice(bundle, false)
+        }else{
+            showRating()
+        }
+
     }
 
     private fun showInvoice(bundle: Bundle,update:Boolean) {

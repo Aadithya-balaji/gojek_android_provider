@@ -1,3 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-</resources>
+    <string name="live_task">المهام الحية</string>
+    <string name="time_left">الوقت المتبقي</string>
+    <string name="dummy_time_left">100 ثانية</string>
+    <string name="reached_restaurant">وصلت متجر</string>
+    <string name="order_picked_up">ترتيب التقطت</string>
+    <string name="order_delivered">أجل تسليم</string>
+    <string name="payment_received">منجز</string>
+    <string name="dummy_resturant_name">طرق جانبية</string>
+    <string name="dummy_address">Tarc Colony، Megberg winsond road، United States-10002</string>
+    <string name="dummy_order_id">11</string>
+    <string name="dummy_time">8:30 مساءا</string>
+    <string name="item_total">مجموع الاشياء</string>
+    <string name="dummy_item_total">0</string>
+    <string name="service_tax">ضريبة الخدمة</string>
+    <string name="delivery_charge_tv">رسوم التوصيل</string>
+    <string name="started_towards_restaturant">بدأت نحو متجر</string>
+    <string name="total">مجموع</string>
+    <string name="dummy_item_name">حار بروان تكا X1</string>
+    <string name="feedback">ردود الفعل</string>
+    <string name="how_was_the_delivery">كيف كان التسليم؟</string>
+    <string name="terrible">رهيب</string>
+    <string name="bad">سيئة</string>
+    <string name="okay">حسنا</string>
+    <string name="good">حسن</string>
+    <string name="superb">رائع</string>
+    <string name="give_some_feedback_in_words">إعطاء بعض الملاحظات في الكلمات</string>
+    <string name="submit">تقديم</string>
+    <string name="package_amount">حزمة المبلغ</string>
+    <string name="wallet_amount">محفظة المبلغ</string>
+    <string name="promocode_deduction">خصم الرمز الترويجي</string>
+    <string name="discount_amount">مقدار الخصم</string>
+    <string name="rating">تقييم</string>
+    <string name="rate_your_customer">معدل عميلك</string>
+    <string name="leave_comments">اترك تعليقاتك</string>
+    <string name="enter_the_otp">أدخل مكتب المدعي العام</string>
+    <string name="foodie_invalid_otp">أدخل OTP صالح</string>
+    <string name="foodie_make_sure_your_payment">* تأكد من الدفع من العملاء</string>
+    <string name="no_valid_mobile">لا يوجد رقم هاتف صالح</string>
+    <string name="no_valid_loction">لا يوجد موقع صالح</string>
+    </resources>

@@ -1,77 +1,76 @@
-<resources
-    xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:ns0="http://schemas.android.com/tools" ns0:ignore="MissingTranslation">
+
+    <string name="submit">تقديم</string>
+    <string name="waiting">وقت الانتظار</string>
 
 
-    <!-- Common -->
-    <string name="submit">Submit</string>
-    <string name="waiting">Waiting Time</string>
+    <string name="taxi_pickup_location">اختر موقعا</string>
+    <string name="taxi_drop_location" ns0:ignore="ExtraTranslation">إسقاط الموقع</string>
+    <string name="taxi_sos">نجدة</string>
 
-    <!-- Taxi pickup -->
-    <string name="taxi_pickup_location">Pickup Location</string>
-    <string name="taxi_drop_location" tools:ignore="ExtraTranslation">Drop Location</string>
-    <string name="taxi_sos">SOS</string>
 
-    <!-- invoice -->
-    <string name="taxi_invoice">Invoice</string>
-    <string name="taxi_source_destination">Source and Destination</string>
-    <string name="taxi_invoice_total">Total</string>
-    <string name="taxi_confirm_payment">Confirm Payment</string>
-    <string name="taxi_confirm_done">Done</string>
-    <string name="taxi_invoice_booking_id">Booking ID</string>
-    <string name="taxi_distance_travelled">Distance Travelled</string>
-    <string name="taxi_invoice_time_taken">Time Taken</string>
-    <string name="taxi_invoice_base_fare">Base Fare</string>
-    <string name="taxi_invoice_distance_fare">Distance Fare</string>
-    <string name="taxi_invoice_tax">Tax</string>
-    <string name="taxi_invoice_Tips">Tips</string>
-    <string name="taxi_invoice_toll">Toll</string>
-    <string name="taxi_invoie_add">ADD</string>
+    <string name="taxi_invoice">فاتورة</string>
+    <string name="taxi_source_destination">المصدر والوجهة</string>
+    <string name="taxi_invoice_total">مجموع</string>
+    <string name="taxi_confirm_payment">تأكيد الدفع</string>
+    <string name="taxi_confirm_done">منجز</string>
+    <string name="taxi_invoice_booking_id">معرف الحجز</string>
+    <string name="taxi_distance_travelled">المسافة المقطوعة</string>
+    <string name="taxi_invoice_time_taken">الوقت المستغرق</string>
+    <string name="taxi_invoice_base_fare">الاجرة الاساسية</string>
+    <string name="taxi_invoice_distance_fare">أجرة المسافة</string>
+    <string name="taxi_invoice_tax">ضريبة</string>
+    <string name="taxi_invoice_Tips">نصائح</string>
+    <string name="taxi_invoice_toll">رسوم</string>
+    <string name="taxi_invoie_add">أضف</string>
 
-    <!-- OTP -->
-    <string name="otp_label">Enter OTP</string>
-    <string name="otp_call">Call</string>
-    <string name="otp_chat">Chat</string>
-    <string name="otp_start_trip">Start Trip</string>
 
-    <!-- Toll Charge -->
-    <string name="toll_label">TOLL CHARGE</string>
-    <string name="toll_submit">Submit</string>
-    <string name="toll_cancel">Cancel</string>
-    <string name="empty_toll_charge">Please enter the Toll charge</string>
-    <string name="invalid_toll_charge">Please enter the valid Toll charge</string>
+    <string name="otp_label">أدخل OTP</string>
+    <string name="otp_call">مكالمة</string>
+    <string name="otp_chat">دردشة</string>
+    <string name="otp_start_trip">ابدأ الرحلة</string>
 
-    <!-- Rating -->
-    <string name="rating_label">Rating</string>
-    <string name="rate_your_customer">Rate your Customer</string>
-    <string name="rate_comments">Leave your comments</string>
 
-    <!-- Ride status -->
-    <string name="taxi_pickup_approve">Approve</string>
-    <string name="taxi_pickup_cancel">Cancel</string>
-    <string name="taxi_tab_dropped">Tap When Dropped</string>
-    <string name="taxi_pickup_arrived">Arrived</string>
+    <string name="toll_label">تهمة حصيلة</string>
+    <string name="toll_submit">تقديم</string>
+    <string name="toll_cancel">إلغاء</string>
+    <string name="empty_toll_charge">يرجى إدخال رسوم تول</string>
+    <string name="invalid_toll_charge">الرجاء إدخال رسوم الاتصال الصحيحة</string>
 
-    <!-- Support -->
-    <string name="support">Support</string>
-    <string name="support_team_text">You can contact our team at any time for you quries</string>
-    <string name="call">Call</string>
-    <string name="mail">Mail</string>
-    <string name="website">Website</string>
 
-    <!-- Facebook -->
+    <string name="rating_label">تقييم</string>
+    <string name="rate_your_customer">معدل عميلك</string>
+    <string name="rate_comments">اترك تعليقاتك</string>
+
+
+    <string name="taxi_pickup_approve">يوافق</string>
+    <string name="taxi_pickup_cancel">إلغاء</string>
+    <string name="taxi_tab_dropped">اضغط عند المسقطة</string>
+    <string name="taxi_pickup_arrived">وصل</string>
+
+
+    <string name="support">الدعم</string>
+    <string name="support_team_text">يمكنك الاتصال بفريقنا في أي وقت لاستفساراتك</string>
+    <string name="call">مكالمة</string>
+    <string name="mail">بريد</string>
+    <string name="website">موقع الكتروني</string>
+
+
+
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
-    <string name="taxi_pickup">Pick Up</string>
-    <string name="any_toll" translatable="false" tools:ignore="ExtraTranslation">Do you have andy Toll charge</string>
-    <string name="request_canceled">Request Canceled Successfully</string>
-    <string name="invalid_otp">Invalid OTP</string>
-    <string name="waiting_timer_running">Waiting timer is on, switch off to proceed</string>
-    <string name="taxi_invoice_waiting_charge">Waiting charge</string>
-    <string name="reason">Reason</string>
+    <string name="taxi_pickup">امسك</string>
+    <string name="any_toll" translatable="false" ns0:ignore="ExtraTranslation">Do you have andy Toll charge</string>
+    <string name="request_canceled">تم إلغاء الطلب بنجاح</string>
+    <string name="invalid_otp">مكتب المدعي العام غير صالح</string>
+    <string name="waiting_timer_running">مؤقت الانتظار قيد التشغيل ، قم بإيقاف التشغيل للمتابعة</string>
+    <string name="taxi_invoice_waiting_charge">تهمة الانتظار</string>
+    <string name="reason">السبب</string>
     <string name="dummy_num">1234</string>
-    <string name="start_timer">00:00:00</string>
-    <string name="toll_charge_desc">Do you have any Toll charge</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
-    <string name="click_back_exit">Please click back again to exit</string>
+    <string name="start_timer">0:00:00</string>
+    <string name="dotdotdot">...</string>
+    <string name="toll_charge_desc">هل لديك أي رسوم تولى</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="click_back_exit">يرجى النقر مرة أخرى مرة أخرى للخروج</string>
 
-</resources>
+    </resources>

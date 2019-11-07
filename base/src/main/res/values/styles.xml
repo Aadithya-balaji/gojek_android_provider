@@ -309,7 +309,7 @@
 
     <style name="xuberRatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/xuber_grey</item>
-        <item name="colorControlActivated">@color/colorTaxiYellow</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
     </style>
 
     <style name="MediumText.Black" parent="MediumText">

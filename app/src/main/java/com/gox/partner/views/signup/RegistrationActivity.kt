@@ -26,7 +26,6 @@ import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
-import com.facebook.login.LoginBehavior
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.Auth
@@ -36,7 +35,6 @@ import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.gox.partner.views.verifyotp.VerifyOTPActivity
 import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.PreferencesKey
@@ -61,6 +59,7 @@ import com.gox.partner.views.countrypicker.CountryCodeActivity
 import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.privacypolicy.PrivacyActivity
 import com.gox.partner.views.sign_in.LoginActivity
+import com.gox.partner.views.verifyotp.VerifyOTPActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_register.*
@@ -555,8 +554,80 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getFacebookProfile() {
-        LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY)
-                .logInWithReadPermissions(this, listOf("public_profile", "email"))
+       /* LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY)
+                .logInWithReadPermissions(this, listOf("public_profile", "email"))*/
+
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"))
+        LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                if (AccessToken.getCurrentAccessToken() != null) {
+                    setFacebookData(loginResult)
+                    println("Token received " + loginResult.accessToken.token)
+
+
+                }
+
+            }
+
+            private fun setFacebookData(loginResult: LoginResult) {
+                val request = GraphRequest.newMeRequest(loginResult.accessToken, GraphRequest.GraphJSONObjectCallback { jsonObject: JSONObject, graphResponse: GraphResponse ->
+                    mBinding.socialSignupLayout.visibility = View.GONE
+                    mBinding.tilSignupPwd.visibility = View.GONE
+
+
+                    Log.d("_D_FB", graphResponse.jsonObject.getString("email"))
+
+                    val imgUrl = "http://graph.facebook.com/" + graphResponse.jsonObject.getString("id") + "/picture?type=large"
+
+                    val socialFirstName = graphResponse.jsonObject.getString("first_name")
+                    val socialLastName = graphResponse.jsonObject.getString("last_name")
+                    val socialId = graphResponse.jsonObject.getString("id")
+                    val email = graphResponse.jsonObject.getString("email")
+                    val profileImage = imgUrl
+
+                    glideSetImageView(ivProfile, profileImage.toString(), R.drawable.ic_user_place_holder)
+
+                    mViewModel.firstName.value = socialFirstName.toString()
+                    mViewModel.lastName.value = socialLastName.toString()
+                    mViewModel.email.value = email.toString()
+                    mViewModel.socialID.value = socialId
+
+                    if (!mViewModel.firstName.value.isNullOrEmpty()) edtFirstName.isEnabled = false
+                    else if (!mViewModel.lastName.value.isNullOrEmpty()) edtLastName.isEnabled = false
+                    else if (!mViewModel.email.value.isNullOrEmpty()) edtEmail.isEnabled = false
+
+                    mViewModel.loginby.value = "FACEBOOK"
+                    tlPassword.visibility = View.GONE
+
+                    DownloadImage(this@RegistrationActivity).execute(URL(profileImage).toString())
+
+//                    mBinding.emailidRegisterEt.setText(graphResponse.jsonObject.getString("gender"))
+
+
+                })
+
+                val parameters = Bundle()
+//                parameters.putString("fields", "id,first_name,last_name,email");
+                parameters.putString("fields", "id,name,email,link,gender,first_name,last_name,verified")
+                request.setParameters(parameters);
+                request.executeAsync();
+            }
+
+
+            override fun onCancel() {
+                Log.d("_D_fb_cancel", "canceled")
+            }
+
+            override fun onError(exception: FacebookException) {
+                exception.printStackTrace()
+                val s = exception.message
+                if (exception is FacebookAuthorizationException) {
+                    if (AccessToken.getCurrentAccessToken() != null)
+                        LoginManager.getInstance().logOut()
+                } else if (s!!.contains("GraphQLHttpFailureDomain"))
+                    ViewUtils.showToast(this@RegistrationActivity, getString(R.string.fb_session_expired), false)
+            }
+        })
     }
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)

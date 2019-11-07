@@ -295,8 +295,8 @@
     <string name="add_amount">Add amount</string>
     <string name="save_card">Save Card</string>
     <string name="card_for_receving_the_user_s_payment">Card for receiving the user\'s payment.</string>
-    <string name="dummy_card_number">xxxx xxxx xxxx 1234</string>
-    <string name="dummy_bank_name">HDFC</string>
+    <string name="dummy_card_number" translatable="false">xxxx xxxx xxxx 1234</string>
+    <string name="dummy_bank_name" translatable="false">HDFC</string>
     <string name="enter_amount">Enter amount</string>
     <string name="transaction_id">Transaction Id</string>
     <string name="date">Date</string>
@@ -306,8 +306,8 @@
     <string name="dummy_amount" translatable="false">$ 15</string>
     <string name="contact_our_team_via">Contact Our Team Via</string>
     <string name="dummy_number">+91123456789</string>
-    <string name="dummy_website">www.support.com</string>
-    <string name="dummy_mail_id">mail@mail.com</string>
+    <string name="dummy_website" translatable="false">www.support.com</string>
+    <string name="dummy_mail_id" translatable="false">mail@mail.com</string>
     <string name="dummy_status">Pending</string>
     <string name="taxi_app">Taxi App</string>
     <string name="food">Food</string>

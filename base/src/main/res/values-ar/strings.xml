@@ -1,29 +1,28 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <string name="crop_image_activity_title"></string>
-    <string name="crop_image_menu_rotate_left">Rotate counter clockwise</string>
-    <string name="crop_image_menu_rotate_right">Rotate</string>
-    <string name="crop_image_menu_crop">Crop</string>
-    <string name="crop_image_menu_flip">Flip</string>
-    <string name="crop_image_menu_flip_horizontally">Flip horizontally</string>
-    <string name="crop_image_menu_flip_vertically">Flip vertically</string>
-    <string name="pick_image_intent_chooser_title">Select source</string>
-    <string name="crop_image_activity_no_permissions">Cancelling, required permissions are not granted</string>
-    <string name="no_internet_connection">No Internet Connection :( </string>
-    <string name="floating_app">Tracking Location</string>
-    <string name="low_battery">Your battery is low</string>
-    <string name="chat">Chat</string>
+<resources xmlns:ns0="http://schemas.android.com/tools">
+    <string name="action_allow">السماح</string>
+    <string name="action_deny" ns0:ignore="MissingTranslation">أنكر</string>
+    <string name="xjek_delete_account" ns0:ignore="MissingTranslation">حذف الحساب</string>
+    <string name="xjek_logout_account" ns0:ignore="MissingTranslation">حساب الخروج</string>
+    <string name="fetching_loading" ns0:ignore="MissingTranslation">يرجى الانتظار ، أثناء العثور على موقعك</string>
+    <string name="missing_permission" ns0:ignore="MissingTranslation">يرجى تمكين الإذن اللازم لمتابعة applcation</string>
+    <string name="ok" ns0:ignore="MissingTranslation">حسنا</string>
+    <string name="cancel" ns0:ignore="MissingTranslation">إلغاء</string>
+    <string name="status">الحالة</string>
+    <string name="no_internet_connection">لا يوجد اتصال إنترنت :(</string>
+    <string name="floating_app">تتبع الموقع</string>
+    <string name="low_battery">البطارية منخفضة</string>
+    <string name="chat">دردشة</string>
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
-    <string name="location_permissing_missing">Location permission missing…</string>
+    <string name="location_permissing_missing">إذن الموقع مفقود ...</string>
 
-    <!--Map Error Strings-->
-    <string name="NoRoadMapAvailable">No road map available…</string>
-    <string name="WayPointLlimitExceeded">Way point limit exceeded…</string>
-    <string name="RoadMapLimitExceeded">Road map limit exceeded…</string>
-    <string name="InvalidInputs">Invalid inputs…</string>
-    <string name="MayBeInvalidAPIBillingPendingMethodDeprecated">MayBe invalid API/Billing pending/Method Deprecated…</string>
-    <string name="TooManyRequestlimitExceeded">Too many request, limit exceeded…</string>
-    <string name="DirectionsServiceNotEnabled">Directions service not enabled…</string>
-    <string name="ServerError">Server Error…</string>
+
+    <string name="NoRoadMapAvailable">لا توجد خريطة طريق ...</string>
+    <string name="WayPointLlimitExceeded">تم تجاوز حد نقطة الطريق ...</string>
+    <string name="RoadMapLimitExceeded">تم تجاوز حد خارطة الطريق ...</string>
+    <string name="InvalidInputs">مدخلات غير صالحة ...</string>
+    <string name="MayBeInvalidAPIBillingPendingMethodDeprecated">MayBe غير صالح API / إعداد الفواتير معلقة / الطريقة غير صالحة ...</string>
+    <string name="TooManyRequestlimitExceeded">طلب أكثر من اللازم ، تم تجاوز الحد ...</string>
+    <string name="DirectionsServiceNotEnabled">لم يتم تمكين خدمة الاتجاهات ...</string>
+    <string name="ServerError">خطأ في الخادم…</string>
+
 </resources>

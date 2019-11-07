@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="action_allow" translatable="false">Allow</string>
+    <string name="action_allow" tools:ignore="MissingTranslation">Allow</string>
     <string name="action_deny" tools:ignore="MissingTranslation">Deny</string>
     <string name="xjek_delete_account" tools:ignore="MissingTranslation">Delete Account</string>
     <string name="xjek_logout_account" tools:ignore="MissingTranslation">Logout Account</string>
@@ -7,21 +7,21 @@
     <string name="missing_permission" tools:ignore="MissingTranslation">Please Enable Necessary permission to proceed the applcation</string>
     <string name="ok" tools:ignore="MissingTranslation">OK</string>
     <string name="cancel" tools:ignore="MissingTranslation">Cancel</string>
-    <string name="status">Status</string>
-    <string name="no_internet_connection">No Internet Connection :( </string>
-    <string name="floating_app">Tracking Location</string>
-    <string name="low_battery">Your battery is low</string>
-    <string name="chat">Chat</string>
+    <string name="status" tools:ignore="MissingTranslation">Status</string>
+    <string name="no_internet_connection" tools:ignore="MissingTranslation">No Internet Connection :( </string>
+    <string name="floating_app" tools:ignore="MissingTranslation">Tracking Location</string>
+    <string name="low_battery" tools:ignore="MissingTranslation">Your battery is low</string>
+    <string name="chat" tools:ignore="MissingTranslation">Chat</string>
     <string name="placeholder_string" translatable="false">xXx xXx xXx</string>
-    <string name="location_permissing_missing">Location permission missing…</string>
+    <string name="location_permissing_missing" tools:ignore="MissingTranslation">Location permission missing…</string>
 
     <!--Map Error Strings-->
-    <string name="NoRoadMapAvailable">No road map available…</string>
-    <string name="WayPointLlimitExceeded">Way point limit exceeded…</string>
-    <string name="RoadMapLimitExceeded">Road map limit exceeded…</string>
-    <string name="InvalidInputs">Invalid inputs…</string>
-    <string name="MayBeInvalidAPIBillingPendingMethodDeprecated">MayBe invalid API/Billing pending/Method Deprecated…</string>
-    <string name="TooManyRequestlimitExceeded">Too many request, limit exceeded…</string>
-    <string name="DirectionsServiceNotEnabled">Directions service not enabled…</string>
-    <string name="ServerError">Server Error…</string>
+    <string name="NoRoadMapAvailable" tools:ignore="MissingTranslation">No road map available…</string>
+    <string name="WayPointLlimitExceeded" tools:ignore="MissingTranslation">Way point limit exceeded…</string>
+    <string name="RoadMapLimitExceeded" tools:ignore="MissingTranslation">Road map limit exceeded…</string>
+    <string name="InvalidInputs" tools:ignore="MissingTranslation">Invalid inputs…</string>
+    <string name="MayBeInvalidAPIBillingPendingMethodDeprecated" tools:ignore="MissingTranslation">MayBe invalid API/Billing pending/Method Deprecated…</string>
+    <string name="TooManyRequestlimitExceeded" tools:ignore="MissingTranslation">Too many request, limit exceeded…</string>
+    <string name="DirectionsServiceNotEnabled" tools:ignore="MissingTranslation">Directions service not enabled…</string>
+    <string name="ServerError" tools:ignore="MissingTranslation">Server Error…</string>
 </resources>

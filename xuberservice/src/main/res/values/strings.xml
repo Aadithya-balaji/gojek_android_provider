@@ -80,5 +80,6 @@
     <string name="no">No</string>
     <string name="no_instruction_found">No instruction found</string>
     <string name="waiting_for_payment_confirmation">Waiting for payment confirmation</string>
+    <string name="rated_success">Rated Successfully</string>
 
 </resources>

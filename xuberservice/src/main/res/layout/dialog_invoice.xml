@@ -63,11 +63,11 @@
 
                         <TextView
                             android:id="@+id/tvUserName"
-                            style="@style/SmallText"
+                            style="@style/BoldText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{invoicemodel.userName}"
-                            android:textColor="@color/xuper_light_black"
+                            android:textColor="@color/colorBlack"
                             android:textSize="@dimen/_12sdp"
                             android:textStyle="bold"
                             tools:text="SSS" />
@@ -79,17 +79,20 @@
 
                             <TextView
                                 android:id="@+id/tvXuperRating"
-                                style="@style/SmallText"
+                                style="@style/MediumText"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                tools:text="2.0"
+                                android:layout_marginTop="@dimen/_5sdp"
                                 android:text="@={invoicemodel.rating}"
-                                android:textColor="@color/xuber_grey"
+                                android:textColor="@color/dark_grey"
                                 android:textSize="@dimen/_10sdp" />
 
                             <ImageView
                                 android:id="@+id/ivXuperRate"
                                 android:layout_width="@dimen/_10sdp"
                                 android:layout_height="@dimen/_10sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
                                 android:contentDescription="@string/app_name"
                                 android:layout_marginStart="@dimen/_3sdp"
                                 android:src="@drawable/star"
@@ -107,7 +110,7 @@
 
                         <TextView
                             android:id="@+id/tvXuperServicelabel"
-                            style="@style/SmallText"
+                            style="@style/BoldText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/label_service"
@@ -116,11 +119,11 @@
 
                         <TextView
                             android:id="@+id/tvXuperService"
-                            style="@style/SmallText"
+                            style="@style/MediumText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_3sdp"
-                            android:textColor="@color/xuper_invoice_grey"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:textColor="@color/dark_grey"
                             android:textSize="@dimen/_10sdp"
                             tools:text="@string/dummy_xuberservice_text" />
                     </LinearLayout>
@@ -147,11 +150,11 @@
 
                         <TextView
                             android:id="@+id/tvXuperTimeTaken"
-                            style="@style/SmallText"
+                            style="@style/BoldText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/xuper_label_time"
-                            android:textColor="@color/xuper_light_black"
+                            android:textColor="@color/colorBlack"
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
@@ -159,8 +162,9 @@
                             style="@style/SmallText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="@string/start_timer"
-                            android:textColor="@color/xuper_invoice_grey" />
+                            android:textColor="@color/dark_grey" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -182,7 +186,7 @@
                             android:paddingBottom="@dimen/_8sdp"
                             android:text="@string/xuper_label_additional_charge"
                             android:textColor="@color/xuper_invoice_paid"
-                            android:textSize="@dimen/_10sdp" />
+                            android:textSize="@dimen/_8sdp" />
                     </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
@@ -219,7 +223,6 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="38dp"
-                    android:text="@={invoicemodel.totalAmount}"
                     android:textColor="@color/xuper_blue"
                     android:textSize="@dimen/_12sdp" />
             </RelativeLayout>
@@ -233,7 +236,7 @@
 
             <TextView
                 android:id="@+id/tvXuperConfirmPayment"
-                style="@style/SmallText"
+                style="@style/BoldText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -179,7 +179,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
                 .into(mBinding.ivUserImg)
 
         mBinding.tvAmountToBePaid.text = "$currency ${xUberInvoiceModel.totalAmount.value}"
-        mBinding.tvXuperService.text = "$currency ${xUberInvoiceModel.serviceName.value}"
+        mBinding.tvXuperService.text = xUberInvoiceModel.serviceName.value
         mBinding.tvAdditionalCharge.text = "${getText(R.string.xuper_label_additional_charge)} $currency ${xUberInvoiceModel.tvAdditionalCharge.value}"
     }
 

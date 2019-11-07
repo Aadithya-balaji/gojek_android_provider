@@ -27,9 +27,10 @@
 
         <ImageView
             android:id="@+id/ivXuperRatingUser"
-            android:layout_width="@dimen/_35sdp"
-            android:layout_height="@dimen/_35sdp"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
             android:src="@drawable/ic_user_place_holder"
             android:contentDescription="@string/app_name" />
 
@@ -38,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText.Black"
             android:text="@string/xuper_rate"
             android:textColor="@color/xuper_light_black"
             android:textSize="@dimen/_11sdp" />
@@ -46,6 +47,7 @@
 
         <androidx.appcompat.widget.AppCompatRatingBar
             android:id="@+id/rbUser"
+            style="@android:style/Widget.Material.Light.RatingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -84,11 +86,12 @@
             android:padding="@dimen/_8sdp"
             style="@style/SmallText"
             android:text="@={ratingmodel.comment}"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_12sdp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:layout_marginTop="@dimen/_10sdp"
             android:background="@color/xuber_grey" />
 
@@ -99,7 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/BoldText"
             android:onClick="@{() -> ratingmodel.callRateApi()}"
             android:text="@string/submit"
             android:textAllCaps="true"

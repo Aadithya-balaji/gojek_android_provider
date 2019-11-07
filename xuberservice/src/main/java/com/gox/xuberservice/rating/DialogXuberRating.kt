@@ -104,11 +104,10 @@ class DialogXuberRating : BaseDialogFragment<DialogXuperRatingBinding>(),
     }
 
     fun getApiResponse() {
-        mViewModel.ratingLiveData.observe(this, object : Observer<XuperRatingModel> {
-            override fun onChanged(t: XuperRatingModel?) {
-                loadingObservable.value = false
-                activity!!.finish()
-            }
+        mViewModel.ratingLiveData.observe(this, Observer<XuperRatingModel> {
+            loadingObservable.value = false
+            ViewUtils.showToast(activity!!, getString(R.string.rated_success), true)
+            activity!!.finish()
         })
     }
 

@@ -1,80 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources tools:ignore="MissingTranslation"
-    xmlns:tools="http://schemas.android.com/tools">
-    <string name="location_permission_denied">Location permission denied</string>
-    <string name="location_permission_rationale">    Location Permission is needed to get current location</string>
-    <string name="chat">Chat</string>
-    <string name="dummy_customer_name">Christain Joseph</string>
-    <string name="call">Call</string>
-    <string name="cancel">Cancel</string>
-    <string name="arrived">Arrived</string>
-    <string name="call_action">call action</string>
-    <string name="chat_action">chat action</string>
-    <string name="start_service">Start service</string>
-    <string name="enter_otp_here">Enter OTP here</string>
-    <string name="end_service">End service</string>
-    <string name="confrim_payment">Confirm Payment</string>
-    <string name="xuber_done">Done</string>
-    <string name="invoice">INVOICE</string>
-    <string name="amount_to_be_paid">Amount to be paid</string>
-    <string name="dummy_price">$35</string>
-    <string name="cash_mode">Cash</string>
-    <string name="submit">Submit</string>
-    <string name="dummy_rate_your_service_with_christain_joseph">Rate your service with Christain Joseph</string>
-    <string name="write_your_review">write your reviews</string>
+<resources xmlns:ns0="http://schemas.android.com/tools" ns0:ignore="MissingTranslation">
+    <string name="location_permission_denied">تم رفض إذن الموقع</string>
+    <string name="location_permission_rationale">    مطلوب إذن الموقع للحصول على الموقع الحالي</string>
+    <string name="chat">دردشة</string>
+    <string name="dummy_customer_name">كريستين جوزيف</string>
+    <string name="call">مكالمة</string>
+    <string name="cancel">إلغاء</string>
+    <string name="arrived">وصل</string>
+    <string name="call_action">استدعاء العمل</string>
+    <string name="chat_action">عمل الدردشة</string>
+    <string name="start_service">إبدأ الخدمة</string>
+    <string name="enter_otp_here">أدخل مكتب المدعي العام هنا</string>
+    <string name="end_service">نهاية الخدمة</string>
+    <string name="confrim_payment">تأكيد الدفع</string>
+    <string name="xuber_done">منجز</string>
+    <string name="invoice">فاتورة</string>
+    <string name="amount_to_be_paid">المبلغ المستحق للدفع</string>
+    <string name="dummy_price">$ 35</string>
+    <string name="cash_mode">السيولة النقدية</string>
+    <string name="submit">تقديم</string>
+    <string name="dummy_rate_your_service_with_christain_joseph">قيم خدمتك مع كريستين جوزيف</string>
+    <string name="write_your_review">اكتب ملاحظاتك</string>
 
 
-    <!-- Servie status -->
-    <string name="label_service">Service</string>
-    <string name="label_start">Start</string>
-    <string name="label_cancel">Cancel</string>
-    <string name="label_compeleted">Completed</string>
-    <string name="label_instruction">Instruction</string>
-    <string name="label_arrived">Arrived</string>
-    <string name="after_service">After Service</string>
-    <string name="before_service">Before Service</string>
-    <string name="hit_otp">Please Enter Otp</string>
-    <string name="empty_otp">Please Enter the Otp</string>
-    <string name="request_canceled">Request Canceled Successfully</string>
+
+    <string name="label_service">الخدمات</string>
+    <string name="label_start">بداية</string>
+    <string name="label_cancel">إلغاء</string>
+    <string name="label_compeleted">منجز</string>
+    <string name="label_instruction">تعليمات</string>
+    <string name="label_arrived">وصل</string>
+    <string name="after_service">ما بعد الخدمه</string>
+    <string name="before_service">قبل الخدمة</string>
+    <string name="hit_otp">الرجاء إدخال Otp</string>
+    <string name="empty_otp">الرجاء إدخال Otp</string>
+    <string name="request_canceled">تم إلغاء الطلب بنجاح</string>
 
 
-    <!--  Upload Image -->
-    <string name="upload_image">Upload the Image</string>
-    <string name="empty_image">Please add Image</string>
-    <string name="empty_front_image">Please add an Image Before Start your work</string>
-    <string name="empty_back_image">Please add an Image of completed work item</string>
+
+    <string name="upload_image">تحميل الصورة</string>
+    <string name="empty_image">يرجى إضافة صورة</string>
+    <string name="empty_front_image">يرجى إضافة صورة قبل بدء عملك</string>
+    <string name="empty_back_image">الرجاء إضافة صورة لبند العمل المكتمل</string>
 
 
-    <!-- Invoice -->
-    <string name="xuper_label_time">Time Taken</string>
-    <string name="xuper_label_additional_charge">Additional Charge</string>
-    <string name="xuper_amount_to_be_paid">Amount to be paid</string>
-    <string name="xuper_confirm_payment">Confirm Payment</string>
-    <string name="xuper_invoice">Invoice</string>
 
-    <!-- Additional Charges -->
-    <string name="xuper_additional_charge">Additional Charges</string>
-    <string name="xuper_label_description">Description</string>
-    <string name="xuper_label_amount">Amount</string>
+    <string name="xuper_label_time">الوقت المستغرق</string>
+    <string name="xuper_label_additional_charge">رسوم اضافية</string>
+    <string name="xuper_amount_to_be_paid">المبلغ المستحق للدفع</string>
+    <string name="xuper_confirm_payment">تأكيد الدفع</string>
+    <string name="xuper_invoice">فاتورة</string>
 
-    <!-- Rating -->
-    <string name="xuper_rating">Rating</string>
-    <string name="xuper_rate">Rate your service with %s</string>
-    <string name="xuper_comments">Write Comments</string>
-    <string name="xuper_service_location">Service Location</string>
-    <string name="xuper_rating_user">%.2f</string>
 
-    <!-- Info window -->
-    <string name="xuper_image">Image</string>
-    <string name="xuper_instruction">Instruction</string>
-    <string name="prg_loading">Loading …</string>
-    <string name="invalid_otp">Invalid OTP</string>
-    <string name="start_timer">00:00:00</string>
-    <string name="dummy_xuberservice_text">Car Wash - HatchBack</string>
-    <string name="reason">Reason</string>
-    <string name="instruction">Instruction</string>
-    <string name="crop_failed">Cropping failed</string>
-    <string name="no_instruction_found">No instruction found</string>
-    <string name="waiting_for_payment_confirmation">Waiting for payment confirmation</string>
+    <string name="xuper_additional_charge">رسوم إضافية</string>
+    <string name="xuper_label_description">وصف</string>
+    <string name="xuper_label_amount">كمية</string>
+
+
+    <string name="xuper_rating">تقييم</string>
+    <string name="xuper_rate">قيم خدمتك مع٪ s</string>
+    <string name="xuper_comments">اكتب التعليقات</string>
+    <string name="xuper_service_location">موقع الخدمة</string>
+    <string name="xuper_rating_user">٪ .2f</string>
+
+
+    <string name="xuper_image">صورة</string>
+    <string name="xuper_instruction">تعليمات</string>
+    <string name="prg_loading">جار التحميل …</string>
+    <string name="invalid_otp">مكتب المدعي العام غير صالح</string>
+    <string name="start_timer">0:00:00</string>
+    <string name="dummy_xuberservice_text">غسيل السيارات - هاتشباك</string>
+    <string name="reason">السبب</string>
+    <string name="instruction">تعليمات</string>
+    <string name="crop_failed">فشل زراعة المحاصيل</string>
+
+    <string name="additional_charge_desc">هل لديك أي رسوم إضافية</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="no_instruction_found">لم يتم العثور على تعليمات</string>
+    <string name="waiting_for_payment_confirmation">في انتظار تأكيد الدفع</string>
+    <string name="rated_success">تم التقييم بنجاح</string>
 
 </resources>

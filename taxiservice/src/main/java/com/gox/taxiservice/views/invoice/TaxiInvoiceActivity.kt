@@ -87,20 +87,24 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         }
         observeLiveData(mViewModel.checkStatusTaxiLiveData) {
             if (it?.statusCode.equals("200")) {
-                getIntentValues(it.responseData)
-                when (it.responseData.request.status) {
-                    Constants.RideStatus.COMPLETED -> {
-                        println("RRR :: inside COMPLETED = ")
-                        if (it.responseData.request.paid == 1 && !isRatingShown) {
-                            isRatingShown = true
-                            openRatingDialog(it.responseData)
+                if (it.responseData.request!=null) {
+                    getIntentValues(it.responseData)
+                    when (it.responseData.request.status) {
+                        Constants.RideStatus.COMPLETED -> {
+                            println("RRR :: inside COMPLETED = ")
+                            if (it.responseData.request.paid == 1 && !isRatingShown) {
+                                isRatingShown = true
+                                openRatingDialog(it.responseData)
+                            }
+                        }
+
+                        "" ->{
+                            finish()
                         }
                     }
-
-                    "" ->{
-                        finish()
-                    }
                 }
+                else
+                    finish()
             }
         }
 

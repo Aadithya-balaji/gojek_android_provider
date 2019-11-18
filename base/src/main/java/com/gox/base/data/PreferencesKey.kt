@@ -35,6 +35,8 @@ object PreferencesKey {
 
     const val SOS_NUMBER = "SOS_NUMBER"
     const val SHOW_OTP = "SHOW_OTP"
+    const val SEND_SMS = "send_sms"
+    const val SEND_EMAIL = "send_email"
     const val RIDE_OTP = "RIDE_OTP"
     const val SERVICE_OTP = "SERVICE_OTP"
     const val ORDER_OTP = "ORDER_OTP"

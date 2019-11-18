@@ -82,7 +82,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
             try {
                 customPreference.edit().putString(PreferencesKey.SOS_NUMBER,
                         it.responseData.appsetting.supportdetails.contact_number[0].number).apply()
-                customPreference.edit().putBoolean(PreferencesKey.SHOW_OTP, it.responseData.appsetting.otp_verify == 1).apply()
+                customPreference.edit().putBoolean(PreferencesKey.SEND_SMS, it.responseData.appsetting.send_sms == 1).apply()
+                customPreference.edit().putBoolean(PreferencesKey.SEND_EMAIL, it.responseData.appsetting.send_email == 1).apply()
                 customPreference.edit().putBoolean(PreferencesKey.RIDE_OTP, it.responseData.appsetting.ride_otp == 1).apply()
                 customPreference.edit().putBoolean(PreferencesKey.SERVICE_OTP, it.responseData.appsetting.service_otp == 1).apply()
                 customPreference.edit().putBoolean(PreferencesKey.ORDER_OTP, it.responseData.appsetting.order_otp == 1).apply()

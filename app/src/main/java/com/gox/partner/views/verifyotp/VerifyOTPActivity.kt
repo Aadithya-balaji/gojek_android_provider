@@ -37,6 +37,9 @@ class VerifyOTPActivity : BaseActivity<ActivityVerifyOtpBinding>(), VerifyOTPNav
         mViewDataBinding.run {
             titleToolbar.setNavigationIcon(getDrawable(R.drawable.back_arrow))
             titleToolbar.setTitle(getString(R.string.otp_verification))
+            titleToolbar.setNavigationOnClickListener {
+                onBackPressed()
+            }
         }
         setSupportActionBar(mViewDataBinding.titleToolbar)
 

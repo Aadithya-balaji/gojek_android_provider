@@ -168,7 +168,7 @@ interface AppWebService {
     ): Observable<AddVehicleResponseModel>
 
     @FormUrlEncoded
-    @POST("provider/vehicle/edit")
+    @POST("provider/vehicle/add")
     fun postVehicle(
             @FieldMap params: HashMap<String, String>
     ): Observable<AddVehicleResponseModel>

@@ -261,6 +261,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     val dashBoardIntent = Intent(this, DashBoardActivity::class.java)
                     dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     openActivity(dashBoardIntent, true)*/
+                    mViewModel.loadingProgress.value = true
                     mViewModel.postSignUp()
                 }
 

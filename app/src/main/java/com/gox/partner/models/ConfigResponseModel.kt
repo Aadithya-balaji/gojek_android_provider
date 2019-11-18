@@ -30,6 +30,8 @@ data class Appsetting(
         var ios_key: String = "",
         var languages: List<Language> = listOf(),
         var otp_verify: Int = 0,
+        val send_sms: Int = 0,
+        val send_email: Int = 0,
         var ride_otp: Int = 0,
         var order_otp: Int = 0,
         var service_otp: Int = 0,

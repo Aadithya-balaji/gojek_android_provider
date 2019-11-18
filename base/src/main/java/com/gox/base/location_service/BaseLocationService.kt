@@ -67,21 +67,21 @@ class BaseLocationService : Service() {
         println("RRRR:: BaseLocationService.onCreate")
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        h = Handler()
+       /* h = Handler()
         r = Runnable {
             h!!.postDelayed(r, checkInterval.toLong())
             streamLocation()
-        }
+        }*/
 
         mLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 println("RRRR:: BaseLocationService.LocationCallBack")
                 super.onLocationResult(locationResult)
                 onNewLocation(locationResult!!.lastLocation)
-                if (h != null) {
+                /*if (h != null) {
                     h!!.removeCallbacks(r)
                     h!!.postDelayed(r, checkInterval.toLong())
-                }
+                }*/
             }
         }
 
@@ -195,15 +195,6 @@ class BaseLocationService : Service() {
         return false
     }
 
-    private fun requestLocationUpdates() {
-        println("RRRR:: BaseLocationService.requestLocationUpdates")
-        startService(Intent(applicationContext, BaseLocationService::class.java))
-        try {
-            mFusedLocationClient!!.requestLocationUpdates(mLocationRequest, mLocationCallback!!, Looper.myLooper())
-        } catch (unlikely: SecurityException) {
-            println("RRRR:: Lost location permission. Could not request updates. $unlikely")
-        }
-    }
 
     private fun removeLocationUpdates() {
         println("RRRR:: BaseLocationService.removeLocationUpdates")

@@ -208,7 +208,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                             DROPPED -> whenDropped(true)
 
                             // Confirm Payment when cash flow
-                            COMPLETED -> whenDropped(true)
+                            COMPLETED -> whenPayment()
 
                         }
                     }
@@ -277,7 +277,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         fab_xuber_menu.visibility = View.GONE
         val bundle = Bundle()
         var currentPaymentMode = ""
-        var paid:Int? = 0
 
         if (isCheckRequest) {
             mBinding.llBottomService.llServiceTime.visibility = View.GONE
@@ -286,8 +285,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             bundle.putBoolean("fromCheckReq", true)
             cmXuberServiceTime.stop()
             currentPaymentMode = mViewModel.xUberCheckRequest.value?.responseData?.requests?.payment_mode!!
-            paid = mViewModel.xUberCheckRequest.value?.responseData?.requests?.paid
-            if (paymentMode.equals(""))
+            if(paymentMode.equals(""))
                 paymentMode = currentPaymentMode
         } else {
             mBinding.llBottomService.llServiceTime.visibility = View.GONE
@@ -296,21 +294,33 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             bundle.putBoolean("fromCheckReq", false)
             cmXuberServiceTime.stop()
             currentPaymentMode = mViewModel.xUberCheckRequest.value?.responseData?.requests?.payment_mode!!
-            paid = mViewModel.xUberCheckRequest.value?.responseData?.requests?.paid
-            if (paymentMode.equals(""))
+            if(paymentMode.equals(""))
                 paymentMode = currentPaymentMode
         }
 
-        if(paid == 0){
-            if (!paymentMode.equals(currentPaymentMode,true)) {
-                paymentMode = currentPaymentMode
-                showInvoice(bundle, true)
-            }
-            else showInvoice(bundle, false)
-        }else{
-            showRating()
+        if (!paymentMode.equals(currentPaymentMode)) {
+            paymentMode = currentPaymentMode
+            showInvoice(bundle, true)
         }
+        else showInvoice(bundle, false)
 
+    }
+
+
+    private fun whenPayment() {
+        fab_xuber_menu.visibility = View.GONE
+        mGoogleMap!!.clear()
+        mBinding.llBottomService.fbCamera.visibility = View.GONE
+        val bundle = Bundle()
+        val strCheckRequest = Gson().toJson(mViewModel.xUberCheckRequest.value)
+        bundle.putString("strCheckReq", strCheckRequest)
+        bundle.putBoolean("isFromCheckRequest", true)
+        val ratingDialog = supportFragmentManager.findFragmentByTag("ratingDialog")
+        if (ratingDialog != null && ratingDialog.isVisible) {
+        } else if (!ratingPage.isShown()) {
+            ratingPage.arguments = bundle
+            ratingPage.show(supportFragmentManager, "ratingDialog")
+        }
     }
 
     private fun showInvoice(bundle: Bundle,update:Boolean) {

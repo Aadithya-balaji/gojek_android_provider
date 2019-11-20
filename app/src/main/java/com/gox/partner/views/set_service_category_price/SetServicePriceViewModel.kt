@@ -36,7 +36,7 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
         }, service))
     }
 
-    fun postSelection(toString: String, id: String, selectedService: MutableList<SelectedService>) {
+    fun postSelection(isEdit:Boolean,toString: String, id: String, selectedService: MutableList<SelectedService>) {
         val params = HashMap<String, String>()
         params["category_id"] = (toString)
         params["sub_category_id"] = (id)
@@ -56,14 +56,31 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
                 i += 1
             }
         }
-        getCompositeDisposable().add(mRepository.postVehicle(object : ApiListener {
-            override fun success(successData: Any) {
-                addServiceResponseModel.value = successData as AddVehicleResponseModel
-            }
 
-            override fun fail(failData: Throwable) {
-                navigator.showError(getErrorMessage(failData))
-            }
-        }, params))
+        if(!isEdit){
+            getCompositeDisposable().add(mRepository.postVehicle(object : ApiListener {
+                override fun success(successData: Any) {
+                    addServiceResponseModel.value = successData as AddVehicleResponseModel
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showError(getErrorMessage(failData))
+                }
+            }, params))
+        }else{
+            getCompositeDisposable().add(mRepository.editVehicle(object : ApiListener {
+                override fun success(successData: Any) {
+                    addServiceResponseModel.value = successData as AddVehicleResponseModel
+                }
+
+                override fun fail(failData: Throwable) {
+                    navigator.showError(getErrorMessage(failData))
+                }
+            }, params))
+        }
+
+
+
+
     }
 }

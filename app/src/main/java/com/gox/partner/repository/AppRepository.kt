@@ -335,6 +335,15 @@ class AppRepository : BaseRepository() {
                 .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
     }
 
+
+    fun editVehicle(listener: ApiListener, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .editVehicle(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
+    }
+
     fun getBankTemplate(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getBankTemplate()

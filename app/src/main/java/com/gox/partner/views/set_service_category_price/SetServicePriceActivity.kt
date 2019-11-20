@@ -25,6 +25,7 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
     private lateinit var service: ServiceCategoriesResponse.ResponseData
     private lateinit var selectedService: SubServicePriceResponseData
     private lateinit var subServicePriceCategoriesResponse: SubServicePriceCategoriesResponse
+    private var isEdit:Boolean = false
 
     override fun getLayoutId() = R.layout.activity_set_service_category_price
 
@@ -111,12 +112,14 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                     Collections.addAll(selectedService, newService)
                 }
             }
-            if (selectedService.isEmpty())
+            /*if (selectedService.isEmpty())
                 ViewUtils.showToast(this, getString(R.string.select_service), false)
             else {
                 loadingObservable.value = true
                 mViewModel.postSelection(service.id.toString(), subService.id, selectedService)
-            }
+            }*/
+            loadingObservable.value = true
+            mViewModel.postSelection(isEdit,service.id.toString(), subService.id, selectedService)
         }
 
         checkResponse()
@@ -182,6 +185,9 @@ class SetServicePriceActivity : BaseActivity<ActivitySetServiceCategoryPriceBind
                 for (i in it.responseData!!.indices)
                     if (it.responseData!![i]!!.service_city != null)
                         subServicePriceCategoriesResponse.responseData!!.add(it.responseData!![i]!!)
+
+
+                isEdit = it.responseData?.any { data -> data?.providerservices?.size ?: 0 > 0}?:false
 
                 if (!subServicePriceCategoriesResponse.responseData.isNullOrEmpty()
                         && subServicePriceCategoriesResponse.responseData?.size!! > 0){

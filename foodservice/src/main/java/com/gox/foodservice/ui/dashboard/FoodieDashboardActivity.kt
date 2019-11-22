@@ -36,6 +36,7 @@ import com.gox.base.extensions.writePreferences
 import com.gox.base.location_service.BaseLocationService
 import com.gox.base.socket.SocketListener
 import com.gox.base.socket.SocketManager
+import com.gox.base.utils.Utils
 import com.gox.base.utils.ViewUtils
 import com.gox.foodservice.R
 import com.gox.foodservice.adapter.OrderItemListAdapter
@@ -310,60 +311,65 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
 
     private fun setPaymentDetails(order_invoice: OrderInvoice) {
         val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
-        if (order_invoice.gross.toDouble() > 0)
-            item_total_tv.text = currency + order_invoice.gross
+
+        var itemTotal = 0.0
+
+        order_invoice.items.forEach {
+            itemTotal += it.total_item_price
+        }
+
         when {
-            order_invoice.gross.toDouble() > 0 -> {
-                item_total_tv.text = currency + order_invoice.gross
+            itemTotal > 0 -> {
+                item_total_tv.text = Utils.getNumberFormat()?.format(itemTotal)?:""
                 item_total_lt.visibility = VISIBLE
             }
             else -> item_total_lt.visibility = GONE
         }
         when {
-            order_invoice.tax_amount.toDouble() > 0 -> {
-                servicetax_tv.text = currency + order_invoice.tax_amount
+            order_invoice.tax_amount > 0 -> {
+                servicetax_tv.text = Utils.getNumberFormat()?.format(order_invoice.tax_amount)?:""
                 service_tax_lt.visibility = VISIBLE
             }
             else -> service_tax_lt.visibility = GONE
         }
         when {
-            order_invoice.delivery_amount.toDouble() > 0 -> {
-                delivery_charge_tv.text = currency + order_invoice.delivery_amount
+            order_invoice.delivery_amount > 0 -> {
+                delivery_charge_tv.text = Utils.getNumberFormat()?.format(order_invoice.delivery_amount)?:""
                 delivery_charge_lt.visibility = VISIBLE
             }
             else -> delivery_charge_lt.visibility = GONE
         }
         when {
-            order_invoice.promocode_amount.toDouble() > 0 -> {
-                promocode_deduction_tv.text = currency + order_invoice.promocode_amount
+            order_invoice.promocode_amount > 0 -> {
+                promocode_deduction_tv.text = Utils.getNumberFormat()?.format(order_invoice.promocode_amount)?:""
                 promocode_deduction_lt.visibility = VISIBLE
             }
             else -> promocode_deduction_lt.visibility = GONE
         }
         when {
-            order_invoice.discount.toDouble() > 0 -> {
-                discount_amount_tv.text = currency + order_invoice.discount
+            order_invoice.discount > 0 -> {
+                discount_amount_tv.text = Utils.getNumberFormat()?.format(order_invoice.discount)?:""
                 discount_lt.visibility = VISIBLE
             }
             else -> discount_lt.visibility = GONE
         }
         when {
-            order_invoice.wallet_amount.toDouble() > 0 -> {
-                wallet_amount_tv.text = currency + order_invoice.wallet_amount
+            order_invoice.wallet_amount > 0 -> {
+                wallet_amount_tv.text = Utils.getNumberFormat()?.format(order_invoice.wallet_amount)?:""
                 wallet_amount_lt.visibility = VISIBLE
             }
             else -> wallet_amount_lt.visibility = GONE
         }
         when {
-            order_invoice.store_package_amount.toDouble() > 0 -> {
-                package_amount_tv.text = currency + order_invoice.store_package_amount
+            order_invoice.store_package_amount > 0 -> {
+                package_amount_tv.text = Utils.getNumberFormat()?.format(order_invoice.store_package_amount)?:""
                 package_amount_lt.visibility = VISIBLE
             }
             else -> package_amount_lt.visibility = GONE
         }
         when {
             order_invoice.payable > 0 -> {
-                total_value_tv.text = currency + order_invoice.payable
+                total_value_tv.text = Utils.getNumberFormat()?.format(order_invoice.payable)?:""
                 total_value_lt.visibility = VISIBLE
             }
             else -> total_value_lt.visibility = GONE

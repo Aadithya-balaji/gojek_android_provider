@@ -209,8 +209,9 @@ data class HistoryDetailModel(
                 val status: String? = "",
                 val user: User? = User(),
                 val dispute: Dispute? = Dispute(),
-                val user_id: Int? = 0
-        ) {
+                val user_id: Int? = 0,
+                val rating: Transport.Rating? = Transport.Rating()
+                ) {
             data class User(
                     val first_name: String? = "",
                     val id: Int? = 0,

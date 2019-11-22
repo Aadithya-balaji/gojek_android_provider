@@ -127,14 +127,14 @@ class OrderInvoice(
         var store_order_id: String = "",
         var payment_mode: String = "",
         var gross: String = "",
-        var discount: String = "",
-        var promocode_amount: String = "",
-        var wallet_amount: String = "",
-        var tax_amount: String = "",
-        var delivery_amount: String = "",
-        var store_package_amount: String = "",
-        var total_amount: String = "",
-        var cash: String = "",
+        var discount: Double = 0.0,
+        var promocode_amount: Double = 0.0,
+        var wallet_amount: Double = 0.0,
+        var tax_amount: Double = 0.0,
+        var delivery_amount: Double = 0.0,
+        var store_package_amount: Double = 0.0,
+        var total_amount: Double = 0.0,
+        var cash: Double = 0.0,
         var payable: Double = 0.0,
         var cart_details: String = "",
         var items: List<Item> = listOf()
@@ -149,9 +149,9 @@ class Item(
         var store_order_id: String = "",
         var company_id: String = "",
         var quantity: String = "",
-        var item_price: String = "",
-        var total_item_price: String = "",
-        var tot_addon_price: String = "",
+        var item_price: Double = 0.0,
+        var total_item_price: Double = 0.0,
+        var tot_addon_price: Double = 0.0,
         var note: String = "",
         var product_data: String = "",
         var product: Product = Product(),
@@ -166,7 +166,7 @@ class CartAddon(
         var store_item_addons_id: String = "",
         var store_addon_id: String = "",
         var company_id: String = "",
-        var addon_price: String = "",
+        var addon_price: Double = 0.0,
         var addon_name: String = ""
 ) : Serializable
 
@@ -193,7 +193,7 @@ class StoreType(
 
 class Product(
         var item_name: String = "",
-        var item_price: String = "",
+        var item_price: Double = 0.0,
         var id: String = "") : Serializable
 
 class StoreDetails(

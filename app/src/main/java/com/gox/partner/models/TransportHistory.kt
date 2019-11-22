@@ -138,7 +138,7 @@ data class Order(
     data class Rating(
             val id: Int? = 0,
             val provider_comment: String? = "",
-            val provider_rating: Int? = 0,
+            val provider_rating: Double? = 0.0,
             val store_rating: Double? = 0.0,
             val user_comment: String? = "",
             val user_rating: Double? = 0.0

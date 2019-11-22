@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
+import com.gox.base.utils.Utils
 import com.gox.foodservice.R
 import com.gox.foodservice.databinding.RowOderItemlistBinding
 import com.gox.foodservice.model.Item
@@ -27,17 +28,20 @@ class OrderItemListAdapter(var activity: FragmentActivity?, var itemList: List<I
         holder.mBinding.orderItemName.text =
                 itemList[position].product.item_name + " x " + itemList[position].quantity
 
-        holder.mBinding.orderItemCostTv.text =
+        /*holder.mBinding.orderItemCostTv.text =
                 activity!!.readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL) +
-                        itemList[position].product.item_price
+                        itemList[position].product.item_price*/
+        holder.mBinding.orderItemCostTv.text =
+                Utils.getNumberFormat()?.format(itemList[position].product.item_price)?:""
 
         if (itemList[position].cartaddon.isNotEmpty()) {
             holder.mBinding.addonItemCostTv.visibility = VISIBLE
             holder.mBinding.addonItemName.visibility = VISIBLE
             holder.mBinding.addonItemName.text = itemList[position].cartaddon[0].addon_name + " x 1"
-            holder.mBinding.addonItemCostTv.text =
+            /*holder.mBinding.addonItemCostTv.text =
                     activity!!.readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL) +
-                            itemList[position].cartaddon[0].addon_price
+                            itemList[position].cartaddon[0].addon_price*/
+            holder.mBinding.addonItemCostTv.text = Utils.getNumberFormat()?.format(itemList[position].cartaddon[0].addon_price)?:""
         } else {
             holder.mBinding.addonItemCostTv.visibility = GONE
             holder.mBinding.addonItemName.visibility = GONE

@@ -85,9 +85,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mViewModel.historyModelLiveData.observe(this,
                 Observer<HistoryDetailModel> {
                     loadingObservable.value = false
-                    when {
-                        serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> setupTransportDetail(it.responseData.transport)
-                        serviceType.equals(Constants.ModuleTypes.ORDER,true) -> setupOrderHistoryDetail(it.responseData.order)
+                    when(serviceType?.toUpperCase()) {
+                        Constants.ModuleTypes.TRANSPORT -> setupTransportDetail(it.responseData.transport)
+                        Constants.ModuleTypes.ORDER -> setupOrderHistoryDetail(it.responseData.order)
                         else -> setupServiceDetail(it.responseData.service)
                     }
                 })
@@ -307,7 +307,14 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 .into(mBinding.providerCimgv)
         mBinding.providerNameTv.text = (transPastDetail.user.first_name + " " +
                 transPastDetail.user.last_name)
-        mBinding.rvUser.rating = transPastDetail.provider_rated!!.toFloat()
+        mBinding.rvUser.rating = transPastDetail.user.rating!!.toFloat()
+
+        if (transPastDetail.rating!!.provider_comment != null && !transPastDetail.rating.provider_comment!!.isEmpty()) {
+            mBinding.itemLayout.visibility = View.VISIBLE
+            mBinding.idHistrydetailCommentValTv.text = transPastDetail.rating.provider_comment
+        } else {
+            mBinding.itemLayout.visibility = View.GONE
+        }
 
         if (transPastDetail.dispute != null) {
             mBinding.disputeBtn.text = getString(R.string.dispute_status)
@@ -344,6 +351,14 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.providerNameTv.text = (serviceDetail.user!!.first_name + " " + serviceDetail.user.last_name)
         mBinding.tvStatusValue.text = serviceDetail.status
         mBinding.rvUser.rating = serviceDetail.user!!.rating!!.toFloat()
+
+        if (serviceDetail.rating!!.provider_comment != null && !serviceDetail.rating.provider_comment!!.isEmpty()) {
+            mBinding.itemLayout.visibility = View.VISIBLE
+            mBinding.idHistrydetailCommentValTv.text = serviceDetail.rating.provider_comment
+        } else {
+            mBinding.itemLayout.visibility = View.GONE
+        }
+
         mBinding.lossSomething.visibility = View.GONE
         mBinding.destLayout.visibility = View.GONE
         mBinding.locationView.visibility = View.GONE
@@ -369,6 +384,14 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         Glide.with(this).load(orderDetail.user!!.picture).error(R.drawable.ic_user_place_holder)
                 .into(mBinding.providerCimgv)
         mBinding.rvUser.rating = orderDetail.user.rating!!.toFloat()
+
+        if (orderDetail.rating!!.provider_comment != null && !orderDetail.rating.provider_comment!!.isEmpty()) {
+            mBinding.itemLayout.visibility = View.VISIBLE
+            mBinding.idHistrydetailCommentValTv.text = orderDetail.rating.provider_comment
+        } else {
+            mBinding.itemLayout.visibility = View.GONE
+        }
+
         if (orderDetail.dispute != null) {
             mBinding.disputeBtn.text = getString(R.string.dispute_status)
             isShowDisputeStatus = true

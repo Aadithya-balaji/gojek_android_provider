@@ -95,7 +95,7 @@ data class XuperCheckRequest(
                 val currency: String? = "",
                 val distance: Double? = 0.0,
                 val finished_at: String? = "",
-                val id: Int? = 0,
+                val id: Int = 0,
                 val is_scheduled: String? = "",
                 val otp: String? = "",
                 val paid: Int? = 0,

@@ -36,6 +36,8 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     private var requestModel: ResponseData? = null
     //    private var strCheckRequestModel: String? = null
     private var checkRequestTimer: Timer? = null
+    private var roomConnected: Boolean = false
+    private var reqID: Int = 0
 
     override fun getLayoutId() = R.layout.activity_invoice_taxi
 
@@ -66,12 +68,9 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 
         SocketManager.setOnSocketRefreshListener(object : SocketListener.ConnectionRefreshCallBack {
             override fun onRefresh() {
-                if (PreferencesHelper.get(PreferencesKey.TRANSPORT_REQ_ID, 0) != 0)
-                    SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
+                SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.getTransportRoom(reqID))
             }
         })
-
-        SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
     }
 
     override fun onResume() {
@@ -129,6 +128,18 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     }
 
     private fun getIntentValues(strCheckRequestModel: ResponseData) {
+
+
+        if(!roomConnected){
+            reqID = strCheckRequestModel.request.id
+            PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
+            if (reqID!=0) {
+                roomConnected = true
+                SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.getTransportRoom(reqID))
+            }else{
+                roomConnected = false
+            }
+        }
 
         requestModel = strCheckRequestModel
         if (requestModel != null) {

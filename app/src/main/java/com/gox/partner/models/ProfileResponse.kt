@@ -81,7 +81,7 @@ data class Country(
 data class ProfileCity(
         var city_name: String = "",
         var country_id: Int? = 0,
-        var id: Int? = 0,
+        var id: Int = 0,
         var state_id: Int? = 0,
         var status: Any = Any()
 )

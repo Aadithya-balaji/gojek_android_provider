@@ -133,6 +133,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var endLatLng = LatLng(0.0, 0.0)
     private var checkStatusApiCounter = 0
     private var roomConnected: Boolean = false
+    private var reqID: Int = 0
+
     private var doubleBackToExit: Boolean = false
     private var distanceApiCallCount = 0
 
@@ -145,6 +147,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var tempPoint: LatLng? = null
     private var polylineKey = ""
     private var sosCall = ""
+    private var checkRequestTimer: Timer? = null
+
 
     override fun getLayoutId() = R.layout.activity_taxi_main
 
@@ -154,6 +158,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mViewModel = ViewModelProviders.of(this).get(TaxiDashboardViewModel::class.java)
         mViewModel.navigator = this
         context = this
+        checkRequestTimer = Timer()
         mBinding.lifecycleOwner = this
         mBinding.taximainmodule = mViewModel
         mViewModel.currentStatus.value = ""
@@ -166,6 +171,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         fab_taxi_menu.isIconAnimated = false
         fab_taxi_menu.setPadding(50, 50, 50, 50)
+
+        checkRequestTimer!!.schedule(object : TimerTask() {
+            override fun run() {
+                mViewModel.callTaxiCheckStatusAPI()
+            }
+        }, 0, 5000)
 
         observeLiveData(mViewModel.showLoading) {
             loadingObservable.value = it
@@ -286,6 +297,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         mViewModel.currentStatus.value = ""
                     }*/
 
+
+                    if(!roomConnected){
+                        reqID = checkStatusResponse.responseData.request.id
+                        PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
+                        if (reqID!=0) {
+                            SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.getTransportRoom(reqID))
+                        }
+
+                    }
+
                     //if (mSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) mSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                     if (mViewModel.currentStatus.value != checkStatusResponse.responseData.request.status) {
 
@@ -316,12 +337,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 
-                        if (!roomConnected) {
+                       /* if (!roomConnected) {
                             roomConnected = true
                             val reqID = checkStatusResponse.responseData.request.id
                             PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
                             SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
-                        }
+                        }*/
 
                         when (checkStatusResponse.responseData.request.status) {
                             SEARCHING -> {
@@ -418,17 +439,21 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             ViewUtils.showToast(this, resources.getString(R.string.request_canceled), true)
         })
 
+        SocketManager.onEvent(Constants.RoomName.STATUS, Emitter.Listener {
+            Log.e("SOCKET", "SOCKET_SK transport STATUS ")
+            if(it.isNotEmpty() && it[0].toString().contains(TRANSPORT)){
+                roomConnected = true
+            }
+        })
+
         SocketManager.onEvent(Constants.RoomName.RIDE_REQ, Emitter.Listener {
-            Log.e("SOCKET", "SOCKET_SK transport request " + it[0])
+            Log.e("SOCKET", "SOCKET_SK transport request ")
             mViewModel.callTaxiCheckStatusAPI()
         })
 
         SocketManager.setOnSocketRefreshListener(object : SocketListener.ConnectionRefreshCallBack {
             override fun onRefresh() {
-                if (roomConnected) {
-                    roomConnected = false
-                    SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
-                }
+                SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.getTransportRoom(reqID))
             }
         })
     }
@@ -680,12 +705,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             val locationObj = JSONObject()
             locationObj.put("latitude", location.latitude)
             locationObj.put("longitude", location.longitude)
-            locationObj.put("room", Constants.RoomId.TRANSPORT_ROOM)
+            locationObj.put("room", Constants.RoomId.getTransportRoom(reqID))
 //                    SocketManager.emit("send_location", locationObj)
             Log.e("SOCKET", "SOCKET_SK Location update called")
         }
 
-        if (!BuildConfig.isSocketEnabled) if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
+//        if (!BuildConfig.isSocketEnabled) if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
 
         if (startLatLng.latitude != 0.0) endLatLng = startLatLng
         startLatLng = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)

@@ -82,7 +82,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     private var googleApiClient: GoogleApiClient? = null
     private val FLOATING_OVERLAY_PERMISSION = 104
     private var checkRequestTimer: Timer? = null
-
+    private var cityID = 0
 
     override fun getLayoutId() = R.layout.activity_dashboard
 
@@ -275,10 +275,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         })
 
         observeLiveData(mViewModel.mProfileResponse) {
-            val cityID = it.profileData.city.id
+            cityID = it.profileData.city.id
             writePreferences(PreferencesKey.IS_ONLINE, it.profileData.is_online)
             PreferencesHelper.put(PreferencesKey.CITY_ID, cityID)
-            SocketManager.emit(Constants.RoomName.COMMON_ROOM_NAME, Constants.RoomId.COMMON_ROOM)
+            SocketManager.emit(Constants.RoomName.COMMON_ROOM_NAME, Constants.RoomId.getCommonRoom(cityID))
         }
 
         SocketManager.onEvent(Constants.RoomName.NEW_REQ, Emitter.Listener {
@@ -288,7 +288,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
         SocketManager.setOnSocketRefreshListener(object : SocketListener.ConnectionRefreshCallBack {
             override fun onRefresh() {
-                SocketManager.emit(Constants.RoomName.COMMON_ROOM_NAME, Constants.RoomId.COMMON_ROOM)
+                SocketManager.emit(Constants.RoomName.COMMON_ROOM_NAME, Constants.RoomId.getCommonRoom(cityID))
             }
         })
     }

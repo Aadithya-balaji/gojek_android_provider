@@ -9,6 +9,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -46,6 +47,8 @@ import com.gox.foodservice.ui.rating.FoodieRatingFragment
 import com.gox.foodservice.ui.verifyotp.FoodieVerifyOtpDialog
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activty_foodie_dashboard.*
+import org.json.JSONObject
+import java.util.*
 
 class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), FoodLiveTaskServiceNavigator {
 
@@ -56,6 +59,8 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     private var currentStatus = ""
     private var showingStoreDetail = true
     private var roomConnected: Boolean = false
+    private var reqID:Int = 0
+    private var checkRequestTimer: Timer? = null
 
     override fun getLayoutId() = R.layout.activty_foodie_dashboard
 
@@ -65,25 +70,31 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
         mViewDataBinding.foodLiveTaskviewModel = mViewModel
         mViewDataBinding.orderItemListAdpter = OrderItemListAdapter(this, listOf())
         mViewModel.navigator = this
+        checkRequestTimer = Timer()
 
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(mBroadcastReceiver, IntentFilter(BaseLocationService.BROADCAST))
 
         mViewModel.showLoading = loadingObservable
         mViewModel.showLoading.value = true
-        mViewModel.callFoodieCheckRequest()
+//        mViewModel.callFoodieCheckRequest()
+
+        checkRequestTimer!!.schedule(object : TimerTask() {
+            override fun run() {
+                mViewModel.callFoodieCheckRequest()
+            }
+        }, 0, 5000)
 
         SocketManager.onEvent(Constants.RoomName.ORDER_REQ, Emitter.Listener {
             Log.e("SOCKET", "SOCKET_SK ORDER request " + it[0])
             mViewModel.callFoodieCheckRequest()
         })
 
+
+
         SocketManager.setOnSocketRefreshListener(object : SocketListener.ConnectionRefreshCallBack {
             override fun onRefresh() {
-                if (roomConnected) {
-                    roomConnected = false
-                    SocketManager.emit(Constants.RoomName.ORDER_ROOM_NAME, Constants.RoomId.ORDER_ROOM)
-                }
+                SocketManager.emit(Constants.RoomName.ORDER_ROOM_NAME, Constants.RoomId.getOrderRoom(reqID))
             }
         })
 
@@ -130,15 +141,29 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
         mViewModel.callFoodieCheckRequest()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        checkRequestTimer?.cancel()
+    }
+
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-                if (checkStatusApiCounter++ % 3 == 0)
+               /* if (checkStatusApiCounter++ % 3 == 0)
                     mViewModel.callFoodieCheckRequest()
-                else loadingObservable.value = false
+                else loadingObservable.value = false*/
+
+                if (roomConnected) {
+                    val locationObj = JSONObject()
+                    locationObj.put("latitude", location.latitude)
+                    locationObj.put("longitude", location.longitude)
+                    locationObj.put("room", Constants.RoomId.getOrderRoom(reqID))
+                    SocketManager.emit("send_location", locationObj)
+                    Log.e("SOCKET", "SOCKET_SK Location update called $locationObj")
+                }
             }
         }
     }
@@ -158,12 +183,14 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                     mViewModel.orderId.value = it.responseData.requests.id
                     currentStatus = it.responseData.requests.status
 
-                    val reqID = mViewModel.orderId.value
-
-                    if (!roomConnected && reqID!=0) {
-                        roomConnected = true
+                    if (!roomConnected) {
+                        reqID = it.responseData.requests.id
                         PreferencesHelper.put(PreferencesKey.ORDER_REQ_ID, reqID)
-                        SocketManager.emit(Constants.RoomName.ORDER_ROOM_NAME, Constants.RoomId.ORDER_ROOM)
+                        Handler().postDelayed({
+                            if(reqID!=0){
+                                SocketManager.emit(Constants.RoomName.ORDER_ROOM_NAME, Constants.RoomId.getOrderRoom(reqID))
+                            }
+                        },1000)
                     }
 
                     writePreferences(Constants.Chat.ADMIN_SERVICE, ORDER)

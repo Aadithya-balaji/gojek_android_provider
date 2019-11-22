@@ -121,7 +121,7 @@ data class Request(
         var distance: Double? = 0.0,
         var finished_at: String = "",
         var finished_time: String = "",
-        var id: Int? = 0,
+        var id: Int = 0,
         var is_scheduled: String = "",
         var is_track: String = "",
         var otp: String = "",

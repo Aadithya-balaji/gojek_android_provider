@@ -101,6 +101,22 @@ object Constants {
         var TRANSPORT_ROOM: String = "room_${RoomConstants.COMPANY_ID}_R${RoomConstants.TRANSPORT_REQ_ID}_TRANSPORT"
         var SERVICE_ROOM: String = "room_${RoomConstants.COMPANY_ID}_R${RoomConstants.SERVICE_REQ_ID}_SERVICE"
         var ORDER_ROOM: String = "room_${RoomConstants.COMPANY_ID}_R${RoomConstants.ORDER_REQ_ID}_ORDER"
+
+        fun getCommonRoom(cityID:Int):String{
+            return "room_${RoomConstants.COMPANY_ID}_${cityID}"
+        }
+
+        fun getTransportRoom(reqID:Int):String{
+            return "room_${RoomConstants.COMPANY_ID}_R${reqID}_TRANSPORT"
+        }
+
+        fun getServiceRoom(reqID:Int):String{
+            return "room_${RoomConstants.COMPANY_ID}_R${reqID}_SERVICE"
+        }
+
+        fun getOrderRoom(reqID:Int):String{
+            return "room_${RoomConstants.COMPANY_ID}_R${reqID}_ORDER"
+        }
     }
 
     object ModuleTypes {

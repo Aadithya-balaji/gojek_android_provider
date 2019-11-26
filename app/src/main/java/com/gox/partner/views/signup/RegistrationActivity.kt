@@ -37,6 +37,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.gox.base.BuildConfig.SALT_KEY
 import com.gox.base.base.BaseActivity
+import com.gox.base.base.BaseApplication
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
@@ -395,8 +396,14 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                 configurationBuilder.build())
         startActivityForResult(intent, FB_ACCOUNT_KIT_CODE)*/
 
-        mViewModel.loadingProgress.value = true
-        mViewModel.sendOTP()
+        if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SEND_SMS, false)) {
+            mViewModel.loadingProgress.value = true
+            mViewModel.sendOTP()
+        } else {
+            mViewModel.loadingProgress.value = true
+            mViewModel.postSignUp()
+        }
+
     }
 
     private fun initFacebook() {

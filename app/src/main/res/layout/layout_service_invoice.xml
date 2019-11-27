@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/taxi_invoice_base_fare" />
 
@@ -22,8 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
-
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp" />
 
 
@@ -37,7 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/tax_fare" />
 
@@ -60,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/wallet" />
 
@@ -83,7 +82,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/extra_charge" />
 
@@ -106,7 +105,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/taken_time" />
 
@@ -130,6 +129,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp"
+            style="@style/SmallText"
             android:text="@string/waiting_amount" />
 
         <TextView

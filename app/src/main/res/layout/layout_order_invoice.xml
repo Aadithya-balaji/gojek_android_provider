@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/cart_Subtotal" />
 
@@ -37,7 +37,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/tax_fare" />
 
@@ -61,9 +61,9 @@
         android:padding="@dimen/_1sdp">
 
         <TextView
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
             android:padding="@dimen/_5sdp"
             android:text="@string/delivery_charge" />
 
@@ -87,6 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp"
+            style="@style/SmallText"
             android:text="@string/packaging_charge" />
 
         <TextView
@@ -108,8 +109,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
             android:padding="@dimen/_5sdp"
+            style="@style/SmallText"
             android:text="@string/wallet" />
 
         <TextView
@@ -133,7 +134,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/promo_code" />
 

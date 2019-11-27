@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/taxi_invoice_base_fare" />
 
@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/tax_fare" />
 
@@ -66,7 +66,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/hourly_fare" />
 
@@ -88,7 +88,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/taxi_invoice_distance_fare" />
 
@@ -111,7 +111,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/taxiprovider_pay" />
 
@@ -133,7 +133,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/wallet_detection" />
 
@@ -156,7 +156,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/discount_applied" />
 
@@ -179,7 +179,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/tips" />
 
@@ -203,6 +203,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp"
+            style="@style/SmallText"
             android:text="@string/waiting_amount" />
 
         <TextView
@@ -223,7 +224,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/toll_charge" />
 

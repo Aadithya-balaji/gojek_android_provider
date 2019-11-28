@@ -1,9 +1,12 @@
 package com.gox.partner.views.history_details
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -17,6 +20,7 @@ import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
+import com.gox.base.utils.Utils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityCurrentorderDetailLayoutBinding
@@ -24,6 +28,7 @@ import com.gox.partner.databinding.DisputeResonDialogBinding
 import com.gox.partner.databinding.DisputeStatusBinding
 import com.gox.partner.models.*
 import com.gox.partner.utils.CommonMethods
+import com.gox.partner.utils.Constant
 import com.gox.partner.views.adapters.DisputeReasonListAdapter
 import com.gox.partner.views.adapters.ReasonListClickListener
 import com.gox.partner.views.dashboard.DashBoardViewModel
@@ -159,7 +164,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
     override fun onClickViewReceipt() = showInvoiceAlertDialog()
 
-    private fun showInvoiceAlertDialog() {
+    /*private fun showInvoiceAlertDialog() {
         val invoiceDialogView = LayoutInflater.from(this).inflate(R.layout.view_recepit, null, false)
         val builder = AlertDialog.Builder(this)
         builder.setView(invoiceDialogView)
@@ -189,7 +194,297 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             }
         }
         alertDialog.show()
+    }*/
+
+    private fun showInvoiceAlertDialog() {
+        val invoiceDialogView = LayoutInflater.from(this).inflate(R.layout.view_recepit,
+                null, false);
+
+        val builder = AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog)
+        builder.setView(invoiceDialogView)
+
+
+        //finally creating the alert dialog and displaying it
+        val alertDialog = builder.create()
+        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+        alertDialog.findViewById<ImageView>(R.id.cancel_dialog_img)!!
+                .setOnClickListener { alertDialog.dismiss() }
+
+        val tvDeliveryCharge:TextView? = alertDialog.findViewById(R.id.deliverycharges_tv)
+        val tvTips:TextView? = alertDialog.findViewById(R.id.tvTips)
+        val tvPackagingCharge:TextView? = alertDialog.findViewById(R.id.packing_charge_tv)
+        val tvItemPrice:TextView? = alertDialog.findViewById(R.id.gross_pay_tv)
+        val tvTaxFare:TextView? = alertDialog.findViewById(R.id.taxfare_tv)
+        val tvTotalPayable:TextView? = alertDialog.findViewById(R.id.total_charge_value_tv)
+        val tvBaseFare:TextView? = alertDialog.findViewById(R.id.basefare_tv)
+        val tvWalletFare:TextView? = alertDialog.findViewById(R.id.wallet_tv)
+        val tvHourlyFare:TextView? = alertDialog.findViewById(R.id.hourlyfare_tv)
+        val tvDiscountApplied:TextView? = alertDialog.findViewById(R.id.disscount_applied_tv)
+        val tvDistanceFare:TextView? = alertDialog.findViewById(R.id.tvDistanceFare)
+        val tvTollCharge:TextView? = alertDialog.findViewById(R.id.tvTollCharge)
+        val tvExtraCharge:TextView? = alertDialog.findViewById(R.id.tvExtraCharge)
+        val tvTotalAmount:TextView? = alertDialog.findViewById(R.id.tvTotalAmount)
+        val tvRoundOff:TextView? = alertDialog.findViewById(R.id.tvRoundOff)
+
+        val rlPackage: RelativeLayout? = alertDialog.findViewById(R.id.packngCharges_layout)
+        val rlDeliveryCharge: RelativeLayout? = alertDialog.findViewById(R.id.deliverycharges_layout)
+        val rlItemPrice: RelativeLayout? = alertDialog.findViewById(R.id.gross_pay_layout)
+        val rlBaseFare: RelativeLayout? = alertDialog.findViewById(R.id.basefare_layout)
+        val rlHourlyFare: RelativeLayout? = alertDialog.findViewById(R.id.hourlyfare_layout)
+        val rlDistanceFare: RelativeLayout? = alertDialog.findViewById(R.id.distanceFare_layout)
+        val rlTips: RelativeLayout? = alertDialog.findViewById(R.id.rlTips)
+        val rlTollCharge: RelativeLayout? = alertDialog.findViewById(R.id.rlTollCharge)
+        val rlExtraCharges: RelativeLayout? = alertDialog.findViewById(R.id.rlExtraCharges)
+        val rlWalletDeduction: RelativeLayout? = alertDialog.findViewById(R.id.rlWalletDeduction)
+        val rlRoundOff: RelativeLayout? = alertDialog.findViewById(R.id.rlRoundOff)
+        val rlDiscount: RelativeLayout? = alertDialog.findViewById(R.id.rlDiscount)
+        val rlTotal: RelativeLayout? = alertDialog.findViewById(R.id.rlTotal)
+
+
+        when(serviceType?.toUpperCase()){
+
+            Constants.ModuleTypes.ORDER ->{
+
+                when {
+                    (mViewModel.orderDetail.value?.order_invoice?.wallet_amount?:0.0) >0 -> {
+                        rlWalletDeduction?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlWalletDeduction?.visibility = View.GONE
+                    }
+                }
+
+                when {
+                    (mViewModel.orderDetail.value?.order_invoice?.promocode_amount?:0.0) >0 -> {
+                        rlDiscount?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlDiscount?.visibility = View.GONE
+                    }
+                }
+
+
+                when {
+                    ((mViewModel.orderDetail.value?.order_invoice?.delivery_amount?:0.0) > 0.0) -> {
+                        tvDeliveryCharge?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        tvDeliveryCharge?.visibility = View.GONE
+                    }
+                }
+
+                when {
+                    ((mViewModel.orderDetail.value?.order_invoice?.store_package_amount?:0.0) > 0.0) -> {
+                        rlPackage?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlPackage?.visibility = View.GONE
+                    }
+                }
+
+                when {
+                    ((mViewModel.orderDetail.value?.order_invoice!!.delivery_amount?:0.0) > 0.0) -> {
+                        rlDeliveryCharge?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlDeliveryCharge?.visibility = View.GONE
+                    }
+                }
+
+
+            }
+
+            Constants.ModuleTypes.TRANSPORT ->{
+
+                when {
+                    (mViewModel.transportDetail.value?.payment!!.toll_charge?:0.0) >0 -> {
+                        rlTollCharge?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlTollCharge?.visibility = View.GONE
+                    }
+                }
+
+
+                when {
+                    ((mViewModel.transportDetail.value?.payment!!.round_of?:0.0) !=0.0) -> {
+                        rlRoundOff?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlRoundOff?.visibility = View.GONE
+                    }
+                }
+
+                when {
+                    (mViewModel.transportDetail.value?.payment?.wallet?:0.0) >0 -> {
+                        rlWalletDeduction?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlWalletDeduction?.visibility = View.GONE
+                    }
+                }
+
+                when {
+                    (mViewModel.transportDetail.value?.payment!!.tips?:0.0) >0 -> {
+                        rlTips?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlTips?.visibility = View.GONE
+                    }
+                }
+
+                when {
+
+                    (mViewModel.transportDetail.value?.payment!!.discount?:0.0) >0 -> {
+                        rlDiscount?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlDiscount?.visibility = View.GONE
+                    }
+                }
+            }
+
+            Constants.ModuleTypes.SERVICE ->{
+
+                when {
+                    (mViewModel.serviceDetail.value?.payment?.extra_charges?:0.0) >0 -> {
+                        rlExtraCharges?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlExtraCharges?.visibility = View.GONE
+                    }
+                }
+
+
+                when {
+                    ((mViewModel.serviceDetail.value?.payment!!.round_of?:0.0) !=0.0) -> {
+                        rlRoundOff?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlRoundOff?.visibility = View.GONE
+                    }
+                }
+
+                when {
+                    (mViewModel.serviceDetail.value?.payment?.wallet?:0.0) >0 -> {
+                        rlWalletDeduction?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlWalletDeduction?.visibility = View.GONE
+                    }
+                }
+
+                when {
+                    (mViewModel.serviceDetail.value?.payment!!.tips?:0.0) >0 -> {
+                        rlTips?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlTips?.visibility = View.GONE
+                    }
+                }
+
+                when {
+
+                    mViewModel.serviceDetail.value?.payment!!.discount >0 -> {
+                        rlDiscount?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlDiscount?.visibility = View.GONE
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+        /*when {
+            ((transpotResponseData.order_invoice!!.item_price?:0.0) > 0.0) -> {
+                rlItemPrice?.visibility = View.VISIBLE
+            }
+            else -> {
+                rlItemPrice?.visibility = View.GONE
+            }
+        }*/
+
+
+
+
+        when (serviceType?.toUpperCase()) {
+            Constants.ModuleTypes.ORDER -> {
+                rlBaseFare?.visibility = View.GONE
+                rlHourlyFare?.visibility = View.GONE
+                rlDistanceFare?.visibility = View.GONE
+                rlTollCharge?.visibility = View.GONE
+                rlTotal?.visibility = View.GONE
+                rlTips?.visibility = View.GONE
+                rlExtraCharges?.visibility = View.GONE
+                rlRoundOff?.visibility = View.GONE
+
+                val itemPrice:Double = mViewModel.orderDetail.value?.order_invoice?.items?.sumByDouble { it?.item_price?:0.0 }?:0.0
+
+                tvItemPrice?.text = Utils.getNumberFormat()?.format(itemPrice)?:"0.0"
+                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.tax_amount?:0.0)?:"0.0"
+                tvPackagingCharge?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.store_package_amount?:0.0)?:"0.0"
+                tvDeliveryCharge?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.delivery_amount?:0.0)?:"0.0"
+                tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.promocode_amount)}"
+                tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.total_amount?:0.0)?:"0.0"
+
+            }
+            Constants.ModuleTypes.TRANSPORT -> {
+                rlPackage?.visibility = View.GONE
+                rlDeliveryCharge?.visibility = View.GONE
+                rlItemPrice?.visibility = View.GONE
+                rlExtraCharges?.visibility = View.GONE
+
+                tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.fixed)?:"0.0"
+                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.tax)?:"0.0"
+                tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour)?:"0.0"
+                tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.distance)?:"0.0"
+                tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.tips)?:"0.0"
+                tvTollCharge?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.toll_charge)?:"0.0"
+                tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.wallet)?:"0.0"
+                tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.total)?:"0.0"
+                tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.round_of)?:"0.0"
+                tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.discount)}"
+                tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.payable)?:"0.0"
+            }
+
+
+            Constants.ModuleTypes.SERVICE -> {
+                rlPackage?.visibility = View.GONE
+                rlDeliveryCharge?.visibility = View.GONE
+                rlItemPrice?.visibility = View.GONE
+                rlTollCharge?.visibility = View.GONE
+
+                tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.fixed)?:"0.0"
+                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.tax)?:"0.0"
+                tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.hour)?:"0.0"
+                tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.distance)?:"0.0"
+                tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.tips)?:"0.0"
+                tvExtraCharge?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.extra_charges)?:"0.0"
+                tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.wallet)?:"0.0"
+                tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.round_of)?:"0.0"
+                tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.discount)?:"0.0"}"
+//                tvTips?.text = (Constant.currency + transpotResponseData.payment!!.tips)
+
+                val total:Double? = (mViewModel.serviceDetail.value?.payment?.fixed?:0.0).plus(mViewModel.serviceDetail.value?.payment?.tax?:0.0).plus(mViewModel.serviceDetail.value?.payment?.hour?:0.0).plus(mViewModel.serviceDetail.value?.payment!!.distance?:0.0).plus(mViewModel.serviceDetail.value?.payment!!.tips?:0.0).plus(mViewModel.serviceDetail.value?.payment!!.extra_charges?:0.0)
+                tvTotalAmount?.text = Utils.getNumberFormat()?.format(total)?:"0.0"
+
+                val payable:Double? = (total?:0.0).minus(mViewModel.serviceDetail.value?.payment!!.wallet?:0.0).minus(mViewModel.serviceDetail.value?.payment!!.discount?:0.0).plus(mViewModel.serviceDetail.value?.payment!!.round_of?:0.0)
+
+                tvTotalPayable?.text = Utils.getNumberFormat()?.format(payable)?:"0.0"
+            }
+        }
+
+
+
+        alertDialog.show()
     }
+
 
     override fun onClickLossItem() {
     }
@@ -399,7 +694,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
 
-    private fun setUpTransportInvoice(alertDialog: AlertDialog) {
+    /*private fun setUpTransportInvoice(alertDialog: AlertDialog) {
         val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
         alertDialog.findViewById<TextView>(R.id.tvTaxiFare)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.tax)
@@ -415,9 +710,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
         alertDialog.findViewById<TextView>(R.id.tvTaxiDistanceFare)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.distance)
-
-        alertDialog.findViewById<TextView>(R.id.tvTaxiProviderFare)!!.text = (currency
-                + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.provider_pay)
 
         alertDialog.findViewById<TextView>(R.id.tvTaxiDiscount)!!.text = (currency
                 + mViewModel.historyModelLiveData.value!!.responseData.transport.payment!!.discount)
@@ -459,7 +751,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.promocode_amount)
         alertDialog.findViewById<TextView>(R.id.tvInvoiceTotal)!!.text = (currency +
                 mViewModel.historyModelLiveData.value!!.responseData.order.order_invoice!!.total_amount.toString())
-    }
+    }*/
 
     override fun showErrorMessage(error: String) {
         ViewUtils.showToast(this, error, false)

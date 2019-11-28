@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
 
 
-
     <RelativeLayout
+        android:id="@+id/base_Fare_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/base_Fare_layout"
         android:layout_marginTop="@dimen/_5sdp"
         android:padding="@dimen/_1sdp">
 
         <TextView
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/taxi_invoice_base_fare" />
 
         <TextView
             android:id="@+id/tvBaseFare"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
-
-            android:padding="@dimen/_5sdp" />
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
 
 
     </RelativeLayout>
@@ -38,204 +40,235 @@
         android:padding="@dimen/_1sdp">
 
         <TextView
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/tax_fare" />
 
         <TextView
             android:id="@+id/tvTaxiFare"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
-            android:padding="@dimen/_5sdp" />
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
 
 
     </RelativeLayout>
 
 
-
     <RelativeLayout
+        android:id="@+id/hourlyfare_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/hourlyfare_layout"
         android:padding="@dimen/_1sdp">
 
         <TextView
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/hourly_fare" />
 
         <TextView
             android:id="@+id/tvTaxiHourlyFare"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:padding="@dimen/_5sdp" />
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
 
 
     </RelativeLayout>
+
     <RelativeLayout
+        android:id="@+id/distancefare_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/distancefare_layout"
         android:padding="@dimen/_1sdp">
 
         <TextView
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/taxi_invoice_distance_fare" />
 
         <TextView
             android:id="@+id/tvTaxiDistanceFare"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:padding="@dimen/_5sdp" />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/providerpay_layout"
-        android:padding="@dimen/_1sdp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
-            android:text="@string/taxiprovider_pay" />
-
-        <TextView
-            android:id="@+id/tvTaxiProviderFare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:padding="@dimen/_5sdp" />
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
 
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rlTips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_1sdp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             style="@style/SmallText"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/wallet_detection" />
-
-        <TextView
-            android:id="@+id/tvTaxiWalletAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
-            android:padding="@dimen/_5sdp" />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_1sdp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/SmallText"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/discount_applied" />
-
-        <TextView
-            android:id="@+id/tvTaxiDiscount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
-            android:padding="@dimen/_5sdp" />
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_1sdp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/SmallText"
             android:padding="@dimen/_5sdp"
             android:text="@string/tips" />
 
         <TextView
             android:id="@+id/tvTaxiTips"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
             android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rlTollCharge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_1sdp">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             style="@style/SmallText"
-            android:text="@string/waiting_amount" />
-
-        <TextView
-            android:id="@+id/tvTaxiWaitingTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
             android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_10sdp" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/_1sdp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/SmallText"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/toll_charge" />
+            android:text="@string/toll_charge"
+            android:textSize="@dimen/_12sdp" />
 
         <TextView
             android:id="@+id/tvTaxiTollCharge"
+            style="@style/SmallText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
             android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_10sdp" />
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
 
     </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlWallet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_1sdp">
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/wallet_detection" />
+
+        <TextView
+            android:id="@+id/tvTaxiWalletAmount"
+            style="@style/SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_background_color"
+        android:padding="@dimen/_1sdp">
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="Total" />
+
+        <TextView
+            android:id="@+id/tvTotal"
+            style="@style/SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlDiscount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_1sdp">
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/discount_applied" />
+
+        <TextView
+            android:id="@+id/tvTaxiDiscount"
+            style="@style/SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
+
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlRoundOff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_1sdp">
+
+        <TextView
+            style="@style/SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/round_off" />
+
+        <TextView
+            android:id="@+id/tvTaxiWaitingTime"
+            style="@style/SmallText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:padding="@dimen/_5sdp"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00" />
+
+    </RelativeLayout>
+
+
 </LinearLayout>

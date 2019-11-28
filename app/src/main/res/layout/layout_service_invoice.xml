@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -14,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/SmallText"
+            android:textSize="@dimen/_12sdp"
             android:padding="@dimen/_5sdp"
             android:text="@string/taxi_invoice_base_fare" />
 
@@ -23,6 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             style="@style/SmallText"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00"
             android:padding="@dimen/_5sdp" />
 
 
@@ -45,7 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00"
             android:padding="@dimen/_5sdp" />
 
 
@@ -68,7 +74,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00"
             android:padding="@dimen/_5sdp" />
 
 
@@ -91,7 +99,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00"
             android:padding="@dimen/_5sdp" />
 
 
@@ -114,9 +124,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:fontFamily="@font/avenirltstd_medium"
+            style="@style/SmallText"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00"
             android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_10sdp" />
+            />
 
     </RelativeLayout>
 
@@ -138,7 +150,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:padding="@dimen/_5sdp"
-            android:textSize="@dimen/_10sdp" />
+            style="@style/SmallText"
+            android:textSize="@dimen/_12sdp"
+            tools:text="$10.00"
+            />
 
     </RelativeLayout>
 </LinearLayout>

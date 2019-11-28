@@ -254,7 +254,12 @@ data class HistoryDetailModel(
                     val service_request_id: Int? = 0,
                     val tax: Double? = 0.0,
                     val total: Double? = 0.0,
-                    val wallet: Double? = 0.0
+                    val discount: Double = 0.0,
+                    val round_of: Double? = 0.0,
+                    val tips: Double? = 0.0,
+                    val wallet: Double? = 0.0,
+                    val hour: Double? = 0.0,
+                    val distance: Double? = 0.0
             )
         }
 

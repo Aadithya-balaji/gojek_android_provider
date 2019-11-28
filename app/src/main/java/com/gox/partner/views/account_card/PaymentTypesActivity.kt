@@ -72,6 +72,11 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
         getIntentValues()
         val payTypes = object : TypeToken<List<ConfigPayment>>() {}.type
         paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), payTypes)
+        paymentList = paymentList!!.filter { it.status == "1" }
+
+        val cardPaymentAvailable = paymentList!!.any { it.name.equals(Constants.PaymentMode.CARD,true) }
+        mBinding.rlPaymentCard.visibility = if(cardPaymentAvailable)View.VISIBLE else View.GONE
+
         val linearLayoutManager = LinearLayoutManager(this)
         mBinding.rvPaymentModes.layoutManager = linearLayoutManager
         paymentModeAdapter = PaymentModeAdapter(context, paymentList!!, mViewModel, isFromWallet)

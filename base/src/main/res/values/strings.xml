@@ -24,4 +24,6 @@
     <string name="TooManyRequestlimitExceeded" tools:ignore="MissingTranslation">Too many request, limit exceeded…</string>
     <string name="DirectionsServiceNotEnabled" tools:ignore="MissingTranslation">Directions service not enabled…</string>
     <string name="ServerError" tools:ignore="MissingTranslation">Server Error…</string>
+    <string name="discount">Discount</string>
+
 </resources>

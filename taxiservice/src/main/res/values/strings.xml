@@ -75,5 +75,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="click_back_exit">Please click back again to exit</string>
+    <string name="payable">Payable</string>
 
 </resources>

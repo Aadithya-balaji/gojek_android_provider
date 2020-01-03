@@ -12,7 +12,9 @@ import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Retrofit
 import java.io.IOException
+import java.net.ConnectException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -53,6 +55,8 @@ open class BaseRepository {
                     SessionManager.clearSession()
                 getErrorMessage(e.response().errorBody()!!)
             }
+            is UnknownHostException ->NetworkError.UNKNOWN_HOST_EXCEPTION
+            is ConnectException ->NetworkError.UNKNOWN_HOST_EXCEPTION
             is SocketTimeoutException -> NetworkError.TIME_OUT
             is IOException -> NetworkError.IO_EXCEPTION
             else -> NetworkError.SERVER_EXCEPTION

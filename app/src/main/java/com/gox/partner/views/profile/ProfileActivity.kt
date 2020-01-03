@@ -40,10 +40,12 @@ import com.gox.partner.views.citylist.CityListActivity
 import com.gox.partner.views.countrylist.CountryListActivity
 import com.gox.partner.views.verifyotp.VerifyOTPActivity
 import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
@@ -199,20 +201,17 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     }
 
     private fun checkPermission() = Dexter.withActivity(this)
-            .withPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .withListener(object : PermissionListener {
-                override fun onPermissionGranted(response: PermissionGrantedResponse?) {
+            .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.CAMERA)
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                     CropImage.startPickImageActivity(this@ProfileActivity)
                 }
 
-                override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
+                override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
                     token?.continuePermissionRequest()
                 }
-
-                override fun onPermissionDenied(response: PermissionDeniedResponse?) {
-                    ViewUtils.showToast(applicationContext, "Unable to perform this action", false)
-                }
-
             }).check()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

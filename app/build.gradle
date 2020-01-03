@@ -97,13 +97,12 @@ dependencies {
 
     implementation 'com.github.GoodieBag:Pinview:v1.4'
 
-
     implementation project(':base')
     implementation project(':foodservice')
     implementation project(':taxiservice')
     implementation project(':xuberservice')
     implementation project(':countrycodepicker')
-    implementation project(':cropperlibrary')
+  //  implementation project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

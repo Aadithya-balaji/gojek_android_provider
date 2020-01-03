@@ -330,6 +330,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:text="@string/discount"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvDiscount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:gravity="end"
+                        android:text="@={invoicemodel.discount}"
+                        android:textSize="@dimen/_12sdp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:orientation="horizontal"
                     android:weightSum="1">
 
@@ -446,14 +472,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_12sdp"
-                    android:background="#DEDEDE"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/_5sdp"
-                    android:paddingTop="@dimen/_10sdp"
-                    android:paddingRight="@dimen/_5sdp"
-                    android:paddingBottom="@dimen/_10sdp"
+                    android:layout_marginTop="8dp"
                     android:weightSum="1">
 
                     <TextView
@@ -463,19 +482,51 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.60"
                         android:text="@string/taxi_invoice_total"
-                        android:textAllCaps="true"
+                        android:fontFamily="@font/avenirltstd_bold"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="16sp" />
 
                     <TextView
                         android:id="@+id/tv_invoice_total"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.40"
-                        android:fontFamily="@font/avenirltstd_medium"
+                        android:fontFamily="@font/avenirltstd_bold"
                         android:gravity="end"
                         android:text="@={invoicemodel.total}"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:background="#DEDEDE"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_10sdp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_bold"
+                        android:text="@string/payable"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvPayable"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_bold"
+                        android:gravity="end"
+                        android:text="@={invoicemodel.payableAmount}"
+                        android:textColor="@color/blue_color"
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 

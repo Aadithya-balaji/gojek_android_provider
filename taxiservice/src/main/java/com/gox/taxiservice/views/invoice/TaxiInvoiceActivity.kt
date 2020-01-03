@@ -86,7 +86,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         }
         observeLiveData(mViewModel.checkStatusTaxiLiveData) {
             if (it?.statusCode.equals("200")) {
-                if (it.responseData.request!=null) {
+                if (it.responseData.request != null) {
                     getIntentValues(it.responseData)
                     when (it.responseData.request.status) {
                         Constants.RideStatus.COMPLETED -> {
@@ -97,12 +97,11 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                             }
                         }
 
-                        "" ->{
+                        "" -> {
                             finish()
                         }
                     }
-                }
-                else
+                } else
                     finish()
             }
         }
@@ -130,13 +129,13 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     private fun getIntentValues(strCheckRequestModel: ResponseData) {
 
 
-        if(!roomConnected){
+        if (!roomConnected) {
             reqID = strCheckRequestModel.request.id
             PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
-            if (reqID!=0) {
+            if (reqID != 0) {
                 roomConnected = true
                 SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.getTransportRoom(reqID))
-            }else{
+            } else {
                 roomConnected = false
             }
         }
@@ -152,9 +151,11 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
             mViewModel.dropLocation.value = requestModel!!.request.d_address
             mViewModel.bookingId.value = requestModel!!.request.booking_id
             mViewModel.distance.value = requestModel!!.request.distance.toString() + requestModel!!.request.unit
-            mViewModel.timeTaken.value = requestModel!!.request.travel_time+" mins"
+            mViewModel.timeTaken.value = requestModel!!.request.travel_time + " mins"
             mViewModel.baseFare.value = requestModel!!.request.currency + requestModel!!.request.payment.fixed.toString()
             mViewModel.waitingCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.waiting_amount.toString()
+            mViewModel.discount.set("-" + requestModel!!.request.currency + requestModel!!.request.payment.discount.toString())
+            mViewModel.payableAmount.set(requestModel!!.request.currency + requestModel!!.request.payment.payable.toString())
             mViewModel.distanceFare.value = requestModel!!.request.currency + requestModel!!.request.payment.distance.toString()
             mViewModel.tax.value = requestModel!!.request.currency + requestModel!!.request.payment.tax.toString()
             mViewModel.tips.value = requestModel!!.request.currency + requestModel!!.request.payment.tips.toString()
@@ -216,7 +217,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         val bundle = Bundle()
         bundle.putString("id", data!!.request.id.toString())
         bundle.putString("admin_service", data.provider_details.service.admin_service.toString())
-        if(!data.request?.user?.picture.isNullOrEmpty())
+        if (!data.request?.user?.picture.isNullOrEmpty())
             bundle.putString("profileImg", data.request.user?.picture)
         else
             bundle.putString("profileImg", "")

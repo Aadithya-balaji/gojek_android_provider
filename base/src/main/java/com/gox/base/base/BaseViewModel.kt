@@ -14,7 +14,9 @@ import okhttp3.ResponseBody
 import org.json.JSONObject
 import java.io.IOException
 import java.lang.ref.WeakReference
+import java.net.ConnectException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 open class BaseViewModel<N> : ViewModel() {
 
@@ -50,6 +52,8 @@ open class BaseViewModel<N> : ViewModel() {
             }
             is SocketTimeoutException -> NetworkError.TIME_OUT
             is IOException -> NetworkError.IO_EXCEPTION
+            is UnknownHostException ->NetworkError.UNKNOWN_HOST_EXCEPTION
+            is ConnectException ->NetworkError.UNKNOWN_HOST_EXCEPTION
             else -> NetworkError.SERVER_EXCEPTION
         }
     }

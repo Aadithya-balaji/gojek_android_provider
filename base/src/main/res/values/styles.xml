@@ -76,7 +76,6 @@
         <item name="boxCornerRadiusBottomEnd">25dp</item>
         <item name="boxCornerRadiusTopStart">25dp</item>
         <item name="boxCornerRadiusTopEnd">25dp</item>
-        <item name="hintTextColor">@color/colorOverflowText</item>
         <item name="android:textColorHint">@color/colorHintText</item>
         <item name="android:fontFamily">@font/avenir_lt_std_roman</item>
     </style>
@@ -153,7 +152,6 @@
         <item name="helperTextTextAppearance">@style/TextInputLayoutHelperText</item>
         <item name="errorTextAppearance">@style/TextInputLayoutErrorText</item>
         <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
-        <item name="hintTextColor">@color/light_grey</item>
         <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
         <item name="android:fontFamily">@font/avenirltstd_medium</item>
         <item name="android:editTextStyle">@style/TextInputEditText.OutlinedBox.CustomFont</item>

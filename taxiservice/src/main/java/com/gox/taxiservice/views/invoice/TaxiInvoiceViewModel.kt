@@ -1,5 +1,7 @@
 package com.gox.taxiservice.views.invoice
 
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
@@ -21,10 +23,12 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
     var timeTaken = MutableLiveData<String>()
     var baseFare = MutableLiveData<String>()
     var distanceFare = MutableLiveData<String>()
+    var discount = ObservableField<String>()
     var tax = MutableLiveData<String>()
     var waitingCharge = MutableLiveData<String>()
     var tips = MutableLiveData<String>()
     var tollCharge = MutableLiveData<String>()
+    var payableAmount = ObservableField<String>()
     var total = MutableLiveData<String>()
     var requestLiveData = MutableLiveData<ResponseData>()
     var paymentLiveData = MutableLiveData<PaymentModel>()

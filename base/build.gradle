@@ -25,9 +25,9 @@ android {
         buildConfigField "boolean", "isSocketLocationUpdate", "false"
         buildConfigField("String", "SALT_KEY", '"MQ=="')
 //        buildConfigField("String", "BASE_URL", '"https://api.gox.services/"')
-        buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
+        //    buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
         //      Staging
-        //      buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
+        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
     }
 
     buildTypes {
@@ -116,7 +116,7 @@ dependencies {
 
     //      Creditcard widget
     api 'com.github.sharish:CreditCardView:v1.0.4'
-    api ('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
+    api('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
         transitive = true;
     }
 
@@ -138,7 +138,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.1.0"
 
     //      For Kotlin use kapt instead of annotationProcessor
-   // api project(':cropperlibrary')
+    // api project(':cropperlibrary')
     api project(':monitorinternet')
 
     //      Socket IO

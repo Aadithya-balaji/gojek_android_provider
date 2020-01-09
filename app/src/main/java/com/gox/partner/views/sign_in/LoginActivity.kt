@@ -212,6 +212,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         mBinding.passwordRegisterEt.setText("")
         mBinding.tilEmail.visibility = View.GONE
         mBinding.llPhoneNumber.visibility = View.VISIBLE
+        mBinding.phonenumberRegisterEt.requestFocus()
         mBinding.phoneSigninImgview.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
         mBinding.mailSinginImgview.setColorFilter(ContextCompat.getColor(this, R.color.dark_grey))
         mBinding.phoneSigninImgview.setBackgroundResource((R.drawable.login_icon_selected_bg))
@@ -223,6 +224,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         mBinding.passwordRegisterEt.setText("")
         mBinding.llPhoneNumber.visibility = View.GONE
         mBinding.tilEmail.visibility = View.VISIBLE
+        mBinding.emailidRegisterEt.requestFocus()
         mBinding.phoneSigninImgview.setColorFilter(ContextCompat.getColor(this, R.color.dark_grey))
         mBinding.mailSinginImgview.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent))
         mBinding.phoneSigninImgview.setBackgroundResource((R.drawable.login_icon_normal_bg))

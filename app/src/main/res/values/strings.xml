@@ -540,5 +540,6 @@
     <string name="total_payable">Total Payable</string>
     <string name="extra_charges">Extra Charges</string>
     <string name="distance_fare">Distance Fare</string>
+    <string name="card_invalid">Card details invalid</string>
 
 </resources>

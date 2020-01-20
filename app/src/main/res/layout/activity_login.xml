@@ -372,7 +372,6 @@
                             android:text="@string/connect_via_facebook"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/_12sdp" />
-
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>

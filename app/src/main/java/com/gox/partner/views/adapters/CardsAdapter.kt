@@ -59,4 +59,9 @@ class CardsAdapter(context: Context, cardList: MutableList<CardResponseModel>, c
             cardListViewModel!!.navigator.cardPicked(cardResponseModel.getCardId().toString(), cardResponseModel.getId().toString(), selectedPosition!!)
         }
     }
+
+    fun addItem(item: CardResponseModel) {
+        cardList!!.add(item)
+        notifyItemChanged(cardList!!.size)
+    }
 }

@@ -74,8 +74,8 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
         paymentList = Gson().fromJson<List<ConfigPayment>>(BaseApplication.getCustomPreference!!.getString(PreferencesKey.PAYMENT_LIST, ""), payTypes)
         paymentList = paymentList!!.filter { it.status == "1" }
 
-        val cardPaymentAvailable = paymentList!!.any { it.name.equals(Constants.PaymentMode.CARD,true) }
-        mBinding.rlPaymentCard.visibility = if(cardPaymentAvailable)View.VISIBLE else View.GONE
+        val cardPaymentAvailable = paymentList!!.any { it.name.equals(Constants.PaymentMode.CARD, true) }
+        mBinding.rlPaymentCard.visibility = if (cardPaymentAvailable) View.VISIBLE else View.GONE
 
         val linearLayoutManager = LinearLayoutManager(this)
         mBinding.rvPaymentModes.layoutManager = linearLayoutManager
@@ -92,16 +92,16 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
     private fun getApiResponse() {
         mViewModel.addCardLiveResponse.observe(this, Observer<AddCardModel> { addCardModel ->
             if (addCardModel.getStatusCode().equals("200")) {
+                cardList!!.add(addCardModel.getResponseData()?.get(0) as CardResponseModel)
+                cardsAdapter.addItem(addCardModel.getResponseData()?.get(0) as CardResponseModel)
                 mViewModel.showLoading.value = false
-                mViewModel.getCardList()
             }
         })
 
         mViewModel.cardListLiveResponse.observe(this, Observer<CardListModel> { cardListModel ->
             mViewModel.showLoading.value = false
-            if (mViewModel.cardListLiveResponse != null
-                    && mViewModel.cardListLiveResponse.value!!.getResponseData() != null
-                    && mViewModel.cardListLiveResponse.value!!.getResponseData()!!.size > 0) {
+            if (mViewModel.cardListLiveResponse.value!!.getResponseData() != null &&
+                    mViewModel.cardListLiveResponse.value!!.getResponseData()!!.size > 0) {
                 mBinding.ivEmptyCard.visibility = View.GONE
                 mBinding.rvCards.visibility = View.VISIBLE
                 val linearLayoutManager = LinearLayoutManager(this)
@@ -117,19 +117,18 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
 
         mViewModel.deleteCardLivResponse.observe(this, Observer<AddCardModel> { addCardModel ->
             mViewModel.showLoading.value = false
-            if (mViewModel.deleteCardLivResponse != null)
-                if (mViewModel.deleteCardLivResponse.value!!.getStatusCode().equals("200")) {
-                    cardList?.let { selectedPosition?.let { it1 -> it.removeAt(it1) } }
-                    selectedCardID = ""
-                    selectedPosition = -1
-                    mBinding.ivDelete.visibility = View.GONE
-                    mBinding.ivRemove.visibility = View.GONE
-                    if (cardList!!.size == 0) {
-                        mBinding.rvCards.visibility = View.GONE
-                        mBinding.ivEmptyCard.visibility = View.VISIBLE
-                    }
-                    cardsAdapter.notifyDataSetChanged()
+            if (mViewModel.deleteCardLivResponse.value!!.getStatusCode().equals("200")) {
+                cardList?.let { selectedPosition?.let { it1 -> it.removeAt(it1) } }
+                selectedCardID = ""
+                selectedPosition = -1
+                mBinding.ivDelete.visibility = View.GONE
+                mBinding.ivRemove.visibility = View.GONE
+                if (cardList!!.size == 0) {
+                    mBinding.rvCards.visibility = View.GONE
+                    mBinding.ivEmptyCard.visibility = View.VISIBLE
                 }
+                cardsAdapter.notifyDataSetChanged()
+            }
         })
     }
 
@@ -147,8 +146,14 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
             mCardCVV = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV)
             mCardHolderName = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME)
 
+            if (mCardNumber == null || mCardExpiryDate == null ||
+                    mCardExpiryDate!!.length < 5 || mCardCVV == null || mCardHolderName == null) {
+                ViewUtils.showToast(this, getString(R.string.card_invalid), false)
+                return
+            }
+
             // Your processing goes here.
-            val temp = mCardExpiryDate!!.split("/".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val temp = mCardExpiryDate!!.split("/")
             val month = Integer.parseInt(temp[0])
             val year = Integer.parseInt(temp[1])
 
@@ -158,19 +163,15 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
             if (card.validateNumber() && card.validateCVC()) {
                 mViewModel.showLoading.value = true
                 val stripe = Stripe(this, BaseApplication.getCustomPreference!!.getString(PreferencesKey.STRIPE_KEY, ""))
-                println("RRR :: PaymentTypesActivity.stripe = $stripe")
                 stripe.createToken(card, object : TokenCallback {
                     override fun onSuccess(token: Token) {
-                        println("RRR :: PaymentTypesActivity.onSuccess")
                         mViewModel.showLoading.value = false
                         if (!TextUtils.isEmpty(token.id))
                             mViewModel.callAddCardApi(token.id)
                     }
 
                     override fun onError(error: Exception) {
-                        println("RRR :: PaymentTypesActivity.onError")
                         mViewModel.showLoading.value = false
-                        error.printStackTrace()
                     }
                 })
             } else mViewModel.showLoading.value = false
@@ -199,7 +200,7 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
     }
 
     override fun removeCard() = ViewUtils.showMessageOKCancel(context, resources.getString(R.string.delete_card),
-            DialogInterface.OnClickListener { dialog, which -> mViewModel.callCardDeleteCardAPi() })
+            DialogInterface.OnClickListener { _, _ -> mViewModel.callCardDeleteCardAPi() })
 
     override fun deselectCard() {
         selectedPosition?.let { cardList!![it].isCardSelected = false }

@@ -12,8 +12,6 @@
     <string name="walk_2">الخدمة مستمرة</string>
     <string name="walk_3">معدل الخدمة</string>
 
-
-
     <string name="social_sign_up">الاشتراك الاجتماعي</string>
     <string name="hint_first_name">الاسم الاول</string>
     <string name="hint_last_name">الكنية</string>
@@ -30,10 +28,7 @@
     <string name="terms_condition">أوافق على الشروط والأحكام التالية</string>
     <string name="already_have_account">هل لديك حساب</string>
 
-
-
     <string name="do_not_have_account">ليس لديك حساب</string>
-
 
     <string name="title_forgot_password">هل نسيت كلمة المرور</string>
     <string name="reset_via">إعادة تعيين عبر</string>

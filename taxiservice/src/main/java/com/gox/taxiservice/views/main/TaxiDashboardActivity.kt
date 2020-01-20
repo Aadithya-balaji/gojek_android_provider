@@ -397,10 +397,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         mViewModel.distanceApiProcessing.observe(this, Observer {
             var canShowTollChargeDialog = false
-            println("RRR::distanceApiProcessing = ${it.size}")
-            println("RRR::distanceApiProcessing:distanceApiCallCount = $distanceApiCallCount")
-            println("RRR::distanceApiProcessing = ${Gson().toJson(it)}")
-            println("RRR::distanceMeter.value ::1:: = ${mViewModel.distanceMeter.value}")
             if (it.isNotEmpty() && it.size > 0 && it.size == distanceApiCallCount) {
                 println("RRR::distanceApiProcessing::inside if = ${it.size}")
                 for (items in it) {

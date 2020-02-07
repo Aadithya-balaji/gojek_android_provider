@@ -92,9 +92,7 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
     private fun getApiResponse() {
         mViewModel.addCardLiveResponse.observe(this, Observer<AddCardModel> { addCardModel ->
             if (addCardModel.getStatusCode().equals("200")) {
-                cardList!!.add(addCardModel.getResponseData()?.get(0) as CardResponseModel)
-                cardsAdapter.addItem(addCardModel.getResponseData()?.get(0) as CardResponseModel)
-                mViewModel.showLoading.value = false
+                mViewModel.getCardList()
             }
         })
 
@@ -140,7 +138,7 @@ class PaymentTypesActivity : BaseActivity<ActivityPaymentTypesBinding>(), CardLi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK && Constants.RequestCode.ADD_CARD == requestCode) {
             mCardNumber = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER)
             mCardExpiryDate = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY)
             mCardCVV = data?.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV)

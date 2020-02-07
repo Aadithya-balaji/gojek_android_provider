@@ -34,23 +34,24 @@ class DisputeReasonListAdapter(val viewModel: HistoryDetailViewModel, private va
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.rowDisputeListBinding.llDisputeReaons.tag = position
-        holder.rowDisputeListBinding.tvDisbuteReason.text = disputeReason.get(position).dispute_name
+        holder.rowDisputeListBinding.tvDisbuteReason.text = disputeReason[position].dispute_name
 
         holder.rowDisputeListBinding.rbDisbute.isChecked = selectedPosition == position
-        /*  holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener {
-              if (mListener != null) {
-                  mListener!!.reasonOnItemClick((disputeReason.get(position).dispute_name).toLowerCase().capitalize())
-              }
-          }*/
-        holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener { v -> itemCheckChanged(v) }
+        holder.rowDisputeListBinding.rbDisbute.setOnCheckedChangeListener { _, _ ->
+            onItemChecked(position)
+        }
+        holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener {
+            onItemChecked(position)
+        }
     }
 
-    private fun itemCheckChanged(v: View) {
-        selectedPosition = v.tag as Int
+    private fun onItemChecked(index: Int) {
+        val oldIndex = selectedPosition
+        selectedPosition = index
         viewModel.selectedDisputeModel.value = disputeReason[selectedPosition]
-        notifyDataSetChanged()
+        notifyItemChanged(oldIndex)
+        notifyItemChanged(selectedPosition)
     }
-
     inner class MyViewHolder(itemView: RowDisputeListBinding) : RecyclerView.ViewHolder(itemView.root) {
         val rowDisputeListBinding = itemView
     }

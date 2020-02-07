@@ -18,8 +18,6 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
-import com.gox.base.data.PreferencesKey
-import com.gox.base.extensions.readPreferences
 import com.gox.base.utils.Utils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
@@ -28,11 +26,9 @@ import com.gox.partner.databinding.DisputeResonDialogBinding
 import com.gox.partner.databinding.DisputeStatusBinding
 import com.gox.partner.models.*
 import com.gox.partner.utils.CommonMethods
-import com.gox.partner.utils.Constant
 import com.gox.partner.views.adapters.DisputeReasonListAdapter
 import com.gox.partner.views.adapters.ReasonListClickListener
 import com.gox.partner.views.dashboard.DashBoardViewModel
-import kotlinx.android.synthetic.main.view_recepit.*
 
 class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBinding>(),
         CurrentOrderDetailsNavigator {
@@ -63,11 +59,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mViewModel.navigator = this
         loadingObservable.value = true
         mViewModel.showLoading = loadingObservable
-        mViewDataBinding.upcmngCancelBtn.visibility = View.GONE
         getIntentValues()
         mViewModel.serviceType.value = serviceType
         if (historyType.equals("past")) {
-            println("BBBB" + "   " + serviceType.toString())
             when {
                 serviceType.equals(Constants.ModuleTypes.TRANSPORT) -> mViewModel.getTransportHistoryDetail(selectedId.toString())
                 serviceType.equals(Constants.ModuleTypes.SERVICE) -> mViewModel.getServiceHistoryDetail(selectedId.toString())
@@ -90,7 +84,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mViewModel.historyModelLiveData.observe(this,
                 Observer<HistoryDetailModel> {
                     loadingObservable.value = false
-                    when(serviceType?.toUpperCase()) {
+                    when (serviceType?.toUpperCase()) {
                         Constants.ModuleTypes.TRANSPORT -> setupTransportDetail(it.responseData.transport)
                         Constants.ModuleTypes.ORDER -> setupOrderHistoryDetail(it.responseData.order)
                         else -> setupServiceDetail(it.responseData.service)
@@ -154,7 +148,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             disputeStatusBinding!!.disputeStatus.background =
                     ContextCompat.getDrawable(this, R.drawable.bg_dispute_close)
             disputeStatusBinding!!.disputeStatus.setTextColor(
-                    ContextCompat.getColor(this, R.color.dispute_status_open))
+                    ContextCompat.getColor(this, R.color.dispute_status_open)
+            )
         }
 
         val dialog = BottomSheetDialog(this)
@@ -163,38 +158,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
     override fun onClickViewReceipt() = showInvoiceAlertDialog()
-
-    /*private fun showInvoiceAlertDialog() {
-        val invoiceDialogView = LayoutInflater.from(this).inflate(R.layout.view_recepit, null, false)
-        val builder = AlertDialog.Builder(this)
-        builder.setView(invoiceDialogView)
-        val alertDialog = builder.create()
-        alertDialog.show()
-        alertDialog.findViewById<ImageView>(R.id.cancel_dialog_img)!!.setOnClickListener { alertDialog.dismiss() }
-        when {
-            serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> {
-                alertDialog.llServiceInvoice.visibility = View.GONE
-                alertDialog.llOrderInvoice.visibility = View.GONE
-                alertDialog.llTaxiInvoice.visibility = View.VISIBLE
-                setUpTransportInvoice(alertDialog)
-
-            }
-            serviceType.equals(Constants.ModuleTypes.ORDER,true) -> {
-                alertDialog.llServiceInvoice.visibility = View.GONE
-                alertDialog.llOrderInvoice.visibility = View.VISIBLE
-                alertDialog.llTaxiInvoice.visibility = View.GONE
-                setUpOrderInvoice(alertDialog)
-
-            }
-            serviceType.equals(Constants.ModuleTypes.SERVICE,true) -> {
-                alertDialog.llServiceInvoice.visibility = View.VISIBLE
-                alertDialog.llOrderInvoice.visibility = View.GONE
-                alertDialog.llTaxiInvoice.visibility = View.GONE
-                setUpServiceInvoice(alertDialog)
-            }
-        }
-        alertDialog.show()
-    }*/
 
     private fun showInvoiceAlertDialog() {
         val invoiceDialogView = LayoutInflater.from(this).inflate(R.layout.view_recepit,
@@ -211,21 +174,21 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         alertDialog.findViewById<ImageView>(R.id.cancel_dialog_img)!!
                 .setOnClickListener { alertDialog.dismiss() }
 
-        val tvDeliveryCharge:TextView? = alertDialog.findViewById(R.id.deliverycharges_tv)
-        val tvTips:TextView? = alertDialog.findViewById(R.id.tvTips)
-        val tvPackagingCharge:TextView? = alertDialog.findViewById(R.id.packing_charge_tv)
-        val tvItemPrice:TextView? = alertDialog.findViewById(R.id.gross_pay_tv)
-        val tvTaxFare:TextView? = alertDialog.findViewById(R.id.taxfare_tv)
-        val tvTotalPayable:TextView? = alertDialog.findViewById(R.id.total_charge_value_tv)
-        val tvBaseFare:TextView? = alertDialog.findViewById(R.id.basefare_tv)
-        val tvWalletFare:TextView? = alertDialog.findViewById(R.id.wallet_tv)
-        val tvHourlyFare:TextView? = alertDialog.findViewById(R.id.hourlyfare_tv)
-        val tvDiscountApplied:TextView? = alertDialog.findViewById(R.id.disscount_applied_tv)
-        val tvDistanceFare:TextView? = alertDialog.findViewById(R.id.tvDistanceFare)
-        val tvTollCharge:TextView? = alertDialog.findViewById(R.id.tvTollCharge)
-        val tvExtraCharge:TextView? = alertDialog.findViewById(R.id.tvExtraCharge)
-        val tvTotalAmount:TextView? = alertDialog.findViewById(R.id.tvTotalAmount)
-        val tvRoundOff:TextView? = alertDialog.findViewById(R.id.tvRoundOff)
+        val tvDeliveryCharge: TextView? = alertDialog.findViewById(R.id.deliverycharges_tv)
+        val tvTips: TextView? = alertDialog.findViewById(R.id.tvTips)
+        val tvPackagingCharge: TextView? = alertDialog.findViewById(R.id.packing_charge_tv)
+        val tvItemPrice: TextView? = alertDialog.findViewById(R.id.gross_pay_tv)
+        val tvTaxFare: TextView? = alertDialog.findViewById(R.id.taxfare_tv)
+        val tvTotalPayable: TextView? = alertDialog.findViewById(R.id.total_charge_value_tv)
+        val tvBaseFare: TextView? = alertDialog.findViewById(R.id.basefare_tv)
+        val tvWalletFare: TextView? = alertDialog.findViewById(R.id.wallet_tv)
+        val tvHourlyFare: TextView? = alertDialog.findViewById(R.id.hourlyfare_tv)
+        val tvDiscountApplied: TextView? = alertDialog.findViewById(R.id.disscount_applied_tv)
+        val tvDistanceFare: TextView? = alertDialog.findViewById(R.id.tvDistanceFare)
+        val tvTollCharge: TextView? = alertDialog.findViewById(R.id.tvTollCharge)
+        val tvExtraCharge: TextView? = alertDialog.findViewById(R.id.tvExtraCharge)
+        val tvTotalAmount: TextView? = alertDialog.findViewById(R.id.tvTotalAmount)
+        val tvRoundOff: TextView? = alertDialog.findViewById(R.id.tvRoundOff)
 
         val rlPackage: RelativeLayout? = alertDialog.findViewById(R.id.packngCharges_layout)
         val rlDeliveryCharge: RelativeLayout? = alertDialog.findViewById(R.id.deliverycharges_layout)
@@ -242,12 +205,12 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         val rlTotal: RelativeLayout? = alertDialog.findViewById(R.id.rlTotal)
 
 
-        when(serviceType?.toUpperCase()){
+        when (serviceType?.toUpperCase()) {
 
-            Constants.ModuleTypes.ORDER ->{
+            Constants.ModuleTypes.ORDER -> {
 
                 when {
-                    (mViewModel.orderDetail.value?.order_invoice?.wallet_amount?:0.0) >0 -> {
+                    (mViewModel.orderDetail.value?.order_invoice?.wallet_amount ?: 0.0) > 0 -> {
                         rlWalletDeduction?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -256,7 +219,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
 
                 when {
-                    (mViewModel.orderDetail.value?.order_invoice?.promocode_amount?:0.0) >0 -> {
+                    (mViewModel.orderDetail.value?.order_invoice?.promocode_amount ?: 0.0) > 0 -> {
                         rlDiscount?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -266,7 +229,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
 
                 when {
-                    ((mViewModel.orderDetail.value?.order_invoice?.delivery_amount?:0.0) > 0.0) -> {
+                    ((mViewModel.orderDetail.value?.order_invoice?.delivery_amount
+                            ?: 0.0) > 0.0) -> {
                         tvDeliveryCharge?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -275,7 +239,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
 
                 when {
-                    ((mViewModel.orderDetail.value?.order_invoice?.store_package_amount?:0.0) > 0.0) -> {
+                    ((mViewModel.orderDetail.value?.order_invoice?.store_package_amount
+                            ?: 0.0) > 0.0) -> {
                         rlPackage?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -284,7 +249,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
 
                 when {
-                    ((mViewModel.orderDetail.value?.order_invoice!!.delivery_amount?:0.0) > 0.0) -> {
+                    ((mViewModel.orderDetail.value?.order_invoice!!.delivery_amount
+                            ?: 0.0) > 0.0) -> {
                         rlDeliveryCharge?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -295,10 +261,10 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
             }
 
-            Constants.ModuleTypes.TRANSPORT ->{
+            Constants.ModuleTypes.TRANSPORT -> {
 
                 when {
-                    (mViewModel.transportDetail.value?.payment!!.toll_charge?:0.0) >0 -> {
+                    (mViewModel.transportDetail.value?.payment!!.toll_charge ?: 0.0) > 0 -> {
                         rlTollCharge?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -308,7 +274,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
 
                 when {
-                    ((mViewModel.transportDetail.value?.payment!!.round_of?:0.0) !=0.0) -> {
+                    ((mViewModel.transportDetail.value?.payment!!.round_of ?: 0.0) != 0.0) -> {
                         rlRoundOff?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -317,7 +283,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
 
                 when {
-                    (mViewModel.transportDetail.value?.payment?.wallet?:0.0) >0 -> {
+                    (mViewModel.transportDetail.value?.payment?.wallet ?: 0.0) > 0 -> {
                         rlWalletDeduction?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -326,7 +292,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
 
                 when {
-                    (mViewModel.transportDetail.value?.payment!!.tips?:0.0) >0 -> {
+                    (mViewModel.transportDetail.value?.payment!!.tips ?: 0.0) > 0 -> {
                         rlTips?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -336,7 +302,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
                 when {
 
-                    (mViewModel.transportDetail.value?.payment!!.discount?:0.0) >0 -> {
+                    (mViewModel.transportDetail.value?.payment!!.discount ?: 0.0) > 0 -> {
                         rlDiscount?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -345,10 +311,10 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
             }
 
-            Constants.ModuleTypes.SERVICE ->{
+            Constants.ModuleTypes.SERVICE -> {
 
                 when {
-                    (mViewModel.serviceDetail.value?.payment?.extra_charges?:0.0) >0 -> {
+                    (mViewModel.serviceDetail.value?.payment?.extra_charges ?: 0.0) > 0 -> {
                         rlExtraCharges?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -358,7 +324,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
 
                 when {
-                    ((mViewModel.serviceDetail.value?.payment!!.round_of?:0.0) !=0.0) -> {
+                    ((mViewModel.serviceDetail.value?.payment!!.round_of ?: 0.0) != 0.0) -> {
                         rlRoundOff?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -367,7 +333,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
 
                 when {
-                    (mViewModel.serviceDetail.value?.payment?.wallet?:0.0) >0 -> {
+                    (mViewModel.serviceDetail.value?.payment?.wallet ?: 0.0) > 0 -> {
                         rlWalletDeduction?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -376,7 +342,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
 
                 when {
-                    (mViewModel.serviceDetail.value?.payment!!.tips?:0.0) >0 -> {
+                    (mViewModel.serviceDetail.value?.payment!!.tips ?: 0.0) > 0 -> {
                         rlTips?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -386,7 +352,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
                 when {
 
-                    mViewModel.serviceDetail.value?.payment!!.discount >0 -> {
+                    mViewModel.serviceDetail.value?.payment!!.discount > 0 -> {
                         rlDiscount?.visibility = View.VISIBLE
                     }
                     else -> {
@@ -395,10 +361,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
             }
         }
-
-
-
-
 
 
         /*when {
@@ -424,14 +386,20 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 rlExtraCharges?.visibility = View.GONE
                 rlRoundOff?.visibility = View.GONE
 
-                val itemPrice:Double = mViewModel.orderDetail.value?.order_invoice?.items?.sumByDouble { it?.item_price?:0.0 }?:0.0
+                val itemPrice: Double = mViewModel.orderDetail.value?.order_invoice?.items?.sumByDouble {
+                    it?.item_price ?: 0.0
+                } ?: 0.0
 
-                tvItemPrice?.text = Utils.getNumberFormat()?.format(itemPrice)?:"0.0"
-                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.tax_amount?:0.0)?:"0.0"
-                tvPackagingCharge?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.store_package_amount?:0.0)?:"0.0"
-                tvDeliveryCharge?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.delivery_amount?:0.0)?:"0.0"
+                tvItemPrice?.text = Utils.getNumberFormat()?.format(itemPrice) ?: "0.0"
+                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.tax_amount
+                        ?: 0.0) ?: "0.0"
+                tvPackagingCharge?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.store_package_amount
+                        ?: 0.0) ?: "0.0"
+                tvDeliveryCharge?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.delivery_amount
+                        ?: 0.0) ?: "0.0"
                 tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.promocode_amount)}"
-                tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.total_amount?:0.0)?:"0.0"
+                tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.total_amount
+                        ?: 0.0) ?: "0.0"
 
             }
             Constants.ModuleTypes.TRANSPORT -> {
@@ -440,17 +408,27 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 rlItemPrice?.visibility = View.GONE
                 rlExtraCharges?.visibility = View.GONE
 
-                tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.fixed)?:"0.0"
-                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.tax)?:"0.0"
-                tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour)?:"0.0"
-                tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.distance)?:"0.0"
-                tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.tips)?:"0.0"
-                tvTollCharge?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.toll_charge)?:"0.0"
-                tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.wallet)?:"0.0"
-                tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.total)?:"0.0"
-                tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.round_of)?:"0.0"
+                tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.fixed)
+                        ?: "0.0"
+                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.tax)
+                        ?: "0.0"
+                tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour)
+                        ?: "0.0"
+                tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.distance)
+                        ?: "0.0"
+                tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.tips)
+                        ?: "0.0"
+                tvTollCharge?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.toll_charge)
+                        ?: "0.0"
+                tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.wallet)
+                        ?: "0.0"
+                tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.total)
+                        ?: "0.0"
+                tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.round_of)
+                        ?: "0.0"
                 tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.discount)}"
-                tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.payable)?:"0.0"
+                tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.payable)
+                        ?: "0.0"
             }
 
 
@@ -460,23 +438,40 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 rlItemPrice?.visibility = View.GONE
                 rlTollCharge?.visibility = View.GONE
 
-                tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.fixed)?:"0.0"
-                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.tax)?:"0.0"
-                tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.hour)?:"0.0"
-                tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.distance)?:"0.0"
-                tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.tips)?:"0.0"
-                tvExtraCharge?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.extra_charges)?:"0.0"
-                tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.wallet)?:"0.0"
-                tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.round_of)?:"0.0"
-                tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.discount)?:"0.0"}"
+                tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.fixed)
+                        ?: "0.0"
+                tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.tax)
+                        ?: "0.0"
+                tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.hour)
+                        ?: "0.0"
+                tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.distance)
+                        ?: "0.0"
+                tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.tips)
+                        ?: "0.0"
+                tvExtraCharge?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.extra_charges)
+                        ?: "0.0"
+                tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.wallet)
+                        ?: "0.0"
+                tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.round_of)
+                        ?: "0.0"
+                tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.discount)
+                        ?: "0.0"}"
 //                tvTips?.text = (Constant.currency + transpotResponseData.payment!!.tips)
 
-                val total:Double? = (mViewModel.serviceDetail.value?.payment?.fixed?:0.0).plus(mViewModel.serviceDetail.value?.payment?.tax?:0.0).plus(mViewModel.serviceDetail.value?.payment?.hour?:0.0).plus(mViewModel.serviceDetail.value?.payment!!.distance?:0.0).plus(mViewModel.serviceDetail.value?.payment!!.tips?:0.0).plus(mViewModel.serviceDetail.value?.payment!!.extra_charges?:0.0)
-                tvTotalAmount?.text = Utils.getNumberFormat()?.format(total)?:"0.0"
+                val total: Double? = (mViewModel.serviceDetail.value?.payment?.fixed
+                        ?: 0.0).plus(mViewModel.serviceDetail.value?.payment?.tax
+                        ?: 0.0).plus(mViewModel.serviceDetail.value?.payment?.hour
+                        ?: 0.0).plus(mViewModel.serviceDetail.value?.payment!!.distance
+                        ?: 0.0).plus(mViewModel.serviceDetail.value?.payment!!.tips
+                        ?: 0.0).plus(mViewModel.serviceDetail.value?.payment!!.extra_charges ?: 0.0)
+                tvTotalAmount?.text = Utils.getNumberFormat()?.format(total) ?: "0.0"
 
-                val payable:Double? = (total?:0.0).minus(mViewModel.serviceDetail.value?.payment!!.wallet?:0.0).minus(mViewModel.serviceDetail.value?.payment!!.discount?:0.0).plus(mViewModel.serviceDetail.value?.payment!!.round_of?:0.0)
+                val payable: Double? = (total
+                        ?: 0.0).minus(mViewModel.serviceDetail.value?.payment!!.wallet
+                        ?: 0.0).minus(mViewModel.serviceDetail.value?.payment!!.discount
+                        ?: 0.0).plus(mViewModel.serviceDetail.value?.payment!!.round_of ?: 0.0)
 
-                tvTotalPayable?.text = Utils.getNumberFormat()?.format(payable)?:"0.0"
+                tvTotalPayable?.text = Utils.getNumberFormat()?.format(payable) ?: "0.0"
             }
         }
 
@@ -523,9 +518,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             mViewModel.getDisputeList()
         } else {
             when {
-                serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> mViewModel.getTransPortDisputeStatus(
+                serviceType.equals(Constants.ModuleTypes.TRANSPORT, true) -> mViewModel.getTransPortDisputeStatus(
                         mViewModel.transportDetail.value!!.id.toString())
-                serviceType.equals(Constants.ModuleTypes.ORDER,true) -> mViewModel.getOrderDisputeStatus(
+                serviceType.equals(Constants.ModuleTypes.ORDER, true) -> mViewModel.getOrderDisputeStatus(
                         mViewModel.orderDetail.value!!.id.toString())
                 else -> mViewModel.getServiceDisputeStatus(
                         mViewModel.serviceDetail.value!!.id.toString())
@@ -545,7 +540,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         params[Constants.Dispute.DISPUTE_NAME] = mViewModel.disputeName.value!!
 
         when {
-            serviceType.equals(Constants.ModuleTypes.TRANSPORT,true) -> {
+            serviceType.equals(Constants.ModuleTypes.TRANSPORT, true) -> {
                 mViewModel.userID.value = mViewModel.transportDetail.value!!.user!!.id.toString()
                 mViewModel.providerID.value = mViewModel.transportDetail.value!!.provider_id.toString()
                 mViewModel.requestID.value = mViewModel.transportDetail.value!!.id.toString()
@@ -554,7 +549,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
                 mViewModel.postTaxiDispute(params)
             }
-            serviceType.equals(Constants.ModuleTypes.SERVICE,true) -> {
+            serviceType.equals(Constants.ModuleTypes.SERVICE, true) -> {
                 mViewModel.userID.value = mViewModel.historyModelLiveData.value!!.responseData.service.user!!.id.toString()
                 mViewModel.providerID.value = mViewModel.historyModelLiveData.value!!.responseData.service.provider_id.toString()
                 mViewModel.requestID.value = mViewModel.historyModelLiveData.value!!.responseData.service.id.toString()

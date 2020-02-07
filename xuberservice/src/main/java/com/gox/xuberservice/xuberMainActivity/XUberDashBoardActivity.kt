@@ -176,9 +176,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         mViewModel.userRating.value = String.format(resources.getString(R.string.xuper_rating_user),
                                 xUberCheckRequest.responseData.requests.user!!.rating!!.toDouble())
 
-                        if (xUberCheckRequest.responseData.requests.user.picture != null)
-                            setUserImage(xUberCheckRequest.responseData.requests.user.picture.toString())
-                        else setUserImage("")
+                        setUserImage(xUberCheckRequest.responseData.requests.user.picture)
 
                         mViewModel.polyLineSrc.value = LatLng(xUberCheckRequest.responseData.requests.s_latitude!!,
                                 xUberCheckRequest.responseData.requests.s_longitude!!)
@@ -186,7 +184,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                         if (!roomConnected) {
                             reqID = xUberCheckRequest.responseData.requests.id
                             PreferencesHelper.put(PreferencesKey.SERVICE_REQ_ID, reqID)
-                            if(reqID!=0){
+                            if (reqID != 0) {
                                 SocketManager.emit(Constants.RoomName.SERVICE_ROOM_NAME, Constants.RoomId.getServiceRoom(reqID))
                             }
 
@@ -246,7 +244,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 loadingObservable.value = false
                 when (updateRequest.responseData!!.status) {
                     ARRIVED -> whenArrived()
-
                     PICKED_UP -> {
                         whenStarted()
                         startTheTimer()
@@ -264,14 +261,13 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         })
 
         SocketManager.onEvent(Constants.RoomName.STATUS, Emitter.Listener {
-            if(it[0].toString().contains(Constants.ModuleTypes.SERVICE)){
+            if (it[0].toString().contains(SERVICE)) {
                 roomConnected = true
             }
         })
 
         SocketManager.onEvent(Constants.RoomName.SERVICE_REQ, Emitter.Listener {
-            Log.e("SOCKET", "SOCKET_SK service request " + it[0])
-            if(it[0].toString().contains("payment_mode")){
+            if (it[0].toString().contains("payment_mode")) {
                 val data = it[0] as JSONObject
                 paymentMode = data.getString("payment_mode")
                 mViewModel.currentStatus.value = ""
@@ -308,7 +304,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             bundle.putBoolean("fromCheckReq", true)
             cmXuberServiceTime.stop()
             currentPaymentMode = mViewModel.xUberCheckRequest.value?.responseData?.requests?.payment_mode!!
-            if(paymentMode.equals(""))
+            if (paymentMode.equals(""))
                 paymentMode = currentPaymentMode
         } else {
             mBinding.llBottomService.llServiceTime.visibility = View.GONE
@@ -317,15 +313,14 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             bundle.putBoolean("fromCheckReq", false)
             cmXuberServiceTime.stop()
             currentPaymentMode = mViewModel.xUberUpdateRequest.value?.responseData?.payment_mode!!
-            if(paymentMode.equals(""))
+            if (paymentMode.equals(""))
                 paymentMode = currentPaymentMode
         }
 
         if (!paymentMode.equals(currentPaymentMode)) {
             paymentMode = currentPaymentMode
             showInvoice(bundle, true)
-        }
-        else showInvoice(bundle, false)
+        } else showInvoice(bundle, false)
 
     }
 
@@ -346,7 +341,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
         }
     }
 
-    private fun showInvoice(bundle: Bundle,update:Boolean) {
+    private fun showInvoice(bundle: Bundle, update: Boolean) {
         llBottomService.visibility = View.GONE
         invoicePage.arguments = bundle
         if (update)
@@ -568,8 +563,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun whenAccepted() {
-        if(mViewModel.xUberUpdateRequest.value!=null)
-            mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
+        if (mViewModel.xUberUpdateRequest.value != null)
+            mViewModel.currentStatus.value = mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase(Locale.getDefault()) }
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
         mBinding.llBottomService.fbCamera.visibility = View.GONE
         mBinding.llBottomService.llConfirm.tvCancel.visibility = View.VISIBLE
@@ -580,14 +575,22 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun whenArrived() {
-        if(mViewModel.xUberUpdateRequest.value!=null)
-            mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
+        if (mViewModel.xUberUpdateRequest.value != null)
+            mViewModel.currentStatus.value = mViewModel.xUberUpdateRequest.value?.let {
+                it.responseData!!.status!!.toUpperCase(Locale.getDefault())
+            }
         fab_xuber_menu.visibility = View.GONE
         mBinding.llBottomService.llServiceTime.visibility = View.GONE
+
         if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false))
             edtXuperOtp.visibility = View.VISIBLE
-        else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false))
+        else edtXuperOtp.visibility = View.GONE
+
+        if (mViewModel.xUberCheckRequest.value?.responseData != null &&
+                mViewModel.xUberCheckRequest.value!!.responseData?.requests!!.created_type == "ADMIN")
             edtXuperOtp.visibility = View.GONE
+
+
         if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1)
             mBinding.llBottomService.fbCamera.visibility = View.VISIBLE
         else mBinding.llBottomService.fbCamera.visibility = View.GONE
@@ -597,8 +600,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun whenStarted() {
-        if(mViewModel.xUberUpdateRequest.value!=null)
-            mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
+        if (mViewModel.xUberUpdateRequest.value != null)
+            mViewModel.currentStatus.value = mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase(Locale.getDefault()) }
         fab_xuber_menu.visibility = View.GONE
         mGoogleMap!!.clear()
         if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_after_image == 1)
@@ -612,8 +615,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     private fun showRating() {
-        if(mViewModel.xUberUpdateRequest.value!=null)
-            mViewModel.currentStatus.value =mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase() }
+        if (mViewModel.xUberUpdateRequest.value != null)
+            mViewModel.currentStatus.value = mViewModel.xUberUpdateRequest.value?.let { it.responseData!!.status!!.toUpperCase(Locale.getDefault()) }
         fab_xuber_menu.visibility = View.GONE
         mGoogleMap!!.clear()
         mBinding.llBottomService.fbCamera.visibility = View.GONE
@@ -642,7 +645,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     override fun updateService(view: View) {
         when (view.id) {
-            R.id.tvAllow ->{
+            R.id.tvAllow -> {
 
                 when (mViewModel.currentStatus.value) {
                     // Update Status As Arrived while the request is in accepted status
@@ -654,19 +657,17 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     }
 
                     // To Start the Service while the request is in Arrived state
-                    ARRIVED -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false) && mViewModel.otp.value.isNullOrEmpty()) {
-                        ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
-                    } else if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false)
-                            && mViewModel.otp.value != mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.otp) {
-                        ViewUtils.showToast(this, resources.getString(R.string.invalid_otp), false)
-                    } else {
-                        if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1 && frontImgFile == null) {
-                            ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
-                        } else {
-                            if (frontImgFile != null)
-                                frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
-                            mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true, "", "")
+                    ARRIVED -> if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false) &&
+                            mViewModel.xUberCheckRequest.value?.responseData!!.requests!!.created_type != "ADMIN") {
+                        when {
+                            mViewModel.otp.value.isNullOrEmpty() ->
+                                ViewUtils.showToast(this, resources.getString(R.string.empty_otp), false)
+                            mViewModel.otp.value != mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.otp ->
+                                ViewUtils.showToast(this, resources.getString(R.string.invalid_otp), false)
+                            else -> checkBeforeImageValidAndUpdateRequest()
                         }
+                    } else {
+                        checkBeforeImageValidAndUpdateRequest()
                     }
 
                     // Complete the service while request is in Started state
@@ -681,8 +682,17 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                 }
             }
 
-
             R.id.tvCancel -> XUberCancelReasonFragment().show(supportFragmentManager, "XUberCancelReasonFragment")
+        }
+    }
+
+    private fun checkBeforeImageValidAndUpdateRequest() {
+        if (mViewModel.xUberCheckRequest.value!!.responseData!!.requests!!.service!!.allow_before_image == 1 && frontImgFile == null) {
+            ViewUtils.showToast(this, resources.getString(R.string.empty_front_image), false)
+        } else {
+            if (frontImgFile != null)
+                frontImgMultiPart = getImageMultiPart(frontImgFile!!, true)
+            mViewModel.updateRequest(PICKED_UP, frontImgMultiPart, true, "", "")
         }
     }
 
@@ -692,7 +702,8 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             override fun onPositiveButtonClick(dialog: DialogInterface) {
                 XUberExtraChargeDialog.newInstance(object : GetExtraChargeInterface {
                     override fun getExtraCharge(extraCharge: String, extraNotes: String) {
-                        println("RRR :: extraCharge = [${extraCharge}], extraNotes = [${extraNotes}]")
+                        //
+                        //   println("RRR :: extraCharge = [${extraCharge}], extraNotes = [${extraNotes}]")
                         mViewModel.updateRequest(status, file, isFrontImage, extraNotes, extraCharge)
                     }
                 }).show(supportFragmentManager, "extraRate")
@@ -741,11 +752,11 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
     }
 
     override fun getFilePath(filePath: Uri) {
-        val currentStatus = mViewModel.currentStatus.value?:""
-        val isFront = (currentStatus.equals(ARRIVED,true) || currentStatus.equals(ACCEPTED,true))
-            getImageFile(isFront, filePath)
-        if(!isFront)
-        updateService(mBinding.llBottomService.tvAllow)
+        val currentStatus = mViewModel.currentStatus.value ?: ""
+        val isFront = (currentStatus.equals(ARRIVED, true) || currentStatus.equals(ACCEPTED, true))
+        getImageFile(isFront, filePath)
+        if (!isFront)
+            updateService(mBinding.llBottomService.tvAllow)
     }
 
     private fun getImageMultiPart(file: File, isFrontImage: Boolean): MultipartBody.Part {
@@ -830,9 +841,9 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
                     mViewModel.strDesc.value.toString(), mViewModel.descImage.value.toString())
 
     override fun onClick(v: View?) {
-        val currentStatus = mViewModel.currentStatus.value?:""
+        val currentStatus = mViewModel.currentStatus.value ?: ""
         if (currentStatus.isNotEmpty()) {
-            isFront = (currentStatus.equals(ARRIVED,true) || currentStatus.equals(ACCEPTED,true))
+            isFront = (currentStatus.equals(ARRIVED, true) || currentStatus.equals(ACCEPTED, true))
             val dialogUploadPicture = UploadPictureDialog()
             val bundle = Bundle()
             bundle.putBoolean("isFront", isFront)

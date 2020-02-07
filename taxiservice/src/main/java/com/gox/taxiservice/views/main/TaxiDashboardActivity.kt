@@ -124,7 +124,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var providerMarker: Marker? = null
 
     private var srcMarker: Marker? = null
-    private var isWaitingTime: Boolean? = false
+    private var isWaitingTime: Boolean = false
     private var lastWaitingTime: Long? = 0
     private var isNeedToUpdateWaiting: Boolean = true
     private var isLocationDialogShown: Boolean = false
@@ -554,10 +554,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         btn_picked_up.setOnClickListener {
             if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.RIDE_OTP, false)) {
-                if (!isWaitingTime!!) {
+                if (!isWaitingTime) {
                     val otpDialogFragment = VerifyOtpDialog.newInstance(
                             responseData.request.otp,
-                            responseData.request.id!!
+                            responseData.request.id
                     )
                     otpDialogFragment.show(supportFragmentManager, "VerifyOtpDialog")
                 } else ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
@@ -910,14 +910,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     override fun onClick(view: View?) {
         when (view!!.id) {
 //<<<<<<< HEAD
-            R.id.btnWaiting -> if (isWaitingTime!!) {
+            R.id.btnWaiting -> if (isWaitingTime) {
                 changeWaitingTimeBackground(false)
                 isWaitingTime = false
                 lastWaitingTime = SystemClock.elapsedRealtime()
                 val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
                 val params = HashMap<String, String>()
                 params[Constants.Common.ID] = requestID
-                params["status"] = "1"
+                params["status"] = "0"
                 mViewModel.taxiWaitingTime(params)
                 cmWaiting.stop()
             } else {
@@ -932,15 +932,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                 if (mViewModel.checkStatusTaxiLiveData.value != null) {
                     val requestID = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-//=======
-//            R.id.btnWaiting -> {
-//                if (isWaitingTime!!) {
-//                    changeWaitingTimeBackground(false)
-//                    isWaitingTime = false
-//                    lastWaitingTime = SystemClock.elapsedRealtime()
-//                    val requestID = mViewModel.checkStatusTaxiLiveData.value!!
-//                            .responseData.request.id.toString()
-//>>>>>>> SocketTesting
                     val params = HashMap<String, String>()
                     params[Constants.Common.ID] = requestID
                     params["status"] = "1"

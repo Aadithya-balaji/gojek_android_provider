@@ -87,6 +87,7 @@ data class XuperCheckRequest(
                 val assigned_at: String? = "",
                 val before_image: Any? = Any(),
                 val booking_id: String? = "",
+                val created_type: String = "",
                 val cancel_reason: Any? = Any(),
                 val cancelled_by: Any? = Any(),
                 val city_id: Int? = 0,
@@ -129,7 +130,7 @@ data class XuperCheckRequest(
                 val user_id: Int? = 0,
                 val user_rated: Double? = 0.0,
                 val category: Category? = Category(),
-                val subcategory: Subcategory? =Subcategory()
+                val subcategory: Subcategory? = Subcategory()
         ) {
             data class Service(
                     val allow_after_image: Int? = 0,

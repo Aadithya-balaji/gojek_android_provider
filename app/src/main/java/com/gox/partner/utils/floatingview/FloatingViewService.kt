@@ -15,6 +15,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.gox.base.R
 import com.gox.partner.views.splash.SplashActivity
 import jp.co.recruit_lifestyle.android.floatingview.FloatingViewListener
@@ -60,12 +61,9 @@ class FloatingViewService : Service(), FloatingViewListener {
 
     override fun onFinishFloatingView() {
         stopSelf()
-        Log.d(TAG, "onFinishFloatingView")
     }
 
     override fun onTouchFinished(isFinishing: Boolean, x: Int, y: Int) {
-        if (isFinishing) Log.d(TAG, "onTouchFinished:: $isFinishing")
-        else Log.d(TAG, "onTouchFinished:: $isFinishing X: $x Y: $y")
     }
 
     private fun destroy() {
@@ -76,7 +74,6 @@ class FloatingViewService : Service(), FloatingViewListener {
     }
 
     companion object {
-        private const val TAG = "RRR::FloatingView::"
         private const val EXTRA_CUTOUT_SAFE_AREA = "cutout_safe_area"
         private const val NOTIFICATION_ID = 9083150
     }
@@ -89,7 +86,8 @@ class FloatingViewService : Service(), FloatingViewListener {
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
         val notification = notificationBuilder.setOngoing(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_push)
+                .setColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.floating_app))
                 .setPriority(NotificationCompat.PRIORITY_LOW)

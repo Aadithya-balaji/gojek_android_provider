@@ -10,6 +10,7 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -22,30 +23,19 @@ import com.gox.partner.views.splash.SplashActivity
 
 class FcmService : FirebaseMessagingService() {
 
-    private val tagName = "RRR :: FCMService"
     private var notificationId = 100
 
     private lateinit var mUrlPersistence: SharedPreferences
 
     @SuppressLint("CommitPrefEdits")
-    override fun onNewToken(token: String?) {
+    override fun onNewToken(token: String) {
         super.onNewToken(token)
         mUrlPersistence = BaseApplication.run { getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE) }
-
-        Log.d(tagName, "FireBaseRegToken: " + token!!)
-        Log.e("FCMToken", "----$token")
-
         mUrlPersistence.edit().putString(PreferencesKey.DEVICE_TOKEN, token)
     }
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
-
-        println(tagName
-                + " notificationData = " + remoteMessage!!.data!!["custom"]
-                + " status = Background->" + isBackground(applicationContext)
-                + " isLocked ->" + isLocked(applicationContext)
-                + " is CallActive -> " + isCallActive(applicationContext))
 
         val notificationData = Gson().fromJson(remoteMessage.data!!["custom"], NotificationDataModel::class.java)
 
@@ -54,7 +44,6 @@ class FcmService : FirebaseMessagingService() {
         else sendNotification(notificationData)
 
         if (notificationData.message!!.topic!!.contains("incoming_request")
-                || notificationData.message!!.topic!!.contains("RRRR")
                 && !isBackground(applicationContext)
                 && !isLocked(applicationContext)
                 && !isCallActive(applicationContext) && !PreferencesHelper
@@ -63,7 +52,7 @@ class FcmService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(notificationData: NotificationDataModel) {
-        println("RRR push notificationData = $notificationData")
+
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,
@@ -73,6 +62,7 @@ class FcmService : FirebaseMessagingService() {
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_push)
+                .setColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
                 .setContentTitle(notificationData.message!!.notification!!.title)
                 .setContentText(notificationData.message!!.notification!!.body)
                 .setAutoCancel(true)
@@ -138,7 +128,6 @@ class FcmService : FirebaseMessagingService() {
     }
 
     private fun restartApp() {
-        println("RRR MyFireBaseMessagingService.restartApp")
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)

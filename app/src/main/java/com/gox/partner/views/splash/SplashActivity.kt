@@ -50,8 +50,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         mViewModel = provideViewModel { SplashViewModel() }
         mViewModel.navigator = this
 
-        LocaleUtils.setNewLocale(this,LocaleUtils.getLanguagePref(this)!!)
-
+        LocaleUtils.setNewLocale(this, LocaleUtils.getLanguagePref(this)!!)
         observeViewModel()
         generateHash()
 
@@ -62,13 +61,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         FirebaseInstanceId.getInstance().instanceId
                 .addOnCompleteListener(OnCompleteListener { task ->
                     if (!task.isSuccessful) {
-                        Log.w("Tag", "getInstanceId failed", task.exception)
                         return@OnCompleteListener
                     }
-                    println("RRR :: FCMtoken = ${task.result?.token}")
                     customPreference.edit().putString(PreferencesKey.DEVICE_TOKEN, task.result?.token).apply()
                 })
-        println("RRR :: FCMtoken = ${BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")}")
     }
 
     @SuppressLint("CommitPrefEdits")

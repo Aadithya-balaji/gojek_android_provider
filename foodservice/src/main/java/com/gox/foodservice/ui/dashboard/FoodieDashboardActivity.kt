@@ -59,7 +59,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     private var currentStatus = ""
     private var showingStoreDetail = true
     private var roomConnected: Boolean = false
-    private var reqID:Int = 0
+    private var reqID: Int = 0
     private var checkRequestTimer: Timer? = null
 
     override fun getLayoutId() = R.layout.activty_foodie_dashboard
@@ -182,10 +182,10 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                         reqID = it.responseData.requests.id
                         PreferencesHelper.put(PreferencesKey.ORDER_REQ_ID, reqID)
                         Handler().postDelayed({
-                            if(reqID!=0){
+                            if (reqID != 0) {
                                 SocketManager.emit(Constants.RoomName.ORDER_ROOM_NAME, Constants.RoomId.getOrderRoom(reqID))
                             }
-                        },1000)
+                        }, 1000)
                     }
 
                     writePreferences(Constants.Chat.ADMIN_SERVICE, ORDER)
@@ -342,56 +342,61 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
 
         when {
             itemTotal > 0 -> {
-                item_total_tv.text = Utils.getNumberFormat()?.format(itemTotal)?:""
+                item_total_tv.text = Utils.getNumberFormat()?.format(itemTotal) ?: ""
                 item_total_lt.visibility = VISIBLE
             }
             else -> item_total_lt.visibility = GONE
         }
         when {
             order_invoice.tax_amount > 0 -> {
-                servicetax_tv.text = Utils.getNumberFormat()?.format(order_invoice.tax_amount)?:""
+                servicetax_tv.text = Utils.getNumberFormat()?.format(order_invoice.tax_amount) ?: ""
                 service_tax_lt.visibility = VISIBLE
             }
             else -> service_tax_lt.visibility = GONE
         }
         when {
             order_invoice.delivery_amount > 0 -> {
-                delivery_charge_tv.text = Utils.getNumberFormat()?.format(order_invoice.delivery_amount)?:""
+                delivery_charge_tv.text = Utils.getNumberFormat()?.format(order_invoice.delivery_amount)
+                        ?: ""
                 delivery_charge_lt.visibility = VISIBLE
             }
             else -> delivery_charge_lt.visibility = GONE
         }
         when {
             order_invoice.promocode_amount > 0 -> {
-                promocode_deduction_tv.text = Utils.getNumberFormat()?.format(order_invoice.promocode_amount)?:""
+                promocode_deduction_tv.text = "-".plus(Utils.getNumberFormat()?.format(order_invoice.promocode_amount)
+                        ?: "0.00")
                 promocode_deduction_lt.visibility = VISIBLE
             }
             else -> promocode_deduction_lt.visibility = GONE
         }
         when {
             order_invoice.discount > 0 -> {
-                discount_amount_tv.text = Utils.getNumberFormat()?.format(order_invoice.discount)?:""
+                discount_amount_tv.text = "-".plus(Utils.getNumberFormat()?.format(order_invoice.discount)
+                        ?: "0:00")
                 discount_lt.visibility = VISIBLE
             }
             else -> discount_lt.visibility = GONE
         }
         when {
             order_invoice.wallet_amount > 0 -> {
-                wallet_amount_tv.text = Utils.getNumberFormat()?.format(order_invoice.wallet_amount)?:""
+                wallet_amount_tv.text = Utils.getNumberFormat()?.format(order_invoice.wallet_amount)
+                        ?: ""
                 wallet_amount_lt.visibility = VISIBLE
             }
             else -> wallet_amount_lt.visibility = GONE
         }
         when {
             order_invoice.store_package_amount > 0 -> {
-                package_amount_tv.text = Utils.getNumberFormat()?.format(order_invoice.store_package_amount)?:""
+                package_amount_tv.text = Utils.getNumberFormat()?.format(order_invoice.store_package_amount)
+                        ?: ""
                 package_amount_lt.visibility = VISIBLE
             }
             else -> package_amount_lt.visibility = GONE
         }
         when {
             order_invoice.payable > 0 -> {
-                total_value_tv.text = Utils.getNumberFormat()?.format(order_invoice.payable)?:""
+                total_value_tv.text = Utils.getNumberFormat()?.format(order_invoice.payable) ?: ""
                 total_value_lt.visibility = VISIBLE
             }
             else -> total_value_lt.visibility = GONE

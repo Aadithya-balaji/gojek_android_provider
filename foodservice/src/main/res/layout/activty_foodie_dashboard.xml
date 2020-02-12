@@ -447,6 +447,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:textColor="@color/red"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
@@ -477,6 +478,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:textColor="@color/red"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:padding="@dimen/_2sdp"
                         android:text="@string/dummy_item_total" />

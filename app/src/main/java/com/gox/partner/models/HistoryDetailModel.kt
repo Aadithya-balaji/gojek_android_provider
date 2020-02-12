@@ -327,6 +327,7 @@ data class HistoryDetailModel(
                     val payable: Double? = 0.0,
                     val payment_mode: String? = "",
                     val promocode_amount: Double? = 0.0,
+                    val discount: Double? = 0.0,
                     val store_order_id: Int? = 0,
                     val tax_amount: Double? = 0.0,
                     val total_amount: Double? = 0.0,

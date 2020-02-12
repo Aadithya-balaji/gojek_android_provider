@@ -126,7 +126,6 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
             if (latitude.isNotEmpty() && longitude.isNotEmpty()) {
                 val url = "http://maps.google.com/maps?saddr=" + mViewModel.latitude.value + "," +
                         mViewModel.longitude.value + "&daddr=" + latitude + "," + longitude
-                println("RRR :: Navigation url = $url")
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
             } else ViewUtils.showToast(this, getString(R.string.no_valid_loction), false)
         }
@@ -152,9 +151,6 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
             if (location != null) {
                 mViewModel.latitude.value = location.latitude
                 mViewModel.longitude.value = location.longitude
-               /* if (checkStatusApiCounter++ % 3 == 0)
-                    mViewModel.callFoodieCheckRequest()
-                else loadingObservable.value = false*/
 
                 if (roomConnected) {
                     val locationObj = JSONObject()
@@ -162,7 +158,6 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                     locationObj.put("longitude", location.longitude)
                     locationObj.put("room", Constants.RoomId.getOrderRoom(reqID))
                     SocketManager.emit("send_location", locationObj)
-                    Log.e("SOCKET", "SOCKET_SK Location update called $locationObj")
                 }
             }
         }
@@ -420,8 +415,7 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                 writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
                 val bundle = Bundle()
                 bundle.putString("id", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.id.toString())
-                if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture != null)
-                    bundle.putString("profileImg", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
+                bundle.putString("profileImg", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.picture)
                 bundle.putString("name", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
                         mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name)
                 bundle.putString("bookingID", mViewModel.foodieCheckRequestModel.value!!.responseData.requests.store_order_invoice_id)

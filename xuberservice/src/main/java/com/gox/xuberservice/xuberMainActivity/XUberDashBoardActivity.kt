@@ -419,7 +419,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(contxt: Context?, intent: Intent?) {
-            println("RRRR:: XuberDashboardActivity")
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
 
@@ -469,7 +468,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             options.addAll(polyLine)
             mPolyline = mGoogleMap!!.addPolyline(options.width(5f).color
             (ContextCompat.getColor(baseContext, R.color.colorBlack)))
-            println("RRR mPolyline = " + polyLine.size)
         } else {
             canDrawPolyLine = true
             drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), mViewModel.polyLineSrc.value!!)
@@ -512,7 +510,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.e("Map", "------------" + e.message.toString())
         }
     }
 
@@ -530,7 +527,6 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             (mViewModel.tempSrc.value, mViewModel.tempDest.value, key))
         }
 
-        println("RRR whenFail = $statusCode")
         when (statusCode) {
             "NOT_FOUND" -> showLog(getString(R.string.NoRoadMapAvailable))
             "ZERO_RESULTS" -> showLog(getString(R.string.NoRoadMapAvailable))

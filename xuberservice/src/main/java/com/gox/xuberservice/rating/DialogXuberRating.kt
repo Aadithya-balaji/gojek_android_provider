@@ -57,7 +57,7 @@ class DialogXuberRating : BaseDialogFragment<DialogXuperRatingBinding>(),
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
         getBundleValues()
         mBinding.tvRateWithUser.text = String.format(resources.getString(R.string.xuper_rate),
-                mViewModel.firstName.value.toString() + mViewModel.lastName.value.toString())
+                mViewModel.firstName.value.toString() + " " + mViewModel.lastName.value.toString())
         mBinding.rbUser.onRatingBarChangeListener = this
         getApiResponse()
     }

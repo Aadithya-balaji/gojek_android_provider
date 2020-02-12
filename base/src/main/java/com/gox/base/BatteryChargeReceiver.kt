@@ -10,6 +10,7 @@ import android.media.RingtoneManager
 import android.os.BatteryManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 
 class BatteryChargeReceiver : BroadcastReceiver() {
 
@@ -24,8 +25,6 @@ class BatteryChargeReceiver : BroadcastReceiver() {
         temp = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1)
         voltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1)
 
-        println("RRR :: BatteryChargeReceiver = $level")
-
         if (level < 20) notification(context)
     }
 
@@ -33,7 +32,8 @@ class BatteryChargeReceiver : BroadcastReceiver() {
         val channelId = context.getString(R.string.app_name)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_push)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setContentTitle(context.getString(R.string.app_name))
                 .setContentText(context.getString(R.string.low_battery))
                 .setPriority(NotificationCompat.PRIORITY_LOW)

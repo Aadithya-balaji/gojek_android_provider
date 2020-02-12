@@ -29,6 +29,8 @@ import com.gox.partner.utils.CommonMethods
 import com.gox.partner.views.adapters.DisputeReasonListAdapter
 import com.gox.partner.views.adapters.ReasonListClickListener
 import com.gox.partner.views.dashboard.DashBoardViewModel
+import java.util.*
+import kotlin.collections.HashMap
 
 class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBinding>(),
         CurrentOrderDetailsNavigator {
@@ -161,7 +163,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
     private fun showInvoiceAlertDialog() {
         val invoiceDialogView = LayoutInflater.from(this).inflate(R.layout.view_recepit,
-                null, false);
+                null, false)
 
         val builder = AlertDialog.Builder(this, R.style.Theme_AppCompat_Light_Dialog)
         builder.setView(invoiceDialogView)
@@ -183,6 +185,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         val tvBaseFare: TextView? = alertDialog.findViewById(R.id.basefare_tv)
         val tvWalletFare: TextView? = alertDialog.findViewById(R.id.wallet_tv)
         val tvHourlyFare: TextView? = alertDialog.findViewById(R.id.hourlyfare_tv)
+        val tvPromoCode: TextView? = alertDialog.findViewById(R.id.tvPromoCode)
         val tvDiscountApplied: TextView? = alertDialog.findViewById(R.id.disscount_applied_tv)
         val tvDistanceFare: TextView? = alertDialog.findViewById(R.id.tvDistanceFare)
         val tvTollCharge: TextView? = alertDialog.findViewById(R.id.tvTollCharge)
@@ -191,6 +194,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         val tvRoundOff: TextView? = alertDialog.findViewById(R.id.tvRoundOff)
 
         val rlPackage: RelativeLayout? = alertDialog.findViewById(R.id.packngCharges_layout)
+        val rlPromoCode: RelativeLayout? = alertDialog.findViewById(R.id.rlPromoCode)
         val rlDeliveryCharge: RelativeLayout? = alertDialog.findViewById(R.id.deliverycharges_layout)
         val rlItemPrice: RelativeLayout? = alertDialog.findViewById(R.id.gross_pay_layout)
         val rlBaseFare: RelativeLayout? = alertDialog.findViewById(R.id.basefare_layout)
@@ -219,11 +223,19 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
 
                 when {
-                    (mViewModel.orderDetail.value?.order_invoice?.promocode_amount ?: 0.0) > 0 -> {
+                    (mViewModel.orderDetail.value?.order_invoice?.discount ?: 0.0) > 0 -> {
                         rlDiscount?.visibility = View.VISIBLE
                     }
                     else -> {
                         rlDiscount?.visibility = View.GONE
+                    }
+                }
+                when {
+                    (mViewModel.orderDetail.value?.order_invoice?.promocode_amount ?: 0.0) > 0 -> {
+                        rlPromoCode?.visibility = View.VISIBLE
+                    }
+                    else -> {
+                        rlPromoCode?.visibility = View.GONE
                     }
                 }
 
@@ -375,7 +387,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
 
 
-        when (serviceType?.toUpperCase()) {
+        when (serviceType?.toUpperCase(Locale.getDefault())) {
             Constants.ModuleTypes.ORDER -> {
                 rlBaseFare?.visibility = View.GONE
                 rlHourlyFare?.visibility = View.GONE
@@ -397,7 +409,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                         ?: 0.0) ?: "0.0"
                 tvDeliveryCharge?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.delivery_amount
                         ?: 0.0) ?: "0.0"
-                tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.promocode_amount)}"
+                tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.discount)}"
+                tvPromoCode?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.promocode_amount)}"
                 tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.total_amount
                         ?: 0.0) ?: "0.0"
 

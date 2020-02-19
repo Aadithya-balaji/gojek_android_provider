@@ -8,7 +8,6 @@
     <string name="ok" tools:ignore="MissingTranslation">OK</string>
     <string name="cancel" tools:ignore="MissingTranslation">Cancel</string>
     <string name="status" tools:ignore="MissingTranslation">Status</string>
-    <string name="no_internet_connection" tools:ignore="MissingTranslation">No Internet Connection :( </string>
     <string name="floating_app" tools:ignore="MissingTranslation">Tracking Location</string>
     <string name="low_battery" tools:ignore="MissingTranslation">Your battery is low</string>
     <string name="chat" tools:ignore="MissingTranslation">Chat</string>
@@ -25,5 +24,7 @@
     <string name="DirectionsServiceNotEnabled" tools:ignore="MissingTranslation">Directions service not enabled…</string>
     <string name="ServerError" tools:ignore="MissingTranslation">Server Error…</string>
     <string name="discount">Discount</string>
+    <string name="no_internet_connection">No Internet Connection!!</string>
+    <string name="check_your_internet_connection_and_try_again">Check your internet connection and try again!.</string>
 
 </resources>

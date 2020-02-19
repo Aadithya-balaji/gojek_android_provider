@@ -29,7 +29,7 @@
             android:layout_marginTop="4dp"
             android:layout_toStartOf="@+id/order_item_cost_tv"
             android:fontFamily="@font/avenirltstd_medium"
-            android:text="@string/dummy_item_name"
+            tools:text="@string/dummy_item_name"
             android:textSize="12sp" />
 
         <TextView

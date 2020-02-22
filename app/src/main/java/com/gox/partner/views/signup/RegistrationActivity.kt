@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.AsyncTask
@@ -13,6 +14,7 @@ import android.os.Handler
 import android.telephony.TelephonyManager
 import android.text.Html
 import android.text.TextUtils
+import android.util.Base64
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
@@ -73,6 +75,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.Serializable
 import java.net.URL
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -121,6 +125,9 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         mViewModel = RegistrationViewModel(this)
         this.mBinding.registermodel = mViewModel
         this.mBinding.lifecycleOwner = this
+
+        // WHEN YOU REQUIRED AT THE TIME ONLY ENABLE IT
+       // generateHash()
 
         //      initListener
         tlCountryCode = findViewById(R.id.tl_country_code)
@@ -725,6 +732,35 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             R.id.rbFemale -> if (isChecked) mViewModel.gender.value = "FEMALE"
 
             R.id.cb_terms_condition -> isConditionChecked = isChecked
+        }
+    }
+
+    private fun generateHash() {
+        try {
+            if (Build.VERSION.SDK_INT >= 28) {
+                val packageInfo = packageManager.getPackageInfo(packageName,
+                        PackageManager.GET_SIGNING_CERTIFICATES)
+                val signatures = packageInfo.signingInfo.apkContentsSigners
+                val md = MessageDigest.getInstance("SHA")
+                for (signature in signatures) {
+                    md.update(signature.toByteArray())
+                    val signatureBase64 = String(Base64.encode(md.digest(), Base64.DEFAULT))
+                    Log.d("KEY HASH: ", signatureBase64)
+                }
+            }else{
+                val info = packageManager.getPackageInfo(
+                        packageName,
+                        PackageManager.GET_SIGNATURES)
+                for (signature in info.signatures) {
+                    val md = MessageDigest.getInstance("SHA")
+                    md.update(signature.toByteArray())
+                    Log.d("KEY HASH: ", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+                }
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
         }
     }
 }

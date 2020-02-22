@@ -2,9 +2,9 @@
 <resources>
     <string name="firebase_database_url" translatable="false">https://noted-amphora-240206.firebaseio.com</string>
     <string name="gcm_defaultSenderId" translatable="false">708455232400</string>
-    <string name="google_api_key" translatable="false">AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY</string>
-    <string name="google_app_id" translatable="false">1:708455232400:android:2e18c0be034b8ed9</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY</string>
+    <string name="google_api_key" translatable="false">AIzaSyBX1BLFRpY4p__WQFI6UA1Jm0qAcCsjLhg</string>
+    <string name="google_app_id" translatable="false">1:708455232400:android:86b9e6fed3b264d147f915</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBX1BLFRpY4p__WQFI6UA1Jm0qAcCsjLhg</string>
     <string name="google_storage_bucket" translatable="false">noted-amphora-240206.appspot.com</string>
     <string name="project_id" translatable="false">noted-amphora-240206</string>
 </resources>

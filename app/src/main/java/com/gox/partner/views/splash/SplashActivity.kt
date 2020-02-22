@@ -50,9 +50,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
         mViewModel = provideViewModel { SplashViewModel() }
         mViewModel.navigator = this
 
+        generateHash()
+
         LocaleUtils.setNewLocale(this, LocaleUtils.getLanguagePref(this)!!)
         observeViewModel()
-        generateHash()
 
         if (isNetworkConnected(this)) mViewModel.getConfig()
 
@@ -177,7 +178,16 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                 for (signature in signatures) {
                     md.update(signature.toByteArray())
                     val signatureBase64 = String(Base64.encode(md.digest(), Base64.DEFAULT))
-                    Log.d("KeyHash:: ", signatureBase64)
+                    Log.d("KEY HASH: ", signatureBase64)
+                }
+            }else{
+                val info = packageManager.getPackageInfo(
+                        packageName,
+                        PackageManager.GET_SIGNATURES)
+                for (signature in info.signatures) {
+                    val md = MessageDigest.getInstance("SHA")
+                    md.update(signature.toByteArray())
+                    Log.d("KEY HASH: ", Base64.encodeToString(md.digest(), Base64.DEFAULT))
                 }
             }
         } catch (e: PackageManager.NameNotFoundException) {

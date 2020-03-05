@@ -16,6 +16,7 @@ import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -78,8 +79,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         try {
             mNoInternetDialog = Dialog(this)
             mNoInternetDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            mNoInternetDialog.setCancelable(false)
             mNoInternetDialog.setContentView(R.layout.dialog_no_internet)
+            mNoInternetDialog.findViewById<AppCompatTextView>(R.id.tvSettings).setOnClickListener {
+                startActivity( Intent(android.provider.Settings.ACTION_SETTINGS), null)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

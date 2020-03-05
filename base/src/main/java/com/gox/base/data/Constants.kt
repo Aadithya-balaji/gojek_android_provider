@@ -23,6 +23,7 @@ object Constants {
     const val APP_REQUEST_CODE = 99
     const val COUNTRY_LIST_REQUEST_CODE = 100
     const val CITY_LIST_REQUEST_CODE = 102
+    const val DOCUMENT_UPLOAD_REQUEST_CODE = 12
 
     const val TEMP_FILE_NAME = "Gojek_Provider"
     const val TYPE_PROVIDER = "provider"

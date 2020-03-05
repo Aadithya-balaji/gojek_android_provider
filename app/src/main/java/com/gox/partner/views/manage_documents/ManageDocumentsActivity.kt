@@ -1,31 +1,29 @@
 package com.gox.partner.views.manage_documents
 
 import android.content.Intent
-import android.view.View
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.Observer
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
+import com.gox.base.utils.Utils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityManageDocumentsBinding
+import com.gox.partner.models.ListDocumentResponse
 import com.gox.partner.views.add_edit_document.AddEditDocumentActivity
 import kotlinx.android.synthetic.main.activity_manage_documents.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 
-class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(), ManageDocumentsNavigator {
+class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>() {
 
     private lateinit var mBinding: ActivityManageDocumentsBinding
     private lateinit var mViewModel: ManageDocumentsViewModel
+    private lateinit var mDocsAdapter: DocumentChooseAdapter
 
-    private object DocumentType {
-        const val ALL = "All"
-        const val TRANSPORT = "Transport"
-        const val DELIVERY = "Order"
-        const val SERVICES = "Service"
-    }
-
+    private var groupIndex: Int = -1
+    private var childIndex: Int = -1
     override fun getLayoutId() = R.layout.activity_manage_documents
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
@@ -34,55 +32,50 @@ class ManageDocumentsActivity : BaseActivity<ActivityManageDocumentsBinding>(), 
         mViewModel = provideViewModel {
             ManageDocumentsViewModel()
         }
-        mViewModel.navigator = this
         mBinding.manageDocumentsViewModel = mViewModel
+        mDocsAdapter = DocumentChooseAdapter()
+        expandableList.setAdapter(mDocsAdapter)
 
         setSupportActionBar(mBinding.toolbar.tbApp)
         mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
         mBinding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_manage_documents)
         loadingObservable.value = true
+
+        expandableList.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
+            groupIndex = groupPosition
+            childIndex = childPosition
+            val intent = Intent(this, AddEditDocumentActivity::class.java)
+            intent.putExtra(Constants.DOCUMENT_NAME,
+                    Utils.capitalize(
+                            mViewModel.servicesLiveData.value!!.responseData[groupPosition].adminServiceName
+                    ).plus(getString(R.string.documents))
+            )
+            intent.putExtra(Constants.DOCUMENT_TYPE,
+                    mViewModel.servicesLiveData.value!!.responseData[groupPosition].documents[childIndex])
+            startActivityForResult(intent, Constants.DOCUMENT_UPLOAD_REQUEST_CODE)
+            false
+        }
+
         mViewModel.getServices()
+
         observeLiveData(mViewModel.servicesLiveData) { response ->
             loadingObservable.value = false
-            for (data in response.responseData)
-                when (data.adminServiceName) {
-                    Constants.ModuleTypes.TRANSPORT -> if (data.providerServices != null)
-                        cvTransportDocuments.visibility = View.VISIBLE
-                    Constants.ModuleTypes.SERVICE -> if (data.providerServices != null)
-                        cvServicesDocuments.visibility = View.VISIBLE
-                    Constants.ModuleTypes.ORDER -> if (data.providerServices != null)
-                        cvDeliveryDocuments.visibility = View.VISIBLE
-                }
+            mDocsAdapter.setData(response.responseData)
+
         }
+        mViewModel.errorLiveData.observe(this, Observer {
+            ViewUtils.showToast(applicationContext, it, false)
+        })
     }
 
-    override fun showError(error: String) = ViewUtils.showToast(applicationContext, error, false)
-
-    override fun showAllDocuments() {
-        val intent = Intent(this, AddEditDocumentActivity::class.java)
-        intent.putExtra(Constants.DOCUMENT_NAME, getString(R.string.common_documents))
-        intent.putExtra(Constants.DOCUMENT_TYPE, DocumentType.ALL)
-        openActivity(intent, false)
-    }
-
-    override fun showTransportDocuments() {
-        val intent = Intent(this, AddEditDocumentActivity::class.java)
-        intent.putExtra(Constants.DOCUMENT_NAME, getString(R.string.transport_documents))
-        intent.putExtra(Constants.DOCUMENT_TYPE, DocumentType.TRANSPORT)
-        openActivity(intent, false)
-    }
-
-    override fun showDeliveryDocuments() {
-        val intent = Intent(this, AddEditDocumentActivity::class.java)
-        intent.putExtra(Constants.DOCUMENT_NAME, getString(R.string.delievery_documents))
-        intent.putExtra(Constants.DOCUMENT_TYPE, DocumentType.DELIVERY)
-        openActivity(intent, false)
-    }
-
-    override fun showServicesDocuments() {
-        val intent = Intent(this, AddEditDocumentActivity::class.java)
-        intent.putExtra(Constants.DOCUMENT_NAME, getString(R.string.services_documents))
-        intent.putExtra(Constants.DOCUMENT_TYPE, DocumentType.SERVICES)
-        openActivity(intent, false)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == RESULT_OK && Constants.DOCUMENT_UPLOAD_REQUEST_CODE == requestCode) {
+            mDocsAdapter.setItem(
+                    groupIndex,
+                    childIndex,
+                    data?.extras!!.get(Constants.DOCUMENT_TYPE) as ListDocumentResponse.ResponseData.ProviderDocument
+            )
+        }
     }
 }

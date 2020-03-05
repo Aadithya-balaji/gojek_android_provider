@@ -16,11 +16,6 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.facebook.accountkit.AccountKitLoginResult
-import com.facebook.accountkit.PhoneNumber
-import com.facebook.accountkit.ui.AccountKitActivity
-import com.facebook.accountkit.ui.AccountKitConfiguration
-import com.facebook.accountkit.ui.LoginType
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.APP_REQUEST_CODE

@@ -127,7 +127,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         this.mBinding.lifecycleOwner = this
 
         // WHEN YOU REQUIRED AT THE TIME ONLY ENABLE IT
-       // generateHash()
+        // generateHash()
 
         //      initListener
         tlCountryCode = findViewById(R.id.tl_country_code)
@@ -203,7 +203,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             startActivityForResult(intent, COUNTRYLIST_REQUEST_CODE)
         }
 
-        mViewModel.loadingProgress.observe(this,androidx.lifecycle.Observer {
+        mViewModel.loadingProgress.observe(this, androidx.lifecycle.Observer {
             loadingObservable.value = it
         })
 
@@ -213,10 +213,10 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             ViewUtils.showToast(this, getString(R.string.otp_success), true)
             Handler().postDelayed({
                 val intent = Intent(this, VerifyOTPActivity::class.java)
-                intent.putExtra("country_code",mViewModel.countryCode.value!!.replace("+",""))
-                intent.putExtra("mobile",mViewModel.phoneNumber.value!!.toString())
-                startActivityForResult(intent,FB_ACCOUNT_KIT_CODE)
-            },1000)
+                intent.putExtra("country_code", mViewModel.countryCode.value!!.replace("+", ""))
+                intent.putExtra("mobile", mViewModel.phoneNumber.value!!.toString())
+                startActivityForResult(intent, FB_ACCOUNT_KIT_CODE)
+            }, 1000)
         });
     }
 
@@ -392,17 +392,6 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     }
 
     override fun verifyPhoneNumber() {
-       /* val phoneNumber = PhoneNumber(countryCode!!, mViewModel.phoneNumber.value!!, isoCode)
-        val intent = Intent(this, AccountKitActivity::class.java)
-        val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
-                LoginType.PHONE,
-                AccountKitActivity.ResponseType.CODE)
-        configurationBuilder.setInitialPhoneNumber(phoneNumber)
-        intent.putExtra(
-                AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
-                configurationBuilder.build())
-        startActivityForResult(intent, FB_ACCOUNT_KIT_CODE)*/
-
         if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SEND_SMS, false)) {
             mViewModel.loadingProgress.value = true
             mViewModel.sendOTP()
@@ -447,7 +436,6 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                 val socialEmail = jsonObject.getString("email")
                 val imgValue = "http://graph.facebook.com/" + jsonObject.getString("id") + "/picture?type=large"
                 glideSetImageView(ivProfile, imgValue, R.drawable.ic_user_place_holder)
-                Log.e("FB_ID", "-----$socialId")
                 mViewModel.firstName.value = socialFirstName
                 mViewModel.lastName.value = socialLastName
                 mViewModel.email.value = socialEmail
@@ -569,8 +557,8 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun getFacebookProfile() {
-       /* LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY)
-                .logInWithReadPermissions(this, listOf("public_profile", "email"))*/
+        /* LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY)
+                 .logInWithReadPermissions(this, listOf("public_profile", "email"))*/
 
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"))
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
@@ -585,12 +573,9 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             }
 
             private fun setFacebookData(loginResult: LoginResult) {
-                val request = GraphRequest.newMeRequest(loginResult.accessToken, GraphRequest.GraphJSONObjectCallback { jsonObject: JSONObject, graphResponse: GraphResponse ->
+                val request = GraphRequest.newMeRequest(loginResult.accessToken) { _: JSONObject, graphResponse: GraphResponse ->
                     mBinding.socialSignupLayout.visibility = View.GONE
                     mBinding.tilSignupPwd.visibility = View.GONE
-
-
-                    Log.d("_D_FB", graphResponse.jsonObject.getString("email"))
 
                     val imgUrl = "http://graph.facebook.com/" + graphResponse.jsonObject.getString("id") + "/picture?type=large"
 
@@ -600,7 +585,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     val email = graphResponse.jsonObject.getString("email")
                     val profileImage = imgUrl
 
-                    glideSetImageView(ivProfile, profileImage.toString(), R.drawable.ic_user_place_holder)
+                    glideSetImageView(ivProfile, profileImage, R.drawable.ic_user_place_holder)
 
                     mViewModel.firstName.value = socialFirstName.toString()
                     mViewModel.lastName.value = socialLastName.toString()
@@ -616,10 +601,10 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
                     DownloadImage(this@RegistrationActivity).execute(URL(profileImage).toString())
 
-//                    mBinding.emailidRegisterEt.setText(graphResponse.jsonObject.getString("gender"))
+                    //                    mBinding.emailidRegisterEt.setText(graphResponse.jsonObject.getString("gender"))
 
 
-                })
+                }
 
                 val parameters = Bundle()
 //                parameters.putString("fields", "id,first_name,last_name,email");
@@ -700,12 +685,11 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 85, out)
                     out.flush()
                     out.close()
-                    Log.i("Seiggailion", "Image saved.")
                 } catch (e: Exception) {
                     Log.i("Seiggailion", e.message)
                 }
             }
-            return if (file != null && file.exists())
+            return if (file.exists())
                 file.path else ""
         }
 
@@ -737,6 +721,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
     private fun generateHash() {
         try {
+            tvHash.visibility = View.GONE
             if (Build.VERSION.SDK_INT >= 28) {
                 val packageInfo = packageManager.getPackageInfo(packageName,
                         PackageManager.GET_SIGNING_CERTIFICATES)
@@ -746,8 +731,9 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     md.update(signature.toByteArray())
                     val signatureBase64 = String(Base64.encode(md.digest(), Base64.DEFAULT))
                     Log.d("KEY HASH: ", signatureBase64)
+                    tvHash.text = signatureBase64
                 }
-            }else{
+            } else {
                 val info = packageManager.getPackageInfo(
                         packageName,
                         PackageManager.GET_SIGNATURES)
@@ -755,6 +741,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     val md = MessageDigest.getInstance("SHA")
                     md.update(signature.toByteArray())
                     Log.d("KEY HASH: ", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+                    tvHash.text = Base64.encodeToString(md.digest(), Base64.DEFAULT)
                 }
             }
         } catch (e: PackageManager.NameNotFoundException) {

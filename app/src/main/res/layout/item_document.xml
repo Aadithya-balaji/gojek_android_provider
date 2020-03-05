@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvDocumentName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_toStartOf="@+id/ivStatus"
+        android:fontFamily="@font/avenir_lt_std_medium"
+        android:maxLines="1"
+        android:textAllCaps="true"
+        android:textColor="@color/colorGray"
+        android:textSize="14sp"
+        tools:text="License Documents" />
+
+    <ImageView
+        android:id="@+id/ivStatus"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_info"
+        android:tint="@color/colorLightRed" />
+
+    <TextView
+        android:id="@+id/tvExpire"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDocumentName"
+        android:layout_gravity="center_vertical"
+        android:layout_toStartOf="@+id/ivStatus"
+        android:fontFamily="@font/avenirltstd_light"
+        android:maxLines="1"
+        android:textColor="@color/colorGray"
+        android:textSize="10sp"
+        tools:text="Expire: 12-12-2020" />
+
+</RelativeLayout>

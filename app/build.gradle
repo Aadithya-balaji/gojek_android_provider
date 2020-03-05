@@ -83,9 +83,6 @@ dependencies {
     implementation 'com.novoda:spritz:1.0.0'
     implementation 'com.aurelhubert:ahbottomnavigation:2.3.4'
 
-    //      Facebook Account Kit
-    implementation 'com.facebook.android:account-kit-sdk:5.0.0'
-
     //      Facebook Login
     implementation 'com.facebook.android:facebook-login:5.1.1'
 

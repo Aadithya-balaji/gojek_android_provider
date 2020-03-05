@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="2dp"
+    app:cardMaxElevation="2dp">
+
+    <TextView
+        android:id="@+id/tvDocumentType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_lt_std_medium"
+        android:maxLines="1"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:textAllCaps="true"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        tools:text="Common Documents" />
+
+    <ImageView
+        android:id="@+id/ivGroupIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/group_indicator"
+        android:contentDescription="@null" />
+</com.google.android.material.card.MaterialCardView>

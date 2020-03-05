@@ -59,9 +59,11 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         }, documentType))
     }
 
-    fun setData(data: List<ListDocumentResponse.ResponseData>) {
-        this.data = data
-        if (data.isNotEmpty()) {
+    fun setData(data: ListDocumentResponse.ResponseData) {
+        val documentList =ArrayList<ListDocumentResponse.ResponseData>()
+        documentList.add(data)
+        this.data = documentList
+        if (this.data.isNotEmpty()) {
             updateDetails()
             showEmpty.value = false
         } else showEmpty.value = true
@@ -73,7 +75,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
         documentFrontName.value = data[currentPosition].name + " (Front)"
         documentBackName.value = data[currentPosition].name + " (Back)"
         showBackSide.value = data[currentPosition].is_backside != null && data[currentPosition].is_backside!! == "1"
-        showExpiry.value = data[currentPosition].is_expire == "1"
+        showExpiry.value = data[currentPosition].is_expire == 1
         if (data[currentPosition].provider_document != null) {
             showFrontView.value = true
             expiryDate.value = Utils.parseDateToYYYYMMdd(data[currentPosition].provider_document?.expires_at)

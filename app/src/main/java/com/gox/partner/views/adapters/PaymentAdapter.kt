@@ -8,8 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.gox.partner.R
 import java.util.*
 
-class PaymentAdapter internal constructor(fm: FragmentManager, context: Context, fragList: Vector<Fragment>)
-    : FragmentStatePagerAdapter(fm) {
+class PaymentAdapter internal constructor(fm: FragmentManager, context: Context, fragList: Vector<Fragment>) : FragmentStatePagerAdapter(fm) {
 
     private var title: String? = null
     private var context: Context? = null

@@ -30,11 +30,9 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         mViewModel.navigator = this
         mViewModel.setServiceId(intent.getStringExtra(Constants.SERVICE_ID))
         mBinding.setupVehicleViewModel = mViewModel
-
         setSupportActionBar(mBinding.toolbar.tbApp)
         mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
         mBinding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_setup_vehicle)
-
         observeViewModel()
 
     }
@@ -69,12 +67,10 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
 
         val intent = Intent(applicationContext, AddVehicleActivity::class.java)
         intent.putExtra(Constants.SERVICE_ID, mViewModel.getServiceName())
-
         if (providerService is SetupRideResponseModel)
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
         else if (providerService is SetupShopResponseModel)
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
-
         if (providerService is SetupRideResponseModel
                 && providerService.responseData[position].serviceList.isNotEmpty())
             intent.putExtra(Constants.TRANSPORT_VEHICLES,

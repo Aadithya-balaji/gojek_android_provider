@@ -45,9 +45,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
                     descriptions[it])
         }
         icons.recycle()
-
         observeViewModel()
-
         loadingObservable.value = true
         mViewModel.getServices()
     }

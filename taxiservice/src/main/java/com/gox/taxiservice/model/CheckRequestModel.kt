@@ -157,7 +157,8 @@ data class Request(
         var user: User = User(),
         var user_id: Int? = 0,
         var user_rated: Double? = 0.0,
-        var vehicle_type: String = ""
+        var vehicle_type: String = "",
+        var leave_at_door :Int?=0
 ) : Serializable
 
 data class User(

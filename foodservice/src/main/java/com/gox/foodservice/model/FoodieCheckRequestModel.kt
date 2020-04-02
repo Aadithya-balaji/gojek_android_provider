@@ -119,7 +119,8 @@ data class Request(
         var pickup: Pickup = Pickup(),
         var payment: Payment = Payment(),
         var stores_details: StoreDetails = StoreDetails(),
-        var order_invoice: OrderInvoice = OrderInvoice()
+        var order_invoice: OrderInvoice = OrderInvoice(),
+        var leave_at_door:Int=0
 ) : Serializable
 
 class OrderInvoice(

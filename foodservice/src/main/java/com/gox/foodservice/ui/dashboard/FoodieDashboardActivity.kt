@@ -262,6 +262,9 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
         mBinding.iconOrderDelivered.imageTintList = ContextCompat.getColorStateList(this, R.color.white)
         mBinding.iconOrderPickedUp.background = getDrawable(R.drawable.round_accent)
         showingStoreDetail = false
+        if(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.leave_at_door==1)
+         ViewUtils.showAlert(this,getString(R.string.door_step_delivery))
+
     }
 
     private fun whenReached() {

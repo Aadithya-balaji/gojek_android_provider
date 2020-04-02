@@ -39,4 +39,5 @@
     <string name="foodie_make_sure_your_payment">* Make sure your payment from customer</string>
     <string name="no_valid_mobile">There is no valid phone number</string>
     <string name="no_valid_loction">There is no valid location</string>
+    <string name="door_step_delivery">Please drop at doorstep</string>
 </resources>

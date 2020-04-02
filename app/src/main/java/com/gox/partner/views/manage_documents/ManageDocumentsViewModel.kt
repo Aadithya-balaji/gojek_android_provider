@@ -10,11 +10,7 @@ class ManageDocumentsViewModel : BaseViewModel<ManageDocumentsNavigator>() {
 
     private val mRepository = AppRepository.instance()
     val servicesLiveData = MutableLiveData<ManageServicesResponseModel>()
-
-    fun showAllDocuments() = navigator.showAllDocuments()
-    fun showTransportDocuments() = navigator.showTransportDocuments()
-    fun showDeliveryDocuments() = navigator.showDeliveryDocuments()
-    fun showServicesDocuments() = navigator.showServicesDocuments()
+    val errorLiveData = MutableLiveData<String>()
 
     fun getServices() {
         getCompositeDisposable().add(mRepository.getServices(object : ApiListener {
@@ -23,7 +19,7 @@ class ManageDocumentsViewModel : BaseViewModel<ManageDocumentsNavigator>() {
             }
 
             override fun fail(failData: Throwable) {
-                navigator.showError(getErrorMessage(failData))
+               errorLiveData.value =getErrorMessage(failData)
             }
         }))
     }

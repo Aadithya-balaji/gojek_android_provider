@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.gox.partner.views.add_edit_document
 
 import android.Manifest
@@ -11,7 +13,6 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.downloader.Error
 import com.downloader.OnDownloadListener
-import com.downloader.OnProgressListener
 import com.downloader.PRDownloader
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
@@ -41,7 +42,6 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
     private lateinit var mBinding: ActivityAddEditDocumentBinding
     private lateinit var mViewModel: AddEditDocumentViewModel
-
     private lateinit var calendar: Calendar
 
     private var requestCode: Int = -1
@@ -69,8 +69,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
             loadingObservable.value = it
         }
 
-        mViewModel.getDocumentList(intent.getStringExtra(Constants.DOCUMENT_TYPE))
-
+        tv_toolbar_title.text = intent.getStringExtra(Constants.DOCUMENT_NAME)
+        mViewModel.setData(intent.getParcelableExtra(Constants.DOCUMENT_TYPE))
         observeResponses()
 
         mViewModel.expiryDate.value = DateTimeUtil().constructDateString(calendar.get(Calendar.YEAR),
@@ -79,16 +79,17 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
     private fun observeResponses() {
 
-        observeLiveData(mViewModel.documentResponse) { data ->
-            run {
-                mViewModel.setData(data.responseData)
-            }
+        observeLiveData(mViewModel.documentResponse) {
+            // mViewModel.setData(it.responseData)
         }
 
         observeLiveData(mViewModel.addDocumentResponse) {
             ViewUtils.showToast(this, getString(R.string.docuemnt_added_success), true)
-            if (mViewModel.getData().size > (mViewModel.currentPosition + 1))
-                mViewModel.incrementPosition() else finish()
+            it.responseData.expires_at = it.responseData.expires_at.plus(" 00:00:00")
+            setResult(Activity.RESULT_OK, Intent().putExtra(Constants.DOCUMENT_TYPE, it.responseData))
+            finish()
+//            if (mViewModel.getData().size > (mViewModel.currentPosition + 1))
+//                mViewModel.incrementPosition() else finish()
         }
 
         observeLiveData(mViewModel.errorResponse) { error ->

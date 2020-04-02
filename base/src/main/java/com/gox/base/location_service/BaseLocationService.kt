@@ -66,22 +66,11 @@ class BaseLocationService : Service() {
     override fun onCreate() {
         println("RRRR:: BaseLocationService.onCreate")
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-       /* h = Handler()
-        r = Runnable {
-            h!!.postDelayed(r, checkInterval.toLong())
-            streamLocation()
-        }*/
-
         mLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 println("RRRR:: BaseLocationService.LocationCallBack")
                 super.onLocationResult(locationResult)
                 onNewLocation(locationResult!!.lastLocation)
-                /*if (h != null) {
-                    h!!.removeCallbacks(r)
-                    h!!.postDelayed(r, checkInterval.toLong())
-                }*/
             }
         }
 
@@ -109,7 +98,6 @@ class BaseLocationService : Service() {
             val mChannel = NotificationChannel(channelId, name, NotificationManager.IMPORTANCE_DEFAULT)
             mNotificationManager!!.createNotificationChannel(mChannel)
         }
-        // requestLocationUpdates()
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
@@ -139,11 +127,6 @@ class BaseLocationService : Service() {
                     println("RRRR:: mFusedLocationClient received $mLocation")
                     onNewLocation(mLocation!!)
                 } else println("RRRR:: Failed to get location.")
-//                val location = Location("setting")
-//                location.latitude = 0.0
-//                location.longitude = 0.0
-//                onNewLocation(location)
-//                println("RRRR:: streamLocation::task = $task")
             }
         } catch (unlikely: SecurityException) {
             println("RRRR:: Lost location permission.$unlikely")

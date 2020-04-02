@@ -45,6 +45,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/tvHash"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:visibility="gone"
+                    android:textColor="@color/blue"
+                    android:textSize="18sp" />
+
+
                 <RelativeLayout
                     android:id="@+id/loginvia_sociallogin_layout"
                     android:layout_width="match_parent"
@@ -66,10 +76,9 @@
                     android:id="@+id/social_login_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginRight="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_white">
 
                     <TextView
@@ -77,8 +86,6 @@
                         style="@style/SmallText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:drawableStart="@drawable/ic_facebook"
                         android:drawablePadding="@dimen/_10sdp"
                         android:gravity="center"
@@ -94,8 +101,9 @@
                     android:id="@+id/social_google_login_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_white">
 
                     <TextView
@@ -103,7 +111,6 @@
                         style="@style/SmallText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_5sdp"
                         android:drawableStart="@drawable/ic_google"
                         android:drawablePadding="@dimen/_8sdp"
                         android:gravity="center"
@@ -529,8 +536,7 @@
                     android:onClick="@{() -> registermodel.gotoLogin()}"
                     android:padding="@dimen/_3sdp"
                     android:text="@string/already_have_account"
-                    android:textSize="@dimen/_12sdp"
-                     />
+                    android:textSize="@dimen/_12sdp" />
 
                 <!--Signin textview-->
                 <TextView
@@ -557,8 +563,7 @@
                     app:backgroundTint="@color/colorBasePrimary"
                     app:fabSize="mini"
                     app:srcCompat="@drawable/ic_forward_arrow"
-                    app:tint="@android:color/white"
-                     />
+                    app:tint="@android:color/white" />
 
             </RelativeLayout>
 

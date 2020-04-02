@@ -39,7 +39,7 @@ class WebServiceModule {
     private fun getHttpClient() = OkHttpClient.Builder()
             .addNetworkInterceptor(getRequestHeader())
             .addInterceptor(getLoggingInterceptor())
-            .addNetworkInterceptor(StethoInterceptor())
+            //.addNetworkInterceptor(StethoInterceptor())
             .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)

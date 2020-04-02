@@ -117,7 +117,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />
+<!--        <activity android:name="com.facebook.accountkit.ui.AccountKitActivity" />-->
         <activity
             android:name="com.gox.partner.views.splash.SplashActivity"
             android:configChanges="orientation"

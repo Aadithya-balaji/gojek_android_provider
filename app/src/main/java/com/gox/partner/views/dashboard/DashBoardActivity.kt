@@ -228,49 +228,50 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         println("RRR :: HomeFragment.getApiResponse")
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
-                writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
-                if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
-                    mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
-                    writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
-                    when (checkStatusData.responseData.requests[0].request.status) {
-                        SEARCHING -> if (!mIncomingRequestDialog.isShown()) {
-                            val bundle = Bundle()
-                            val strRequest = Gson().toJson(checkStatusData)
-                            bundle.putString("requestModel", strRequest)
-                            mIncomingRequestDialog.arguments = bundle
-                            mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
-                            AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
-                        }
+                    writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
+                    if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
+                        mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
+                        writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
+                        when (checkStatusData.responseData.requests[0].request.status) {
+                            SEARCHING -> if (!mIncomingRequestDialog.isShown()) {
+                                val bundle = Bundle()
+                                val strRequest = Gson().toJson(checkStatusData)
+                                bundle.putString("requestModel", strRequest)
+                                mIncomingRequestDialog.arguments = bundle
+                                mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
+                                AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
+                            }
 
-                        else -> when (checkStatusData.responseData.requests[0].service.admin_service) {
-                            TRANSPORT -> {
-                                BROADCAST = TRANSPORT_BROADCAST
-                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                    val intent = Intent(this, TaxiDashboardActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                    startActivity(intent)
+                            else -> when (checkStatusData.responseData.requests[0].service.admin_service) {
+                                TRANSPORT -> {
+                                    BROADCAST = TRANSPORT_BROADCAST
+                                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                        val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                        startActivity(intent)
+                                    }
                                 }
-                            }
-                            SERVICE -> {
-                                BROADCAST = SERVICE_BROADCAST
-                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                    val intent = Intent(this, XUberDashBoardActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                    startActivity(intent)
+                                SERVICE -> {
+                                    BROADCAST = SERVICE_BROADCAST
+                                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                        val intent = Intent(this, XUberDashBoardActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                        startActivity(intent)
+                                    }
                                 }
-                            }
-                            ORDER -> {
-                                BROADCAST = ORDER_BROADCAST
-                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                    val intent = Intent(this, FoodieDashboardActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                    startActivity(intent)
+                                ORDER -> {
+                                    BROADCAST = ORDER_BROADCAST
+                                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                        val intent = Intent(this, FoodieDashboardActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                        startActivity(intent)
+                                    }
                                 }
+                                else -> BROADCAST = BASE_BROADCAST
                             }
-                            else -> BROADCAST = BASE_BROADCAST
                         }
-                    }
-                } else if (mIncomingRequestDialog.isShown()) mIncomingRequestDialog.dismiss()
+                    } else if (mIncomingRequestDialog.isShown()) mIncomingRequestDialog.dismiss()
+
             }
         })
 

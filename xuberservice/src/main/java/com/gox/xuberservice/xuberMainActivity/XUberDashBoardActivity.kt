@@ -441,8 +441,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             locationObj.put("latitude", location.latitude)
             locationObj.put("longitude", location.longitude)
             locationObj.put("room", Constants.RoomId.getServiceRoom(reqID))
-//                      SocketManager.emit("send_location", locationObj)
-//                      Log.e("SOCKET", "SOCKET_SK Location update service called")
+            SocketManager.emit("send_location", locationObj)
         }
 
         if (BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.SERVICE_OTP, false)) {

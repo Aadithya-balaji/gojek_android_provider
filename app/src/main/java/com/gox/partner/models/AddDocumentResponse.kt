@@ -3,7 +3,7 @@ package com.gox.partner.models
 data class AddDocumentResponse(
         val error: List<Any> = listOf(),
         val message: String = "",
-        val responseData: ResponseData = ResponseData(),
+        val responseData: ListDocumentResponse.ResponseData.ProviderDocument = ListDocumentResponse.ResponseData.ProviderDocument(),
         val statusCode: String = "",
         val title: String = ""
 ) {

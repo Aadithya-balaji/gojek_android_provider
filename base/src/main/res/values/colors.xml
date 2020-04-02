@@ -12,6 +12,7 @@
     <color name="notification_grey">#989fcb</color>
     <color name="colorBlack">#000000</color>
     <color name="blue">#2196F3</color>
+    <color name="colorLightRed">#D05050</color>
 
 
     <!--App Module-->
@@ -27,7 +28,7 @@
     <color name="colorHintText">#888888</color>
     <color name="colorCounterText">#000000</color>
     <color name="colorGray">#9D9D9D</color>
-    <color name="colorGreen">#FFE4DA</color>
+    <color name="colorGreen">#067D03</color>
     <color name="colorFullTransparent">#00000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorLightBlue">#B6C0E3</color>

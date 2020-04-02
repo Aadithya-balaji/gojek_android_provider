@@ -52,7 +52,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         dashBoardNavigator.hideRightIcon(false)
         dashBoardNavigator.showLogo(false)
 
-        observeLiveData(mViewModel.successResponse){
+        observeLiveData(mViewModel.successResponse) {
             dashBoardNavigator.updateLocation(false)
             clearPreferences<String>()
             launchNewActivity(OnBoardActivity::class.java, false)
@@ -77,6 +77,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         val accountMenus = List(accountMenuTitles.size) {
             AccountMenuModel(accountMenuTitles[it], accountMenuIcons.getResourceId(it, -1))
         }
+
         accountMenuIcons.recycle()
         mViewModel.setAccountMenus(accountMenus)
         mViewModel.setAdapter()
@@ -107,7 +108,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(), AccountNavigator
         10 -> launchNewActivity(LanguageActivity::class.java, false)
 
         else -> {
-
+            throw IllegalStateException()
         }
     }
 }

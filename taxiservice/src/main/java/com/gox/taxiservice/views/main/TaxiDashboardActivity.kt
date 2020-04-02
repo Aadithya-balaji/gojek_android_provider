@@ -91,6 +91,7 @@ import org.json.JSONObject
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.util.*
+import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.concurrent.schedule
@@ -148,6 +149,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var polylineKey = ""
     private var sosCall = ""
     private var checkRequestTimer: Timer? = null
+    private var patternMatcher: Pattern? = null
+    private  var tempCurrentLatLon :LatLng?=LatLng(0.0000,0.0000)
+
 
 
     override fun getLayoutId() = R.layout.activity_taxi_main
@@ -690,11 +694,18 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
     }
 
+    //Here Pattern matcher is used for to validate whether the location values are zero or not
     private fun updateMap(location: Location) {
-        mViewModel.latitude.value = location.latitude
-        mViewModel.longitude.value = location.longitude
-        if (mViewModel.latitude.value!! == 0.0 && mViewModel.longitude.value!! == 0.0)
+        val latitudeMatcher = patternMatcher!!.matcher(mViewModel.latitude.value!!.toString())
+        val longtitudeMatcher = patternMatcher!!.matcher(mViewModel.longitude.value!!.toString())
+        val engLatitudeMatcher = patternMatcher!!.matcher(endLatLng.latitude.toString())
+        //Pattern Matcher true means the all values are   zero in lat or lon
+        if (latitudeMatcher.matches() == true && longtitudeMatcher.matches() == true)
             updateCurrentLocation()
+        else{
+            mViewModel.latitude.value=location.latitude
+            mViewModel.longitude.value=location.longitude
+        }
         println("RRRR :: TaxiDashboardActivity " + mViewModel.latitude.value + " :: " + mViewModel.longitude.value)
 
         if (roomConnected) {
@@ -702,28 +713,29 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             locationObj.put("latitude", location.latitude)
             locationObj.put("longitude", location.longitude)
             locationObj.put("room", Constants.RoomId.getTransportRoom(reqID))
-//                    SocketManager.emit("send_location", locationObj)
+            SocketManager.emit("send_location", locationObj)
             Log.e("SOCKET", "SOCKET_SK Location update called")
         }
 
-//        if (!BuildConfig.isSocketEnabled) if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
+        val startingLatitudeMatcher=patternMatcher!!.matcher(mViewModel.latitude.value.toString())
+        val startLongitudeMatcher=patternMatcher!!.matcher(mViewModel.longitude.value.toString())
 
-        if (startLatLng.latitude != 0.0) endLatLng = startLatLng
-        startLatLng = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
+        if (latitudeMatcher.matches()==false && longtitudeMatcher.matches()==false) {
+            startLatLng = tempCurrentLatLon!!
+            tempCurrentLatLon = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
+            endLatLng = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
+        }
 
-        println("RRRR :: TaxiDashboardActivity LatLng(location = " +
-                "${LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)}")
-
-        if (mViewModel.latitude.value!! != 0.0 && endLatLng.latitude != 0.0 && polyLine.size > 0) {
+        if (latitudeMatcher.matches() == false && longtitudeMatcher.matches() == false && polyLine.size > 0) {
             try {
-                CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, endLatLng, startLatLng)
-                polyLineRerouting(endLatLng, polyLine)
+                CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, startLatLng, endLatLng)
+                polyLineRerouting(startLatLng, polyLine)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        } else if (mViewModel.latitude.value!! != 0.0 && polyLine.size == 0) try {
-            drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                    mViewModel.polyLineDest.value!!)
+
+        } else if (latitudeMatcher.matches() == false && longtitudeMatcher.matches()==false&& polyLine.size == 0) try {
+            drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), mViewModel.polyLineDest.value!!)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -909,7 +921,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     override fun onClick(view: View?) {
         when (view!!.id) {
-//<<<<<<< HEAD
             R.id.btnWaiting -> if (isWaitingTime) {
                 changeWaitingTimeBackground(false)
                 isWaitingTime = false

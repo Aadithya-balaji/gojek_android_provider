@@ -525,7 +525,7 @@
     <string name="wheel_chair">Wheel Chair</string>
     <string name="dummy_dispute_created_comments">Dispute created comments</string>
     <string name="dummy_accepted">accepted</string>
-    <string name="listout_lossitem">List Your loss item</string>
+    <string name="listout_lossitem">List your loss item</string>
     <string name="dummy_enter_your_loss_item">Enter your Loss Item</string>
     <string name="dummy_openstatus">open</string>
     <string name="send">send</string>
@@ -541,5 +541,6 @@
     <string name="extra_charges">Extra Charges</string>
     <string name="distance_fare">Distance Fare</string>
     <string name="card_invalid">Card details invalid</string>
-
+    <string name="documents">\u0020Documents</string>
+    <string name="expire_at">"Expire At: "</string>
 </resources>

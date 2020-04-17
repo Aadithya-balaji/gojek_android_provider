@@ -64,6 +64,7 @@ import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
 import kotlinx.android.synthetic.main.toolbar_header.view.*
+import org.json.JSONObject
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -303,8 +304,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 if (location != null) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
-                    /*if (!isSocketEnabled) if (checkStatusApiCounter++ % 2 == 0)
-                        mViewModel.callCheckStatusAPI()*/
+                    val locationObj = JSONObject()
+                    locationObj.put("latitude", location.latitude)
+                    locationObj.put("longitude", location.longitude)
+                    locationObj.put("room", Constants.RoomName.COMMON_ROOM_NAME)
+                    SocketManager.emit("send_location", locationObj)
                 }
             } else if (!isLocationDialogShown) {
                 isLocationDialogShown = true

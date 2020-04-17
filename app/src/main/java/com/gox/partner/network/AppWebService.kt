@@ -180,9 +180,8 @@ interface AppWebService {
             @FieldMap params: HashMap<String, String>
     ): Observable<AddVehicleResponseModel>
 
-    @FormUrlEncoded
-    @POST("provider/listdocuments")
-    fun getDocuments(@Field("type") documentType: String
+    @GET("provider/listdocuments")
+    fun getDocuments(@Query("type") documentType: String
     ): Observable<ListDocumentResponse>
 
     @GET("provider/bankdetails/template")

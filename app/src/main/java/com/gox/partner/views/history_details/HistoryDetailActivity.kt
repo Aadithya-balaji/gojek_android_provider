@@ -124,9 +124,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 })
 
         mViewModel.selectedDisputeModel.observe(this, Observer {
-            bottomSheetDialog!!.dismiss()
+           // bottomSheetDialog!!.dismiss()
             selectedDisputeData = it
-            createDisputeRequest()
+
         })
 
     }
@@ -525,6 +525,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             disputeListBinding = DataBindingUtil.inflate(LayoutInflater.from(this),
                     R.layout.dispute_reson_dialog, null, false)
             disputeListBinding!!.applyFilter.isEnabled = false
+            disputeListBinding!!.historyDetailActivity=this@HistoryDetailActivity
             bottomSheetDialog = BottomSheetDialog(this)
             bottomSheetDialog!!.setContentView(disputeListBinding!!.root)
             bottomSheetDialog!!.show()
@@ -541,7 +542,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         }
     }
 
-    private fun createDisputeRequest() {
+     fun createDisputeRequest() {
         if (selectedDisputeData != null) {
             mViewModel.disputeType.value = "provider"
             mViewModel.disputeName.value = selectedDisputeData?.dispute_name

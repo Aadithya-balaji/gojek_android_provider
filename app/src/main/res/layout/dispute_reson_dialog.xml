@@ -12,6 +12,10 @@
             name="disputeReasonListAdapter"
             type="com.gox.partner.views.adapters.DisputeReasonListAdapter" />
 
+        <variable
+            name="historyDetailActivity"
+            type="com.gox.partner.views.history_details.HistoryDetailActivity" />
+
     </data>
 
 
@@ -94,6 +98,7 @@
             android:text="@string/submit"
             android:textAllCaps="false"
             style="@style/BoldText"
+            android:onClick="@{() ->  historyDetailActivity.createDisputeRequest()}"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12sdp"
             app:backgroundTint="@color/colorPrimary"

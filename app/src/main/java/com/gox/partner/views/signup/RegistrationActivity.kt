@@ -294,7 +294,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     glideSetImageView(ivProfile, result.uri, R.drawable.ic_user_place_holder)
-                    val profileFile = File(result.uri.toString())
+                    val profileFile = File(result.uri.path)
                     if (profileFile.exists()) {
                         filePart = MultipartBody.Part.createFormData("picture", profileFile.name,
                                 RequestBody.create(MediaType.parse("image*//*"), profileFile))

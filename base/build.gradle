@@ -27,7 +27,7 @@ android {
         //Live URL
          buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
         //Staging
-       // buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
+        //buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
     }
 
     buildTypes {

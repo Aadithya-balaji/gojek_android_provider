@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.gson.Gson
 import com.gox.base.BuildConfig.isSocketEnabled
 import com.gox.base.base.BaseActivity
+import com.gox.base.base.BaseApplication
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.gox.base.data.Constants.BroadCastTypes.ORDER_BROADCAST
@@ -307,8 +308,9 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     val locationObj = JSONObject()
                     locationObj.put("latitude", location.latitude)
                     locationObj.put("longitude", location.longitude)
-                    locationObj.put("room", Constants.RoomName.COMMON_ROOM_NAME)
-                    SocketManager.emit("send_location", locationObj)
+                    locationObj.put("url", " https://api.letsorders.com/api/v1/provider/updatelocation")
+                    locationObj.put("provider_id", BaseApplication.getCustomPreference!!.getInt(PreferencesKey.PROVIDER_ID, 0))
+                    SocketManager.emit("update_location", locationObj)
                 }
             } else if (!isLocationDialogShown) {
                 isLocationDialogShown = true

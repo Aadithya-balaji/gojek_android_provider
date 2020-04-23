@@ -6,11 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
@@ -140,8 +142,21 @@ class BaseLocationService : Service() {
         intent.putExtra(EXTRA_LOCATION, location)
         println("RRRR:: intent :: $intent")
         val provider = Settings.Secure.getString(contentResolver, Settings.Secure.LOCATION_PROVIDERS_ALLOWED)
-        if (!provider.contains("gps")) intent.putExtra("ISGPS_EXITS", false)
-        else intent.putExtra("ISGPS_EXITS", true)
+        val locationMangaer=applicationContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val isGpsEnabled=locationMangaer.isProviderEnabled(LocationManager.GPS_PROVIDER)
+
+        //val provider = Settings.Secure.getString(contentResolver, Settings.Secure.LOCATION_PROVIDERS_ALLOWED)
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.P){
+            val provider = Settings.Secure.getString(contentResolver, Settings.Secure.LOCATION_PROVIDERS_ALLOWED)
+            if (!provider.contains("gps")) intent.putExtra("ISGPS_EXITS", false)
+            else intent.putExtra("ISGPS_EXITS", true)
+            Log.e("isGpsEnabled","-------"+provider.contains("gps"))
+
+        }else {
+            intent.putExtra("ISGPS_EXITS", isGpsEnabled)
+            Log.e("isGpsEnabled","-------"+isGpsEnabled)
+
+        }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
         val providerId = readPreferences(FIRE_BASE_PROVIDER_IDENTITY, 0)
         val point = LocationPointsEntity(null, location.latitude, location.longitude, DateFormat.getDateTimeInstance().format(Date()))

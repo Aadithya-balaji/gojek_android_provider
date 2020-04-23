@@ -160,6 +160,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         this.mBinding = mViewDataBinding as ActivityTaxiMainBinding
         mViewModel = ViewModelProviders.of(this).get(TaxiDashboardViewModel::class.java)
+        patternMatcher = Pattern.compile(Constants.PATTERN_MATCH_ZERO)
         mViewModel.navigator = this
         context = this
         checkRequestTimer = Timer()

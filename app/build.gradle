@@ -9,18 +9,17 @@ android {
     //Test
     signingConfigs {
         release {
-            keyAlias 'gox_android_provider'
-            keyPassword 'gox_android_provider'
-            storeFile file('jks/gox_android_provider.jks')
-            storePassword 'gox_android_provider'
+            keyAlias 'opus_android_provider'
+            keyPassword 'opus_android_provider'
+            storeFile file('jks/opus_android_provider.jks')
+            storePassword 'opus_android_provider'
         }
     }
-
     defaultConfig {
-        applicationId "com.gox.provider"
+        applicationId "com.opus.provider"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
+        versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

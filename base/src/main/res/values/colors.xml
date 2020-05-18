@@ -13,10 +13,10 @@
     <color name="colorBlack">#000000</color>
     <color name="blue">#2196F3</color>
     <color name="colorLightRed">#D05050</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
 
 
     <!--App Module-->
-
     <color name="colorPrimary">#2676BC</color>
     <color name="colorPrimaryDark">#2676bc</color>
     <color name="colorAccent">#2676BC</color>

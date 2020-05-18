@@ -46,7 +46,7 @@
         android:gravity="center"
         android:padding="10dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/app_logo"
+        android:src="@drawable/splash_icon"
         android:textColor="@color/xuber_black"
         android:textSize="18sp"
         android:textStyle="bold"

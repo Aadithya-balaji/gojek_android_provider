@@ -31,8 +31,7 @@
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/app_name"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/app_logo" />
+                app:srcCompat="@drawable/splash_icon" />
 
         </RelativeLayout>
 

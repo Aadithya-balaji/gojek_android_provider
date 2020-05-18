@@ -1,9 +1,12 @@
 package com.gox.taxiservice.views.main
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.PreferencesHelper
+import com.gox.base.data.PreferencesKey
 import com.gox.base.repository.ApiListener
 import com.gox.taxiservice.model.*
 import com.gox.taxiservice.repositary.TaxiRepository

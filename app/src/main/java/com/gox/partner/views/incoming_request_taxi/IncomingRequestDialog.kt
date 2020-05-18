@@ -89,8 +89,8 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
 
         if (incomingRequestModel != null) if (incomingRequestModel!!.responseData.requests.isNotEmpty()
         /*&& request.time_left_to_respond!! > 0*/) {
-//            totalSeconds = Math.abs(request.time_left_to_respond!!)
-            totalSeconds = 60
+            totalSeconds = Math.abs(request.time_left_to_respond!!)
+            //totalSeconds = 60
             val minutes = totalSeconds!! / 60
             val seconds = totalSeconds!! % 60
             val time = String.format("%d:%d", minutes, seconds)

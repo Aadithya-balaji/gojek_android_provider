@@ -13,12 +13,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
-        resValue("string", "app_name", "GoX Provider")
+        resValue("string", "app_name", "Opus X Vendor")
         resValue("string", "facebook_app_id", "521250848771874")
         resValue("string", "facebook_accountkit_id", "86a614c0d50f8e010c15b3b92a26dfb4")
         resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
-        resValue("string", "google_map_key", "AIzaSyBAgs4bPWgrbGgE3nrX_kjNAn0vDI_MEOY")
-        resValue("string", "google_signin_server_client_id", "708455232400-n8p5omqpqoi0f2j4ncbfhmk21vntl8ct.apps.googleusercontent.com")
+        resValue("string", "google_map_key", "AIzaSyCL7_GZ-GPT4p-2sDyQYPChEM-0z74TXKc")
+        resValue("string", "google_signin_server_client_id", "281533737100-fqnisdkg5l49duri097udu39uj44mi5b.apps.googleusercontent.com")
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
 
         buildConfigField "boolean", "isSocketEnabled", "false"

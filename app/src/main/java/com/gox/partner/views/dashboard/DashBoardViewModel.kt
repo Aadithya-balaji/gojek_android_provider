@@ -1,8 +1,10 @@
 package com.gox.partner.views.dashboard
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
+import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.readPreferences
 import com.gox.base.repository.ApiListener
@@ -24,7 +26,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
 
     fun callCheckStatusAPI() {
         if (BaseApplication.isNetworkAvailable)
-            if (latitude.value!! != 0.0 && longitude.value!! != 0.0) {
+        if (latitude.value!! != 0.0 && longitude.value!! != 0.0) {
                 if (readPreferences<String>(PreferencesKey.ACCESS_TOKEN).length > 2)
                     getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
                         override fun success(successData: Any) {

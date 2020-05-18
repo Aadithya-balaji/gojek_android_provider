@@ -559,7 +559,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
     fun getFacebookProfile() {
         /* LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY)
                  .logInWithReadPermissions(this, listOf("public_profile", "email"))*/
-
+        LoginManager.getInstance().logOut()
         LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"))
         LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {

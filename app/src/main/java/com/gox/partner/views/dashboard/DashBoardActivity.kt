@@ -103,6 +103,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         checkRequestTimer = Timer()
         checkRequestTimer!!.schedule(object : TimerTask() {
             override fun run() {
+
                 mViewModel.callCheckStatusAPI()
             }
         }, 0, 5000)

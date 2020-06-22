@@ -33,7 +33,7 @@ class TransactionListAdapter(context: Context, transactionList: List<WalletTrans
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.mBinding.tvTransactionID.text = transactionList!![position].transaction_alias
 //        var strDate = CommanMethods.getLocalTimeStamp(transactionList!![position].created_at)
-        holder.mBinding.tvTransactionAmount.text = String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).amount)
+        holder.mBinding.tvTransactionAmount.text = transactionList!!.get(position).provider.currency_symbol+" "+String.format(context!!.getString(R.string.transaction_amount), transactionList!!.get(position).amount)
         if (transactionList!![position].type == "D") {
             holder.mBinding.tvTransactionStatus.text = context!!.resources.getString(R.string.depited)
             holder.mBinding.tvTransactionStatus.setTextColor(ContextCompat.getColor(context!!,

@@ -124,17 +124,17 @@
 
     <string name="title_my_account">حسابي</string>
     <integer-array name="icon_account">
-        <item>@drawable/ic_user</item>
+        <item>@drawable/acc_ic_profile</item>
         <item>@drawable/ic_services</item>
         <item>@drawable/ic_document</item>
         <item>@drawable/ic_bank_details</item>
-        <item>@drawable/ic_card</item>
+        <item>@drawable/acc_ic_payment</item>
         <item>@drawable/wallet</item>
         <item>@drawable/ic_earnings</item>
-        <item>@drawable/ic_gift_card</item>
-        <item>@drawable/ic_policy</item>
-        <item>@drawable/ic_support</item>
-        <item>@drawable/ic_language</item>
+        <item>@drawable/acc_ic_invite_referral</item>
+        <item>@drawable/acc_ic_privacy</item>
+        <item>@drawable/acc_ic_support</item>
+        <item>@drawable/acc_ic_languages</item>
     </integer-array>
 
     <string-array name="title_account">

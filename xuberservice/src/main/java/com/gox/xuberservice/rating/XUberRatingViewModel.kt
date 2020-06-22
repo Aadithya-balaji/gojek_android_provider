@@ -11,13 +11,13 @@ class XUberRatingViewModel : BaseViewModel<XUberRatingNavigator>() {
     private val mRepository = XUberRepository.instance()
 
     val ratingLiveData = MutableLiveData<XuperRatingModel>()
-    var comment = MutableLiveData<String>()
+    var comment = MutableLiveData<String>().apply { setValue("") }
     val rating = MutableLiveData<String>()
     val id = MutableLiveData<String>()
     val firstName = MutableLiveData<String>()
     val lastName = MutableLiveData<String>()
     var showLoading = MutableLiveData<Boolean>()
-    var userRating = MutableLiveData<String>()
+    var userRating = MutableLiveData<String>().apply { setValue("1") }
 
     fun callRateApi() {
         showLoading.value = true

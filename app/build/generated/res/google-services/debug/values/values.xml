@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="default_web_client_id" translatable="false">281533737100-fqnisdkg5l49duri097udu39uj44mi5b.apps.googleusercontent.com</string>
-    <string name="firebase_database_url" translatable="false">https://opus-x.firebaseio.com</string>
-    <string name="gcm_defaultSenderId" translatable="false">281533737100</string>
-    <string name="google_api_key" translatable="false">AIzaSyAgsZKyBQdFKqbTSZVbTIlfC-HmQIDFKhc</string>
-    <string name="google_app_id" translatable="false">1:281533737100:android:1fcdaa9c4fef35f28c33a9</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAgsZKyBQdFKqbTSZVbTIlfC-HmQIDFKhc</string>
-    <string name="google_storage_bucket" translatable="false">opus-x.appspot.com</string>
-    <string name="project_id" translatable="false">opus-x</string>
+    <string name="default_web_client_id" translatable="false">942396039851-c3vq353b0thfmf2ea1n0bp2nh2akqsjj.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://kambolam-bcfb5.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">942396039851</string>
+    <string name="google_api_key" translatable="false">AIzaSyClIHHx1bl321tZl8Qk1rwRfSUYFCeW8Rk</string>
+    <string name="google_app_id" translatable="false">1:942396039851:android:01a394f4507cb12c594dee</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyClIHHx1bl321tZl8Qk1rwRfSUYFCeW8Rk</string>
+    <string name="google_storage_bucket" translatable="false">kambolam-bcfb5.appspot.com</string>
+    <string name="project_id" translatable="false">kambolam-bcfb5</string>
 </resources>

@@ -18,6 +18,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
+import com.gox.base.data.PreferencesHelper
+import com.gox.base.data.PreferencesKey
 import com.gox.base.utils.Utils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
@@ -107,6 +109,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             if (it.statusCode.equals("200")) {
                 isShowDisputeStatus = true
                 mBinding.disputeBtn.text = resources.getString(R.string.dispute_status)
+                bottomSheetDialog!!.dismiss()
                 ViewUtils.showToast(this, resources.getString(R.string.dispute_created_succefully), true)
             }
         })
@@ -140,7 +143,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         disputeStatusBinding = DataBindingUtil.inflate<DisputeStatusBinding>(LayoutInflater.from(baseContext), R.layout.dispute_status, null, false)
         disputeStatusBinding!!.disputeComment.text = (disputeStatusResponseData.responseData!!.dispute_name).toString()
         disputeStatusBinding!!.disputeStatus.text = (disputeStatusResponseData.responseData.status).toString()
-
+        Glide.with(this@HistoryDetailActivity).load(PreferencesHelper.get(PreferencesKey.PICTURE,""))
+                .placeholder(R.drawable.ic_user_place_holder)
+                .into(disputeStatusBinding!!.ivDisPuteUser)
         if (disputeStatusResponseData.responseData.status.equals("open")) {
             disputeStatusBinding!!.disputeStatus.background =
                     ContextCompat.getDrawable(this, R.drawable.bg_dispute_open)

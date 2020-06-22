@@ -4,22 +4,22 @@
     <item
         android:id="@+id/action_home"
         android:enabled="true"
-        android:icon="@drawable/home"
+        android:icon="@drawable/menu_ic_home"
         android:title="@string/menu_home"
         app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/action_history"
-        android:icon="@drawable/order"
+        android:icon="@drawable/menu_ic_history"
         android:title="@string/menu_history"
         app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/action_notification"
-        android:icon="@drawable/bell"
+        android:icon="@drawable/menu_ic_notification"
         android:title="@string/menu_notification"
         app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/action_account"
-        android:icon="@drawable/account"
+        android:icon="@drawable/menu_ic_account"
         android:title="@string/menu_account"
         app:showAsAction="ifRoom|withText" />
 </menu>

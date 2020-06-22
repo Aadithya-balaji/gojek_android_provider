@@ -13,19 +13,19 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
-        resValue("string", "app_name", "Opus X Vendor")
-        resValue("string", "facebook_app_id", "521250848771874")
+        resValue("string", "app_name", "My-Shop")
+        resValue("string", "facebook_app_id", "641168910072727")
         resValue("string", "facebook_accountkit_id", "86a614c0d50f8e010c15b3b92a26dfb4")
         resValue("string", "fb_login_protocol_scheme", "fb394261008038577")
-        resValue("string", "google_map_key", "AIzaSyCL7_GZ-GPT4p-2sDyQYPChEM-0z74TXKc")
-        resValue("string", "google_signin_server_client_id", "281533737100-fqnisdkg5l49duri097udu39uj44mi5b.apps.googleusercontent.com")
+        resValue("string", "google_map_key", "AIzaSyBcRXli2ZRGGRJ7ff2cZlhQtT-krn-Wd0M")
+        resValue("string", "google_signin_server_client_id", "942396039851-c3vq353b0thfmf2ea1n0bp2nh2akqsjj.apps.googleusercontent.com")
         resValue "string", "default_notification_channel_id", "fcm_default_channel"
 
         buildConfigField "boolean", "isSocketEnabled", "false"
         buildConfigField "boolean", "isSocketLocationUpdate", "false"
         buildConfigField("String", "SALT_KEY", '"MQ=="')
         //Live URL
-         buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
+         buildConfigField("String", "BASE_URL", '"https://api.kambolam.com/"')
         //Staging
         //buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
     }

@@ -9,14 +9,14 @@ android {
     //Test
     signingConfigs {
         release {
-            keyAlias 'opus_android_provider'
-            keyPassword 'opus_android_provider'
-            storeFile file('jks/opus_android_provider.jks')
-            storePassword 'opus_android_provider'
+            keyAlias 'kambolam_android_provider'
+            keyPassword 'kambolam_android_provider'
+            storeFile file('jks/kambolam_android_provider.jks')
+            storePassword 'kambolam_android_provider'
         }
     }
     defaultConfig {
-        applicationId "com.opus.provider"
+        applicationId "com.kambolam.provider"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

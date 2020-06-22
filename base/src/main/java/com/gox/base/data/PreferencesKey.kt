@@ -32,6 +32,8 @@ object PreferencesKey {
     const val SERVICE_URL = "service_url"
     const val ORDER_URL = "order_url"
 
+    const val PICTURE = "picture"
+
 
     const val SOS_NUMBER = "SOS_NUMBER"
     const val SHOW_OTP = "SHOW_OTP"

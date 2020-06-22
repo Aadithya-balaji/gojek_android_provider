@@ -114,7 +114,7 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
 
     inner class EditListener : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            setPrefix(mBinding.edtAmount, s, "$")
+            setPrefix(mBinding.edtAmount, s, currencySymbol.toString())
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {

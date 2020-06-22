@@ -164,9 +164,11 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     override fun showLogo(isNeedShow: Boolean) = try {
         if (isNeedShow) {
+            lay_header.setBackgroundColor(resources.getColor(R.color.black))
             tbr_iv_logo.visibility = View.VISIBLE
             tbr_rl_right.visibility = View.GONE
         } else {
+            lay_header.setBackgroundColor(resources.getColor(R.color.white))
             tbr_rl_right.visibility = View.VISIBLE
             tbr_iv_logo.visibility = View.GONE
         }
@@ -309,7 +311,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     val locationObj = JSONObject()
                     locationObj.put("latitude", location.latitude)
                     locationObj.put("longitude", location.longitude)
-                    locationObj.put("url", " https://demoapi.gox.network/api/v1/provider/updatelocation")
+                    locationObj.put("url", " https://api.kambolam.com/api/v1/provider/updatelocation")
                     locationObj.put("provider_id", BaseApplication.getCustomPreference!!.getInt(PreferencesKey.PROVIDER_ID, 0))
                     SocketManager.emit("update_location", locationObj)
                 }

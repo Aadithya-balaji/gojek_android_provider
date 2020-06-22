@@ -44,7 +44,7 @@
                     android:contentDescription="@null"
                     android:padding="14dp"
                     android:src="@{accountViewModel.getAccountMenu(position).component2()}"
-                    android:tint="@color/colorWhite"
+                    android:tint="@color/colorBasePrimary"
                     tools:srcCompat="@drawable/ic_user" />
 
                 <androidx.appcompat.widget.AppCompatTextView

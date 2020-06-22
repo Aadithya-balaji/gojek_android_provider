@@ -27,10 +27,12 @@
 
             <ImageView
                 android:id="@+id/toplayout_applogo"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/app_name"
+                android:scaleType="fitCenter"
+                android:padding="4dp"
                 app:srcCompat="@drawable/splash_icon" />
 
         </RelativeLayout>

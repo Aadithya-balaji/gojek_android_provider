@@ -136,6 +136,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
         observeLiveData(mViewModel.mProfileResponse) {
             writePreferences(PreferencesKey.IS_ONLINE, it.profileData.is_online)
+            writePreferences(PreferencesKey.PICTURE,it.profileData.payment_mode)
             updateOnlineStatus()
         }
     }

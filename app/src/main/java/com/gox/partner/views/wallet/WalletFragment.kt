@@ -74,9 +74,9 @@ class WalletFragment : BaseFragment<FragmentWalletBinding>(), WalletNavigator {
             if (profileResposne.statusCode == "200") {
                 val walletBalance = profileResposne.profileData.wallet_balance
                 mBinding.tvWalletBal.text = String.format(resources.getString(R.string.wallet_balance), walletBalance, currencySymbol)
-                mBinding.btFifty.text = "${currencySymbol}$AMOUNT_1"
-                mBinding.btHundred.text = "${currencySymbol}$AMOUNT_2"
-                mBinding.btThousand.text = "${currencySymbol}$AMOUNT_3"
+                mBinding.btFifty.text = "$AMOUNT_1"
+                mBinding.btHundred.text = "$AMOUNT_2"
+                mBinding.btThousand.text = "$AMOUNT_3"
             }
         })
     }

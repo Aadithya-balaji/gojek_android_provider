@@ -25,7 +25,7 @@ android {
         buildConfigField "boolean", "isSocketLocationUpdate", "false"
         buildConfigField("String", "SALT_KEY", '"MQ=="')
         //Live URL
-         buildConfigField("String", "BASE_URL", '"https://labs.kambolam.com/"')
+         buildConfigField("String", "BASE_URL", '"https://api.kambolam.com/"')
         //Staging
         //buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
     }

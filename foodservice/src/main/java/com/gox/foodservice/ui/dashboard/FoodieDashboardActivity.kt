@@ -288,8 +288,12 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                 .placeholder(R.drawable.ic_user_place_holder).into(resturant_image)
         loc_name_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.first_name + " " +
                 mViewModel.foodieCheckRequestModel.value!!.responseData.requests.user.last_name
-        if(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery != null)
-            loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.flat_no + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.street + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address
+        if(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery != null) {
+            if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address != null)
+                loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.flat_no + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.street + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address
+            else
+                loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.flat_no + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.street
+        }
     }
 
     private fun whenProcessing() {
@@ -327,8 +331,12 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                 .into(resturant_image)
 
         loc_name_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.stores_details.store_name
-        if(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery != null)
-            loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.flat_no + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.street + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address
+        if(mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery != null) {
+            if (mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address != null)
+                loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.flat_no + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.street + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.map_address
+            else
+                loc_address_tv.text = mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.flat_no + " " + mViewModel.foodieCheckRequestModel.value!!.responseData.requests.delivery.street
+        }
     }
 
     private fun setItemsPricing() {

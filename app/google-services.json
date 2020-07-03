@@ -8,6 +8,43 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:942396039851:android:a768a42b9768bafc594dee",
+        "android_client_info": {
+          "package_name": "com.kambalam.shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "942396039851-9q9h1r9692qm56224lcmijh5a9jh393l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kambalam.shop",
+            "certificate_hash": "fe3c2dadec2623cc2ef29aa4d00e31b558d547b8"
+          }
+        },
+        {
+          "client_id": "942396039851-c3vq353b0thfmf2ea1n0bp2nh2akqsjj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClIHHx1bl321tZl8Qk1rwRfSUYFCeW8Rk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "942396039851-c3vq353b0thfmf2ea1n0bp2nh2akqsjj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:942396039851:android:01a394f4507cb12c594dee",
         "android_client_info": {
           "package_name": "com.kambolam.provider"

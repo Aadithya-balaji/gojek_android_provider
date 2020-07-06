@@ -68,19 +68,19 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/signin_btn"
                 style="@style/SmallText.Black"
-                android:layout_width="@dimen/_90sdp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/signleline_view"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="@dimen/_20sdp"
                 android:layout_marginRight="@dimen/_20sdp"
-                android:background="@android:color/transparent"
+                android:background="@drawable/bg_stoke_color"
                 android:elevation="@dimen/_10sdp"
                 android:onClick="@{() -> viewModel.openSignIn()}"
                 android:padding="@dimen/_10sdp"
                 android:text="@string/sign_in"
                 android:textAllCaps="false"
-                android:textColor="@color/dark_grey"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/_12sdp" />
 
             <View

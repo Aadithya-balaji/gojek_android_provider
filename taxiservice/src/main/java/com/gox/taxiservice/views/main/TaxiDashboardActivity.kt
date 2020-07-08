@@ -150,8 +150,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var sosCall = ""
     private var checkRequestTimer: Timer? = null
     private var patternMatcher: Pattern? = null
-    private  var tempCurrentLatLon :LatLng?=LatLng(0.0000,0.0000)
-
+    private var tempCurrentLatLon: LatLng? = LatLng(0.0000, 0.0000)
 
 
     override fun getLayoutId() = R.layout.activity_taxi_main
@@ -296,17 +295,17 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                 if (!checkStatusResponse.responseData.request.status.isNullOrEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-                   /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
-                            currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
+                    /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
+                             currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
 
-                        mViewModel.currentStatus.value = ""
-                    }*/
+                         mViewModel.currentStatus.value = ""
+                     }*/
 
 
-                    if(!roomConnected){
+                    if (!roomConnected) {
                         reqID = checkStatusResponse.responseData.request.id
                         PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
-                        if (reqID!=0) {
+                        if (reqID != 0) {
                             SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.getTransportRoom(reqID))
                         }
 
@@ -342,12 +341,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 
-                       /* if (!roomConnected) {
-                            roomConnected = true
-                            val reqID = checkStatusResponse.responseData.request.id
-                            PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
-                            SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
-                        }*/
+                        /* if (!roomConnected) {
+                             roomConnected = true
+                             val reqID = checkStatusResponse.responseData.request.id
+                             PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
+                             SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
+                         }*/
 
                         when (checkStatusResponse.responseData.request.status) {
                             SEARCHING -> {
@@ -442,7 +441,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
         SocketManager.onEvent(Constants.RoomName.STATUS, Emitter.Listener {
             Log.e("SOCKET", "SOCKET_SK transport STATUS ")
-            if(it.isNotEmpty() && it[0].toString().contains(TRANSPORT)){
+            if (it.isNotEmpty() && it[0].toString().contains(TRANSPORT)) {
                 roomConnected = true
             }
         })
@@ -582,7 +581,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun whenStatusPickedUp(responseData: ResponseData) {
         writePreferences(CAN_SEND_LOCATION, true)
         writePreferences(CAN_SAVE_LOCATION, true)
-            setWaitingTime()
+        setWaitingTime()
         llWaitingTimeContainer.visibility = View.VISIBLE
 
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
@@ -703,9 +702,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         //Pattern Matcher true means the all values are   zero in lat or lon
         if (latitudeMatcher.matches() == true && longtitudeMatcher.matches() == true)
             updateCurrentLocation()
-        else{
-            mViewModel.latitude.value=location.latitude
-            mViewModel.longitude.value=location.longitude
+        else {
+            mViewModel.latitude.value = location.latitude
+            mViewModel.longitude.value = location.longitude
         }
         println("RRRR :: TaxiDashboardActivity " + mViewModel.latitude.value + " :: " + mViewModel.longitude.value)
 
@@ -718,10 +717,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             Log.e("SOCKET", "SOCKET_SK Location update called")
         }
 
-        val startingLatitudeMatcher=patternMatcher!!.matcher(mViewModel.latitude.value.toString())
-        val startLongitudeMatcher=patternMatcher!!.matcher(mViewModel.longitude.value.toString())
+        val startingLatitudeMatcher = patternMatcher!!.matcher(mViewModel.latitude.value.toString())
+        val startLongitudeMatcher = patternMatcher!!.matcher(mViewModel.longitude.value.toString())
 
-        if (latitudeMatcher.matches()==false && longtitudeMatcher.matches()==false) {
+        if (latitudeMatcher.matches() == false && longtitudeMatcher.matches() == false) {
             startLatLng = tempCurrentLatLon!!
             tempCurrentLatLon = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
             endLatLng = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
@@ -735,7 +734,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 e.printStackTrace()
             }
 
-        } else if (latitudeMatcher.matches() == false && longtitudeMatcher.matches()==false&& polyLine.size == 0) try {
+        } else if (latitudeMatcher.matches() == false && longtitudeMatcher.matches() == false && polyLine.size == 0) try {
             drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), mViewModel.polyLineDest.value!!)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -1020,7 +1019,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun locationProcessing(latLng: ArrayList<LatLng>) {
         println("GGGG :: locationProcessing = " + latLng.size)
-
         mViewModel.iteratePointsForApi.add(latLng[0])
         for (i in latLng.indices) if (i < latLng.size - 1)
             iteratePointsApi(latLng[i], latLng[i + 1])

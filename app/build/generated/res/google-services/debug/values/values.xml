@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="firebase_database_url" translatable="false">https://noted-amphora-240206.firebaseio.com</string>
-    <string name="gcm_defaultSenderId" translatable="false">708455232400</string>
-    <string name="google_api_key" translatable="false">AIzaSyBX1BLFRpY4p__WQFI6UA1Jm0qAcCsjLhg</string>
-    <string name="google_app_id" translatable="false">1:708455232400:android:86b9e6fed3b264d147f915</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBX1BLFRpY4p__WQFI6UA1Jm0qAcCsjLhg</string>
-    <string name="google_storage_bucket" translatable="false">noted-amphora-240206.appspot.com</string>
-    <string name="project_id" translatable="false">noted-amphora-240206</string>
+    <string name="default_web_client_id" translatable="false">264044719628-2ed8p3mothmq5cjdgsvhemf34ffs2t1h.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://opus-282711.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">264044719628</string>
+    <string name="google_api_key" translatable="false">AIzaSyBJOZyfeIt5i26J0lHULzSmhK-sc6Kg1iY</string>
+    <string name="google_app_id" translatable="false">1:264044719628:android:985cc314ea136f945d8829</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBJOZyfeIt5i26J0lHULzSmhK-sc6Kg1iY</string>
+    <string name="google_storage_bucket" translatable="false">opus-282711.appspot.com</string>
+    <string name="project_id" translatable="false">opus-282711</string>
 </resources>

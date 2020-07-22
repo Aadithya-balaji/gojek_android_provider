@@ -65,6 +65,7 @@ import com.gox.partner.views.sign_in.LoginActivity
 import com.gox.partner.views.verifyotp.VerifyOTPActivity
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -207,6 +208,11 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             loadingObservable.value = it
         })
 
+        mViewModel.errorResponse.observe(this, androidx.lifecycle.Observer {
+            if(it != null){
+                Toasty.error(applicationContext, it.toString())
+            }
+        })
 
         mViewModel.sendOTPResponse.observe(this, androidx.lifecycle.Observer {
             mViewModel.loadingProgress.value = false

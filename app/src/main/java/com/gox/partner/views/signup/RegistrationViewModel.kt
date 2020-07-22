@@ -150,10 +150,12 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
         getCompositeDisposable().add(mRepository.sendOTP(object : ApiListener {
             override fun success(successData: Any) {
                 sendOTPResponse.postValue(successData as SendOTPResponse)
+                loadingProgress.value = false
             }
 
             override fun fail(error: Throwable) {
                 errorResponse.postValue(getErrorMessage(error))
+                loadingProgress.value = false
             }
         }, hashMap))
     }

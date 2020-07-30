@@ -1,6 +1,7 @@
 package com.gox.partner.network
 
 import com.gox.base.chatmessage.ChatMessageList
+import com.gox.base.models.CommonResponse
 import com.gox.partner.models.*
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -21,6 +22,9 @@ interface AppWebService {
     @POST("user/send-otp")
     fun sendOTP(@PartMap params: HashMap<String, RequestBody>): Observable<SendOTPResponse>
 
+    @FormUrlEncoded
+    @POST("provider/updatelocation/airport")
+    fun  setAirportMode():Observable<CommonResponse>
 
     @Multipart
     @POST("user/verify-otp")

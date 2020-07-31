@@ -22,9 +22,8 @@ interface AppWebService {
     @POST("user/send-otp")
     fun sendOTP(@PartMap params: HashMap<String, RequestBody>): Observable<SendOTPResponse>
 
-    @FormUrlEncoded
     @POST("provider/updatelocation/airport")
-    fun  setAirportMode():Observable<CommonResponse>
+    fun  setAirportMode():Observable<AirportChangeResponseModel>
 
     @Multipart
     @POST("user/verify-otp")

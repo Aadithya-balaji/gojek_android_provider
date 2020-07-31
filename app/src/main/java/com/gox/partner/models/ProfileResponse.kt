@@ -19,6 +19,7 @@ data class ProfileResponseData(
         var country: Country = Country(),
         var country_code: String = "",
         var country_id: Int? = 0,
+        var airport_at: Any? = null,
         var currency: Any = Any(),
         var currency_symbol: String = "",
         var current_location: Any = Any(),

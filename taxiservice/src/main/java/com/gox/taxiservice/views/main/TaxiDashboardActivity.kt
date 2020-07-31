@@ -803,10 +803,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
             srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
-
 //            CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, polyLine[0], polyLine[1])
             srcMarker!!.rotation = CarMarkerAnimUtil().bearingBetweenLocations(polyLine[0], polyLine[1]).toFloat()
-
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
 

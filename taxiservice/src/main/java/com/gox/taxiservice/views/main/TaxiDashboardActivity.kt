@@ -295,11 +295,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                 if (!checkStatusResponse.responseData.request.status.isNullOrEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-                    /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
-                             currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
+                   /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
+                            currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
 
-                         mViewModel.currentStatus.value = ""
-                     }*/
+                        mViewModel.currentStatus.value = ""
+                    }*/
 
 
                     if (!roomConnected) {
@@ -341,12 +341,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 
-                        /* if (!roomConnected) {
-                             roomConnected = true
-                             val reqID = checkStatusResponse.responseData.request.id
-                             PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
-                             SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
-                         }*/
+                       /* if (!roomConnected) {
+                            roomConnected = true
+                            val reqID = checkStatusResponse.responseData.request.id
+                            PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
+                            SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
+                        }*/
 
                         when (checkStatusResponse.responseData.request.status) {
                             SEARCHING -> {
@@ -578,7 +578,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun whenStatusPickedUp(responseData: ResponseData) {
         writePreferences(CAN_SEND_LOCATION, true)
         writePreferences(CAN_SAVE_LOCATION, true)
-        setWaitingTime()
+            setWaitingTime()
         llWaitingTimeContainer.visibility = View.VISIBLE
 
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
@@ -1003,7 +1003,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun locationProcessing(latLng: ArrayList<LatLng>) {
         println("GGGG :: locationProcessing = " + latLng.size)
-
         mViewModel.iteratePointsForApi.add(latLng[0])
         for (i in latLng.indices) if (i < latLng.size - 1)
             iteratePointsApi(latLng[i], latLng[i + 1])

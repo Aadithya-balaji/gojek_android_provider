@@ -108,7 +108,11 @@ data class HistoryDetailModel(
             data class Rating(
                     val id: Int? = 0,
                     val provider_comment: String? = "",
+                    val store_comment: String? = "",
                     val request_id: Int? = 0,
+                    val user_rating: Int? = 0,
+                    val provider_rating: Int? = 0,
+                    val store_rating: Int? = 0,
                     val user_comment: Any? = Any()
             )
 

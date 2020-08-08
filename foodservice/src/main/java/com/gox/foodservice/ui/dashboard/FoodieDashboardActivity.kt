@@ -188,14 +188,14 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
                         }, 1000)
                     }
 
-//                    writePreferences(Constants.Chat.ADMIN_SERVICE, ORDER)
-//                    writePreferences(Constants.Chat.REQUEST_ID, it.responseData.requests.id)
-//                    writePreferences(Constants.Chat.USER_ID, it.responseData.requests.user_id)
-//                    writePreferences(Constants.Chat.PROVIDER_ID, it.responseData.requests.provider_id)
-//                    writePreferences(Constants.Chat.USER_NAME, it.responseData.requests.user.first_name
-//                            + " " + it.responseData.requests.user.first_name)
-//                    writePreferences(Constants.Chat.PROVIDER_NAME, it.responseData.provider_details.first_name
-//                            + " " + it.responseData.provider_details.last_name)
+                    writePreferences(Constants.Chat.ADMIN_SERVICE, ORDER)
+                    writePreferences(Constants.Chat.REQUEST_ID, it.responseData.requests.id)
+                    writePreferences(Constants.Chat.USER_ID, it.responseData.requests.user_id)
+                    writePreferences(Constants.Chat.PROVIDER_ID, it.responseData.requests.provider_id)
+                    writePreferences(Constants.Chat.USER_NAME, it.responseData.requests.user.first_name
+                            + " " + it.responseData.requests.user.first_name)
+                    writePreferences(Constants.Chat.PROVIDER_NAME, it.responseData.provider_details.first_name
+                            + " " + it.responseData.provider_details.last_name)
 
                     when (it.responseData.requests.status) {
                         PROCESSING -> whenProcessing()

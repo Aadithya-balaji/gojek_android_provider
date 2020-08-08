@@ -46,6 +46,7 @@ class ChatAdapter(private var mContext: Context, private var mChatSocketResponse
         val model = mChatSocketResponseList[viewHolder.adapterPosition]
         if (viewHolder is UserViewHolder) setUserMessage(model.message, viewHolder)
         if (viewHolder is ProviderViewHolder) setProviderMessage(model.message, viewHolder)
+        print("Messages : " + model.message + " -type- " + model.type)
     }
 
     private fun setUserMessage(message: String?, viewHolder: UserViewHolder) {

@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.8"
             android:text="@string/verify"
             android:onClick="@{()->verifyOTPModel.actionVerifyOTP()}"
             android:textColor="@color/colorWhite"
@@ -84,6 +84,20 @@
             app:layout_constraintTop_toTopOf="@+id/pvOTP"
             app:layout_constraintVertical_bias="0.25" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_corner_blue_bg"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/resend"
+            android:onClick="@{()->verifyOTPModel.resendOTP()}"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/pvOTP"
+            app:layout_constraintVertical_bias="0.25" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

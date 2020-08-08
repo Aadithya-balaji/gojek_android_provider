@@ -1,6 +1,7 @@
 package com.gox.base.di
 
 import android.preference.PreferenceManager
+import android.util.Log
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseApplication
@@ -51,6 +52,7 @@ class WebServiceModule {
 
     private fun getRequestHeader() = Interceptor {
         val original = it.request()
+        Log.d("Authorization : Bearer", PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext).getString(PreferencesKey.ACCESS_TOKEN, ""))
         val request = original.newBuilder()
                 .header("X-Requested-With", "XMLHttpRequest")
                 .header("Authorization",

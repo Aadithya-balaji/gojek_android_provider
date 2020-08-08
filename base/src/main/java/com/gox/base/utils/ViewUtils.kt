@@ -165,13 +165,19 @@ object ViewUtils {
             val daysInMilli = hoursInMilli * 24
 
 
-            val elapsedDays = different / daysInMilli
+            var elapsedDays = different / daysInMilli
+            if(elapsedDays < 0)
+                elapsedDays =  Math.abs(elapsedDays)
             different = different % daysInMilli
 
-            val elapsedHours = different / hoursInMilli
+            var elapsedHours = different / hoursInMilli
+            if(elapsedHours < 0)
+                elapsedHours =  Math.abs(elapsedHours)
             different = different % hoursInMilli
 
-            val elapsedMinutes = different / minutesInMilli
+            var elapsedMinutes = different / minutesInMilli
+            if(elapsedMinutes < 0)
+                elapsedMinutes =  Math.abs(elapsedMinutes)
             different = different % minutesInMilli
 
             val elapsedSeconds = different / secondsInMilli

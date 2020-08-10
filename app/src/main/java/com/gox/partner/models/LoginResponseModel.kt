@@ -23,6 +23,7 @@ data class LoginResponseModel(
                 @SerializedName("payment_mode") val paymentMode: String,
                 val email: String,
                 @SerializedName("country_code") val countryCode: String,
+                @SerializedName("picture_draft") val picture_draft: String,
                 val mobile: String,
                 val gender: String,
                 @SerializedName("device_token") val deviceToken: String,

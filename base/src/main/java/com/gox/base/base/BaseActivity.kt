@@ -35,7 +35,7 @@ import com.gox.base.views.CustomDialog
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
-    private val loadingLiveData = MutableLiveData<Boolean>()
+    protected val loadingLiveData = MutableLiveData<Boolean>()
 
     private lateinit var mViewDataBinding: T
     private lateinit var mCustomLoaderDialog: CustomDialog

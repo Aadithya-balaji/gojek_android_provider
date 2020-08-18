@@ -295,11 +295,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                 if (!checkStatusResponse.responseData.request.status.isNullOrEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-                    /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
-                             currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
+                   /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
+                            currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
 
-                         mViewModel.currentStatus.value = ""
-                     }*/
+                        mViewModel.currentStatus.value = ""
+                    }*/
 
 
                     if (!roomConnected) {
@@ -341,12 +341,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 
-                        /* if (!roomConnected) {
-                             roomConnected = true
-                             val reqID = checkStatusResponse.responseData.request.id
-                             PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
-                             SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
-                         }*/
+                       /* if (!roomConnected) {
+                            roomConnected = true
+                            val reqID = checkStatusResponse.responseData.request.id
+                            PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
+                            SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
+                        }*/
 
                         when (checkStatusResponse.responseData.request.status) {
                             SEARCHING -> {
@@ -488,7 +488,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btn_arrived.visibility = View.VISIBLE
         btn_picked_up.visibility = View.GONE
         llWaitingTimeContainer.visibility = View.GONE
-
         Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
@@ -496,11 +495,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         .error(R.drawable.ic_user_place_holder))
                 .load(responseData.request.user.picture)
                 .into(civProfile)
-
         tv_user_name.text = responseData.request.user.first_name + " " + responseData.request.user.last_name
         tv_user_address_one.text = responseData.request.s_address
         rate.rating = responseData.request.user.rating.toFloat()
-
         if (responseData.request.s_address.length > 2)
             tv_user_address_one.text = responseData.request.s_address
         else {
@@ -581,7 +578,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun whenStatusPickedUp(responseData: ResponseData) {
         writePreferences(CAN_SEND_LOCATION, true)
         writePreferences(CAN_SAVE_LOCATION, true)
-        setWaitingTime()
+            setWaitingTime()
         llWaitingTimeContainer.visibility = View.VISIBLE
 
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
@@ -717,9 +714,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             Log.e("SOCKET", "SOCKET_SK Location update called")
         }
 
-        val startingLatitudeMatcher = patternMatcher!!.matcher(mViewModel.latitude.value.toString())
-        val startLongitudeMatcher = patternMatcher!!.matcher(mViewModel.longitude.value.toString())
-
         if (latitudeMatcher.matches() == false && longtitudeMatcher.matches() == false) {
             startLatLng = tempCurrentLatLon!!
             tempCurrentLatLon = LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)
@@ -784,25 +778,19 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         val distanceProcessing = DistanceApiProcessing()
         distanceProcessing.id = distanceApiCallCount
         distanceProcessing.apiResponseStatus = "success"
-
         val values = mViewModel.distanceApiProcessing.value!!
         for (leg in output.routes[0].legs) {
             distanceProcessing.distance = distanceProcessing.distance + leg.distance.value
             println("distanceProcessing.distance  = ${leg.distance.value}")
             println("distanceProcessing.distance  = ${distanceProcessing.distance}")
         }
-
         values.add(distanceProcessing)
-        /*startActivity(Intent(this, MainActivity::class.java)
-                .putExtra("ResponseData", Gson().toJson(output)))*/
-
         mViewModel.distanceApiProcessing.postValue(values)
     }
 
     override fun whenDone(output: PolylineOptions) {
         try {
             mGoogleMap!!.clear()
-
             mPolyline = mGoogleMap!!.addPolyline(output.width(5f).color
             (ContextCompat.getColor(baseContext, R.color.colorBlack)))
 
@@ -813,13 +801,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             for (latLng in polyLine) builder.include(latLng)
 
             mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
-
             srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
-
 //            CarMarkerAnimUtil().carAnimWithBearing(srcMarker!!, polyLine[0], polyLine[1])
             srcMarker!!.rotation = CarMarkerAnimUtil().bearingBetweenLocations(polyLine[0], polyLine[1]).toFloat()
-
             mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[polyLine.size - 1]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.ic_marker_stop))))
 
@@ -894,7 +879,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
-
         return bitmap
     }
 

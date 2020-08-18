@@ -30,6 +30,7 @@ class AppRepository : BaseRepository() {
                 }, { listener.fail(it) })
     }
 
+
     fun postLogin(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postLogin(params)
@@ -53,7 +54,7 @@ class AppRepository : BaseRepository() {
                 })
     }
 
-    fun verifyOTP(viewModel: VerifyOTPViewModel, @PartMap params: HashMap<String, RequestBody>): Disposable{
+    fun verifyOTP(viewModel: VerifyOTPViewModel, @PartMap params: HashMap<String, RequestBody>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .verifyOTP(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -75,6 +76,7 @@ class AppRepository : BaseRepository() {
                         listener.success(it)
                 }, { listener.fail(it) })
     }
+
 
     fun postForgotPassword(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
@@ -109,7 +111,6 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
-
 
 
     fun postChangePassword(listener: ApiListener, params: HashMap<String, String>): Disposable {
@@ -254,6 +255,19 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
+
+    fun setAirportMode(listener: ApiListener): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .setAirportMode()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({
+                    listener.success(it)
+                }, {
+                    listener.fail(it)
+                })
+    }
+
 
     fun getServices(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
@@ -459,7 +473,7 @@ class AppRepository : BaseRepository() {
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun addServiceDispute(listener: ApiListener,  params: HashMap<String, String>): Disposable {
+    fun addServiceDispute(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
                 .postServiceDispute(params)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -492,12 +506,12 @@ class AppRepository : BaseRepository() {
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
-    fun getServiceDisputeStatus(listener: ApiListener,requestID: String):Disposable {
-        return  BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL,AppWebService::class.java)
+    fun getServiceDisputeStatus(listener: ApiListener, requestID: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
                 .getServiceDisputeStatus(requestID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({listener.success(it)},{listener.fail(it)})
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
     fun logoutApp(listener: ApiListener): Disposable {
@@ -505,7 +519,7 @@ class AppRepository : BaseRepository() {
                 .logout()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({listener.success(it)}, {listener.fail(it)})
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
     companion object {

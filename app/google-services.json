@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "264044719628-cusdhpm417o0dnukc90t7u4t9jmmah1h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.opus.provider",
+            "certificate_hash": "b7b6a54298b0d2c04d1d99d0cd0d0469a731497f"
+          }
+        },
+        {
+          "client_id": "264044719628-hbvdp8vjjmdclepf1dvgrk6rs6io4ptv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.opus.provider",
+            "certificate_hash": "cb928e0be3593db7eb1a940fbc476dbeb6cb42ee"
+          }
+        },
+        {
           "client_id": "264044719628-2ed8p3mothmq5cjdgsvhemf34ffs2t1h.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -43,6 +59,22 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "264044719628-7pmrvb2poa9af9tugmqarpbqt52rbb5h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.opus.user",
+            "certificate_hash": "e903b72393f39191ac3f5f09368258de2ec87098"
+          }
+        },
+        {
+          "client_id": "264044719628-f53s0vn8l8k044clfbngti8qu3vl53dr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.opus.user",
+            "certificate_hash": "cb928e0be3593db7eb1a940fbc476dbeb6cb42ee"
+          }
+        },
         {
           "client_id": "264044719628-2ed8p3mothmq5cjdgsvhemf34ffs2t1h.apps.googleusercontent.com",
           "client_type": 3

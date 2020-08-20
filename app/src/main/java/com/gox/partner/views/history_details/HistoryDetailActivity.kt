@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -18,6 +19,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
+import com.gox.base.data.PreferencesHelper
+import com.gox.base.data.PreferencesKey
 import com.gox.base.utils.Utils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
@@ -107,6 +110,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             if (it.statusCode.equals("200")) {
                 isShowDisputeStatus = true
                 mBinding.disputeBtn.text = resources.getString(R.string.dispute_status)
+                bottomSheetDialog!!.dismiss()
                 ViewUtils.showToast(this, resources.getString(R.string.dispute_created_succefully), true)
             }
         })
@@ -140,7 +144,9 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         disputeStatusBinding = DataBindingUtil.inflate<DisputeStatusBinding>(LayoutInflater.from(baseContext), R.layout.dispute_status, null, false)
         disputeStatusBinding!!.disputeComment.text = (disputeStatusResponseData.responseData!!.dispute_name).toString()
         disputeStatusBinding!!.disputeStatus.text = (disputeStatusResponseData.responseData.status).toString()
-
+        Glide.with(this@HistoryDetailActivity).load(PreferencesHelper.get(PreferencesKey.PICTURE,""))
+                .placeholder(R.drawable.ic_user_place_holder)
+                .into(disputeStatusBinding!!.ivDisPuteUser)
         if (disputeStatusResponseData.responseData.status.equals("open")) {
             disputeStatusBinding!!.disputeStatus.background =
                     ContextCompat.getDrawable(this, R.drawable.bg_dispute_open)
@@ -152,6 +158,11 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             disputeStatusBinding!!.disputeStatus.setTextColor(
                     ContextCompat.getColor(this, R.color.dispute_status_open)
             )
+            if(disputeStatusResponseData.responseData.comments != null) {
+                disputeStatusBinding!!.Comments.visibility = View.VISIBLE
+                disputeStatusBinding!!.Comments.text = "Comment : " + (disputeStatusResponseData.responseData.comments).toString()
+            }
+
         }
 
         val dialog = BottomSheetDialog(this)
@@ -547,7 +558,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             mViewModel.disputeType.value = "provider"
             mViewModel.disputeName.value = selectedDisputeData?.dispute_name
             mViewModel.disputeID.value = selectedDisputeData?.id
-        }
+
 
         val params = HashMap<String, String>()
         params[Constants.Dispute.DISPUTE_TYPE] = mViewModel.disputeType.value!!
@@ -584,8 +595,11 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 params[Constants.Dispute.DISPUTE_ID] = mViewModel.disputeID.value.toString()
                 params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
 
-                mViewModel.postOrderDispute(params)
+                 mViewModel.postOrderDispute(params)
             }
+        }
+        } else {
+            Toast.makeText(this@HistoryDetailActivity,"Please select any dispute",Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -611,7 +625,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 .into(mBinding.providerCimgv)
         mBinding.providerNameTv.text = (transPastDetail.user.first_name + " " +
                 transPastDetail.user.last_name)
-        mBinding.rvUser.rating = transPastDetail.user.rating!!.toFloat()
+        mBinding.rvUser.rating = transPastDetail.rating!!.provider_rating!!.toFloat()
 
         if (transPastDetail.rating!!.provider_comment != null && !transPastDetail.rating.provider_comment!!.isEmpty()) {
             mBinding.itemLayout.visibility = View.VISIBLE

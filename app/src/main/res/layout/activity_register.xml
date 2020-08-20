@@ -30,12 +30,22 @@
 
                 <ImageView
                     android:id="@+id/toplayout_applogo"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_30sdp"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_15sdp"
                     android:contentDescription="@string/app_name"
+                    android:scaleType="fitCenter"
+                    android:padding="4dp"
                     app:srcCompat="@drawable/splash_icon" />
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/toplayout_applogo"-->
+<!--                    android:layout_width="@dimen/_50sdp"-->
+<!--                    android:layout_height="@dimen/_30sdp"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:layout_marginTop="@dimen/_15sdp"-->
+<!--                    android:contentDescription="@string/app_name"-->
+<!--                    app:srcCompat="@drawable/splash_icon" />-->
 
             </RelativeLayout>
 

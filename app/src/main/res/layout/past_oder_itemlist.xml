@@ -96,6 +96,23 @@
                     android:text="@string/dummy_rating"
                     android:textColor="@color/dark_grey" />
 
+                <TextView
+                    android:id="@+id/dispute"
+                    style="@style/VerySmallText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_below="@id/status_past_tv"
+                    android:gravity="center"
+                    android:layout_alignParentEnd="true"
+                    android:drawableStart="@drawable/ic_danger"
+                    android:drawablePadding="@dimen/_3sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:padding="@dimen/_3sdp"
+                    android:text="@string/dispute"
+                    android:textColor="@color/red"
+                    android:visibility="gone"/>
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/status_past_tv"
                     android:layout_width="wrap_content"

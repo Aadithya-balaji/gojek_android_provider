@@ -15,6 +15,7 @@ android {
             storePassword 'opus_android_provider'
         }
     }
+
     defaultConfig {
         applicationId "com.opus.provider"
         minSdkVersion 21

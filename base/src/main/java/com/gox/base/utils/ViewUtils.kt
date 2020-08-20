@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
@@ -65,7 +66,7 @@ object ViewUtils {
 
     @MainThread
     fun showAlert(context: Context, message: String, callBack: ViewCallBack) {
-        AlertDialog.Builder(context)
+        val builder: AlertDialog? = AlertDialog.Builder(context)
                 .setTitle(context.resources.getString(R.string.app_name))
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes) { dialog, which ->
@@ -73,15 +74,19 @@ object ViewUtils {
                 }.setNegativeButton(android.R.string.no) { dialog, which ->
                     callBack.onNegativeButtonClick(dialog)
                 }.show()
+
+        AlertButton(builder!!)
     }
 
     @MainThread
     fun showAlert(context: Context, message: String) {
-        AlertDialog.Builder(context)
+        val builder: AlertDialog? = AlertDialog.Builder(context)
                 .setTitle(context.resources.getString(R.string.app_name))
                 .setMessage(message)
                 .setPositiveButton(android.R.string.yes) { dialog, which -> dialog.dismiss() }
                 .show()
+
+        AlertButton(builder!!)
     }
 
     @MainThread
@@ -165,13 +170,19 @@ object ViewUtils {
             val daysInMilli = hoursInMilli * 24
 
 
-            val elapsedDays = different / daysInMilli
+            var elapsedDays = different / daysInMilli
+            if(elapsedDays < 0)
+                elapsedDays =  Math.abs(elapsedDays)
             different = different % daysInMilli
 
-            val elapsedHours = different / hoursInMilli
+            var elapsedHours = different / hoursInMilli
+            if(elapsedHours < 0)
+                elapsedHours =  Math.abs(elapsedHours)
             different = different % hoursInMilli
 
-            val elapsedMinutes = different / minutesInMilli
+            var elapsedMinutes = different / minutesInMilli
+            if(elapsedMinutes < 0)
+                elapsedMinutes =  Math.abs(elapsedMinutes)
             different = different % minutesInMilli
 
             val elapsedSeconds = different / secondsInMilli
@@ -230,4 +241,13 @@ object ViewUtils {
         dialog.show()
     }
 
+    fun AlertButton(builder: AlertDialog){
+        val negbuttonbackground: Button = builder!!.getButton(DialogInterface.BUTTON_NEGATIVE)
+        negbuttonbackground.setBackgroundColor(Color.TRANSPARENT)
+        negbuttonbackground.setTextColor(Color.BLACK)
+
+        val posbuttonbackground: Button = builder!!.getButton(DialogInterface.BUTTON_POSITIVE)
+        posbuttonbackground.setBackgroundColor(Color.TRANSPARENT)
+        posbuttonbackground.setTextColor(Color.BLACK)
+    }
 }

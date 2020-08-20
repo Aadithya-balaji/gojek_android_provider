@@ -19,7 +19,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.APP_REQUEST_CODE
+import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
+import com.gox.base.extensions.writePreferences
 import com.gox.base.utils.ValidationUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
@@ -79,6 +81,8 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
         mViewModel.updateProfileResponse().observe(this, Observer {
             ViewUtils.showToast(this, it.message!!, true)
+//            if(it.respo)
+//            writePreferences(PreferencesKey.PICTURE,response.profileData.picture)
         })
 
         mViewModel.countryListResponse.observe(this, Observer<CountryListResponse> {
@@ -129,8 +133,13 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             val d = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
             countrycode_register_et.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null)
 
-            if (!response.profileData.picture.isNullOrEmpty())
+            if (!response.profileData.picture.isNullOrEmpty()) {
                 glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture, R.drawable.ic_user_place_holder)
+                writePreferences(PreferencesKey.PICTURE,response.profileData.picture)
+            } else if(!response.profileData.picture_draft.isNullOrEmpty()) {
+                glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture_draft, R.drawable.ic_user_place_holder)
+                writePreferences(PreferencesKey.PICTURE,response.profileData.picture_draft)
+            }
 
         })
 

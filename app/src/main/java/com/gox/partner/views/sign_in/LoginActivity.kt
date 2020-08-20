@@ -99,6 +99,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
             ViewUtils.showToast(applicationContext, message, true)
             writePreferences(PreferencesKey.ACCESS_TOKEN, it.responseData.accessToken)
             writePreferences(PreferencesKey.IS_ONLINE, it.responseData.user.isOnline)
+            writePreferences(PreferencesKey.PICTURE,it.responseData.user.picture_draft)
             BaseApplication.getCustomPreference!!.edit().putInt(PreferencesKey.PROVIDER_ID,it.responseData.user.id).apply()
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

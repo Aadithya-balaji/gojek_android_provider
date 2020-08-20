@@ -60,6 +60,7 @@
                     android:layout_width="@dimen/_35sdp"
                     android:layout_height="@dimen/_35sdp"
                     android:contentDescription="@string/app_name"
+                    android:layout_gravity="start"
                     android:src="@drawable/ic_user_place_holder" />
 
                 <LinearLayout
@@ -74,6 +75,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/avenirltstd_medium"
                         android:text="@string/you"
+                        android:layout_marginLeft="@dimen/_5sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_10sdp" />
 
@@ -81,10 +83,21 @@
                         android:id="@+id/disputeComment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:padding="@dimen/_5sdp"
+                        android:maxLines="1"
                         android:textColor="@color/grey"
                         android:textSize="@dimen/_12sdp" />
+
+                    <TextView
+                        android:id="@+id/Comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/_12sdp"
+                        android:maxLines="4"
+                        android:ellipsize="end"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 

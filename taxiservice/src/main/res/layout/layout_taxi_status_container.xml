@@ -300,6 +300,8 @@
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_weight=".5"
                     android:fontFamily="@font/avenirltstd_medium"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:paddingBottom="@dimen/_10sdp"
                     android:text="@string/taxi_pickup"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10sdp"

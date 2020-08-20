@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:text="@string/reset"
+                android:visibility="gone"
                 android:textColor="@color/colorAccent" />
         </RelativeLayout>
 

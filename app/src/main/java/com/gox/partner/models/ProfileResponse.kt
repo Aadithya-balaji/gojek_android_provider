@@ -45,6 +45,7 @@ data class ProfileResponseData(
         var payment_gateway_id: Any = Any(),
         var payment_mode: String = "",
         var picture: String = "",
+        var picture_draft: String = "",
         var qrcode_url: String = "",
         var rating: Double? = 0.0,
         var referal_count: Int? = 0,

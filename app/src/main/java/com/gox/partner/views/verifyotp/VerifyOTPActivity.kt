@@ -48,6 +48,8 @@ class VerifyOTPActivity : BaseActivity<ActivityVerifyOtpBinding>(), VerifyOTPNav
             extras.run {
                 country_code = getString("country_code")
                 mobile_number = getString("mobile")
+                mViewModel.countryCode.value = country_code
+                mViewModel.phoneNumber.value = mobile_number
             }
         }
 
@@ -67,6 +69,11 @@ class VerifyOTPActivity : BaseActivity<ActivityVerifyOtpBinding>(), VerifyOTPNav
             val intent = Intent()
             setResult(Activity.RESULT_OK, intent)
             finish()
+        })
+
+        mViewModel.sendOTPResponse.observe(this, Observer {
+            mViewModel.loadingProgress.value = false
+            ViewUtils.showToast(this, getString(R.string.otp_success), true)
         })
 
         mViewModel.errorResponse.observe(this, Observer {

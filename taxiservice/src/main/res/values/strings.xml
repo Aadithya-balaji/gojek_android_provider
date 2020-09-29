@@ -26,7 +26,9 @@
     <string name="taxi_invoice_Tips">Tips</string>
     <string name="taxi_invoice_toll">Toll</string>
     <string name="taxi_invoie_add">ADD</string>
-
+    <string name="taxi_invoice_peak_charge">Peak charge</string>
+    <string name="taxi_invoice_total_fare">Total Fare</string>
+    <string name="taxi_invoice_sub_total">Sub Total</string>
     <!-- OTP -->
     <string name="otp_label">Enter OTP</string>
     <string name="otp_call">Call</string>

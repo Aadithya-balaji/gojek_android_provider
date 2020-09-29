@@ -73,14 +73,16 @@ class SubServicePriceAdapter(val activity: SetServicePriceActivity, private var 
                         HOURLY -> {
                             if (subServiceData.responseData!![position]!!.providerservices!![0]!!.per_mins!! > 0)
                                 subServiceData.responseData!![position]!!.providerservices!![0]!!.per_mins.toString() +
-                                        " " + activity.getString(R.string.per_hour)
+                                        " " + activity.getString(R.string.per_min) + " / " + currency + subServiceData.responseData!![position]!!.providerservices!![0]!!.base_fare.toString()+
+                                        " "+ activity.getString(R.string.base_fare)
                             else subServiceData.responseData!![position]!!.service_city!!.per_mins.toString() +
-                                    " " + activity.getString(R.string.per_hour)
+                                    " " + activity.getString(R.string.per_min) + " / " + currency + subServiceData.responseData!![position]!!.service_city!!.base_fare.toString()+
+                                    " "+ activity.getString(R.string.base_fare)
                         }
                         FIXED -> {
                             if (subServiceData.responseData!![position]!!.providerservices!![0]!!.base_fare!! > 0)
-                                subServiceData.responseData!![position]!!.providerservices!![0]!!.base_fare.toString()
-                            else subServiceData.responseData!![position]!!.service_city!!.base_fare
+                                subServiceData.responseData!![position]!!.providerservices!![0]!!.base_fare.toString() + " " + activity.getString(R.string.base_fare)
+                            else subServiceData.responseData!![position]!!.service_city!!.base_fare.toString() + " " + activity.getString(R.string.base_fare)
                         }
                         else -> "0"
                     } else "0"

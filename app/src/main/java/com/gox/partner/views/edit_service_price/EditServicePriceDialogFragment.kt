@@ -39,6 +39,8 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
             when (it.fareType) {
                 DISTANCE_TIME -> {
                     miles_lt.visibility = VISIBLE
+                    base_fare_lay.visibility = VISIBLE
+                    base_edt.text = Editable.Factory.getInstance().newEditable(it.baseFare.toString())
                     price_miles_edt.text = Editable.Factory.getInstance().newEditable(it.perMiles.toString())
                     price_edt.text = Editable.Factory.getInstance().newEditable(it.perMin.toString())
                 }
@@ -47,6 +49,8 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
                     label.text = getString(R.string.fixed)
                 }
                 HOURLY -> {
+                    base_fare_lay.visibility = VISIBLE
+                    base_edt.text = Editable.Factory.getInstance().newEditable(it.baseFare.toString())
                     price_edt.text = Editable.Factory.getInstance().newEditable(it.perMin.toString())
                 }
             }
@@ -58,17 +62,24 @@ class EditServicePriceDialogFragment : BaseDialogFragment<EditServicePriceDialog
             val service = SetServicePriceActivity.SelectedService()
             if (price_edt.text.isNotEmpty() && price_edt.text.toString().toDouble() > 0) {
                 if (miles_lt.visibility == VISIBLE) if (price_miles_edt.text.isNotEmpty()
-                        && price_miles_edt.text.toString().toDouble() > 0) {
+                        && price_miles_edt.text.toString().toDouble() > 0  && base_edt.visibility == VISIBLE && base_edt.text.isNotEmpty()
+                        &&  base_edt.text.toString().toDouble() > 0) {
                     service.perMiles = Integer.parseInt(price_miles_edt.text.toString())
                     price_miles_edt.setText(service.perMiles.toString())
                     service.perMiles = Integer.parseInt(price_miles_edt.text.toString())
+                    service.baseFare = Integer.parseInt(base_edt.text.toString())
                 } else {
                     ViewUtils.showToast(activity!!, getString(R.string.enter_amount), false)
                     return@setOnClickListener
                 }
                 if (fareType == FIXED)
                     service.baseFare = Integer.parseInt(price_edt.text.toString())
-                else service.perMin = Integer.parseInt(price_edt.text.toString())
+                else {
+                    service.perMin = Integer.parseInt(price_edt.text.toString())
+                    if(base_edt.visibility == VISIBLE && base_edt.text.isNotEmpty()
+                            &&  base_edt.text.toString().toDouble() > 0)
+                        service.baseFare = Integer.parseInt(base_edt.text.toString())
+                }
                 service.fareType = fareType
                 setServicePriceViewModel.listPrice.value = service
                 dismiss()

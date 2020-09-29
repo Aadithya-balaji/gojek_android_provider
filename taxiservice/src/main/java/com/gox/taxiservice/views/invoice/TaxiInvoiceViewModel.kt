@@ -26,10 +26,15 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
     var discount = ObservableField<String>()
     var tax = MutableLiveData<String>()
     var waitingCharge = MutableLiveData<String>()
+    var peakCharge = MutableLiveData<String>()
     var tips = MutableLiveData<String>()
     var tollCharge = MutableLiveData<String>()
     var payableAmount = ObservableField<String>()
     var total = MutableLiveData<String>()
+    var subtotal = MutableLiveData<String>()
+    var totalfare = MutableLiveData<String>()
+
+
     var requestLiveData = MutableLiveData<ResponseData>()
     var paymentLiveData = MutableLiveData<PaymentModel>()
     var showLoading = MutableLiveData<Boolean>()
@@ -62,20 +67,20 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
 
     }
 
-        fun callTaxiCheckStatusAPI() {
-            if (BaseApplication.isNetworkAvailable)
-                getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
-                    override fun success(successData: Any) {
-                        checkStatusTaxiLiveData.value = successData as CheckRequestModel
-                        showLoading.postValue(false)
-                    }
+    fun callTaxiCheckStatusAPI() {
+        if (BaseApplication.isNetworkAvailable)
+            getCompositeDisposable().add(mRepository.checkRequest(object : ApiListener {
+                override fun success(successData: Any) {
+                    checkStatusTaxiLiveData.value = successData as CheckRequestModel
+                    showLoading.postValue(false)
+                }
 
-                    override fun fail(failData: Throwable) {
-                        navigator.showErrorMessage(getErrorMessage(failData))
-                        showLoading.postValue(false)
-                    }
-                }))
-        }
-
-        fun closeActivity() = navigator.closeInvoiceActivity()
+                override fun fail(failData: Throwable) {
+                    navigator.showErrorMessage(getErrorMessage(failData))
+                    showLoading.postValue(false)
+                }
+            }))
     }
+
+    fun closeActivity() = navigator.closeInvoiceActivity()
+}

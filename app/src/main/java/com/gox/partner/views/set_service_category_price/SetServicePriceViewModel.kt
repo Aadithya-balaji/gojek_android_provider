@@ -47,10 +47,14 @@ class SetServicePriceViewModel : BaseViewModel<SetServicePriceNavigator>() {
                 params["service[$i][service_id]"] = (it.id.toString())
                 when (it.fareType) {
                     FIXED -> params["service[$i][base_fare]"] = (it.baseFare.toString())
-                    HOURLY -> params["service[$i][per_mins]"] = (it.perMin.toString())
+                    HOURLY -> {
+                        params["service[$i][base_fare]"] = (it.baseFare.toString())
+                        params["service[$i][per_mins]"] = (it.perMin.toString())
+                    }
                     DISTANCE_TIME -> {
                         params["service[$i][per_mins]"] = (it.perMin.toString())
                         params["service[$i][per_miles]"] = (it.perMiles.toString())
+                        params["service[$i][base_fare]"] = (it.baseFare.toString())
                     }
                 }
                 i += 1

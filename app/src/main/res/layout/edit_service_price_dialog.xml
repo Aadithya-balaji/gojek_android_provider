@@ -51,7 +51,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/price_edt"
                 android:fontFamily="@font/avenir_lt_std_medium"
-                android:text="@string/per_hour"
+                android:text="@string/per_min"
                 android:textSize="@dimen/_11sdp" />
 
         </RelativeLayout>
@@ -89,6 +89,39 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/base_fare_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/base_edt"
+                android:layout_width="@dimen/_100sdp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5sdp"
+                android:background="@drawable/bg_grey_corner"
+                android:fontFamily="@font/avenir_lt_std_medium"
+                android:gravity="center"
+                android:inputType="numberDecimal"
+                android:padding="@dimen/_7sdp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_18sdp"/>
+
+            <TextView
+                android:id="@+id/baselabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/base_edt"
+                android:fontFamily="@font/avenir_lt_std_medium"
+                android:text="@string/taxi_invoice_base_fare"
+                android:textSize="@dimen/_11sdp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/_40sdp"
@@ -114,7 +147,7 @@
                 android:text="@string/submit"
                 android:textColor="@color/card_left_bg"
                 android:textSize="@dimen/_14sdp"
-                 />
+                />
 
         </RelativeLayout>
 

@@ -5,6 +5,7 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.media.AudioAttributes
 import android.media.AudioManager
 import android.media.RingtoneManager
 import android.os.Build
@@ -38,6 +39,7 @@ class FcmService : FirebaseMessagingService() {
         super.onMessageReceived(remoteMessage)
 
         val notificationData = Gson().fromJson(remoteMessage.data!!["custom"], NotificationDataModel::class.java)
+        println("RRR push notificationData = $notificationData")
 
         if (notificationData.message!!.topic!!.contains("incoming_request"))
             sendProlongedNotification(notificationData)
@@ -59,7 +61,12 @@ class FcmService : FirebaseMessagingService() {
                 PendingIntent.FLAG_ONE_SHOT)
 
         val channelId = getString(R.string.app_name)
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val defaultSoundUri = if(notificationData.message!!.notification!!.body!! == "New Incoming Ride"
+                || notificationData.message!!.notification!!.body!! == "New Incoming Service Request")
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        else
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_push)
                 .setColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
@@ -71,22 +78,37 @@ class FcmService : FirebaseMessagingService() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notificationManager.createNotificationChannel(
-                NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (defaultSoundUri != null) {
+                // Creating an Audio Attribute
+                val audioAttributes = AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .build()
+
+                // Creating Channel
+                val notificationChannel = NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
+                notificationChannel.setSound(defaultSoundUri, audioAttributes)
+                notificationManager.createNotificationChannel(notificationChannel)
+            }
+        }
 
         notificationManager.notify(notificationId, notificationBuilder.build())
     }
 
     private fun sendProlongedNotification(notificationData: NotificationDataModel) {
         println("RRR push notificationData = $notificationData")
-
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT)
-
         val channelId = getString(com.gox.partner.R.string.app_name)
-        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val defaultSoundUri = if(notificationData.message!!.notification!!.body!! == "New Incoming Ride"
+                || notificationData.message!!.notification!!.body!! == "New Incoming Service Request")
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+        else
+            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.push)
                 .setContentTitle(notificationData.message!!.notification!!.title)
@@ -94,15 +116,23 @@ class FcmService : FirebaseMessagingService() {
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent)
-
         val mNotification = notificationBuilder.build()
         mNotification.flags = Notification.DEFAULT_LIGHTS or Notification.FLAG_AUTO_CANCEL or Notification.DEFAULT_SOUND
-
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (defaultSoundUri != null) {
+                // Creating an Audio Attribute
+                val audioAttributes = AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .build()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) notificationManager.createNotificationChannel(
-                NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT))
-
+                // Creating Channel
+                val notificationChannel = NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
+                notificationChannel.setSound(defaultSoundUri, audioAttributes)
+                notificationManager.createNotificationChannel(notificationChannel)
+            }
+        }
         notificationManager.notify(notificationId, mNotification)
     }
 

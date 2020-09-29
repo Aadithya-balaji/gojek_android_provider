@@ -186,17 +186,22 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
 
         save_editprofile_btn.setOnClickListener {
-            if (mViewModel.mProfileResponse.value!!.profileData.mobile == phonenumber_register_et.text.toString()) {
-                mMobileNumberFlag = 1
-                if (localPath?.path != null) {
-                    val pictureFile = File(localPath?.path)
-                    val requestFile = RequestBody.create(MediaType.parse("*/*"), pictureFile)
-                    val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
-                    mViewModel.updateProfile(fileBody)
-                } else mViewModel.updateProfile(null)
+            if (mViewModel.mMobileNumber.get()?.length!! > 11 && mViewModel.mCountryCode.get()!!.replace(" ","") == "+977") {
+                ViewUtils.showToast(this, getString(R.string.error_invalid_phonenumber), false)
+                mViewModel.showLoading.value = false
             } else {
-                mMobileNumberFlag = 2
-                verifyMobileNumber()
+                if (mViewModel.mProfileResponse.value!!.profileData.mobile == phonenumber_register_et.text.toString()) {
+                    mMobileNumberFlag = 1
+                    if (localPath?.path != null) {
+                        val pictureFile = File(localPath?.path)
+                        val requestFile = RequestBody.create(MediaType.parse("*/*"), pictureFile)
+                        val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
+                        mViewModel.updateProfile(fileBody)
+                    } else mViewModel.updateProfile(null)
+                } else {
+                    mMobileNumberFlag = 2
+                    verifyMobileNumber()
+                }
             }
         }
     }
@@ -318,6 +323,10 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             mViewModel.showLoading.value = false
             return false
         } else if (TextUtils.isEmpty(phoneNumber) && ValidationUtils.isMinLength(phoneNumber, 6)) {
+            ViewUtils.showToast(this, getString(R.string.error_invalid_phonenumber), false)
+            mViewModel.showLoading.value = false
+            return false
+        } else if (mViewModel.mMobileNumber.get()?.length!! > 11 && mViewModel.mCountryCode.get()!!.replace(" ","")  == "+977") {
             ViewUtils.showToast(this, getString(R.string.error_invalid_phonenumber), false)
             mViewModel.showLoading.value = false
             return false

@@ -175,11 +175,17 @@ data class HistoryDetailModel(
                     val is_partial: Any? = Any(),
                     val minute: Double? = 0.0,
                     val payable: Double? = 0.0,
+                    val base_fare_text: String? = "",
+                    val distance_fare_text: String? = "",
+                    val time_fare_text: String? = "",
+                    val waiting_fare_text: String? = "",
+                    val discount_fare_text: String? = "",
                     val payment_id: Any? = Any(),
                     val payment_mode: String? = "",
                     val peak_amount: Double? = 0.0,
                     val peak_comm_amount: Double? = 0.0,
                     val promocode_id: Double? = 0.0,
+                    val promocode: String? = "",
                     val provider_id: Int? = 0,
                     val provider_pay: Double? = 0.0,
                     val ride_request_id: Int? = 0,
@@ -215,7 +221,7 @@ data class HistoryDetailModel(
                 val dispute: Dispute? = Dispute(),
                 val user_id: Int? = 0,
                 val rating: Transport.Rating? = Transport.Rating()
-                ) {
+        ) {
             data class User(
                     val first_name: String? = "",
                     val id: Int? = 0,
@@ -255,6 +261,7 @@ data class HistoryDetailModel(
                     val minute: Double? = 0.0,
                     val payable: Double? = 0.0,
                     val payment_mode: String? = "",
+                    val promocode: String? = "",
                     val service_request_id: Int? = 0,
                     val tax: Double? = 0.0,
                     val total: Double? = 0.0,
@@ -292,7 +299,7 @@ data class HistoryDetailModel(
                     val id: Int? = 0,
                     val latitude: Double? = 0.0,
                     val longitude: Double? = 0.0,
-                    val map_address: Any? = Any(),
+                    val map_address:String? = "",
                     val street: String? = ""
             )
 
@@ -330,6 +337,7 @@ data class HistoryDetailModel(
                     val items: List<Item?>? = listOf(),
                     val payable: Double? = 0.0,
                     val payment_mode: String? = "",
+                    val promocode: String? = "",
                     val promocode_amount: Double? = 0.0,
                     val discount: Double? = 0.0,
                     val store_order_id: Int? = 0,
@@ -449,4 +457,3 @@ data class HistoryDetailModel(
 
     }
 }
-

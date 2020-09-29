@@ -69,12 +69,16 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
 
     override fun onPause() {
         super.onPause()
-        try {
-            timerToTakeOrder.cancel()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        if(dialog != null) {
+            try {
+                timerToTakeOrder.cancel()
+                mPlayer.stop()
+                println("paused player")
+                dialog!!.dismiss()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-        mPlayer.stop()
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
@@ -173,20 +177,22 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     }
 
     fun initCircularSeekBar(percentage: Float, time: String) {
-        circularProgressBar = mBinding.ivRequestTime
-        val cpbModel = CircularProgressBarModel()
-        cpbModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
-        cpbModel.color = ContextCompat.getColor(context!!, R.color.grey)
-        cpbModel.strokeWidth = 15.0f
-        cpbModel.backgroundStrokeWidth = 15.0f
-        cpbModel.blur = 1
-        cpbModel.titleText = time
-        cpbModel.titleSize = 38
-        cpbModel.subTitleText = ""
-        cpbModel.targetSize = 100
-        cpbModel.targetColor = ContextCompat.getColor(context!!, R.color.colorAccent)
-        circularProgressBar.init(cpbModel)
-        circularProgressBar.setProgress(percentage)
+        if(dialog != null) {
+            circularProgressBar = mBinding.ivRequestTime
+            val cpbModel = CircularProgressBarModel()
+            cpbModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
+            cpbModel.color = ContextCompat.getColor(context!!, R.color.grey)
+            cpbModel.strokeWidth = 15.0f
+            cpbModel.backgroundStrokeWidth = 15.0f
+            cpbModel.blur = 1
+            cpbModel.titleText = time
+            cpbModel.titleSize = 38
+            cpbModel.subTitleText = ""
+            cpbModel.targetSize = 100
+            cpbModel.targetColor = ContextCompat.getColor(context!!, R.color.colorAccent)
+            circularProgressBar.init(cpbModel)
+            circularProgressBar.setProgress(percentage)
+        }
     }
 
     override fun show(manager: FragmentManager, tag: String?) {
@@ -207,6 +213,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         if (!requestModel.isNullOrEmpty()) {
             incomingRequestModel = Gson().fromJson(requestModel.toString(), CheckRequestModel::class.java)
             request = incomingRequestModel!!.responseData.requests[0]
+            println("timer-- "+request.time_left_to_respond)
         }
     }
 

@@ -350,6 +350,8 @@
     <string name="invalid_email">Please Enter the Valid Email</string>
     <string name="country_code_empty">Country code should not be empty</string>
     <string name="phone_number_empty">Phone number should not be empty</string>
+    <string name="valid_phoneno">Please enter valid Phone Number</string>
+
     <string name="email_empty">Email should not be empty</string>
     <string name="email_invalid">Please enter valid email</string>
     <string name="password_empty">Password should not be empty</string>
@@ -545,4 +547,7 @@
     <string name="card_invalid">Card details invalid</string>
     <string name="documents">\u0020Documents</string>
     <string name="expire_at">"Expire At: "</string>
+    <string name="base_fare">Base Fare</string>
+    <string name="peak_charge">Peak Charge</string>
+
 </resources>

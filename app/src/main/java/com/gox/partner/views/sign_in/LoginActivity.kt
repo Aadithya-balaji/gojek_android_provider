@@ -99,8 +99,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
             ViewUtils.showToast(applicationContext, message, true)
             writePreferences(PreferencesKey.ACCESS_TOKEN, it.responseData.accessToken)
             writePreferences(PreferencesKey.IS_ONLINE, it.responseData.user.isOnline)
-            writePreferences(PreferencesKey.PICTURE,it.responseData.user.picture_draft)
-            BaseApplication.getCustomPreference!!.edit().putInt(PreferencesKey.PROVIDER_ID,it.responseData.user.id).apply()
+            if (!it.responseData.user.picture.isNullOrEmpty())
+                writePreferences(PreferencesKey.PICTURE, it.responseData.user.picture)
+            BaseApplication.getCustomPreference!!.edit().putInt(PreferencesKey.PROVIDER_ID, it.responseData.user.id).apply()
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             openActivity(dashBoardIntent, false)
@@ -116,15 +117,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
     }
 
 
-    fun setDefaultCountry(){
+    fun setDefaultCountry() {
         val dr = ContextCompat.getDrawable(this, R.drawable.flag_india)
         val bitmap = (dr as BitmapDrawable).bitmap
-        var width:Int=0
-        var height:Int=0
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        var width: Int = 0
+        var height: Int = 0
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             width = dpsToPixels(this@LoginActivity, 28)
             height = dpsToPixels(this@LoginActivity, 8)
-        }else{
+        } else {
             width = dpsToPixels(this@LoginActivity, 15)
             height = dpsToPixels(this@LoginActivity, 15)
         }
@@ -133,11 +134,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
     }
 
 
-    private fun dpsToPixels(activity: Activity, dps: Int): Int    {
+    private fun dpsToPixels(activity: Activity, dps: Int): Int {
         val r = activity.resources
         return TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP, dps.toFloat(), r.displayMetrics).toInt()
     }
+
     private fun isSignInDataValid(): Boolean {
         if (isEmailLogin) {
             if (mViewModel.email.value.isNullOrBlank()) {
@@ -153,6 +155,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
             return false
         } else if (mViewModel.phoneNumber.value.isNullOrBlank()) {
             message = resources.getString(R.string.phone_number_empty)
+            return false
+        } else if (!isEmailLogin && mViewModel.phoneNumber.value?.length!! > 11 && mViewModel.countryCode.value == "+977") {
+            message = resources.getString(R.string.valid_phoneno)
             return false
         }
 
@@ -183,12 +188,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {
             val bitmap = (leftDrawable as BitmapDrawable).bitmap
-            var width:Int=0
-            var height:Int=0
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            var width: Int = 0
+            var height: Int = 0
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 width = dpsToPixels(this@LoginActivity, 8)
                 height = dpsToPixels(this@LoginActivity, 8)
-            }else{
+            } else {
                 width = dpsToPixels(this@LoginActivity, 15)
                 height = dpsToPixels(this@LoginActivity, 15)
             }

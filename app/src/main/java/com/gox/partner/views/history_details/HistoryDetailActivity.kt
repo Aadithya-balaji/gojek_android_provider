@@ -128,7 +128,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 })
 
         mViewModel.selectedDisputeModel.observe(this, Observer {
-           // bottomSheetDialog!!.dismiss()
+            // bottomSheetDialog!!.dismiss()
             selectedDisputeData = it
 
         })
@@ -203,6 +203,13 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         val tvExtraCharge: TextView? = alertDialog.findViewById(R.id.tvExtraCharge)
         val tvTotalAmount: TextView? = alertDialog.findViewById(R.id.tvTotalAmount)
         val tvRoundOff: TextView? = alertDialog.findViewById(R.id.tvRoundOff)
+        val time: TextView? = alertDialog.findViewById(R.id.time_fare)
+        val tax: TextView? = alertDialog.findViewById(R.id.tax)
+        val tvdistance: TextView? = alertDialog.findViewById(R.id.tvdistance)
+        val tvwaiting: TextView? = alertDialog.findViewById(R.id.tvwaiting)
+        val tvdiscount: TextView? = alertDialog.findViewById(R.id.txt_discount)
+        val tvWaitingFare: TextView? = alertDialog.findViewById(R.id.tvWaitingFare)
+        val tvpeakcharge: TextView? = alertDialog.findViewById(R.id.peakchargecharges_tv)
 
         val rlPackage: RelativeLayout? = alertDialog.findViewById(R.id.packngCharges_layout)
         val rlPromoCode: RelativeLayout? = alertDialog.findViewById(R.id.rlPromoCode)
@@ -218,7 +225,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         val rlRoundOff: RelativeLayout? = alertDialog.findViewById(R.id.rlRoundOff)
         val rlDiscount: RelativeLayout? = alertDialog.findViewById(R.id.rlDiscount)
         val rlTotal: RelativeLayout? = alertDialog.findViewById(R.id.rlTotal)
-
+        val rlPeakcharge: RelativeLayout? = alertDialog.findViewById(R.id.rl_peakcharge)
+        val rlwaiting: RelativeLayout? = alertDialog.findViewById(R.id.waiting_lay)
 
         when (serviceType?.toUpperCase()) {
 
@@ -421,7 +429,13 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 tvDeliveryCharge?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.delivery_amount
                         ?: 0.0) ?: "0.0"
                 tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.discount)}"
-                tvPromoCode?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.promocode_amount)}"
+//                tvPromoCode?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.promocode_amount)}"
+
+                if(mViewModel.orderDetail.value?.order_invoice?.promocode != null && mViewModel.orderDetail.value?.order_invoice?.promocode != "") {
+                    rlPromoCode?.visibility = View.VISIBLE
+                    tvPromoCode?.text = mViewModel.orderDetail.value?.order_invoice?.promocode.toString()
+                } else rlPromoCode?.visibility = View.GONE
+
                 tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.total_amount
                         ?: 0.0) ?: "0.0"
 
@@ -431,6 +445,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 rlDeliveryCharge?.visibility = View.GONE
                 rlItemPrice?.visibility = View.GONE
                 rlExtraCharges?.visibility = View.GONE
+                rlPeakcharge?.visibility = View.VISIBLE
 
                 tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.fixed)
                         ?: "0.0"
@@ -453,6 +468,69 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.discount)}"
                 tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.payable)
                         ?: "0.0"
+
+                tvpeakcharge?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.peak_amount)
+                        ?: "0.0"
+
+                tvWaitingFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.waiting_amount)
+                        ?: "0.0"
+                if(mViewModel.transportDetail.value?.payment!!.waiting_amount == 0.0)
+                    rlwaiting?.visibility = View.GONE
+                else
+                    rlwaiting?.visibility = View.VISIBLE
+                if(mViewModel.transportDetail.value?.payment!!.waiting_fare_text != "")
+                    tvwaiting?.text = mViewModel.transportDetail.value?.payment!!.waiting_fare_text
+
+                if(mViewModel.transportDetail.value?.payment!!.discount_fare_text != "")
+                    tvdiscount?.text = mViewModel.transportDetail.value?.payment!!.discount_fare_text
+
+                tvdistance?.text = mViewModel.transportDetail.value?.payment!!.distance_fare_text
+                if(mViewModel.transportDetail.value?.payment!!.distance == 0.0)
+                    rlDistanceFare?.visibility = View.GONE
+                else
+                    rlDistanceFare?.visibility = View.VISIBLE
+
+                if(mViewModel.transportDetail.value?.calculator.equals("MIN")){
+                    time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute) ?: "0.0"
+                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                        rlHourlyFare?.visibility = View.GONE
+                    else
+                        rlHourlyFare?.visibility = View.VISIBLE
+                } else if(mViewModel.transportDetail.value?.calculator.equals("HOUR")){
+                    time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour) ?: "0.0"
+                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                        rlHourlyFare?.visibility = View.GONE
+                    else
+                        rlHourlyFare?.visibility = View.VISIBLE
+                } else if(mViewModel.transportDetail.value?.calculator.equals("DISTANCE")) {
+                    time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute) ?: "0.0"
+                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                        rlHourlyFare?.visibility = View.GONE
+                    else
+                        rlHourlyFare?.visibility = View.VISIBLE
+                } else if(mViewModel.transportDetail.value?.calculator.equals("DISTANCEMIN")){
+                    time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute) ?: "0.0"
+                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                        rlHourlyFare?.visibility = View.GONE
+                    else
+                        rlHourlyFare?.visibility = View.VISIBLE
+                } else if(mViewModel.transportDetail.value?.calculator.equals("DISTANCEHOUR")){
+                    time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour) ?: "0.0"
+                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                        rlHourlyFare?.visibility = View.GONE
+                    else
+                        rlHourlyFare?.visibility = View.VISIBLE
+                }
+
+                if(mViewModel.transportDetail.value?.payment!!.promocode != null && mViewModel.transportDetail.value?.payment!!.promocode != "") {
+                    rlPromoCode?.visibility = View.VISIBLE
+                    tvPromoCode?.text = mViewModel.transportDetail.value?.payment!!.promocode.toString()
+                } else rlPromoCode?.visibility = View.GONE
             }
 
 
@@ -481,6 +559,11 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.discount)
                         ?: "0.0"}"
 //                tvTips?.text = (Constant.currency + transpotResponseData.payment!!.tips)
+
+                if(mViewModel.serviceDetail.value?.payment!!.promocode != null && mViewModel.serviceDetail.value?.payment!!.promocode != "") {
+                    rlPromoCode?.visibility = View.VISIBLE
+                    tvPromoCode?.text = mViewModel.serviceDetail.value?.payment!!.promocode.toString()
+                } else rlPromoCode?.visibility = View.GONE
 
                 val total: Double? = (mViewModel.serviceDetail.value?.payment?.fixed
                         ?: 0.0).plus(mViewModel.serviceDetail.value?.payment?.tax
@@ -553,51 +636,51 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         }
     }
 
-     fun createDisputeRequest() {
+    fun createDisputeRequest() {
         if (selectedDisputeData != null) {
             mViewModel.disputeType.value = "provider"
             mViewModel.disputeName.value = selectedDisputeData?.dispute_name
             mViewModel.disputeID.value = selectedDisputeData?.id
 
 
-        val params = HashMap<String, String>()
-        params[Constants.Dispute.DISPUTE_TYPE] = mViewModel.disputeType.value!!
-        params[Constants.Dispute.DISPUTE_NAME] = mViewModel.disputeName.value!!
+            val params = HashMap<String, String>()
+            params[Constants.Dispute.DISPUTE_TYPE] = mViewModel.disputeType.value!!
+            params[Constants.Dispute.DISPUTE_NAME] = mViewModel.disputeName.value!!
 
-        when {
-            serviceType.equals(Constants.ModuleTypes.TRANSPORT, true) -> {
-                mViewModel.userID.value = mViewModel.transportDetail.value!!.user!!.id.toString()
-                mViewModel.providerID.value = mViewModel.transportDetail.value!!.provider_id.toString()
-                mViewModel.requestID.value = mViewModel.transportDetail.value!!.id.toString()
-                params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
-                params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
-                params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
-                mViewModel.postTaxiDispute(params)
-            }
-            serviceType.equals(Constants.ModuleTypes.SERVICE, true) -> {
-                mViewModel.userID.value = mViewModel.historyModelLiveData.value!!.responseData.service.user!!.id.toString()
-                mViewModel.providerID.value = mViewModel.historyModelLiveData.value!!.responseData.service.provider_id.toString()
-                mViewModel.requestID.value = mViewModel.historyModelLiveData.value!!.responseData.service.id.toString()
-                params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
-                params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
-                params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
-                mViewModel.postServiceDispute(params)
-            }
-            else -> {
-                mViewModel.userID.value = mViewModel.orderDetail.value!!.user_id.toString()
-                mViewModel.providerID.value = mViewModel.orderDetail.value!!.provider_id.toString()
-                mViewModel.requestID.value = mViewModel.orderDetail.value!!.order_invoice!!.store_order_id.toString()
-                mViewModel.storeID.value = mViewModel.orderDetail.value!!.pickup!!.id.toString()
-                mViewModel.disputeID.value = mViewModel.orderDetail.value!!.id.toString()
-                params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
-                params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
-                params[Constants.Dispute.STORE_ID] = mViewModel.storeID.value.toString()
-                params[Constants.Dispute.DISPUTE_ID] = mViewModel.disputeID.value.toString()
-                params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
+            when {
+                serviceType.equals(Constants.ModuleTypes.TRANSPORT, true) -> {
+                    mViewModel.userID.value = mViewModel.transportDetail.value!!.user!!.id.toString()
+                    mViewModel.providerID.value = mViewModel.transportDetail.value!!.provider_id.toString()
+                    mViewModel.requestID.value = mViewModel.transportDetail.value!!.id.toString()
+                    params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
+                    params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
+                    params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
+                    mViewModel.postTaxiDispute(params)
+                }
 
-                 mViewModel.postOrderDispute(params)
+                serviceType.equals(Constants.ModuleTypes.SERVICE, true) -> {
+                    mViewModel.userID.value = mViewModel.historyModelLiveData.value!!.responseData.service.user!!.id.toString()
+                    mViewModel.providerID.value = mViewModel.historyModelLiveData.value!!.responseData.service.provider_id.toString()
+                    mViewModel.requestID.value = mViewModel.historyModelLiveData.value!!.responseData.service.id.toString()
+                    params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
+                    params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
+                    params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
+                    mViewModel.postServiceDispute(params)
+                }
+                else -> {
+                    mViewModel.userID.value = mViewModel.orderDetail.value!!.user_id.toString()
+                    mViewModel.providerID.value = mViewModel.orderDetail.value!!.provider_id.toString()
+                    mViewModel.requestID.value = mViewModel.orderDetail.value!!.order_invoice!!.store_order_id.toString()
+                    mViewModel.storeID.value = mViewModel.orderDetail.value!!.pickup!!.id.toString()
+                    mViewModel.disputeID.value = mViewModel.orderDetail.value!!.id.toString()
+                    params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
+                    params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
+                    params[Constants.Dispute.STORE_ID] = mViewModel.storeID.value.toString()
+                    params[Constants.Dispute.DISPUTE_ID] = mViewModel.disputeID.value.toString()
+                    params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
+                    mViewModel.postOrderDispute(params)
+                }
             }
-        }
         } else {
             Toast.makeText(this@HistoryDetailActivity,"Please select any dispute",Toast.LENGTH_SHORT).show()
         }
@@ -693,7 +776,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.vechileTypeTv.text = orderDetail.pickup!!.store_name
         mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(orderDetail.created_at, "Req_time") + "")
         mBinding.historydetailSrcValueTv.text = orderDetail.pickup!!.store_location
-        mBinding.historydetailDestValueTv.text = orderDetail.delivery!!.flat_no + " " + orderDetail.delivery.street
+        if(!orderDetail.delivery!!.map_address.isNullOrEmpty())
+            mBinding.historydetailDestValueTv.text = orderDetail.delivery!!.map_address.toString()
         mBinding.scheduletimeView.visibility = View.GONE
         mBinding.scheduleTimeLayout.visibility = View.GONE
         mBinding.tvStatusValue.text = orderDetail.status

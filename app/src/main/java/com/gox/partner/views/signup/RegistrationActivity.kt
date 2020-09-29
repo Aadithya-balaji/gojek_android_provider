@@ -175,7 +175,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     val params = HashMap<String, String>()
                     params["salt_key"] = SALT_KEY
                     params[WebApiConstants.ValidateUser.PHONE] = mViewModel.phoneNumber.value.toString()
-                    params[WebApiConstants.ValidateUser.COUNTRY_CODE] = mViewModel.countryCode.toString()
+                    params[WebApiConstants.ValidateUser.COUNTRY_CODE] = mViewModel.countryCode.value.toString()
                     println("phone ${mViewModel.phoneNumber.value}")
                     mViewModel.validateUser(params)
                 }
@@ -369,7 +369,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         } else if (TextUtils.isEmpty(mViewModel.phoneNumber.value)) {
             message = resources.getString(R.string.empty_phone)
             return false
-        } else if (TextUtils.isEmpty(mViewModel.email.value)) {
+        }  else if (TextUtils.isEmpty(mViewModel.email.value)) {
             message = resources.getString(R.string.email_empty)
             return false
         } else if (TextUtils.isEmpty(mViewModel.password.value) && mViewModel.socialID.value.isNullOrEmpty()) {

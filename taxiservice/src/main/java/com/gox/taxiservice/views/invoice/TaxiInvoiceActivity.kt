@@ -6,6 +6,8 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProviders
 import com.gox.base.base.BaseActivity
@@ -147,22 +149,118 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 tv_confirm_payment.text = resources.getString(R.string.taxi_confirm_payment)
             else tv_confirm_payment.text = resources.getString(R.string.taxi_confirm_done)
 
+            if(requestModel!!.request.calculator.equals("MIN")){
+                mBinding!!.tvInvoiceLabelTime.text=requestModel!!.request.payment?.time_fare_text
+                mBinding!!.tvInvoiceTime.text = requestModel!!.request.currency.toString() + " "+ requestModel!!.request.payment.minute.toString()
+                mBinding!!.tvLabelDistanceFare.visibility = View.GONE
+                mBinding!!.tvDistanceFare.visibility = View.GONE
+                mBinding!!.llLabelDistanceFare.visibility = View.GONE
+                if(requestModel!!.request.payment.minute == 0.0)
+                    mBinding!!.llInvoiceLabelTime.visibility = View.GONE
+                else
+                    mBinding!!.llInvoiceLabelTime.visibility = View.VISIBLE
+            }else if(requestModel!!.request.calculator.equals("HOUR")){
+                mBinding!!.tvLabelDistanceFare.visibility = View.GONE
+                mBinding!!.tvDistanceFare.visibility = View.GONE
+                mBinding!!.llLabelDistanceFare.visibility = View.GONE
+                mBinding!!.tvInvoiceLabelTime.text=requestModel!!.request.payment?.time_fare_text
+                mBinding!!.tvInvoiceTime.text = requestModel!!.request.currency.toString() + " "+ requestModel!!.request.payment.hour.toString()
+                if(requestModel!!.request.payment.hour == 0.0)
+                    mBinding!!.llInvoiceLabelTime.visibility = View.GONE
+                else
+                    mBinding!!.llInvoiceLabelTime.visibility = View.VISIBLE
+            }else if(requestModel!!.request.calculator.equals("DISTANCE")){
+                mBinding!!.tvLabelDistanceFare.text= requestModel!!.request.payment?.distance_fare_text
+                mBinding!!.tvDistanceFare.text = requestModel!!.request.currency.toString() + " " + requestModel!!.request.payment?.distance.toString()
+                mBinding!!.tvInvoiceLabelTime.visibility = View.GONE
+                mBinding!!.tvInvoiceTime.visibility = View.GONE
+                mBinding!!.llInvoiceLabelTime.visibility = View.GONE
+            }else if(requestModel!!.request.calculator.equals("DISTANCEMIN")){
+                mBinding!!.tvInvoiceLabelTime.text=requestModel!!.request.payment?.time_fare_text
+                mBinding!!.tvLabelDistanceFare.text= requestModel!!.request.payment?.distance_fare_text
+                mBinding!!.tvInvoiceTime.text = requestModel!!.request.currency.toString() + " "+ requestModel!!.request.payment.minute.toString()
+                mBinding!!.tvDistanceFare.text = requestModel!!.request.currency.toString() + " " + requestModel!!.request.payment?.distance.toString()
+                if(requestModel!!.request.payment?.minute == 0.0)
+                    mBinding!!.llInvoiceLabelTime.visibility = View.GONE
+                else
+                    mBinding!!.llInvoiceLabelTime.visibility = View.VISIBLE
+            }else if(requestModel!!.request.calculator.equals("DISTANCEHOUR")){
+                mBinding!!.tvInvoiceLabelTime.text=requestModel!!.request.payment?.time_fare_text
+                mBinding!!.tvLabelDistanceFare.text= requestModel!!.request.payment?.distance_fare_text
+                mBinding!!.tvInvoiceTime.text = requestModel!!.request.currency.toString() + " "+ requestModel!!.request.payment.hour.toString()
+                mBinding!!.tvDistanceFare.text = requestModel!!.request.currency.toString() + " " + requestModel!!.request.payment?.distance.toString()
+                if(requestModel!!.request.payment?.hour == 0.0)
+                    mBinding!!.llInvoiceLabelTime.visibility = View.GONE
+                else
+                    mBinding!!.llInvoiceLabelTime.visibility = View.VISIBLE
+            }
+
+            if(requestModel!!.request.payment?.distance == 0.0)
+                mBinding!!.llLabelDistanceFare.visibility = View.GONE
+            else
+                mBinding!!.llLabelDistanceFare.visibility = View.VISIBLE
+
+            mBinding!!.tvInvoiceLabelWaitingCharge.text = requestModel!!.request.payment?.waiting_fare_text
+            mBinding!!.discountTxt.text = requestModel!!.request.payment?.discount_fare_text
             mViewModel.pickuplocation.value = requestModel!!.request.s_address
             mViewModel.dropLocation.value = requestModel!!.request.d_address
             mViewModel.bookingId.value = requestModel!!.request.booking_id
-            mViewModel.distance.value = requestModel!!.request.distance.toString() + requestModel!!.request.unit
-            mViewModel.timeTaken.value = requestModel!!.request.travel_time + " mins"
+            mViewModel.distance.value = requestModel!!.request.total_distance.toString() + requestModel!!.request.unit
+//            mViewModel.timeTaken.value = requestModel!!.request.travel_time + " mins"
+            mBinding!!.tvInvoiceLableFare.text =  requestModel!!.request.payment.base_fare_text.toString()
             mViewModel.baseFare.value = requestModel!!.request.currency + requestModel!!.request.payment.fixed.toString()
-            mViewModel.waitingCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.waiting_amount.toString()
-            mViewModel.discount.set("-" + requestModel!!.request.currency + requestModel!!.request.payment.discount.toString())
+            if(requestModel!!.request.payment.waiting_amount!! >0){
+                mViewModel.waitingCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.waiting_amount.toString()
+                mBinding!!.llInvoiceLabelWaitingCharge.visibility = VISIBLE
+            }else{
+                mBinding!!.llInvoiceLabelWaitingCharge.visibility = GONE
+            }
+            if(requestModel!!.request.payment.peak_amount!! >0){
+                mViewModel.peakCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.peak_amount.toString()
+                mBinding!!.llInvoiceLabelPeakCharge.visibility = VISIBLE
+            }else{
+                mBinding!!.llInvoiceLabelPeakCharge.visibility = GONE
+            }
+            if(requestModel!!.request.payment.discount!! >0){
+                mViewModel.discount.set("-" + requestModel!!.request.currency + requestModel!!.request.payment.discount.toString())
+                mBinding!!.llDiscount.visibility = VISIBLE
+            }else{
+                mBinding!!.llDiscount.visibility = GONE
+            }
             mViewModel.payableAmount.set(requestModel!!.request.currency + requestModel!!.request.payment.payable.toString())
-            mViewModel.distanceFare.value = requestModel!!.request.currency + requestModel!!.request.payment.distance.toString()
-            mViewModel.tax.value = requestModel!!.request.currency + requestModel!!.request.payment.tax.toString()
-            mViewModel.tips.value = requestModel!!.request.currency + requestModel!!.request.payment.tips.toString()
-            mViewModel.total.value = requestModel!!.request.currency + requestModel!!.request.payment.total.toString()
-            if (requestModel!!.request.payment.toll_charge!! > 0)
+//            mViewModel.distanceFare.value = requestModel!!.request.currency + requestModel!!.request.payment.distance.toString()
+            if(requestModel!!.request.payment.tax!! >0){
+                mViewModel.tax.value = requestModel!!.request.currency + requestModel!!.request.payment.tax.toString()
+                mBinding!!.llInvoiceLabelTax.visibility = VISIBLE
+            }else{
+                mBinding!!.llInvoiceLabelTax.visibility = GONE
+            }
+            if(requestModel!!.request.payment.tips!! >0){
+                mViewModel.tips.value = requestModel!!.request.currency + requestModel!!.request.payment.tips.toString()
+                mBinding!!.llInvoiceLabelTips.visibility = VISIBLE
+            }else{
+                mBinding!!.llInvoiceLabelTips.visibility = GONE
+            }
+            if(requestModel!!.request.payment.sub_total!! >0){
+                mViewModel.subtotal.value = requestModel!!.request.currency + requestModel!!.request.payment.sub_total.toString()
+                mBinding!!.llInvoiceLabelTotal.visibility = VISIBLE
+            }else{
+                mBinding!!.llInvoiceLabelTotal.visibility = GONE
+            }
+            if(requestModel!!.request.payment.total_fare!! >0){
+                mViewModel.totalfare.value = requestModel!!.request.currency + requestModel!!.request.payment.total_fare.toString()
+                mBinding!!.llInvoiceLabelTotalFare.visibility = VISIBLE
+            }else{
+                mBinding!!.llInvoiceLabelTotalFare.visibility = GONE
+            }
+
+            if (requestModel!!.request.payment.toll_charge!! > 0) {
                 mViewModel.tollCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.toll_charge.toString()
-            else mViewModel.tollCharge.value = requestModel!!.request.currency + "0"
+                mBinding!!.llToll.visibility = VISIBLE
+            }else{ mViewModel.tollCharge.value = requestModel!!.request.currency + "0"
+                mBinding!!.llToll.visibility = GONE
+            }
+
         }
 
         if (mViewModel.pickuplocation.value != null && mViewModel.pickuplocation.value!!.length > 2)

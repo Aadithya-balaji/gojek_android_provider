@@ -19,6 +19,7 @@ object Constants {
     const val PROVIDER_ORDER_VEHICLE = "provider_order_vehicle"
     const val DOCUMENT_NAME = "document_name"
     const val DOCUMENT_TYPE = "document_type"
+    const val DELIVERY_VEHICLES = "delivery_vehicles"
 
     const val APP_REQUEST_CODE = 99
     const val COUNTRY_LIST_REQUEST_CODE = 100
@@ -85,6 +86,7 @@ object Constants {
         var COMMON_ROOM_NAME: String = "joinCommonRoom"
         var STATUS: String = "socketStatus"
         var NEW_REQ: String = "newRequest"
+        var DELIVERY_REQ: String = "deliveryRequest"
         var RIDE_REQ: String = "rideRequest"
         var SERVICE_REQ: String = "serveRequest"
         var ORDER_REQ: String = "orderRequest"
@@ -95,6 +97,8 @@ object Constants {
         var UPDATELOCATION: String = "updateLocation"
         var JOIN_ROOM_NAME: String = "joinPrivateChatRoom"
         var ON_MESSAGE_RECEIVE: String = "new_message"
+        var DELIVERY_ROOM_NAME: String = "joinPrivateRoom"
+
     }
 
     object RoomId {
@@ -119,12 +123,17 @@ object Constants {
         fun getOrderRoom(reqID:Int):String{
             return "room_${RoomConstants.COMPANY_ID}_R${reqID}_ORDER"
         }
+
+        fun getDeliveryRoom(reqID:Int):String{
+            return "room_${RoomConstants.COMPANY_ID}_R${reqID}_DELIVERY"
+        }
     }
 
     object ModuleTypes {
         const val TRANSPORT = "TRANSPORT"
         const val SERVICE = "SERVICE"
         const val ORDER = "ORDER"
+        const val DELIVERY = "DELIVERY"
     }
 
     object ProviderStatus {
@@ -143,6 +152,7 @@ object Constants {
         const val TRANSPORT_BROADCAST = "TRANSPORT_BROADCAST"
         const val SERVICE_BROADCAST = "SERVICE_BROADCAST"
         const val ORDER_BROADCAST = "ORDER_BROADCAST"
+        const val DELIVERY_BROADCAST = "DELIVERY_BROADCAST"
         const val BASE_BROADCAST = "BASE_BROADCAST"
     }
 

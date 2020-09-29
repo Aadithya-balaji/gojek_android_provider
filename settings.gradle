@@ -1,1 +1,2 @@
+include ':courierservice'
 include ':app', ':base', ':taxiservice', ':foodservice', ':xuberservice', ':countrycodepicker', ':cropperlibrary', ':monitorinternet'

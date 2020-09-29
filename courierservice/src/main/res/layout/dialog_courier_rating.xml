@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="ratingmodel"
+            type="com.bee.courierservice.rating.CourierRatingViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shadow"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/avenirltstd_medium"
+            android:text="@string/xuper_rating"
+            android:textColor="@color/xuber_black"
+            android:textSize="@dimen/_14sdp" />
+
+        <ImageView
+            android:id="@+id/ivXuperRatingUser"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:src="@drawable/ic_user_place_holder"
+            android:contentDescription="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tvRateWithUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_8sdp"
+            style="@style/SmallText.Black"
+            android:text="@string/xuper_rate"
+            android:textColor="@color/xuper_light_black"
+            android:textSize="@dimen/_11sdp" />
+
+
+        <androidx.appcompat.widget.AppCompatRatingBar
+            android:id="@+id/rbUser"
+            style="@android:style/Widget.Material.Light.RatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:numStars="5"
+            android:rating="1"
+            android:scaleX="0.7"
+            android:scaleY="0.8"
+            android:stepSize="1"
+            android:theme="@style/xuberRatingBar" />
+        <!-- <TextView
+             android:id="@+id/tvXuperRating"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textColor="@color/xuber_grey"
+             android:textSize="@dimen/_10sdp"
+             android:fontFamily="@font/avenirltstd_medium"/>
+         <ImageView
+             android:id="@+id/ivXuperRate"
+             android:layout_width="@dimen/_10sdp"
+             android:layout_height="@dimen/_10sdp"
+             android:tint="@color/chip_yellow_inner_color"
+             android:src="@drawable/star"/>-->
+        <EditText
+            android:id="@+id/edtCommands"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@drawable/bg_write_commands"
+            android:gravity="start"
+            android:hint="@string/write_your_review"
+            android:maxHeight="@dimen/_100sdp"
+            android:minHeight="@dimen/_80sdp"
+            android:padding="@dimen/_8sdp"
+            style="@style/SmallText"
+            android:text="@={ratingmodel.comment}"
+            android:textSize="@dimen/_12sdp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@color/xuber_grey" />
+
+
+        <TextView
+            android:id="@+id/tvXuperSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            style="@style/BoldText"
+            android:onClick="@{() -> ratingmodel.callRateApi()}"
+            android:text="@string/submit"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_14sdp" />
+    </LinearLayout>
+
+</layout>

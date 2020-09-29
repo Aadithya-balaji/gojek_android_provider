@@ -110,11 +110,9 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         }
 
         mViewModel.mProfileResponse.observe(this, Observer { response ->
-
             countryDetail = Country.getAllCountries().filter { countryModel ->
                 countryModel.code == response.profileData.country.country_code
             }
-
             mViewModel.mUserName.set(response.profileData.first_name)
             mViewModel.mMobileNumber.set(response.profileData.mobile)
             mViewModel.mEmail.set(response.profileData.email)

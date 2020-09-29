@@ -33,6 +33,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     private var isBankDetailNeed: Int? = 0
     private  var isProfieNeed:Int?=0
     private var dialogType: String? = ""
+    private var isProfileNeeded: Int? = 0
     private var shown: Boolean? = false
 
     override fun getLayout() = R.layout.pending_list_dialog

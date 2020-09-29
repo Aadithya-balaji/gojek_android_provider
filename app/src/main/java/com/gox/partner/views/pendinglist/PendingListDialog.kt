@@ -20,6 +20,7 @@ import com.gox.partner.views.manage_bank_details.ManageBankDetailsActivity
 import com.gox.partner.views.manage_documents.ManageDocumentsActivity
 import com.gox.partner.views.manage_payment.ManagePaymentActivity
 import com.gox.partner.views.manage_services.ManageServicesActivity
+import com.gox.partner.views.profile.ProfileActivity
 
 class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), PendingListNavigator {
 
@@ -30,6 +31,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     private var isDocumentNeed: Int? = 0
     private var isServiceNeed: Int? = 0
     private var isBankDetailNeed: Int? = 0
+    private  var isProfieNeed:Int?=0
     private var dialogType: String? = ""
     private var shown: Boolean? = false
 
@@ -56,6 +58,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
             isServiceNeed = it.isService
             isDocumentNeed = it.isDocument
             isBankDetailNeed = it.isBankDetail
+            isProfieNeed = it.isProfile
             updateView()
         }
 
@@ -87,6 +90,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
 
         mBinding.tvAddService.visibility = (if (isServiceNeed == 0) View.VISIBLE else View.GONE)
         mBinding.tvAddDocument.visibility = (if (isDocumentNeed == 0) View.VISIBLE else View.GONE)
+        mBinding.tvAddProfile.visibility = (if (isProfieNeed == 0) View.VISIBLE else View.GONE)
         mBinding.tvBankDetails.visibility = (if (isBankDetailNeed == 0) View.VISIBLE else View.GONE)
     }
 
@@ -101,6 +105,8 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
             R.id.tv_add_service -> startActivity(Intent(dashBoardActivity, ManageServicesActivity::class.java))
 
             R.id.btn_call_admin -> startActivity(Intent(dashBoardActivity, ManagePaymentActivity::class.java))
+
+            R.id.tvAddProfile -> startActivity(Intent(dashBoardActivity, ProfileActivity::class.java))
         }
     }
 

@@ -58,6 +58,24 @@
                 android:textSize="@dimen/_12sdp"
                 tools:targetApi="m" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAddProfile"
+                style="@style/SmallText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_11sdp"
+                android:background="@drawable/bg_transaprent_rounded_corner_rect"
+                android:drawableEnd="@drawable/ic_right_arrow"
+                android:drawableTint="@color/colorGray"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:onClick="@{(v) -> pendinglistModel.selectedPendingList(v)}"
+                android:padding="@dimen/_10sdp"
+                android:text="@string/update_profile"
+                android:textColor="@color/colorGray"
+                android:textSize="@dimen/_12sdp"
+                tools:targetApi="m" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_add_document"

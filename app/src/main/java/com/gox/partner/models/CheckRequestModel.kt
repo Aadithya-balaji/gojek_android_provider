@@ -57,6 +57,7 @@ data class ProviderDetails(
         var is_document: Int? = 0,
         var is_online: Int? = 0,
         var is_service: Int? = 0,
+        var is_profile: Int? = 0,
         var language: String = "",
         var last_name: String = "",
         var latitude: String = "",

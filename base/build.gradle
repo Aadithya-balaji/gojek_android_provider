@@ -24,9 +24,9 @@ android {
         buildConfigField "boolean", "isSocketLocationUpdate", "false"
         buildConfigField("String", "SALT_KEY", '"MQ=="')
         //Live URL
-        // buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
+         buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
         //Staging
-        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
+//        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
     }
 
     buildTypes {
@@ -166,6 +166,8 @@ dependencies {
 
     //      Multidex
     api 'com.android.support:multidex:1.0.3'
+
+    api 'com.github.vihtarb:tooltip:0.1.9'
 
     //      Floating Action Bar Button
     api 'com.github.clans:fab:1.6.4'

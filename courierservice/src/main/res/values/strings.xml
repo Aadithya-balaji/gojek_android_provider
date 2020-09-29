@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources tools:ignore="MissingTranslation"
+    xmlns:tools="http://schemas.android.com/tools">
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="location_permission_rationale">    Location Permission is needed to get current location</string>
+    <string name="chat">Chat</string>
+    <string name="dummy_customer_name">Christain Joseph</string>
+    <string name="call">Call</string>
+    <string name="cancel">Cancel</string>
+    <string name="arrived">Arrived</string>
+    <string name="call_action">call action</string>
+    <string name="chat_action">chat action</string>
+    <string name="start_service">Start service</string>
+    <string name="enter_otp_here">Enter OTP here</string>
+    <string name="end_service">End service</string>
+    <string name="confrim_payment">Confirm Payment</string>
+    <string name="xuber_done">Done</string>
+    <string name="invoice">INVOICE</string>
+    <string name="amount_to_be_paid">Amount to be paid</string>
+    <string name="dummy_price">$35</string>
+    <string name="cash_mode">Cash</string>
+    <string name="submit">Submit</string>
+    <string name="dummy_rate_your_service_with_christain_joseph">Rate your service with Christain Joseph</string>
+    <string name="write_your_review">write your reviews</string>
+
+
+    <!-- Servie status -->
+    <string name="label_service">Service</string>
+    <string name="label_start">Start</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_compeleted">Completed</string>
+    <string name="label_instruction">Instruction</string>
+    <string name="label_arrived">Arrived</string>
+    <string name="after_service">After Service</string>
+    <string name="before_service">Before Service</string>
+    <string name="hit_otp">Please Enter Otp</string>
+    <string name="empty_otp">Please Enter the Otp</string>
+    <string name="request_canceled">Request Canceled Successfully</string>
+
+
+    <!--  Upload Image -->
+    <string name="upload_image">Upload the Image</string>
+    <string name="empty_image">Please add Image</string>
+    <string name="empty_front_image">Please add an Image Before Start your work</string>
+    <string name="empty_back_image">Please add an Image of completed work item</string>
+
+
+    <!-- Invoice -->
+    <string name="xuper_label_time">Time Taken</string>
+    <string name="xuper_label_additional_charge">Additional Charge</string>
+    <string name="xuper_amount_to_be_paid">Amount to be paid</string>
+    <string name="xuper_confirm_payment">Confirm Payment</string>
+    <string name="xuper_invoice">Invoice</string>
+
+    <!-- Additional Charges -->
+    <string name="xuper_additional_charge">Additional Charges</string>
+    <string name="xuper_label_description">Description</string>
+    <string name="xuper_label_amount">Amount</string>
+
+    <!-- Rating -->
+    <string name="xuper_rating">Rating</string>
+    <string name="xuper_rate">Rate your service with %s</string>
+    <string name="xuper_comments">Write Comments</string>
+    <string name="xuper_service_location">Service Location</string>
+    <string name="xuper_rating_user">%.2f</string>
+
+    <!-- Info window -->
+    <string name="xuper_image">Image</string>
+    <string name="xuper_instruction">Instruction</string>
+    <string name="prg_loading">Loading …</string>
+    <string name="invalid_otp">Invalid OTP</string>
+    <string name="start_timer">00:00:00</string>
+    <string name="dummy_xuberservice_text">Car Wash - HatchBack</string>
+    <string name="reason">Reason</string>
+    <string name="instruction">Instruction</string>
+    <string name="crop_failed">Cropping failed</string>
+
+    <string name="additional_charge_desc">Do you have any Additional charge</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_instruction_found">No instruction found</string>
+    <string name="waiting_for_payment_confirmation">Waiting for payment confirmation</string>
+    <string name="rated_success">Rated Successfully</string>
+
+
+    <string name="taxi_invoice">Invoice</string>
+    <string name="taxi_source_destination">Source and Destination</string>
+    <string name="taxi_invoice_total">Total</string>
+    <string name="taxi_confirm_payment">Confirm Payment</string>
+    <string name="taxi_reached_and_delivered">Reached &amp; Delivered </string>
+    <string name="taxi_confirm_done">Done</string>
+    <string name="taxi_invoice_booking_id">Booking ID</string>
+    <string name="taxi_distance_travelled">Distance Travelled</string>
+    <string name="taxi_invoice_time_taken">Time Taken</string>
+    <string name="taxi_invoice_base_fare">Base Fare</string>
+    <string name="taxi_invoice_distance_fare">Distance Fare</string>
+    <string name="taxi_invoice_tax">Tax</string>
+    <string name="taxi_invoice_Tips">Tips</string>
+    <string name="taxi_invoice_toll">Toll</string>
+    <string name="taxi_invoie_add">ADD</string>
+    <string name="reached_the_delivery_location">Reached the Delivery location</string>
+    <string name="courier_delivered">Delivered</string>
+    <string name="courier_arrived">Arrived</string>
+    <string name="courier_pickup">Pickup</string>
+    <string name="courier_delivery">Delivery</string>
+
+</resources>

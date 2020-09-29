@@ -11,6 +11,7 @@ import android.os.Handler
 import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ObservableField
 import androidx.databinding.ViewDataBinding
@@ -52,6 +53,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import com.tooltip.Tooltip
 import java.io.Serializable
 
 class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavigator {
@@ -84,6 +86,12 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 //            if(it.respo)
 //            writePreferences(PreferencesKey.PICTURE,response.profileData.picture)
         })
+
+        profile_wait.setOnClickListener {
+            val tooltip: Tooltip = Tooltip.Builder(it)
+                    .setText("Waiting for approval")
+                    .show()
+        }
 
         mViewModel.countryListResponse.observe(this, Observer<CountryListResponse> {
             Log.d("_D", "country_code :" + it.responseData[0].country_code)
@@ -131,14 +139,17 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             val d = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, width, height, true))
             countrycode_register_et.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null)
 
-            if (!response.profileData.picture.isNullOrEmpty()) {
-                glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture, R.drawable.ic_user_place_holder)
-                writePreferences(PreferencesKey.PICTURE,response.profileData.picture)
-            } else if(!response.profileData.picture_draft.isNullOrEmpty()) {
+            if(!response.profileData.picture_draft.isNullOrEmpty()) {
                 glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture_draft, R.drawable.ic_user_place_holder)
                 writePreferences(PreferencesKey.PICTURE,response.profileData.picture_draft)
+                profile_app.setVisibility(View.GONE)
+                profile_wait.setVisibility(View.VISIBLE)
+            }else if (!response.profileData.picture.isNullOrEmpty()) {
+                glideSetImageView(mViewDataBinding.profileImage, response.profileData.picture, R.drawable.ic_user_place_holder)
+                writePreferences(PreferencesKey.PICTURE,response.profileData.picture)
+                profile_app.setVisibility(View.VISIBLE)
+                profile_wait.setVisibility(View.GONE)
             }
-
         })
 
 
@@ -189,15 +200,15 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     }
 
     private fun verifyMobileNumber() {
-       /* val phoneNumber = PhoneNumber(mViewModel.mProfileResponse.value!!.profileData.country_code,
-                mViewModel.mMobileNumber.get().toString(), "")
-        val intent = Intent(this, AccountKitActivity::class.java)
-        val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
-                LoginType.PHONE, AccountKitActivity.ResponseType.CODE)
-        configurationBuilder.setInitialPhoneNumber(phoneNumber)
-        intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
-                configurationBuilder.build())
-        startActivityForResult(intent, APP_REQUEST_CODE)*/
+        /* val phoneNumber = PhoneNumber(mViewModel.mProfileResponse.value!!.profileData.country_code,
+                 mViewModel.mMobileNumber.get().toString(), "")
+         val intent = Intent(this, AccountKitActivity::class.java)
+         val configurationBuilder = AccountKitConfiguration.AccountKitConfigurationBuilder(
+                 LoginType.PHONE, AccountKitActivity.ResponseType.CODE)
+         configurationBuilder.setInitialPhoneNumber(phoneNumber)
+         intent.putExtra(AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
+                 configurationBuilder.build())
+         startActivityForResult(intent, APP_REQUEST_CODE)*/
         mViewModel.showLoading.value = true
         mViewModel.sendOTP()
     }
@@ -264,14 +275,14 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     }
 
     private fun accountKitOtpVerified(data: Intent?) {
-       /* val loginResult: AccountKitLoginResult = data!!.getParcelableExtra(AccountKitLoginResult.RESULT_KEY)
-        if (loginResult.error != null) {
-            Log.d("_D_fbaccountkit", loginResult.error.toString())
-        } else if (loginResult.wasCancelled()) {
-            Log.d("_D_fbaccountkit", "Fb login cancelled")
-        } else {
+        /* val loginResult: AccountKitLoginResult = data!!.getParcelableExtra(AccountKitLoginResult.RESULT_KEY)
+         if (loginResult.error != null) {
+             Log.d("_D_fbaccountkit", loginResult.error.toString())
+         } else if (loginResult.wasCancelled()) {
+             Log.d("_D_fbaccountkit", "Fb login cancelled")
+         } else {
 
-        }*/
+         }*/
 
         mMobileNumberFlag = 1
         if (localPath?.path != null) {

@@ -26,6 +26,7 @@ object PreferencesKey {
     const val CURRENCY_SYMBOL = "CURRENCY_SYMBOL"
     const val STRIPE_KEY = "stripe_key"
     const val DEVICE_TOKEN = "device_token"
+    const val DELIVERY_REQ_ID = "delivery_req_id"
 
     const val BASE_URL = "base_url"
     const val TRANSPORT_URL = "taxi_url"

@@ -377,6 +377,7 @@
     <string name="please_complete_below_steps">Please Complete below steps</string>
     <string name="add_services">Add Services</string>
     <string name="add_document">Add Document</string>
+    <string name="update_profile">Add Profile Image</string>
     <string name="add_bank_detail">Add Bank Detail</string>
     <string name="add_bank_details_added">Bank Details Updated Successfully</string>
     <string name="select_language">Select Language</string>

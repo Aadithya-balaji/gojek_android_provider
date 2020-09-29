@@ -31,6 +31,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
     private var isServiceNeed: Int? = 0
     private var isBankDetailNeed: Int? = 0
     private var dialogType: String? = ""
+    private var isProfileNeeded: Int? = 0
     private var shown: Boolean? = false
 
     override fun getLayout() = R.layout.pending_list_dialog
@@ -56,6 +57,7 @@ class PendingListDialog : BaseDialogFragment<PendingListDialogBinding>(), Pendin
             isServiceNeed = it.isService
             isDocumentNeed = it.isDocument
             isBankDetailNeed = it.isBankDetail
+            isProfileNeeded = it.isProfileUpdated
             updateView()
         }
 

@@ -135,14 +135,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private var checkStatusApiCounter = 0
     private var roomConnected: Boolean = false
     private var reqID: Int = 0
-
     private var doubleBackToExit: Boolean = false
     private var distanceApiCallCount = 0
-
     private var iteratePointsForDistanceCalc = ArrayList<LatLng>()
     private var tempPointForDistanceCal: LatLng? = null
     private var iteratePointsForDistanceCal = 500.0
-    private var iteratePointsForApi = 50.0
+    private var minimumDistance = 50.0
     private var points = ArrayList<LocationPointsEntity>()
     private var tempPoints = ArrayList<LatLng>()
     private var tempPoint: LatLng? = null
@@ -625,7 +623,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 tempPoints.clear()
                 mViewModel.iteratePointsForApi.clear()
                 iteratePointsForDistanceCalc.clear()
-
                 points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints()
                         as ArrayList<LocationPointsEntity>
 
@@ -793,13 +790,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             mGoogleMap!!.clear()
             mPolyline = mGoogleMap!!.addPolyline(output.width(5f).color
             (ContextCompat.getColor(baseContext, R.color.colorBlack)))
-
             polyLine = output.points as ArrayList<LatLng>
-
             val builder = LatLngBounds.Builder()
-
             for (latLng in polyLine) builder.include(latLng)
-
             mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
             srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
             (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
@@ -826,11 +819,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         distanceProcessing.id = distanceApiCallCount
         distanceProcessing.apiResponseStatus = statusCode + "directionApiFailed"
         distanceProcessing.distance = 0.0
-
         val values: ArrayList<DistanceApiProcessing> = arrayListOf()
         values.add(distanceProcessing)
         mViewModel.distanceApiProcessing.postValue(values)
-
         println("RRR whenDirectionFail = $statusCode")
         when (statusCode) {
             "NOT_FOUND" -> showLog(getString(R.string.NoRoadMapAvailable))
@@ -1004,18 +995,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun locationProcessing(latLng: ArrayList<LatLng>) {
         println("GGGG :: locationProcessing = " + latLng.size)
         mViewModel.iteratePointsForApi.add(latLng[0])
-        for (i in latLng.indices) if (i < latLng.size - 1)
-            iteratePointsApi(latLng[i], latLng[i + 1])
-
+        for (i in latLng.indices)
+            if (i < latLng.size - 1)
+        iteratePointsApi(latLng[i], latLng[i + 1])
         mViewModel.iteratePointsForApi.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(mViewModel.iteratePointsForApi), "BBB")
         println("GGGG :: locationProcessing::iteratePointsApi = " + mViewModel.iteratePointsForApi.size)
-
         iteratePointsForDistanceCalc.add(latLng[0])
         for (i in mViewModel.iteratePointsForApi.indices) if (i < mViewModel.iteratePointsForApi.size - 1)
             iteratePointsForDistanceCal(mViewModel.iteratePointsForApi[i], mViewModel.iteratePointsForApi[i + 1])
-
-        iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
+            iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
         println("GGGG :: locationProcessing::iteratePointsForDistanceCalc = " + iteratePointsForDistanceCalc.size)
 
@@ -1031,12 +1020,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     private fun iteratePointsApi(s: LatLng, e: LatLng) {
         var dist = distBt(s, e)
-        if (dist >= iteratePointsForApi) {
+        if (dist >= minimumDistance) {
             mViewModel.iteratePointsForApi.add(e)
             tempPoint = null
         } else if (tempPoint != null) {
             dist = distBt(tempPoint!!, e)
-            if (dist >= iteratePointsForApi) {
+            if (dist >= minimumDistance) {
                 mViewModel.iteratePointsForApi.add(e)
                 tempPoint = null
             }
@@ -1061,7 +1050,6 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         val startPoint = Location("start")
         startPoint.latitude = a.latitude
         startPoint.longitude = a.longitude
-
         val endPoint = Location("end")
         endPoint.latitude = b.latitude
         endPoint.longitude = b.longitude

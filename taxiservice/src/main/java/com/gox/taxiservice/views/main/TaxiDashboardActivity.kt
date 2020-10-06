@@ -522,6 +522,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun whenStatusArrived(responseData: ResponseData) {
         writePreferences(CAN_SEND_LOCATION, true)
         writePreferences(CAN_SAVE_LOCATION, false)
+        setWaitingTime()
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
         btn_cancel.visibility = View.VISIBLE
         btn_arrived.visibility = View.GONE
@@ -910,9 +911,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 changeWaitingTimeBackground(true)
                 isWaitingTime = true
                 val temp: Long = 0
-
+                lastWaitingTime = mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingTime
                 if (lastWaitingTime != temp)
-                    cmWaiting.base = (cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
+//                    cmWaiting.base = (cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
+                    cmWaiting.base =SystemClock.elapsedRealtime() - (lastWaitingTime?.times(1000)!!)
                 else
                     cmWaiting.base = SystemClock.elapsedRealtime()
 

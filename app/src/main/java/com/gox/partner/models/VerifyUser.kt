@@ -14,9 +14,6 @@ class VerifyUser {
     @SerializedName("message")
     @Expose
     var message: String? = null
-    @SerializedName("responseData")
-    @Expose
-    var responseData: List<Any>? = null
     @SerializedName("error")
     @Expose
     var error: List<Any>? = null

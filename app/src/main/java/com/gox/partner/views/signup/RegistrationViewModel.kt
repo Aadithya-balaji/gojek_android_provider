@@ -21,7 +21,6 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
     : BaseViewModel<RegistrationViewModel.RegistrationNavigator>() {
 
     private val mRepository = AppRepository.instance()
-
     var firstName = MutableLiveData<String>()
     var lastName = MutableLiveData<String>()
     var countryCode = MutableLiveData<String>()

@@ -100,7 +100,6 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="${crashlyticsEnabled}" />
 
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -249,11 +248,9 @@
         <service
             android:name="com.gox.base.location_service.BaseLocationService"
             android:exported="false" />
-
         <service
             android:name=".utils.floatingview.FloatingViewService"
             android:exported="false" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -263,7 +260,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-
         <service
             android:name="com.gox.partner.fcm.FcmService"
             android:exported="false">

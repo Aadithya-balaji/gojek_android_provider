@@ -41,12 +41,12 @@ class FcmService : FirebaseMessagingService() {
         val notificationData = Gson().fromJson(remoteMessage.data!!["custom"], NotificationDataModel::class.java)
         println("RRR push notificationData = $notificationData")
 
-        if (notificationData.message!!.topic!!.contains("incoming_request"))
+        if (notificationData.message!!.topic!!.contains("New Incoming"))
             sendProlongedNotification(notificationData)
         else sendNotification(notificationData)
 
-        if (notificationData.message!!.topic!!.contains("incoming_request")
-                && !isBackground(applicationContext)
+        if (notificationData.message!!.notification!!.body!!.toUpperCase().contains("NEW INCOMING")
+                && isBackground(applicationContext)
                 && !isLocked(applicationContext)
                 && !isCallActive(applicationContext) && !PreferencesHelper
                         .get(PreferencesKey.ACCESS_TOKEN, "")
@@ -54,12 +54,10 @@ class FcmService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(notificationData: NotificationDataModel) {
-
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT)
-
         val channelId = getString(R.string.app_name)
         val defaultSoundUri = if(notificationData.message!!.notification!!.body!! == "New Incoming Ride"
                 || notificationData.message!!.notification!!.body!! == "New Incoming Service Request")
@@ -68,7 +66,7 @@ class FcmService : FirebaseMessagingService() {
             RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.ic_push)
+                .setSmallIcon(R.drawable.push)
                 .setColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
                 .setContentTitle(notificationData.message!!.notification!!.title)
                 .setContentText(notificationData.message!!.notification!!.body)

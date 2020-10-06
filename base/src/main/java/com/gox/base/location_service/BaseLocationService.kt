@@ -32,36 +32,29 @@ import java.util.*
 class BaseLocationService : Service() {
 
     private val channelId = "channel_01"
-
     private val checkInterval = 10000
-
     private var r: Runnable? = null
     private var h: Handler? = null
-
     private var mNotificationManager: NotificationManager? = null
     private var mLocationRequest: LocationRequest? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
     private var mLocationCallback: LocationCallback? = null
-
     private var mLocation: Location? = null
-
     private val notification: Notification
         get() {
             val intent = Intent(this, BaseLocationService::class.java)
             intent.putExtra(NOTIFICATION, true)
-
             val builder = NotificationCompat.Builder(this, "123456")
-                    .addAction(R.drawable.ic_push, getString(R.string.app_name), null)
+                    .addAction(R.drawable.push, getString(R.string.app_name), null)
                     .setContentText(mLocation!!.toString())
                     .setContentTitle(DateFormat.getDateTimeInstance().format(Date()))
                     .setOngoing(true)
                     .setPriority(NotificationCompat.PRIORITY_MAX)
-                    .setSmallIcon(R.drawable.ic_push)
+                    .setSmallIcon(R.drawable.push)
                     .setTicker(mLocation!!.toString())
                     .setWhen(System.currentTimeMillis())
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 builder.setChannelId(channelId)
-
             return builder.build()
         }
 

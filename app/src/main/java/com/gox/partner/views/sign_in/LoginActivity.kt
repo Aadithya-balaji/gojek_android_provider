@@ -100,13 +100,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
             writePreferences(PreferencesKey.ACCESS_TOKEN, it.responseData.accessToken)
             writePreferences(PreferencesKey.IS_ONLINE, it.responseData.user.isOnline)
             if (!it.responseData.user.picture.isNullOrEmpty())
-<<<<<<< HEAD
-                writePreferences(PreferencesKey.PICTURE, it.responseData.user.picture)
-            BaseApplication.getCustomPreference!!.edit().putInt(PreferencesKey.PROVIDER_ID, it.responseData.user.id).apply()
-=======
                 writePreferences(PreferencesKey.PICTURE, it.responseData.user.picture) else
                 BaseApplication.getCustomPreference!!.edit().putInt(PreferencesKey.PROVIDER_ID, it.responseData.user.id).apply()
->>>>>>> dbee383b9db81de70573ca201e31f9d06cd543e7
             val dashBoardIntent = Intent(applicationContext, DashBoardActivity::class.java)
             dashBoardIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             openActivity(dashBoardIntent, false)

@@ -353,6 +353,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                         }
                     }
                 }
+                Activity.RESULT_CANCELED -> {
+                    isGPSEnabled=false
+                    isLocationDialogShown=false
+                }
             }
             FLOATING_OVERLAY_PERMISSION -> showFloatingView(this, false)
         }

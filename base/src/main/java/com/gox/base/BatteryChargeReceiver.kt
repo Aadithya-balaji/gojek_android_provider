@@ -32,7 +32,7 @@ class BatteryChargeReceiver : BroadcastReceiver() {
         val channelId = context.getString(R.string.app_name)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_push)
+                .setSmallIcon(R.drawable.push)
                 .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setContentTitle(context.getString(R.string.app_name))
                 .setContentText(context.getString(R.string.low_battery))

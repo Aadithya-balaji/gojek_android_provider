@@ -131,6 +131,18 @@
                 android:textSize="@dimen/_12sdp"
                 tools:text="Chennai, India" />
 
+            <TextView
+                android:id="@+id/tv_weight"
+                style="@style/SmallText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={requestmodel.weight}"
+                android:textColor="@color/light_grey"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:textSize="@dimen/_12sdp"
+                tools:text="weight"
+                android:visibility="gone"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

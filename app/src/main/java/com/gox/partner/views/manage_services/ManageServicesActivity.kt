@@ -65,6 +65,7 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
             0 -> intent = Intent(applicationContext, SetupVehicleActivity::class.java)
             1 -> intent = Intent(applicationContext, SetupVehicleActivity::class.java)
             2 -> intent = Intent(applicationContext, SetServiceActivity::class.java)
+            3 -> intent = Intent(applicationContext, SetupVehicleActivity::class.java)
         }
 
         val response = mViewModel.getServicesObservable().value!!.responseData

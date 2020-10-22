@@ -1,6 +1,7 @@
-package com.gox.app.ui.verifyotp
+package com.gox.partner.views.verifyotp
 
 import androidx.lifecycle.MutableLiveData
+import com.gox.partner.verifyotp.VerifyOTPNavigator
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseViewModel
 import com.gox.base.repository.ApiListener

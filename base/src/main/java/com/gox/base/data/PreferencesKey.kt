@@ -6,6 +6,7 @@ object PreferencesKey {
     const val ALTERNATE_MAP_KEY = "ALTERNATE_MAP_KEY"
     const val TRANSPORT_ID = "transport_id"
     const val ORDER_ID = "order_id"
+    const val DELIVERY_ID = "delivery_id"
     const val SERVICE_ID = "admin_service"
     const val PRIVACY_POLICY = "privacy_policy"
     const val HELP = "help"

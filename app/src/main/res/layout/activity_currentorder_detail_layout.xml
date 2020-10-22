@@ -8,6 +8,10 @@
         <variable
             name="currentOrderDetailModel"
             type="com.gox.partner.views.history_details.HistoryDetailViewModel" />
+        <variable
+            name="deliveryDropLocationAdpater"
+            type="com.gox.partner.views.adapters.DeliveryDropLocationAdpater" />
+
 
     </data>
 
@@ -259,6 +263,16 @@
                                     android:padding="@dimen/_1sdp"
                                     android:textSize="@dimen/_10sdp"
                                     tools:text="Test" />
+
+                                <androidx.recyclerview.widget.RecyclerView
+                                    android:id="@+id/rvDropLocation"
+                                    android:layout_width="match_parent"
+                                    android:layout_below="@+id/currentorderetail_destination_tv"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:adapter="@{deliveryDropLocationAdpater}"
+                                    android:visibility="gone"
+                                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                             </RelativeLayout>
 

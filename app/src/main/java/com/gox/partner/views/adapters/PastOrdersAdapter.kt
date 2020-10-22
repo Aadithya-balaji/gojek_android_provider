@@ -33,6 +33,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                 Constants.ModuleTypes.TRANSPORT -> transportHistory.transport.size
                 Constants.ModuleTypes.SERVICE -> transportHistory.service.size
                 Constants.ModuleTypes.ORDER -> transportHistory.order.size
+                Constants.ModuleTypes.DELIVERY -> transportHistory.delivery.size
                 else -> 0
             }
 
@@ -46,7 +47,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                         , transportHistory.transport[position].booking_id
                         , transportHistory.transport[position].rating?.provider_rating?:0.0
                         , (CommonMethods.getLocalTimeStamp(transportHistory.transport[position].assigned_at, "Req_time") + "")
-                        , (CommonMethods.getLocalTimeStamp(transportHistory.transport[position].assigned_at, "Req_Date_Month") + ""), transportHistory.transport[position].dispute_count)
+                        , (CommonMethods.getLocalTimeStamp(transportHistory.transport[position].assigned_at, "Req_Date_Month") + ""))
 
                 holder.pastOderItemlistBinding.itemClickListener = object : CustomClickListner {
                     override fun onListClickListner() {
@@ -60,13 +61,33 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                     }
                 }
             }
+            Constants.ModuleTypes.DELIVERY -> {
+                updateHistoryUi(holder, transportHistory.delivery[position].service?.vehicle_name!!
+                        , transportHistory.delivery[position].status.equals("Completed", true)
+                        , transportHistory.delivery[position].booking_id
+                        , transportHistory.delivery[position].rating?.provider_rating?:0.0
+                        , (CommonMethods.getLocalTimeStamp(transportHistory.delivery[position].assigned_at, "Req_time") + "")
+                        , (CommonMethods.getLocalTimeStamp(transportHistory.delivery[position].assigned_at, "Req_Date_Month") + ""))
+
+                holder.pastOderItemlistBinding.itemClickListener = object : CustomClickListner {
+                    override fun onListClickListner() {
+                        if (!transportHistory.delivery[position].status.equals("cancelled", true)) {
+                            val intent = Intent(activity, HistoryDetailActivity::class.java)
+                            intent.putExtra("selected_trip_id", transportHistory.delivery[position].id.toString())
+                            intent.putExtra("history_type", "past")
+                            intent.putExtra("servicetype", servicetype)
+                            activity!!.startActivity(intent)
+                        }
+                    }
+                }
+            }
             Constants.ModuleTypes.SERVICE -> {
                 updateHistoryUi(holder, transportHistory.service[position].service?.service_name.toString()!!
                         , transportHistory.service[position].status.equals("Completed", true)
                         , transportHistory.service[position].booking_id!!
                         , transportHistory.service[position].rating?.provider_rating?:0.0
                         , (CommonMethods.getLocalTimeStamp(transportHistory.service[position].assigned_at!!, "Req_time") + "")
-                        , (CommonMethods.getLocalTimeStamp(transportHistory.service[position].assigned_at!!, "Req_Date_Month") + ""), transportHistory.service[position].dispute_count!!)
+                        , (CommonMethods.getLocalTimeStamp(transportHistory.service[position].assigned_at!!, "Req_Date_Month") + ""))
 
                 holder.pastOderItemlistBinding.itemClickListener = object : CustomClickListner {
                     override fun onListClickListner() {
@@ -87,7 +108,7 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                         , transportHistory.order[position].store_order_invoice_id!!
                         , transportHistory.order[position].rating?.provider_rating?:0.0
                         , (CommonMethods.getLocalTimeStamp(transportHistory.order[position].created_at!!, "Req_time") + "")
-                        , (CommonMethods.getLocalTimeStamp(transportHistory.order[position].created_at!!, "Req_Date_Month") + ""), transportHistory.order[position].dispute_count!!)
+                        , (CommonMethods.getLocalTimeStamp(transportHistory.order[position].created_at!!, "Req_Date_Month") + ""))
 
 
                 holder.pastOderItemlistBinding.itemClickListener = object : CustomClickListner {
@@ -107,17 +128,12 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
     }
 
     private fun updateHistoryUi(holder: MyViewHolder, order: String, status: Boolean, booking_id: String, rating: Double
-                                , req_time: String, req_month: String, dispute: Int) {
+                                , req_time: String, req_month: String) {
         holder.pastOderItemlistBinding.titlePastListTv.text = booking_id
         holder.pastOderItemlistBinding.ratingPastTv.text = String.format("%.2f", rating)
         holder.pastOderItemlistBinding.datePastListTv.text = req_month
         holder.pastOderItemlistBinding.timePastListTv.text = req_time
         holder.pastOderItemlistBinding.orderedItemTv.text = order
-
-        if(dispute == 1)
-            holder.pastOderItemlistBinding.dispute.visibility = View.VISIBLE
-        else
-            holder.pastOderItemlistBinding.dispute.visibility = View.GONE
 
         if (status) {
             holder.pastOderItemlistBinding.statusPastTv.background = ContextCompat.getDrawable(activity as Context,

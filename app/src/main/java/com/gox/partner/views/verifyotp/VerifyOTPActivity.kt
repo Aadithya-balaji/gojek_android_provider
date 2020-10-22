@@ -5,8 +5,7 @@ import android.content.Intent
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.gox.app.ui.verifyotp.VerifyOTPNavigator
-import com.gox.app.ui.verifyotp.VerifyOTPViewModel
+import com.gox.partner.verifyotp.VerifyOTPNavigator
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseActivity
 import com.gox.base.utils.ViewUtils

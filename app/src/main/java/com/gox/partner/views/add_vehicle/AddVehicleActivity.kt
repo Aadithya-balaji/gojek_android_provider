@@ -15,6 +15,7 @@ import com.gox.base.utils.ImageCropperUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityAddVehicleBinding
+import com.gox.partner.models.SetupDeliveryResponseModel
 import com.gox.partner.models.SetupRideResponseModel
 import com.gox.partner.utils.Enums
 import com.theartofdev.edmodo.cropper.CropImage
@@ -31,6 +32,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     private var requestCode: Int = -1
 
     private lateinit var vehicleData: ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
+    private lateinit var vehicleDeliveryData: ArrayList<SetupDeliveryResponseModel.ResponseData.ServiceList>
+
 
     override fun getLayoutId() = R.layout.activity_add_vehicle
 
@@ -49,19 +52,25 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         mViewModel.setCategoryId(intent.getIntExtra(Constants.CATEGORY_ID, -1))
 
 
-        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
+        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE) ||  intent.hasExtra(Constants.PROVIDER_DELIVERY_VEHICLE))
             mViewModel.setIsEdit(true) else mViewModel.setIsEdit(false)
 
         if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
             mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
         else if (intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
             mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_ORDER_VEHICLE))
+        else if (intent.hasExtra(Constants.PROVIDER_DELIVERY_VEHICLE))
+            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_DELIVERY_VEHICLE))
 
 
         if (intent.hasExtra(Constants.TRANSPORT_VEHICLES)) {
             vehicleData = intent.getSerializableExtra(Constants.TRANSPORT_VEHICLES)
                     as ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
             setVehicle(vehicleData)
+        }else if (intent.hasExtra(Constants.DELIVERY_VEHICLES)) {
+            vehicleDeliveryData = intent.getSerializableExtra(Constants.DELIVERY_VEHICLES)
+                    as ArrayList<SetupDeliveryResponseModel.ResponseData.ServiceList>
+            setDeliveryVehicle(vehicleDeliveryData)
         }else{
             mViewModel.specialSeatLiveData.value = false
         }
@@ -86,9 +95,18 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         spinnerCarCategory.setOnItemSelectedListener { view, position, id, item ->
             run {
                 txt_category_selection.setText(item.toString())
-                mViewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
-                val capacity:Int? = vehicleData[position].capacity
-                mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
+                val isTransport = mViewModel.getServiceName() == mViewModel.getTransportServiceName()
+//                val isDelivery = mViewModel.getServiceName() == mViewModel.getDeliveryServiceName()
+                if(isTransport){
+                    mViewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
+                    val capacity:Int? = vehicleData[position].capacity
+                    mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
+                }else{
+                    mViewModel.getVehicleData()!!.vehicleId = vehicleDeliveryData[position].id
+                    val capacity:Int? = vehicleDeliveryData[position].capacity
+                    mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
+                }
+
             }
         }
     }
@@ -142,11 +160,39 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         }
     }
 
+    private fun setDeliveryVehicle(vehicleData: ArrayList<SetupDeliveryResponseModel.ResponseData.ServiceList>) {
+        try {
+            if (!vehicleData.isNullOrEmpty()) {
+                spinnerCarCategory.setItems(vehicleData)
+                if (mViewModel.getVehicleData()!!.vehicleId != 0) {
+                    var vehiclePosition = vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
+                    if (vehiclePosition == -1) {
+                        vehiclePosition = 0
+                        spinnerCarCategory.selectedIndex = vehiclePosition
+                    } else
+                        spinnerCarCategory.selectedIndex = vehiclePosition
+                    txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
+                    val capacity: Int? = vehicleData[vehiclePosition].capacity
+                    mViewModel.specialSeatLiveData.value = capacity != null && capacity > 3
+                } else {
+                    spinnerCarCategory.selectedIndex = 0
+                    txt_category_selection.setText(vehicleData[0].vehicleName)
+                    mViewModel.getVehicleData()!!.vehicleId = vehicleData[0].id
+                    mViewModel.specialSeatLiveData.value = false
+                }
+            }
+        } catch (ce: Exception){
+            ce.printStackTrace()
+        }
+
+    }
+
     private fun performValidation() {
         ViewUtils.hideSoftInputWindow(this)
         val data = mViewModel.getVehicleData()
         val isTransport = mViewModel.getServiceName() == mViewModel.getTransportServiceName()
-        if (!isTransport) {
+        val isDelivery = mViewModel.getServiceName() == mViewModel.getDeliveryServiceName()
+        if (!isTransport || !isDelivery) {
             when {
                 data?.vehicleMake.isNullOrEmpty() ->
                     ViewUtils.showToast(this,

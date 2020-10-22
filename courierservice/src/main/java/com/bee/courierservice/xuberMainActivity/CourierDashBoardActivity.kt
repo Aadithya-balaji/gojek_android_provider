@@ -138,6 +138,7 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
     private var currentlng: Double = 0.0
     private var providerMarker: Marker? = null
     var deliveryPosistion:Int = 0
+    private var locationUpdate:Int = 0;
 
     override fun getLayoutId() = R.layout.activity_courier_main
 
@@ -254,8 +255,8 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
                                     + " " + xUberCheckRequest.responseData.request.user.last_name)
                             writePreferences(Constants.Chat.PROVIDER_NAME, xUberCheckRequest.responseData.provider_details.first_name
                                     + " " + xUberCheckRequest.responseData.provider_details.last_name)
-                            drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                                    LatLng(delivery.d_latitude!!,delivery.d_longitude!!))
+//                            drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
+//                                    LatLng(delivery.d_latitude!!,delivery.d_longitude!!))
                         when (xUberCheckRequest!!.responseData!!.request.status) {
                             COMPLETED -> {
                                 indicatorView(COMPLETED)
@@ -300,9 +301,10 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
                                mViewModel.height.value = xUberCheckRequest.responseData!!.request!!.delivery.height.toString()
                                mViewModel.width.value = xUberCheckRequest.responseData!!.request!!.delivery.breadth.toString()
                                mViewModel.length.value = xUberCheckRequest.responseData!!.request!!.delivery.length.toString()
-
-                               drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!),
-                                       LatLng(xUberCheckRequest.responseData!!.request!!.delivery.d_latitude!!,xUberCheckRequest.responseData!!.request!!.delivery.d_longitude!!))
+//                               if(locationUpdate == 0) {
+                                   drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), LatLng(xUberCheckRequest.responseData!!.request!!.delivery.d_latitude!!, xUberCheckRequest.responseData!!.request!!.delivery.d_longitude!!))
+//                                   locationUpdate = 1
+//                               }
                            }
                            if (status != mViewModel.currentStatus.value) {
                                mViewModel.currentStatus.value = xUberCheckRequest.let { xUberCheckRequest.responseData!!.request!!.delivery.status }
@@ -418,7 +420,7 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
 
     }
 
-    fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
+    fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = true) {
         providerMarker?.remove()
         try {
             providerMarker = mGoogleMap?.addMarker(MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap
@@ -565,7 +567,7 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
 
     override fun onPause() {
         super.onPause()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
     }
 
     private val mBroadcastReceiver = object : BroadcastReceiver() {
@@ -655,7 +657,7 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
             locationObj.put("provider_id", mViewModel.xUberCheckRequest.value!!.responseData.provider_details.id)
             locationObj.put("room", Constants.RoomId.getDeliveryRoom(reqID))
             SocketManager.emit("send_location", locationObj)
-            Log.e("SOCKET", "SOCKET_SK Location update called")
+            Log.e("SOCKET", "SOCKET_SK Location update called "+Gson().toJson(locationObj))
         }
 
 //        if (!BuildConfig.isSocketEnabled) if (checkStatusApiCounter++ % 3 == 0) mViewModel.callTaxiCheckStatusAPI()
@@ -665,6 +667,9 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
 
         println("RRRR :: TaxiDashboardActivity LatLng(location = " +
                 "${LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!)}")
+
+        println("RRRR :: TaxiDashboardActivity LatLng(location = " +
+                "${polyLine.size}")
 
         if (mViewModel.latitude.value!! != 0.0 && endLatLng.latitude != 0.0 && polyLine.size > 0) {
             try {
@@ -721,11 +726,10 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
             val builder = LatLngBounds.Builder()
 
             for (latLng in polyLine) builder.include(latLng)
-
             mGoogleMap!!.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 100))
 
             srcMarker = mGoogleMap!!.addMarker(MarkerOptions().position(polyLine[0]).icon
-            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.xubermarkertest))))
+            (BitmapDescriptorFactory.fromBitmap(bitmapFromVector(baseContext, R.drawable.iv_marker_car))))
 
             CarMarkerAnimUtil().carAnim(srcMarker!!, polyLine[0], polyLine[1])
 

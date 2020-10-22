@@ -20,6 +20,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.bee.courierservice.xuberMainActivity.CourierDashBoardActivity
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
@@ -32,6 +33,7 @@ import com.gox.base.data.Constants.BroadCastTypes.BASE_BROADCAST
 import com.gox.base.data.Constants.BroadCastTypes.ORDER_BROADCAST
 import com.gox.base.data.Constants.BroadCastTypes.SERVICE_BROADCAST
 import com.gox.base.data.Constants.BroadCastTypes.TRANSPORT_BROADCAST
+import com.gox.base.data.Constants.ModuleTypes.DELIVERY
 import com.gox.base.data.Constants.ModuleTypes.ORDER
 import com.gox.base.data.Constants.ModuleTypes.SERVICE
 import com.gox.base.data.Constants.ModuleTypes.TRANSPORT
@@ -266,6 +268,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                                     BROADCAST = ORDER_BROADCAST
                                     if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
                                         val intent = Intent(this, FoodieDashboardActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                        startActivity(intent)
+                                    }
+                                }
+                                DELIVERY -> {
+                                    BROADCAST = Constants.BroadCastTypes.DELIVERY_BROADCAST
+                                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                        val intent = Intent(this, CourierDashBoardActivity::class.java)
                                         intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                         startActivity(intent)
                                     }

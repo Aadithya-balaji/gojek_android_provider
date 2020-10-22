@@ -10,6 +10,7 @@ import com.gox.partner.repository.AppRepository
 class IncomingRequestViewModel : BaseViewModel<IncomingNavigator>() {
 
     val mRepository = AppRepository.instance()
+    var weight = MutableLiveData<String>()
 
     var pickupLocation = MutableLiveData<String>()
     var serviceType = MutableLiveData<String>()

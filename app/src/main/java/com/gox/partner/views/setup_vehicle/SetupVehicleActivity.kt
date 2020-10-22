@@ -2,6 +2,7 @@ package com.gox.partner.views.setup_vehicle
 
 import android.content.Intent
 import androidx.databinding.ViewDataBinding
+import com.google.gson.Gson
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
@@ -9,6 +10,7 @@ import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivitySetupVehicleBinding
+import com.gox.partner.models.SetupDeliveryResponseModel
 import com.gox.partner.models.SetupRideResponseModel
 import com.gox.partner.models.SetupShopResponseModel
 import com.gox.partner.views.add_vehicle.AddVehicleActivity
@@ -58,6 +60,10 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             mViewModel.getOrderId() -> {
                 mViewModel.getShops()
             }
+            mViewModel.getDeliveryId() -> {
+                mViewModel.getDelivery()
+            }
+
             else -> loadingObservable.value = false
         }
     }
@@ -71,22 +77,35 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
         else if (providerService is SetupShopResponseModel)
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
+        else if (providerService is SetupDeliveryResponseModel)
+            intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
+
         if (providerService is SetupRideResponseModel
                 && providerService.responseData[position].serviceList.isNotEmpty())
             intent.putExtra(Constants.TRANSPORT_VEHICLES,
-                ArrayList(providerService.responseData[position].serviceList))
+                    ArrayList(providerService.responseData[position].serviceList))
+        if (providerService is SetupDeliveryResponseModel
+                && providerService.responseData[position].serviceList.isNotEmpty()){
+            System.out.println("vechiadata--> "+ Gson().toJson(providerService.responseData[position].serviceList))
+            intent.putExtra(Constants.DELIVERY_VEHICLES,
+                    ArrayList(providerService.responseData[position].serviceList))}
+
 
         if (providerService is SetupRideResponseModel
                 && providerService.responseData[position].providerService != null) {
             //Need to compare ride delievery id
             val vehicleData = providerService.responseData[position].providerService!!.providerVehicle
             vehicleData.vehicleServiceId = providerService.responseData[position].providerService?.rideDeliveryId ?:0
-            intent.putExtra(Constants.PROVIDER_TRANSPORT_VEHICLE,
-                    vehicleData)
+            intent.putExtra(Constants.PROVIDER_TRANSPORT_VEHICLE, vehicleData)
         } else if (providerService is SetupShopResponseModel
                 && providerService.responseData[position].providerService != null) {
             intent.putExtra(Constants.PROVIDER_ORDER_VEHICLE,
                     providerService.responseData[position].providerService!!.providerVehicle)
+        }else if (providerService is SetupDeliveryResponseModel
+                && providerService.responseData[position].providerService != null) {
+            val vehicleData = providerService.responseData[position].providerService!!.providerVehicle
+            vehicleData.vehicleServiceId = providerService.responseData[position].providerService?.deliveryVehicleId ?:0
+            intent.putExtra(Constants.PROVIDER_DELIVERY_VEHICLE, vehicleData)
         }
         openActivity(intent, false)
     }

@@ -6,6 +6,7 @@ import com.gox.base.base.BaseViewModel
 import com.gox.base.data.Constants
 import com.gox.base.data.PreferencesKey
 import com.gox.base.repository.ApiListener
+import com.gox.partner.models.SetupDeliveryResponseModel
 import com.gox.partner.models.SetupRideResponseModel
 import com.gox.partner.models.SetupShopResponseModel
 import com.gox.partner.repository.AppRepository
@@ -14,14 +15,16 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
 
     private val mRepository = AppRepository.instance()
     private val vehicleLiveData = MutableLiveData<Any>()
-    private val transportServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.TRANSPORT_ID,Constants.ModuleTypes.TRANSPORT)
-    private val orderServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ORDER_ID, Constants.ModuleTypes.ORDER)
+    private val transportServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.TRANSPORT_ID,Constants.ModuleTypes.TRANSPORT) ?: ""
+    private val orderServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ORDER_ID, Constants.ModuleTypes.ORDER) ?: ""
+    private val deliveryServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.DELIVERY_ID, Constants.ModuleTypes.DELIVERY) ?: ""
 
     private var serviceName: String = Constants.ModuleTypes.TRANSPORT
     private val adapter: SetupVehicleAdapter = SetupVehicleAdapter(this)
 
     fun getTransportId() = transportServiceName
     fun getOrderId() = orderServiceName
+    fun getDeliveryId() = deliveryServiceName
 
     fun setServiceId(serviceId: String) {
         this.serviceName = serviceId
@@ -40,6 +43,7 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
             when (serviceName) {
                 transportServiceName -> (vehicleLiveData.value as SetupRideResponseModel).responseData.size
                 orderServiceName -> (vehicleLiveData.value as SetupShopResponseModel).responseData.size
+                deliveryServiceName -> (vehicleLiveData.value as SetupDeliveryResponseModel).responseData.size
                 else -> 0
             }
         }
@@ -49,6 +53,7 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
         return when (serviceName) {
             transportServiceName -> (vehicleLiveData.value as SetupRideResponseModel).responseData[position].rideName
             orderServiceName -> (vehicleLiveData.value as SetupShopResponseModel).responseData[position].name
+            deliveryServiceName -> (vehicleLiveData.value as SetupDeliveryResponseModel).responseData[position].deliveryName
             else -> return ""
         }
     }
@@ -57,6 +62,7 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
         return when (serviceName) {
             transportServiceName -> (vehicleLiveData.value as SetupRideResponseModel).responseData[position].providerService != null
             orderServiceName -> (vehicleLiveData.value as SetupShopResponseModel).responseData[position].providerService != null
+            deliveryServiceName -> (vehicleLiveData.value as SetupDeliveryResponseModel).responseData[position].providerService != null
             else -> false
         }
     }
@@ -85,7 +91,20 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
         }))
     }
 
+    fun getDelivery() {
+        getCompositeDisposable().add(mRepository.getDelivery(object : ApiListener {
+            override fun success(successData: Any) {
+                getVehicleDataObservable().value = successData
+            }
+
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        }))
+    }
+
     fun getVehicleDataObservable() = vehicleLiveData
 
     fun onItemClick(position: Int) = navigator.onMenuItemClicked(position)
+
 }

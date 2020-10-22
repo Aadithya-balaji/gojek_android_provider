@@ -35,6 +35,7 @@
     <color name="colorDrive">#E94D6F</color>
     <color name="colorDeliver">#3BBDB2</color>
     <color name="colorServe">#8B4F97</color>
+    <color name="colorCourier">#FFEB3B</color>
     <color name="service_bg_color">#514659F7</color>
     <color name="selected_provider_tc">#B5364BEA</color>
     <color name="bg_doc_button">#FCFCFC</color>

@@ -151,6 +151,9 @@ interface AppWebService {
     @GET("provider/shoptype")
     fun getShops(): Observable<SetupShopResponseModel>
 
+    @GET("provider/deliverytype")
+    fun getDelivery(): Observable<SetupDeliveryResponseModel>
+
     @Multipart
     @POST("provider/vechile/add")
     fun postVehicle(
@@ -226,6 +229,9 @@ interface AppWebService {
     @GET("provider/history/order/{id}")
     fun getOrderDetail(@Path("id") id: String): Observable<HistoryDetailModel>
 
+    @GET("provider/history/delivery/{id}")
+    fun getDeliveryDetail(@Path("id") id: String): Observable<HistoryDetailModel>
+
     @GET("provider/ride/dispute")
     fun getDisputeList(): Observable<DisputeListModel>
 
@@ -243,6 +249,12 @@ interface AppWebService {
     ): Observable<DisputeStatus>
 
     @FormUrlEncoded
+    @POST("provider/history-dispute/delivery")
+    fun postDeliveryDispute(
+            @FieldMap params: HashMap<String, String>
+    ): Observable<DisputeStatus>
+
+    @FormUrlEncoded
     @POST("provider/history-dispute/order")
     fun postOrderDispute(@FieldMap params: HashMap<String, String>): Observable<DisputeStatus>
 
@@ -254,6 +266,9 @@ interface AppWebService {
 
     @GET("provider/order/disputestatus/{request_id}")
     fun getOrderDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
+
+    @GET("provider/delivery/disputestatus/{request_id}")
+    fun getDeliveryDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
     @GET("provider/service/disputestatus/{request_id}")
     fun getServiceDisputeStatus(@Path("request_id") id:String):Observable<DisputeStatusModel>

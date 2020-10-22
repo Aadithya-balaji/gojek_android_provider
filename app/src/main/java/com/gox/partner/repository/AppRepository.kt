@@ -1,6 +1,6 @@
 package com.gox.partner.repository
 
-import com.gox.app.ui.verifyotp.VerifyOTPViewModel
+import com.gox.partner.views.verifyotp.VerifyOTPViewModel
 import com.gox.base.data.Constants
 import com.gox.base.repository.ApiListener
 import com.gox.base.repository.BaseRepository
@@ -317,6 +317,14 @@ class AppRepository : BaseRepository() {
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
+    fun getDelivery(listener: ApiListener): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .getDelivery()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
+    }
+
     fun postVehicle(listener: ApiListener,
                     params: HashMap<String, RequestBody>,
                     vehicleMultiPart: MultipartBody.Part?,
@@ -440,7 +448,13 @@ class AppRepository : BaseRepository() {
                 .subscribeOn(Schedulers.io())
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
-
+    fun getDeliveryDetail(listener: ApiListener, selectedID: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getDeliveryDetail(selectedID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
+    }
     fun getDisputeList(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
                 .getDisputeList()
@@ -481,6 +495,14 @@ class AppRepository : BaseRepository() {
                 .subscribe({ listener.success(it) }, { listener.fail(it) })
     }
 
+    fun addDeliveryDispute(listener: ApiListener,  params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .postDeliveryDispute(params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
+    }
+
     fun addOrderDispute(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
                 .postOrderDispute(params)
@@ -501,6 +523,14 @@ class AppRepository : BaseRepository() {
     fun getOrderDisputeStatus(listener: ApiListener, requestID: String): Disposable {
         return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
                 .getOrderDisputeStatus(requestID)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
+    }
+
+    fun getDeliveryDisputeStatus(listener: ApiListener, requestID: String): Disposable {
+        return BaseRepository().createApiClient(Constants.BaseUrl.APP_BASE_URL, AppWebService::class.java)
+                .getDeliveryDisputeStatus(requestID)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe({ listener.success(it) }, { listener.fail(it) })

@@ -8,7 +8,7 @@
 
         <variable
             name="verifyOTPModel"
-            type="com.gox.app.ui.verifyotp.VerifyOTPViewModel" />
+            type="com.gox.partner.views.verifyotp.VerifyOTPViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

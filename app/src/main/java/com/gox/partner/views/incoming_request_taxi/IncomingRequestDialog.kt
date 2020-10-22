@@ -15,6 +15,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.MutableLiveData
+import com.bee.courierservice.xuberMainActivity.CourierDashBoardActivity
 import com.google.gson.Gson
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.data.Constants
@@ -127,6 +128,13 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                             request.request.pickup.storetype.name + " - " +
                             request.request.pickup.store_name
                 }
+                Constants.ModuleTypes.DELIVERY -> {
+                    mViewModel.pickupLocation.value = request.request.s_address
+                    mViewModel.serviceType.value = request.service.display_name
+                    mBinding.tvWeight.visibility = View.VISIBLE
+                    mViewModel.weight.value = "Weight : " + request.request.weight + " kg"
+                }
+
             }
         }
         getApiResponse()
@@ -141,6 +149,8 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                 when {
                     request.admin_service.equals("SERVICE",true)  ->
                         activity!!.startActivity(Intent(activity, XUberDashBoardActivity::class.java))
+                    request.admin_service.equals("DELIVERY",true)  ->
+                        activity!!.startActivity(Intent(activity, CourierDashBoardActivity::class.java))
                     request.admin_service.equals("ORDER",true)  ->
                         activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
                     else -> activity!!.startActivity(Intent(activity, TaxiDashboardActivity::class.java))

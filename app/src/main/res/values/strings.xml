@@ -194,28 +194,33 @@
     <string name="title_payment_type">Payment Type</string>
 
 
+
     <array name="color_manage_services">
         <item>@color/colorDrive</item>
         <item>@color/colorDeliver</item>
         <item>@color/colorServe</item>
+        <item>@color/colorCourier</item>
     </array>
 
     <integer-array name="icon_manage_services">
         <item>@drawable/ic_drive</item>
         <item>@drawable/ic_deliver</item>
         <item>@drawable/ic_serve</item>
+        <item>@drawable/ic_deliver</item>
     </integer-array>
 
     <string-array name="title_manage_services">
         <item>I am ready to Drive</item>
         <item>I am ready to Deliver</item>
         <item>I am ready to Serve</item>
+        <item>I am ready to Post</item>
     </string-array>
 
     <string-array name="desc_manage_services">
         <item>Setup your Vehicle</item>
         <item>Setup your Deliveries</item>
         <item>Setup your Services</item>
+        <item>Setup your Courier</item>
     </string-array>
 
 

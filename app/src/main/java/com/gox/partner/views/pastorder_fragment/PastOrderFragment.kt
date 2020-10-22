@@ -19,7 +19,7 @@ import com.gox.partner.views.dashboard.DashBoardViewModel
 class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNavigator {
     lateinit var mViewDataBinding: FragmentPastOrdersBinding
     override fun getLayoutId(): Int = R.layout.fragment_past_orders;
-    var transportResponseData: TransportResponseData = TransportResponseData(0, mutableListOf(), mutableListOf(), mutableListOf(), "")
+    var transportResponseData: TransportResponseData = TransportResponseData(0, mutableListOf(), mutableListOf(), mutableListOf(), mutableListOf(), "")
     private var offset = 0
     private var loadMore = true
 

@@ -100,6 +100,7 @@ dependencies {
     implementation project(':taxiservice')
     implementation project(':xuberservice')
     implementation project(':countrycodepicker')
+    implementation project(':courierservice')
   //  implementation project(':cropperlibrary')
 
     testImplementation 'junit:junit:4.12'

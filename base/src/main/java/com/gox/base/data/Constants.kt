@@ -20,6 +20,8 @@ object Constants {
     const val DOCUMENT_NAME = "document_name"
     const val DOCUMENT_TYPE = "document_type"
     const val DELIVERY_VEHICLES = "delivery_vehicles"
+    const val PROVIDER_DELIVERY_VEHICLE = "provider_delivery_vehicle"
+
 
     const val APP_REQUEST_CODE = 99
     const val COUNTRY_LIST_REQUEST_CODE = 100

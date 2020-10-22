@@ -29,6 +29,7 @@ import com.gox.partner.databinding.DisputeResonDialogBinding
 import com.gox.partner.databinding.DisputeStatusBinding
 import com.gox.partner.models.*
 import com.gox.partner.utils.CommonMethods
+import com.gox.partner.views.adapters.DeliveryDropLocationAdpater
 import com.gox.partner.views.adapters.DisputeReasonListAdapter
 import com.gox.partner.views.adapters.ReasonListClickListener
 import com.gox.partner.views.dashboard.DashBoardViewModel
@@ -47,6 +48,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     private var disputeStatusBinding: DisputeStatusBinding? = null
     private var selectedDisputeData: DisputeListData? = null
     private var bottomSheetDialog: BottomSheetDialog? = null
+    private lateinit var dropLocationAdpater: DeliveryDropLocationAdpater
 
     private var historyType: String? = ""
     private var selectedId: String? = ""
@@ -71,6 +73,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 serviceType.equals(Constants.ModuleTypes.TRANSPORT) -> mViewModel.getTransportHistoryDetail(selectedId.toString())
                 serviceType.equals(Constants.ModuleTypes.SERVICE) -> mViewModel.getServiceHistoryDetail(selectedId.toString())
                 serviceType.equals(Constants.ModuleTypes.ORDER) -> mViewModel.getOrderHistoryDetail(selectedId.toString())
+                serviceType.equals(Constants.ModuleTypes.DELIVERY) -> mViewModel.getDeliveryHistoryDetail(selectedId.toString())
             }
         }
         apiResponse()
@@ -92,6 +95,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                     when (serviceType?.toUpperCase()) {
                         Constants.ModuleTypes.TRANSPORT -> setupTransportDetail(it.responseData.transport)
                         Constants.ModuleTypes.ORDER -> setupOrderHistoryDetail(it.responseData.order)
+                        Constants.ModuleTypes.DELIVERY -> setupDeliveryDetail(it.responseData.delivery)
                         else -> setupServiceDetail(it.responseData.service)
                     }
                 })
@@ -130,6 +134,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mViewModel.selectedDisputeModel.observe(this, Observer {
             // bottomSheetDialog!!.dismiss()
             selectedDisputeData = it
+//            disputeListBinding!!.disputeReasonListAdapter!!.notifyDataSetChanged()
 
         })
 
@@ -182,7 +187,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
         //finally creating the alert dialog and displaying it
         val alertDialog = builder.create()
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         alertDialog.show()
         alertDialog.findViewById<ImageView>(R.id.cancel_dialog_img)!!
                 .setOnClickListener { alertDialog.dismiss() }
@@ -440,6 +445,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                         ?: 0.0) ?: "0.0"
 
             }
+
             Constants.ModuleTypes.TRANSPORT -> {
                 rlPackage?.visibility = View.GONE
                 rlDeliveryCharge?.visibility = View.GONE
@@ -533,6 +539,59 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 } else rlPromoCode?.visibility = View.GONE
             }
 
+            Constants.ModuleTypes.DELIVERY -> {
+                try {
+                    rlPackage?.visibility = View.GONE
+                    rlDeliveryCharge?.visibility = View.GONE
+                    rlItemPrice?.visibility = View.GONE
+                    rlExtraCharges?.visibility = View.GONE
+                    rlHourlyFare?.visibility = View.GONE
+                    rlDistanceFare?.visibility = View.GONE
+                    rlTips?.visibility = View.GONE
+                    rlTollCharge?.visibility = View.GONE
+                    rlRoundOff?.visibility = View.GONE
+
+                    if(mViewModel.deliveryDetail.value?.payment != null) {
+                        tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.fixed)
+                                ?: "0.0"
+                        tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.tax)
+                                ?: "0.0"
+                        tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.distance)
+                                ?: "0.0"
+                        tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.tips)
+                                ?: "0.0"
+                        tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.wallet)
+                                ?: "0.0"
+                        tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.total)
+                                ?: "0.0"
+                        tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.round_of)
+                                ?: "0.0"
+                        tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.discount)}"
+                        tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.payable)
+                                ?: "0.0"
+                    } else if(mViewModel.deliveryDetail.value?.deliveries != null) {
+                        tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.fixed)
+                                ?: "0.0"
+                        tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.tax)
+                                ?: "0.0"
+                        tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.distance)
+                                ?: "0.0"
+                        tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.tips)
+                                ?: "0.0"
+                        tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.wallet)
+                                ?: "0.0"
+                        tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.total)
+                                ?: "0.0"
+                        tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.round_of)
+                                ?: "0.0"
+                        tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.discount)}"
+                        tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.payable)
+                                ?: "0.0"
+                    }
+                } catch (ce: Exception){
+                    ce.printStackTrace()
+                }
+            }
 
             Constants.ModuleTypes.SERVICE -> {
                 rlPackage?.visibility = View.GONE
@@ -581,12 +640,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 tvTotalPayable?.text = Utils.getNumberFormat()?.format(payable) ?: "0.0"
             }
         }
-
-
-
         alertDialog.show()
     }
-
 
     override fun onClickLossItem() {
     }
@@ -608,6 +663,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
     }
 
     private fun setDisputeListData(disputeListData: List<DisputeListData>) {
+
         disputeListBinding!!.applyFilter.isEnabled = true
         disputeListBinding!!.disputeReasonListAdapter = DisputeReasonListAdapter(mViewModel, disputeListData)
         disputeListBinding!!.disputeReasonListAdapter!!.setOnClickListener(mOnAdapterClickListener)
@@ -630,6 +686,8 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                         mViewModel.transportDetail.value!!.id.toString())
                 serviceType.equals(Constants.ModuleTypes.ORDER, true) -> mViewModel.getOrderDisputeStatus(
                         mViewModel.orderDetail.value!!.id.toString())
+                serviceType.equals(Constants.ModuleTypes.DELIVERY, true) -> mViewModel.getDeliveryDisputeStatus(
+                        mViewModel.deliveryDetail.value!!.id.toString())
                 else -> mViewModel.getServiceDisputeStatus(
                         mViewModel.serviceDetail.value!!.id.toString())
             }
@@ -657,7 +715,6 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                     params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
                     mViewModel.postTaxiDispute(params)
                 }
-
                 serviceType.equals(Constants.ModuleTypes.SERVICE, true) -> {
                     mViewModel.userID.value = mViewModel.historyModelLiveData.value!!.responseData.service.user!!.id.toString()
                     mViewModel.providerID.value = mViewModel.historyModelLiveData.value!!.responseData.service.provider_id.toString()
@@ -666,6 +723,15 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                     params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
                     params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
                     mViewModel.postServiceDispute(params)
+                }
+                serviceType.equals(Constants.ModuleTypes.DELIVERY, true) -> {
+                    mViewModel.userID.value = mViewModel.historyModelLiveData.value!!.responseData.delivery.user!!.id.toString()
+                    mViewModel.providerID.value = mViewModel.historyModelLiveData.value!!.responseData.delivery.provider_id.toString()
+                    mViewModel.requestID.value = mViewModel.historyModelLiveData.value!!.responseData.delivery.id.toString()
+                    params[Constants.Dispute.PROVIDER_ID] = mViewModel.providerID.value.toString()
+                    params[Constants.Dispute.USER_ID] = mViewModel.userID.value!!.toString()
+                    params[Constants.Dispute.REQUEST_ID] = mViewModel.requestID.value.toString()
+                    mViewModel.postDeliveryDispute(params)
                 }
                 else -> {
                     mViewModel.userID.value = mViewModel.orderDetail.value!!.user_id.toString()
@@ -708,7 +774,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 .into(mBinding.providerCimgv)
         mBinding.providerNameTv.text = (transPastDetail.user.first_name + " " +
                 transPastDetail.user.last_name)
-        mBinding.rvUser.rating = transPastDetail.rating!!.provider_rating!!.toFloat()
+        mBinding.rvUser.rating = transPastDetail.user.rating!!.toFloat()
 
         if (transPastDetail.rating!!.provider_comment != null && !transPastDetail.rating.provider_comment!!.isEmpty()) {
             mBinding.itemLayout.visibility = View.VISIBLE
@@ -768,6 +834,62 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             isShowDisputeStatus = true
         }
     }
+
+    private fun setupDeliveryDetail(deliveryDetail: HistoryDetailModel.ResponseData.Delivery) {
+        /*mViewModel.serviceDetail.value = serviceDetail
+        mBinding.currentorderdetailTitleTv.text = serviceDetail.booking_id
+        mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at!!,
+                "Req_Date_Month") + "")
+        mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(serviceDetail.started_at,
+                "Req_time") + "")
+        mBinding.historydetailSrcValueTv.text = serviceDetail.s_address
+        mBinding.historydetailStatusValueTv.text = serviceDetail.status
+        mBinding.historydetailPaymentmodeValTv.text = serviceDetail.payment!!.payment_mode
+        Glide.with(this).load(serviceDetail.user!!.picture).into(mBinding.providerCimgv)
+        mBinding.providerNameTv.text = (serviceDetail.user.first_name + " " + serviceDetail.user.last_name)*/
+        mViewModel.deliveryDetail.value = deliveryDetail
+        mBinding.currentorderdetailTitleTv.text = deliveryDetail.booking_id
+        mBinding.historydetailSrcValueTv.text = deliveryDetail.s_address + ""
+        mBinding.historydetailDestValueTv.visibility = View.GONE
+        mBinding.vechileTypeTv.text = (deliveryDetail.service!!.vehicle_name)
+        mBinding.scheduletimeView.visibility = View.GONE
+        mBinding.scheduleTimeLayout.visibility = View.GONE
+        mBinding.historydetailPaymentmodeValTv.text = deliveryDetail.payment_mode
+        Glide.with(this).load(deliveryDetail.user!!.picture).error(R.drawable.ic_user_place_holder)
+                .into(mBinding.providerCimgv)
+        if (deliveryDetail.started_at != null)
+            mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(deliveryDetail.started_at!!, "Req_time") + "")
+        if (deliveryDetail.started_at != null)
+            mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(deliveryDetail.started_at!!, "Req_Date_Month") + "")
+        mBinding.providerNameTv.text = (deliveryDetail.user!!.first_name + " " + deliveryDetail.user.last_name)
+        mBinding.tvStatusValue.text = deliveryDetail.status
+        mBinding.rvUser.rating = deliveryDetail.user!!.rating!!.toFloat()
+        if (deliveryDetail.deliveries!!.size > 0) {
+            val deliveryData: ArrayList<HistoryDetailModel.ResponseData.Delivery.DeliveryData> = ArrayList()
+            deliveryData.addAll(deliveryDetail.deliveries!!)
+            dropLocationAdpater = DeliveryDropLocationAdpater(this, deliveryData!!)
+            mBinding.rvDropLocation.adapter = dropLocationAdpater
+            dropLocationAdpater.notifyDataSetChanged()
+            mBinding.rvDropLocation.visibility = View.VISIBLE
+        }
+//
+        if (deliveryDetail.rating!!.provider_comment != null && !deliveryDetail.rating.provider_comment!!.isEmpty()) {
+            mBinding.itemLayout.visibility = View.VISIBLE
+            mBinding.idHistrydetailCommentValTv.text = deliveryDetail.rating.provider_comment
+        } else {
+            mBinding.itemLayout.visibility = View.GONE
+        }
+
+        mBinding.lossSomething.visibility = View.GONE
+        mBinding.destLayout.visibility = View.VISIBLE
+        mBinding.locationView.visibility = View.GONE
+        if (deliveryDetail.dispute != null) {
+            mBinding.disputeBtn.text = getString(R.string.dispute_status)
+            isShowDisputeStatus = true
+        }
+
+    }
+
 
     private fun setupOrderHistoryDetail(orderDetail: HistoryDetailModel.ResponseData.Order) {
         mViewModel.orderDetail.value = orderDetail

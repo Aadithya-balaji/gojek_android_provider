@@ -142,6 +142,7 @@ data class RequestX(
         var finished_at: String = "",
         var finished_time: String = "",
         var id: Int? = 0,
+        var weight: Int? = 0,
         var invoice: Invoice = Invoice(),
         var is_scheduled: String = "",
         var is_track: String = "",

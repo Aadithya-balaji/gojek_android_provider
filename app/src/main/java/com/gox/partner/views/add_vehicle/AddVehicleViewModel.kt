@@ -24,8 +24,9 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     private val mRepository = AppRepository.instance()
 
-    private val transportServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.TRANSPORT_ID, Constants.ModuleTypes.TRANSPORT)
-    private val orderServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ORDER_ID, Constants.ModuleTypes.ORDER)
+    private val transportServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.TRANSPORT_ID, Constants.ModuleTypes.TRANSPORT) ?: ""
+    private val deliveryServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.DELIVERY_ID, Constants.ModuleTypes.DELIVERY) ?: ""
+    private val orderServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ORDER_ID, Constants.ModuleTypes.ORDER) ?: ""
     private val vehicleCategoryLiveData = MutableLiveData<VehicleCategoryResponseModel>()
     private val vehicleResponseLiveData = MutableLiveData<AddVehicleResponseModel>()
     var specialSeatLiveData = MutableLiveData<Boolean>()
@@ -47,6 +48,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     }
 
     fun getTransportServiceName() = transportServiceName
+    fun getDeliveryServiceName() = deliveryServiceName
 
     fun setServiceName(serviceName: String) {
         this.serviceName = serviceName
@@ -98,6 +100,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun isFieldMandatory() = when (serviceName) {
         transportServiceName -> true
+        deliveryServiceName -> true
         orderServiceName -> false
         else -> false
     }
@@ -105,8 +108,9 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     fun postVehicle() {
         showLoading.value = true
         val isTransport: Boolean = serviceName == transportServiceName
+        val isDelivery: Boolean = serviceName == deliveryServiceName
         val params = HashMap<String, RequestBody>()
-        if (isTransport) {
+        if (isTransport || isDelivery ) {
             params[WebApiConstants.AddService.VEHICLE_ID] = createRequestBody(getVehicleData()!!.vehicleId.toString())
             params[WebApiConstants.AddService.VEHICLE_YEAR] =
                     createRequestBody(getVehicleData()!!.vehicleYear!!)

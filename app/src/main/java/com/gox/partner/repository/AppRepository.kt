@@ -277,6 +277,14 @@ class AppRepository : BaseRepository() {
                 .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
     }
 
+    fun updateService(listener: ApiListener,id:Int, params: HashMap<String, String>): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .updateService(id,params)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ listener.success(it) }, { listener.fail(it) })
+    }
+
     fun getServiceCategories(listener: ApiListener): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .getServiceCategories()

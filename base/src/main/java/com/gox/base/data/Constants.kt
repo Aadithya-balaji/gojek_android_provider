@@ -14,6 +14,7 @@ object Constants {
 
     const val SERVICE_ID = "service_id"
     const val CATEGORY_ID = "category_id"
+    const val SERVICE_STATUS = "service_status"
     const val PROVIDER_TRANSPORT_VEHICLE = "provider_transport_vehicle"
     const val TRANSPORT_VEHICLES = "transport_vehicles"
     const val PROVIDER_ORDER_VEHICLE = "provider_order_vehicle"

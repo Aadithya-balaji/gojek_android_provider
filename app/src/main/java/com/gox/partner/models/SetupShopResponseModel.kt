@@ -30,7 +30,7 @@ data class SetupShopResponseModel(
                 @SerializedName("base_fare") val baseFare: String,
                 @SerializedName("per_miles") val perMiles: String,
                 @SerializedName("per_mins") val perMins: String,
-                val status: String,
+                var status: String,
                 @SerializedName("providervehicle") val providerVehicle: ProviderVehicleResponseModel
         )
     }

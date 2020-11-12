@@ -39,6 +39,7 @@ class ManageServicesViewModel : BaseViewModel<ManageServicesNavigator>() {
         }))
     }
 
+
     fun getServicesObservable() = servicesLiveData
 
     fun onItemClick(position: Int) = navigator.onMenuItemClicked(position)

@@ -2,6 +2,8 @@ package com.gox.partner.views.add_vehicle
 
 import android.net.Uri
 import android.view.View
+import androidx.databinding.BindingConversion
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
@@ -20,6 +22,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 
+
 class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     private val mRepository = AppRepository.instance()
@@ -33,10 +36,16 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     private var serviceName: String = Constants.ModuleTypes.TRANSPORT
     private var categoryId: Int = -1
+    private var serviceStatus: String = ""
     private var isEdit: Boolean = false
     private val addVehicleDataModel = AddVehicleDataModel()
     private val vehicleLiveData = MutableLiveData<AddVehicleDataModel>()
+    var isEditAble = ObservableField<Boolean>()
 
+//    private var isEditAble = true //initializing with empty string, so that it doesn't crash
+
+
+//    var isEditAble = true;
     private var vehicleUri: Uri? = null
     private var rcBookUri: Uri? = null
     private var insuranceUri: Uri? = null
@@ -56,6 +65,13 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun getServiceName() = serviceName
 
+
+    fun setServiceStatus(serviceStatus: String) {
+        this.serviceStatus = serviceStatus
+    }
+
+    fun getServiceStatus() = serviceStatus
+
     fun setCategoryId(categoryId: Int) {
         this.categoryId = categoryId
     }
@@ -63,6 +79,12 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     fun setIsEdit(isEdit: Boolean) {
         this.isEdit = isEdit
     }
+
+//    @BindingConversion
+//    fun getRememberMe() = isEditAble
+//
+//    fun setRememberMe(value: Boolean) {
+//        isEditAble = value    }
 
     fun getIsEdit() = isEdit
 
@@ -104,6 +126,12 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         orderServiceName -> false
         else -> false
     }
+
+//    fun isEditAble() = when (serviceStatus) {
+//        "INACTIVE" -> false
+//        "ACTIVE" -> false
+//         else -> true
+//    }
 
     fun postVehicle() {
         showLoading.value = true

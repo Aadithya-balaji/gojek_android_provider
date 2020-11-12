@@ -50,6 +50,11 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
         mViewModel.getServices()
     }
 
+    override fun onResume() {
+        super.onResume()
+        mViewModel.setServiceData(serviceData)
+    }
+
     private fun observeViewModel() {
         observeLiveData(mViewModel.getServicesObservable()) { response ->
             run {
@@ -59,6 +64,8 @@ class ManageServicesActivity : BaseActivity<ActivityManageServicesBinding>(), Ma
             }
         }
     }
+
+
 
     override fun onMenuItemClicked(position: Int) {
         when (position) {

@@ -1,5 +1,6 @@
 package com.gox.base.base
 
+import androidx.databinding.BaseObservable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.JsonSyntaxException

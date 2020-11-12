@@ -7,6 +7,8 @@ import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.*
+import java.util.*
+import kotlin.collections.HashMap
 
 interface AppWebService {
 
@@ -134,6 +136,10 @@ interface AppWebService {
 
     @GET("provider/ridetype")
     fun getRides(): Observable<SetupRideResponseModel>
+
+    @GET("provider/services_status/{service_id}")
+    fun updateService(@Path("service_id") service_id:Int, @QueryMap params: HashMap<String, String>
+    ): Observable<Objects>
 
     @GET("provider/providerservice/categories")
     fun getServiceCategories(): Observable<ServiceCategoriesResponse>

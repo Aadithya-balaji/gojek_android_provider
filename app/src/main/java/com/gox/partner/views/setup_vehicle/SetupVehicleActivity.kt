@@ -1,6 +1,7 @@
 package com.gox.partner.views.setup_vehicle
 
 import android.content.Intent
+import android.widget.Toast
 import androidx.databinding.ViewDataBinding
 import com.google.gson.Gson
 import com.gox.base.base.BaseActivity
@@ -36,7 +37,6 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
         mBinding.toolbar.tbApp.tv_toolbar_title.text = resources.getString(R.string.title_setup_vehicle)
         observeViewModel()
-
     }
 
     private fun observeViewModel() {
@@ -70,7 +70,6 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
 
     override fun onMenuItemClicked(position: Int) {
         val providerService = mViewModel.getVehicleDataObservable().value
-
         val intent = Intent(applicationContext, AddVehicleActivity::class.java)
         intent.putExtra(Constants.SERVICE_ID, mViewModel.getServiceName())
         if (providerService is SetupRideResponseModel)
@@ -79,6 +78,21 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
         else if (providerService is SetupDeliveryResponseModel)
             intent.putExtra(Constants.CATEGORY_ID, providerService.responseData[position].id)
+
+
+        if (providerService is SetupRideResponseModel) {
+            if (providerService.responseData[position].providerService != null) {
+                intent.putExtra(Constants.SERVICE_STATUS, providerService.responseData[position].providerService?.status)
+            }
+        }else if (providerService is SetupShopResponseModel) {
+            if (providerService.responseData[position].providerService != null) {
+                intent.putExtra(Constants.SERVICE_STATUS, providerService.responseData[position].providerService?.status)
+            }
+        }else if (providerService is SetupDeliveryResponseModel) {
+            if (providerService.responseData[position].providerService != null) {
+                intent.putExtra(Constants.SERVICE_STATUS, providerService.responseData[position].providerService?.status)
+            }
+        }
 
         if (providerService is SetupRideResponseModel
                 && providerService.responseData[position].serviceList.isNotEmpty())
@@ -110,8 +124,70 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
         openActivity(intent, false)
     }
 
+    override fun switchOnCliked(position: Int,status:Boolean) {
+        loadingObservable.value = true
+        val providerService = mViewModel.getVehicleDataObservable().value
+        val UpadteServiceMap:HashMap<String,String>  = HashMap();
+        UpadteServiceMap.put("admin_service",mViewModel.getServiceName())
+        if(status){
+            UpadteServiceMap.put("status","1");
+        }else{
+            UpadteServiceMap.put("status","0");
+        }
+
+        if (providerService is SetupRideResponseModel) {
+            if (providerService.responseData[position].providerService?.providerVehicle != null) {
+                mViewModel.updateService(status, providerService.responseData[position].providerService!!.providerVehicle.id, UpadteServiceMap,position);
+            }else{
+                loadingObservable.value = false
+                Toast.makeText(this,"No vechicle details found",Toast.LENGTH_LONG).show()
+                setupVehicle()
+            }
+        }else if (providerService is SetupShopResponseModel) {
+            if (providerService.responseData[position].providerService?.providerVehicle != null) {
+                mViewModel.updateService(status, providerService.responseData[position].providerService!!.providerVehicle.id, UpadteServiceMap,position);
+            }else{
+                loadingObservable.value = false
+                Toast.makeText(this,"No vechicle details found",Toast.LENGTH_LONG).show()
+                setupVehicle()
+            }
+        } else if (providerService is SetupDeliveryResponseModel){
+            if (providerService.responseData[position].providerService?.providerVehicle != null) {
+                mViewModel.updateService(status,providerService.responseData[position].providerService!!.providerVehicle.id,UpadteServiceMap,position);
+            }else{
+                loadingObservable.value = false
+                Toast.makeText(this,"No vechicle details found!",Toast.LENGTH_LONG).show()
+                setupVehicle()
+            }
+        }
+    }
+
     override fun showError(error: String) {
         loadingObservable.value = false
         ViewUtils.showToast(applicationContext, error, false)
+        setupVehicle()
+    }
+
+    override fun showSuccess(status:Boolean,postion:Int) {
+        if(status){
+            if (mViewModel.getVehicleDataObservable().value is SetupRideResponseModel)
+                (mViewModel.getVehicleDataObservable().value as SetupRideResponseModel)?.responseData?.get(postion)?.providerService?.status = "ACTIVE"
+            else if (mViewModel.getVehicleDataObservable().value is SetupShopResponseModel)
+                (mViewModel.getVehicleDataObservable().value as SetupShopResponseModel)?.responseData?.get(postion)?.providerService?.status = "ACTIVE"
+            else if (mViewModel.getVehicleDataObservable().value is SetupDeliveryResponseModel)
+                (mViewModel.getVehicleDataObservable().value as SetupDeliveryResponseModel)?.responseData?.get(postion)?.providerService?.status = "ACTIVE"
+            loadingObservable.value = false
+            ViewUtils.showToast(applicationContext, "Service Turn-ON successfully.", true)
+        }else{
+            if (mViewModel.getVehicleDataObservable().value is SetupRideResponseModel)
+                (mViewModel.getVehicleDataObservable().value as SetupRideResponseModel)?.responseData?.get(postion)?.providerService?.status = "INACTIVE"
+            else if (mViewModel.getVehicleDataObservable().value is SetupShopResponseModel)
+                (mViewModel.getVehicleDataObservable().value as SetupShopResponseModel)?.responseData?.get(postion)?.providerService?.status = "INACTIVE"
+            else if (mViewModel.getVehicleDataObservable().value is SetupDeliveryResponseModel)
+                (mViewModel.getVehicleDataObservable().value as SetupDeliveryResponseModel)?.responseData?.get(postion)?.providerService?.status = "INACTIVE"
+            loadingObservable.value = false
+            ViewUtils.showToast(applicationContext, "Service Turn-OFF successfully.", true)
+        }
+//        onBackPressed()
     }
 }

@@ -1,5 +1,6 @@
 package com.gox.partner.views.setup_vehicle
 
+import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
@@ -14,7 +15,7 @@ import com.gox.partner.repository.AppRepository
 class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
 
     private val mRepository = AppRepository.instance()
-    private val vehicleLiveData = MutableLiveData<Any>()
+    private var vehicleLiveData = MutableLiveData<Any>()
     private val transportServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.TRANSPORT_ID,Constants.ModuleTypes.TRANSPORT) ?: ""
     private val orderServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ORDER_ID, Constants.ModuleTypes.ORDER) ?: ""
     private val deliveryServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.DELIVERY_ID, Constants.ModuleTypes.DELIVERY) ?: ""
@@ -60,9 +61,21 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
 
     fun isVehicleAdded(position: Int): Boolean {
         return when (serviceName) {
-            transportServiceName -> (vehicleLiveData.value as SetupRideResponseModel).responseData[position].providerService != null
-            orderServiceName -> (vehicleLiveData.value as SetupShopResponseModel).responseData[position].providerService != null
-            deliveryServiceName -> (vehicleLiveData.value as SetupDeliveryResponseModel).responseData[position].providerService != null
+            transportServiceName ->{
+                return if((vehicleLiveData.value as SetupRideResponseModel).responseData[position].providerService?.status == "ACTIVE"){
+                    true
+                }else (vehicleLiveData.value as SetupRideResponseModel).responseData[position].providerService?.status == "ASSESSING"
+            }
+            orderServiceName -> {
+                return if((vehicleLiveData.value as SetupShopResponseModel).responseData[position].providerService?.status == "ACTIVE"){
+                    true
+                }else (vehicleLiveData.value as SetupShopResponseModel).responseData[position].providerService?.status == "ASSESSING"
+            }
+            deliveryServiceName -> {
+                return if((vehicleLiveData.value as SetupDeliveryResponseModel).responseData[position].providerService?.status == "ACTIVE"){
+                    true
+                }else (vehicleLiveData.value as SetupDeliveryResponseModel).responseData[position].providerService?.status == "ASSESSING"
+            }
             else -> false
         }
     }
@@ -91,6 +104,17 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
         }))
     }
 
+    fun updateService(status:Boolean,id:Int,updateService:HashMap<String,String>,postion:Int) {
+        getCompositeDisposable().add(mRepository.updateService(object : ApiListener {
+            override fun success(successData: Any) {
+                navigator.showSuccess(status,postion)
+            }
+            override fun fail(failData: Throwable) {
+                navigator.showError(getErrorMessage(failData))
+            }
+        },id,updateService))
+    }
+
     fun getDelivery() {
         getCompositeDisposable().add(mRepository.getDelivery(object : ApiListener {
             override fun success(successData: Any) {
@@ -106,5 +130,7 @@ class SetupVehicleViewModel : BaseViewModel<SetupVehicleNavigator>() {
     fun getVehicleDataObservable() = vehicleLiveData
 
     fun onItemClick(position: Int) = navigator.onMenuItemClicked(position)
+    fun onItemSwitchClick(position: Int,status:Boolean) = navigator.switchOnCliked(position,status)
+
 
 }

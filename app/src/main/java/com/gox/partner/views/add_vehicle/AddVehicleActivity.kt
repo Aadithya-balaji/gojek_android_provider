@@ -3,6 +3,8 @@ package com.gox.partner.views.add_vehicle
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.view.View
 import androidx.databinding.ViewDataBinding
@@ -23,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_add_vehicle.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 import java.io.File
 
+
 class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicleNavigator {
 
     private lateinit var mBinding: ActivityAddVehicleBinding
@@ -42,15 +45,32 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
         mBinding = mViewDataBinding as ActivityAddVehicleBinding
         mBinding.lifecycleOwner = this
-
         mViewModel = provideViewModel {
             AddVehicleViewModel()
         }
         mViewModel.navigator = this
 
         mViewModel.setServiceName(intent.getStringExtra(Constants.SERVICE_ID))
+        if(intent.hasExtra(Constants.SERVICE_STATUS))
+        mViewModel.setServiceStatus(intent.getStringExtra(Constants.SERVICE_STATUS))
         mViewModel.setCategoryId(intent.getIntExtra(Constants.CATEGORY_ID, -1))
+        mViewModel.isEditAble.set(true)
+        if(!mViewModel.getServiceStatus().equals("")){
+            if(mViewModel.getServiceStatus().equals("ACTIVE") || mViewModel.getServiceStatus().equals("INACTIVE")){
+             toolbar.editChanges.visibility  = View.VISIBLE
+                mViewModel.isEditAble.set(false)
+            }
+            toolbar.editChanges.setOnClickListener {
+                val builder = AlertDialog.Builder(this)
+                builder.setMessage("If you change any filed's you can ride only when admin is approved").setNegativeButton("", DialogInterface.OnClickListener { dialog, which ->  }).setPositiveButton("Ok",DialogInterface.OnClickListener { dialog, which ->
+                    mViewModel.isEditAble.set(true)
+                    toolbar.editChanges.visibility  = View.GONE
+                })
+                builder.show();
 
+
+            }
+        }
 
         if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE) ||  intent.hasExtra(Constants.PROVIDER_DELIVERY_VEHICLE))
             mViewModel.setIsEdit(true) else mViewModel.setIsEdit(false)

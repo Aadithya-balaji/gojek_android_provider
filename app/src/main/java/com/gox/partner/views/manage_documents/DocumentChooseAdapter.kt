@@ -67,7 +67,12 @@ class DocumentChooseAdapter() : BaseExpandableListAdapter() {
         }
         val item = (getChild(groupPosition, childPosition) as ListDocumentResponse.ResponseData)
 
-        convertView!!.tvDocumentName.text = item.name
+        if(item.servicesub_category == null){
+            convertView!!.tvDocumentName.text = item.name
+        }else{
+            convertView!!.tvDocumentName.text = item.name+" - "+item.servicesub_category.service_subcategory_name
+
+        }
         if (item.provider_document != null) {
             if (item.is_expire == 1) {
                 convertView.tvExpire.text = parent!!.context.getString(R.string.expire_at).plus(

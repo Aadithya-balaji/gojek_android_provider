@@ -19,6 +19,8 @@ data class ListDocumentResponse(
             val is_expire: Int = 0,
             val name: String = "",
             var provider_document: ProviderDocument? = ProviderDocument(),
+            var service_category: Service_category,
+            var servicesub_category: Servicesub_category,
             val service: String? = "",
             val status: Int? = 0,
             val type: String = ""
@@ -38,5 +40,29 @@ data class ListDocumentResponse(
                     val url: String = ""
             ):Parcelable
         }
+
+        @Parcelize
+        data class Service_category (
+                val id : Int = 0,
+                val service_category_name : String = "",
+                val alias_name : String  = "",
+                val price_choose : String  = "",
+                val picture : String  = "",
+                val service_category_order : Int = 0,
+                val service_category_status : Int = 0
+        ):Parcelable
+
+        @Parcelize
+        data class Servicesub_category (
+                val id : Int = 0,
+                val service_category_id : Int = 0,
+                val service_subcategory_name : String  = "",
+                val picture : String  = "",
+                val service_subcategory_order : Int = 0,
+                val service_subcategory_status : Int= 0
+        ):Parcelable
+
+
+
     }
 }

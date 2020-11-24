@@ -18,6 +18,8 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
     var loginLiveData = MutableLiveData<LoginResponseModel>()
 
     val countryCode = MutableLiveData<String>().apply { "+1" }
+    var countryIso = MutableLiveData<String>().apply { "IN" }
+
     val phoneNumber = MutableLiveData<String>()
     val email = MutableLiveData<String>()
     val password = MutableLiveData<String>()
@@ -47,6 +49,8 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
         }
         params[WebApiConstants.Login.PASSWORD] = password.value!!.trim()
         params[WebApiConstants.Login.DEVICE_TYPE] = Enums.DEVICE_TYPE
+        params["ios2"] = countryIso
+
         params[WebApiConstants.Login.DEVICE_TOKEN] = BaseApplication.getCustomPreference!!
                 .getString(PreferencesKey.DEVICE_TOKEN, "123")!!
         params["salt_key"] = SALT_KEY
@@ -65,6 +69,7 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
     internal fun postSocialLogin(isGoogleSignIn: Boolean, id: String) {
         val params = HashMap<String, String>()
         params[WebApiConstants.SocialLogin.DEVICE_TYPE] = ANDROID
+
         params[WebApiConstants.SocialLogin.DEVICE_TOKEN] = BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")!!
         params[WebApiConstants.SocialLogin.LOGIN_BY] = (if (isGoogleSignIn)
             LoginType.GOOGLE.value() else LoginType.FACEBOOK.value())

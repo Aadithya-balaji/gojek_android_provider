@@ -24,6 +24,9 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
     var firstName = MutableLiveData<String>()
     var lastName = MutableLiveData<String>()
     var countryCode = MutableLiveData<String>()
+    var countryIso = MutableLiveData<String>()
+
+
     var phoneNumber = MutableLiveData<String>()
     var email = MutableLiveData<String>()
     var password = MutableLiveData<String>()
@@ -55,14 +58,20 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
 
     fun postSignUp() {
         val signUpParams = HashMap<String, RequestBody>()
+
         signUpParams["salt_key"] = RequestBody.create(MediaType.parse("text/plain"), SALT_KEY)
         signUpParams[WebApiConstants.SignUp.DEVICE_TYPE] =
                 RequestBody.create(MediaType.parse("text/plain"), Enums.DEVICE_TYPE)
+
         signUpParams[WebApiConstants.SignUp.DEVICE_TOKEN] =
                 RequestBody.create(MediaType.parse("text/plain"),
                         BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")!!)
         signUpParams[WebApiConstants.SignUp.LOGIN_BY] =
                 RequestBody.create(MediaType.parse("text/plain"), loginby.value.toString())
+        signUpParams["iso2"] =
+                RequestBody.create(MediaType.parse("text/plain"), countryIso.value.toString())
+        signUpParams[WebApiConstants.SignUp.FIRST_NAME] =
+                RequestBody.create(MediaType.parse("text/plain"), firstName.value.toString())
         signUpParams[WebApiConstants.SignUp.FIRST_NAME] =
                 RequestBody.create(MediaType.parse("text/plain"), firstName.value.toString())
         signUpParams[WebApiConstants.SignUp.LAST_NAME] =

@@ -161,10 +161,13 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             resultIntent.putExtra("countryName", "India")
             resultIntent.putExtra("countryCode", "+91")
             resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+            resultIntent.putExtra("countryIsoCode", "IN")
+
         } else {
             resultIntent.putExtra("countryName", countryModel.name)
             resultIntent.putExtra("countryCode", countryModel.dialCode)
             resultIntent.putExtra("countryFlag", countryModel.flag)
+            resultIntent.putExtra("countryIsoCode", countryModel.code)
         }
         handleCountryCodePickerResult(resultIntent)
 
@@ -505,6 +508,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         countryCode = countryCode!!.removePrefix("+")
 
         mViewModel.countryCode.value = countryCode
+        mViewModel.countryIso.value = isoCode
         val countryFlag = data.getIntExtra("countryFlag", -1)
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {

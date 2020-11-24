@@ -83,10 +83,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
             resultIntent.putExtra("countryName", "India")
             resultIntent.putExtra("countryCode", "+91")
             resultIntent.putExtra("countryFlag", R.drawable.flag_in)
+            resultIntent.putExtra("countryIsoCode", "IN")
         } else {
             resultIntent.putExtra("countryName", countryModel.name)
             resultIntent.putExtra("countryCode", countryModel.dialCode)
             resultIntent.putExtra("countryFlag", countryModel.flag)
+            resultIntent.putExtra("countryIsoCode",countryModel.code)
         }
 
         handleCountryCodePickerResult(resultIntent)
@@ -184,6 +186,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
     private fun handleCountryCodePickerResult(data: Intent) {
         val countryCode = data.getStringExtra("countryCode")
         mViewModel.countryCode.value = countryCode
+        mViewModel. countryIso.value = data.getStringExtra("countryIsoCode")
         val countryFlag = data.getIntExtra("countryFlag", -1)
         val leftDrawable = ContextCompat.getDrawable(this, countryFlag)
         if (leftDrawable != null) {

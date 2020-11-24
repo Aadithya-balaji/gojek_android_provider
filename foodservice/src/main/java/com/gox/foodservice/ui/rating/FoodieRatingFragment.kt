@@ -50,6 +50,7 @@ class FoodieRatingFragment(bundle: Bundle) : BaseDialogFragment<FoodieFragmentRa
         val mViewModel = FoodieRatingViewModel()
         mBinding!!.viewModel = mViewModel
         mViewModel.navigator = this
+        rbRatingBar.rating = 5.0f
         tvUserName.text = b.getString("name")!!
         tvBookingId.text = b.getString("bookingID")!!
         try {

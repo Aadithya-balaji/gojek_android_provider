@@ -58,6 +58,7 @@ class DialogCourierRating : BaseDialogFragment<DialogCourierRatingBinding>(),
         getBundleValues()
         mBinding.tvRateWithUser.text = String.format(resources.getString(R.string.xuper_rate),
                 mViewModel.firstName.value.toString() + mViewModel.lastName.value.toString())
+        mBinding.rbUser.rating = 5.0f
         mBinding.rbUser.onRatingBarChangeListener = this
         getApiResponse()
     }

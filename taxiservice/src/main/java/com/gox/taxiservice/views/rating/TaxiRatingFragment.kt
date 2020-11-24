@@ -55,7 +55,7 @@ class TaxiRatingFragment(bundle: Bundle) : BaseDialogFragment<FragmentRatingBind
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
         dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
+        rbRatingBar.rating = 5.0f
         tvUserName.text = b.getString("name")!!
         tvBookingId.text = b.getString("bookingID")!!
 

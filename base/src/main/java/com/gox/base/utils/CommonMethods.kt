@@ -44,8 +44,8 @@ class CommonMethods {
         fun createImageFile(context: Context): File {
             val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
             val imageFileName: String = context.getString(R.string.app_name) + timeStamp + "_"
-            val storageDir: File = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-            if (!storageDir.exists()) storageDir.mkdirs()
+            val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+            if (!storageDir?.exists()!!) storageDir?.mkdirs()
             return File.createTempFile(imageFileName, ".jpg", storageDir)
         }
 

@@ -3,11 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -24,9 +24,9 @@ android {
         buildConfigField "boolean", "isSocketLocationUpdate", "false"
         buildConfigField("String", "SALT_KEY", '"MQ=="')
         //Live URL
-//         buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
+         buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
         //Staging
-        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
+//        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
     }
 
     buildTypes {

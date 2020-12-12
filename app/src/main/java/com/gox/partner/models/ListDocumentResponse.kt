@@ -19,8 +19,8 @@ data class ListDocumentResponse(
             val is_expire: Int = 0,
             val name: String = "",
             var provider_document: ProviderDocument? = ProviderDocument(),
-            var service_category: Service_category,
-            var servicesub_category: Servicesub_category,
+            var service_category: Service_category? = Service_category(),
+            var servicesub_category: Servicesub_category? = Servicesub_category(),
             val service: String? = "",
             val status: Int? = 0,
             val type: String = ""
@@ -61,7 +61,6 @@ data class ListDocumentResponse(
                 val service_subcategory_order : Int = 0,
                 val service_subcategory_status : Int= 0
         ):Parcelable
-
 
 
     }

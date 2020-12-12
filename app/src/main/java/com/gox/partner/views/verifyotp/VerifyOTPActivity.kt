@@ -45,8 +45,8 @@ class VerifyOTPActivity : BaseActivity<ActivityVerifyOtpBinding>(), VerifyOTPNav
         val extras = intent.extras
         if (extras != null && extras.containsKey("country_code")) {
             extras.run {
-                country_code = getString("country_code")
-                mobile_number = getString("mobile")
+                country_code = getString("country_code")!!
+                mobile_number = getString("mobile")!!
                 mViewModel.countryCode.value = country_code
                 mViewModel.phoneNumber.value = mobile_number
             }

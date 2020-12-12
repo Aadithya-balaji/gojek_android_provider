@@ -49,7 +49,7 @@ class LoginViewModel : BaseViewModel<LoginViewModel.LoginNavigator>() {
         }
         params[WebApiConstants.Login.PASSWORD] = password.value!!.trim()
         params[WebApiConstants.Login.DEVICE_TYPE] = Enums.DEVICE_TYPE
-        params["ios2"] = countryIso
+        params["ios2"] = countryIso.value!!.trim()
 
         params[WebApiConstants.Login.DEVICE_TOKEN] = BaseApplication.getCustomPreference!!
                 .getString(PreferencesKey.DEVICE_TOKEN, "123")!!

@@ -70,7 +70,7 @@ class DocumentChooseAdapter() : BaseExpandableListAdapter() {
         if(item.servicesub_category == null){
             convertView!!.tvDocumentName.text = item.name
         }else{
-            convertView!!.tvDocumentName.text = item.name+" - "+item.servicesub_category.service_subcategory_name
+            convertView!!.tvDocumentName.text = item.name+" - "+item.servicesub_category?.service_subcategory_name
 
         }
         if (item.provider_document != null) {

@@ -14,6 +14,7 @@ import com.gox.partner.databinding.ActivityVerifyOtpBinding
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class VerifyOTPActivity : BaseActivity<ActivityVerifyOtpBinding>(), VerifyOTPNavigator {
 
     private lateinit var mViewDataBinding: ActivityVerifyOtpBinding

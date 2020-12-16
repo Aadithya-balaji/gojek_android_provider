@@ -305,6 +305,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/txt_or"
                     style="@style/SmallText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

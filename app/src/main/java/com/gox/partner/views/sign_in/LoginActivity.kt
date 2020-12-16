@@ -72,6 +72,14 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), LoginViewModel.Login
 
         detectDefaultCountry(resultIntent)
 
+        if(BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.social_login, false)) {
+            mViewDataBinding.socialLoginLayout.visibility = View.VISIBLE
+            mViewDataBinding.txtOr.visibility = View.VISIBLE
+        } else {
+            mViewDataBinding.socialLoginLayout.visibility = View.GONE
+            mViewDataBinding.txtOr.visibility = View.GONE
+        }
+
         //    setDefaultCountry()
 
     }

@@ -26,6 +26,7 @@
                 android:id="@+id/top_applogo_layout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_60sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/custom_halfcircle">
 
                 <ImageView

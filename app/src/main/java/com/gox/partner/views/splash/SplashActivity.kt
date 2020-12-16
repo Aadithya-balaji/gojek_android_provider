@@ -84,6 +84,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
                 customPreference.edit().putBoolean(PreferencesKey.RIDE_OTP, it.responseData.appsetting.ride_otp == 1).apply()
                 customPreference.edit().putBoolean(PreferencesKey.SERVICE_OTP, it.responseData.appsetting.service_otp == 1).apply()
                 customPreference.edit().putBoolean(PreferencesKey.ORDER_OTP, it.responseData.appsetting.order_otp == 1).apply()
+                customPreference.edit().putBoolean(PreferencesKey.social_login, it.responseData.appsetting.social_login == 1).apply()
             } catch (e: Exception) {
                 e.printStackTrace()
             }

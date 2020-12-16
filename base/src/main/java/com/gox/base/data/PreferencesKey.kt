@@ -44,6 +44,7 @@ object PreferencesKey {
     const val RIDE_OTP = "RIDE_OTP"
     const val SERVICE_OTP = "SERVICE_OTP"
     const val ORDER_OTP = "ORDER_OTP"
+    const val social_login = "social_login"
     const val PROVIDER_ID = "PROVIDER_ID"
 
     const val PROVIDER_NEGATIVE_BALANCE = "PROVIDER_NEGATIVE_BALANCE"

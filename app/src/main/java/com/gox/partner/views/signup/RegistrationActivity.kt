@@ -20,6 +20,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
@@ -183,6 +184,11 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     mViewModel.validateUser(params)
                 }
         }
+
+        if(BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.social_login, false))
+            mViewDataBinding.socialSignupLayout.visibility = View.VISIBLE
+        else
+            mViewDataBinding.socialSignupLayout.visibility = View.GONE
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             terms_conditions_tv.text = Html.fromHtml(getString(R.string.i_accept_the_following_terms_and_conditions),

@@ -58,8 +58,13 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
                         offset += 10
                         transportResponseData.order.addAll(it.responseData.order)
                         setTransportHistoryAdapter(Constants.ModuleTypes.ORDER)
+                    } else if(it.responseData.type.equals(Constants.ModuleTypes.DELIVERY, true) && !it.responseData.delivery!!.isEmpty()){
+                        loadMore = true
+                        offset += 10
+                        transportResponseData.delivery.addAll(it.responseData.delivery)
+                        setTransportHistoryAdapter(Constants.ModuleTypes.DELIVERY)
                     }
-                    when (transportResponseData.order.size + transportResponseData.service.size + transportResponseData.transport.size > 0) {
+                    when (transportResponseData.order.size + transportResponseData.service.size + transportResponseData.transport.size + transportResponseData.delivery.size > 0) {
                         false -> {
                             this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
                             this.mViewDataBinding.pastOrdersfrgRv.visibility = View.GONE
@@ -69,7 +74,7 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
 
         pastOrderViewModel.errorResponse.observe(this@PastOrderFragment, Observer<String> { error ->
             loadingObservable.value = false
-            when (transportResponseData.order.size + transportResponseData.service.size + transportResponseData.transport.size > 0) {
+            when (transportResponseData.order.size + transportResponseData.service.size + transportResponseData.transport.size + transportResponseData.delivery.size > 0) {
                 false -> {
                     this.mViewDataBinding.emptyViewLayout.visibility = View.VISIBLE
                     this.mViewDataBinding.pastOrdersfrgRv.visibility = View.GONE

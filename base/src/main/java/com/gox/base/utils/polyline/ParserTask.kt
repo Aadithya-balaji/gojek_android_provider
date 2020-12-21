@@ -57,8 +57,12 @@ class ParserTask internal constructor(private val mPolyLineListener: PolyLineLis
             lineOptions.geodesic(true)
         }
 
-        if (lineOptions != null) mPolyLineListener.whenDone(lineOptions)
-        else mPolyLineListener.whenFail(error!!)
+        try {
+            if (lineOptions != null) mPolyLineListener.whenDone(lineOptions)
+            else mPolyLineListener.whenFail(error!!)
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
     }
 
     private fun getDistance(jObject: JSONObject){

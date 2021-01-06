@@ -20,7 +20,7 @@ android {
         applicationId "com.opus.provider"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 6
+        versionCode 7
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true

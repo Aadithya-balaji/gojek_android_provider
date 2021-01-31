@@ -52,13 +52,13 @@ class WebServiceModule {
 
     private fun getRequestHeader() = Interceptor {
         val original = it.request()
-        Log.d("Authorization : Bearer", PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext).getString(PreferencesKey.ACCESS_TOKEN, ""))
+        PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext).getString(PreferencesKey.ACCESS_TOKEN, "")?.let { it1 -> Log.d("Authorization : Bearer", it1) }
         val request = original.newBuilder()
                 .header("X-Requested-With", "XMLHttpRequest")
                 .header("Authorization",
                         "Bearer " + PreferenceManager.getDefaultSharedPreferences(BaseApplication.getBaseApplicationContext)
                                 .getString(PreferencesKey.ACCESS_TOKEN, ""))
-                .method(original.method(), original.body())
+                .method(original.method, original.body)
                 .build()
         it.proceed(request)
     }

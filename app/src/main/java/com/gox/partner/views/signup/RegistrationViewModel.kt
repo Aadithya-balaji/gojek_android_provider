@@ -14,8 +14,10 @@ import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
 import com.gox.partner.utils.Enums
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class RegistrationViewModel(private val registrationNavigator: RegistrationNavigator)
     : BaseViewModel<RegistrationViewModel.RegistrationNavigator>() {
@@ -59,44 +61,43 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
     fun postSignUp() {
         val signUpParams = HashMap<String, RequestBody>()
 
-        signUpParams["salt_key"] = RequestBody.create(MediaType.parse("text/plain"), SALT_KEY)
+        signUpParams["salt_key"] = SALT_KEY.toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.DEVICE_TYPE] =
-                RequestBody.create(MediaType.parse("text/plain"), Enums.DEVICE_TYPE)
+                Enums.DEVICE_TYPE.toRequestBody("text/plain".toMediaTypeOrNull())
 
         signUpParams[WebApiConstants.SignUp.DEVICE_TOKEN] =
-                RequestBody.create(MediaType.parse("text/plain"),
-                        BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")!!)
+                BaseApplication.getCustomPreference!!.getString(PreferencesKey.DEVICE_TOKEN, "123")!!.toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.LOGIN_BY] =
-                RequestBody.create(MediaType.parse("text/plain"), loginby.value.toString())
+                loginby.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams["iso2"] =
-                RequestBody.create(MediaType.parse("text/plain"), countryIso.value.toString())
+                countryIso.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.FIRST_NAME] =
-                RequestBody.create(MediaType.parse("text/plain"), firstName.value.toString())
+                firstName.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.FIRST_NAME] =
-                RequestBody.create(MediaType.parse("text/plain"), firstName.value.toString())
+                firstName.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.LAST_NAME] =
-                RequestBody.create(MediaType.parse("text/plain"), lastName.value.toString())
+                lastName.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.EMAIL] =
-                RequestBody.create(MediaType.parse("text/plain"), email.value.toString())
+                email.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.GENDER] =
-                RequestBody.create(MediaType.parse("text/plain"), gender.value.toString())
+                gender.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.COUNTRY_CODE] =
-                RequestBody.create(MediaType.parse("text/plain"), countryCode.value.toString().replace("+",""))
+                countryCode.value.toString().replace("+","").toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.MOBILE] =
-                RequestBody.create(MediaType.parse("text/plain"), phoneNumber.value.toString())
+                phoneNumber.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.PASSWORD] =
-                RequestBody.create(MediaType.parse("text/plain"), password.value.toString())
+                password.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.COUNTRY_ID] =
-                RequestBody.create(MediaType.parse("text/plain"), countryID.value.toString())
+                countryID.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         signUpParams[WebApiConstants.SignUp.CITY_ID] =
-                RequestBody.create(MediaType.parse("text/plain"), cityID.value.toString())
+                cityID.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         if (!referralCode.value.isNullOrEmpty())
             signUpParams[WebApiConstants.SignUp.REFERRAL_CODE] =
-                    RequestBody.create(MediaType.parse("text/plain"), referralCode.value.toString())
+                    referralCode.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
         if (!socialID.value.isNullOrEmpty())
             signUpParams[WebApiConstants.SignUp.SOCIAL_ID] =
-                    RequestBody.create(MediaType.parse("text/plain"), socialID.value.toString())
+                    socialID.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         getCompositeDisposable().add(mRepository.postSignUp(object : ApiListener {
             override fun success(successData: Any) {
@@ -152,9 +153,9 @@ class RegistrationViewModel(private val registrationNavigator: RegistrationNavig
 
     fun sendOTP() {
         val hashMap: HashMap<String, RequestBody> = HashMap()
-        hashMap.put("country_code", RequestBody.create(MediaType.parse("text/plain"), countryCode.value!!.replace("+", "")))
-        hashMap.put("mobile", RequestBody.create(MediaType.parse("text/plain"), phoneNumber.value!!.toString()))
-        hashMap.put("salt_key", RequestBody.create(MediaType.parse("text/plain"), BuildConfig.SALT_KEY))
+        hashMap.put("country_code", countryCode.value!!.replace("+", "").toRequestBody("text/plain".toMediaTypeOrNull()))
+        hashMap.put("mobile", phoneNumber.value!!.toString().toRequestBody("text/plain".toMediaTypeOrNull()))
+        hashMap.put("salt_key", BuildConfig.SALT_KEY.toRequestBody("text/plain".toMediaTypeOrNull()))
         getCompositeDisposable().add(mRepository.sendOTP(object : ApiListener {
             override fun success(successData: Any) {
                 sendOTPResponse.postValue(successData as SendOTPResponse)

@@ -16,8 +16,10 @@ import com.bee.courierservice.model.UpdateRequest
 import com.bee.courierservice.model.CourierCheckRequest
 import com.bee.courierservice.repositary.CourierRepository
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class CourierDashboardViewModel : BaseViewModel<CourierDashBoardNavigator>() {
 
@@ -76,12 +78,11 @@ class CourierDashboardViewModel : BaseViewModel<CourierDashBoardNavigator>() {
         if (BaseApplication.isNetworkAvailable) {
             showLoading.value = true
             val params = HashMap<String, RequestBody>()
-            params[ID] = RequestBody.create(MediaType.parse("text/plain"),
-                    xUberCheckRequest.value!!.responseData!!.request!!.delivery.id.toString())
-            params[STATUS] = RequestBody.create(MediaType.parse("text/plain"), status)
-            params[METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
-            params[EXTRA_CHARGE] = RequestBody.create(MediaType.parse("text/plain"), extraCharge)
-            params[EXTRA_CHARGE_NOTES] = RequestBody.create(MediaType.parse("text/plain"), extraChargeNotes)
+            params[ID] = xUberCheckRequest.value!!.responseData.request.delivery.id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            params[STATUS] = status.toRequestBody("text/plain".toMediaTypeOrNull())
+            params[METHOD] = "PATCH".toRequestBody("text/plain".toMediaTypeOrNull())
+            params[EXTRA_CHARGE] = extraCharge.toRequestBody("text/plain".toMediaTypeOrNull())
+            params[EXTRA_CHARGE_NOTES] = extraChargeNotes.toRequestBody("text/plain".toMediaTypeOrNull())
 
             if (isFrontImage) getCompositeDisposable().add(mRepository.xUberUpdateRequest(object : ApiListener {
                 override fun success(successData: Any) {

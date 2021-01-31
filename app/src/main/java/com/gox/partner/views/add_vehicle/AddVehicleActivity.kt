@@ -17,6 +17,7 @@ import com.gox.base.utils.ImageCropperUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityAddVehicleBinding
+import com.gox.partner.models.ProviderVehicleResponseModel
 import com.gox.partner.models.SetupDeliveryResponseModel
 import com.gox.partner.models.SetupRideResponseModel
 import com.gox.partner.utils.Enums
@@ -50,21 +51,20 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         }
         mViewModel.navigator = this
 
-        mViewModel.setServiceName(intent.getStringExtra(Constants.SERVICE_ID))
-        if(intent.hasExtra(Constants.SERVICE_STATUS))
-        mViewModel.setServiceStatus(intent.getStringExtra(Constants.SERVICE_STATUS))
+        intent.getStringExtra(Constants.SERVICE_ID)?.let { mViewModel.setServiceName(it) }
+        intent.getStringExtra(Constants.SERVICE_STATUS)?.let { mViewModel.setServiceStatus(it) }
         mViewModel.setCategoryId(intent.getIntExtra(Constants.CATEGORY_ID, -1))
         mViewModel.isEditAble.set(true)
-        if(!mViewModel.getServiceStatus().equals("")){
-            if(mViewModel.getServiceStatus().equals("ACTIVE") || mViewModel.getServiceStatus().equals("INACTIVE")){
-             toolbar.editChanges.visibility  = View.VISIBLE
+        if (!mViewModel.getServiceStatus().equals("")) {
+            if (mViewModel.getServiceStatus().equals("ACTIVE") || mViewModel.getServiceStatus().equals("INACTIVE")) {
+                toolbar.editChanges.visibility = View.VISIBLE
                 mViewModel.isEditAble.set(false)
             }
             toolbar.editChanges.setOnClickListener {
                 val builder = AlertDialog.Builder(this)
-                builder.setMessage("If you change any filed's you can ride only when admin is approved").setNegativeButton("", DialogInterface.OnClickListener { dialog, which ->  }).setPositiveButton("Ok",DialogInterface.OnClickListener { dialog, which ->
+                builder.setMessage("If you change any filed's you can ride only when admin is approved").setNegativeButton("", DialogInterface.OnClickListener { dialog, which -> }).setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, which ->
                     mViewModel.isEditAble.set(true)
-                    toolbar.editChanges.visibility  = View.GONE
+                    toolbar.editChanges.visibility = View.GONE
                 })
                 builder.show();
 
@@ -72,26 +72,23 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             }
         }
 
-        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE) ||  intent.hasExtra(Constants.PROVIDER_DELIVERY_VEHICLE))
+        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE) || intent.hasExtra(Constants.PROVIDER_DELIVERY_VEHICLE))
             mViewModel.setIsEdit(true) else mViewModel.setIsEdit(false)
 
-        if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
-            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_TRANSPORT_VEHICLE))
-        else if (intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE))
-            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_ORDER_VEHICLE))
-        else if (intent.hasExtra(Constants.PROVIDER_DELIVERY_VEHICLE))
-            mViewModel.setVehicleLiveData(intent.getParcelableExtra(Constants.PROVIDER_DELIVERY_VEHICLE))
+        intent.getParcelableExtra<ProviderVehicleResponseModel>(Constants.PROVIDER_TRANSPORT_VEHICLE)?.let { mViewModel.setVehicleLiveData(it) }
+        intent.getParcelableExtra<ProviderVehicleResponseModel>(Constants.PROVIDER_ORDER_VEHICLE)?.let { mViewModel.setVehicleLiveData(it) }
+        intent.getParcelableExtra<ProviderVehicleResponseModel>(Constants.PROVIDER_DELIVERY_VEHICLE)?.let { mViewModel.setVehicleLiveData(it) }
 
 
         if (intent.hasExtra(Constants.TRANSPORT_VEHICLES)) {
             vehicleData = intent.getSerializableExtra(Constants.TRANSPORT_VEHICLES)
                     as ArrayList<SetupRideResponseModel.ResponseData.ServiceList>
             setVehicle(vehicleData)
-        }else if (intent.hasExtra(Constants.DELIVERY_VEHICLES)) {
+        } else if (intent.hasExtra(Constants.DELIVERY_VEHICLES)) {
             vehicleDeliveryData = intent.getSerializableExtra(Constants.DELIVERY_VEHICLES)
                     as ArrayList<SetupDeliveryResponseModel.ResponseData.ServiceList>
             setDeliveryVehicle(vehicleDeliveryData)
-        }else{
+        } else {
             mViewModel.specialSeatLiveData.value = false
         }
 
@@ -117,14 +114,14 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 txt_category_selection.setText(item.toString())
                 val isTransport = mViewModel.getServiceName() == mViewModel.getTransportServiceName()
 //                val isDelivery = mViewModel.getServiceName() == mViewModel.getDeliveryServiceName()
-                if(isTransport){
+                if (isTransport) {
                     mViewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
-                    val capacity:Int? = vehicleData[position].capacity
-                    mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
-                }else{
+                    val capacity: Int? = vehicleData[position].capacity
+                    mViewModel.specialSeatLiveData.value = capacity != null && capacity > 3
+                } else {
                     mViewModel.getVehicleData()!!.vehicleId = vehicleDeliveryData[position].id
-                    val capacity:Int? = vehicleDeliveryData[position].capacity
-                    mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
+                    val capacity: Int? = vehicleDeliveryData[position].capacity
+                    mViewModel.specialSeatLiveData.value = capacity != null && capacity > 3
                 }
 
             }
@@ -169,8 +166,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 val vehiclePosition = vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
                 spinnerCarCategory.selectedIndex = vehiclePosition
                 txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
-                val capacity:Int? = vehicleData[vehiclePosition].capacity
-                mViewModel.specialSeatLiveData.value = capacity!=null && capacity >3
+                val capacity: Int? = vehicleData[vehiclePosition].capacity
+                mViewModel.specialSeatLiveData.value = capacity != null && capacity > 3
             } else {
                 spinnerCarCategory.selectedIndex = 0
                 txt_category_selection.setText(vehicleData[0].vehicleName)
@@ -201,7 +198,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                     mViewModel.specialSeatLiveData.value = false
                 }
             }
-        } catch (ce: Exception){
+        } catch (ce: Exception) {
             ce.printStackTrace()
         }
 

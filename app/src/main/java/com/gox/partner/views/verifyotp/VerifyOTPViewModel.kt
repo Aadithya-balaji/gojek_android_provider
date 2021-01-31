@@ -9,7 +9,9 @@ import com.gox.partner.models.SendOTPResponse
 import com.gox.partner.models.VerifyOTPResponse
 import com.gox.partner.repository.AppRepository
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class VerifyOTPViewModel: BaseViewModel<VerifyOTPNavigator>(){
     var loadingProgress = MutableLiveData<Boolean>()
@@ -33,9 +35,9 @@ class VerifyOTPViewModel: BaseViewModel<VerifyOTPNavigator>(){
     fun resendOTP() {
         loadingProgress.value = true
         val hashMap: HashMap<String, RequestBody> = HashMap()
-        hashMap.put("country_code", RequestBody.create(MediaType.parse("text/plain"), countryCode.value!!.replace("+", "")))
-        hashMap.put("mobile", RequestBody.create(MediaType.parse("text/plain"), phoneNumber.value!!.toString()))
-        hashMap.put("salt_key", RequestBody.create(MediaType.parse("text/plain"), BuildConfig.SALT_KEY))
+        hashMap.put("country_code", countryCode.value!!.replace("+", "").toRequestBody("text/plain".toMediaTypeOrNull()))
+        hashMap.put("mobile", phoneNumber.value!!.toString().toRequestBody("text/plain".toMediaTypeOrNull()))
+        hashMap.put("salt_key", BuildConfig.SALT_KEY.toRequestBody("text/plain".toMediaTypeOrNull()))
         getCompositeDisposable().add(appRepository.sendOTP(object : ApiListener {
             override fun success(successData: Any) {
                 sendOTPResponse.postValue(successData as SendOTPResponse)

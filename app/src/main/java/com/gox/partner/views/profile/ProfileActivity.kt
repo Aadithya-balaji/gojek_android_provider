@@ -54,6 +54,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
 import com.tooltip.Tooltip
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.Serializable
 
 class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavigator {
@@ -192,7 +193,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                     mMobileNumberFlag = 1
                     if (localPath?.path != null) {
                         val pictureFile = File(localPath?.path)
-                        val requestFile = RequestBody.create(MediaType.parse("*/*"), pictureFile)
+                        val requestFile = RequestBody.create("*/*".toMediaTypeOrNull(), pictureFile)
                         val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
                         mViewModel.updateProfile(fileBody)
                     } else mViewModel.updateProfile(null)
@@ -293,7 +294,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         if (localPath?.path != null) {
             val pictureFile = File(localPath?.path)
             val requestFile = RequestBody.create(
-                    MediaType.parse("*/*"),
+                    "*/*".toMediaTypeOrNull(),
                     pictureFile)
 
             val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)

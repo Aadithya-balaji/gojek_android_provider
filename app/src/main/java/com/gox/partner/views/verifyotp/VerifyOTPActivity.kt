@@ -12,7 +12,9 @@ import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityVerifyOtpBinding
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class VerifyOTPActivity : BaseActivity<ActivityVerifyOtpBinding>(), VerifyOTPNavigator {
@@ -90,10 +92,10 @@ class VerifyOTPActivity : BaseActivity<ActivityVerifyOtpBinding>(), VerifyOTPNav
             ViewUtils.showToast(this, getString(R.string.error_enter_valid_otp), false)
         } else {
             val hashMap: HashMap<String, RequestBody> = HashMap()
-            hashMap.put("country_code", RequestBody.create(MediaType.parse("text/plain"), country_code))
-            hashMap.put("mobile", RequestBody.create(MediaType.parse("text/plain"), mobile_number))
-            hashMap.put("otp", RequestBody.create(MediaType.parse("text/plain"), mViewDataBinding.pvOTP.value))
-            hashMap.put("salt_key", RequestBody.create(MediaType.parse("text/plain"), BuildConfig.SALT_KEY))
+            hashMap.put("country_code", country_code.toRequestBody("text/plain".toMediaTypeOrNull()))
+            hashMap.put("mobile", mobile_number.toRequestBody("text/plain".toMediaTypeOrNull()))
+            hashMap.put("otp", mViewDataBinding.pvOTP.value.toRequestBody("text/plain".toMediaTypeOrNull()))
+            hashMap.put("salt_key", BuildConfig.SALT_KEY.toRequestBody("text/plain".toMediaTypeOrNull()))
             mViewModel.verifyOTPApiCall(hashMap)
             mViewModel.loadingProgress.value = true
         }

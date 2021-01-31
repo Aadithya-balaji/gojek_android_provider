@@ -75,6 +75,7 @@ import kotlinx.android.synthetic.main.bottom_service_status_sheet.*
 import kotlinx.android.synthetic.main.bottom_service_status_sheet.view.*
 import kotlinx.android.synthetic.main.dialog_info_window.view.*
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -422,7 +423,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
             val location = intent!!.getParcelableExtra<Location>(BaseLocationService.EXTRA_LOCATION)
             val isGpsEnabled = intent.getBooleanExtra("ISGPS_EXITS", false)
 
-            if (isGpsEnabled) updateMap(location)
+            if (isGpsEnabled) location?.let { updateMap(it) }
             else if (!isLocationDialogShown) {
                 isLocationDialogShown = true
                 CommonMethods.checkGps(context)
@@ -756,7 +757,7 @@ class XUberDashBoardActivity : BaseActivity<ActivityXuberMainBinding>(),
 
     private fun getImageMultiPart(file: File, isFrontImage: Boolean): MultipartBody.Part {
         val fileBody: MultipartBody.Part
-        val requestFile = RequestBody.create(MediaType.parse("*/*"), file)
+        val requestFile = RequestBody.create("*/*".toMediaTypeOrNull(), file)
         fileBody = if (isFrontImage)
             MultipartBody.Part.createFormData("before_picture", file.name, requestFile)
         else MultipartBody.Part.createFormData("after_picture", file.name, requestFile)

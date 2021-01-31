@@ -23,6 +23,7 @@ import com.gox.base.utils.ImageCropperUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityAddEditDocumentBinding
+import com.gox.partner.models.ListDocumentResponse
 import com.gox.partner.utils.Enums
 import com.gox.partner.utils.Enums.Companion.PDF_EXTENSION
 import com.karumi.dexter.Dexter
@@ -70,7 +71,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         }
 
         tv_toolbar_title.text = intent.getStringExtra(Constants.DOCUMENT_NAME)
-        mViewModel.setData(intent.getParcelableExtra(Constants.DOCUMENT_TYPE))
+        intent.getParcelableExtra<ListDocumentResponse.ResponseData>(Constants.DOCUMENT_TYPE)?.let { mViewModel.setData(it) }
         observeResponses()
 
         mViewModel.expiryDate.value = DateTimeUtil().constructDateString(calendar.get(Calendar.YEAR),

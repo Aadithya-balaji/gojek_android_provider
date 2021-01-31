@@ -11,7 +11,9 @@ import android.util.Base64
 import android.util.Log
 import androidx.databinding.ViewDataBinding
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.FirebaseApp
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.gox.base.base.BaseActivity
 import com.gox.base.base.BaseApplication
@@ -59,13 +61,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(), SplashViewModel.Sp
 
         customPreference = BaseApplication.getCustomPreference!!
 
-        FirebaseInstanceId.getInstance().instanceId
-                .addOnCompleteListener(OnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        return@OnCompleteListener
-                    }
-                    customPreference.edit().putString(PreferencesKey.DEVICE_TOKEN, task.result?.token).apply()
-                })
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {  task ->
+            if (!task.isSuccessful) {
+                return@addOnCompleteListener
+            }
+            customPreference.edit().putString(PreferencesKey.DEVICE_TOKEN, task.result).apply()
+        }
+
     }
 
     @SuppressLint("CommitPrefEdits")

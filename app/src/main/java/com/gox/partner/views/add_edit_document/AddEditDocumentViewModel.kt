@@ -9,8 +9,10 @@ import com.gox.partner.models.ListDocumentResponse
 import com.gox.partner.repository.AppRepository
 import com.gox.partner.utils.Enums
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.sql.Timestamp
 
@@ -122,13 +124,13 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
         val hashMap: HashMap<String, RequestBody> = HashMap()
         if (!expiryDate.value.isNullOrEmpty()) hashMap["expires_at"] =
-                RequestBody.create(MediaType.parse("text/plain"), expiryDate.value!!)
-        hashMap["document_id"] = RequestBody.create(MediaType.parse("text/plain"), data[currentPosition].id.toString())
+                expiryDate.value!!.toRequestBody("text/plain".toMediaTypeOrNull())
+        hashMap["document_id"] = data[currentPosition].id.toString().toRequestBody("text/plain".toMediaTypeOrNull())
 
         var frontImageRequestBody: RequestBody? = null
         if (documentFrontImageFile.value != null) {
             frontImageRequestBody = RequestBody.create(
-                    MediaType.parse("*/*"),
+                    "*/*".toMediaTypeOrNull(),
                     documentFrontImageFile.value!!)
         }
 
@@ -136,7 +138,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
         if (documentBackImageFile.value != null) {
             backImageFile = RequestBody.create(
-                    MediaType.parse("*/*"),
+                    "*/*".toMediaTypeOrNull(),
                     documentBackImageFile.value!!)
         }
 

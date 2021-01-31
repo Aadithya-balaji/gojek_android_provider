@@ -34,7 +34,7 @@ open class BaseApplication : Application(), InternetConnectivityListener {
             .webServiceModule(WebServiceModule())
             .build()
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
+    override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         LocaleUtils.setLocale(this)
     }

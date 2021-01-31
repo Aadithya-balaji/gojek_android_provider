@@ -14,6 +14,8 @@ import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.Constants
 import com.gox.base.repository.ApiListener
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class CourierInvoiceViewModel : BaseViewModel<CourierInvoiceNavigator>() {
 
@@ -80,16 +82,15 @@ class CourierInvoiceViewModel : BaseViewModel<CourierInvoiceNavigator>() {
 
     fun updatePayment(id:String,payment_by:String){
         val params = HashMap<String, RequestBody>()
-        params[Constants.Common.ID] = RequestBody.create(MediaType.parse("text/plain"),
-                id)
+        params[Constants.Common.ID] = id.toRequestBody("text/plain".toMediaTypeOrNull())
         if(payment_by.equals("SENDER",true))
-        params[Constants.XUberProvider.STATUS] = RequestBody.create(MediaType.parse("text/plain"), "PAYMENT")
+        params[Constants.XUberProvider.STATUS] = "PAYMENT".toRequestBody("text/plain".toMediaTypeOrNull())
         else
-            params[Constants.XUberProvider.STATUS] = RequestBody.create(MediaType.parse("text/plain"), "COMPLETED")
+            params[Constants.XUberProvider.STATUS] = "COMPLETED".toRequestBody("text/plain".toMediaTypeOrNull())
 
-        params[Constants.Common.METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
-        params[Constants.XUberProvider.EXTRA_CHARGE] = RequestBody.create(MediaType.parse("text/plain"), "")
-        params[Constants.XUberProvider.EXTRA_CHARGE_NOTES] = RequestBody.create(MediaType.parse("text/plain"), "")
+        params[Constants.Common.METHOD] = "PATCH".toRequestBody("text/plain".toMediaTypeOrNull())
+        params[Constants.XUberProvider.EXTRA_CHARGE] = "".toRequestBody("text/plain".toMediaTypeOrNull())
+        params[Constants.XUberProvider.EXTRA_CHARGE_NOTES] = "".toRequestBody("text/plain".toMediaTypeOrNull())
        getCompositeDisposable().add(mRepository.xUberUpdateRequest(object : ApiListener {
             override fun success(successData: Any) {
                 invoiceUpdateRequest.value = successData as CourierCheckRequest

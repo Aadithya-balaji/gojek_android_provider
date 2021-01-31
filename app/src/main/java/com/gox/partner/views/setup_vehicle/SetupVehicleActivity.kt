@@ -31,7 +31,7 @@ class SetupVehicleActivity : BaseActivity<ActivitySetupVehicleBinding>(), SetupV
             SetupVehicleViewModel()
         }
         mViewModel.navigator = this
-        mViewModel.setServiceId(intent.getStringExtra(Constants.SERVICE_ID))
+        intent.getStringExtra(Constants.SERVICE_ID)?.let { mViewModel.setServiceId(it) }
         mBinding.setupVehicleViewModel = mViewModel
         setSupportActionBar(mBinding.toolbar.tbApp)
         mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }

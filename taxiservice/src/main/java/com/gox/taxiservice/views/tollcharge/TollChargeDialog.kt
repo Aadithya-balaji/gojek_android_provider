@@ -55,8 +55,7 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
         mBinding.edtAmount.addTextChangedListener(EditListener())
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
-        val strRequestID = if (arguments != null && arguments!!.containsKey("requestID"))
-            arguments!!.getString("requestID") else ""
+        val strRequestID = arguments?.getString("requestID") ?: ""
 
         val locationPoint: ArrayList<LocationPoint> = arrayListOf()
 

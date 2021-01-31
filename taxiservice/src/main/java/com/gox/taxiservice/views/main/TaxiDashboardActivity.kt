@@ -841,8 +841,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     override fun whenFail(statusCode: String) {
         if (statusCode == "OVER_DAILY_LIMIT" || statusCode.contains(
                         "You have exceeded your daily request quota for this API")) {
-            polylineKey = BaseApplication.getCustomPreference!!.getString(
-                    PreferencesKey.ALTERNATE_MAP_KEY, "")
+            polylineKey = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ALTERNATE_MAP_KEY, "")!!
             PolylineUtil(this).execute(DirectionUtils().getDirectionsUrl
             (mViewModel.tempSrc.value, mViewModel.tempDest.value, polylineKey))
         }

@@ -69,6 +69,7 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -249,8 +250,8 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
         if (resultCode != RESULT_CANCELED) {
             if (requestCode == GOOGLE_REQ_CODE) {
                 val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-                Log.e("status code ", result.status.toString())
-                if (result.isSuccess) {
+                Log.e("status code ", result?.status.toString())
+                if (result?.isSuccess == true) {
                     val acct = result.signInAccount
                     if (acct != null) handleGPlusSignInResult(acct)
                 } else Auth.GoogleSignInApi.signOut(mGoogleApiClient)
@@ -290,7 +291,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
                 GOOGLE_REQ_CODE -> {
                     val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
-                    if (result.isSuccess) {
+                    if (result?.isSuccess == true) {
                         // Signed in successfully, show authenticated UI.
                         val acct = result.signInAccount
                         if (acct != null) handleGPlusSignInResult(acct)
@@ -312,7 +313,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     val profileFile = File(result.uri.path)
                     if (profileFile.exists()) {
                         filePart = MultipartBody.Part.createFormData("picture", profileFile.name,
-                                RequestBody.create(MediaType.parse("image*//*"), profileFile))
+                                RequestBody.create("image*//*".toMediaTypeOrNull(), profileFile))
                         mViewModel.fileName.value = filePart
                     }
                 }
@@ -551,7 +552,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             if (profileFile != null && profileFile.exists()) {
                 Log.e("signUp", "---------" + profileFile.path)
                 filePart = MultipartBody.Part.createFormData("picture",
-                        profileFile.name, RequestBody.create(MediaType.parse("image*//*"), profileFile))
+                        profileFile.name, RequestBody.create("image*//*".toMediaTypeOrNull(), profileFile))
                 mViewModel.fileName.value = filePart
             }
 //            mViewModel.postSignUp()
@@ -702,7 +703,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     out.flush()
                     out.close()
                 } catch (e: Exception) {
-                    Log.i("Seiggailion", e.message)
+                    Log.i("Seiggailion", e.message?:"")
                 }
             }
             return if (file.exists())

@@ -7,7 +7,9 @@ import com.gox.base.repository.ApiListener
 import com.gox.xuberservice.model.UpdateRequest
 import com.gox.xuberservice.repositary.XUberRepository
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class XUberInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
 
@@ -33,10 +35,10 @@ class XUberInvoiceViewModel : BaseViewModel<XuperInvoiceNavigator>() {
         if (paymentType.equals(Constants.PaymentMode.CASH, true)) {
             showLoading.value = true
             val params = HashMap<String, RequestBody>()
-            params[Constants.Common.ID] = RequestBody.create(MediaType.parse("text/plain"), requestID.value.toString())
-            params[Constants.XUberProvider.STATUS] = RequestBody.create(MediaType.parse("text/plain"), "PAYMENT")
-            params[Constants.Common.METHOD] = RequestBody.create(MediaType.parse("text/plain"), "PATCH")
-            params["extra_charge_notes"] = RequestBody.create(MediaType.parse("text/plain"), extraChargeNotes.value.toString())
+            params[Constants.Common.ID] = requestID.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
+            params[Constants.XUberProvider.STATUS] = "PAYMENT".toRequestBody("text/plain".toMediaTypeOrNull())
+            params[Constants.Common.METHOD] = "PATCH".toRequestBody("text/plain".toMediaTypeOrNull())
+            params["extra_charge_notes"] = extraChargeNotes.value.toString().toRequestBody("text/plain".toMediaTypeOrNull())
             getCompositeDisposable().add(mRepository.confirmPayment(object : ApiListener {
                 override fun success(successData: Any) {
                     invoiceLiveData.value = successData as UpdateRequest

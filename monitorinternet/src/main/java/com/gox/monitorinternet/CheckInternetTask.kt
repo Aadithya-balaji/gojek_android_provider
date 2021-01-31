@@ -13,7 +13,7 @@ internal class CheckInternetTask(callback: TaskFinished<Boolean>) : AsyncTask<Vo
 
     private val mCallbackWeakReference: WeakReference<TaskFinished<Boolean>> = WeakReference(callback)
 
-    override fun doInBackground(vararg params: Void): Boolean? {
+    override fun doInBackground(vararg params: Void): Boolean {
         try {
             //      parse url. if url is not parsed properly then return
             val url: URL
@@ -45,8 +45,8 @@ internal class CheckInternetTask(callback: TaskFinished<Boolean>) : AsyncTask<Vo
 
     }
 
-    override fun onPostExecute(isInternetAvailable: Boolean?) {
+    override fun onPostExecute(isInternetAvailable: Boolean) {
         val callback = mCallbackWeakReference.get()
-        callback?.onTaskFinished(isInternetAvailable!!)
+        callback?.onTaskFinished(isInternetAvailable)
     }
 }

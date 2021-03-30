@@ -17,6 +17,8 @@ import androidx.databinding.ObservableField
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.data.Constants.APP_REQUEST_CODE
@@ -45,8 +47,6 @@ import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.karumi.dexter.listener.single.PermissionListener
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.android.synthetic.main.activity_edit_profile.*
 import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import okhttp3.MediaType
@@ -248,9 +248,15 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == Activity.RESULT_OK) {
-                    glideSetImageView(mBinding.profileImage, result.uri, R.drawable.ic_user_place_holder)
+                    result?.let { it.uri?.run {
+                        glideSetImageView(mBinding.profileImage,this,R.drawable.ic_car_placeholder) }}
+                    }
 //                    mBinding.profileImage.setImageURI(result.uri)
-                    localPath = result.uri
+                     result?.let { it.uri?.let {
+                         kotlin.run {
+                             localPath=it
+                         }
+                     } }
                 } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
                     ViewUtils.showNormalToast(this, getText(R.string.cropping_fail) as String)
             }
@@ -271,7 +277,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 mViewModel.showLoading.value = false
             } else mViewModel.showLoading.value = false
         }
-    }
+
 
     private fun setCountry(data: Intent?) {
         val selectedCountry = data?.extras?.get("selected_list") as? CountryResponseData

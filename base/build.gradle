@@ -25,7 +25,7 @@ android {
         buildConfigField("String", "SALT_KEY", '"MQ=="')
 
         //Live URL
-        buildConfigField("String", "BASE_URL", '"https://demoapi.gox.network/"')
+        buildConfigField("String", "BASE_URL", '"https://api.gox.network/"')
     }
 
     buildTypes {
@@ -126,8 +126,6 @@ dependencies {
     //      flex layout
     api 'com.google.android:flexbox:2.0.1'
 
-    //      For Image Picker
-    api 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
 
     //      Room Database
     api "androidx.room:room-runtime:2.2.6"
@@ -168,6 +166,8 @@ dependencies {
     api 'com.github.clans:fab:1.6.4'
 
     api 'de.hdodenhof:circleimageview:3.1.0'
+
+    api project(":cropper")
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

@@ -1,10 +1,13 @@
 package com.gox.partner.views.add_vehicle
 
 import android.net.Uri
+import android.os.FileUtils
+import android.util.Log
 import android.view.View
 import androidx.databinding.BindingConversion
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import androidx.room.util.FileUtil
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.Constants
@@ -18,6 +21,7 @@ import com.gox.partner.models.ProviderVehicleResponseModel
 import com.gox.partner.models.VehicleCategoryResponseModel
 import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -138,7 +142,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         val isTransport: Boolean = serviceName == transportServiceName
         val isDelivery: Boolean = serviceName == deliveryServiceName
         val params = HashMap<String, RequestBody>()
-        if (isTransport || isDelivery ) {
+        if (isTransport || isDelivery) {
             params[WebApiConstants.AddService.VEHICLE_ID] = createRequestBody(getVehicleData()!!.vehicleId.toString())
             params[WebApiConstants.AddService.VEHICLE_YEAR] =
                     createRequestBody(getVehicleData()!!.vehicleYear!!)
@@ -148,10 +152,10 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
                     createRequestBody(getVehicleData()!!.vehicleColor!!)
         }
 
-        if(specialSeatLiveData.value!! && getVehicleData()!!.childSeat ==1){
+        if (specialSeatLiveData.value!! && getVehicleData()!!.childSeat == 1) {
             params[WebApiConstants.AddService.CHILD_SEAT] = createRequestBody(getVehicleData()!!.childSeat.toString())
         }
-        if(specialSeatLiveData.value!! && getVehicleData()!!.wheelChair ==1){
+        if (specialSeatLiveData.value!! && getVehicleData()!!.wheelChair == 1) {
             params[WebApiConstants.AddService.WHEEL_CHAIR] = createRequestBody(getVehicleData()!!.wheelChair.toString())
         }
 

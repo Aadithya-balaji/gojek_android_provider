@@ -1,8 +1,8 @@
 package com.gox.base.utils
 
 import android.app.Activity
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
 
 object ImageCropperUtils {
     fun launchImageCropperActivity(activity: Activity) {

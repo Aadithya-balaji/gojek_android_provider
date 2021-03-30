@@ -16,12 +16,13 @@ import com.facebook.FacebookSdk.getApplicationContext
 import com.bee.courierservice.R
 import com.bee.courierservice.databinding.CDialogUploadImageBinding
 import com.bee.courierservice.interfaces.GetFilePathInterface
+import com.canhub.cropper.CropImage
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.data.Constants
 import com.gox.base.utils.CommonMethods
 import com.gox.base.utils.ViewUtils
-import com.theartofdev.edmodo.cropper.CropImage
 import java.io.File
+
 
 class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(), UploadPictureDialogNavigator {
 
@@ -99,7 +100,7 @@ class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(), Upl
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     if (resultCode == Activity.RESULT_OK) {
-                        localPath = result.uri
+                        localPath = result!!.uri
                         mBinding.llCaptureImage.visibility = View.GONE
                         mBinding.ivServiceImg.setImageURI(localPath)
                         mBinding.ivServiceImg.visibility = View.VISIBLE

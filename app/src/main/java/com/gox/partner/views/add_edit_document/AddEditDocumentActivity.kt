@@ -11,6 +11,7 @@ import android.widget.DatePicker
 import androidx.databinding.ViewDataBinding
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.canhub.cropper.CropImage
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
@@ -31,7 +32,6 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.theartofdev.edmodo.cropper.CropImage
 import droidninja.filepicker.FilePickerBuilder
 import droidninja.filepicker.FilePickerConst
 import kotlinx.android.synthetic.main.activity_add_edit_document.*
@@ -254,16 +254,21 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     when (this.requestCode) {
 
                         Enums.DOCUMENT_UPLOAD_FRONT -> {
-                            val frontImageFile = File(result.uri.path)
-                            Glide.with(this)
-                                    .load(frontImageFile)
-                                    .into(ivFrontImage)
-                            mViewModel.documentFrontImageFile.value = frontImageFile
-                            mViewModel.showFrontView.value = true
+                            result?.let { it.uri?.run {
+
+                                val frontImageFile = File(this.path)
+                                if(frontImageFile!=null)
+                                    Glide.with(this@AddEditDocumentActivity)
+                                            .load(frontImageFile)
+                                            .into(ivFrontImage)
+                                mViewModel.documentFrontImageFile.value = frontImageFile
+                                mViewModel.showFrontView.value = true
+                            } }
+
                         }
 
                         else -> {
-                            val backImageFile = File(result.uri.path)
+                            val backImageFile = File(result?.let { it.uri?.let { it.path } })
                             Glide.with(this)
                                     .load(backImageFile)
                                     .into(ivBackImage)

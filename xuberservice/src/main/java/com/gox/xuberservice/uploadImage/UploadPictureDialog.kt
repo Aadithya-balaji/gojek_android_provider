@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.ViewDataBinding
+import com.canhub.cropper.CropImage
 import com.facebook.FacebookSdk.getApplicationContext
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.data.Constants
@@ -20,7 +21,6 @@ import com.gox.base.utils.ViewUtils
 import com.gox.xuberservice.R
 import com.gox.xuberservice.databinding.DialogUploadImageBinding
 import com.gox.xuberservice.interfaces.GetFilePathInterface
-import com.theartofdev.edmodo.cropper.CropImage
 import java.io.File
 
 class UploadPictureDialog : BaseDialogFragment<DialogUploadImageBinding>(), UploadPictureDialogNavigator {
@@ -99,11 +99,13 @@ class UploadPictureDialog : BaseDialogFragment<DialogUploadImageBinding>(), Uplo
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     if (resultCode == Activity.RESULT_OK) {
-                        localPath = result.uri
-                        mBinding.llCaptureImage.visibility = View.GONE
-                        mBinding.ivServiceImg.setImageURI(localPath)
-                        mBinding.ivServiceImg.visibility = View.VISIBLE
-                    } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
+                        result?.let { it.uri?.run {
+                            localPath = result?.let { this }
+                            mBinding.llCaptureImage.visibility = View.GONE
+                            mBinding.ivServiceImg.setImageURI(localPath)
+                            mBinding.ivServiceImg.visibility = View.VISIBLE
+                        } } }
+                     else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
                         ViewUtils.showNormalToast(activity!!, getText(R.string.crop_failed) as String)
                 }
             }

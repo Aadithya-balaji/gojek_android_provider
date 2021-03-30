@@ -6,9 +6,11 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
+import com.canhub.cropper.CropImage
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
@@ -21,7 +23,6 @@ import com.gox.partner.models.ProviderVehicleResponseModel
 import com.gox.partner.models.SetupDeliveryResponseModel
 import com.gox.partner.models.SetupRideResponseModel
 import com.gox.partner.utils.Enums
-import com.theartofdev.edmodo.cropper.CropImage
 import kotlinx.android.synthetic.main.activity_add_vehicle.*
 import kotlinx.android.synthetic.main.layout_app_bar.view.*
 import java.io.File
@@ -261,21 +262,30 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == Activity.RESULT_OK) when (this.requestCode) {
                     Enums.RC_VEHICLE_IMAGE -> {
-                        mViewModel.setVehicleUri(result.uri)
-                        Glide.with(this).load(File(result.uri.path))
-                                .placeholder(R.drawable.ic_car_placeholder)
-                                .circleCrop().into(iv_vehicle)
+                        result?.let { it.uri?.run {
+                            mViewModel.setVehicleUri(this)
+                            Glide.with(this@AddVehicleActivity).load(this)
+                                    .placeholder(R.drawable.ic_car_placeholder)
+                                    .centerCrop().into(iv_vehicle)
+                        } }
                     }
                     Enums.RC_RC_BOOK_IMAGE -> {
-                        mViewModel.setRcBookUri(result.uri)
-                        Glide.with(this).load(File(result.uri.path))
-                                .into(iv_rc_book)
+                        result?.let { it.uri?.run {
+                            Log.e("RCURI","------"+this.toString())
+                            mViewModel.setRcBookUri(this)
+                            Glide.with(this@AddVehicleActivity).load(this)
+                                    .placeholder(R.drawable.ic_car_placeholder)
+                                    .centerCrop().into(iv_rc_book)
+                        } }
                         tvRcBook.visibility = View.GONE
                     }
                     Enums.RC_INSURANCE_IMAGE -> {
-                        mViewModel.setInsuranceUri(result.uri)
-                        Glide.with(this).load(File(result.uri.path))
-                                .into(iv_insurance)
+                        result?.let { it.uri?.run {
+                            mViewModel.setInsuranceUri(this)
+                            Glide.with(this@AddVehicleActivity).load(this)
+                                    .placeholder(R.drawable.ic_car_placeholder)
+                                    .centerCrop().into(iv_insurance)
+                        } }
                         tvInsurance.visibility = View.GONE
                     }
                 }

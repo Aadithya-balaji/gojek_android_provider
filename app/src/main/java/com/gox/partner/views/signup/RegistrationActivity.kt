@@ -27,6 +27,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.DownsampleStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
@@ -64,8 +66,6 @@ import com.gox.partner.views.dashboard.DashBoardActivity
 import com.gox.partner.views.privacypolicy.PrivacyActivity
 import com.gox.partner.views.sign_in.LoginActivity
 import com.gox.partner.views.verifyotp.VerifyOTPActivity
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
@@ -246,7 +246,6 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (resultCode != RESULT_CANCELED) {
             if (requestCode == GOOGLE_REQ_CODE) {
                 val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
@@ -309,13 +308,18 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
-                    glideSetImageView(ivProfile, result.uri, R.drawable.ic_user_place_holder)
-                    val profileFile = File(result.uri.path)
-                    if (profileFile.exists()) {
-                        filePart = MultipartBody.Part.createFormData("picture", profileFile.name,
-                                RequestBody.create("image*//*".toMediaTypeOrNull(), profileFile))
-                        mViewModel.fileName.value = filePart
-                    }
+                    result?.let { it.uri?.let {  glideSetImageView(ivProfile,it, R.drawable.ic_user_place_holder) } }
+                    result?.let { it.uri?.let {
+                        kotlin.run {
+                            val profileFile = File(it.path)
+                            if (profileFile.exists()) {
+                                filePart = MultipartBody.Part.createFormData("picture", profileFile.name,
+                                        RequestBody.create("image*//*".toMediaTypeOrNull(), profileFile))
+                                mViewModel.fileName.value = filePart
+                            }
+                        }
+                    } }
+
                 }
             }
         }

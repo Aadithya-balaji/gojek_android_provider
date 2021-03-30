@@ -1,10 +1,5 @@
 buildscript {
-    ext {
-        PUBLISH_GROUP_ID = 'com.theartofdev.edmodo'
-        PUBLISH_ARTIFACT_ID = 'android-image-cropper'
-        PUBLISH_VERSION = '2.8.0'
 
-    }
     repositories {
         google()
         jcenter()

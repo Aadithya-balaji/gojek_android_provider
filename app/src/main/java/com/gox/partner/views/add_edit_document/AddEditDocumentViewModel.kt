@@ -2,6 +2,7 @@ package com.gox.partner.views.add_edit_document
 
 import androidx.lifecycle.MutableLiveData
 import com.gox.base.base.BaseViewModel
+import com.gox.base.extensions.createMultipartBody
 import com.gox.base.repository.ApiListener
 import com.gox.base.utils.Utils
 import com.gox.partner.models.AddDocumentResponse
@@ -12,6 +13,7 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.sql.Timestamp
@@ -129,17 +131,15 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
         var frontImageRequestBody: RequestBody? = null
         if (documentFrontImageFile.value != null) {
-            frontImageRequestBody = RequestBody.create(
-                    "*/*".toMediaTypeOrNull(),
-                    documentFrontImageFile.value!!)
+             frontImageRequestBody = documentFrontImageFile.value!!.asRequestBody("*/*".toMediaTypeOrNull())
         }
 
         var backImageFile: RequestBody? = null
 
         if (documentBackImageFile.value != null) {
-            backImageFile = RequestBody.create(
-                    "*/*".toMediaTypeOrNull(),
-                    documentBackImageFile.value!!)
+            documentBackImageFile.value?.let { kotlin.run {
+                backImageFile=it.asRequestBody("*/*".toMediaTypeOrNull())
+            } }
         }
 
         var fileFrontImageBody: MultipartBody.Part? = null
@@ -148,7 +148,7 @@ class AddEditDocumentViewModel : BaseViewModel<DocumentUploadNavigator>() {
 
         var fileBackImageBody: MultipartBody.Part? = null
         if (backImageFile != null) fileBackImageBody = MultipartBody.Part.createFormData("file[1]",
-                "${Timestamp(System.currentTimeMillis())}_back", backImageFile)
+                "${Timestamp(System.currentTimeMillis())}_back", backImageFile!!)
 
         getCompositeDisposable().add(mRepository.postDocument(object : ApiListener {
             override fun success(successData: Any) {

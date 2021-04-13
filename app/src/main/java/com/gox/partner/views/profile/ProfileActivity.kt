@@ -55,6 +55,7 @@ import okhttp3.RequestBody
 import java.io.File
 import com.tooltip.Tooltip
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.Serializable
 
 class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavigator {
@@ -67,6 +68,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     private var localPath: Uri? = null
     private var mMobileNumberFlag = 0
     private lateinit var countryDetail: List<CountryModel>
+    private  var requestFile:RequestBody?=null
 
     override fun getLayoutId() = R.layout.activity_edit_profile
 
@@ -193,7 +195,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                     mMobileNumberFlag = 1
                     if (localPath?.path != null) {
                         val pictureFile = File(localPath?.path)
-                        val requestFile = RequestBody.create("*/*".toMediaTypeOrNull(), pictureFile)
+                        val requestFile = pictureFile.asRequestBody("*/*".toMediaTypeOrNull())
                         val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
                         mViewModel.updateProfile(fileBody)
                     } else mViewModel.updateProfile(null)
@@ -299,12 +301,14 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         mMobileNumberFlag = 1
         if (localPath?.path != null) {
             val pictureFile = File(localPath?.path)
-            val requestFile = RequestBody.create(
-                    "*/*".toMediaTypeOrNull(),
-                    pictureFile)
+            pictureFile?.let { kotlin.run {
+                requestFile=pictureFile.asRequestBody("*/*".toMediaTypeOrNull())
+            } }
 
-            val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile)
-            mViewModel.updateProfile(fileBody)
+            if(requestFile!=null) {
+                val fileBody = MultipartBody.Part.createFormData("picture", pictureFile.name, requestFile!!)
+                mViewModel.updateProfile(fileBody)
+            }
         } else mViewModel.updateProfile(null)
     }
 

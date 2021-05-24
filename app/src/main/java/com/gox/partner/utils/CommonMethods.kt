@@ -31,7 +31,7 @@ class CommonMethods {
         }
 
         fun getLocalTimeStamp(dateStr: String, request: String): String {
-            val df = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
             df.timeZone = TimeZone.getTimeZone("UTC")
             var date: Date? = null
             val localTime = ""

@@ -31,61 +31,81 @@ class FcmService : FirebaseMessagingService() {
     @SuppressLint("CommitPrefEdits")
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        mUrlPersistence = BaseApplication.run { getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE) }
+        mUrlPersistence = BaseApplication.run {
+            getSharedPreferences(
+                BuildConfig.APPLICATION_ID,
+                Context.MODE_PRIVATE
+            )
+        }
         mUrlPersistence.edit().putString(PreferencesKey.DEVICE_TOKEN, token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
 
-        val notificationData = Gson().fromJson(remoteMessage.data!!["custom"], NotificationDataModel::class.java)
+        val notificationData =
+            Gson().fromJson(remoteMessage.data["custom"], NotificationDataModel::class.java)
         println("RRR push notificationData = $notificationData")
 
-        if (notificationData.message!!.topic!!.contains("New Incoming"))
-            sendProlongedNotification(notificationData)
-        else sendNotification(notificationData)
+        if (notificationData != null) {
 
-        if (notificationData.message!!.notification!!.body!!.toUpperCase().contains("NEW INCOMING")
+            if (notificationData.message?.topic?.contains("New Incoming") == true)
+                sendProlongedNotification(notificationData)
+            else sendNotification(notificationData)
+
+            if (notificationData.message!!.notification!!.body!!.toUpperCase()
+                    .contains("NEW INCOMING")
                 && isBackground(applicationContext)
                 && !isLocked(applicationContext)
                 && !isCallActive(applicationContext) && !PreferencesHelper
-                        .get(PreferencesKey.ACCESS_TOKEN, "")
-                        .equals("")) restartApp()
+                    .get(PreferencesKey.ACCESS_TOKEN, "")
+                    .equals("")
+            ) restartApp()
+        }
     }
 
     private fun sendNotification(notificationData: NotificationDataModel) {
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0, intent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
         val channelId = getString(R.string.app_name)
-        val defaultSoundUri = if(notificationData.message!!.notification!!.body!! == "New Incoming Ride"
-                || notificationData.message!!.notification!!.body!! == "New Incoming Service Request")
-            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-        else
-            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val defaultSoundUri =
+            if (notificationData.message!!.notification!!.body!! == "New Incoming Ride"
+                || notificationData.message!!.notification!!.body!! == "New Incoming Service Request"
+            )
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+            else
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.push)
-                .setColor(ContextCompat.getColor(applicationContext,R.color.colorPrimary))
-                .setContentTitle(notificationData.message!!.notification!!.title)
-                .setContentText(notificationData.message!!.notification!!.body)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
+            .setSmallIcon(R.drawable.push)
+            .setColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
+            .setContentTitle(notificationData.message!!.notification!!.title)
+            .setContentText(notificationData.message!!.notification!!.body)
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (defaultSoundUri != null) {
                 // Creating an Audio Attribute
                 val audioAttributes = AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .setUsage(AudioAttributes.USAGE_ALARM)
-                        .build()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .build()
 
                 // Creating Channel
-                val notificationChannel = NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
+                val notificationChannel = NotificationChannel(
+                    channelId,
+                    getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_HIGH
+                )
                 notificationChannel.setSound(defaultSoundUri, audioAttributes)
                 notificationManager.createNotificationChannel(notificationChannel)
             }
@@ -98,35 +118,45 @@ class FcmService : FirebaseMessagingService() {
         println("RRR push notificationData = $notificationData")
         val intent = Intent(this, SplashActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0, intent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
         val channelId = getString(com.gox.partner.R.string.app_name)
-        val defaultSoundUri = if(notificationData.message!!.notification!!.body!! == "New Incoming Ride"
-                || notificationData.message!!.notification!!.body!! == "New Incoming Service Request")
-            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-        else
-            RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val defaultSoundUri =
+            if (notificationData.message!!.notification!!.body!! == "New Incoming Ride"
+                || notificationData.message!!.notification!!.body!! == "New Incoming Service Request"
+            )
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+            else
+                RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
-                .setSmallIcon(R.drawable.push)
-                .setContentTitle(notificationData.message!!.notification!!.title)
-                .setContentText(notificationData.message!!.notification!!.body)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent)
+            .setSmallIcon(R.drawable.push)
+            .setContentTitle(notificationData.message!!.notification!!.title)
+            .setContentText(notificationData.message!!.notification!!.body)
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
         val mNotification = notificationBuilder.build()
-        mNotification.flags = Notification.DEFAULT_LIGHTS or Notification.FLAG_AUTO_CANCEL or Notification.DEFAULT_SOUND
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        mNotification.flags =
+            Notification.DEFAULT_LIGHTS or Notification.FLAG_AUTO_CANCEL or Notification.DEFAULT_SOUND
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (defaultSoundUri != null) {
                 // Creating an Audio Attribute
                 val audioAttributes = AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .setUsage(AudioAttributes.USAGE_ALARM)
-                        .build()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .build()
 
                 // Creating Channel
-                val notificationChannel = NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_HIGH)
+                val notificationChannel = NotificationChannel(
+                    channelId,
+                    getString(R.string.app_name),
+                    NotificationManager.IMPORTANCE_HIGH
+                )
                 notificationChannel.setSound(defaultSoundUri, audioAttributes)
                 notificationManager.createNotificationChannel(notificationChannel)
             }

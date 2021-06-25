@@ -40,17 +40,18 @@ class FcmService : FirebaseMessagingService() {
 
         val notificationData = Gson().fromJson(remoteMessage.data!!["custom"], NotificationDataModel::class.java)
         println("RRR push notificationData = $notificationData")
+        if(notificationData?.message != null) {
+            if (notificationData.message!!.topic!!.contains("New Incoming"))
+                sendProlongedNotification(notificationData)
+            else sendNotification(notificationData)
 
-        if (notificationData.message!!.topic!!.contains("New Incoming"))
-            sendProlongedNotification(notificationData)
-        else sendNotification(notificationData)
-
-        if (notificationData.message!!.notification!!.body!!.toUpperCase().contains("NEW INCOMING")
-                && isBackground(applicationContext)
-                && !isLocked(applicationContext)
-                && !isCallActive(applicationContext) && !PreferencesHelper
-                        .get(PreferencesKey.ACCESS_TOKEN, "")
-                        .equals("")) restartApp()
+            if (notificationData.message!!.notification!!.body!!.toUpperCase().contains("NEW INCOMING")
+                    && isBackground(applicationContext)
+                    && !isLocked(applicationContext)
+                    && !isCallActive(applicationContext) && !PreferencesHelper
+                            .get(PreferencesKey.ACCESS_TOKEN, "")
+                            .equals("")) restartApp()
+        }
     }
 
     private fun sendNotification(notificationData: NotificationDataModel) {

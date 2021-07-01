@@ -71,6 +71,7 @@ import com.gox.base.utils.polyline.PolylineUtil
 import com.gox.taxiservice.R
 import com.gox.taxiservice.databinding.ActivityTaxiMainBinding
 import com.gox.taxiservice.interfaces.GetReasonsInterface
+import com.gox.taxiservice.locationpick.LocationPickActivity
 import com.gox.taxiservice.model.CancelRequestModel
 import com.gox.taxiservice.model.DistanceApiProcessing
 import com.gox.taxiservice.model.ResponseData
@@ -302,6 +303,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                     if (!roomConnected) {
                         reqID = checkStatusResponse.responseData.request.id
+                        mViewModel.serviceType = checkStatusResponse.responseData.request.service_type
                         PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
                         if (reqID != 0) {
                             SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.getTransportRoom(reqID))
@@ -577,8 +579,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun whenStatusPickedUp(responseData: ResponseData) {
         writePreferences(CAN_SEND_LOCATION, true)
         writePreferences(CAN_SAVE_LOCATION, true)
+        if(!responseData.request.service_type.equals("OUTSTATION",true)) {
             setWaitingTime()
-        llWaitingTimeContainer.visibility = View.VISIBLE
+            llWaitingTimeContainer.visibility = View.VISIBLE
+        }
 
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
         ib_steering.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
@@ -616,6 +620,23 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_drop.setOnClickListener {
+           if(mViewModel.serviceType.equals("RENTAL",true)) {
+                val intent = Intent(this, LocationPickActivity::class.java)
+                intent.putExtra("LocationPickFlag", 0)
+                intent.putExtra("startlatlong", LatLng(currentLat, currentlng))
+                startActivityForResult(intent,
+                        LocationPickActivity.DESTINATION_REQUEST_CODE)
+            }else{
+                dropClicked()
+            }
+        }
+
+        drawRoute(LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!),
+                LatLng(responseData.request.d_latitude!!, responseData.request.d_longitude!!))
+    }
+
+
+    fun dropClicked(){
             mViewModel.distanceMeter.value = 0.0
             if (isWaitingTime!!) ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
             else {
@@ -639,6 +660,10 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         val tollChargeDialog = TollChargeDialog()
                         val bundle = Bundle()
                         bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
+                        if (mViewModel.serviceType.equals("rental", true)) {
+                            bundle.putParcelable("dropLocation", mViewModel.rentalDropLatLong)
+                            bundle.putString("dropAddress", mViewModel.rentalDropAddress)
+                        }
                         tollChargeDialog.arguments = bundle
                         tollChargeDialog.show(supportFragmentManager, "tollCharge")
                     }
@@ -649,15 +674,16 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                         params["status"] = DROPPED
                         params["_method"] = "PATCH"
                         params["toll_price"] = "0"
+                        if (mViewModel.serviceType.equals("rental", true)) {
+                            params["d_address"] = mViewModel.rentalDropAddress
+                            params["d_latitude"] = mViewModel.rentalDropLatLong?.latitude.toString()
+                            params["d_longitude"] = mViewModel.rentalDropLatLong?.longitude.toString()
+                        }
                         mViewModel.taxiDroppingStatus(params)
                         dialog.dismiss()
                     }
                 })
             }
-        }
-
-        drawRoute(LatLng(responseData.request.s_latitude!!, responseData.request.s_longitude!!),
-                LatLng(responseData.request.d_latitude!!, responseData.request.d_longitude!!))
     }
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
@@ -985,6 +1011,15 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                             ViewUtils.dismissGpsDialog()
                             updateCurrentLocation()
                         }
+                    }
+                }
+            }
+            LocationPickActivity.DESTINATION_REQUEST_CODE -> {
+                when (resultCode) {
+                    Activity.RESULT_OK -> {
+                        mViewModel.rentalDropLatLong  = data?.getParcelableExtra<LatLng>("SelectedLatLng")!!
+                        mViewModel.rentalDropAddress = data?.getStringExtra("SelectedLocation") ?: ""
+                        dropClicked()
                     }
                 }
             }

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
@@ -79,7 +80,7 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
     //      Permission
-    implementation "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
+    api "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
     kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.7.0"
 
     //      Rx java dependency
@@ -97,6 +98,8 @@ dependencies {
     api 'com.google.android.gms:play-services-maps:17.0.0'
     api 'com.google.android.gms:play-services-location:17.1.0'
     api 'com.google.android.gms:play-services-auth:19.0.0'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+
 
     //      Loading
     api 'com.wang.avi:library:2.1.3'

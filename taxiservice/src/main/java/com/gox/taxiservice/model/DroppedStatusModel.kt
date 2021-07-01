@@ -11,7 +11,10 @@ data class DroppedStatusModel(
         var distance: Double = 0.0,
         var latitude: Double = 0.0,
         var location_points: List<LocationPoint> = listOf(),
-        var longitude: Double = 0.0
+        var longitude: Double = 0.0,
+        var d_latitude: Double? = null,
+        var d_address: String? = null,
+        var d_longitude: Double? = null
 ) : Serializable
 
 data class LocationPoint(

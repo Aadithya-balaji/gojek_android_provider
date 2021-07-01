@@ -18,6 +18,8 @@ data class ProviderVehicleResponseModel(
         @SerializedName("vechile_image") var vehicleImage: String?,
         @SerializedName("wheel_chair") var wheelChair: Int,
         @SerializedName("child_seat") var childSeat: Int,
+        @SerializedName("is_rental") var itsRental: Int ,
+        @SerializedName("is_outstation") var itsOutstation: Int,
         val picture: String?,
         val picture1: String?
 ) : KParcelable {
@@ -33,6 +35,8 @@ data class ProviderVehicleResponseModel(
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
+            parcel.readInt(),
+            parcel.readInt(),
             parcel.readInt(),
             parcel.readInt(),
             parcel.readString(),
@@ -52,6 +56,8 @@ data class ProviderVehicleResponseModel(
         writeString(vehicleImage)
         writeInt(wheelChair)
         writeInt(childSeat)
+        writeInt(itsRental)
+        writeInt(itsOutstation)
         writeString(picture)
         writeString(picture1)
     }

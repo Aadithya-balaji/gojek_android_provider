@@ -45,6 +45,9 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     private val addVehicleDataModel = AddVehicleDataModel()
     private val vehicleLiveData = MutableLiveData<AddVehicleDataModel>()
     var isEditAble = ObservableField<Boolean>()
+    var isTransportMain = ObservableField<Boolean>()
+
+
 
 //    private var isEditAble = true //initializing with empty string, so that it doesn't crash
 
@@ -65,6 +68,8 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun setServiceName(serviceName: String) {
         this.serviceName = serviceName
+        val isTransport: Boolean = serviceName == transportServiceName
+        isTransportMain.set(isTransport)
     }
 
     fun getServiceName() = serviceName
@@ -105,6 +110,8 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         addVehicleDataModel.vehicleId = providerVehicle.vehicleServiceId
         addVehicleDataModel.wheelChair = providerVehicle.wheelChair
         addVehicleDataModel.childSeat = providerVehicle.childSeat
+        addVehicleDataModel.itsRental = providerVehicle.itsRental
+        addVehicleDataModel.itsOutstation = providerVehicle.itsOutstation
         vehicleLiveData.value = addVehicleDataModel
     }
 
@@ -151,7 +158,14 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
             params[WebApiConstants.AddService.VEHICLE_COLOR] =
                     createRequestBody(getVehicleData()!!.vehicleColor!!)
         }
-
+        if(isTransport){
+            if (getVehicleData()!!.itsRental == 1) {
+                params[WebApiConstants.AddService.IS_RENTAL] = createRequestBody(getVehicleData()!!.itsRental.toString())
+            }
+            if (getVehicleData()!!.itsOutstation == 1) {
+                params[WebApiConstants.AddService.IS_OUTSTATION] = createRequestBody(getVehicleData()!!.itsOutstation.toString())
+            }
+        }
         if (specialSeatLiveData.value!! && getVehicleData()!!.childSeat == 1) {
             params[WebApiConstants.AddService.CHILD_SEAT] = createRequestBody(getVehicleData()!!.childSeat.toString())
         }
@@ -236,6 +250,22 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
             getVehicleData()?.wheelChair = 1
         }else{
             getVehicleData()?.wheelChair = 0
+        }
+    }
+
+    fun onRentalCheckChanged(isChecked:Boolean){
+        if(isChecked){
+            getVehicleData()?.itsRental = 1
+        }else{
+            getVehicleData()?.itsRental = 0
+        }
+    }
+
+    fun onOutstationCheckChanged(isChecked:Boolean){
+        if(isChecked){
+            getVehicleData()?.itsOutstation = 1
+        }else{
+            getVehicleData()?.itsOutstation = 0
         }
     }
 

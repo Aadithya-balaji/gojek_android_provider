@@ -332,6 +332,61 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/service_type_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_25sdp"
+                        android:visibility="gone"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:background="@drawable/bg_white">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/_10sdp">
+
+                            <ImageView
+                                android:id="@+id/service_type_view"
+                                android:layout_width="@dimen/_8sdp"
+                                android:layout_height="@dimen/_8sdp"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/_5sdp"
+                                android:contentDescription="@string/app_name"
+                                android:src="@drawable/custom_circle"
+                                app:tint="@color/colorTaxiYellow" />
+
+                            <TextView
+                                android:id="@+id/tvServiceTypeLabel"
+                                style="@style/BoldText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toRightOf="@+id/service_type_view"
+                                android:padding="@dimen/_1sdp"
+                                android:text="Service Type"
+                                android:textColor="@color/colorBlack"
+                                android:textSize="@dimen/_10sdp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tvServiceTypeValue"
+                                style="@style/SmallText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tvServiceTypeLabel"
+                                android:layout_marginStart="@dimen/_15sdp"
+                                android:layout_toRightOf="@+id/service_type_view"
+                                android:padding="@dimen/_1sdp"
+                                android:textSize="@dimen/_12sdp"
+                                tools:text="SSS" />
+
+                        </RelativeLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
                         android:id="@+id/status_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

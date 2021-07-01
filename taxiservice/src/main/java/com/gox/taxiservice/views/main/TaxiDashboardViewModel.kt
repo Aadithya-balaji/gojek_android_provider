@@ -30,6 +30,11 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     var distanceApiProcessing = MutableLiveData<ArrayList<DistanceApiProcessing>>()
     var iteratePointsForApi = ArrayList<LatLng>()
 
+    var rentalDropAddress:String = ""
+    var rentalDropLatLong :LatLng? = null
+    var serviceType :String? = ""
+
+
 
     var tempSrc = MutableLiveData<LatLng>()
     var tempDest = MutableLiveData<LatLng>()
@@ -96,7 +101,13 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
             model.longitude = longitude.value!!
             model.location_points = locationPoint
 
-            getCompositeDisposable().add(mRepository.taxiDroppingStatus(object : ApiListener {
+            if (serviceType.equals("rental", true)) {
+                model.d_latitude = rentalDropLatLong?.latitude!!
+                model.d_longitude = rentalDropLatLong?.longitude!!
+                model.d_address = rentalDropAddress
+            }
+
+                getCompositeDisposable().add(mRepository.taxiDroppingStatus(object : ApiListener {
                 override fun success(successData: Any) {
                     callTaxiCheckStatusAPI()
                     showLoading.postValue(false)

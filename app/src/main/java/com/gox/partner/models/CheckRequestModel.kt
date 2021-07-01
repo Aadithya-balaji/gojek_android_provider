@@ -181,6 +181,8 @@ data class RequestX(
         var user_id: Int? = 0,
         var user_rated: Double? = 0.0,
         var vehicle_type: String = "",
+        var service_type: String = "",
+        var outstation_type:String = "",
         var ride_type: RideType = RideType(),
         var service: ServiceX = ServiceX(),
         var ride: Ride = Ride()

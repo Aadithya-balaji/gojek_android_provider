@@ -135,6 +135,7 @@ data class Request(
         var provider_service_id: Int? = 0,
         var provider_vehicle_id: Int? = 0,
         var request_type: String = "",
+        var service_type: String = "",
         var ride_delivery_id: Int? = 0,
         var ride_type_id: Int? = 0,
         var route_key: String = "",

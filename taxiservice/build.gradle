@@ -30,15 +30,26 @@ android {
     buildFeatures {
         dataBinding = true
     }
+
+    publishNonDefault true
+
+    lintOptions {
+        warningsAsErrors true
+    }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    kapt 'com.android.databinding:compiler:3.1.4'
-    //      Permission check lib compiler
-    kapt "com.github.hotchemi:permissionsdispatcher-processor:4.1.0"
+    kapt "com.android.databinding:compiler:3.1.4"
+    api "org.permissionsdispatcher:permissionsdispatcher:4.6.0"
+    kapt "org.permissionsdispatcher:permissionsdispatcher-processor:4.7.0"
 
     //      Added dependent library modules into the Android app module.
     implementation project(':base')
+}
+
+repositories {
+    mavenCentral()
 }

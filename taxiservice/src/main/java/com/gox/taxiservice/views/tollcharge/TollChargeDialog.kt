@@ -47,7 +47,7 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         mBinding = viewDataBinding as DialogTollChargeBinding
         mViewModel = TollChargeViewModel()
-        mDashboardViewModel = ViewModelProviders.of(activity!!).get(TaxiDashboardViewModel::class.java)
+        mDashboardViewModel = ViewModelProviders.of(requireActivity()).get(TaxiDashboardViewModel::class.java)
 
         mViewModel.navigator = this
         mBinding.tollmodel = mViewModel
@@ -56,6 +56,7 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
         mViewModel.showLoading = loadingObservable as MutableLiveData<Boolean>
 
         val strRequestID = arguments?.getString("requestID") ?: ""
+
 
         val locationPoint: ArrayList<LocationPoint> = arrayListOf()
 
@@ -80,6 +81,11 @@ class TollChargeDialog : BaseDialogFragment<DialogTollChargeBinding>(), TollChar
                 model.latitude = mDashboardViewModel.latitude.value!!
                 model.longitude = mDashboardViewModel.longitude.value!!
                 model.location_points = locationPoint
+                if (mDashboardViewModel.serviceType.equals("rental", true)) {
+                    model.d_latitude = mDashboardViewModel.rentalDropLatLong?.latitude!!
+                    model.d_longitude = mDashboardViewModel.rentalDropLatLong?.longitude!!
+                    model.d_address = mDashboardViewModel.rentalDropAddress
+                }
 
                 println("RRR::" + Gson().toJson(model))
                 mViewModel.callUpdateRequestApi(model)

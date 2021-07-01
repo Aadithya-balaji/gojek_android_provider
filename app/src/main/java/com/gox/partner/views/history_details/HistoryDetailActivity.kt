@@ -149,7 +149,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         disputeStatusBinding = DataBindingUtil.inflate<DisputeStatusBinding>(LayoutInflater.from(baseContext), R.layout.dispute_status, null, false)
         disputeStatusBinding!!.disputeComment.text = (disputeStatusResponseData.responseData!!.dispute_name).toString()
         disputeStatusBinding!!.disputeStatus.text = (disputeStatusResponseData.responseData.status).toString()
-        Glide.with(this@HistoryDetailActivity).load(PreferencesHelper.get(PreferencesKey.PICTURE,""))
+        Glide.with(this@HistoryDetailActivity).load(PreferencesHelper.get(PreferencesKey.PICTURE, ""))
                 .placeholder(R.drawable.ic_user_place_holder)
                 .into(disputeStatusBinding!!.ivDisPuteUser)
         if (disputeStatusResponseData.responseData.status.equals("open")) {
@@ -163,7 +163,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             disputeStatusBinding!!.disputeStatus.setTextColor(
                     ContextCompat.getColor(this, R.color.dispute_status_open)
             )
-            if(disputeStatusResponseData.responseData.comments != null) {
+            if (disputeStatusResponseData.responseData.comments != null) {
                 disputeStatusBinding!!.Comments.visibility = View.VISIBLE
                 disputeStatusBinding!!.Comments.text = "Comment : " + (disputeStatusResponseData.responseData.comments).toString()
             }
@@ -436,7 +436,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.discount)}"
 //                tvPromoCode?.text = "-${Utils.getNumberFormat()?.format(mViewModel.orderDetail.value?.order_invoice?.promocode_amount)}"
 
-                if(mViewModel.orderDetail.value?.order_invoice?.promocode != null && mViewModel.orderDetail.value?.order_invoice?.promocode != "") {
+                if (mViewModel.orderDetail.value?.order_invoice?.promocode != null && mViewModel.orderDetail.value?.order_invoice?.promocode != "") {
                     rlPromoCode?.visibility = View.VISIBLE
                     tvPromoCode?.text = mViewModel.orderDetail.value?.order_invoice?.promocode.toString()
                 } else rlPromoCode?.visibility = View.GONE
@@ -480,60 +480,65 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
 
                 tvWaitingFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.waiting_amount)
                         ?: "0.0"
-                if(mViewModel.transportDetail.value?.payment!!.waiting_amount == 0.0)
+                if (mViewModel.transportDetail.value?.payment!!.waiting_amount == 0.0)
                     rlwaiting?.visibility = View.GONE
                 else
                     rlwaiting?.visibility = View.VISIBLE
-                if(mViewModel.transportDetail.value?.payment!!.waiting_fare_text != "")
+                if (mViewModel.transportDetail.value?.payment!!.waiting_fare_text != "")
                     tvwaiting?.text = mViewModel.transportDetail.value?.payment!!.waiting_fare_text
 
-                if(mViewModel.transportDetail.value?.payment!!.discount_fare_text != "")
+                if (mViewModel.transportDetail.value?.payment!!.discount_fare_text != "")
                     tvdiscount?.text = mViewModel.transportDetail.value?.payment!!.discount_fare_text
 
                 tvdistance?.text = mViewModel.transportDetail.value?.payment!!.distance_fare_text
-                if(mViewModel.transportDetail.value?.payment!!.distance == 0.0)
+                if (mViewModel.transportDetail.value?.payment!!.distance == 0.0)
                     rlDistanceFare?.visibility = View.GONE
                 else
                     rlDistanceFare?.visibility = View.VISIBLE
 
-                if(mViewModel.transportDetail.value?.calculator.equals("MIN")){
+                if (mViewModel.transportDetail.value?.calculator.equals("MIN")) {
                     time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
-                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute) ?: "0.0"
-                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute)
+                            ?: "0.0"
+                    if (mViewModel.transportDetail.value?.payment!!.minute == 0.0)
                         rlHourlyFare?.visibility = View.GONE
                     else
                         rlHourlyFare?.visibility = View.VISIBLE
-                } else if(mViewModel.transportDetail.value?.calculator.equals("HOUR")){
+                } else if (mViewModel.transportDetail.value?.calculator.equals("HOUR")) {
                     time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
-                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour) ?: "0.0"
-                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour)
+                            ?: "0.0"
+                    if (mViewModel.transportDetail.value?.payment!!.minute == 0.0)
                         rlHourlyFare?.visibility = View.GONE
                     else
                         rlHourlyFare?.visibility = View.VISIBLE
-                } else if(mViewModel.transportDetail.value?.calculator.equals("DISTANCE")) {
+                } else if (mViewModel.transportDetail.value?.calculator.equals("DISTANCE")) {
                     time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
-                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute) ?: "0.0"
-                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute)
+                            ?: "0.0"
+                    if (mViewModel.transportDetail.value?.payment!!.minute == 0.0)
                         rlHourlyFare?.visibility = View.GONE
                     else
                         rlHourlyFare?.visibility = View.VISIBLE
-                } else if(mViewModel.transportDetail.value?.calculator.equals("DISTANCEMIN")){
+                } else if (mViewModel.transportDetail.value?.calculator.equals("DISTANCEMIN")) {
                     time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
-                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute) ?: "0.0"
-                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.minute)
+                            ?: "0.0"
+                    if (mViewModel.transportDetail.value?.payment!!.minute == 0.0)
                         rlHourlyFare?.visibility = View.GONE
                     else
                         rlHourlyFare?.visibility = View.VISIBLE
-                } else if(mViewModel.transportDetail.value?.calculator.equals("DISTANCEHOUR")){
+                } else if (mViewModel.transportDetail.value?.calculator.equals("DISTANCEHOUR")) {
                     time?.text = mViewModel.transportDetail.value?.payment!!.time_fare_text
-                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour) ?: "0.0"
-                    if(mViewModel.transportDetail.value?.payment!!.minute == 0.0)
+                    tvHourlyFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.hour)
+                            ?: "0.0"
+                    if (mViewModel.transportDetail.value?.payment!!.minute == 0.0)
                         rlHourlyFare?.visibility = View.GONE
                     else
                         rlHourlyFare?.visibility = View.VISIBLE
                 }
 
-                if(mViewModel.transportDetail.value?.payment!!.promocode != null && mViewModel.transportDetail.value?.payment!!.promocode != "") {
+                if (mViewModel.transportDetail.value?.payment!!.promocode != null && mViewModel.transportDetail.value?.payment!!.promocode != "") {
                     rlPromoCode?.visibility = View.VISIBLE
                     tvPromoCode?.text = mViewModel.transportDetail.value?.payment!!.promocode.toString()
                 } else rlPromoCode?.visibility = View.GONE
@@ -551,7 +556,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                     rlTollCharge?.visibility = View.GONE
                     rlRoundOff?.visibility = View.GONE
 
-                    if(mViewModel.deliveryDetail.value?.payment != null) {
+                    if (mViewModel.deliveryDetail.value?.payment != null) {
                         tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.fixed)
                                 ?: "0.0"
                         tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.tax)
@@ -569,7 +574,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                         tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.discount)}"
                         tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.payable)
                                 ?: "0.0"
-                    } else if(mViewModel.deliveryDetail.value?.deliveries != null) {
+                    } else if (mViewModel.deliveryDetail.value?.deliveries != null) {
                         tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.fixed)
                                 ?: "0.0"
                         tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.tax)
@@ -588,7 +593,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                         tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.payable)
                                 ?: "0.0"
                     }
-                } catch (ce: Exception){
+                } catch (ce: Exception) {
                     ce.printStackTrace()
                 }
             }
@@ -615,11 +620,13 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                         ?: "0.0"
                 tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.round_of)
                         ?: "0.0"
-                tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.discount)
-                        ?: "0.0"}"
+                tvDiscountApplied?.text = "-${
+                    Utils.getNumberFormat()?.format(mViewModel.serviceDetail.value?.payment!!.discount)
+                            ?: "0.0"
+                }"
 //                tvTips?.text = (Constant.currency + transpotResponseData.payment!!.tips)
 
-                if(mViewModel.serviceDetail.value?.payment!!.promocode != null && mViewModel.serviceDetail.value?.payment!!.promocode != "") {
+                if (mViewModel.serviceDetail.value?.payment!!.promocode != null && mViewModel.serviceDetail.value?.payment!!.promocode != "") {
                     rlPromoCode?.visibility = View.VISIBLE
                     tvPromoCode?.text = mViewModel.serviceDetail.value?.payment!!.promocode.toString()
                 } else rlPromoCode?.visibility = View.GONE
@@ -675,7 +682,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
             disputeListBinding = DataBindingUtil.inflate(LayoutInflater.from(this),
                     R.layout.dispute_reson_dialog, null, false)
             disputeListBinding!!.applyFilter.isEnabled = false
-            disputeListBinding!!.historyDetailActivity=this@HistoryDetailActivity
+            disputeListBinding!!.historyDetailActivity = this@HistoryDetailActivity
             bottomSheetDialog = BottomSheetDialog(this)
             bottomSheetDialog!!.setContentView(disputeListBinding!!.root)
             bottomSheetDialog!!.show()
@@ -748,7 +755,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                 }
             }
         } else {
-            Toast.makeText(this@HistoryDetailActivity,"Please select any dispute",Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@HistoryDetailActivity, "Please select any dispute", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -770,6 +777,11 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.tvStatusValue.text = transPastDetail.status
         mBinding.historydetailPaymentmodeValTv.text = transPastDetail.payment_mode
         mBinding.vechileTypeTv.text = (transPastDetail.ride!!.vehicle_name)
+        if (transPastDetail.calculator.isNullOrBlank().not()) {
+            mBinding.serviceTypeLayout.visibility = View.VISIBLE
+            mBinding.tvServiceTypeValue.text = if (transPastDetail.calculator.equals("distance", true)) "RIDE"
+            else transPastDetail.calculator
+        }
         Glide.with(this).load(transPastDetail.user!!.picture).error(R.drawable.ic_user_place_holder)
                 .into(mBinding.providerCimgv)
         mBinding.providerNameTv.text = (transPastDetail.user.first_name + " " +
@@ -898,7 +910,7 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.vechileTypeTv.text = orderDetail.pickup!!.store_name
         mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(orderDetail.created_at, "Req_time") + "")
         mBinding.historydetailSrcValueTv.text = orderDetail.pickup!!.store_location
-        if(!orderDetail.delivery!!.map_address.isNullOrEmpty())
+        if (!orderDetail.delivery!!.map_address.isNullOrEmpty())
             mBinding.historydetailDestValueTv.text = orderDetail.delivery!!.map_address.toString()
         mBinding.scheduletimeView.visibility = View.GONE
         mBinding.scheduleTimeLayout.visibility = View.GONE

@@ -43,6 +43,8 @@ data class SetupRideResponseModel(
                 @SerializedName("vehicle_name") val vehicleName: String,
                 @SerializedName("vehicle_image") val vehicleImage: String,
                 @SerializedName("vehicle_marker") val vehicleMarker: String,
+                @SerializedName("is_rental") var itsRental: Int = 0,
+                @SerializedName("is_outstation") var itsOutstation: Int = 0,
                 val capacity: Int,
                 val status: Int
         ) : Serializable {

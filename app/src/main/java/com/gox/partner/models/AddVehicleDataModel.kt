@@ -13,4 +13,6 @@ class AddVehicleDataModel {
     var vehicleInsurance: String? = ""
     var wheelChair: Int = 0
     var childSeat: Int = 0
+    var itsRental: Int = 0
+    var itsOutstation: Int = 0
 }

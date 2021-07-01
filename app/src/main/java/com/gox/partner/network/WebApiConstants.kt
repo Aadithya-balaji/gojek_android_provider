@@ -92,5 +92,7 @@ object WebApiConstants {
         const val VEHICLE_IMAGE = "vechile_image"
         const val PICTURE = "picture"
         const val PICTURE1 = "picture1"
+        const val IS_RENTAL = "is_rental"
+        const val IS_OUTSTATION = "is_outstation"
     }
 }

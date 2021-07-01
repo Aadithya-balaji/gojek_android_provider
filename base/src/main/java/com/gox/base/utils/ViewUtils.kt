@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.MainThread
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -25,6 +26,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.gox.base.R
 import es.dmoral.toasty.Toasty
+import permissions.dispatcher.PermissionRequest
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -62,6 +64,16 @@ object ViewUtils {
     @MainThread
     fun showNormalToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    @MainThread
+    fun showRationaleAlert(context: Context, @StringRes messageResId: Int, request: PermissionRequest) {
+        android.app.AlertDialog.Builder(context)
+                .setTitle(R.string.app_name)
+                .setMessage(messageResId)
+                .setPositiveButton(context.getString(R.string.action_allow)) { dialog, which -> request.proceed() }
+                .setNegativeButton(context.getString(R.string.action_deny)) { dialog, which -> request.cancel() }
+                .show()
     }
 
     @MainThread

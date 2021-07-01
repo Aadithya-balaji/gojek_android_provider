@@ -70,7 +70,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
 
     override fun onPause() {
         super.onPause()
-        if(dialog != null) {
+        if (dialog != null) {
             try {
                 timerToTakeOrder.cancel()
                 mPlayer.stop()
@@ -110,8 +110,19 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                 Constants.ModuleTypes.TRANSPORT -> {
                     mViewModel.pickupLocation.value = request.request.s_address
 
+
                     mViewModel.serviceType.value = request.service.display_name + " - " +
-                            request.request.ride_type.ride_name + " - " +
+                            request.request.ride_type.ride_name + if (request.request.service_type.equals("ride", true).not()) {
+                        " (" + request.request.service_type +
+                                if (request.request.service_type.equals("Outstation", true)) {
+                                    " - " + request.request.outstation_type
+                                } else {
+                                    ""
+                                } +
+                                ")"
+                    } else {
+                        ""
+                    } + " - " +
                             request.request.ride.vehicle_name
                 }
                 Constants.ModuleTypes.SERVICE -> {
@@ -147,11 +158,11 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
             if (mViewModel.acceptRequestLiveData.value!!.statusCode.equals("200")) {
                 timerToTakeOrder.cancel()
                 when {
-                    request.admin_service.equals("SERVICE",true)  ->
+                    request.admin_service.equals("SERVICE", true) ->
                         activity!!.startActivity(Intent(activity, XUberDashBoardActivity::class.java))
-                    request.admin_service.equals("DELIVERY",true)  ->
+                    request.admin_service.equals("DELIVERY", true) ->
                         activity!!.startActivity(Intent(activity, CourierDashBoardActivity::class.java))
-                    request.admin_service.equals("ORDER",true)  ->
+                    request.admin_service.equals("ORDER", true) ->
                         activity!!.startActivity(Intent(activity, FoodieDashboardActivity::class.java))
                     else -> activity!!.startActivity(Intent(activity, TaxiDashboardActivity::class.java))
                 }
@@ -187,7 +198,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
     }
 
     fun initCircularSeekBar(percentage: Float, time: String) {
-        if(dialog != null) {
+        if (dialog != null) {
             circularProgressBar = mBinding.ivRequestTime
             val cpbModel = CircularProgressBarModel()
             cpbModel.backgroundColor = ContextCompat.getColor(context!!, R.color.colorBasePrimary)
@@ -223,7 +234,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
         if (!requestModel.isNullOrEmpty()) {
             incomingRequestModel = Gson().fromJson(requestModel.toString(), CheckRequestModel::class.java)
             request = incomingRequestModel!!.responseData.requests[0]
-            println("timer-- "+request.time_left_to_respond)
+            println("timer-- " + request.time_left_to_respond)
         }
     }
 

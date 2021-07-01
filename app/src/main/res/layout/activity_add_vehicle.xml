@@ -50,7 +50,7 @@
                     app:contentPaddingTop="61dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@+id/sc_outstation">
 
                     <androidx.appcompat.widget.LinearLayoutCompat
                         android:layout_width="match_parent"
@@ -271,6 +271,30 @@
 
                 </androidx.cardview.widget.CardView>
 
+                <androidx.appcompat.widget.SwitchCompat
+                    android:padding="5dp"
+                    android:id="@+id/sc_rental"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:switchPadding="@dimen/_5sdp"
+                    android:checked="@{(addVehicleViewModel.vehicleData.itsRental == 1)}"
+                    android:onCheckedChanged="@{(view,isChecked) -> addVehicleViewModel.onRentalCheckChanged(isChecked)}"
+                    android:text="Rental"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:padding="5dp"
+                    app:switchPadding="@dimen/_5sdp"
+                    android:id="@+id/sc_outstation"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/sc_rental"
+                    android:checked="@{(addVehicleViewModel.vehicleData.itsOutstation == 1)}"
+                    android:onCheckedChanged="@{(view,isChecked) -> addVehicleViewModel.onOutstationCheckChanged(isChecked)}"
+                    android:text="Outstation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
                 <ImageView
                     android:id="@+id/iv_vehicle"
                     android:layout_width="90dp"
@@ -284,7 +308,7 @@
                     app:layout_constraintCircleRadius="45dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/sc_outstation" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="24dp"
@@ -300,7 +324,7 @@
                     app:layout_constraintCircleRadius="45dp"
                     app:layout_constraintEnd_toEndOf="@+id/iv_vehicle"
                     app:srcCompat="@drawable/ic_pencil_edit_button"
-                    app:tint="@color/colorWhite" />
+                    app:tint="@color/colorPrimary" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_document_upload"

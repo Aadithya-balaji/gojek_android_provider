@@ -25,6 +25,7 @@
             <action android:name="android.media.action.IMAGE_CAPTURE" />
         </intent>
     </queries>
+
     <application
         android:name="com.gox.partner.GoJekApplication"
         android:allowBackup="true"

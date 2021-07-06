@@ -25,7 +25,7 @@ interface AppWebService {
     fun sendOTP(@PartMap params: HashMap<String, RequestBody>): Observable<SendOTPResponse>
 
     @POST("provider/updatelocation/airport")
-    fun  setAirportMode():Observable<AirportChangeResponseModel>
+    fun setAirportMode(): Observable<AirportChangeResponseModel>
 
     @Multipart
     @POST("user/verify-otp")
@@ -138,7 +138,7 @@ interface AppWebService {
     fun getRides(): Observable<SetupRideResponseModel>
 
     @GET("provider/services_status/{service_id}")
-    fun updateService(@Path("service_id") service_id:Int, @QueryMap params: HashMap<String, String>
+    fun updateService(@Path("service_id") service_id: Int, @QueryMap params: HashMap<String, String>
     ): Observable<Objects>
 
     @GET("provider/providerservice/categories")
@@ -178,6 +178,12 @@ interface AppWebService {
             @Part rcBookMultipart: MultipartBody.Part?,
             @Part insuranceMultipart: MultipartBody.Part?
     ): Observable<AddVehicleResponseModel>
+
+    @GET("provider/serviceride_status/{id}")
+    fun postServiceRideStatus(@Path("id") id: String,
+                              @Query("is_rental") rental: String,
+                              @Query("is_outstation") outstation: String
+    ): Observable<RentalOutsationResponse>
 
     @FormUrlEncoded
     @POST("provider/vechile/add")
@@ -277,7 +283,7 @@ interface AppWebService {
     fun getDeliveryDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
     @GET("provider/service/disputestatus/{request_id}")
-    fun getServiceDisputeStatus(@Path("request_id") id:String):Observable<DisputeStatusModel>
+    fun getServiceDisputeStatus(@Path("request_id") id: String): Observable<DisputeStatusModel>
 
     @POST("provider/logout")
     fun logout(): Observable<ResponseData>

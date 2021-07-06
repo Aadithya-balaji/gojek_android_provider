@@ -357,6 +357,17 @@ class AppRepository : BaseRepository() {
                 .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
     }
 
+    fun postServiceRideStatus(listener: ApiListener,
+                              id:String,rental:String,outstation:String,
+                    ): Disposable {
+        return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
+                .postServiceRideStatus(id, rental,outstation)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe({ if (it.statusCode == "200") listener.success(it) }, { listener.fail(it) })
+    }
+
+
     fun postVehicle(listener: ApiListener, params: HashMap<String, String>): Disposable {
         return BaseRepository().createApiClient(serviceId, AppWebService::class.java)
                 .postVehicle(params)

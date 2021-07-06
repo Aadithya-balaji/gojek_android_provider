@@ -238,8 +238,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     @SuppressLint("MissingPermission")
     override fun updateCurrentLocation() {
         runOnUiThread {
-            mGoogleMap!!.uiSettings.isMyLocationButtonEnabled = true
-            mGoogleMap!!.uiSettings.isCompassEnabled = true
+            mGoogleMap?.uiSettings?.isMyLocationButtonEnabled = true
+            mGoogleMap?.uiSettings?.isCompassEnabled = true
         }
         if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION))
             LocationUtils.getLastKnownLocation(applicationContext, object : LocationCallBack {

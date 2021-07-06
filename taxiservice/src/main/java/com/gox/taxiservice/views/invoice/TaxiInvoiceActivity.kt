@@ -209,6 +209,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 //            mViewModel.timeTaken.value = requestModel!!.request.travel_time + " mins"
             mBinding!!.tvInvoiceLableFare.text =  requestModel!!.request.payment.base_fare_text.toString()
             mViewModel.baseFare.value = requestModel!!.request.currency + requestModel!!.request.payment.fixed.toString()
+
             if(requestModel!!.request.payment.waiting_amount!! >0){
                 mViewModel.waitingCharge.value = requestModel!!.request.currency + requestModel!!.request.payment.waiting_amount.toString()
                 mBinding!!.llInvoiceLabelWaitingCharge.visibility = VISIBLE

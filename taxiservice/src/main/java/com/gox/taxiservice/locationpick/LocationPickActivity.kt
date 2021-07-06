@@ -151,6 +151,7 @@ class LocationPickActivity : BaseActivity<ActivityLocationPickBinding>(),
                     mActivityLocationPickBinding.rvAutoCompletePlaces.visibility = View.GONE
                     etLocationPick.setText(prediction[position].mFullAddress)
                     latLng = mLatLng
+                    updateMapLocation(LatLng(latLng.latitude, latLng.longitude))
                     hideKeyboard()
                 }
                 Handler().postDelayed({ canShowLocationList = true }, 2000)

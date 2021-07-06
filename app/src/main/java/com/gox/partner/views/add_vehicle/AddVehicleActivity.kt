@@ -58,18 +58,16 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         mViewModel.isEditAble.set(true)
         if (!mViewModel.getServiceStatus().equals("")) {
             if (mViewModel.getServiceStatus().equals("ACTIVE") || mViewModel.getServiceStatus().equals("INACTIVE")) {
-                toolbar.editChanges.visibility = View.VISIBLE
+                editChanges.visibility = View.VISIBLE
                 mViewModel.isEditAble.set(false)
             }
-            toolbar.editChanges.setOnClickListener {
+            editChanges.setOnClickListener {
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage("If you change any filed's you can ride only when admin is approved").setNegativeButton("", DialogInterface.OnClickListener { dialog, which -> }).setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, which ->
                     mViewModel.isEditAble.set(true)
-                    toolbar.editChanges.visibility = View.GONE
+                    editChanges.visibility = View.GONE
                 })
                 builder.show();
-
-
             }
         }
 
@@ -139,6 +137,13 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 ViewUtils.showToast(this, getString(R.string.vehicle_added_success), true)
             else ViewUtils.showToast(this, getString(R.string.vehicle_update_success), true)
             finish()
+        }
+
+        observeLiveData(mViewModel.getRentalOutsationResponseObservable()) {
+            loadingObservable.value = false
+           if(it.message.isNullOrBlank().not()){
+               showSuccess(it.message)
+           }
         }
 
         observeLiveData(mViewModel.getVehicleDataObservable()) { vehicleData ->
@@ -328,4 +333,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         loadingObservable.value = false
         ViewUtils.showToast(applicationContext, error, false)
     }
+
+    override fun showSuccess(message: String) {
+        loadingObservable.value = false
+        ViewUtils.showToast(applicationContext, message, true)    }
 }

@@ -15,10 +15,7 @@ import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.createMultipartBody
 import com.gox.base.extensions.createRequestBody
 import com.gox.base.repository.ApiListener
-import com.gox.partner.models.AddVehicleDataModel
-import com.gox.partner.models.AddVehicleResponseModel
-import com.gox.partner.models.ProviderVehicleResponseModel
-import com.gox.partner.models.VehicleCategoryResponseModel
+import com.gox.partner.models.*
 import com.gox.partner.network.WebApiConstants
 import com.gox.partner.repository.AppRepository
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -36,6 +33,8 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
     private val orderServiceName: String = BaseApplication.getCustomPreference!!.getString(PreferencesKey.ORDER_ID, Constants.ModuleTypes.ORDER) ?: ""
     private val vehicleCategoryLiveData = MutableLiveData<VehicleCategoryResponseModel>()
     private val vehicleResponseLiveData = MutableLiveData<AddVehicleResponseModel>()
+    private val rentalOutsationResponse = MutableLiveData<RentalOutsationResponse>()
+
     var specialSeatLiveData = MutableLiveData<Boolean>()
 
     private var serviceName: String = Constants.ModuleTypes.TRANSPORT
@@ -138,11 +137,36 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         else -> false
     }
 
+    fun isFieldRentalMandatory() = when (serviceName) {
+        transportServiceName -> true
+        deliveryServiceName -> false
+        orderServiceName -> false
+        else -> false
+    }
 //    fun isEditAble() = when (serviceStatus) {
 //        "INACTIVE" -> false
 //        "ACTIVE" -> false
 //         else -> true
 //    }
+
+    fun  postServiceRideStatus(){
+        if(isEdit) {
+            showLoading.value = true
+
+            getCompositeDisposable().add(mRepository.postServiceRideStatus(object : ApiListener {
+                override fun success(successData: Any) {
+                    showLoading.postValue(false)
+                    rentalOutsationResponse.value = successData as RentalOutsationResponse
+                }
+
+                override fun fail(failData: Throwable) {
+                    showLoading.postValue(false)
+                    navigator.showError(getErrorMessage(failData))
+                }
+            }, getVehicleData()!!.id.toString(), getVehicleData()!!.itsRental.toString(),getVehicleData()!!.itsOutstation.toString()))
+        }
+
+    }
 
     fun postVehicle() {
         showLoading.value = true
@@ -229,6 +253,9 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
 
     fun getVehicleResponseObservable() = vehicleResponseLiveData
 
+    fun getRentalOutsationResponseObservable() = rentalOutsationResponse
+
+
     fun onVehicleImageClick(view: View) = navigator.onVehicleImageClicked()
 
     fun onRcBookClick(view: View) = navigator.onRcBookClicked()
@@ -259,6 +286,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         }else{
             getVehicleData()?.itsRental = 0
         }
+        postServiceRideStatus()
     }
 
     fun onOutstationCheckChanged(isChecked:Boolean){
@@ -267,6 +295,7 @@ class AddVehicleViewModel : BaseViewModel<AddVehicleNavigator>() {
         }else{
             getVehicleData()?.itsOutstation = 0
         }
+        postServiceRideStatus()
     }
 
 }

@@ -6,4 +6,6 @@ interface AddVehicleNavigator {
     fun onInsuranceClicked()
     fun onVehicleSubmitClicked()
     fun showError(error: String)
+    fun showSuccess(message: String)
+
 }

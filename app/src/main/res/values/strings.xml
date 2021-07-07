@@ -554,5 +554,6 @@
     <string name="expire_at">"Expire At: "</string>
     <string name="base_fare">Base Fare</string>
     <string name="peak_charge">Peak Charge</string>
+    <string name="location_permission_alert">This app collects location data to enable Táxi, Delivery of food, Delivery of products, Logistics and deliveries &amp; hiring service provider even when the app is closed or not in use.</string>
 
 </resources>

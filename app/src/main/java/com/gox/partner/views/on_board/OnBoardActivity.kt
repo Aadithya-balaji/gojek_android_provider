@@ -1,21 +1,31 @@
 package com.gox.partner.views.on_board
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.NonNull
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.gox.base.base.BaseActivity
+import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityOnBoardBinding
 import com.gox.partner.views.sign_in.LoginActivity
 import com.gox.partner.views.signup.RegistrationActivity
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 
 class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>()
         , OnBoardNavigator {
@@ -52,6 +62,41 @@ class OnBoardActivity : BaseActivity<ActivityOnBoardBinding>()
 
         loadAdapter()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    || checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                showLocationPermissionAlert()
+            }
+    }
+
+    private fun showLocationPermissionAlert() {
+        val builder: AlertDialog = AlertDialog.Builder(this)
+                .setTitle(getString(com.gox.base.R.string.app_name))
+                .setMessage(getString(R.string.location_permission_alert))
+                .setPositiveButton(R.string.ok) { dialog, which ->
+                    dialog.dismiss()
+                    Dexter.withActivity(this)
+                            .withPermissions(
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                            )
+                            .withListener(object : MultiplePermissionsListener {
+                                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+
+                                }
+
+                                override fun onPermissionRationaleShouldBeShown(
+                                        permissions: MutableList<PermissionRequest>?,
+                                        token: PermissionToken?
+                                ) {
+                                    token?.continuePermissionRequest()
+                                }
+                            }).check()
+                }
+                .show()
+
+        ViewUtils.AlertButton(builder)
     }
 
     private fun loadAdapter() {

@@ -62,7 +62,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 
     private lateinit var mBinding: ActivityEditProfileBinding
     private lateinit var mViewModel: ProfileViewModel
-    private lateinit var city: List<City>
+     var city: List<City>? = null
 
     private var mCropImageUri: Uri? = null
     private var localPath: Uri? = null
@@ -102,6 +102,11 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             intent.putExtra("selectedfrom", "country")
             intent.putExtra("countrylistresponse", it as Serializable)
             startActivityForResult(intent, Constants.COUNTRY_LIST_REQUEST_CODE)
+        })
+
+        mViewModel.countryResponse.observe(this,{
+            city = it?.city!!
+            mViewModel.getCityList()
         })
 
         observeLiveData(mViewModel.showLoading) {
@@ -358,7 +363,9 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
     override fun goToCityListActivity(countryId: ObservableField<String>) =
             if (TextUtils.isEmpty(countryId.toString()))
                 ViewUtils.showToast(this, getString(R.string.error_select_country), false)
-            else {
+            else if(city.isNullOrEmpty()){
+                mViewModel.getProfileCountryCityList()
+            }else {
                 val intent = Intent(this, CityListActivity::class.java)
                 intent.putExtra("selectedfrom", "city")
                 intent.putExtra("citylistresponse", city as Serializable)

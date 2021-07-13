@@ -31,6 +31,7 @@ android {
 
         debug {
             manifestPlaceholders = [crashlyticsEnabled: true]
+            signingConfig signingConfigs.release
         }
 
         release {

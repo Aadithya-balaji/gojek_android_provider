@@ -317,6 +317,7 @@
                                 style="@style/SmallText"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:digits="0123456789"
                                 android:inputType="number"
                                 android:paddingStart="20dp"
                                 android:paddingEnd="25dp"

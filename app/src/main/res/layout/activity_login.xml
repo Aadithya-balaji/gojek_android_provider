@@ -167,6 +167,7 @@
                                 app:boxCornerRadiusTopStart="0dp">
 
                                 <com.google.android.material.textfield.TextInputEditText
+                                    android:digits="0123456789"
                                     android:id="@+id/phonenumber_register_et"
                                     style="@style/SmallText"
                                     android:layout_width="match_parent"

@@ -21,6 +21,10 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
     var bookingId = MutableLiveData<String>()
     var distance = MutableLiveData<String>()
     var timeTaken = MutableLiveData<String>()
+    var rentalPackage = MutableLiveData<String>()
+    var outstationType = MutableLiveData<String>()
+
+
     var baseFare = MutableLiveData<String>()
     var distanceFare = MutableLiveData<String>()
     var discount = ObservableField<String>()

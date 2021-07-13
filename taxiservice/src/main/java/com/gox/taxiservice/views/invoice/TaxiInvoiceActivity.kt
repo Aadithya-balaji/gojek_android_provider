@@ -150,19 +150,23 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
             else tv_confirm_payment.text = resources.getString(R.string.taxi_confirm_done)
 
             if(requestModel!!.request.calculator.equals("MIN")){
+                mBinding!!.llOutstationLabelTime.visibility = GONE
                 mBinding!!.tvInvoiceLabelTime.text=requestModel!!.request.payment?.time_fare_text
                 mBinding!!.tvInvoiceTime.text = requestModel!!.request.currency.toString() + " "+ requestModel!!.request.payment.minute.toString()
                 mBinding!!.tvLabelDistanceFare.visibility = View.GONE
                 mBinding!!.tvDistanceFare.visibility = View.GONE
+                mBinding!!.llRentalLabelTime.visibility = GONE
                 mBinding!!.llLabelDistanceFare.visibility = View.GONE
                 if(requestModel!!.request.payment.minute == 0.0)
                     mBinding!!.llInvoiceLabelTime.visibility = View.GONE
                 else
                     mBinding!!.llInvoiceLabelTime.visibility = View.VISIBLE
             }else if(requestModel!!.request.calculator.equals("HOUR")){
+                mBinding!!.llOutstationLabelTime.visibility = GONE
                 mBinding!!.tvLabelDistanceFare.visibility = View.GONE
                 mBinding!!.tvDistanceFare.visibility = View.GONE
                 mBinding!!.llLabelDistanceFare.visibility = View.GONE
+                mBinding!!.llRentalLabelTime.visibility = GONE
                 mBinding!!.tvInvoiceLabelTime.text=requestModel!!.request.payment?.time_fare_text
                 mBinding!!.tvInvoiceTime.text = requestModel!!.request.currency.toString() + " "+ requestModel!!.request.payment.hour.toString()
                 if(requestModel!!.request.payment.hour == 0.0)
@@ -170,12 +174,16 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 else
                     mBinding!!.llInvoiceLabelTime.visibility = View.VISIBLE
             }else if(requestModel!!.request.calculator.equals("DISTANCE")){
+                mBinding!!.llOutstationLabelTime.visibility = GONE
                 mBinding!!.tvLabelDistanceFare.text= requestModel!!.request.payment?.distance_fare_text
                 mBinding!!.tvDistanceFare.text = requestModel!!.request.currency.toString() + " " + requestModel!!.request.payment?.distance.toString()
                 mBinding!!.tvInvoiceLabelTime.visibility = View.GONE
+                mBinding!!.llRentalLabelTime.visibility = GONE
                 mBinding!!.tvInvoiceTime.visibility = View.GONE
                 mBinding!!.llInvoiceLabelTime.visibility = View.GONE
             }else if(requestModel!!.request.calculator.equals("DISTANCEMIN")){
+                mBinding!!.llRentalLabelTime.visibility = GONE
+                mBinding!!.llOutstationLabelTime.visibility = GONE
                 mBinding!!.tvInvoiceLabelTime.text=requestModel!!.request.payment?.time_fare_text
                 mBinding!!.tvLabelDistanceFare.text= requestModel!!.request.payment?.distance_fare_text
                 mBinding!!.tvInvoiceTime.text = requestModel!!.request.currency.toString() + " "+ requestModel!!.request.payment.minute.toString()
@@ -185,6 +193,8 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                 else
                     mBinding!!.llInvoiceLabelTime.visibility = View.VISIBLE
             }else if(requestModel!!.request.calculator.equals("DISTANCEHOUR")){
+                mBinding!!.llRentalLabelTime.visibility = GONE
+                mBinding!!.llOutstationLabelTime.visibility = GONE
                 mBinding!!.tvInvoiceLabelTime.text=requestModel!!.request.payment?.time_fare_text
                 mBinding!!.tvLabelDistanceFare.text= requestModel!!.request.payment?.distance_fare_text
                 mBinding!!.tvInvoiceTime.text = requestModel!!.request.currency.toString() + " "+ requestModel!!.request.payment.hour.toString()
@@ -193,6 +203,24 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
                     mBinding!!.llInvoiceLabelTime.visibility = View.GONE
                 else
                     mBinding!!.llInvoiceLabelTime.visibility = View.VISIBLE
+            }else if(requestModel!!.request.calculator.equals("RENTAL")){
+                mBinding!!.tvLabelDistanceFare.visibility = View.GONE
+                mBinding!!.tvDistanceFare.visibility = View.GONE
+                mBinding!!.llLabelDistanceFare.visibility = View.GONE
+                mBinding!!.tvInvoiceLabelTime.visibility = View.GONE
+                mBinding!!.tvInvoiceTime.visibility = View.GONE
+                mBinding!!.llInvoiceLabelTime.visibility = View.GONE
+                mBinding!!.llOutstationLabelTime.visibility = GONE
+                mBinding!!.tvRentalTime.text = requestModel!!.request.rental_package?.hour + "h- "+ requestModel!!.request.rental_package?.km.toString()+"Km"
+            }else if(requestModel!!.request.calculator.equals("OUTSTATION")){
+                mBinding!!.tvLabelDistanceFare.visibility = View.GONE
+                mBinding!!.tvDistanceFare.visibility = View.GONE
+                mBinding!!.llLabelDistanceFare.visibility = View.GONE
+                mBinding!!.tvInvoiceLabelTime.visibility = View.GONE
+                mBinding!!.tvInvoiceTime.visibility = View.GONE
+                mBinding!!.llInvoiceLabelTime.visibility = View.GONE
+                mBinding!!.llRentalLabelTime.visibility = GONE
+                mBinding!!.tvOutstationTime.text = requestModel!!.request.outstation_type.toString()
             }
 
             if(requestModel!!.request.payment?.distance == 0.0)

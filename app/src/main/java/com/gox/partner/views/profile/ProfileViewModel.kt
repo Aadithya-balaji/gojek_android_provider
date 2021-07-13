@@ -6,10 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseViewModel
 import com.gox.base.repository.ApiListener
-import com.gox.partner.models.CountryListResponse
-import com.gox.partner.models.ProfileResponse
-import com.gox.partner.models.ResProfileUpdate
-import com.gox.partner.models.SendOTPResponse
+import com.gox.partner.models.*
 import com.gox.partner.repository.AppRepository
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -34,6 +31,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
 
     var showLoading = MutableLiveData<Boolean>()
     var countryListResponse = MutableLiveData<CountryListResponse>()
+    var countryResponse = MutableLiveData<CountryResponseData>()
     var sendOTPResponse = MutableLiveData<SendOTPResponse>()
 
     val mRepository = AppRepository.instance()
@@ -74,7 +72,7 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
         }, hashMap, file))
     }
 
-    fun getProfileCountryList(view: View) {
+    fun getProfileCountryList() {
         showLoading.value = true
 
         val hashMap: HashMap<String, Any?> = HashMap()
@@ -83,6 +81,24 @@ class ProfileViewModel : BaseViewModel<ProfileNavigator>() {
         getCompositeDisposable().add(mRepository.getCountryList(object : ApiListener {
             override fun success(successData: Any) {
                 countryListResponse.value = successData as CountryListResponse
+            }
+
+            override fun fail(failData: Throwable) {
+                errorResponse.value = getErrorMessage(failData)
+            }
+        }, hashMap))
+    }
+
+    fun getProfileCountryCityList() {
+        showLoading.value = true
+
+        val hashMap: HashMap<String, Any?> = HashMap()
+        hashMap["salt_key"] = BuildConfig.SALT_KEY
+
+        getCompositeDisposable().add(mRepository.getCountryList(object : ApiListener {
+            override fun success(successData: Any) {
+                 val countryResponseData = successData as CountryListResponse
+                 countryResponse.value = countryResponseData.responseData.find { mCountryId.get() == it.id.toString() }
             }
 
             override fun fail(failData: Throwable) {

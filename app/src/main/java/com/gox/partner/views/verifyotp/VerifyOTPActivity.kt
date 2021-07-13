@@ -11,6 +11,7 @@ import com.gox.base.base.BaseActivity
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityVerifyOtpBinding
+import kotlinx.android.synthetic.main.toolbar_layout.view.*
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -36,14 +37,11 @@ class VerifyOTPActivity : BaseActivity<ActivityVerifyOtpBinding>(), VerifyOTPNav
         mViewDataBinding.verifyOTPModel = mViewModel
         mViewDataBinding.lifecycleOwner = this
 
-        mViewDataBinding.run {
-            titleToolbar.navigationIcon = getDrawable(R.drawable.back_arrow)
-            titleToolbar.title = getString(R.string.otp_verification)
-            titleToolbar.setNavigationOnClickListener {
+        mViewDataBinding.titleToolbars.title_toolbar.title = getString(R.string.otp_verification)
+        mViewDataBinding.titleToolbars.toolbar_back_img.setOnClickListener{
                 onBackPressed()
             }
-        }
-        setSupportActionBar(mViewDataBinding.titleToolbar)
+
 
         val extras = intent.extras
         if (extras != null && extras.containsKey("country_code")) {

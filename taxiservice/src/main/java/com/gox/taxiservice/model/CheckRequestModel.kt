@@ -155,6 +155,8 @@ data class Request(
         var track_longitude: Double? = 0.0,
         var travel_time: String = "",
         var unit: String = "",
+        var outstation_type:String? = "",
+        var rental_package:RentalPackageDetails? = null,
         var use_wallet: Int? = 0,
         var user: User = User(),
         var user_id: Int? = 0,

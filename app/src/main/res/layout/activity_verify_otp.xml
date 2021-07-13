@@ -17,15 +17,11 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/title_toolbar"
-            style="@style/CustomToolBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/light_gray"
+        <include
             app:layout_constraintTop_toTopOf="parent"
-            app:titleTextAppearance="@style/MediumText"
-            tools:targetApi="honeycomb" />
+            android:id="@+id/title_toolbars"
+            layout="@layout/toolbar_layout" />
+
 
         <ImageView
             android:id="@+id/ivLogo"

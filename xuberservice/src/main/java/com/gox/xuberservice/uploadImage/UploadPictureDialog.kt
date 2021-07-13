@@ -99,7 +99,7 @@ class UploadPictureDialog : BaseDialogFragment<DialogUploadImageBinding>(), Uplo
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     if (resultCode == Activity.RESULT_OK) {
-                        result?.let { it.uri?.run {
+                        result?.let { it.uriContent?.run {
                             localPath = result?.let { this }
                             mBinding.llCaptureImage.visibility = View.GONE
                             mBinding.ivServiceImg.setImageURI(localPath)

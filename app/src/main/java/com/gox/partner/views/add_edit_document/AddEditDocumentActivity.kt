@@ -254,7 +254,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     when (this.requestCode) {
 
                         Enums.DOCUMENT_UPLOAD_FRONT -> {
-                            result?.let { it.uri?.run {
+                            result?.let { it.uriContent?.run {
 
                                 val frontImageFile = File(this.path)
                                 if(frontImageFile!=null)
@@ -268,7 +268,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                         }
 
                         else -> {
-                            val backImageFile = File(result?.let { it.uri?.let { it.path } })
+                            val backImageFile = File(result?.let { it.uriContent?.let { it.path } })
                             Glide.with(this)
                                     .load(backImageFile)
                                     .into(ivBackImage)

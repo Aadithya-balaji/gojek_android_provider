@@ -308,8 +308,8 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
-                    result?.let { it.uri?.let {  glideSetImageView(ivProfile,it, R.drawable.ic_user_place_holder) } }
-                    result?.let { it.uri?.let {
+                    result?.let { it.uriContent?.let {  glideSetImageView(ivProfile,it, R.drawable.ic_user_place_holder) } }
+                    result?.let { it.uriContent?.let {
                         kotlin.run {
                             val profileFile = File(it.path)
                             if (profileFile.exists()) {

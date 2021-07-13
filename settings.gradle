@@ -1,3 +1,2 @@
-include ':cropper'
 include ':courierservice'
-include ':app', ':base', ':taxiservice', ':foodservice', ':xuberservice', ':countrycodepicker', ':cropperlibrary', ':monitorinternet'
+include ':app', ':base', ':taxiservice', ':foodservice', ':xuberservice', ':countrycodepicker', ':monitorinternet'

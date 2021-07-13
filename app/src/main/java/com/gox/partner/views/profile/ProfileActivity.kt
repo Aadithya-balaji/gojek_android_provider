@@ -244,7 +244,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE) {
-                val imageUri = CropImage.getPickImageResultUri(this, data)
+                val imageUri = CropImage.getPickImageResultUriContent(this, data)
                 if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
                     mCropImageUri = imageUri
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -255,11 +255,11 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
             if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == Activity.RESULT_OK) {
-                    result?.let { it.uri?.run {
+                    result?.let { it.uriContent?.run {
                         glideSetImageView(mBinding.profileImage,this,R.drawable.ic_car_placeholder) }}
                     }
 //                    mBinding.profileImage.setImageURI(result.uri)
-                     result?.let { it.uri?.let {
+                     result?.let { it.uriContent?.let {
                          kotlin.run {
                              localPath=it
                          }

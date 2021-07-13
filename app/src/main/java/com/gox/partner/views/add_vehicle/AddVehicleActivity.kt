@@ -267,7 +267,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == Activity.RESULT_OK) when (this.requestCode) {
                     Enums.RC_VEHICLE_IMAGE -> {
-                        result?.let { it.uri?.run {
+                        result?.let { it.uriContent?.run {
                             mViewModel.setVehicleUri(this)
                             Glide.with(this@AddVehicleActivity).load(this)
                                     .placeholder(R.drawable.ic_car_placeholder)
@@ -275,7 +275,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                         } }
                     }
                     Enums.RC_RC_BOOK_IMAGE -> {
-                        result?.let { it.uri?.run {
+                        result?.let { it.uriContent?.run {
                             Log.e("RCURI","------"+this.toString())
                             mViewModel.setRcBookUri(this)
                             Glide.with(this@AddVehicleActivity).load(this)
@@ -285,7 +285,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                         tvRcBook.visibility = View.GONE
                     }
                     Enums.RC_INSURANCE_IMAGE -> {
-                        result?.let { it.uri?.run {
+                        result?.let { it.uriContent?.run {
                             mViewModel.setInsuranceUri(this)
                             Glide.with(this@AddVehicleActivity).load(this)
                                     .placeholder(R.drawable.ic_car_placeholder)

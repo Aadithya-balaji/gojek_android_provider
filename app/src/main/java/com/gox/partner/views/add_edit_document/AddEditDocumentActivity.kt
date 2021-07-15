@@ -287,7 +287,7 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
                         else -> {
                             result?.uriContent?.let {
-                                ImageUtils.getPathFromInputStreamUri(applicationContext, it)?.let {
+                                ImageUtils.getPathFromInputStreamFile(applicationContext, it)?.let {
                                     Glide.with(this)
                                         .load(it)
                                         .into(ivBackImage)

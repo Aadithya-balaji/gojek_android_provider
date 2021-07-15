@@ -312,104 +312,104 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 mViewModel.showLoading.value = false
             } else mViewModel.showLoading.value = false
         }
-
-
-        private fun setCountry(data: Intent?) {
-            val selectedCountry = data?.extras?.get("selected_list") as? CountryResponseData
-            city = selectedCountry?.city!!
-            mBinding.countryRegisterEt.setText(selectedCountry.country_name)
-            mViewModel.mCountryId.set(selectedCountry.id.toString())
-        }
-
-        private fun accountKitOtpVerified(data: Intent?) {
-            /* val loginResult: AccountKitLoginResult = data!!.getParcelableExtra(AccountKitLoginResult.RESULT_KEY)
-             if (loginResult.error != null) {
-                 Log.d("_D_fbaccountkit", loginResult.error.toString())
-             } else if (loginResult.wasCancelled()) {
-                 Log.d("_D_fbaccountkit", "Fb login cancelled")
-             } else {
-
-             }*/
-
-            mMobileNumberFlag = 1
-            if (localPath?.path != null) {
-                val pictureFile = File(localPath?.path)
-                pictureFile?.let {
-                    kotlin.run {
-                        requestFile = pictureFile.asRequestBody("*/*".toMediaTypeOrNull())
-                    }
-                }
-
-                if (requestFile != null) {
-                    val fileBody = MultipartBody.Part.createFormData(
-                        "picture",
-                        pictureFile.name,
-                        requestFile!!
-                    )
-                    mViewModel.updateProfile(fileBody)
-                }
-            } else mViewModel.updateProfile(null)
-        }
-
-        private fun setCity(data: Intent?) {
-            val selectedCity = data?.extras?.get("selected_list") as? City
-            mBinding.cityRegisterEt.setText(selectedCity?.city_name)
-            mViewModel.mCityId.set(selectedCity?.id.toString())
-        }
-
-        private fun startCropImageActivity(imageUri: Uri) = CropImage.activity(imageUri)
-            .setFixAspectRatio(true)
-            .setGuidelines(CropImageView.Guidelines.ON)
-            .setCropShape(CropImageView.CropShape.OVAL)
-            .setMultiTouchEnabled(true)
-            .start(this)
-
-        override fun profileUpdateValidation(
-            email: String, phoneNumber: String, firstName: String, country: String, city: String
-        ): Boolean {
-            if (TextUtils.isEmpty(firstName)) {
-                ViewUtils.showToast(this, getString(R.string.error_firstname), false)
-                mViewModel.showLoading.value = false
-                return false
-            } else if (TextUtils.isEmpty(phoneNumber) && ValidationUtils.isMinLength(
-                    phoneNumber,
-                    6
-                )
-            ) {
-                ViewUtils.showToast(this, getString(R.string.error_invalid_phonenumber), false)
-                mViewModel.showLoading.value = false
-                return false
-            } else if (mViewModel.mMobileNumber.get()?.length!! > 11 && mViewModel.mCountryCode.get()!!
-                    .replace(" ", "") == "+977"
-            ) {
-                ViewUtils.showToast(this, getString(R.string.error_invalid_phonenumber), false)
-                mViewModel.showLoading.value = false
-                return false
-            } else if (TextUtils.isEmpty(email) && !ValidationUtils.isValidEmail(email)) {
-                ViewUtils.showToast(this, getString(R.string.error_invalid_email_address), false)
-                mViewModel.showLoading.value = false
-                return false
-            } else if (TextUtils.isEmpty(country)) {
-                ViewUtils.showToast(this, getString(R.string.error_select_country), false)
-                mViewModel.showLoading.value = false
-                return false
-            } else if (TextUtils.isEmpty(city)) {
-                ViewUtils.showToast(this, getString(R.string.error_select_city), false)
-                mViewModel.showLoading.value = false
-                return false
-            }
-            return true
-        }
-
-        override fun goToCityListActivity(countryId: ObservableField<String>) =
-            if (TextUtils.isEmpty(countryId.toString()))
-                ViewUtils.showToast(this, getString(R.string.error_select_country), false)
-            else if (city.isNullOrEmpty()) {
-                mViewModel.getProfileCountryCityList()
-            } else {
-                val intent = Intent(this, CityListActivity::class.java)
-                intent.putExtra("selectedfrom", "city")
-                intent.putExtra("citylistresponse", city as Serializable)
-                startActivityForResult(intent, Constants.CITY_LIST_REQUEST_CODE)
-            }
     }
+
+    private fun setCountry(data: Intent?) {
+        val selectedCountry = data?.extras?.get("selected_list") as? CountryResponseData
+        city = selectedCountry?.city!!
+        mBinding.countryRegisterEt.setText(selectedCountry.country_name)
+        mViewModel.mCountryId.set(selectedCountry.id.toString())
+    }
+
+    private fun accountKitOtpVerified(data: Intent?) {
+        /* val loginResult: AccountKitLoginResult = data!!.getParcelableExtra(AccountKitLoginResult.RESULT_KEY)
+         if (loginResult.error != null) {
+             Log.d("_D_fbaccountkit", loginResult.error.toString())
+         } else if (loginResult.wasCancelled()) {
+             Log.d("_D_fbaccountkit", "Fb login cancelled")
+         } else {
+
+         }*/
+
+        mMobileNumberFlag = 1
+        if (localPath?.path != null) {
+            val pictureFile = File(localPath?.path)
+            pictureFile?.let {
+                kotlin.run {
+                    requestFile = pictureFile.asRequestBody("*/*".toMediaTypeOrNull())
+                }
+            }
+
+            if (requestFile != null) {
+                val fileBody = MultipartBody.Part.createFormData(
+                    "picture",
+                    pictureFile.name,
+                    requestFile!!
+                )
+                mViewModel.updateProfile(fileBody)
+            }
+        } else mViewModel.updateProfile(null)
+    }
+
+    private fun setCity(data: Intent?) {
+        val selectedCity = data?.extras?.get("selected_list") as? City
+        mBinding.cityRegisterEt.setText(selectedCity?.city_name)
+        mViewModel.mCityId.set(selectedCity?.id.toString())
+    }
+
+    private fun startCropImageActivity(imageUri: Uri) = CropImage.activity(imageUri)
+        .setFixAspectRatio(true)
+        .setGuidelines(CropImageView.Guidelines.ON)
+        .setCropShape(CropImageView.CropShape.OVAL)
+        .setMultiTouchEnabled(true)
+        .start(this)
+
+    override fun profileUpdateValidation(
+        email: String, phoneNumber: String, firstName: String, country: String, city: String
+    ): Boolean {
+        if (TextUtils.isEmpty(firstName)) {
+            ViewUtils.showToast(this, getString(R.string.error_firstname), false)
+            mViewModel.showLoading.value = false
+            return false
+        } else if (TextUtils.isEmpty(phoneNumber) && ValidationUtils.isMinLength(
+                phoneNumber,
+                6
+            )
+        ) {
+            ViewUtils.showToast(this, getString(R.string.error_invalid_phonenumber), false)
+            mViewModel.showLoading.value = false
+            return false
+        } else if (mViewModel.mMobileNumber.get()?.length!! > 11 && mViewModel.mCountryCode.get()!!
+                .replace(" ", "") == "+977"
+        ) {
+            ViewUtils.showToast(this, getString(R.string.error_invalid_phonenumber), false)
+            mViewModel.showLoading.value = false
+            return false
+        } else if (TextUtils.isEmpty(email) && !ValidationUtils.isValidEmail(email)) {
+            ViewUtils.showToast(this, getString(R.string.error_invalid_email_address), false)
+            mViewModel.showLoading.value = false
+            return false
+        } else if (TextUtils.isEmpty(country)) {
+            ViewUtils.showToast(this, getString(R.string.error_select_country), false)
+            mViewModel.showLoading.value = false
+            return false
+        } else if (TextUtils.isEmpty(city)) {
+            ViewUtils.showToast(this, getString(R.string.error_select_city), false)
+            mViewModel.showLoading.value = false
+            return false
+        }
+        return true
+    }
+
+    override fun goToCityListActivity(countryId: ObservableField<String>) =
+        if (TextUtils.isEmpty(countryId.toString()))
+            ViewUtils.showToast(this, getString(R.string.error_select_country), false)
+        else if (city.isNullOrEmpty()) {
+            mViewModel.getProfileCountryCityList()
+        } else {
+            val intent = Intent(this, CityListActivity::class.java)
+            intent.putExtra("selectedfrom", "city")
+            intent.putExtra("citylistresponse", city as Serializable)
+            startActivityForResult(intent, Constants.CITY_LIST_REQUEST_CODE)
+        }
+}

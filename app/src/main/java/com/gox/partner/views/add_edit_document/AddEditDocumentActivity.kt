@@ -21,6 +21,7 @@ import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.DateTimeUtil
 import com.gox.base.utils.ImageCropperUtils
+import com.gox.base.utils.ImageUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityAddEditDocumentBinding
@@ -39,7 +40,7 @@ import java.io.File
 import java.util.*
 
 class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
-        DocumentUploadNavigator, DatePickerDialog.OnDateSetListener {
+    DocumentUploadNavigator, DatePickerDialog.OnDateSetListener {
 
     private lateinit var mBinding: ActivityAddEditDocumentBinding
     private lateinit var mViewModel: AddEditDocumentViewModel
@@ -71,11 +72,14 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         }
 
         tv_toolbar_title.text = intent.getStringExtra(Constants.DOCUMENT_NAME)
-        intent.getParcelableExtra<ListDocumentResponse.ResponseData>(Constants.DOCUMENT_TYPE)?.let { mViewModel.setData(it) }
+        intent.getParcelableExtra<ListDocumentResponse.ResponseData>(Constants.DOCUMENT_TYPE)
+            ?.let { mViewModel.setData(it) }
         observeResponses()
 
-        mViewModel.expiryDate.value = DateTimeUtil().constructDateString(calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), "-")
+        mViewModel.expiryDate.value = DateTimeUtil().constructDateString(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), "-"
+        )
     }
 
     private fun observeResponses() {
@@ -87,7 +91,10 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         observeLiveData(mViewModel.addDocumentResponse) {
             ViewUtils.showToast(this, getString(R.string.docuemnt_added_success), true)
             it.responseData.expires_at = it.responseData.expires_at.plus(" 00:00:00")
-            setResult(Activity.RESULT_OK, Intent().putExtra(Constants.DOCUMENT_TYPE, it.responseData))
+            setResult(
+                Activity.RESULT_OK,
+                Intent().putExtra(Constants.DOCUMENT_TYPE, it.responseData)
+            )
             finish()
 //            if (mViewModel.getData().size > (mViewModel.currentPosition + 1))
 //                mViewModel.incrementPosition() else finish()
@@ -106,9 +113,9 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     val circularProgressDrawable = getCircularProgressDrawable()
                     if (!url.isNullOrEmpty()) {
                         Glide.with(this)
-                                .load(url)
-                                .placeholder(circularProgressDrawable)
-                                .into(ivFrontImage)
+                            .load(url)
+                            .placeholder(circularProgressDrawable)
+                            .into(ivFrontImage)
                         mViewModel.showFrontView.value = true
                     } else {
                         ivFrontImage.setImageDrawable(null)
@@ -129,9 +136,9 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     val circularProgressDrawable = getCircularProgressDrawable()
                     if (!url.isNullOrEmpty()) {
                         Glide.with(this)
-                                .load(url)
-                                .placeholder(circularProgressDrawable)
-                                .into(ivBackImage)
+                            .load(url)
+                            .placeholder(circularProgressDrawable)
+                            .into(ivBackImage)
                         mViewModel.showBackView.value = true
                     } else {
                         ivBackImage.setImageDrawable(null)
@@ -149,28 +156,28 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
 
     private fun downloadBackSideFile(url: String?) {
         backFileDownloadID = PRDownloader.download(url, cacheDir.path, "back_image")
-                .build().start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
-                        mViewModel.documentBackImageFile.value =
-                                File(cacheDir.path + File.separator + "back_image")
-                    }
+            .build().start(object : OnDownloadListener {
+                override fun onDownloadComplete() {
+                    mViewModel.documentBackImageFile.value =
+                        File(cacheDir.path + File.separator + "back_image")
+                }
 
-                    override fun onError(error: Error?) {
-                    }
-                })
+                override fun onError(error: Error?) {
+                }
+            })
     }
 
     private fun downloadFrontSideFile(url: String?) {
         frontFileDownloadID = PRDownloader.download(url, cacheDir.path, "front_image")
-                .build().start(object : OnDownloadListener {
-                    override fun onDownloadComplete() {
-                        mViewModel.documentFrontImageFile.value =
-                                File(cacheDir.path + File.separator + "front_image")
-                    }
+            .build().start(object : OnDownloadListener {
+                override fun onDownloadComplete() {
+                    mViewModel.documentFrontImageFile.value =
+                        File(cacheDir.path + File.separator + "front_image")
+                }
 
-                    override fun onError(error: Error?) {
-                    }
-                })
+                override fun onError(error: Error?) {
+                }
+            })
     }
 
     private fun getCircularProgressDrawable(): CircularProgressDrawable {
@@ -182,68 +189,81 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        mViewModel.expiryDate.value = DateTimeUtil().constructDateString(year, month, dayOfMonth, "-")
+        mViewModel.expiryDate.value =
+            DateTimeUtil().constructDateString(year, month, dayOfMonth, "-")
     }
 
     override fun onDateChanged() {
         val datePickerDialog = /*DatePickerDialog(this, this, calendar.time.year,
                 calendar.time.month, calendar.time.date)*/
 
-                DatePickerDialog(this, this, calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+            DatePickerDialog(
+                this, this, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)
+            )
         datePickerDialog.datePicker.minDate = calendar.timeInMillis
         datePickerDialog.show()
     }
 
     override fun selectFrontImage() = Dexter.withActivity(this)
-            .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-            .withListener(object : MultiplePermissionsListener {
-                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                    requestCode = Enums.DOCUMENT_UPLOAD_FRONT
+        .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+        .withListener(object : MultiplePermissionsListener {
+            override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                requestCode = Enums.DOCUMENT_UPLOAD_FRONT
 
-                    if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true))
-                        ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
-                    else {
-                        FilePickerBuilder.instance
-                                .setMaxCount(1)
-                                .addFileSupport(getString(R.string.select_front_page), arrayOf(PDF_EXTENSION), R.drawable.ic_pdf)
-                                .setActivityTheme(R.style.LibAppTheme)
-                                .enableDocSupport(false)
-                                .enableSelectAll(false)
-                                .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                                .pickFile(this@AddEditDocumentActivity)
-                    }
+                if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true))
+                    ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
+                else {
+                    FilePickerBuilder.instance
+                        .setMaxCount(1)
+                        .addFileSupport(
+                            getString(R.string.select_front_page),
+                            arrayOf(PDF_EXTENSION),
+                            R.drawable.ic_pdf
+                        )
+                        .setActivityTheme(R.style.LibAppTheme)
+                        .enableDocSupport(false)
+                        .enableSelectAll(false)
+                        .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                        .pickFile(this@AddEditDocumentActivity)
                 }
+            }
 
-                override fun onPermissionRationaleShouldBeShown(
-                        permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                    token?.continuePermissionRequest()
-                }
-            }).check()
+            override fun onPermissionRationaleShouldBeShown(
+                permissions: MutableList<PermissionRequest>?, token: PermissionToken?
+            ) {
+                token?.continuePermissionRequest()
+            }
+        }).check()
 
     override fun selectBackImage() = Dexter.withActivity(this)
-            .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-            .withListener(object : MultiplePermissionsListener {
-                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                    requestCode = Enums.DOCUMENT_UPLOAD_BACK
-                    if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true))
-                        ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity) else {
-                        FilePickerBuilder.instance
-                                .setMaxCount(1)
-                                .addFileSupport(getString(R.string.select_back_page), arrayOf(PDF_EXTENSION), R.drawable.ic_pdf)
-                                .setActivityTheme(R.style.LibAppTheme)
-                                .enableDocSupport(false)
-                                .enableSelectAll(false)
-                                .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                                .pickFile(this@AddEditDocumentActivity)
-                    }
+        .withPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+        .withListener(object : MultiplePermissionsListener {
+            override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                requestCode = Enums.DOCUMENT_UPLOAD_BACK
+                if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true))
+                    ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity) else {
+                    FilePickerBuilder.instance
+                        .setMaxCount(1)
+                        .addFileSupport(
+                            getString(R.string.select_back_page),
+                            arrayOf(PDF_EXTENSION),
+                            R.drawable.ic_pdf
+                        )
+                        .setActivityTheme(R.style.LibAppTheme)
+                        .enableDocSupport(false)
+                        .enableSelectAll(false)
+                        .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                        .pickFile(this@AddEditDocumentActivity)
                 }
+            }
 
-                override fun onPermissionRationaleShouldBeShown(
-                        permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                    token?.continuePermissionRequest()
-                }
-            }).check()
+            override fun onPermissionRationaleShouldBeShown(
+                permissions: MutableList<PermissionRequest>?, token: PermissionToken?
+            ) {
+                token?.continuePermissionRequest()
+            }
+        }).check()
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -254,26 +274,27 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     when (this.requestCode) {
 
                         Enums.DOCUMENT_UPLOAD_FRONT -> {
-                            result?.let { it.uriContent?.run {
-
-                                val frontImageFile = File(this.path)
-                                if(frontImageFile!=null)
+                            result?.uriContent?.let {
+                                ImageUtils.getPathFromInputStreamFile(applicationContext, it)?.let {
                                     Glide.with(this@AddEditDocumentActivity)
-                                            .load(frontImageFile)
-                                            .into(ivFrontImage)
-                                mViewModel.documentFrontImageFile.value = frontImageFile
-                                mViewModel.showFrontView.value = true
-                            } }
-
+                                        .load(it)
+                                        .into(ivFrontImage)
+                                    mViewModel.documentFrontImageFile.value = it
+                                    mViewModel.showFrontView.value = true
+                                }
+                            }
                         }
 
                         else -> {
-                            val backImageFile = File(result?.let { it.uriContent?.let { it.path } })
-                            Glide.with(this)
-                                    .load(backImageFile)
-                                    .into(ivBackImage)
-                            mViewModel.documentBackImageFile.value = backImageFile
-                            mViewModel.showBackView.value = true
+                            result?.uriContent?.let {
+                                ImageUtils.getPathFromInputStreamUri(applicationContext, it)?.let {
+                                    Glide.with(this)
+                                        .load(it)
+                                        .into(ivBackImage)
+                                    mViewModel.documentBackImageFile.value = it
+                                    mViewModel.showBackView.value = true
+                                }
+                            }
                         }
                     }
                 }
@@ -282,7 +303,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
             FilePickerConst.REQUEST_CODE_DOC -> {
                 if (resultCode == Activity.RESULT_OK && data != null) when (this.requestCode) {
                     Enums.DOCUMENT_UPLOAD_FRONT -> {
-                        val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                        val selectedDoc =
+                            data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
                         val frontPageFile = File(selectedDoc!![0])
                         mViewModel.documentFrontImageFile.value = frontPageFile
                         mViewModel.documentFrontFileName.value = frontPageFile.name
@@ -290,7 +312,8 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
                     }
 
                     else -> {
-                        val selectedDoc = data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
+                        val selectedDoc =
+                            data.getStringArrayListExtra(FilePickerConst.KEY_SELECTED_DOCS)
                         val backPageFile = File(selectedDoc!![0])
                         mViewModel.documentBackImageFile.value = backPageFile
                         mViewModel.documentBackFileName.value = backPageFile.name
@@ -302,16 +325,22 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
     }
 
     override fun submitDocument() =
-            if (mViewModel.documentFrontImageFile.value == null
-                    || !mViewModel.documentFrontImageFile.value!!.isFile) {
-                ViewUtils.showToast(this, getString(R.string.please_select_front_page), false)
-            } else if (mViewModel.showBackSide.value!!
-                    && (mViewModel.documentBackImageFile.value == null
-                            || !mViewModel.documentBackImageFile.value!!.isFile)) {
-                ViewUtils.showToast(this, getString(R.string.please_select_back_page_of_document), false)
-            } else if (mViewModel.showExpiry.value!! && mViewModel.expiryDate.value.isNullOrEmpty())
-                ViewUtils.showToast(this, getString(R.string.please_select_expiry_date), false)
-            else mViewModel.updateDocument()
+        if (mViewModel.documentFrontImageFile.value == null
+            || !mViewModel.documentFrontImageFile.value!!.isFile
+        ) {
+            ViewUtils.showToast(this, getString(R.string.please_select_front_page), false)
+        } else if (mViewModel.showBackSide.value!!
+            && (mViewModel.documentBackImageFile.value == null
+                    || !mViewModel.documentBackImageFile.value!!.isFile)
+        ) {
+            ViewUtils.showToast(
+                this,
+                getString(R.string.please_select_back_page_of_document),
+                false
+            )
+        } else if (mViewModel.showExpiry.value!! && mViewModel.expiryDate.value.isNullOrEmpty())
+            ViewUtils.showToast(this, getString(R.string.please_select_expiry_date), false)
+        else mViewModel.updateDocument()
 
     override fun onDestroy() {
         super.onDestroy()

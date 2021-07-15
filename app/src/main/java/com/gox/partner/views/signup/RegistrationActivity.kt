@@ -46,6 +46,7 @@ import com.gox.base.base.BaseApplication
 import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.writePreferences
+import com.gox.base.utils.ImageUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.ActivityRegisterBinding
@@ -72,6 +73,7 @@ import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import org.json.JSONObject
 import permissions.dispatcher.*
 import java.io.File
@@ -308,17 +310,18 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
-                    result?.let { it.uriContent?.let {  glideSetImageView(ivProfile,it, R.drawable.ic_user_place_holder) } }
-                    result?.let { it.uriContent?.let {
-                        kotlin.run {
+                    result?.uriContent?.let {
+                        ImageUtils.getPathFromInputStreamUri(applicationContext,it)?.let {
+                            glideSetImageView(mBinding.profileImage,it,R.drawable.ic_car_placeholder)
                             val profileFile = File(it.path)
                             if (profileFile.exists()) {
                                 filePart = MultipartBody.Part.createFormData("picture", profileFile.name,
-                                        RequestBody.create("image*//*".toMediaTypeOrNull(), profileFile))
+                                    profileFile.asRequestBody("image*//*".toMediaTypeOrNull())
+                                )
                                 mViewModel.fileName.value = filePart
                             }
                         }
-                    } }
+                    }
 
                 }
             }

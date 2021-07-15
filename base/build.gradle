@@ -173,7 +173,7 @@ dependencies {
 
     api 'de.hdodenhof:circleimageview:3.1.0'
 
-    implementation 'com.github.CanHub:Android-Image-Cropper:3.2.0'
+    api 'com.github.CanHub:Android-Image-Cropper:3.2.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

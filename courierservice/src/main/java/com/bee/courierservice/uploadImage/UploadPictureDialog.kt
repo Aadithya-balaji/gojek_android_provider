@@ -20,11 +20,13 @@ import com.canhub.cropper.CropImage
 import com.gox.base.base.BaseDialogFragment
 import com.gox.base.data.Constants
 import com.gox.base.utils.CommonMethods
+import com.gox.base.utils.ImageUtils
 import com.gox.base.utils.ViewUtils
 import java.io.File
 
 
-class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(), UploadPictureDialogNavigator {
+class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(),
+    UploadPictureDialogNavigator {
 
     private lateinit var mBinding: CDialogUploadImageBinding
     private lateinit var mViewModel: UploadPictureDialogViewModel
@@ -51,7 +53,10 @@ class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(), Upl
 
     override fun onStart() {
         super.onStart()
-        dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog!!.window!!.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
     }
 
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
@@ -72,17 +77,28 @@ class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(), Upl
     }
 
     override fun takePicture() {
-        if (getPermissionUtil().hasPermission(appCompatActivity, Constants.RequestPermission.PERMISSION_CAMERA)) {
+        if (getPermissionUtil().hasPermission(
+                appCompatActivity,
+                Constants.RequestPermission.PERMISSION_CAMERA
+            )
+        ) {
             captureImage(202)
-        } else getPermissionUtil().requestPermissions(appCompatActivity,
-                Constants.RequestPermission.PERMISSION_CAMERA, Constants.RequestCode.PERMISSION_CODE_CAMERA)
+        } else getPermissionUtil().requestPermissions(
+            appCompatActivity,
+            Constants.RequestPermission.PERMISSION_CAMERA,
+            Constants.RequestCode.PERMISSION_CODE_CAMERA
+        )
     }
 
     override fun submit() {
         if (localPath != null) {
             getFilePath.getFilePath(localPath!!)
             dialog!!.dismiss()
-        } else ViewUtils.showToast(appCompatActivity, resources.getString(R.string.empty_image), false)
+        } else ViewUtils.showToast(
+            appCompatActivity,
+            resources.getString(R.string.empty_image),
+            false
+        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -100,12 +116,20 @@ class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(), Upl
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     if (resultCode == Activity.RESULT_OK) {
-                        localPath = result!!.uriContent
-                        mBinding.llCaptureImage.visibility = View.GONE
-                        mBinding.ivServiceImg.setImageURI(localPath)
-                        mBinding.ivServiceImg.visibility = View.VISIBLE
+                        result?.uriContent?.let {
+                            ImageUtils.getPathFromInputStreamUri(requireContext(), it)?.let {
+                                localPath = it
+                                mBinding.llCaptureImage.visibility = View.GONE
+                                mBinding.ivServiceImg.setImageURI(localPath)
+                                mBinding.ivServiceImg.visibility = View.VISIBLE
+                            }
+                        }
+
                     } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE)
-                        ViewUtils.showNormalToast(activity!!, getText(R.string.crop_failed) as String)
+                        ViewUtils.showNormalToast(
+                            activity!!,
+                            getText(R.string.crop_failed) as String
+                        )
                 }
             }
         }
@@ -114,7 +138,11 @@ class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(), Upl
     private fun captureImage(requestCode: Int) {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         mediaFile = CommonMethods.createImageFile(activity!!)
-        mediaUri = FileProvider.getUriForFile(activity!!, getApplicationContext().packageName + ".provider", mediaFile)
+        mediaUri = FileProvider.getUriForFile(
+            activity!!,
+            getApplicationContext().packageName + ".provider",
+            mediaFile
+        )
         intent.putExtra(MediaStore.EXTRA_OUTPUT, mediaUri)
         startActivityForResult(intent, requestCode)
     }

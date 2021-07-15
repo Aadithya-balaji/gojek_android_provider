@@ -107,65 +107,6 @@
                             android:textSize="@dimen/_12sdp" />
 
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_12sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:id="@+id/tv_label_distance_travelled"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.60"
-                            android:fontFamily="@font/avenirltstd_medium"
-                            android:text="@string/taxi_distance_travelled"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.40"
-                            android:fontFamily="@font/avenirltstd_medium"
-                            android:gravity="end"
-                            android:text="@={invoicemodel.distance}"
-                            android:textSize="@dimen/_12sdp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_12sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:id="@+id/tv_invoice_label_time"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.60"
-                            android:fontFamily="@font/avenirltstd_medium"
-                            android:text="@string/taxi_invoice_time_taken"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/tv_invoice_time"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.40"
-                            android:fontFamily="@font/avenirltstd_medium"
-                            android:gravity="end"
-                            android:text="@={invoicemodel.timeTaken}"
-                            android:textSize="@dimen/_12sdp" />
-
-                    </LinearLayout>
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -196,6 +137,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/lldistance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_12sdp"
@@ -203,26 +145,59 @@
                         android:weightSum="1">
 
                         <TextView
-                            android:id="@+id/tv_label_distance_fare"
+                            android:id="@+id/tv_label_distance_travelled"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.60"
+                            android:text="@={invoicemodel.labelDistance}"
                             android:fontFamily="@font/avenirltstd_medium"
-                            android:text="@string/taxi_invoice_distance_fare"
+                            tools:text="@string/taxi_distance_travelled"
                             android:textColor="@color/black"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/tv_distance_fare"
+                            android:id="@+id/tv_distance"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.40"
                             android:fontFamily="@font/avenirltstd_medium"
                             android:gravity="end"
-                            android:text="@={invoicemodel.distanceFare}"
+                            android:text="@={invoicemodel.distance}"
                             android:textSize="@dimen/_12sdp" />
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llweight"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/tv_invoice_label_weight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            tools:text="@string/taxi_invoice_time_taken"
+                            android:textColor="@color/black"
+                            android:text="@={invoicemodel.labelWeight}"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_invoice_weight"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.40"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:gravity="end"
+                            android:text="@={invoicemodel.timeTaken}"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+
 
 
                     <LinearLayout
@@ -276,7 +251,9 @@
                             android:id="@+id/tv_invoice_total"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            style="@style/MediumText"
                             android:layout_weight="0.40"
+                            android:textColor="@color/colorPrimary"
                             android:fontFamily="@font/avenirltstd_bold"
                             android:gravity="end"
                             android:text="@={invoicemodel.total}"

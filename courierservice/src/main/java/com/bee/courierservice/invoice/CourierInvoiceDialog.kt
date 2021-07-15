@@ -8,6 +8,7 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
@@ -225,21 +226,66 @@ class CourierInvoiceDialog : BaseDialogFragment<CDialogInvoiceBinding>(),
             }
             else { mBinding.tvConfirmPayment.text = resources.getString(R.string.taxi_confirm_done)
             }
-
             xUberInvoiceModel.bookingId.value = requestModel!!.responseData.request.booking_id
-            xUberInvoiceModel.distance.value = requestModel!!.responseData.request.distance.toString() + requestModel!!.responseData.request.unit
-            xUberInvoiceModel.timeTaken.value = requestModel!!.responseData.request.travel_time + " mins"
-            xUberInvoiceModel.baseFare.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.fixed.toString()
-            xUberInvoiceModel.waitingCharge.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.waiting_amount.toString()
-            xUberInvoiceModel.discount.set("-" + requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.discount.toString())
-            xUberInvoiceModel.payableAmount.set(requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.payable.toString())
-            xUberInvoiceModel.distanceFare.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.distance.toString()
-            xUberInvoiceModel.tax.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.tax.toString()
-            xUberInvoiceModel.tips.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.tips.toString()
-            xUberInvoiceModel.total.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.total.toString()
-            if (requestModel!!.responseData.request.delivery.payment.toll_charge!! > 0)
-                xUberInvoiceModel.tollCharge.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.toll_charge.toString()
-            else xUberInvoiceModel.tollCharge.value = requestModel!!.responseData.request.currency + "0"
+            if(requestModel!!.responseData.request.payment_by.equals("SENDER", true).not()){
+                if (requestModel!!.responseData.request.calculator.equals("DISTANCE", true)) {
+                    mBinding.tvInvoiceLabelWeight.visibility = GONE
+                    mBinding.tvInvoiceWeight.visibility = GONE
+                    mBinding.llweight.visibility = GONE
+                    xUberInvoiceModel.labelDistance.value = "Distance Fare for ${(requestModel.responseData.request.delivery.distance!!) / 1000} ${requestModel.responseData.request.delivery.unit}"
+                    xUberInvoiceModel.distance.value =requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.distance.toString()
+                } else if (requestModel!!.responseData.request.calculator.equals("WEIGHT", true)) {
+                    mBinding.tvLabelDistanceTravelled.visibility = GONE
+                    mBinding.tvDistance.visibility = GONE
+                    mBinding.lldistance.visibility = GONE
+                    xUberInvoiceModel.labelWeight.value = "Delivery Weight fare for ${requestModel.responseData.request.delivery.weight} Kg"
+                    xUberInvoiceModel.timeTaken.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.weight.toString()
+                } else if (requestModel!!.responseData.request.calculator.equals("WEIGHTDISTANCE", true) || requestModel!!.responseData.request.calculator.equals("DISTANCEWEIGHT", true)) {
+                    xUberInvoiceModel.labelDistance.value = "Distance Fare for ${(requestModel.responseData.request.delivery.distance!!) / 1000} ${requestModel.responseData.request.delivery.unit}"
+                    xUberInvoiceModel.distance.value =requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.distance.toString()
+                    xUberInvoiceModel.labelWeight.value = "Delivery Weight fare for ${requestModel.responseData.request.delivery.weight} Kg"
+                    xUberInvoiceModel.timeTaken.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.weight.toString()
+                }
+                xUberInvoiceModel.baseFare.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.fixed.toString()
+                xUberInvoiceModel.waitingCharge.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.waiting_amount.toString()
+                xUberInvoiceModel.discount.set("-" + requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.discount.toString())
+                xUberInvoiceModel.payableAmount.set(requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.payable.toString())
+                xUberInvoiceModel.tax.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.tax.toString()
+                xUberInvoiceModel.tips.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.tips.toString()
+                xUberInvoiceModel.total.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.total.toString()
+                if (requestModel!!.responseData.request.delivery.payment.toll_charge!! > 0)
+                    xUberInvoiceModel.tollCharge.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.delivery.payment.toll_charge.toString()
+                else xUberInvoiceModel.tollCharge.value = requestModel!!.responseData.request.currency + "0"
+            }else{
+                if (requestModel!!.responseData.request.calculator.equals("DISTANCE", true)) {
+                    mBinding.tvInvoiceLabelWeight.visibility = GONE
+                    mBinding.tvInvoiceWeight.visibility = GONE
+                    mBinding.llweight.visibility = GONE
+                    xUberInvoiceModel.labelDistance.value = requestModel.responseData.request.payment.distance_fare_text.toString()
+                    xUberInvoiceModel.distance.value =requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.distance.toString()
+                } else if (requestModel!!.responseData.request.calculator.equals("WEIGHT", true)) {
+                    mBinding.tvLabelDistanceTravelled.visibility = GONE
+                    mBinding.tvDistance.visibility = GONE
+                    mBinding.lldistance.visibility = GONE
+                    xUberInvoiceModel.labelWeight.value = requestModel.responseData.request.payment.weight_fare_text
+                    xUberInvoiceModel.timeTaken.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.weight.toString()
+                } else if (requestModel!!.responseData.request.calculator.equals("WEIGHTDISTANCE", true) || requestModel!!.responseData.request.calculator.equals("DISTANCEWEIGHT", true)) {
+                    xUberInvoiceModel.labelDistance.value = requestModel.responseData.request.payment.distance_fare_text.toString()
+                    xUberInvoiceModel.distance.value =requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.distance.toString()
+                    xUberInvoiceModel.labelWeight.value = requestModel.responseData.request.payment.weight_fare_text
+                    xUberInvoiceModel.timeTaken.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.weight.toString()
+                }
+                xUberInvoiceModel.baseFare.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.fixed.toString()
+                xUberInvoiceModel.waitingCharge.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.waiting_amount.toString()
+                xUberInvoiceModel.discount.set("-" + requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.discount.toString())
+                xUberInvoiceModel.payableAmount.set(requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.payable.toString())
+                xUberInvoiceModel.tax.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.tax.toString()
+                xUberInvoiceModel.tips.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.tips.toString()
+                xUberInvoiceModel.total.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.total.toString()
+                if (requestModel!!.responseData.request.payment.toll_charge!! > 0)
+                    xUberInvoiceModel.tollCharge.value = requestModel!!.responseData.request.currency + requestModel!!.responseData.request.payment.toll_charge.toString()
+                else xUberInvoiceModel.tollCharge.value = requestModel!!.responseData.request.currency + "0"
+            }
         }
 
 //        if (requestModel!!.responseData.request.paid == 1 && !isRatingShown) {

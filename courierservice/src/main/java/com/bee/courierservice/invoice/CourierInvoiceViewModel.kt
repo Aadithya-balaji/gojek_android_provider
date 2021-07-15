@@ -25,6 +25,8 @@ class CourierInvoiceViewModel : BaseViewModel<CourierInvoiceNavigator>() {
     var pickuplocation = MutableLiveData<String>()
     var bookingId = MutableLiveData<String>()
     var distance = MutableLiveData<String>()
+    var labelDistance = MutableLiveData<String>()
+    var labelWeight = MutableLiveData<String>()
     var timeTaken = MutableLiveData<String>()
     var baseFare = MutableLiveData<String>()
     var distanceFare = MutableLiveData<String>()

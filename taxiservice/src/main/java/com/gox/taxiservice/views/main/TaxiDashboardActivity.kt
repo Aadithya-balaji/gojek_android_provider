@@ -591,6 +591,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btn_cancel.visibility = View.GONE
         btn_arrived.visibility = View.GONE
         btn_picked_up.visibility = View.GONE
+        fab_taxi_menu.visibility = View.GONE
         btn_drop.visibility = View.VISIBLE
         tv_pickup_location.text = getText(R.string.taxi_drop_location)
         vl_trip_started.visibility = View.VISIBLE
@@ -637,7 +638,8 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
 
     fun dropClicked(){
-            mViewModel.distanceMeter.value = 0.0
+        fab_taxi_menu.visibility = View.GONE
+        mViewModel.distanceMeter.value = 0.0
             if (isWaitingTime!!) ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
             else {
                 mViewModel.distanceApiProcessing.value = arrayListOf()

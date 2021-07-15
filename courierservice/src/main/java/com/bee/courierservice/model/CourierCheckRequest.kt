@@ -244,6 +244,7 @@ data class Payment(
         var discount: Double? = 0.0,
         var discount_percent: Double? = 0.0,
         var distance: Double? = 0.0,
+        var weight: Double? = 0.0,
         var fixed: Double? = 0.0,
         var fleet: Int? = 0,
         var fleet_id: Any = Any(),
@@ -271,5 +272,9 @@ data class Payment(
         var user_id: Int? = 0,
         var waiting_amount: Double? = 0.0,
         var waiting_comm_amount: Double? = 0.0,
-        var wallet: Double? = 0.0
+        var wallet: Double? = 0.0,
+        var base_fare_text:String? = "",
+        var distance_fare_text:String? = "",
+        var discount_fare_text:String? = "",
+        var weight_fare_text:String? = ""
 ) : Serializable

@@ -56,7 +56,8 @@ object Constants {
     object RequestPermission {
         val PERMISSIONS_LOCATION = arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
         )
         val PERMISSION_CAMERA = arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,

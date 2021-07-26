@@ -115,7 +115,7 @@ dependencies {
     api 'com.github.GrenderG:Toasty:1.4.2'
 
     //      Permission check(need to remove after implment the manual permssion check)
-    api 'com.karumi:dexter:5.0.0'
+    api 'com.karumi:dexter:6.2.2'
 
 
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'

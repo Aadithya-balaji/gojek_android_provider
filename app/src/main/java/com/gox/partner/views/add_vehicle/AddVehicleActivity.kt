@@ -6,16 +6,18 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import com.gox.base.base.BaseActivity
 import com.gox.base.data.Constants
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
-import com.gox.base.utils.ImageCropperUtils
 import com.gox.base.utils.ImageUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
@@ -299,9 +301,31 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         }
     }
 
+    private fun startCropImageActivity(imageUri: Uri) {
+        CropImage.activity(imageUri)
+                .setFixAspectRatio(true)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setMultiTouchEnabled(true)
+                .start(this)
+    }
+
     @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
+            CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE -> {
+                val imageUri = CropImage.getPickImageResultUriContent(this, data)
+                // For API >= 23 we need to check specifically that we have permissions to read external storage.
+                if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                    // request permissions and handle the result in onRequestPermissionsResult()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 0)
+                    }
+                } else {
+                    // no permissions required or already grunted, can start crop image activity
+                    startCropImageActivity(imageUri)
+                }
+            }
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == Activity.RESULT_OK) when (this.requestCode) {
@@ -346,7 +370,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     override fun onVehicleImageClicked() {
         if (getPermissionUtil().hasPermission(this, permissions)) {
             requestCode = Enums.RC_VEHICLE_IMAGE
-            ImageCropperUtils.launchImageCropperActivity(this)
+            CropImage.startPickImageActivity(this)
+//            ImageCropperUtils.launchImageCropperActivity(this)
         } else {
             getPermissionUtil().requestPermissions(this, permissions, Enums.FILE_REQ_CODE)
         }
@@ -355,7 +380,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     override fun onRcBookClicked() {
         if (getPermissionUtil().hasPermission(this, permissions)) {
             requestCode = Enums.RC_RC_BOOK_IMAGE
-            ImageCropperUtils.launchImageCropperActivity(this)
+            CropImage.startPickImageActivity(this)
+//            ImageCropperUtils.launchImageCropperActivity(this)
         } else {
             getPermissionUtil().requestPermissions(this, permissions, Enums.FILE_REQ_CODE)
         }
@@ -364,7 +390,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
     override fun onInsuranceClicked() {
         if (getPermissionUtil().hasPermission(this, permissions)) {
             requestCode = Enums.RC_INSURANCE_IMAGE
-            ImageCropperUtils.launchImageCropperActivity(this)
+            CropImage.startPickImageActivity(this)
+//            ImageCropperUtils.launchImageCropperActivity(this)
         } else {
             getPermissionUtil().requestPermissions(this, permissions, Enums.FILE_REQ_CODE)
         }

@@ -104,16 +104,17 @@ class LocationPickActivity : BaseActivity<ActivityLocationPickBinding>(),
         btnDone.setOnClickListener {
             address = etLocationPick.text.toString()
             if (address.isEmpty()) ViewUtils.showToast(applicationContext, "Enter Valid Address", false)
-            else if((distFrom(startLatLong?.latitude!!,startLatLong?.longitude!!,latLng.latitude,latLng.longitude)/1000) < 100) {
+            else{
                 if (mLocationPickFlag == 0) {
                     setResult(Activity.RESULT_OK, Intent()
                             .putExtra("SelectedLocation", address)
                             .putExtra("SelectedLatLng", latLng))
                     finish()
                 }
-            }else{
-                ViewUtils.showToast(applicationContext, "Maximum distance 100km", false)
             }
+//            else{
+//                ViewUtils.showToast(applicationContext, "Maximum distance 100km", false)
+//            }
         }
 
 

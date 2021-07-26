@@ -7,11 +7,14 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.ActivityInfo
+import android.net.Uri
+import android.os.Build
 import android.widget.DatePicker
 import androidx.databinding.ViewDataBinding
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImage
+import com.canhub.cropper.CropImageView
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
@@ -211,26 +214,27 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
             override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                 requestCode = Enums.DOCUMENT_UPLOAD_FRONT
 
-                if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true))
-                    ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
-                else {
+                if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true)) {
+                    CropImage.startPickImageActivity(this@AddEditDocumentActivity)
+//                    ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
+                } else {
                     FilePickerBuilder.instance
-                        .setMaxCount(1)
-                        .addFileSupport(
-                            getString(R.string.select_front_page),
-                            arrayOf(PDF_EXTENSION),
-                            R.drawable.ic_pdf
-                        )
-                        .setActivityTheme(R.style.LibAppTheme)
-                        .enableDocSupport(false)
-                        .enableSelectAll(false)
-                        .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                        .pickFile(this@AddEditDocumentActivity)
+                            .setMaxCount(1)
+                            .addFileSupport(
+                                    getString(R.string.select_front_page),
+                                    arrayOf(PDF_EXTENSION),
+                                    R.drawable.ic_pdf
+                            )
+                            .setActivityTheme(R.style.LibAppTheme)
+                            .enableDocSupport(false)
+                            .enableSelectAll(false)
+                            .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                            .pickFile(this@AddEditDocumentActivity)
                 }
             }
 
             override fun onPermissionRationaleShouldBeShown(
-                permissions: MutableList<PermissionRequest>?, token: PermissionToken?
+                    permissions: MutableList<PermissionRequest>?, token: PermissionToken?
             ) {
                 token?.continuePermissionRequest()
             }
@@ -241,33 +245,57 @@ class AddEditDocumentActivity : BaseActivity<ActivityAddEditDocumentBinding>(),
         .withListener(object : MultiplePermissionsListener {
             override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                 requestCode = Enums.DOCUMENT_UPLOAD_BACK
-                if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true))
-                    ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity) else {
+                if (mViewModel.getFileType().equals(Enums.IMAGE_TYPE, true)) {
+                    CropImage.startPickImageActivity(this@AddEditDocumentActivity)
+//                    ImageCropperUtils.launchImageCropperActivity(this@AddEditDocumentActivity)
+                } else {
                     FilePickerBuilder.instance
-                        .setMaxCount(1)
-                        .addFileSupport(
-                            getString(R.string.select_back_page),
-                            arrayOf(PDF_EXTENSION),
-                            R.drawable.ic_pdf
-                        )
-                        .setActivityTheme(R.style.LibAppTheme)
-                        .enableDocSupport(false)
-                        .enableSelectAll(false)
-                        .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                        .pickFile(this@AddEditDocumentActivity)
+                            .setMaxCount(1)
+                            .addFileSupport(
+                                    getString(R.string.select_back_page),
+                                    arrayOf(PDF_EXTENSION),
+                                    R.drawable.ic_pdf
+                            )
+                            .setActivityTheme(R.style.LibAppTheme)
+                            .enableDocSupport(false)
+                            .enableSelectAll(false)
+                            .withOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+                            .pickFile(this@AddEditDocumentActivity)
                 }
             }
 
             override fun onPermissionRationaleShouldBeShown(
-                permissions: MutableList<PermissionRequest>?, token: PermissionToken?
+                    permissions: MutableList<PermissionRequest>?, token: PermissionToken?
             ) {
                 token?.continuePermissionRequest()
             }
         }).check()
 
+    private fun startCropImageActivity(imageUri: Uri) {
+        CropImage.activity(imageUri)
+                .setFixAspectRatio(true)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.OVAL)
+                .setMultiTouchEnabled(true)
+                .start(this)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
+            CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE -> {
+                val imageUri = CropImage.getPickImageResultUriContent(this, data)
+                // For API >= 23 we need to check specifically that we have permissions to read external storage.
+                if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                    // request permissions and handle the result in onRequestPermissionsResult()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 0)
+                    }
+                } else {
+                    // no permissions required or already grunted, can start crop image activity
+                    startCropImageActivity(imageUri)
+                }
+            }
             CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                 val result = CropImage.getActivityResult(data)
                 if (resultCode == Activity.RESULT_OK) {

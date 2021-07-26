@@ -80,7 +80,8 @@ class BaseLocationService : Service() {
        // mLocationRequest!!.smallestDisplacement = displacement.toFloat()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                    checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ViewUtils.showNormalToast(this, getText(R.string.location_permissing_missing) as String)
                 return
             }

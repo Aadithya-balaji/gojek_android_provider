@@ -719,9 +719,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
     //Here Pattern matcher is used for to validate whether the location values are zero or not
     private fun updateMap(location: Location) {
-        val latitudeMatcher = patternMatcher!!.matcher(mViewModel.latitude.value!!.toString())
-        val longtitudeMatcher = patternMatcher!!.matcher(mViewModel.longitude.value!!.toString())
-        val engLatitudeMatcher = patternMatcher!!.matcher(endLatLng.latitude.toString())
+        val latitudeMatcher = patternMatcher!!.matcher(mViewModel.latitude.value?.toString())
+        val longtitudeMatcher = patternMatcher!!.matcher(mViewModel.longitude.value?.toString())
+//        val engLatitudeMatcher = patternMatcher!!.matcher(endLatLng.latitude.toString())
         //Pattern Matcher true means the all values are   zero in lat or lon
         if (latitudeMatcher.matches() == true && longtitudeMatcher.matches() == true)
             updateCurrentLocation()
@@ -729,7 +729,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             mViewModel.latitude.value = location.latitude
             mViewModel.longitude.value = location.longitude
         }
-        println("RRRR :: TaxiDashboardActivity " + mViewModel.latitude.value + " :: " + mViewModel.longitude.value)
+//        println("RRRR :: TaxiDashboardActivity " + mViewModel.latitude.value + " :: " + mViewModel.longitude.value)
 
         if (roomConnected) {
             val locationObj = JSONObject()
@@ -1103,7 +1103,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         } else DistanceProcessing(this).execute(DistanceUtils().getUrl(list, key))
     }
 
-    override fun showCurrentLocation() = Dexter.withActivity(this)
+    override fun showCurrentLocation() = Dexter.withContext(this)
             .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
             .withListener(object : MultiplePermissionsListener {
                 override fun onPermissionsChecked(report: MultiplePermissionsReport?) {

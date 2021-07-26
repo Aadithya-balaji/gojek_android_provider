@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
@@ -308,6 +309,20 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
                     if (data != null && data.extras != null) handleCountryCodePickerResult(data)
                 }
 
+                CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE -> {
+                    val imageUri = CropImage.getPickImageResultUriContent(this, data)
+                    // For API >= 23 we need to check specifically that we have permissions to read external storage.
+                    if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                        // request permissions and handle the result in onRequestPermissionsResult()
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 0)
+                        }
+                    } else {
+                        // no permissions required or already grunted, can start crop image activity
+                        startCropImageActivity(imageUri)
+                    }
+                }
+
                 CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE -> {
                     val result = CropImage.getActivityResult(data)
                     result?.uriContent?.let {
@@ -327,6 +342,14 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
             }
         }
     }
+
+    private fun startCropImageActivity(imageUri: Uri) = CropImage.activity(imageUri)
+            .setFixAspectRatio(true)
+            .setGuidelines(CropImageView.Guidelines.ON)
+            .setCropShape(CropImageView.CropShape.OVAL)
+            .setMultiTouchEnabled(true)
+            .start(this)
+
 
     private fun initListener() {
         edtCountryCode.isFocusableInTouchMode = false
@@ -662,7 +685,7 @@ class RegistrationActivity : BaseActivity<ActivityRegisterBinding>(),
 
     @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
     fun pickImage() {
-        CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).start(this)
+        CropImage.startPickImageActivity(this)
     }
 
     @OnPermissionDenied(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)

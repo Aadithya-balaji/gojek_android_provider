@@ -47,7 +47,8 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
 
     fun confirmPayment() {
         val response = checkStatusTaxiLiveData.value
-        if(response!!.responseData.request.payment.payment_mode.equals(Constants.PaymentMode.CASH,true)){
+        if(response!!.responseData.request.payment.payment_mode.equals(Constants.PaymentMode.CASH,true) ||
+            response.responseData.request.payment.payment_mode.equals(Constants.PaymentMode.WALLET,true)){
             val params = HashMap<String, String>()
             if (checkStatusTaxiLiveData.value != null) {
                 showLoading.value = true

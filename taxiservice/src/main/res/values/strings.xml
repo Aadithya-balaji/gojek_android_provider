@@ -82,5 +82,6 @@
     <string name="enter_your_location">Enter your location</string>
     <string name="outstation_type">Outstation Type</string>
     <string name="rental_package">Rental package</string>
+    <string name="book_for_some_one_user_info">Book for some one user info</string>
 
 </resources>

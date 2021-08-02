@@ -20,8 +20,8 @@ android {
         applicationId "com.opus.provider"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 10
-        versionName "1.4"
+        versionCode 11
+        versionName "1.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true

@@ -497,6 +497,18 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 .into(civProfile)
         tv_user_name.text = responseData.request.user.first_name + " " + responseData.request.user.last_name
         tv_user_address_one.text = responseData.request.s_address
+        if(responseData.request.someone == 1){
+            rl_book_someone.visibility = View.VISIBLE
+            responseData.request.someone_name?.let {
+                tv_book_someone_name.setText(it)
+            }
+            responseData.request.someone_mobile?.let {
+                tv_book_someone_number.setText(it)
+            }
+
+        }else{
+            rl_book_someone.visibility = View.GONE
+        }
         rate.rating = responseData.request.user.rating.toFloat()
         if (responseData.request.s_address.length > 2)
             tv_user_address_one.text = responseData.request.s_address
@@ -542,7 +554,18 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         tv_user_name.text = responseData.request.user.first_name + " " + responseData.request.user.last_name
         tv_user_address_one.text = responseData.request.s_address
         rate.rating = responseData.request.user.rating.toFloat()
+        if(responseData.request.someone == 1){
+            rl_book_someone.visibility = View.VISIBLE
+            responseData.request.someone_name?.let {
+                tv_book_someone_name.setText(it)
+            }
+            responseData.request.someone_mobile?.let {
+                tv_book_someone_number.setText(it)
+            }
 
+        }else{
+            rl_book_someone.visibility = View.GONE
+        }
         if (responseData.request.s_address.length > 2)
             tv_user_address_one.text = responseData.request.s_address
         else {
@@ -583,7 +606,18 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             setWaitingTime()
             llWaitingTimeContainer.visibility = View.VISIBLE
         }
+        if(responseData.request.someone == 1){
+            rl_book_someone.visibility = View.VISIBLE
+            responseData.request.someone_name?.let {
+                tv_book_someone_name.setText(it)
+            }
+            responseData.request.someone_mobile?.let {
+                tv_book_someone_number.setText(it)
+            }
 
+        }else{
+            rl_book_someone.visibility = View.GONE
+        }
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
         ib_steering.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)

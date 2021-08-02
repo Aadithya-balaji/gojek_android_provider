@@ -84,7 +84,7 @@
             android:maxHeight="@dimen/_100sdp"
             android:minHeight="@dimen/_80sdp"
             android:padding="@dimen/_8sdp"
-            style="@style/SmallText"
+            style="@style/SmallText.Black"
             android:text="@={ratingmodel.comment}"
             android:textSize="@dimen/_12sdp" />
 

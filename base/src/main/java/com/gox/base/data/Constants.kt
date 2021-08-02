@@ -176,6 +176,7 @@ object Constants {
 
     object PaymentMode {
         val CASH = "CASH"
+        val WALLET = "WALLET"
         val CARD = "CARD"
     }
 

@@ -145,7 +145,8 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
         requestModel = strCheckRequestModel
         if (requestModel != null) {
 
-            if (requestModel!!.request.payment_mode.equals(Constants.PaymentMode.CASH, true))
+            if (requestModel!!.request.payment_mode.equals(Constants.PaymentMode.CASH, true)
+                    || requestModel!!.request.payment_mode.equals(Constants.PaymentMode.WALLET, true))
                 tv_confirm_payment.text = resources.getString(R.string.taxi_confirm_payment)
             else tv_confirm_payment.text = resources.getString(R.string.taxi_confirm_done)
 

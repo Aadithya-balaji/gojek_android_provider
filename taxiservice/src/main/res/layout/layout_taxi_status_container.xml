@@ -184,11 +184,67 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/rl_book_someone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
+                    android:padding="10dp"
+                    android:layout_below="@+id/ll_user">
+
+                    <TextView
+                        android:id="@+id/tv_book_someone"
+                        style="@style/SmallText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/ibBookSomeone"
+                        android:padding="3dp"
+                        android:text="@string/book_for_some_one_user_info"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13sdp" />
+
+                    <TextView
+                        android:id="@+id/tv_book_someone_name"
+                        style="@style/SmallText"
+                        tools:text="mdvshyhyhyhm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_book_someone"
+                        android:layout_toStartOf="@id/ibBookSomeone"
+                        android:padding="3dp"
+                        android:textColor="@color/light_grey" />
+
+                    <TextView
+                        android:id="@+id/tv_book_someone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="dsvkjnskfvn"
+                        android:layout_below="@+id/tv_book_someone_name"
+                        android:layout_toStartOf="@id/ibBookSomeone"
+                        android:padding="3dp"
+                        android:textColor="@color/grey"
+                        android:visibility="visible" />
+
+
+                        <ImageButton
+                            android:layout_alignParentEnd="true"
+                            android:id="@+id/ibBookSomeone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:contentDescription="@string/app_name"
+                            android:padding="20dp"
+                            android:tint="@color/colorPrimary"
+                            app:srcCompat="@drawable/ic_call" />
+
+                </RelativeLayout>
+
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/ll_user"
+                    android:layout_below="@+id/rl_book_someone"
                     android:layout_margin="10dp">
 
                     <TextView

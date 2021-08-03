@@ -15,7 +15,9 @@ import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImage
 import com.canhub.cropper.CropImageView
 import com.gox.base.base.BaseActivity
+import com.gox.base.base.BaseApplication
 import com.gox.base.data.Constants
+import com.gox.base.data.PreferencesKey
 import com.gox.base.extensions.observeLiveData
 import com.gox.base.extensions.provideViewModel
 import com.gox.base.utils.ImageUtils
@@ -47,8 +49,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
 
     override fun initView(mViewDataBinding: ViewDataBinding?) {
         permissions = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
         mBinding = mViewDataBinding as ActivityAddVehicleBinding
         mBinding.lifecycleOwner = this
@@ -61,9 +63,21 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         intent.getStringExtra(Constants.SERVICE_STATUS)?.let { mViewModel.setServiceStatus(it) }
         mViewModel.setCategoryId(intent.getIntExtra(Constants.CATEGORY_ID, -1))
         mViewModel.isEditAble.set(true)
+
+        if (!BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.ADMIN_RENTAL, false) &&
+                !BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.ADMIN_OUTSTATION, false)) {
+            mBinding.rentalOut.visibility = View.GONE
+        }
+        if (!BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.ADMIN_RENTAL, false)) {
+            mBinding.scRental.visibility = View.GONE
+        }
+        if (!BaseApplication.getCustomPreference!!.getBoolean(PreferencesKey.ADMIN_OUTSTATION, false)) {
+            mBinding.scOutstation.visibility = View.GONE
+        }
+
         if (!mViewModel.getServiceStatus().equals("")) {
             if (mViewModel.getServiceStatus().equals("ACTIVE") || mViewModel.getServiceStatus()
-                    .equals("INACTIVE")
+                            .equals("INACTIVE")
             ) {
                 editChanges.visibility = View.VISIBLE
                 mViewModel.isEditAble.set(false)
@@ -71,27 +85,27 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             editChanges.setOnClickListener {
                 val builder = AlertDialog.Builder(this)
                 builder.setMessage("If you change any filed's you can ride only when admin is approved")
-                    .setNegativeButton("", DialogInterface.OnClickListener { dialog, which -> })
-                    .setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, which ->
-                        mViewModel.isEditAble.set(true)
-                        editChanges.visibility = View.GONE
-                    })
+                        .setNegativeButton("", DialogInterface.OnClickListener { dialog, which -> })
+                        .setPositiveButton("Ok", DialogInterface.OnClickListener { dialog, which ->
+                            mViewModel.isEditAble.set(true)
+                            editChanges.visibility = View.GONE
+                        })
                 builder.show();
             }
         }
 
         if (intent.hasExtra(Constants.PROVIDER_TRANSPORT_VEHICLE) || intent.hasExtra(Constants.PROVIDER_ORDER_VEHICLE) || intent.hasExtra(
-                Constants.PROVIDER_DELIVERY_VEHICLE
-            )
+                        Constants.PROVIDER_DELIVERY_VEHICLE
+                )
         )
             mViewModel.setIsEdit(true) else mViewModel.setIsEdit(false)
 
         intent.getParcelableExtra<ProviderVehicleResponseModel>(Constants.PROVIDER_TRANSPORT_VEHICLE)
-            ?.let { mViewModel.setVehicleLiveData(it) }
+                ?.let { mViewModel.setVehicleLiveData(it) }
         intent.getParcelableExtra<ProviderVehicleResponseModel>(Constants.PROVIDER_ORDER_VEHICLE)
-            ?.let { mViewModel.setVehicleLiveData(it) }
+                ?.let { mViewModel.setVehicleLiveData(it) }
         intent.getParcelableExtra<ProviderVehicleResponseModel>(Constants.PROVIDER_DELIVERY_VEHICLE)
-            ?.let { mViewModel.setVehicleLiveData(it) }
+                ?.let { mViewModel.setVehicleLiveData(it) }
 
 
         if (intent.hasExtra(Constants.TRANSPORT_VEHICLES)) {
@@ -111,7 +125,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         setSupportActionBar(mBinding.toolbar.tbApp)
         mBinding.toolbar.tbApp.iv_toolbar_back.setOnClickListener { onBackPressed() }
         mBinding.toolbar.tbApp.tv_toolbar_title.text =
-            resources.getString(R.string.title_add_vehicle)
+                resources.getString(R.string.title_add_vehicle)
 
         observeViewModel()
 
@@ -128,7 +142,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             run {
                 txt_category_selection.setText(item.toString())
                 val isTransport =
-                    mViewModel.getServiceName() == mViewModel.getTransportServiceName()
+                        mViewModel.getServiceName() == mViewModel.getTransportServiceName()
 //                val isDelivery = mViewModel.getServiceName() == mViewModel.getDeliveryServiceName()
                 if (isTransport) {
                     mViewModel.getVehicleData()!!.vehicleId = vehicleData[position].id
@@ -166,18 +180,18 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         observeLiveData(mViewModel.getVehicleDataObservable()) { vehicleData ->
             run {
                 Glide.with(this)
-                    .load(vehicleData.vehicleImage)
-                    .placeholder(R.drawable.ic_car_placeholder)
-                    .circleCrop()
-                    .into(iv_vehicle)
+                        .load(vehicleData.vehicleImage)
+                        .placeholder(R.drawable.ic_car_placeholder)
+                        .circleCrop()
+                        .into(iv_vehicle)
 
                 Glide.with(this)
-                    .load(vehicleData.vehicleRcBook)
-                    .into(this.iv_rc_book)
+                        .load(vehicleData.vehicleRcBook)
+                        .into(this.iv_rc_book)
 
                 Glide.with(this)
-                    .load(vehicleData.vehicleInsurance)
-                    .into(iv_insurance)
+                        .load(vehicleData.vehicleInsurance)
+                        .into(iv_insurance)
             }
         }
     }
@@ -187,7 +201,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             spinnerCarCategory.setItems(vehicleData)
             if (mViewModel.getVehicleData()!!.vehicleId != 0) {
                 val vehiclePosition =
-                    vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
+                        vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
                 spinnerCarCategory.selectedIndex = vehiclePosition
                 txt_category_selection.setText(vehicleData[vehiclePosition].vehicleName)
                 val capacity: Int? = vehicleData[vehiclePosition].capacity
@@ -207,7 +221,7 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 spinnerCarCategory.setItems(vehicleData)
                 if (mViewModel.getVehicleData()!!.vehicleId != 0) {
                     var vehiclePosition =
-                        vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
+                            vehicleData.indexOfFirst { data -> data.id == mViewModel.getVehicleData()!!.vehicleId }
                     if (vehiclePosition == -1) {
                         vehiclePosition = 0
                         spinnerCarCategory.selectedIndex = vehiclePosition
@@ -238,23 +252,23 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
             when {
                 data?.vehicleMake.isNullOrEmpty() ->
                     ViewUtils.showToast(
-                        this,
-                        getString(R.string.please_enter_vehicle_name), false
+                            this,
+                            getString(R.string.please_enter_vehicle_name), false
                     )
                 data?.vehicleNumber.isNullOrEmpty() ->
                     ViewUtils.showToast(
-                        this,
-                        getString(R.string.please_enter_vehicle_number), false
+                            this,
+                            getString(R.string.please_enter_vehicle_number), false
                     )
                 (!mViewModel.getIsEdit() && mViewModel.getRcBookUri() == null) ->
                     ViewUtils.showToast(
-                        this,
-                        getString(R.string.please_select_rc_book_document), false
+                            this,
+                            getString(R.string.please_select_rc_book_document), false
                     )
                 (!mViewModel.getIsEdit() && mViewModel.getInsuranceUri() == null) ->
                     ViewUtils.showToast(
-                        this,
-                        getString(R.string.please_select_insurance_document), false
+                            this,
+                            getString(R.string.please_select_insurance_document), false
                     )
                 else -> mViewModel.postVehicle()
             }
@@ -263,38 +277,38 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 ViewUtils.showLog(this, getString(R.string.please_enter_vehicle_name), false)
             }*/
             data?.vehicleModel.isNullOrEmpty() -> ViewUtils.showToast(
-                this,
-                getString(R.string.please_enter_vehicle_model), false
+                    this,
+                    getString(R.string.please_enter_vehicle_model), false
             )
 
             data?.vehicleYear.isNullOrEmpty() -> ViewUtils.showToast(
-                this,
-                getString(R.string.please_enter_vehicle_year), false
+                    this,
+                    getString(R.string.please_enter_vehicle_year), false
             )
 
             data?.vehicleColor.isNullOrEmpty() -> ViewUtils.showToast(
-                this,
-                getString(R.string.please_enter_vehicle_color), false
+                    this,
+                    getString(R.string.please_enter_vehicle_color), false
             )
 
             data?.vehicleNumber.isNullOrEmpty() -> ViewUtils.showToast(
-                this,
-                getString(R.string.please_enter_vehicle_plate_number), false
+                    this,
+                    getString(R.string.please_enter_vehicle_plate_number), false
             )
 
             data?.vehicleMake.isNullOrEmpty() -> ViewUtils.showToast(
-                this,
-                getString(R.string.please_enter_vehicle_make), false
+                    this,
+                    getString(R.string.please_enter_vehicle_make), false
             )
 
             (!mViewModel.getIsEdit() && mViewModel.getRcBookUri() == null) -> ViewUtils.showToast(
-                this,
-                getString(R.string.please_select_rc_book_document), false
+                    this,
+                    getString(R.string.please_select_rc_book_document), false
             )
 
             (!mViewModel.getIsEdit() && mViewModel.getInsuranceUri() == null) -> ViewUtils.showToast(
-                this,
-                getString(R.string.please_select_insurance_document), false
+                    this,
+                    getString(R.string.please_select_insurance_document), false
             )
 
             else -> mViewModel.postVehicle()
@@ -334,8 +348,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                             ImageUtils.getPathFromInputStreamUri(applicationContext, it)?.run {
                                 mViewModel.setVehicleUri(this)
                                 Glide.with(this@AddVehicleActivity).load(this)
-                                    .placeholder(R.drawable.ic_car_placeholder)
-                                    .centerCrop().into(iv_vehicle)
+                                        .placeholder(R.drawable.ic_car_placeholder)
+                                        .centerCrop().into(iv_vehicle)
                             }
                         }
                     }
@@ -344,8 +358,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                             ImageUtils.getPathFromInputStreamUri(applicationContext, it)?.run {
                                 mViewModel.setRcBookUri(this)
                                 Glide.with(this@AddVehicleActivity).load(this)
-                                    .placeholder(R.drawable.ic_car_placeholder)
-                                    .centerCrop().into(iv_rc_book)
+                                        .placeholder(R.drawable.ic_car_placeholder)
+                                        .centerCrop().into(iv_rc_book)
                             }
                         }
                         tvRcBook.visibility = View.GONE
@@ -356,8 +370,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                             ImageUtils.getPathFromInputStreamUri(applicationContext, it)?.run {
                                 mViewModel.setInsuranceUri(this)
                                 Glide.with(this@AddVehicleActivity).load(this)
-                                    .placeholder(R.drawable.ic_car_placeholder)
-                                    .centerCrop().into(iv_insurance)
+                                        .placeholder(R.drawable.ic_car_placeholder)
+                                        .centerCrop().into(iv_insurance)
                             }
                         }
                         tvInsurance.visibility = View.GONE

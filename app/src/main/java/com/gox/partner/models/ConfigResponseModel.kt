@@ -32,6 +32,8 @@ data class Appsetting(
         var otp_verify: Int = 0,
         val send_sms: Int = 0,
         val send_email: Int = 0,
+        val rental: Int = 0,
+        val outstation: Int = 0,
         var ride_otp: Int = 0,
         var order_otp: Int = 0,
         var service_otp: Int = 0,

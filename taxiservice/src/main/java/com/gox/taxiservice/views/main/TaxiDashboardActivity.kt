@@ -294,11 +294,11 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                 if (!checkStatusResponse.responseData.request.status.isNullOrEmpty()) {
                     println("RRR :: Status = ${checkStatusResponse.responseData.request.status}")
-                   /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
-                            currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
+                    /* if (currentLat != 0.0 || currentLat != checkStatusResponse.responseData.request.s_latitude &&
+                             currentlng != 0.0 || currentlng != checkStatusResponse.responseData.request.s_longitude) {
 
-                        mViewModel.currentStatus.value = ""
-                    }*/
+                         mViewModel.currentStatus.value = ""
+                     }*/
 
 
                     if (!roomConnected) {
@@ -341,12 +341,12 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
 
                         val requestID = checkStatusResponse.responseData.request.id.toString()
 
-                       /* if (!roomConnected) {
-                            roomConnected = true
-                            val reqID = checkStatusResponse.responseData.request.id
-                            PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
-                            SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
-                        }*/
+                        /* if (!roomConnected) {
+                             roomConnected = true
+                             val reqID = checkStatusResponse.responseData.request.id
+                             PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
+                             SocketManager.emit(Constants.RoomName.TRANSPORT_ROOM_NAME, Constants.RoomId.TRANSPORT_ROOM)
+                         }*/
 
                         when (checkStatusResponse.responseData.request.status) {
                             SEARCHING -> {
@@ -488,6 +488,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         btn_arrived.visibility = View.VISIBLE
         btn_picked_up.visibility = View.GONE
         llWaitingTimeContainer.visibility = View.GONE
+
         Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
@@ -497,16 +498,20 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 .into(civProfile)
         tv_user_name.text = responseData.request.user.first_name + " " + responseData.request.user.last_name
         tv_user_address_one.text = responseData.request.s_address
-        if(responseData.request.someone == 1){
+        if (responseData.request.someone == 1) {
             rl_book_someone.visibility = View.VISIBLE
             responseData.request.someone_name?.let {
                 tv_book_someone_name.setText(it)
             }
-            responseData.request.someone_mobile?.let {
-                tv_book_someone_number.setText(it)
+            responseData.request.someone_mobile?.let { someone_mobile ->
+                tv_book_someone_number.setText(someone_mobile)
+                ibBookSomeone.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse("tel:${someone_mobile}")
+                    startActivity(intent)
+                }
             }
-
-        }else{
+        } else {
             rl_book_someone.visibility = View.GONE
         }
         rate.rating = responseData.request.user.rating.toFloat()
@@ -554,16 +559,21 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         tv_user_name.text = responseData.request.user.first_name + " " + responseData.request.user.last_name
         tv_user_address_one.text = responseData.request.s_address
         rate.rating = responseData.request.user.rating.toFloat()
-        if(responseData.request.someone == 1){
+        if (responseData.request.someone == 1) {
             rl_book_someone.visibility = View.VISIBLE
             responseData.request.someone_name?.let {
                 tv_book_someone_name.setText(it)
             }
-            responseData.request.someone_mobile?.let {
-                tv_book_someone_number.setText(it)
+            responseData.request.someone_mobile?.let { someone_mobile ->
+                tv_book_someone_number.setText(someone_mobile)
+                ibBookSomeone.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse("tel:${someone_mobile}")
+                    startActivity(intent)
+                }
             }
 
-        }else{
+        } else {
             rl_book_someone.visibility = View.GONE
         }
         if (responseData.request.s_address.length > 2)
@@ -602,20 +612,25 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     private fun whenStatusPickedUp(responseData: ResponseData) {
         writePreferences(CAN_SEND_LOCATION, true)
         writePreferences(CAN_SAVE_LOCATION, true)
-        if(!responseData.request.service_type.equals("OUTSTATION",true)) {
+        if (!responseData.request.service_type.equals("OUTSTATION", true)) {
             setWaitingTime()
             llWaitingTimeContainer.visibility = View.VISIBLE
         }
-        if(responseData.request.someone == 1){
+        if (responseData.request.someone == 1) {
             rl_book_someone.visibility = View.VISIBLE
             responseData.request.someone_name?.let {
                 tv_book_someone_name.setText(it)
             }
-            responseData.request.someone_mobile?.let {
-                tv_book_someone_number.setText(it)
+            responseData.request.someone_mobile?.let { someone_mobile ->
+                tv_book_someone_number.setText(someone_mobile)
+                ibBookSomeone.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_DIAL)
+                    intent.data = Uri.parse("tel:${someone_mobile}")
+                    startActivity(intent)
+                }
             }
 
-        }else{
+        } else {
             rl_book_someone.visibility = View.GONE
         }
         ib_location_pin.background = ContextCompat.getDrawable(this, R.drawable.bg_status_complete)
@@ -630,8 +645,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         tv_pickup_location.text = getText(R.string.taxi_drop_location)
         vl_trip_started.visibility = View.VISIBLE
 
-        Glide
-                .with(this)
+        Glide.with(this)
                 .applyDefaultRequestOptions(RequestOptions()
                         .circleCrop()
                         .placeholder(R.drawable.ic_user_place_holder)
@@ -655,13 +669,13 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         }
 
         btn_drop.setOnClickListener {
-           if(mViewModel.serviceType.equals("RENTAL",true)) {
+            if (mViewModel.serviceType.equals("RENTAL", true)) {
                 val intent = Intent(this, LocationPickActivity::class.java)
                 intent.putExtra("LocationPickFlag", 0)
                 intent.putExtra("startlatlong", LatLng(currentLat, currentlng))
                 startActivityForResult(intent,
                         LocationPickActivity.DESTINATION_REQUEST_CODE)
-            }else{
+            } else {
                 dropClicked()
             }
         }
@@ -671,55 +685,55 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
     }
 
 
-    fun dropClicked(){
+    fun dropClicked() {
         fab_taxi_menu.visibility = View.GONE
         mViewModel.distanceMeter.value = 0.0
-            if (isWaitingTime!!) ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
-            else {
-                mViewModel.distanceApiProcessing.value = arrayListOf()
-                points.clear()
-                tempPoints.clear()
-                mViewModel.iteratePointsForApi.clear()
-                iteratePointsForDistanceCalc.clear()
-                points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints()
-                        as ArrayList<LocationPointsEntity>
+        if (isWaitingTime!!) ViewUtils.showToast(this, getString(R.string.waiting_timer_running), false)
+        else {
+            mViewModel.distanceApiProcessing.value = arrayListOf()
+            points.clear()
+            tempPoints.clear()
+            mViewModel.iteratePointsForApi.clear()
+            iteratePointsForDistanceCalc.clear()
+            points = AppDatabase.getAppDataBase(this)!!.locationPointsDao().getAllPoints()
+                    as ArrayList<LocationPointsEntity>
 
-                if (points.size > 2) {
-                    for (point in points) {
-                        val latLng = LatLng(point.lat, point.lng)
-                        if (latLng.latitude != 0.0 && latLng.longitude != 0.0) tempPoints.add(latLng)
+            if (points.size > 2) {
+                for (point in points) {
+                    val latLng = LatLng(point.lat, point.lng)
+                    if (latLng.latitude != 0.0 && latLng.longitude != 0.0) tempPoints.add(latLng)
+                }
+                if (tempPoints.size > 2) locationProcessing(tempPoints)
+            } else ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
+                    getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
+                override fun onPositiveButtonClick(dialog: DialogInterface) {
+                    val tollChargeDialog = TollChargeDialog()
+                    val bundle = Bundle()
+                    bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
+                    if (mViewModel.serviceType.equals("rental", true)) {
+                        bundle.putParcelable("dropLocation", mViewModel.rentalDropLatLong)
+                        bundle.putString("dropAddress", mViewModel.rentalDropAddress)
                     }
-                    if (tempPoints.size > 2) locationProcessing(tempPoints)
-                } else ViewUtils.showAlert(this, getString(R.string.toll_charge_desc),
-                        getString(R.string.yes), getString(R.string.no), object : ViewUtils.ViewCallBack {
-                    override fun onPositiveButtonClick(dialog: DialogInterface) {
-                        val tollChargeDialog = TollChargeDialog()
-                        val bundle = Bundle()
-                        bundle.putString("requestID", mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString())
-                        if (mViewModel.serviceType.equals("rental", true)) {
-                            bundle.putParcelable("dropLocation", mViewModel.rentalDropLatLong)
-                            bundle.putString("dropAddress", mViewModel.rentalDropAddress)
-                        }
-                        tollChargeDialog.arguments = bundle
-                        tollChargeDialog.show(supportFragmentManager, "tollCharge")
-                    }
+                    tollChargeDialog.arguments = bundle
+                    tollChargeDialog.show(supportFragmentManager, "tollCharge")
+                }
 
-                    override fun onNegativeButtonClick(dialog: DialogInterface) {
-                        val params: HashMap<String, String> = HashMap()
-                        params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
-                        params["status"] = DROPPED
-                        params["_method"] = "PATCH"
-                        params["toll_price"] = "0"
-                        if (mViewModel.serviceType.equals("rental", true)) {
-                            params["d_address"] = mViewModel.rentalDropAddress
-                            params["d_latitude"] = mViewModel.rentalDropLatLong?.latitude.toString()
-                            params["d_longitude"] = mViewModel.rentalDropLatLong?.longitude.toString()
-                        }
-                        mViewModel.taxiDroppingStatus(params)
-                        dialog.dismiss()
+                override fun onNegativeButtonClick(dialog: DialogInterface) {
+                    val params: HashMap<String, String> = HashMap()
+                    params["id"] = mViewModel.checkStatusTaxiLiveData.value!!.responseData.request.id.toString()
+                    params["status"] = DROPPED
+                    params["_method"] = "PATCH"
+                    params["toll_price"] = "0"
+                    if (mViewModel.serviceType.equals("rental", true)) {
+                        params["d_address"] = mViewModel.rentalDropAddress
+                        params["d_latitude"] = mViewModel.rentalDropLatLong?.latitude.toString()
+                        params["d_longitude"] = mViewModel.rentalDropLatLong?.longitude.toString()
                     }
-                })
-            }
+                    mViewModel.taxiDroppingStatus(params)
+                    dialog.dismiss()
+                }
+            })
+        }
     }
 
     private fun getCurrentAddress(context: Context, currentLocation: com.google.maps.model.LatLng): List<Address> {
@@ -975,7 +989,7 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
                 lastWaitingTime = mViewModel.checkStatusTaxiLiveData.value!!.responseData.waitingTime
                 if (lastWaitingTime != temp)
 //                    cmWaiting.base = (cmWaiting.base + SystemClock.elapsedRealtime()) - lastWaitingTime!!
-                    cmWaiting.base =SystemClock.elapsedRealtime() - (lastWaitingTime?.times(1000)!!)
+                    cmWaiting.base = SystemClock.elapsedRealtime() - (lastWaitingTime?.times(1000)!!)
                 else
                     cmWaiting.base = SystemClock.elapsedRealtime()
 
@@ -1053,8 +1067,9 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
             LocationPickActivity.DESTINATION_REQUEST_CODE -> {
                 when (resultCode) {
                     Activity.RESULT_OK -> {
-                        mViewModel.rentalDropLatLong  = data?.getParcelableExtra<LatLng>("SelectedLatLng")!!
-                        mViewModel.rentalDropAddress = data?.getStringExtra("SelectedLocation") ?: ""
+                        mViewModel.rentalDropLatLong = data?.getParcelableExtra<LatLng>("SelectedLatLng")!!
+                        mViewModel.rentalDropAddress = data?.getStringExtra("SelectedLocation")
+                                ?: ""
                         dropClicked()
                     }
                 }
@@ -1069,14 +1084,14 @@ class TaxiDashboardActivity : BaseActivity<ActivityTaxiMainBinding>(),
         mViewModel.iteratePointsForApi.add(latLng[0])
         for (i in latLng.indices)
             if (i < latLng.size - 1)
-        iteratePointsApi(latLng[i], latLng[i + 1])
+                iteratePointsApi(latLng[i], latLng[i + 1])
         mViewModel.iteratePointsForApi.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(mViewModel.iteratePointsForApi), "BBB")
         println("GGGG :: locationProcessing::iteratePointsApi = " + mViewModel.iteratePointsForApi.size)
         iteratePointsForDistanceCalc.add(latLng[0])
         for (i in mViewModel.iteratePointsForApi.indices) if (i < mViewModel.iteratePointsForApi.size - 1)
             iteratePointsForDistanceCal(mViewModel.iteratePointsForApi[i], mViewModel.iteratePointsForApi[i + 1])
-            iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
+        iteratePointsForDistanceCalc.add(latLng[latLng.size - 1])
         longLog(Gson().toJson(iteratePointsForDistanceCalc), "CCC")
         println("GGGG :: locationProcessing::iteratePointsForDistanceCalc = " + iteratePointsForDistanceCalc.size)
 

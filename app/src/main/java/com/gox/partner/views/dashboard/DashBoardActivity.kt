@@ -336,7 +336,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     val locationObj = JSONObject()
                     locationObj.put("latitude", location.latitude)
                     locationObj.put("longitude", location.longitude)
-                    locationObj.put("url", " https://demoapi.gox.network/api/v1/provider/updatelocation")
+                    locationObj.put("url", "https://demoapi.gox.network/api/v1/provider/updatelocation")
                     locationObj.put("provider_id", BaseApplication.getCustomPreference!!.getInt(PreferencesKey.PROVIDER_ID, 0))
                     SocketManager.emit("update_location", locationObj)
                 }

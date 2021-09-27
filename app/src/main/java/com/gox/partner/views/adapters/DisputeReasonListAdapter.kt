@@ -1,5 +1,6 @@
 package com.gox.partner.views.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -37,20 +38,14 @@ class DisputeReasonListAdapter(val viewModel: HistoryDetailViewModel, private va
         holder.rowDisputeListBinding.tvDisbuteReason.text = disputeReason[position].dispute_name
 
         holder.rowDisputeListBinding.rbDisbute.isChecked = selectedPosition == position
-        holder.rowDisputeListBinding.rbDisbute.setOnCheckedChangeListener { _, _ ->
-            onItemChecked(position)
-        }
-        holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener {
-            onItemChecked(position)
-        }
+        holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener { v -> itemCheckChanged(v) }
     }
 
-    private fun onItemChecked(index: Int) {
-        val oldIndex = selectedPosition
-        selectedPosition = index
+    @SuppressLint("NotifyDataSetChanged")
+    private fun itemCheckChanged(v: View) {
+        selectedPosition = v.tag as Int
         viewModel.selectedDisputeModel.value = disputeReason[selectedPosition]
-        notifyItemChanged(oldIndex)
-        notifyItemChanged(selectedPosition)
+        notifyDataSetChanged()
     }
     inner class MyViewHolder(itemView: RowDisputeListBinding) : RecyclerView.ViewHolder(itemView.root) {
         val rowDisputeListBinding = itemView

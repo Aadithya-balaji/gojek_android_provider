@@ -10,7 +10,7 @@ import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.FragmentTransactionBinding
 import com.gox.partner.models.WalletTransaction
-import com.gox.partner.views.adapters.TransactionListAdapter
+import com.gox.partner.views.adapters.ParentTransactionListAdapter
 import kotlinx.android.synthetic.main.fragment_transaction.*
 
 class TransactionFragment : BaseFragment<FragmentTransactionBinding>(), TransactionNavigator {
@@ -19,7 +19,7 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding>(), Transact
     private lateinit var mViewModel: TransactionViewModel
 
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var transactionListAdapter: TransactionListAdapter
+    private lateinit var parentTransactionListAdapter: ParentTransactionListAdapter
 
     override fun getLayoutId() = R.layout.fragment_transaction
 
@@ -47,8 +47,8 @@ class TransactionFragment : BaseFragment<FragmentTransactionBinding>(), Transact
 
             val transactionList: List<WalletTransaction.ResponseData.Data> =
                     mViewModel.transactionLiveResponse.value!!.responseData.data
-            transactionListAdapter = TransactionListAdapter(activity!!, transactionList)
-            mBinding.transactionListRv.adapter = transactionListAdapter
+            parentTransactionListAdapter = ParentTransactionListAdapter(activity!!, transactionList)
+            mBinding.transactionListRv.adapter = parentTransactionListAdapter
         }
 
         observeLiveData(mViewModel.errorResponse) {

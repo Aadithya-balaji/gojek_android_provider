@@ -84,8 +84,6 @@
                         android:id="@+id/transaction_list_rv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_8sdp"
-                        android:padding="@dimen/_5sdp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

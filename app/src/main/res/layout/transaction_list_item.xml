@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tvTransactionID"
+            android:id="@+id/tvTransactionDesc"
             style="@style/SmallText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

@@ -55,7 +55,7 @@ class DashBoardViewModel : BaseViewModel<DashBoardNavigator>() {
     }
 
     fun changeAirportModel() {
-        loaderProgress.postValue(true)
+       // loaderProgress.postValue(true)
         if (BaseApplication.isNetworkAvailable)
             getCompositeDisposable().add(mRepository.setAirportMode(object : ApiListener {
                 override fun success(successData: Any) {

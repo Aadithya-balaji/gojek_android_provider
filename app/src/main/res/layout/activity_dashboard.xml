@@ -62,6 +62,7 @@
             app:fab_colorNormal="@color/grey"
             app:fab_colorPressed="@color/red"
             app:fab_colorRipple="@color/black"
+            android:visibility="gone"
             android:onClick="@{() -> dashboard.changeAirportMode()}"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

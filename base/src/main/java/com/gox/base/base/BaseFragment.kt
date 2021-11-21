@@ -20,7 +20,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     private var mActivity: FragmentActivity? = null
     private lateinit var mViewDataBinding: T
-    private val loadingLiveData = MutableLiveData<Boolean>()
+     val loadingLiveData = MutableLiveData<Boolean>()
     private var customDialog: CustomDialog? = null
 
     val loadingObservable: MutableLiveData<*>

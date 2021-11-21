@@ -43,9 +43,9 @@ class CourierInvoiceViewModel : BaseViewModel<CourierInvoiceNavigator>() {
     var checkStatusTaxiLiveData = MutableLiveData<CourierCheckRequest>()
     var invoiceUpdateRequest = MutableLiveData<CourierCheckRequest>()
 
-    fun summit(){
+  /*  fun summit(){
         navigator.submit()
-    }
+    }*/
     fun callXUberCheckRequest() {
         if (BaseApplication.isNetworkAvailable) {
             getCompositeDisposable().add(mRepository.xUberCheckRequest
@@ -53,6 +53,7 @@ class CourierInvoiceViewModel : BaseViewModel<CourierInvoiceNavigator>() {
                 override fun success(successData: Any) {
                     checkStatusTaxiLiveData.value = successData as CourierCheckRequest
                     showLoading.postValue(false)
+                    navigator.submit(checkStatusTaxiLiveData.value!!.responseData)
                 }
 
                 override fun fail(failData: Throwable) {

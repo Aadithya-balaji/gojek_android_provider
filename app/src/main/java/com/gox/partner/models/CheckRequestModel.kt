@@ -77,7 +77,8 @@ data class ProviderDetails(
         var status: String = "",
         var stripe_cust_id: Any = Any(),
         var wallet_balance: Double? = 0.0,
-        var zone_id: Any = Any()
+        var zone_id: Any = Any(),
+        var airport_at: Any? = null,
 ) : Serializable
 
 data class Request(

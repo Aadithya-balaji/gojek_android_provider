@@ -33,6 +33,7 @@ import com.gox.partner.views.adapters.DeliveryDropLocationAdpater
 import com.gox.partner.views.adapters.DisputeReasonListAdapter
 import com.gox.partner.views.adapters.ReasonListClickListener
 import com.gox.partner.views.dashboard.DashBoardViewModel
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -555,24 +556,23 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                     rlTips?.visibility = View.GONE
                     rlTollCharge?.visibility = View.GONE
                     rlRoundOff?.visibility = View.GONE
-
                     if (mViewModel.deliveryDetail.value?.payment != null) {
-                        tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.fixed)
+                        tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.fixed)
                                 ?: "0.0"
-                        tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.tax)
+                        tvTaxFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.tax)
                                 ?: "0.0"
-                        tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.distance)
+                        tvDistanceFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.distance)
                                 ?: "0.0"
-                        tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.tips)
+                        tvTips?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.tips)
                                 ?: "0.0"
-                        tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.wallet)
+                        tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.wallet)
                                 ?: "0.0"
-                        tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.total)
+                        tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.total)
                                 ?: "0.0"
-                        tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.round_of)
+                        tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.round_of)
                                 ?: "0.0"
-                        tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.discount)}"
-                        tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.payment!!.payable)
+                        tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.discount)}"
+                        tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries?.get(0)?.payment!!.payable)
                                 ?: "0.0"
                     } else if (mViewModel.deliveryDetail.value?.deliveries != null) {
                         tvBaseFare?.text = Utils.getNumberFormat()?.format(mViewModel.deliveryDetail.value?.deliveries!![0].payment!!.fixed)
@@ -869,11 +869,22 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
         mBinding.historydetailPaymentmodeValTv.text = deliveryDetail.payment_mode
         Glide.with(this).load(deliveryDetail.user!!.picture).error(R.drawable.ic_user_place_holder)
                 .into(mBinding.providerCimgv)
-        if (deliveryDetail.started_at != null)
-            mBinding.timeCurrentorderdetailTv.text = (CommonMethods.getLocalTimeStamp(deliveryDetail.started_at!!, "Req_time") + "")
-        if (deliveryDetail.started_at != null)
-            mBinding.currentorderdetailDateTv.text = (CommonMethods.getLocalTimeStamp(deliveryDetail.started_at!!, "Req_Date_Month") + "")
-        mBinding.providerNameTv.text = (deliveryDetail.user!!.first_name + " " + deliveryDetail.user.last_name)
+        Log.e("setupDeliveryDetail: ",deliveryDetail.assigned_time.toString())
+        if (deliveryDetail.assigned_time != null) {
+            var datetime = deliveryDetail.assigned_time
+            val splitDatetime = datetime.split(" ")
+            val curFormater = SimpleDateFormat("dd-MM-yyyy")
+            val dateObj: Date = curFormater.parse(splitDatetime[0])
+            val monthFormat = SimpleDateFormat("MMM")
+            val dateFormat = SimpleDateFormat("dd")
+            val month_name: String = monthFormat.format(dateObj)
+            val date: String = dateFormat.format(dateObj)
+            mBinding.timeCurrentorderdetailTv.text = splitDatetime[1] + " " + splitDatetime[2]
+            mBinding.currentorderdetailDateTv.text = date + " " + month_name
+            Log.e("setupDeliveryDetail: ",splitDatetime[1]+ " " + splitDatetime[2].toString())
+            mBinding.providerNameTv.text =
+                (deliveryDetail.user!!.first_name + " " + deliveryDetail.user.last_name)
+        }
         mBinding.tvStatusValue.text = deliveryDetail.status
         mBinding.rvUser.rating = deliveryDetail.user!!.rating!!.toFloat()
         if (deliveryDetail.deliveries!!.size > 0) {

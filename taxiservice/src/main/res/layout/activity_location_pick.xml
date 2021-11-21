@@ -107,7 +107,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"
-                    android:drawableTint="@color/taxi_bg_yellow"
                     android:background="@drawable/custom_full_round_corner"
                     android:backgroundTint="@color/taxi_bg_yellow"
                     android:fontFamily="@font/avenirltstd_medium"

@@ -7,9 +7,13 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.Location
+import android.os.Build
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
@@ -31,6 +35,7 @@ import com.gox.base.utils.LocationUtils
 import com.gox.base.utils.ViewUtils
 import com.gox.partner.R
 import com.gox.partner.databinding.FragmentHomePageBinding
+import com.gox.partner.models.AirportChangeResponseModel
 import com.gox.partner.utils.Constant
 import com.gox.partner.views.dashboard.DashBoardNavigator
 import com.gox.partner.views.dashboard.DashBoardViewModel
@@ -40,11 +45,13 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import droidninja.filepicker.PickerManager.theme
+import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.fragment_home_page.*
 
 class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
-        HomeNavigator,
-        OnMapReadyCallback {
+    HomeNavigator,
+    OnMapReadyCallback {
 
     private lateinit var mBinding: FragmentHomePageBinding
     private lateinit var mViewModel: HomeViewModel
@@ -53,8 +60,9 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     private lateinit var mDashboardViewModel: DashBoardViewModel
     private var mGoogleMap: GoogleMap? = null
     private var providerMarker: Marker? = null
-    private var isOnline: Boolean? = true
+    private var cityID = 0
     private var pendingListDialog: PendingListDialog? = null
+    private var airportButton: Boolean = false
 
     override fun getLayoutId() = R.layout.fragment_home_page
 
@@ -65,6 +73,7 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
         mDashboardViewModel = ViewModelProviders.of(activity!!).get(DashBoardViewModel::class.java)
         mViewModel.navigator = this
         mBinding.homemodel = mViewModel
+        mBinding.homeFragment = this
         mBinding.btnChangeStatus.bringToFront()
         MapsInitializer.initialize(activity!!)
         initializeMap()
@@ -89,6 +98,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
     }
 
     private fun getApiResponse() {
+        mDashboardViewModel.changeAirportModel()
+        mDashboardViewModel.getProfile()
         println("RRR :: HomeFragment.getApiResponse")
         observeLiveData(mDashboardViewModel.checkRequestLiveData) { checkStatusData ->
             if (checkStatusData.statusCode == "200") {
@@ -100,14 +111,17 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 verificationModel.isBankDetail = providerDetailsModel.is_bankdetail!!
                 verificationModel.isDocument = providerDetailsModel.is_document!!
                 verificationModel.isService = providerDetailsModel.is_service!!
-                verificationModel.isProfile=providerDetailsModel.is_profile!!
-                verificationModel.providerStatus = checkStatusData.responseData.provider_details.status
-                verificationModel.providerWalletBalance = checkStatusData.responseData.provider_details.wallet_balance!!
+                verificationModel.isProfile = providerDetailsModel.is_profile!!
+                verificationModel.providerStatus =
+                    checkStatusData.responseData.provider_details.status
+                verificationModel.providerWalletBalance =
+                    checkStatusData.responseData.provider_details.wallet_balance!!
                 Constant.verificationObservable.value = verificationModel
 
                 val verificationData = Constant.verificationObservable.value!!
                 if (verificationData.isNeedToShowPendingDialog() && pendingListDialog != null
-                        && !pendingListDialog!!.isShown()) showPendingListDialog()
+                    && !pendingListDialog!!.isShown()
+                ) showPendingListDialog()
                 val onlineStatus = providerDetailsModel.is_online
                 writePreferences(PreferencesKey.IS_ONLINE, onlineStatus)
                 changeView(onlineStatus == 1)
@@ -119,7 +133,8 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
             observeLiveData(mViewModel.onlineStatusLiveData) {
                 loadingObservable.value = false
                 if (mViewModel.onlineStatusLiveData.value != null) {
-                    val isOnline = mViewModel.onlineStatusLiveData.value!!.responseData?.providerStatus
+                    val isOnline =
+                        mViewModel.onlineStatusLiveData.value!!.responseData?.providerStatus
                     if (isOnline.equals("1")) {
                         writePreferences(PreferencesKey.IS_ONLINE, 1)
                         dashBoardNavigator.updateLocation(true)
@@ -137,9 +152,48 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
         observeLiveData(mViewModel.mProfileResponse) {
             writePreferences(PreferencesKey.IS_ONLINE, it.profileData.is_online)
-            writePreferences(PreferencesKey.PICTURE,it.profileData.payment_mode)
+            writePreferences(PreferencesKey.PICTURE, it.profileData.payment_mode)
             updateOnlineStatus()
         }
+        observeLiveData(mDashboardViewModel.mProfileResponse) {
+            cityID = it.profileData.city.id
+            writePreferences(PreferencesKey.IS_ONLINE, it.profileData.is_online)
+            PreferencesHelper.put(PreferencesKey.CITY_ID, cityID)
+            SocketManager.emit(
+                Constants.RoomName.COMMON_ROOM_NAME,
+                Constants.RoomId.getCommonRoom(cityID)
+            )
+             if (mDashboardViewModel.mProfileResponse.value!!.profileData.airport_at !== null) {
+                 changeToAirportMode(true)
+             } else {
+                 changeToAirportMode(false)
+             }
+        }
+
+        mDashboardViewModel.airportModeResponse.observe(this, Observer {
+            if (it != null && it.responseData != null && it.responseData.status == 1) {
+                airportButton=true
+                changeToAirportMode(true)
+            } else {
+                airportButton=false
+                changeToAirportMode(false)
+            }
+
+            mDashboardViewModel.loaderProgress.observe(this, Observer {
+                loadingLiveData.postValue(it)
+            })
+        })
+    }
+
+    fun changeAirportMode() {
+       /* airportButton = true
+        mDashboardViewModel.changeAirportModel()*/
+        if (airportButton)
+            ViewUtils.showToast(activity!!,
+                "Airport Location Already Updated", true)
+else
+            ViewUtils.showToast(activity!!,
+                "You are not in the Airport Location", false)/* Log.e("airport", "changeAirportMode: " )  */
     }
 
     private fun initializeMap() {
@@ -159,23 +213,34 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
                 e.printStackTrace()
             }
 
-            mGoogleMap!!.setMapStyle(MapStyleOptions.loadRawResourceStyle(context, com.gox.taxiservice.R.raw.style_json))
+            mGoogleMap!!.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    context,
+                    com.gox.taxiservice.R.raw.style_json
+                )
+            )
 
         } catch (e: Resources.NotFoundException) {
             e.printStackTrace()
         }
 
         Dexter.withActivity(activity!!)
-                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-                .withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        updateCurrentLocation()
-                    }
+            .withPermissions(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                    updateCurrentLocation()
+                }
 
-                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                        token?.continuePermissionRequest()
-                    }
-                }).check()
+                override fun onPermissionRationaleShouldBeShown(
+                    permissions: MutableList<PermissionRequest>?,
+                    token: PermissionToken?
+                ) {
+                    token?.continuePermissionRequest()
+                }
+            }).check()
     }
 
     fun updateMapLocation(location: LatLng, isAnimateMap: Boolean = false) {
@@ -183,21 +248,37 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
         try {
 
-            providerMarker = mGoogleMap?.addMarker(MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromBitmap
-            (bitmapFromVector(BaseApplication.getBaseApplicationContext, R.drawable.ic_marker_provider))))
+            providerMarker = mGoogleMap?.addMarker(
+                MarkerOptions().position(location).icon(
+                    BitmapDescriptorFactory.fromBitmap
+                        (
+                        bitmapFromVector(
+                            BaseApplication.getBaseApplicationContext,
+                            R.drawable.ic_marker_provider
+                        )
+                    )
+                )
+            )
 
         } catch (e: Exception) {
             e.printStackTrace()
         }
 
-        if (!isAnimateMap) mGoogleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
+        if (!isAnimateMap) mGoogleMap?.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                location,
+                DEFAULT_ZOOM
+            )
+        )
         else mGoogleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location, DEFAULT_ZOOM))
     }
 
     private fun bitmapFromVector(context: Context, drawableId: Int): Bitmap {
         val drawable = ContextCompat.getDrawable(context, drawableId)
-        val bitmap = Bitmap.createBitmap(drawable!!.intrinsicWidth,
-                drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(
+            drawable!!.intrinsicWidth,
+            drawable.intrinsicHeight, Bitmap.Config.ARGB_8888
+        )
 
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, canvas.width, canvas.height)
@@ -279,15 +360,39 @@ class HomeFragment : BaseFragment<FragmentHomePageBinding>(),
 
     override fun showCurrentLocation() {
         Dexter.withActivity(activity!!)
-                .withPermissions(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-                .withListener(object : MultiplePermissionsListener {
-                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                        updateCurrentLocation()
-                    }
+            .withPermissions(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+            .withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                    updateCurrentLocation()
+                }
 
-                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                        token?.continuePermissionRequest()
-                    }
-                }).check()
+                override fun onPermissionRationaleShouldBeShown(
+                    permissions: MutableList<PermissionRequest>?,
+                    token: PermissionToken?
+                ) {
+                    token?.continuePermissionRequest()
+                }
+            }).check()
+    }
+
+    fun changeToAirportMode(isAirportMode: Boolean) {
+        if (isAirportMode) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                frgmentairportmode.setBackgroundTintList(
+                    resources.getColorStateList(
+                        R.color.red,
+                        context!!.theme
+                    )
+                )
+            } else {
+                frgmentairportmode.setBackgroundTintList(resources.getColorStateList(R.color.red))
+            }
+        } else {
+            frgmentairportmode.setBackgroundTintList(resources.getColorStateList(R.color.white))
+            //fbAirportMode.setBackgroundColor(ContextCompat.getColor(context!!, R.color.grey))
+        }
     }
 }

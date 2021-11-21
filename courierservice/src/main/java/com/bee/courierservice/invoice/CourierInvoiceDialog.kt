@@ -26,6 +26,7 @@ import com.bee.courierservice.interfaces.GetExtraChargeInterface
 import com.bee.courierservice.model.UpdateRequest
 import com.bee.courierservice.model.CourierCheckRequest
 import com.bee.courierservice.model.PaymentModel
+import com.bee.courierservice.model.ResponseData
 import com.bee.courierservice.rating.DialogCourierRating
 import com.bee.courierservice.xuberMainActivity.CourierDashboardViewModel
 import com.gox.base.base.BaseDialogFragment
@@ -319,9 +320,27 @@ class CourierInvoiceDialog : BaseDialogFragment<CDialogInvoiceBinding>(),
 
     fun isShown() = shown!!
 
-    override fun submit() {
-        if(xUberCheckRequest!!.responseData.request.payment_by.equals("SENDER",true)){
-            xUberInvoiceModel.updatePayment(xUberCheckRequest!!.responseData.request.delivery.id.toString(),"SENDER")
+    override fun submit(data:ResponseData?) {
+        Log.e("PaidStatus", data!!.request.paid.toString())
+        if(data!!.request.payment_by.equals("SENDER",true)){
+            if(xUberCheckRequest!!.responseData.request.payment_mode.equals("CASH")) {
+                xUberInvoiceModel.updatePayment(
+                    xUberCheckRequest!!.responseData.request.delivery.id.toString(),
+                    "SENDER"
+                )
+            }
+            else
+            {
+                if(data!!.request.paid==0)
+                {
+                    ViewUtils.showToast(activity!!,"User Not Paid",false)
+                }
+                else
+                    xUberInvoiceModel.updatePayment(
+                        xUberCheckRequest!!.responseData.request.delivery.id.toString(),
+                        "SENDER"
+                    )
+            }
         }else{
             xUberInvoiceModel.updatePayment(xUberCheckRequest!!.responseData.request.delivery.id.toString(),"RECEIVER")
 //            xUberCheckRequest!!.responseData.request.let { request ->

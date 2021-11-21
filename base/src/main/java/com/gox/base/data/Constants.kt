@@ -2,7 +2,9 @@ package com.gox.base.data
 
 import android.Manifest
 import android.content.Context
+import android.os.Build
 import android.util.Base64
+import androidx.annotation.RequiresApi
 import com.gox.base.BuildConfig
 import com.gox.base.base.BaseApplication
 import java.nio.charset.Charset
@@ -54,11 +56,16 @@ object Constants {
     }
 
     object RequestPermission {
-        val PERMISSIONS_LOCATION = arrayOf(
+        @RequiresApi(Build.VERSION_CODES.Q)
+        val PERMISSIONS_LOCATION_X = arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
         )
+        val PERMISSIONS_LOCATION = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+
         val PERMISSION_CAMERA = arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,

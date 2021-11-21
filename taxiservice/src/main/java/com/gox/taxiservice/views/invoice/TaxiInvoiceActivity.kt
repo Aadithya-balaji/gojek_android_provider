@@ -340,6 +340,7 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     }
 
     override fun openRatingDialog(data: ResponseData?) {
+        var donotMove:Int = 0
         AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
         mViewModel.showLoading.value = false
         val bundle = Bundle()
@@ -351,9 +352,14 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
             bundle.putString("profileImg", "")
         bundle.putString("name", data.request.user.first_name + " " + data.request.user.last_name)
         bundle.putString("bookingID", data.request.booking_id)
-        val ratingFragment = TaxiRatingFragment(bundle)
-        ratingFragment.show(supportFragmentManager, "rating")
-        ratingFragment.isCancelable = false
+        if(data.request.paid==1 && donotMove == 0) {
+            val ratingFragment = TaxiRatingFragment(bundle)
+            ratingFragment.show(supportFragmentManager, "rating")
+            ratingFragment.isCancelable = false
+        }
+        else if(!data.request.payment_mode.equals("CASH"))
+            ViewUtils.showToast(this, "User Not Paid", false)
+        donotMove==1
     }
 
     override fun tollCharge(amount: String) {

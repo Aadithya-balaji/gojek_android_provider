@@ -145,7 +145,6 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                     mBinding.tvWeight.visibility = View.VISIBLE
                     mViewModel.weight.value = "Weight : " + request.request.weight + " kg"
                 }
-
             }
         }
         getApiResponse()
@@ -169,6 +168,7 @@ class IncomingRequestDialog : BaseDialogFragment<DialogTaxiIncomingRequestBindin
                 mPlayer.stop()
                 dialog!!.dismiss()
             }
+
         }
         observeLiveData(mViewModel.rejectRequestLiveData) {
             loadingObservable.value = false

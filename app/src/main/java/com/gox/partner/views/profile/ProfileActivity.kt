@@ -91,12 +91,12 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
 //            writePreferences(PreferencesKey.PICTURE,response.profileData.picture)
         })
 
-        profile_wait.setOnClickListener {
+        /*profile_wait.setOnClickListener {
             val tooltip: Tooltip = Tooltip.Builder(it)
                 .setText("Waiting for approval")
                 .show()
         }
-
+*/
         mViewModel.countryListResponse.observe(this, Observer<CountryListResponse> {
             Log.d("_D", "country_code :" + it.responseData[0].country_code)
             val intent = Intent(this, CountryListActivity::class.java)
@@ -156,8 +156,8 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                     R.drawable.ic_user_place_holder
                 )
                 writePreferences(PreferencesKey.PICTURE, response.profileData.picture_draft)
-                profile_app.setVisibility(View.GONE)
-                profile_wait.setVisibility(View.VISIBLE)
+               // profile_app.setVisibility(View.GONE)
+               // profile_wait.setVisibility(View.VISIBLE)
             } else if (!response.profileData.picture.isNullOrEmpty()) {
                 glideSetImageView(
                     mViewDataBinding.profileImage,
@@ -166,7 +166,7 @@ class ProfileActivity : BaseActivity<ActivityEditProfileBinding>(), ProfileNavig
                 )
                 writePreferences(PreferencesKey.PICTURE, response.profileData.picture)
                 profile_app.setVisibility(View.VISIBLE)
-                profile_wait.setVisibility(View.GONE)
+                //profile_wait.setVisibility(View.GONE)
             }
         })
 

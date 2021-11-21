@@ -192,7 +192,10 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
 
     override fun submit() {
         if(paymentType.equals(Constants.PaymentMode.CARD,true) || paymentType.equals("")){
+            if(updateRequestModel!!.responseData!!.paid ==1)
             showRating()
+            else
+                ViewUtils.showToast(activity!!,"User Not Paid", false)
         }else{
             if (paid == 0)
                 xUberInvoiceModel.callConfirmPaymentApi()

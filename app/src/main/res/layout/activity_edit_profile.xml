@@ -186,6 +186,7 @@
                                 android:layout_height="wrap_content"
                                 android:drawablePadding="@dimen/_5sdp"
                                 android:focusable="false"
+                                android:enabled="false"
                                 android:imeOptions="actionDone"
                                 android:onClick="@{() -> profileviewmodel.getProfileCountryList()}"
                                 android:paddingStart="25dp"
@@ -277,7 +278,7 @@
 
             <ImageView
                 android:id="@+id/profile_app"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_alignParentEnd="true"
@@ -290,12 +291,13 @@
 
             <ImageView
                 android:id="@+id/profile_wait"
-                android:backgroundTint="@color/chip_yellow_color"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
+                android:visibility="gone"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/custom_circle"
+                android:backgroundTint="@color/chip_yellow_color"
                 android:contentDescription="@string/edit_image"
                 android:padding="@dimen/_5sdp"
                 app:srcCompat="@drawable/ic_ques_mark" />

@@ -191,6 +191,15 @@
                         android:text="@string/courier_delivery"
                         android:textColor="@color/xuber_black"
                         android:textSize="@dimen/_12sdp" />
+                    <TextView
+                        android:id="@+id/tv_fragile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:gravity="start"
+                        android:text="fragile"
+                        android:textColor="@color/xuber_black"
+                        android:textSize="@dimen/_12sdp" />
 
                     <TextView
                         android:id="@+id/tv_service_type"

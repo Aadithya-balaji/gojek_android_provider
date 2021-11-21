@@ -12,10 +12,8 @@ import com.gox.base.data.Constants.XUberProvider.EXTRA_CHARGE_NOTES
 import com.gox.base.data.Constants.XUberProvider.STATUS
 import com.gox.base.repository.ApiListener
 import com.bee.courierservice.model.CancelRequestModel
-import com.bee.courierservice.model.UpdateRequest
 import com.bee.courierservice.model.CourierCheckRequest
 import com.bee.courierservice.repositary.CourierRepository
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody

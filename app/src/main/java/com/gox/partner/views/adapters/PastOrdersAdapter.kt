@@ -16,6 +16,8 @@ import com.gox.partner.databinding.PastOderItemlistBinding
 import com.gox.partner.models.TransportResponseData
 import com.gox.partner.utils.CommonMethods
 import com.gox.partner.views.history_details.HistoryDetailActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: TransportResponseData
@@ -62,12 +64,21 @@ class PastOrdersAdapter(val activity: FragmentActivity?, val transportHistory: T
                 }
             }
             Constants.ModuleTypes.DELIVERY -> {
+                var datetime = transportHistory!!.delivery[position]!!.assigned_time
+                val splitDatetime = datetime.split(" ")
+                val curFormater=SimpleDateFormat("dd-MM-yyyy")
+                val dateObj: Date = curFormater.parse(splitDatetime[0])
+                val monthFormat = SimpleDateFormat("MMM")
+                val dateFormat=SimpleDateFormat("dd")
+                val month_name: String = monthFormat.format(dateObj)
+                val date:String=dateFormat.format(dateObj)
                 updateHistoryUi(holder, transportHistory.delivery[position].service?.vehicle_name!!
                         , transportHistory.delivery[position].status.equals("Completed", true)
                         , transportHistory.delivery[position].booking_id
                         , transportHistory.delivery[position].rating?.provider_rating?:0.0
-                        , (CommonMethods.getLocalTimeStamp(transportHistory.delivery[position].assigned_at, "Req_time") + "")
-                        , (CommonMethods.getLocalTimeStamp(transportHistory.delivery[position].assigned_at, "Req_Date_Month") + ""))
+                        ,splitDatetime[1]+" "+splitDatetime[2]
+                            ,date+" "+month_name)/* (CommonMethods.getLocalTimeStamp(transportHistory!!.delivery[position]!!.assigned_at, "Req_time") + "")
+                        , (CommonMethods.getLocalTimeStamp(transportHistory!!.delivery[position]!!.assigned_at, "Req_Date_Month") + ""))*/
 
                 holder.pastOderItemlistBinding.itemClickListener = object : CustomClickListner {
                     override fun onListClickListner() {

@@ -1,5 +1,7 @@
 package com.gox.taxiservice.views.invoice
 
+import android.content.Context
+import android.util.Log
 import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
@@ -7,6 +9,7 @@ import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
 import com.gox.base.data.Constants
 import com.gox.base.repository.ApiListener
+import com.gox.base.utils.ViewUtils
 import com.gox.taxiservice.model.CheckRequestModel
 import com.gox.taxiservice.model.PaymentModel
 import com.gox.taxiservice.model.ResponseData
@@ -44,11 +47,17 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
     var showLoading = MutableLiveData<Boolean>()
     var checkStatusTaxiLiveData = MutableLiveData<CheckRequestModel>()
 
-
     fun confirmPayment() {
         val response = checkStatusTaxiLiveData.value
-        if(response!!.responseData.request.payment.payment_mode.equals(Constants.PaymentMode.CASH,true) ||
-            response.responseData.request.payment.payment_mode.equals(Constants.PaymentMode.WALLET,true)){
+        if (response!!.responseData.request.payment.payment_mode.equals(
+                Constants.PaymentMode.CASH,
+                true
+            ) ||
+            response.responseData.request.payment.payment_mode.equals(
+                Constants.PaymentMode.WALLET,
+                true
+            )
+        ) {
             val params = HashMap<String, String>()
             if (checkStatusTaxiLiveData.value != null) {
                 showLoading.value = true
@@ -66,10 +75,12 @@ class TaxiInvoiceViewModel : BaseViewModel<TaxiInvoiceNavigator>() {
                 }, params))
 
             }
-        }else{
-            navigator.openRatingDialog(response.responseData)
+        } else {
+            //if (response!!.responseData.request.paid == 1)
+                navigator.openRatingDialog(response.responseData)
+            //else
+              //  navigator.showErrorMessage("User Not Pay")
         }
-
     }
 
     fun callTaxiCheckStatusAPI() {

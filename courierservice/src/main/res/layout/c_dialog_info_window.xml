@@ -13,15 +13,14 @@
         android:id="@+id/rl_cross"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        >
+        android:layout_marginTop="@dimen/_10sdp">
 
         <TextView
             android:id="@+id/tvlableImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenirltstd_medium"
-            android:text="@string/xuper_image"
+            android:text="@string/instruction"
             android:textColor="@color/xuber_black"
             android:textSize="@dimen/_12sdp" />
 
@@ -29,8 +28,8 @@
             android:id="@+id/ivClose"
             android:layout_width="@dimen/_25sdp"
             android:layout_height="@dimen/_25sdp"
-            android:contentDescription="@string/app_name"
             android:layout_alignParentEnd="true"
+            android:contentDescription="@string/app_name"
             android:tint="@color/xuper_red"
             app:srcCompat="@drawable/cross" />
     </RelativeLayout>
@@ -39,19 +38,21 @@
         android:id="@+id/ivInfo"
         android:layout_width="@dimen/_70sdp"
         android:layout_height="@dimen/_70sdp"
+        android:visibility="gone"
         android:layout_below="@+id/rl_cross"
+        android:layout_marginTop="@dimen/_9sdp"
         android:contentDescription="@string/app_name"
         android:scaleType="centerCrop"
-        android:layout_marginTop="@dimen/_9sdp"
         android:src="@drawable/image_placeholder" />
 
     <TextView
         android:id="@+id/tvlabelDescription"
+        style="@style/SmallText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivInfo"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_15sdp"
-        style="@style/SmallText"
         android:text="@string/instruction"
         android:textColor="@color/xuber_black"
         android:textSize="@dimen/_12sdp" />

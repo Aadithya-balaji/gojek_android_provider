@@ -1,6 +1,6 @@
 package com.gox.partner.network
-
 import com.gox.base.chatmessage.ChatMessageList
+import com.gox.base.chatmessage.ResponseData
 import com.gox.base.models.CommonResponse
 import com.gox.partner.models.*
 import io.reactivex.Observable

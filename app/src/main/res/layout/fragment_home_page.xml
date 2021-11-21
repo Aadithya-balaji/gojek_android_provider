@@ -7,6 +7,9 @@
         <variable
             name="homemodel"
             type="com.gox.partner.views.home.HomeViewModel" />
+        <variable
+            name="homeFragment"
+            type="com.gox.partner.views.home.HomeFragment"/>
     </data>
 
 
@@ -41,6 +44,38 @@
                 app:backgroundTint="@color/colorWhite"
                 app:fabCustomSize="50dp"
                 app:srcCompat="@drawable/ic_current_location" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/container_order"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/frgmentairportmode"
+                style="@style/Widget.MaterialComponents.FloatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="@dimen/_15sdp"
+                android:layout_marginBottom="@dimen/_60sdp"
+                android:contentDescription="@string/submit"
+                android:onClick="@{() -> homeFragment.changeAirportMode()}"
+                android:src="@drawable/ic_airplanemode_active"
+                app:backgroundTint="@color/light_gray"
+                app:fab_colorDisabled="@color/grey"
+                app:fab_colorNormal="@color/grey"
+                app:fab_colorPressed="@color/red"
+                app:fab_colorRipple="@color/black"
+                app:pressedTranslationZ="1dp" />
         </RelativeLayout>
 
 

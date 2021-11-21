@@ -38,6 +38,7 @@ import com.gox.base.data.Constants.ModuleTypes.ORDER
 import com.gox.base.data.Constants.ModuleTypes.SERVICE
 import com.gox.base.data.Constants.ModuleTypes.TRANSPORT
 import com.gox.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION
+import com.gox.base.data.Constants.RequestPermission.PERMISSIONS_LOCATION_X
 import com.gox.base.data.Constants.RideStatus.SEARCHING
 import com.gox.base.data.PreferencesHelper
 import com.gox.base.data.PreferencesKey
@@ -72,7 +73,7 @@ import java.util.*
 import kotlin.concurrent.schedule
 
 class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
-        DashBoardNavigator {
+    DashBoardNavigator {
 
     private lateinit var mBinding: ActivityDashboardBinding
     private lateinit var mViewModel: DashBoardViewModel
@@ -106,29 +107,35 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         checkRequestTimer!!.schedule(object : TimerTask() {
             override fun run() {
                 mViewModel.callCheckStatusAPI()
+                mViewModel.changeAirportModel()
             }
         }, 0, 5000)
 
-        supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, mHomeFragment).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, mHomeFragment)
+            .commit()
         mBinding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.action_home -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, mHomeFragment).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_home_container, mHomeFragment).commit()
                     true
                 }
 
                 R.id.action_history -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, OrderFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_home_container, OrderFragment()).commit()
                     true
                 }
 
                 R.id.action_notification -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, NotificationFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_home_container, NotificationFragment()).commit()
                     true
                 }
 
                 R.id.action_account -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.frame_home_container, AccountFragment()).commit()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_home_container, AccountFragment()).commit()
                     true
                 }
                 else -> false
@@ -136,14 +143,34 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         }
 
         locationServiceIntent = Intent(this, BaseLocationService::class.java)
-        if (getPermissionUtil().hasAllPermission(PERMISSIONS_LOCATION, context, 150)) updateLocation(true)
+        Log.e("locationPermission", PERMISSIONS_LOCATION.toString())
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P)
+            if (getPermissionUtil().hasAllPermission(
+                    PERMISSIONS_LOCATION_X,
+                    context,
+                    150
+                )
+            ) updateLocation(true)
+            else
+                if (getPermissionUtil().hasAllPermission(
+                        PERMISSIONS_LOCATION,
+                        context,
+                        150
+                    )
+                ) updateLocation(true)
+
+
 
         showFloatingView(this, true)
         mViewModel.getProfile()
         getApiResponse()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         val permission = getPermissionUtil().onRequestPermissionsResult(permissions, grantResults)
         if (permission.isNotEmpty()) run {
             getPermissionUtil().isFirstTimePermission = true
@@ -155,7 +182,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         super.onResume()
         mViewModel.callCheckStatusAPI()
         writePreferences(PreferencesKey.CAN_SEND_LOCATION, false)
-        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
     }
 
     override fun setTitle(title: String) {
@@ -192,7 +220,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     override fun updateLocation(isTrue: Boolean) {
         println("RRRR :: DashBoardActivity.updateLocation :: $isTrue")
         if (isTrue) {
-            LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
+            LocalBroadcastManager.getInstance(this)
+                .registerReceiver(mBroadcastReceiver, IntentFilter(BROADCAST))
             startService(locationServiceIntent)
         } else {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver)
@@ -203,8 +232,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     @Synchronized
     private fun setUpGClient() {
         googleApiClient = GoogleApiClient.Builder(this)
-                .addApi(LocationServices.API)
-                .build()
+            .addApi(LocationServices.API)
+            .build()
         googleApiClient!!.connect()
     }
 
@@ -215,7 +244,12 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                 override fun onSuccess(location: Location) {
                     mViewModel.latitude.value = location.latitude
                     mViewModel.longitude.value = location.longitude
-                    mHomeFragment.updateMapLocation(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!))
+                    mHomeFragment.updateMapLocation(
+                        LatLng(
+                            mViewModel.latitude.value!!,
+                            mViewModel.longitude.value!!
+                        )
+                    )
                     mViewModel.callCheckStatusAPI()
                 }
 
@@ -233,57 +267,66 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         println("RRR :: HomeFragment.getApiResponse")
         mViewModel.checkRequestLiveData.observe(this, Observer { checkStatusData ->
             run {
-                    writePreferences(PreferencesKey.CURRENCY_SYMBOL, checkStatusData.responseData.provider_details.currency_symbol)
-                    if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
-                        mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
-                        writePreferences(PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY, checkStatusData.responseData.provider_details.id)
-                        when (checkStatusData.responseData.requests[0].request.status) {
-                            SEARCHING -> if (!mIncomingRequestDialog.isShown()) {
-                                val bundle = Bundle()
-                                val strRequest = Gson().toJson(checkStatusData)
-                                bundle.putString("requestModel", strRequest)
-                                mIncomingRequestDialog.arguments = bundle
-                                mIncomingRequestDialog.show(supportFragmentManager, "mIncomingRequestDialog")
-                                AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
-                            }
-
-                            else -> when (checkStatusData.responseData.requests[0].service.admin_service) {
-                                TRANSPORT -> {
-                                    BROADCAST = TRANSPORT_BROADCAST
-                                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                        val intent = Intent(this, TaxiDashboardActivity::class.java)
-                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                        startActivity(intent)
-                                    }
-                                }
-                                SERVICE -> {
-                                    BROADCAST = SERVICE_BROADCAST
-                                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                        val intent = Intent(this, XUberDashBoardActivity::class.java)
-                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                        startActivity(intent)
-                                    }
-                                }
-                                ORDER -> {
-                                    BROADCAST = ORDER_BROADCAST
-                                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                        val intent = Intent(this, FoodieDashboardActivity::class.java)
-                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                        startActivity(intent)
-                                    }
-                                }
-                                DELIVERY -> {
-                                    BROADCAST = Constants.BroadCastTypes.DELIVERY_BROADCAST
-                                    if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
-                                        val intent = Intent(this, CourierDashBoardActivity::class.java)
-                                        intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                                        startActivity(intent)
-                                    }
-                                }
-                                else -> BROADCAST = BASE_BROADCAST
-                            }
+                writePreferences(
+                    PreferencesKey.CURRENCY_SYMBOL,
+                    checkStatusData.responseData.provider_details.currency_symbol
+                )
+                if (checkStatusData.statusCode == "200") if (!checkStatusData.responseData.requests.isNullOrEmpty()) {
+                    mViewModel.currentStatus.value = checkStatusData.responseData.requests[0].status
+                    writePreferences(
+                        PreferencesKey.FIRE_BASE_PROVIDER_IDENTITY,
+                        checkStatusData.responseData.provider_details.id
+                    )
+                    when (checkStatusData.responseData.requests[0].request.status) {
+                        SEARCHING -> if (!mIncomingRequestDialog.isShown()) {
+                            val bundle = Bundle()
+                            val strRequest = Gson().toJson(checkStatusData)
+                            bundle.putString("requestModel", strRequest)
+                            mIncomingRequestDialog.arguments = bundle
+                            mIncomingRequestDialog.show(
+                                supportFragmentManager,
+                                "mIncomingRequestDialog"
+                            )
+                            AppDatabase.getAppDataBase(this)!!.locationPointsDao().deleteAllPoint()
                         }
-                    } else if (mIncomingRequestDialog.isShown()) mIncomingRequestDialog.dismiss()
+
+                        else -> when (checkStatusData.responseData.requests[0].service.admin_service) {
+                            TRANSPORT -> {
+                                BROADCAST = TRANSPORT_BROADCAST
+                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                    val intent = Intent(this, TaxiDashboardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    startActivity(intent)
+                                }
+                            }
+                            SERVICE -> {
+                                BROADCAST = SERVICE_BROADCAST
+                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                    val intent = Intent(this, XUberDashBoardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    startActivity(intent)
+                                }
+                            }
+                            ORDER -> {
+                                BROADCAST = ORDER_BROADCAST
+                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                    val intent = Intent(this, FoodieDashboardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    startActivity(intent)
+                                }
+                            }
+                            DELIVERY -> {
+                                BROADCAST = Constants.BroadCastTypes.DELIVERY_BROADCAST
+                                if (getPermissionUtil().hasPermission(this, PERMISSIONS_LOCATION)) {
+                                    val intent = Intent(this, CourierDashBoardActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                                    startActivity(intent)
+                                }
+                            }
+                            else -> BROADCAST = BASE_BROADCAST
+                        }
+                    }
+                } else if (mIncomingRequestDialog.isShown()) mIncomingRequestDialog.dismiss()
 
             }
         })
@@ -292,7 +335,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
             cityID = it.profileData.city.id
             writePreferences(PreferencesKey.IS_ONLINE, it.profileData.is_online)
             PreferencesHelper.put(PreferencesKey.CITY_ID, cityID)
-            SocketManager.emit(Constants.RoomName.COMMON_ROOM_NAME, Constants.RoomId.getCommonRoom(cityID))
+            SocketManager.emit(
+                Constants.RoomName.COMMON_ROOM_NAME,
+                Constants.RoomId.getCommonRoom(cityID)
+            )
             if (mViewModel.mProfileResponse.value!!.profileData.airport_at !== null) {
                 changeToAirportMode(true)
             } else {
@@ -319,7 +365,10 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
         SocketManager.setOnSocketRefreshListener(object : SocketListener.ConnectionRefreshCallBack {
             override fun onRefresh() {
-                SocketManager.emit(Constants.RoomName.COMMON_ROOM_NAME, Constants.RoomId.getCommonRoom(cityID))
+                SocketManager.emit(
+                    Constants.RoomName.COMMON_ROOM_NAME,
+                    Constants.RoomId.getCommonRoom(cityID)
+                )
             }
         })
     }
@@ -336,8 +385,14 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     val locationObj = JSONObject()
                     locationObj.put("latitude", location.latitude)
                     locationObj.put("longitude", location.longitude)
-                    locationObj.put("url", "https://demoapi.gox.network/api/v1/provider/updatelocation")
-                    locationObj.put("provider_id", BaseApplication.getCustomPreference!!.getInt(PreferencesKey.PROVIDER_ID, 0))
+                    locationObj.put(
+                        "url",
+                        "https://demoapi.gox.network/api/v1/provider/updatelocation"
+                    )
+                    locationObj.put(
+                        "provider_id",
+                        BaseApplication.getCustomPreference!!.getInt(PreferencesKey.PROVIDER_ID, 0)
+                    )
                     SocketManager.emit("update_location", locationObj)
                 }
             } else if (!isLocationDialogShown) {
@@ -364,8 +419,8 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
                     }
                 }
                 Activity.RESULT_CANCELED -> {
-                    isGPSEnabled=false
-                    isLocationDialogShown=false
+                    isGPSEnabled = false
+                    isLocationDialogShown = false
                 }
             }
             FLOATING_OVERLAY_PERMISSION -> showFloatingView(this, false)
@@ -384,28 +439,36 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
             return
         }
 
-        if (isShowOverlayPermission) startActivityForResult(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + context.packageName)), FLOATING_OVERLAY_PERMISSION)
+        if (isShowOverlayPermission) startActivityForResult(
+            Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + context.packageName)
+            ), FLOATING_OVERLAY_PERMISSION
+        )
     }
 
     private fun startFloatingViewService(activity: Activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             if (activity.window.attributes.layoutInDisplayCutoutMode
-                    == WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER)
+                == WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER
+            )
                 throw RuntimeException("'windowLayoutInDisplayCutoutMode' do not be set to " + "'never'")
             if (activity.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
                 throw RuntimeException("Do not set Activity to landscape")
         }
 
         try {
-            ContextCompat.startForegroundService(activity, Intent(activity, FloatingViewService::class.java))
+            ContextCompat.startForegroundService(
+                activity,
+                Intent(activity, FloatingViewService::class.java)
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
 
     fun changeAirportMode() {
-        mViewModel.changeAirportModel()
+        // mViewModel.changeAirportModel()
     }
 
     override fun getInstance() = this@DashBoardActivity
@@ -423,7 +486,12 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     fun changeToAirportMode(isAirportMode: Boolean) {
         if (isAirportMode) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                fbAirportMode.setBackgroundTintList(resources.getColorStateList(R.color.red, context.theme))
+                fbAirportMode.setBackgroundTintList(
+                    resources.getColorStateList(
+                        R.color.red,
+                        context.theme
+                    )
+                )
             else
                 fbAirportMode.setBackgroundTintList(resources.getColorStateList(R.color.red))
         } else {

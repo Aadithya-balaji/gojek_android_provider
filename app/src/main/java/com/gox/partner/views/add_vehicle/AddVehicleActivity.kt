@@ -250,6 +250,9 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         val isDelivery = mViewModel.getServiceName() == mViewModel.getDeliveryServiceName()
         if (!isTransport || !isDelivery) {
             when {
+                (data?.vehicleId==0) -> {
+                    ViewUtils.showToast(this, getString(R.string.please_enter_vehicle_name), false)
+                }
                 data?.vehicleMake.isNullOrEmpty() ->
                     ViewUtils.showToast(
                             this,
@@ -273,9 +276,9 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                 else -> mViewModel.postVehicle()
             }
         } else when {
-            /*(data?.vehicleId==0) -> {
-                ViewUtils.showLog(this, getString(R.string.please_enter_vehicle_name), false)
-            }*/
+            (data?.vehicleId==0) -> {
+                ViewUtils.showToast(this, getString(R.string.please_enter_vehicle_name), false)
+            }
             data?.vehicleModel.isNullOrEmpty() -> ViewUtils.showToast(
                     this,
                     getString(R.string.please_enter_vehicle_model), false

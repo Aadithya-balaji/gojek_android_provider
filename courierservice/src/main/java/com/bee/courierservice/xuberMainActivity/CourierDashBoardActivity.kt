@@ -225,6 +225,9 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
                             mViewModel.userName.value = xUberCheckRequest.responseData!!.request!!.user!!.first_name +
                                     " " + xUberCheckRequest.responseData.request!!.user!!.last_name!!
                             mBinding.llBottomService.receiverData.setText(delivery.name+"( "+delivery.mobile+" )")
+                        if(xUberCheckRequest.responseData!!.request!!.delivery.is_fragile.toString().equals("0"))
+                            mBinding.llBottomService.tvFragile.text= "Not Fragile"
+                        else mBinding.llBottomService.tvFragile.text= "Fragile"
                             mViewModel.descImage.value = delivery.picture.toString()
                             mViewModel.strDesc.value = delivery.instruction
                             mViewModel.weight.value = delivery.weight.toString()
@@ -287,7 +290,6 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
                             whenPayment()
                         }
                     }
-
 //                       deliveryPosistion = deliveryPosistion + 1
                        if (mainstatus == PICKED_UP) {
                            val status = xUberCheckRequest.let {xUberCheckRequest.responseData!!.request!!.delivery.status}
@@ -295,7 +297,9 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
                                mBinding.llBottomService.receiverData.setText(xUberCheckRequest.responseData!!.request!!.delivery.name+"( "+xUberCheckRequest.responseData!!.request!!.delivery.mobile+" )")
                                if (xUberCheckRequest.responseData!!.request!!.delivery.d_address!!.length > 2)
                                    mBinding.llBottomService.tvDropLocation.text = xUberCheckRequest.responseData!!.request!!.delivery.d_address
-
+                               /*if(xUberCheckRequest.responseData!!.request!!.delivery.is_fragile.toString().equals("0"))
+                               mBinding.llBottomService.tvFragile.text= "Not Fragile"
+                               else mBinding.llBottomService.tvFragile.text= "Fragile"*/
                                mViewModel.descImage.value = xUberCheckRequest.responseData!!.request!!.delivery.picture.toString()
                                mViewModel.strDesc.value = xUberCheckRequest.responseData!!.request!!.delivery.instruction
                                mViewModel.weight.value = xUberCheckRequest.responseData!!.request!!.delivery.weight.toString()

@@ -14,6 +14,7 @@ class IncomingRequestViewModel : BaseViewModel<IncomingNavigator>() {
 
     var pickupLocation = MutableLiveData<String>()
     var serviceType = MutableLiveData<String>()
+    var fragileType=MutableLiveData<String>()
     var acceptRequestLiveData = MutableLiveData<AcceptRequestModel>()
     var rejectRequestLiveData = MutableLiveData<RejectRequestModel>()
     var showLoading = MutableLiveData<Boolean>()

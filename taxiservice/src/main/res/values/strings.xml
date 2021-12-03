@@ -83,5 +83,8 @@
     <string name="outstation_type">Outstation Type</string>
     <string name="rental_package">Rental package</string>
     <string name="book_for_some_one_user_info">Book for some one user info</string>
+    <string name="provider_commision">Commission</string>
+    <string name="provider_earning">Provider Earning</string>
+    <string name="provider_payable">Provider Payable</string>
 
 </resources>

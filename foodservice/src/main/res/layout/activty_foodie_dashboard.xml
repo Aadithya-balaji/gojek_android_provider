@@ -521,6 +521,99 @@
                         android:text="@string/dummy_item_total"
                         android:textColor="@color/black" />
 
+
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlCommission"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
+
+                    <TextView
+                        android:id="@+id/lableCommssion"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:padding="@dimen/_2sdp"
+                        android:text="Commission" />
+
+                    <TextView
+                        android:id="@+id/tvCommission"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:padding="@dimen/_2sdp"
+                        android:textColor="@color/red" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlTax"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
+
+                    <TextView
+                        android:id="@+id/labelTax"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:padding="@dimen/_2sdp"
+                        android:text="Tax" />
+
+                    <TextView
+                        android:id="@+id/TvTax"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:textColor="@color/red"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/dummy_item_total" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlProviderPay"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginEnd="@dimen/_5sdp">
+
+                    <TextView
+                        android:id="@+id/labelProviderPay"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:padding="@dimen/_2sdp"
+                        android:text="Provider Pay"
+                        android:textColor="@color/black"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvProviderPay"
+                        style="@style/SmallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:textColor="@color/red"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/avenirltstd_medium"
+                        android:padding="@dimen/_2sdp"
+                        android:text="@string/dummy_item_total" />
                 </RelativeLayout>
 
                 <View

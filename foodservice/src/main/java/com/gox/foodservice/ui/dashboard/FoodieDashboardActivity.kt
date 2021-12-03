@@ -214,7 +214,14 @@ class FoodieDashboardActivity : BaseActivity<ActivtyFoodieDashboardBinding>(), F
     }
 
     private fun whenPaid() {
+        val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
         chat_img.visibility = VISIBLE
+       /* mBinding.rlCommission.visibility= VISIBLE
+        mBinding.rlTax.visibility= VISIBLE
+        mBinding.rlProviderPay.visibility= VISIBLE*/
+        /*mBinding.tvCommission.text="-"+""+currency+" "+mViewModel.foodieCheckRequestModel.value!!.responseData.requests.payment.commision.toString()
+        mBinding.TvTax.text="-"+""+currency+" "+mViewModel.foodieCheckRequestModel.value!!.responseData.requests.payment.tax.toString()
+        mBinding.tvProviderPay.text=currency+" "+mViewModel.foodieCheckRequestModel.value!!.responseData.requests.order_invoice..toString()*/
         changeToFlowIconView(true)
         writePreferences(PreferencesKey.CAN_SEND_LOCATION, true)
         setOrderId()

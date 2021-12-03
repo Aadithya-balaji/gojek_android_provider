@@ -129,8 +129,6 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
     }
 
     private fun getIntentValues(strCheckRequestModel: ResponseData) {
-
-
         if (!roomConnected) {
             reqID = strCheckRequestModel.request.id
             PreferencesHelper.put(PreferencesKey.TRANSPORT_REQ_ID, reqID)
@@ -144,6 +142,10 @@ class TaxiInvoiceActivity : BaseActivity<ActivityInvoiceTaxiBinding>(), TaxiInvo
 
         requestModel = strCheckRequestModel
         if (requestModel != null) {
+            val Minus:String?="-"
+            mBinding!!.tvInvoiceCommisionAmut.text=Minus+""+requestModel!!.request.currency.toString()+" "+requestModel!!.request.payment?.commision.toString()
+            mBinding!!.ttvInvoiceTax.text=Minus+""+requestModel!!.request.currency.toString()+" "+requestModel!!.request.payment?.tax.toString()
+            mBinding!!.tvProviderPayable.text=requestModel!!.request.currency.toString()+" "+requestModel!!.request.payment?.provider_pay.toString()
 
             if (requestModel!!.request.payment_mode.equals(Constants.PaymentMode.CASH, true)
                     || requestModel!!.request.payment_mode.equals(Constants.PaymentMode.WALLET, true))

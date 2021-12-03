@@ -227,6 +227,10 @@ class CourierInvoiceDialog : BaseDialogFragment<CDialogInvoiceBinding>(),
             }
             else { mBinding.tvConfirmPayment.text = resources.getString(R.string.taxi_confirm_done)
             }
+            val Minus:String?="-"
+            /*mBinding.tvInvoiceCommission.text=Minus+""+requestModel!!.responseData.request.currency.toString()+" "+requestModel!!.responseData.request.delivery.payment?.commision.toString()
+            mBinding.ttvInvoiceTax.text=Minus+""+requestModel!!.responseData.request.currency.toString()+" "+requestModel!!.responseData.request.delivery.payment?.tax.toString()
+            mBinding.tvInvoiceProviderPay.text=requestModel!!.responseData.request.currency.toString()+" "+requestModel!!.responseData.request.delivery.payment?.provider_pay.toString()*/
             xUberInvoiceModel.bookingId.value = requestModel!!.responseData.request.booking_id
             if(requestModel!!.responseData.request.payment_by.equals("SENDER", true).not()){
                 if (requestModel!!.responseData.request.calculator.equals("DISTANCE", true)) {

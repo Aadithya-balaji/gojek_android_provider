@@ -177,10 +177,12 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
                         .error(R.drawable.ic_user_place_holder))
                 .load(xUberInvoiceModel.userImage.value)
                 .into(mBinding.ivUserImg)
-
         mBinding.tvAmountToBePaid.text = "$currency ${xUberInvoiceModel.totalAmount.value}"
         mBinding.tvXuperService.text = xUberInvoiceModel.serviceName.value
         mBinding.tvAdditionalCharge.text = "${getText(R.string.xuper_label_additional_charge)} $currency ${xUberInvoiceModel.tvAdditionalCharge.value}"
+        mBinding.tvCommssion.text="-"+""+currency+" "+xUberCheckRequest!!.responseData!!.requests!!.payment!!.commision.toString()
+        mBinding.tvTax.text="-"+""+currency+" "+xUberCheckRequest!!.responseData!!.requests!!.payment!!.tax.toString()
+        mBinding.tvProviderPay.text=currency+" "+xUberCheckRequest!!.responseData!!.requests!!.payment!!.provider_pay.toString()
     }
 
     override fun showErrorMessage(error: String) {

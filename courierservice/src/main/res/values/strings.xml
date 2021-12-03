@@ -103,5 +103,7 @@
     <string name="courier_arrived">Arrived</string>
     <string name="courier_pickup">Pickup</string>
     <string name="courier_delivery">Delivery</string>
+    <string name="commission">Commission</string>
+    <string name="provider_payable">Provider Payable</string>
 
 </resources>

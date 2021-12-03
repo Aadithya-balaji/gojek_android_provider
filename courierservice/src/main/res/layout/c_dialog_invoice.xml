@@ -260,6 +260,94 @@
                             android:textSize="16sp" />
 
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:visibility="gone"
+                        android:orientation="horizontal"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/tv_invoice_label_commission"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:text="@string/commission"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tv_invoice_commission"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.40"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:gravity="end"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/ttv_invoice_label_tax"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:text="@string/taxi_invoice_tax"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/ttv_invoice_tax"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.40"
+                            android:fontFamily="@font/avenirltstd_medium"
+                            android:gravity="end"
+                            android:textSize="@dimen/_12sdp" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"
+                        android:weightSum="1">
+
+                        <TextView
+                            android:id="@+id/tv_invoice_label_provider_pay"
+                            style="@style/MediumText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.60"
+                            android:text="@string/provider_payable"
+                            android:fontFamily="@font/avenirltstd_bold"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="16sp" />
+
+                        <TextView
+                            android:id="@+id/tv_invoice_provider_pay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            style="@style/MediumText"
+                            android:layout_weight="0.40"
+                            android:textColor="@color/colorPrimary"
+                            android:fontFamily="@font/avenirltstd_bold"
+                            android:gravity="end"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:visibility="gone"

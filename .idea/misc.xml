@@ -21,8 +21,10 @@
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/app/src/main/res/layout/layout_manage_services_item.xml" value="0.3875" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/app/src/main/res/layout/layout_setup_vehicle_item.xml" value="0.3875" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/app/src/main/res/layout/layout_taxi_invoice.xml" value="0.3875" />
+        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/app/src/main/res/layout/parent_transaction_list_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/app/src/main/res/layout/pending_list_dialog.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/base/src/main/res/drawable/ic_facebook.xml" value="0.10052083333333334" />
+        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/base/src/main/res/drawable/layerlist_remove_document.xml" value="0.3769230769230769" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/base/src/main/res/layout/activity_chat_main.xml" value="0.3875" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/base/src/main/res/layout/activity_main.xml" value="0.3875" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/base/src/main/res/layout/layout_permission_setting.xml" value="0.36666666666666664" />
@@ -34,8 +36,13 @@
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/taxiservice/src/main/res/layout-v23/activity_location_pick.xml" value="0.3875" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/taxiservice/src/main/res/layout/activity_invoice_taxi.xml" value="0.29777365491651203" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/taxiservice/src/main/res/layout/activity_location_pick.xml" value="0.1" />
+        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/xuberservice/src/main/res/layout/activity_xuber_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/xuberservice/src/main/res/layout/bottom_service_status_sheet.xml" value="0.22" />
-        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/xuberservice/src/main/res/layout/dialog_invoice.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/xuberservice/src/main/res/layout/dialog_invoice.xml" value="0.33" />
+        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/xuberservice/src/main/res/layout/dialog_reason.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/xuberservice/src/main/res/layout/dialog_upload_image.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/xuberservice/src/main/res/layout/dialog_xuper_extra_charge.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/Admin/StudioProjects/opus_android_provider/xuberservice/src/main/res/layout/dialog_xuper_rating.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

@@ -32,14 +32,9 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
         pastOrderViewModel.getTransportPastHistory(userDashboardViewModel.selectedFilterService.value!!.toLowerCase()
                 , offset.toString())
         loadingObservable.value = true
-        pastOrderViewModel.historyResponseLiveData.observe(this@PastOrderFragment, Observer<HistoryModel> {
-
-        })
-
-
-
         pastOrderViewModel.historyResponseLiveData.observe(this@PastOrderFragment,
                 Observer<HistoryModel> {
+                    Log.e("Data type", it.responseData.toString())
                     loadingObservable.value = false
                     if (it.responseData!!.type.equals(Constants.ModuleTypes.TRANSPORT, true)
                             && !it.responseData.transport!!.isEmpty()) {
@@ -47,7 +42,13 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
                         offset += 10
                         transportResponseData.transport.addAll(it.responseData.transport)
                         setTransportHistoryAdapter(Constants.ModuleTypes.TRANSPORT)
-                    } else if (it.responseData.type.equals(Constants.ModuleTypes.SERVICE, true)
+                    }
+                    else if(it.responseData.type.equals(Constants.ModuleTypes.DELIVERY, true) && !it.responseData.delivery!!.isEmpty()){
+                        loadMore = true
+                        offset += 10
+                        transportResponseData.delivery.addAll(it.responseData.delivery)
+                        setTransportHistoryAdapter(Constants.ModuleTypes.DELIVERY)
+                    }else if (it.responseData.type.equals(Constants.ModuleTypes.SERVICE, true)
                             && !it.responseData.service.isEmpty()) {
                         loadMore = true
                         offset += 10
@@ -58,11 +59,6 @@ class PastOrderFragment : BaseFragment<FragmentPastOrdersBinding>(), PastOrderNa
                         offset += 10
                         transportResponseData.order.addAll(it.responseData.order)
                         setTransportHistoryAdapter(Constants.ModuleTypes.ORDER)
-                    } else if(it.responseData.type.equals(Constants.ModuleTypes.DELIVERY, true) && !it.responseData.delivery!!.isEmpty()){
-                        loadMore = true
-                        offset += 10
-                        transportResponseData.delivery.addAll(it.responseData.delivery)
-                        setTransportHistoryAdapter(Constants.ModuleTypes.DELIVERY)
                     }
                     when (transportResponseData.order.size + transportResponseData.service.size + transportResponseData.transport.size + transportResponseData.delivery.size > 0) {
                         false -> {

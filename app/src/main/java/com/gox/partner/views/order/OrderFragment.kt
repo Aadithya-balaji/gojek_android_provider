@@ -1,6 +1,7 @@
 package com.gox.partner.views.order
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -99,6 +100,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), OrderFragmentNavigat
                 filterServiceAdapter.notifyDataSetChanged()
             }
             view.applyFilter.setOnClickListener {
+                Log.i("ServiceType", selectedService.toString())
                 dashboardViewModel.selectedFilterService.value = selectedService
                 mBinding.serviceNameToolbarTv.text = dashboardViewModel.selectedFilterService.value
                 dialog.dismiss()

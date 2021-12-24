@@ -212,7 +212,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     override fun hideRightIcon(isNeedHide: Boolean) = try {
         if (isNeedHide && iv_right != null) iv_right.visibility = View.GONE
-        else iv_right.visibility = View.VISIBLE
+       else System.out.println("Visible")
     } catch (e: Exception) {
         e.printStackTrace()
     }

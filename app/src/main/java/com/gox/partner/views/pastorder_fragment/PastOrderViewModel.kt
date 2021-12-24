@@ -26,7 +26,10 @@ class PastOrderViewModel : BaseViewModel<PastOrderNavigator>() {
         showLoading.value = true
         getCompositeDisposable().add(mRepository.getPastOrderHistory(object : ApiListener {
             override fun success(successData: Any) {
+
                 historyResponseLiveData.value = successData as HistoryModel
+
+
             }
 
             override fun fail(failData: Throwable) {

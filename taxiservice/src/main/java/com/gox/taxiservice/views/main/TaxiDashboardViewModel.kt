@@ -1,12 +1,12 @@
 package com.gox.taxiservice.views.main
 
+import android.location.Location
+import android.os.Handler
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.gox.base.base.BaseApplication
 import com.gox.base.base.BaseViewModel
-import com.gox.base.data.PreferencesHelper
-import com.gox.base.data.PreferencesKey
 import com.gox.base.repository.ApiListener
 import com.gox.taxiservice.model.*
 import com.gox.taxiservice.repositary.TaxiRepository
@@ -29,8 +29,8 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
     var locationPoint: ArrayList<LocationPoint> = arrayListOf()
     var distanceApiProcessing = MutableLiveData<ArrayList<DistanceApiProcessing>>()
     var iteratePointsForApi = ArrayList<LatLng>()
-
-    var rentalDropAddress:String = ""
+    var distance: Float = 0.0F
+    var rentalDropAddress: String = ""
     var rentalDropLatLong :LatLng? = null
     var serviceType :String? = ""
 
@@ -91,23 +91,31 @@ class TaxiDashboardViewModel : BaseViewModel<TaxiDashboardNavigator>() {
 
             for (points in iteratePointsForApi)
                 locationPoint.add(LocationPoint(points.latitude, points.longitude))
+            val startPoint = Location("locationA")
+            if(locationPoint.size>0) {
+                startPoint.setLatitude(locationPoint.get(0).lat)
+                startPoint.setLongitude(locationPoint.get(0).lng)
+
+                val endPoint = Location("locationB")
+                endPoint.setLatitude(locationPoint.get(locationPoint.size - 1).lat)
+                endPoint.setLongitude(locationPoint.get(locationPoint.size - 1).lng)
+                distance = startPoint.distanceTo(endPoint)
+            }
 
             model.id = params["id"]!!
             model.status = params["status"]!!
             model._method = params["_method"]!!
             model.toll_price = params["toll_price"]!!
-            model.distance = distanceMeter.value!!
+            model.distance =   distance.toDouble()
             model.latitude = latitude.value!!
             model.longitude = longitude.value!!
             model.location_points = locationPoint
-
-            if (serviceType.equals("rental", true)) {
-                model.d_latitude = rentalDropLatLong?.latitude!!
-                model.d_longitude = rentalDropLatLong?.longitude!!
+            if (serviceType.equals("rental", true) && locationPoint.size>0) {
+                model.d_latitude = locationPoint.get(locationPoint.size - 1).lat
+                model.d_longitude = locationPoint.get(locationPoint.size-1).lng
                 model.d_address = rentalDropAddress
             }
-
-                getCompositeDisposable().add(mRepository.taxiDroppingStatus(object : ApiListener {
+            getCompositeDisposable().add(mRepository.taxiDroppingStatus(object : ApiListener {
                 override fun success(successData: Any) {
                     callTaxiCheckStatusAPI()
                     showLoading.postValue(false)

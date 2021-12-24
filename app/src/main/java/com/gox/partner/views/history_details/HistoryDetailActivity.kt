@@ -468,14 +468,21 @@ class HistoryDetailActivity : BaseActivity<ActivityCurrentorderDetailLayoutBindi
                         ?: "0.0"
                 tvWalletFare?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.wallet)
                         ?: "0.0"
-                tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.total)
-                        ?: "0.0"
+                if(rlTips?.visibility==View.VISIBLE)
+                tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.total?.plus(
+                    mViewModel.transportDetail.value?.payment!!.tips!!
+                )) ?: "0.0"
+                else
+                    tvTotalAmount?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.total) ?: "0.0"
                 tvRoundOff?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.round_of)
                         ?: "0.0"
                 tvDiscountApplied?.text = "-${Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.discount)}"
-                tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.payable)
-                        ?: "0.0"
-
+                if(rlTips?.visibility==View.VISIBLE)
+                    tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.payable?.plus(
+                        mViewModel.transportDetail.value?.payment!!.tips!!
+                    )) ?: "0.0"
+                else
+                    tvTotalPayable?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.payable) ?: "0.0"
                 tvpeakcharge?.text = Utils.getNumberFormat()?.format(mViewModel.transportDetail.value?.payment!!.peak_amount)
                         ?: "0.0"
 

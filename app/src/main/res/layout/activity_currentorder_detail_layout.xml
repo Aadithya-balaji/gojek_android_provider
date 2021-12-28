@@ -519,13 +519,13 @@
                             </LinearLayout>
 
                             <ImageView
+                                android:id="@+id/payment_image"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignEnd="@+id/llPayment"
                                 android:layout_centerVertical="true"
                                 android:layout_marginEnd="@dimen/_5sdp"
                                 android:contentDescription="@string/app_name"
-                                android:tint="@color/dark_grey"
                                 app:srcCompat="@drawable/ic_cash" />
                         </RelativeLayout>
 

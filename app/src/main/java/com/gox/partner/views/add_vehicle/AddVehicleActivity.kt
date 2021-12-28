@@ -248,8 +248,9 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
         val data = mViewModel.getVehicleData()
         val isTransport = mViewModel.getServiceName() == mViewModel.getTransportServiceName()
         val isDelivery = mViewModel.getServiceName() == mViewModel.getDeliveryServiceName()
-        if (!isTransport || !isDelivery) {
-            when {
+        Log.e("performValidation: ",mViewModel.getDeliveryServiceName())
+        if (isTransport!=null || isDelivery!=null) {
+           /* when {
                 (data?.vehicleId==0) -> {
                     ViewUtils.showToast(this, getString(R.string.please_enter_vehicle_name), false)
                 }
@@ -272,9 +273,8 @@ class AddVehicleActivity : BaseActivity<ActivityAddVehicleBinding>(), AddVehicle
                     ViewUtils.showToast(
                             this,
                             getString(R.string.please_select_insurance_document), false
-                    )
-                else -> mViewModel.postVehicle()
-            }
+                    )*/
+                /*else ->*/ mViewModel.postVehicle()
         } else when {
             (data?.vehicleId==0) -> {
                 ViewUtils.showToast(this, getString(R.string.please_enter_vehicle_name), false)

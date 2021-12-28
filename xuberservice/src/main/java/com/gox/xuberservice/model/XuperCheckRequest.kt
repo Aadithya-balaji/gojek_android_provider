@@ -130,7 +130,9 @@ data class XuperCheckRequest(
                 val user_id: Int? = 0,
                 val user_rated: Double? = 0.0,
                 val category: Category? = Category(),
-                val subcategory: Subcategory? = Subcategory()
+                val subcategory: Subcategory? = Subcategory(),
+                val started_time:String="",
+                val finished_time:String=""
         ) {
             data class Service(
                     val allow_after_image: Int? = 0,

@@ -36,7 +36,7 @@ class DisputeReasonListAdapter(val viewModel: HistoryDetailViewModel, private va
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.rowDisputeListBinding.llDisputeReaons.tag = position
         holder.rowDisputeListBinding.tvDisbuteReason.text = disputeReason[position].dispute_name
-
+        holder.rowDisputeListBinding.rbDisbute.isClickable=false
         holder.rowDisputeListBinding.rbDisbute.isChecked = selectedPosition == position
         holder.rowDisputeListBinding.llDisputeReaons.setOnClickListener { v -> itemCheckChanged(v) }
     }

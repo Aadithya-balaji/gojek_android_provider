@@ -2,10 +2,12 @@ package com.gox.xuberservice.invoice
 
 import android.app.Dialog
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -61,6 +63,7 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         getBundleValues()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun initView(viewDataBinding: ViewDataBinding, view: View) {
         mBinding = viewDataBinding as DialogInvoiceBinding
         xUberInvoiceModel = XUberInvoiceViewModel()
@@ -115,8 +118,13 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun updateViews() {
         val currency = readPreferences<String>(PreferencesKey.CURRENCY_SYMBOL)
+        val startSplitDatetime =xUberCheckRequest!!.responseData!!.requests!!.started_time.split(" ")
+        var startTime:String=startSplitDatetime[1]+" "+startSplitDatetime[2]
+        val endSplitDatetime =xUberCheckRequest!!.responseData!!.requests!!.finished_time.split(" ")
+        var endTime:String=endSplitDatetime[1]+" "+endSplitDatetime[2]
         if (isFromCheckRequest == false) {
             xUberInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user), updateRequestModel!!.responseData!!.user!!.rating!!.toDouble())
             xUberInvoiceModel.serviceName.value = updateRequestModel!!.responseData!!.service!!.service_name
@@ -130,8 +138,8 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
             }
             xUberInvoiceModel.userName.value = updateRequestModel!!.responseData!!.user!!.first_name +
                     " " + updateRequestModel!!.responseData!!.user!!.last_name
-            timeTaken = CommonMethods.getTimeDifference(updateRequestModel!!.responseData!!.started_at!!,
-                    updateRequestModel!!.responseData!!.finished_at!!, "")
+            timeTaken = CommonMethods.timeDiff(endTime,
+                    startTime)
         } else {
             xUberInvoiceModel.rating.value = String.format(resources.getString(R.string.xuper_rating_user), xUberCheckRequest!!.responseData!!.requests!!.user!!.rating!!.toDouble())
             xUberInvoiceModel.serviceName.value = xUberCheckRequest!!.responseData!!.requests!!.service!!.service_name
@@ -145,8 +153,8 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
             xUberInvoiceModel.requestID.value = xUberCheckRequest!!.responseData!!.requests!!.id.toString()
             xUberInvoiceModel.userName.value = xUberCheckRequest!!.responseData!!.requests!!.user!!.first_name +
                     " " + xUberCheckRequest!!.responseData!!.requests!!.user!!.last_name
-            timeTaken = CommonMethods.getTimeDifference(xUberCheckRequest!!.responseData!!.requests!!.started_at!!,
-                    xUberCheckRequest!!.responseData!!.requests!!.finished_at!!, "")
+            timeTaken = CommonMethods.timeDiff(endTime,
+                startTime)
         }
 
         if (isFromCheckRequest == false) {
@@ -180,9 +188,9 @@ class XUberInvoiceDialog : BaseDialogFragment<DialogInvoiceBinding>(),
         mBinding.tvAmountToBePaid.text = "$currency ${xUberInvoiceModel.totalAmount.value}"
         mBinding.tvXuperService.text = xUberInvoiceModel.serviceName.value
         mBinding.tvAdditionalCharge.text = "${getText(R.string.xuper_label_additional_charge)} $currency ${xUberInvoiceModel.tvAdditionalCharge.value}"
-        mBinding.tvCommssion.text="-"+""+currency+" "+xUberCheckRequest!!.responseData!!.requests!!.payment!!.commision.toString()
         mBinding.tvTax.text="-"+""+currency+" "+xUberCheckRequest!!.responseData!!.requests!!.payment!!.tax.toString()
         mBinding.tvProviderPay.text=currency+" "+xUberCheckRequest!!.responseData!!.requests!!.payment!!.provider_pay.toString()
+        if(xUberCheckRequest!!.responseData!!.requests!!.payment!!.commision!=null)  mBinding.tvCommssion.text="-"+""+currency+" "+xUberCheckRequest!!.responseData!!.requests!!.payment!!.commision.toString()
     }
 
     override fun showErrorMessage(error: String) {

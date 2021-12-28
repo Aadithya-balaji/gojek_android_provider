@@ -14,6 +14,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -32,6 +33,7 @@ import com.gox.base.extensions.observeLiveData
 import com.gox.base.utils.LocaleUtils
 import com.gox.base.utils.PermissionUtils
 import com.gox.base.utils.RunTimePermission
+import com.gox.base.utils.ViewUtils
 import com.gox.base.views.CustomDialog
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
@@ -43,7 +45,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     private lateinit var mNoInternetDialog: Dialog
     private lateinit var mParentView: View
     private lateinit var context: Context
-
+   private var connectionInternet:Boolean=false
     private var locationManager: LocationManager? = null
     private var locationRequest: LocationRequest? = null
     private var mFusedLocationClient: FusedLocationProviderClient? = null
@@ -88,8 +90,15 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
             e.printStackTrace()
         }
 
-        observeLiveData(BaseApplication.getInternetMonitorLiveData) { isInternetAvailable ->
-            if (isInternetAvailable) mNoInternetDialog.dismiss() else mNoInternetDialog.show()
+        observeLiveData(BaseApplication.getInternetMonitorLiveData) { it ->
+            if (!it) {
+                mNoInternetDialog.show()
+                connectionInternet = true
+            }else {
+                if(connectionInternet) ViewUtils.showToast(applicationContext, "Internet Connection is ON .", true)
+                connectionInternet=false
+                mNoInternetDialog.dismiss()
+            }
         }
     }
 

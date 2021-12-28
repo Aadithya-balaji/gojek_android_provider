@@ -192,7 +192,7 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
 
     override fun showLogo(isNeedShow: Boolean) = try {
         if (isNeedShow) {
-            lay_header.setBackgroundColor(resources.getColor(R.color.black))
+//            lay_header.setBackgroundColor(resources.getColor(R.color.black))
             tbr_iv_logo.visibility = View.VISIBLE
             tbr_rl_right.visibility = View.GONE
         } else {

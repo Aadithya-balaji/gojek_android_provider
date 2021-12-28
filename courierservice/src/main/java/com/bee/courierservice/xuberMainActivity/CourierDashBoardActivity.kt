@@ -184,7 +184,8 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
             mViewModel.updateRequest(COMPLETED, null, false, "", "",deliveryPosistion)
         }
         mBinding.llBottomService.bCourierDroped.setOnClickListener {
-            mViewModel.updateRequest(DROPPED, null, false, "", "",deliveryPosistion) }
+            mViewModel.updateRequest(DROPPED, null, false, "", "",deliveryPosistion)
+            }
     }
 
     fun getApiResponse() {
@@ -225,7 +226,7 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
                             mViewModel.userName.value = xUberCheckRequest.responseData!!.request!!.user!!.first_name +
                                     " " + xUberCheckRequest.responseData.request!!.user!!.last_name!!
                             mBinding.llBottomService.receiverData.setText(delivery.name+"( "+delivery.mobile+" )")
-                        if(xUberCheckRequest.responseData!!.request!!.delivery.is_fragile.toString().equals("0"))
+                        if(delivery.is_fragile.toString().equals("0"))
                             mBinding.llBottomService.tvFragile.text= "Not Fragile"
                         else mBinding.llBottomService.tvFragile.text= "Fragile"
                             mViewModel.descImage.value = delivery.picture.toString()
@@ -310,6 +311,9 @@ class CourierDashBoardActivity : BaseActivity<ActivityCourierMainBinding>(),
                                    drawRoute(LatLng(mViewModel.latitude.value!!, mViewModel.longitude.value!!), LatLng(xUberCheckRequest.responseData!!.request!!.delivery.d_latitude!!, xUberCheckRequest.responseData!!.request!!.delivery.d_longitude!!))
 //                                   locationUpdate = 1
 //                               }
+                               if(xUberCheckRequest.responseData!!.request!!.delivery.is_fragile.toString().equals("0"))
+                                   mBinding.llBottomService.tvFragile.text= "Not Fragile"
+                               else mBinding.llBottomService.tvFragile.text= "Fragile"
                            }
                            if (status != mViewModel.currentStatus.value) {
                                mViewModel.currentStatus.value = xUberCheckRequest.let { xUberCheckRequest.responseData!!.request!!.delivery.status }

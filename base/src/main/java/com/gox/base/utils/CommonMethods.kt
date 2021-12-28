@@ -10,8 +10,10 @@ import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -25,8 +27,14 @@ import com.gox.base.R
 import java.io.File
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.util.*
 import java.util.concurrent.TimeUnit
+
+
+
 
 class CommonMethods {
     companion object {
@@ -130,11 +138,31 @@ class CommonMethods {
             return timeDiff!!
 
         }
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun timeDiff(strFromDate: String, strToDate: String): String{
+            var totalTimeString: String? =""
+            try {
+                val simpleDateFormat = SimpleDateFormat("HH:mm")
+                val start: Date = simpleDateFormat.parse(strFromDate)
+                val end: Date = simpleDateFormat.parse(strToDate)
+
+                val difference: Long = start.getTime() - end.getTime()
+
+                val diffMinutes: Long = difference / (60 * 1000)
+                val diffHours: Long = difference / (60 * 60 * 1000)
+                Log.e("Time", diffMinutes.toString()+" "+diffHours.toString())
+                 totalTimeString =diffHours.toString()+" hours "+diffMinutes+" Min "
+            }
+            catch (e: java.lang.Exception) {
+                e.printStackTrace()
+            }
+            return totalTimeString!!
+        }
 
         fun getTimeDifference(strFromDate: String, strToDate: String, format: String): String {
             val diffTime: Long?
             var hms: String? = ""
-            val fromSimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            val fromSimpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
             fromSimpleDateFormat.timeZone = TimeZone.getTimeZone("UTC")
             val fromDate: Date?
             val fromCalender: Calendar?

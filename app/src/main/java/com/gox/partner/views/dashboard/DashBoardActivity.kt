@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.net.Uri
 import android.os.Build
@@ -64,6 +65,7 @@ import com.gox.partner.views.notification.NotificationFragment
 import com.gox.partner.views.order.OrderFragment
 import com.gox.taxiservice.views.main.TaxiDashboardActivity
 import com.gox.xuberservice.xuberMainActivity.XUberDashBoardActivity
+import com.rilixtech.CountryCodePicker
 import io.socket.emitter.Emitter
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import kotlinx.android.synthetic.main.header_layout.*
@@ -74,6 +76,8 @@ import kotlin.concurrent.schedule
 
 class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
     DashBoardNavigator {
+
+    private val TAG = "DashBoardActivity"
 
     private lateinit var mBinding: ActivityDashboardBinding
     private lateinit var mViewModel: DashBoardViewModel
@@ -205,14 +209,22 @@ class DashBoardActivity : BaseActivity<ActivityDashboardBinding>(),
         e.printStackTrace()
     }
 
+
+
     override fun setRightIcon(rightIcon: Int) = try {
-        iv_right.setImageResource(rightIcon)
-    } catch (e: Exception) {
-    }
+         iv_right.setImageResource(rightIcon)
+         System.out.println("Visible")
+     } catch (e: Exception) {
+         e.printStackTrace()
+         System.out.println("inVisible")
+
+     }
 
     override fun hideRightIcon(isNeedHide: Boolean) = try {
-        if (isNeedHide && iv_right != null) iv_right.visibility = View.GONE
-       else System.out.println("Visible")
+        if (isNeedHide) {
+            iv_right.visibility = View.GONE
+        } else  iv_right.visibility = View.VISIBLE
+
     } catch (e: Exception) {
         e.printStackTrace()
     }

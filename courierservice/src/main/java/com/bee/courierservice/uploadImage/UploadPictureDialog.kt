@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.databinding.ViewDataBinding
@@ -93,6 +94,7 @@ class UploadPictureDialog : BaseDialogFragment<CDialogUploadImageBinding>(),
     override fun submit() {
         if (localPath != null) {
             getFilePath.getFilePath(localPath!!)
+            ViewUtils.showToast(appCompatActivity,"Image Uploaded Successfully",true)
             dialog!!.dismiss()
         } else ViewUtils.showToast(
             appCompatActivity,

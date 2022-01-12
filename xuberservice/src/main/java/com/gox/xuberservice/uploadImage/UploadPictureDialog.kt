@@ -92,6 +92,8 @@ class UploadPictureDialog : BaseDialogFragment<DialogUploadImageBinding>(),
     override fun submit() {
         if (localPath != null) {
             getFilePath.getFilePath(localPath!!)
+            ViewUtils.showToast(appCompatActivity,"Image Uploaded Successfully",true)
+
             dialog!!.dismiss()
         } else ViewUtils.showToast(
             appCompatActivity,
